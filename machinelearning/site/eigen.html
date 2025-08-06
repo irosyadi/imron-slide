@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+        
+            <link rel="icon" href="assets\i.ico">
+        
+
+        <link rel="stylesheet" href="assets\reveal-js/dist/reveal.css" />
+
+        
+            <link rel="stylesheet" href="assets\slides.css" />
+        
+        
+            <link rel="stylesheet" href="assets\vs.css" />
+        
+
+        
+            
+        
+            
+        
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section data-markdown
+                
+                    data-separator="^\s*---\s*$"
+                
+                    data-separator-vertical="^\s*-v-\s*$"
+                
+                    data-separator-notes="^Notes?:"
+                
+                >
+                    <!-- The markdown must be placed to the whole left to prevent indentation issues like https://github.com/MartenBE/mkslides/issues/52 -->
+                    <textarea data-template>
+# Eigenvalues and Eigenvectors: Unlocking Linear Transformations
+
+---
+
+## What are Eigenvalues and Eigenvectors?
+
+🔎 **Definition:**
+For a square matrix $A$, a non-zero vector $v$ is an **eigenvector** if, when $A$ acts upon it, the result is simply a scalar multiple of $v$. The scalar is called the **eigenvalue**, denoted by $\lambda$.
+
+Mathematically:
+$Av = \lambda v$
+
+Where:
+*   $A$ is a square matrix
+*   $v$ is the eigenvector (a non-zero vector)
+*   $\lambda$ is the eigenvalue (a scalar)
+
+💭 **Intuition:** Eigenvectors are the special vectors that are only *stretched* or *shrunk* by a linear transformation, not rotated or flipped in direction (though they can be reversed if $\lambda$ is negative). They define the "axes" along which a transformation primarily acts.
+
+---
+
+## Geometric Intuition 🚀
+
+Imagine a transformation applied to many vectors:
+
+*   Most vectors change both their length and direction.
+*   **Eigenvectors** are unique! They only change their length (scaled by $\lambda$), but maintain their original direction (or perfectly opposite direction if $\lambda < 0$).
+
+-v-
+
+Visualize:
+```mermaid
+graph TD
+    A[Original Vector v] --> B{Apply Matrix A};
+    B --> C{General Vector $Av'$};
+    C --> D[Changes Direction & Length];
+
+    A --> E{If v is an Eigenvector};
+    E --> F[Result is $\lambda v$];
+    F --> G[Only Changes Length];
+```
+This property makes them incredibly powerful for understanding the essence of a linear transformation.
+
+---
+
+## Finding Eigenvalues 🛠️
+
+The equation $Av = \lambda v$ can be rewritten as:
+$Av - \lambda v = 0$
+$Av - \lambda I v = 0$ (where $I$ is the identity matrix)
+$(A - \lambda I)v = 0$
+
+For a non-zero eigenvector $v$ to exist, the matrix $(A - \lambda I)$ must be singular, meaning its determinant must be zero.
+
+This gives us the **Characteristic Equation**:
+$det(A - \lambda I) = 0$
+
+**Steps:**
+1.  Form the matrix $(A - \lambda I)$.
+2.  Calculate its determinant.
+3.  Solve the resulting polynomial equation for $\lambda$. The roots are the eigenvalues.
+
+---
+
+## Example: Finding Eigenvalues 📋
+
+Let's find the eigenvalues for the matrix $A = \begin{pmatrix} 2 & 1 \\ 1 & 2 \end{pmatrix}$.
+
+1.  Form $(A - \lambda I)$:
+    $A - \lambda I = \begin{pmatrix} 2 & 1 \\ 1 & 2 \end{pmatrix} - \lambda \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix} = \begin{pmatrix} 2-\lambda & 1 \\ 1 & 2-\lambda \end{pmatrix}$
+
+2.  Calculate the determinant:
+    $det(A - \lambda I) = (2-\lambda)(2-\lambda) - (1)(1)$
+    $= (2-\lambda)^2 - 1$
+
+3.  Set determinant to zero and solve for $\lambda$:
+    $(2-\lambda)^2 - 1 = 0$
+    $(2-\lambda)^2 = 1$
+    $2-\lambda = \pm 1$
+
+    Case 1: $2-\lambda = 1 \implies \lambda_1 = 1$
+    Case 2: $2-\lambda = -1 \implies \lambda_2 = 3$
+
+Our eigenvalues are $\lambda_1 = 1$ and $\lambda_2 = 3$.
+
+---
+
+## Finding Eigenvectors 🔑
+
+Once you have the eigenvalues, substitute each $\lambda$ back into the equation:
+$(A - \lambda I)v = 0$
+
+Then, solve this system of linear equations for $v$. This means finding the null space (or kernel) of the matrix $(A - \lambda I)$.
+
+**Important Note:** Eigenvectors are not unique! If $v$ is an eigenvector, then any non-zero scalar multiple $kv$ is also an eigenvector for the same eigenvalue. We usually pick a simple representative vector.
+
+---
+
+## Example: Finding Eigenvectors (cont.) 📝
+
+Using the matrix $A = \begin{pmatrix} 2 & 1 \\ 1 & 2 \end{pmatrix}$ and eigenvalues $\lambda_1 = 1, \lambda_2 = 3$.
+
+**For $\lambda_1 = 1$:**
+$(A - 1I)v = \begin{pmatrix} 2-1 & 1 \\ 1 & 2-1 \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} 1 & 1 \\ 1 & 1 \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \end{pmatrix}$
+This gives the equation: $x + y = 0 \implies y = -x$.
+A simple eigenvector is $v_1 = \begin{pmatrix} 1 \\ -1 \end{pmatrix}$.
+
+**For $\lambda_2 = 3$:**
+$(A - 3I)v = \begin{pmatrix} 2-3 & 1 \\ 1 & 2-3 \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} -1 & 1 \\ 1 & -1 \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \end{pmatrix}$
+This gives the equation: $-x + y = 0 \implies y = x$.
+A simple eigenvector is $v_2 = \begin{pmatrix} 1 \\ 1 \end{pmatrix}$.
+
+---
+
+## Key Properties and Facts 🌟
+
+*   **Distinct Eigenvalues:** Eigenvectors corresponding to distinct eigenvalues are linearly independent.
+*   **Trace and Determinant:**
+    *   The trace of a matrix (sum of diagonal elements) is equal to the sum of its eigenvalues.
+        $Tr(A) = \sum \lambda_i$
+    *   The determinant of a matrix is equal to the product of its eigenvalues.
+        $det(A) = \prod \lambda_i$
+*   **Symmetric Matrices:** For a symmetric matrix ($A = A^T$), its eigenvectors are orthogonal (or can be chosen to be orthogonal).
+*   **Diagonalization:** If a matrix $A$ has a full set of linearly independent eigenvectors, it can be diagonalized:
+    $A = PDP^{-1}$
+    where $P$ is the matrix whose columns are the eigenvectors of $A$, and $D$ is a diagonal matrix whose diagonal entries are the corresponding eigenvalues.
+    This simplifies many matrix operations, like computing powers of A: $A^k = PD^kP^{-1}$.
+
+---
+
+## Why are they Important? 💡
+
+Eigenvalues and eigenvectors provide a fundamental way to:
+
+*   **Simplify Complex Transformations:** They identify the "natural" directions along which a linear transformation acts consistently.
+*   **Decompose Matrices:** Allow us to break down complicated matrices into simpler diagonal forms.
+*   **Analyze System Dynamics:** In physics and engineering, they describe modes of vibration, stability, and growth rates.
+*   **Reduce Data Dimensionality:** Crucial in machine learning and data analysis for finding essential components.
+*   **Solve Differential Equations:** Provide basis functions for solutions.
+
+They are at the heart of many powerful analytical techniques!
+
+---
+
+## Application 1: Principal Component Analysis (PCA) 📊
+
+*   **What it is:** A statistical procedure that uses an orthogonal transformation to convert a set of observations of possibly correlated variables into a set of values of linearly uncorrelated variables called principal components.
+*   **How Eigenstuff Helps:**
+    1.  A **covariance matrix** is constructed from the data. This matrix captures the relationships and variances between different features.
+    2.  The **eigenvectors** of this covariance matrix are the **principal components**. They represent the directions of maximum variance in the data.
+    3.  The corresponding **eigenvalues** indicate the amount of variance captured along each principal component.
+*   **Use Case:** Dimensionality reduction, data compression, noise reduction, feature extraction in machine learning.
+
+-v-
+
+```mermaid
+graph LR
+
+    A[High-Dimensional Data] --> B{Calculate Covariance Matrix};
+    B --> C{Find Eigenvalues & Eigenvectors};
+    C --> D[Eigenvectors = Principal Components - New Axes];
+    C --> E[Eigenvalues = Variance along PCs - Importance];
+    D & E --> F[Project Data onto Selected PCs];
+    F --> G[Lower-Dimensional Representation];
+```
+
+---
+
+## Application 2: Quantum Mechanics ⚛️
+
+*   **Schrödinger Equation:** One of the most famous eigenvalue problems in physics.
+    $H\psi = E\psi$
+    Where:
+    *   $H$ is the Hamiltonian operator (representing the total energy of a system, often a matrix in discrete systems).
+    *   $\psi$ is the wavefunction (an eigenvector-like function).
+    *   $E$ is the energy of the system (an eigenvalue).
+*   **Interpretation:** The eigenvalues $E$ are the possible quantifiable energy levels that a quantum system can possess, and the eigenvectors $\psi$ are the corresponding wavefunctions describing the state of the system at those energy levels.
+*   **Use Case:** Predicting stable energy states of atoms and molecules, understanding particle behavior.
+
+---
+
+## Application 3: Graph Theory (PageRank Algorithm) 🔗
+
+*   **Google's PageRank:** An algorithm used by Google Search to rank web pages in their search engine results.
+*   **How it Works:**
+    1.  A web graph is constructed where pages are nodes and hyperlinks are directed edges.
+    2.  An appropriately constructed **stochastic matrix** (related to the adjacency matrix of the web graph) $M$ is formed. Each entry $M_{ij}$ represents the probability of moving from page $j$ to page $i$.
+    3.  The PageRank scores of all pages collectively form an **eigenvector** of this matrix $M$ corresponding to the largest eigenvalue (which is usually 1, by the Perron-Frobenius theorem).
+*   **Interpretation:** Pages with higher PageRank values are considered more "important" or "authoritative."
+
+---
+
+## Application 4: Vibrational Analysis ⚙️
+
+*   **Engineering Systems:** In mechanical and structural engineering, systems like bridges, buildings, and rotating machinery exhibit natural modes of vibration.
+*   **How Eigenstuff Helps:**
+    *   The complex dynamics of a vibrating system can often be modeled as an eigenvalue problem:
+        $M\ddot{x} + C\dot{x} + Kx = F(t)$ (Equation of Motion)
+        Which simplifies to $(K - \omega^2 M)u = 0$ for free vibrations often.
+    *   The **eigenvalues** ($\omega^2$) represent the squares of the natural frequencies (or resonant frequencies) at which the system naturally oscillates.
+    *   The corresponding **eigenvectors** ($u$) represent the "mode shapes" &mdash; the specific displacement patterns of the system when it vibrates at that natural frequency.
+*   **Use Case:** Designing structures to avoid resonance (which can cause catastrophic failure), predicting how structures will respond to dynamic loads.
+
+---
+
+## Application 5: Image Compression & Processing 📷
+
+*   **Karhunen-Loève Transform (KLT) / Eigenfaces:** Techniques used in image processing for compression and pattern recognition.
+*   **How Eigenstuff Helps:**
+    1.  An image (or a set of images) can be represented as high-dimensional data points.
+    2.  A covariance matrix is computed from this data.
+    3.  Its **eigenvectors** form an optimal basis &mdash; they capture the most significant variations in the image data.
+    4.  By keeping only the eigenvectors corresponding to the largest eigenvalues, most of the "information" (variance) in the image can be preserved with significantly fewer dimensions.
+*   **Use Case:** Representing and compressing images efficiently, facial recognition (e.g., "Eigenfaces" project faces onto a lower-dimensional eigen-space).
+
+---
+
+## Conclusion 🎉
+
+*   Eigenvalues and Eigenvectors are not just abstract mathematical concepts; they are powerful tools for understanding and simplifying **linear transformations**.
+*   They reveal the inherent structure and behavior of matrices and the systems they represent.
+*   From data science and quantum mechanics to engineering and computer science, their **applications are vast and critical** in diverse fields.
+
+Keep exploring their power! 🚀
+
+---
+
+## Questions? 🙋
+
+Thank you!
+                    </textarea>
+                </section>
+            </div>
+        </div>
+        <script src="assets\reveal-js/dist/reveal.js"></script>
+        <script src="assets\reveal-js/plugin/highlight/highlight.js"></script>
+        <script src="assets\reveal-js/plugin/markdown/markdown.js"></script>
+        <script src="assets\reveal-js/plugin/math/math.js"></script>
+        <script src="assets\reveal-js/plugin/notes/notes.js"></script>
+        <script src="assets\reveal-js/plugin/search/search.js"></script>
+        <script src="assets\reveal-js/plugin/zoom/zoom.js"></script>
+
+        
+            
+                
+                    
+                        <script src="https://cdn.jsdelivr.net/npm/reveal.js-mermaid-plugin/plugin/mermaid/mermaid.min.js"></script>
+                    
+                
+            
+                
+                    
+                        <script src="https://cdn.jsdelivr.net/npm/reveal-plantuml/dist/reveal-plantuml.min.js"></script>
+                    
+                
+            
+        
+
+        <script>
+            Reveal.initialize({
+                
+                    
+                        history: true,
+                    
+                        slideNumber: "c/t",
+                    
+                        height: 1080,
+                    
+                        width: 1920,
+                    
+                        transition: "fade",
+                    
+                
+                plugins: [
+                    RevealMarkdown, // Must come before the other plugins so they can hook into the generated HTML.
+                    RevealHighlight,
+                    RevealMath.KaTeX,
+                    RevealNotes,
+                    RevealSearch,
+                    RevealZoom,
+
+                    
+                        
+                            
+                                RevealMermaid,
+                            
+                        
+                            
+                        
+                    
+                ],
+            });
+        </script>
+    </body>
+</html>
