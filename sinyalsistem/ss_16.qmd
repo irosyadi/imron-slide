@@ -1,0 +1,900 @@
+---
+title: "Signal and Systems"
+subtitle: "1.6 Basic System Properties"
+author: "Imron Rosyadi"
+format:
+  live-revealjs:
+    logo: "qrjs_assets/unsoed_logo.png"
+    footer: "[irosyadi-2025](https://imron-slide.vercel.app)"
+    slide-number: true
+    chalkboard: true
+    scrollable: true
+    controls: true
+    progress: true
+    preview-links: false
+    transition: fade
+    incremental: false
+    smaller: false
+    theme: [default, qrjs_assets/ir_style.scss]
+filters:
+  - pyodide
+---
+
+# Basic System Properties
+
+---
+
+## Introduction to System Properties
+
+*   **Understanding System Behavior:** Basic system properties help categorize and analyze how systems behave.
+*   These properties are crucial for:
+    *   Simplifying system analysis and design.
+    *   Predicting system responses to various inputs.
+    *   Developing theoretical frameworks for signals and systems.
+
+::: {.notes}
+Welcome everyone to this session on Basic System Properties. In Signals and Systems, understanding how systems react to signals is fundamental. But to truly understand them, we first need to characterize them based on certain intrinsic properties. These properties act like fundamental rules that govern a system's behavior, allowing us to predict, design, and even troubleshoot complex systems with greater ease. They'll be central to all our subsequent discussions in this course.
+:::
+
+---
+
+## 1. Systems with and without Memory
+
+A system is **memoryless** if its output at any given time depends only on the input at that *same* time.
+
+**Memoryless System Examples:**
+
+*   **Discrete-Time:**
+    $$
+    y[n]=\left(2 x[n]-x^{2}[n]\right)^{2} \quad \text{(1.90)}
+    $$
+*   **Continuous-Time (Resistor):**
+    $$
+    y(t)=R x(t) \quad \text{(1.91)}
+    $$
+
+---
+
+## 1. Systems with and without Memory
+
+**Systems with Memory:** Output depends on past or future input values.
+
+*   **Discrete-Time Accumulator (Summer):**
+    $$
+    y[n]=\sum_{k=-\infty}^{n} x[k] \quad \text{(1.92)}
+    $$
+    This can also be expressed as $y[n]=y[n-1]+x[n]$.
+*   **Discrete-Time Delay:**
+    $$
+    y[n]=x[n-1] \quad \text{(1.93)}
+    $$
+*   **Continuous-Time Capacitor:**
+    $$
+    y(t)=\frac{1}{C} \int_{-\infty}^{t} x(\tau) d \tau \quad \text{(1.94)}
+    $$
+
+::: {.notes}
+The first property we'll discuss is memory. Think of it simply: does the system need to "remember" past (or anticipate future) inputs to produce its current output?
+
+A memoryless system is like an instantaneous black box. The resistor is a classic example: the voltage across it at time 't' only depends on the current flowing through it at that *exact* same time 't'. It doesn't care what the current was five seconds ago, or what it will be in the future.
+
+On the other hand, systems with memory hold onto information. An accumulator, for instance, needs to sum *all* past inputs up to the current moment. Similarly, a delay system needs to remember the previous input value to output it at the current time. In physical systems, memory is often associated with energy storage, such as in capacitors (storing charge related to past current) or inductors (storing magnetic energy related to past voltage). Digital systems store information in registers. While we usually think of memory as related to the past, dependency on future values also qualifies as memory, as we'll see with causality.
+:::
+
+---
+
+## Memory: Interactive Demonstration
+
+Let's compare a memoryless system with a system with memory (an accumulator).
+
+**Memoryless System:** $y[n] = x[n]^2$
+```{pyodide}
+#| max-lines: 10
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Input signal
+n = np.arange(-5, 6)
+x = np.where((n >= -2) & (n <= 2), 1, 0) # Simple pulse
+
+# Memoryless system output
+y_memoryless = x**2
+
+plt.figure(figsize=(6, 2.5))
+plt.stem(n, x, label='Input x[n]', basefmt=" ")
+plt.stem(n, y_memoryless, linefmt='r-', markerfmt='ro', label='Output y[n]', basefmt=" ")
+plt.title('Memoryless System: y[n] = x[n]^2')
+plt.xlabel('n')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+## Memory: Interactive Demonstration
+
+**System with Memory (Accumulator):** $y[n] = \sum_{k=-\infty}^{n} x[k]$
+```{pyodide}
+#| max-lines: 10
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Input signal
+n = np.arange(-5, 6)
+x = np.where((n == 0) | (n == 1), 1, 0) # Two impulses
+
+# Accumulator output
+y_accumulator = np.cumsum(x)
+
+plt.figure(figsize=(6, 2.5))
+plt.stem(n, x, label='Input x[n]', basefmt=" ")
+plt.stem(n, y_accumulator, linefmt='g-', markerfmt='go', label='Output y[n]', basefmt=" ")
+plt.title('Accumulator: y[n] = sum(x[k])')
+plt.xlabel('n')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+
+::: {.notes}
+Here we have two interactive plots to illustrate the concept of memory.
+
+On the first, for the memoryless system `y[n] = x[n]^2`, observe how `y[n]` at any point `n` (e.g., `n=0`) is simply the square of `x[n]` at that *same* `n`. There's no dependency on `x[-1]` or `x[1]`. The output mirrors the input's shape instantaneously.
+
+On the second, we have an accumulator `y[n] = sum(x[k])`. If the input `x[n]` is an impulse at `n=0` and `n=1`, the output `y[n]` at, say, `n=2`, is the sum of `x[-infinity]` to `x[2]`. It "remembers" the past impulses. Notice how the output value at a given `n` is influenced by all the input values that came before it. This continuous build-up is a clear sign of memory.
+:::
+
+---
+
+## 2. Invertibility and Inverse Systems
+
+A system is **invertible** if distinct inputs always produce distinct outputs.
+
+*   If a system is invertible, an **inverse system** exists.
+*   When cascaded with the original system, the inverse system yields an output identical to the original input.
+
+```{mermaid}
+graph LR
+    A["Input x[n]"] --> S1["System S"]
+    S1 --> B["Output y[n]"]
+    B --> S2["Inverse System S⁻¹"]
+    S2 --> C["Output w[n] = x[n]"]
+```
+*(Figure 1.45(a) - Concept of an inverse system)*
+
+---
+
+## 2. Invertibility and Inverse Systems
+
+**Invertible System Example (Continuous-Time):**
+
+$$
+y(t)=2 x(t) \quad \text{(1.97)}
+$$
+Inverse System:
+$$
+w(t)=\frac{1}{2} y(t) \quad \text{(1.98)}
+$$
+
+**Invertible System Example (Discrete-Time Accumulator):**
+
+The accumulator: $y[n]=\sum_{k=-\infty}^{n} x[k]$
+Inverse System:
+$$
+w[n]=y[n]-y[n-1] \quad \text{(1.99)}
+$$
+
+::: {.notes}
+Next, we consider invertibility. An invertible system is one where you can uniquely determine the input signal if you know the output signal. Imagine a secret code: if you can decode the message perfectly back to its original form, the encoding process was invertible. If multiple different original messages could result in the same encoded message, then it's not invertible and you can't uniquely recover the original.
+
+Mathematically, this means that if $x_1(t) \neq x_2(t)$, then their corresponding outputs $y_1(t) \neq y_2(t)$. If this condition holds, then an inverse system can be designed. The block diagram shows this concept: the original system followed by its inverse system effectively acts as an identity system, where the final output is just the original input.
+
+Consider the simple scaling system `y(t) = 2x(t)`. If you know `y(t)`, you can always find `x(t)` by dividing `y(t)` by 2. It's perfectly invertible. The accumulator is also invertible, its inverse is the first difference operator.
+:::
+
+---
+
+## Non-Invertible Systems
+
+**Examples of Non-Invertible Systems:**
+
+*   **Zero System:**
+    $$
+    y[n]=0 \quad \text{(1.100)}
+    $$
+    *Many different inputs (e.g., $x[n]=u[n]$ or $x[n]=\delta[n]$) produce the same zero output.*
+*   **Squaring System:**
+    $$
+    y(t)=x^{2}(t) \quad \text{(1.101)}
+    $$
+    *You cannot determine the sign of $x(t)$ from $y(t)$.
+    For example, $x(t)=2$ and $x(t)=-2$ both yield $y(t)=4$.*
+
+**Practical Application: Encoding Systems**
+*   In communications, encoders must be invertible for perfect signal recovery.
+
+::: {.notes}
+Now for non-invertible systems: these are systems where multiple distinct inputs can lead to the *same* output. If this happens, you can't uniquely reconstruct the input from the output, as you don't know which of the multiple input possibilities was the original one.
+
+The 'zero system' is a trivial but clear example: no matter what you input, the output is always zero. If the output is zero, you have no way of knowing what the original input was. Similarly, for the squaring system $y(t) = x^2(t)$, consider inputs $x(t)=2$ and $x(t)=-2$. Both produce the output $y(t)=4$. If you only see $y(t)=4$, you can't tell if the input was 2 or -2. Thus, the system is non-invertible.
+
+This concept is vital in areas like data compression and encoding. For instance, lossless audio compression aims to be invertible, allowing you to perfectly reconstruct the original audio. Lossy compression, like MP3, is non-invertible because it discards information, making perfect reconstruction impossible, though often perceptually acceptable.
+:::
+
+---
+
+## Invertibility: Interactive Demonstration
+
+Let's demonstrate the inverse for an accumulator.
+
+```{pyodide}
+#| max-lines: 10
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define input signal
+n = np.arange(-5, 6)
+x = np.array([0, 0, 0, 1, 2, -1, 0.5, 0, 0, 0, 0]) # A simple test signal
+
+# System (Accumulator)
+# y[n] = sum_{k=-inf}^{n} x[k]
+y_system = np.cumsum(x)
+
+# Inverse System (First Difference)
+# w[n] = y[n] - y[n-1]
+w_inverse = np.zeros_like(y_system, dtype=float)
+w_inverse[0] = y_system[0] # Handle the first element
+w_inverse[1:] = y_system[1:] - y_system[:-1]
+
+
+plt.figure(figsize=(10, 4))
+
+plt.subplot(3, 1, 1)
+plt.stem(n, x, label='Input x[n]', basefmt=" ")
+plt.title('Original Input x[n]')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.tight_layout()
+
+plt.subplot(3, 1, 2)
+plt.stem(n, y_system, linefmt='r-', markerfmt='ro', label='Output y[n]', basefmt=" ")
+plt.title('System Output y[n] (Accumulator)')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.tight_layout()
+
+plt.subplot(3, 1, 3)
+plt.stem(n, w_inverse, linefmt='g-', markerfmt='go', label='Recovered w[n]', basefmt=" ")
+plt.title('Recovered Signal w[n] (Inverse System)')
+plt.xlabel('n')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.tight_layout()
+
+plt.show()
+
+# Verify if w_inverse is identical to x
+print(f"Are recovered signal w[n] and original x[n] identical? {np.allclose(x, w_inverse)}")
+
+```
+
+::: {.notes}
+This interactive plot helps us visualize the invertibility of the accumulator.
+
+1.  **Original Input `x[n]`:** This is the signal we apply to our system.
+2.  **System Output `y[n]` (Accumulator):** This shows `x[n]` after passing through the accumulator, where each `y[n]` is the running sum of `x[k]` up to `n`. Notice how the signal builds up or combines the past values.
+3.  **Recovered Signal `w[n]` (Inverse System):** This is the output of the inverse system, which performs a "first difference" operation ($w[n] = y[n] - y[n-1]$). Observe how this operation effectively "undoes" the accumulation and recovers the original shape of `x[n]`.
+
+The printout below the graph confirms numerically that the recovered signal `w[n]` is indeed identical to the original input `x[n]`. This provides a concrete example of an invertible system and its inverse.
+:::
+
+---
+
+## 3. Causality
+
+A system is **causal** if its output at any time depends *only* on values of the input at the present time and in the past.
+
+*   Often referred to as **nonanticipative**.
+*   If $x_1(t) = x_2(t)$ for $t \le t_0$, then $y_1(t) = y_2(t)$ for $t \le t_0$.
+*   **All memoryless systems are causal.**
+
+**Causal System Examples:**
+
+*   **RC Circuit:** Capacitor voltage responds to present and past source voltage.
+*   **Accumulator:** $y[n]=\sum_{k=-\infty}^{n} x[k]$
+*   **Delay:** $y[n]=x[n-1]$
+
+---
+
+## 3. Causality
+
+**Non-Causal System Examples:**
+
+*   **Future-Dependent:**
+    $$
+    y[n]=x[n]-x[n+1] \quad \text{(1.102)}
+    $$
+    $$
+    y(t)=x(t+1) \quad \text{(1.103)}
+    $$
+*   **Time Reversal:**
+    $$
+    y[n]=x[-n] \quad \text{(1.105)}
+    $$
+    *For $n < 0$, e.g., $y[-4]=x[4]$, output depends on future input.*
+*   **Averaging System:**
+    $$
+    y[n]=\frac{1}{2 M+1} \sum_{k=-M}^{+M} x[n-k] \quad \text{(1.104)}
+    $$
+    *Includes future values like $x[n+M]$.*
+
+::: {.notes}
+Causality is a crucial property, especially for real-time systems. Simply put, a causal system cannot "look into the future." Its current output can only be influenced by the current input or inputs that have already occurred (i.e., past inputs). Think of hitting a drum: the sound (output) can only happen after you hit it (input), not before.
+
+An RC circuit is causal because the capacitor voltage builds up based on the history of the current, not what current will flow in the future. All memoryless systems are inherently causal because their output only depends on the present input, which by definition means no future dependency.
+
+However, many systems are non-causal. For instance, a system that outputs `x[n+1]` outputs a future value of the input. This is impossible in real-time, but perfectly fine for processing recorded data, like in audio mastering or image processing, where the entire signal is available. The average system is an example, it takes inputs from a window that spans both past and future values relative to `n`. Another subtle non-causal system is `y[n] = x[-n]`. For $n < 0$, say $n=-5$, $y[-5]$ becomes $x[5]$, which is a future value.
+:::
+
+---
+
+## Causality: Interactive Demonstration
+
+Compare a causal delay with a non-causal advance.
+
+```{pyodide}
+#| max-lines: 10
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define input signal
+n = np.arange(-5, 6)
+x = np.cos(np.pi/2 * n) * np.exp(-0.2*np.abs(n))
+x = np.where(n >= -4, x, 0) # Make it start from a certain point for clarity
+
+# Causal System: Delay
+y_delay = np.zeros_like(x)
+y_delay[1:] = x[:-1] # y[n] = x[n-1]
+
+# Non-Causal System: Advance
+y_advance = np.zeros_like(x)
+y_advance[:-1] = x[1:] # y[n] = x[n+1]
+
+plt.figure(figsize=(10, 6))
+
+plt.subplot(3, 1, 1)
+plt.stem(n, x, label='Input x[n]', basefmt=" ")
+plt.title('Original Input x[n]')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.tight_layout()
+
+plt.subplot(3, 1, 2)
+plt.stem(n, y_delay, label='Output y[n]', basefmt=" ")
+plt.stem(n, x, linefmt='k:', markerfmt='k.', label='Original x[n] (for ref)', alpha=0.5, basefmt=" ")
+plt.title('Causal System: y[n] = x[n-1] (Delay)')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+
+
+plt.subplot(3, 1, 3)
+plt.stem(n, y_advance, label='Output y[n]', basefmt=" ")
+plt.stem(n, x, linefmt='k:', markerfmt='k.', label='Original x[n] (for ref)', alpha=0.5, basefmt=" ")
+plt.title('Non-Causal System: y[n] = x[n+1] (Advance)')
+plt.xlabel('n')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+
+plt.show()
+```
+
+::: {.notes}
+This interactive plot clearly demonstrates the difference between causal and non-causal systems using a delay and an advance.
+
+1.  **Original Input `x[n]`:** Our reference signal.
+2.  **Causal System: `y[n] = x[n-1]` (Delay):** Observe that the output `y[n]` is always the value of `x[n]` from the *previous* time step. For example, `y[0]` is `x[-1]`, `y[1]` is `x[0]`, and so on. The output signal is shifted to the right, appearing *after* the corresponding input values. This is how physical, real-time systems operate. For any given `n`, your output only depends on `x[n]` or `x[n-k]` where `k` is a positive integers.
+3.  **Non-Causal System: `y[n] = x[n+1]` (Advance):** Notice how the output `y[n]` is the value of `x[n]` from the *next* time step. For example, `y[0]` is `x[1]`, `y[1]` is `x[2]`. The output signal appears shifted to the left, meaning it anticipates future input values. While impossible in real-time, such systems are useful for processing pre-recorded data when all future samples are available.
+:::
+
+---
+
+## 4. Stability
+
+A system is **stable** if small (bounded) inputs lead to responses that do not diverge (are also bounded).
+
+*   **Bounded-Input, Bounded-Output (BIBO) Stability.**
+*   Informally: A stable system eventually settles down or remains within limits, given a reasonable input.
+
+:::: {.columns}
+
+::: {.column width="50%"}
+**Stable System Analogy: Pendulum**
+*(Replace with Figure 1.46(a): A stable pendulum)*
+![Stable Pendulum](qrjs_present_asset/stable_pendulum_placeholder.png)
+*(Image source: Provided text Figure 1.46(a))*
+*Gravity and friction provide restoring/dissipating forces.*
+:::
+
+::: {.column width="50%"}
+**Unstable System Analogy: Inverted Pendulum**
+*(Replace with Figure 1.46(b): An unstable inverted pendulum)*
+![Unstable Pendulum](qrjs_present_asset/unstable_pendulum_placeholder.png)
+*(Image source: Provided text Figure 1.46(b))*
+*Gravity increases deviation; small perturbation leads to tipping.*
+:::
+
+::::
+
+---
+
+## 4. Stability
+
+**Unstable System Example: Accumulator for Unit Step Input**
+
+If $x[n]=u[n]$ (unit step, bounded, equal to 1 for $n \ge 0$), the accumulator output is:
+$$
+y[n]=\sum_{k=-\infty}^{n} u[k]=(n+1) u[n]
+$$
+*   $y[0]=1, y[1]=2, y[2]=3, \ldots$
+*   $y[n]$ grows without bound, so the accumulator is unstable.
+
+::: {.notes}
+Stability is a critical property for practical systems. An unstable system, even with a small input, can produce an output that grows infinitely large, potentially leading to system failure or unwanted behavior. Think of a microphone feeding back into a speaker: a small sound can quickly escalate into a loud, ear-splitting screech. That's instability.
+
+The formal definition is **BIBO stability**: Bounded-Input, Bounded-Output. If you put a signal into the system whose amplitude never exceeds a certain finite maximum (it's "bounded"), then the output signal must also have an amplitude that never exceeds some finite maximum. If the output grows without limit for *any* bounded input, the system is unstable.
+
+The pendulum analogy is excellent. A normal pendulum is stable: give it a small push, and it oscillates for a while but eventually settles back to its equilibrium point due to damping (friction) and a restoring force (gravity). An inverted pendulum, however, is inherently unstable: a tiny push will cause it to fall over, with its deviation from vertical growing rapidly.
+
+The accumulator, as we saw before, is an example of an unstable system. If you feed it a constant input like a unit step, its output just keeps growing indefinitely, accumulating the past values. This unbounded growth from a bounded input directly violates the BIBO stability criterion.
+:::
+
+---
+
+## Stability: Interactive Demonstration (Accumulator)
+
+Let's observe the accumulator's response to a bounded input.
+
+```{pyodide}
+#| max-lines: 10
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Input signal: Bounded unit step
+n = np.arange(-5, 10)
+x = np.where(n >= 0, 1, 0) # Unit step function, bounded by 1
+
+# Accumulator output
+y_accumulator = np.cumsum(x)
+
+plt.figure(figsize=(8, 4))
+
+plt.subplot(2, 1, 1)
+plt.stem(n, x, label='Input x[n]', basefmt=" ")
+plt.title('Bounded Input: x[n] = u[n]')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.tight_layout()
+
+plt.subplot(2, 1, 2)
+plt.stem(n, y_accumulator, linefmt='r-', markerfmt='ro', label='Output y[n]', basefmt=" ")
+plt.title('System Output: Accumulator (Unbounded)')
+plt.xlabel('n')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.tight_layout()
+
+plt.show()
+
+# Demonstrate some values
+print(f"Input x[0]={x[n==0]}, x[5]={x[n==5]}, x[-1]={x[n==-1]}")
+print(f"Output y[0]={y_accumulator[n==0]}, y[5]={y_accumulator[n==5]}")
+```
+
+::: {.notes}
+This interactive demonstration uses the accumulator system again, but specifically to show its instability.
+
+1.  **Bounded Input `x[n] = u[n]`:** The top plot shows a unit step function. This signal is definitely bounded; its maximum value is 1, and its minimum is 0.
+2.  **System Output (Accumulator):** The bottom plot shows the output of the accumulator when `u[n]` is the input. You can clearly see that `y[n]` grows linearly with `n` for `n >= 0`. For example, `y[0]=1`, `y[1]=2`, `y[2]=3`, and so on.
+
+Since the output `y[n]` grows indefinitely as `n` increases, even though the input `x[n]` remains bounded, the accumulator is an **unstable system** according to the BIBO definition. This illustrates why the formal definition of stability is vital, as intuitive "slow growth" can still lead to unboundedness over time.
+:::
+
+---
+
+## Examples of Stability Check
+
+:::: {.columns}
+
+::: {.column width="50%"}
+**System $S_1$: $y(t) = t x(t)$** (1.109)
+
+*   **Input:** $x(t) = 1$ (A bounded input).
+*   **Output:** $y(t) = t \cdot 1 = t$.
+*   As $t \to \infty$, $y(t)$ grows without bound.
+*   **Conclusion:** System $S_1$ is **unstable**.
+:::
+
+::: {.column width="50%"}
+**System $S_2$: $y(t) = e^{x(t)}$** (1.110)
+
+*   Consider any bounded input: For some $B > 0$, $|x(t)| < B$.
+    *   This means $-B < x(t) < B$.
+*   Then for the output:
+    *   $e^{-B} < y(t) < e^{B}$.
+*   The output $y(t)$ is bounded by $e^B$.
+*   **Conclusion:** System $S_2$ is **stable**.
+:::
+
+::::
+
+::: {.notes}
+These two examples highlight how to formally check for stability.
+
+For $S_1$, the strategy for proving instability is to find just *one* counterexample. A simple constant input, like $x(t)=1$, is bounded. But when passed through $y(t)=tx(t)$, the output becomes $y(t)=t$. This output clearly grows without limit as time progresses. Since we found a bounded input that yields an unbounded output, $S_1$ is unstable.
+
+For $S_2$, it's not immediately obvious to find a counterexample if it's stable. So, the strategy is to prove it for *any* bounded input. If an input $x(t)$ is bounded by $B$, meaning its absolute value is always less than $B$, then the exponential function $e^{x(t)}$ will also be bounded. Since $e^x$ is an monotonically increasing function, $e^{-B} < e^{x(t)} < e^B$. This shows that if the input is bounded by $B$, the output is guaranteed to be bounded by $e^B$. Thus, $S_2$ is stable. Always remember to check for *all* bounded inputs, not just specific ones, when proving stability.
+:::
+
+---
+
+### 5. Time Invariance
+
+A system is **time invariant** if a time shift in the input signal results in an identical time shift in the output signal.
+
+*   The system's characteristics and behavior are fixed over time.
+*   If $x(t) \to y(t)$, then $x(t-t_0) \to y(t-t_0)$ (Continuous Time).
+*   If $x[n] \to y[n]$, then $x[n-n_0] \to y[n-n_0]$ (Discrete Time).
+
+**Time-Invariant System Example:**
+
+$$
+y(t)=\sin [x(t)] \quad \text{(1.114)}
+$$
+If $x_1(t) \to y_1(t)=\sin[x_1(t)]$, then for $x_2(t)=x_1(t-t_0)$,
+$y_2(t)=\sin[x_2(t)]=\sin[x_1(t-t_0)]$.
+Since $y_1(t-t_0)=\sin[x_1(t-t_0)]$, we have $y_2(t)=y_1(t-t_0)$. Thus, it's time-invariant.
+
+---
+
+### 5. Time Invariance
+
+**Time-Varying System Examples:**
+
+*   **Time-Varying Gain:**
+    $$
+    y[n]=n x[n] \quad \text{(1.119)}
+    $$
+    *The gain `n` changes with time.*
+*   **Time Scaling:**
+    $$
+    y(t)=x(2 t) \quad \text{(1.120)}
+    $$
+    *A time shift in input is compressed in output.*
+
+::: {.notes}
+Time invariance means that the system's "rules" don't change over time. If you perform an experiment with a system today, and then repeat the *exact same experiment* tomorrow (with the same input applied at the same relative time), you should get the exact same output, just shifted in time. The system doesn't "age" or change its internal parameters.
+
+The mathematical definition perfectly captures this. If you shift the input signal by $t_0$ (or $n_0$), the output signal should also just be shifted by the *same* amount.
+
+The $\sin[x(t)]$ system is time-invariant because the sine function itself doesn't change with time. It acts on the input value *regardless* of when that value occurs.
+
+However, a system like $y[n]=nx[n]$ clearly depends on time $n$. If you input an impulse at $n=0$, $y[0]=0 \cdot x[0] = 0$. If you input the *same* impulse (just shifted) at $n=1$, $y[1]=1 \cdot x[1] = 1$. The output is NOT just a shifted version of the first output. This means the system's "gain" changes based on the time `n`, making it time-varying. Similarly, time-scaling like $y(t)=x(2t)$ is time-varying because a time shift in the input gets scaled by the system.
+:::
+
+---
+
+## Time Invariance: Interactive Demonstration (Time-Varying Gain)
+
+Let's illustrate that $y[n]=nx[n]$ is time-varying.
+
+```{pyodide}
+#| max-lines: 10
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define input signal x1[n] (a single pulse at n=0)
+n = np.arange(-5, 6)
+x1 = np.where(n == 0, 1, 0)
+
+# Output for x1[n]
+y1 = n * x1
+
+# Define shifted input signal x2[n] = x1[n-2] (pulse at n=2)
+n0 = 2 # Time shift
+x2 = np.where(n == n0, 1, 0) # This is x1[n-2]
+
+# Output for x2[n]
+y2 = n * x2
+
+# Expected output if system were time-invariant: y1[n-n0]
+y1_shifted = np.zeros_like(n, dtype=float)
+# Find the indices corresponding to the shifted signal
+mask = (n - n0 >= n.min()) & (n - n0 <= n.max())
+y1_shifted[mask] = y1[n[mask] - n0]
+
+plt.figure(figsize=(10, 6))
+
+plt.subplot(3, 1, 1)
+plt.stem(n, x1, label='x1[n]', basefmt=" ")
+plt.stem(n, y1, linefmt='r:', markerfmt='ro', label='y1[n]=n*x1[n]', basefmt=" ")
+plt.title('Input $x_1[n]$ and Output $y_1[n]$')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+
+plt.subplot(3, 1, 2)
+plt.stem(n, x2, label='x2[n] = x1[n-2]', basefmt=" ")
+plt.stem(n, y2, linefmt='g:', markerfmt='go', label='y2[n]=n*x2[n]', basefmt=" ")
+plt.title('Shifted Input $x_2[n]$ and Output $y_2[n]$')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+
+plt.subplot(3, 1, 3)
+plt.stem(n, y2, linefmt='g:', markerfmt='go', label='y2[n]', basefmt=" ")
+plt.stem(n, y1_shifted, linefmt='b--', markerfmt='bx', label='Expected $y_1[n-2]$ for Time Invariance', basefmt=" ")
+plt.title('Comparison: $y_2[n]$ vs. $y_1[n-2]$')
+plt.xlabel('n')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+
+plt.show()
+
+# Verification
+print(f"y1: {y1}")
+print(f"y2: {y2}")
+print(f"y1_shifted: {y1_shifted}")
+print(f"Is y2[n] == y1[n-2]? {np.allclose(y2, y1_shifted)}")
+```
+
+::: {.notes}
+This demonstration visually proves that the system $y[n]=nx[n]$ is *not* time-invariant.
+
+1.  **Top Plot: $x_1[n]$ and $y_1[n]$:** We start with an input $x_1[n]$ which is an impulse at $n=0$. The output $y_1[n]$ is calculated as $n \cdot x_1[n]$, which for $n=0$ is $0 \cdot 1 = 0$. So, $y_1[n]$ is zero everywhere.
+2.  **Middle Plot: $x_2[n]$ and $y_2[n]$:** Now, we shift the input $x_1[n]$ by 2 units to get $x_2[n]$ (an impulse at $n=2$). The output $y_2[n]$ is then calculated as $n \cdot x_2[n]$. For $n=2$, this becomes $2 \cdot 1 = 2$. So, $y_2[n]$ is an impulse of amplitude 2 at $n=2$.
+3.  **Bottom Plot: Comparison ($y_2[n]$ vs. expected $y_1[n-2]$):** If the system were time-invariant, the output $y_2[n]$ (green stems) should simply be a shifted version of $y_1[n]$ (meaning still all zeros, but shifted, so still all zeros -- represented by the dashed blue stems for expected $y_1[n-2]$). However, `y2[n]` clearly has a non-zero value at `n=2`.
+
+Since $y_2[n]$ is not equal to $y_1[n-2]$, the system is time-varying. The gain `n` changes based on time, so the response to the same input (just shifted) will be different.
+:::
+
+---
+
+## 6. Linearity
+
+A system is **linear** if it possesses the property of **superposition**. This means it satisfies two conditions:
+
+1.  **Additivity:** If $x_1(t) \to y_1(t)$ and $x_2(t) \to y_2(t)$, then $x_1(t)+x_2(t) \to y_1(t)+y_2(t)$.
+2.  **Homogeneity (Scaling):** If $x_1(t) \to y_1(t)$, then $a x_1(t) \to a y_1(t)$ for any complex constant $a$.
+
+These two properties can be combined:
+*   **Continuous Time:**
+    $$
+    a x_1(t)+b x_2(t) \rightarrow a y_1(t)+b y_2(t) \quad \text{(1.121)}
+    $$
+*   **Discrete Time:**
+    $$
+    a x_1[n]+b x_2[n] \rightarrow a y_1[n]+b y_2[n] \quad \text{(1.122)}
+    $$
+
+**Important Consequence:** For linear systems, a zero input $x[n]=0$ for all $n$ must result in a zero output $y[n]=0$ for all $n$.
+
+::: {.notes}
+Linearity is perhaps the most fundamental property in Signals and Systems, forming the basis for many powerful analysis techniques. A linear system obeys the principle of **superposition**.
+
+This principle is broken down into two parts:
+1.  **Additivity:** If you have two different inputs, say $x_1$ and $x_2$, and you know their individual outputs, $y_1$ and $y_2$, then if you apply the sum of the inputs ($x_1+x_2$), the output will simply be the sum of their individual outputs ($y_1+y_2$).
+2.  **Homogeneity/Scaling:** If you scale an input by a factor 'a' (e.g., make it twice as strong), the output will also be scaled by the *exact same* factor 'a'.
+
+Both of these must hold for a system to be linear. If either one fails, the system is nonlinear. The combined statement is very powerful for checking linearity.
+
+A crucial consequence of linearity is that a linear system with no input should produce no output. This "zero-in/zero-out" check is often the quickest way to spot a nonlinear system. If you apply zero input and get a non-zero output (like a constant offset), the system is definitely not linear. We'll explore examples now.
+:::
+
+---
+
+## Linearity: Examples
+
+**Example 1: System $S_A: y(t) = t x(t)$** (Example 1.17)
+
+*   Let $x_3(t) = a x_1(t) + b x_2(t)$.
+*   $y_3(t) = t x_3(t) = t(a x_1(t) + b x_2(t)) = a (t x_1(t)) + b (t x_2(t)) = a y_1(t) + b y_2(t)$.
+*   **Conclusion:** System $S_A$ is **linear**. (It is also time-varying, as seen before!)
+
+**Example 2: System $S_B: y(t) = x^2(t)$** (Example 1.18)
+
+*   Let $x_3(t) = a x_1(t) + b x_2(t)$.
+*   $y_3(t) = (a x_1(t) + b x_2(t))^2 = a^2 x_1^2(t) + b^2 x_2^2(t) + 2ab x_1(t) x_2(t)$.
+*   This is $a^2 y_1(t) + b^2 y_2(t) + 2ab x_1(t) x_2(t)$ which is **not** $a y_1(t) + b y_2(t)$.
+*   **Conclusion:** System $S_B$ is **non-linear**.
+
+**Example 3: System $S_C: y[n] = \text{Re}\{x[n]\}$** (Example 1.19)
+
+*   Is additive, but fails homogeneity for complex scalars.
+*   If $x_1[n] = r[n]+js[n]$, then $y_1[n] = r[n]$.
+*   Let $a=j$. The input $x_2[n] = j x_1[n] = -s[n] + j r[n]$.
+*   $y_2[n] = \text{Re}\{x_2[n]\} = -s[n]$.
+*   Expected $a y_1[n] = j r[n]$. Since $-s[n] \ne j r[n]$, it fails homogeneity.
+*   **Conclusion:** System $S_C$ is **non-linear**.
+
+::: {.notes}
+Let's walk through these examples to solidify our understanding of linearity. For each, we apply the superposition test.
+
+1.  **System $S_A: y(t) = t x(t)$**: This is a direct application of the definition. When we substitute the combined input $ax_1(t)+bx_2(t)$ into the system equation, we can factor out $a$ and $b$, showing that the output is indeed the linear combination of individual outputs. So, it's linear. Note that this system is linear but *not* time-invariant, as we discussed previously. Systems can have one property without the other.
+
+2.  **System $S_B: y(t) = x^2(t)$**: Here, the squaring operation $x^2(t)$ immediately suggests non-linearity because of the cross-term $2ab x_1(t) x_2(t)$ that arises from expanding the square of $(ax_1+bx_2)$. This cross-term prevents the output from being a simple linear combination of $y_1$ and $y_2$. Therefore, it's non-linear.
+
+3.  **System $S_C: y[n] = \text{Re}\{x[n]\}$**: This one is tricky and highlights the importance of considering *complex* scalars for homogeneity. It *is* additive, but it fails homogeneity when scaled by a complex constant like $j$. The real part of $j \cdot x_1[n]$ is not $j$ times the real part of $x_1[n]$. This demonstrates that both additivity AND homogeneity must hold for *any complex* scalar for a system to be linear.
+:::
+
+---
+
+## Linearity: Interactive Demonstration (Quadratic System)
+
+Let's test $y[n] = x^2[n]$ for linearity.
+
+```{pyodide}
+#| max-lines: 10
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Input signals
+n = np.arange(-5, 6)
+x1 = np.where(n == 0, 2, 0) # Impulse at n=0, amplitude 2
+x2 = np.where(n == 1, 1, 0) # Impulse at n=1, amplitude 1
+
+# Scaling constants
+a_val = 2
+b_val = 3
+
+# Individual outputs for y[n] = x^2[n]
+y1 = x1**2
+y2 = x2**2
+
+# Expected linear combination: a*y1 + b*y2
+y_expected_linear = a_val * y1 + b_val * y2
+
+# Combined input
+x_combined = a_val * x1 + b_val * x2
+
+# Actual output for combined input
+y_actual_combined = x_combined**2
+
+plt.figure(figsize=(10, 6))
+
+plt.subplot(3, 1, 1)
+plt.stem(n, x1, label='x1[n]', linefmt='b-', markerfmt='bo', basefmt=" ")
+plt.stem(n, x2, label='x2[n]', linefmt='g--', markerfmt='gx', basefmt=" ")
+plt.title('Individual Inputs $x_1[n]$ and $x_2[n]$')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+
+plt.subplot(3, 1, 2)
+plt.stem(n, y_actual_combined, linefmt='r-', markerfmt='ro', label='Actual output from $a x_1 + b x_2$', basefmt=" ")
+plt.title('Actual Output $y[n]$ for $a x_1[n] + b x_2[n]$')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+
+plt.subplot(3, 1, 3)
+plt.stem(n, y_expected_linear, linefmt='b:', markerfmt='bs', label='Expected $a y_1[n] + b y_2[n]$ (if linear)', basefmt=" ")
+plt.stem(n, y_actual_combined, linefmt='r-', markerfmt='ro', label='Actual output (for comparison)', alpha=0.5, basefmt=" ")
+plt.title('Comparison: Actual Output vs. Expected Linear Sum')
+plt.xlabel('n')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+
+plt.show()
+
+# Print values for specific 'n'
+print(f"At n=0:")
+print(f"x1[0]={x1[n==0]}, x2[0]={x2[n==0]}")
+print(f"y_actual_combined[0]={y_actual_combined[n==0]}, y_expected_linear[0]={y_expected_linear[n==0]}")
+print(f"Are they equal at n=0? {np.isclose(y_actual_combined[n==0], y_expected_linear[n==0])}")
+print("\n")
+print(f"At n=1:")
+print(f"x1[1]={x1[n==1]}, x2[1]={x2[n==1]}")
+print(f"y_actual_combined[1]={y_actual_combined[n==1]}, y_expected_linear[1]={y_expected_linear[n==1]}")
+print(f"Are they equal at n=1? {np.isclose(y_actual_combined[n==1], y_expected_linear[n==1])}")
+
+print(f"\nOverall: Are outputs equal? {np.allclose(y_actual_combined, y_expected_linear)}")
+```
+
+::: {.notes}
+This demonstration concretely shows why the system $y[n]=x^2[n]$ is nonlinear. We're testing the superposition property by comparing two results:
+
+1.  **Expected Linear Sum (blue dashed stems):** This is what the output *should* be if the system were linear: $a \cdot y_1[n] + b \cdot y_2[n]$. We compute $y_1[n]$ from $x_1[n]$ and $y_2[n]$ from $x_2[n]$ separately, then combine them.
+2.  **Actual Output (red solid stems):** This is the output we get when we first combine the inputs ($a \cdot x_1[n] + b \cdot x_2[n]$) and *then* pass this combined signal through the system.
+
+**Observe:**
+*   **At `n=0`:** `x1[0]=2`, `x2[0]=0`. The combined input is `2*2 + 3*0 = 4`. The actual output is `4^2=16`. The expected linear sum is `2*(2^2) + 3*(0^2) = 2*4 + 0 = 8`. They are different!
+*   **At `n=1`:** `x1[1]=0`, `x2[1]=1`. The combined input is `2*0 + 3*1 = 3`. The actual output is `3^2=9`. The expected linear sum is `2*(0^2) + 3*(1^2) = 0 + 3*1 = 3`. They are different!
+
+The plots clearly show that the red solid stems (actual output) do *not* match the blue dashed stems (expected linear sum). The numerical checks at the bottom confirm this. This discrepancy, caused by the squaring operation, violates the superposition principle, proving the system is nonlinear.
+:::
+
+---
+
+## Linearity: Incrementally Linear Systems
+
+**Example: System $S_D: y[n] = 2x[n] + 3$** (1.132)
+
+*   This system often looks "linear" because it's a linear equation.
+*   However, it **violates the zero-input, zero-output property**:
+    *   If $x[n]=0$, then $y[n]=2(0)+3=3 \ne 0$.
+*   Therefore, System $S_D$ is **non-linear**.
+
+```{mermaid}
+graph TD
+    A["Input x[n]"] --> S_linear["Linear System: $$y_L[n]=2x[n]$$"]
+    S_linear --> add[+]
+    S_const[Constant Input: 3] --> add
+    add --> B["Output y[n]"]
+```
+*(Figure 1.48 - Structure of an incrementally linear system)*
+
+This system is **incrementally linear**:
+*   The *difference* between two outputs is a linear function of the *difference* between their inputs.
+$$
+y_1[n]-y_2[n] = (2x_1[n]+3) - (2x_2[n]+3) = 2(x_1[n]-x_2[n]) \quad \text{(1.136)}
+$$
+*   This means it can be viewed as a linear system ($2x[n]$) with a constant offset (3).
+
+::: {.notes}
+This final example for linearity, $y[n]=2x[n]+3$, is a very common point of confusion. Many students, seeing a "linear equation", assume it defines a linear system. However, this is not the case within the context of Signals and Systems.
+
+The quickest way to check is the "zero-in, zero-out" property. If $x[n]$ is zero for all $n$, a truly linear system must output zero for all $n$. But for $y[n]=2x[n]+3$, if $x[n]=0$, then $y[n]=3$. Since the output is non-zero, this system is *not* linear. It fails the homogeneity property (try scaling by zero!).
+
+However, such systems are called "incrementally linear." This means that while the system itself isn't linear, *changes* in its output are linear with respect to *changes* in its input. The diagram illustrates this: the system can be seen as a linear part ($2x[n]$) combined with a constant offset (3), which is essentially the system's "zero-input response." This distinction is important for understanding more complex systems later.
+:::
+
+---
+
+## Conclusion & Summary
+
+We've explored six fundamental properties of systems:
+
+*   **Memory / Memoryless:** Does output depend only on the current input?
+*   **Invertibility:** Can the input be uniquely recovered from the output?
+*   **Causality:** Does output depend only on present and past inputs? (Non-anticipative)
+*   **Stability:** Do bounded inputs lead to bounded outputs? (BIBO)
+*   **Time Invariance:** Do a time shift in input cause an identical time shift in output?
+*   **Linearity:** Does the system satisfy superposition (additivity & homogeneity)?
+
+These properties are essential tools for:
+
+*   Classifying systems.
+*   Simplifying analysis (especially for linear, time-invariant systems).
+*   Designing systems with desired behaviors.
+
+Understanding these basics lays the groundwork for advanced topics in Signals and Systems!
+
+::: {.notes}
+To wrap up, we've covered six critical properties that define the behavior of systems in Signals and Systems.
+
+*   **Memory** speaks to whether a system "remembers" past inputs or predicts future ones.
+*   **Invertibility** is about whether we can uniquely reverse the system's operation to deduce the original input.
+*   **Causality** is about real-time behavior - can the system react only to what has already happened, or does it anticipate?
+*   **Stability** is crucial for reliability, ensuring that small inputs don't lead to out-of-control outputs.
+*   **Time Invariance** means the system's behavior is consistent over time, regardless of when an input is applied.
+*   **Linearity** is the bedrock for many advanced analysis techniques, allowing us to break down complex inputs into simpler components and superimpose their responses.
+
+These definitions are not just academic. They directly influence how we design everything from audio filters to control systems, telecommunications networks, and medical imaging devices. Mastering these properties will significantly simplify your journey through the rest of this Signals and Systems course. Thank you!
+:::
