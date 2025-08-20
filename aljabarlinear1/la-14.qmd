@@ -1,0 +1,646 @@
+---
+title: "Linear Algebra"
+subtitle: "1.4 Inverses; Algebraic Properties of Matrices"
+author: "Imron Rosyadi"
+format:
+  live-revealjs:
+    logo: "qrjs_assets/unsoed_logo.png"
+    footer: "[irosyadi-2025](https://imron-slide.vercel.app)"
+    slide-number: true
+    chalkboard: true
+    scrollable: true
+    controls: true
+    progress: true
+    preview-links: false
+    transition: fade
+    incremental: false
+    smaller: false
+    theme: [default, qrjs_assets/ir_style.scss]
+filters:
+  - pyodide
+---
+
+## Inverses; Algebraic Properties of Matrices
+
+In this section, we'll explore fundamental algebraic properties of matrix operations. We'll discover similarities with real number arithmetic but also highlight crucial differences that are vital for engineers.
+
+We will cover:
+
+*   Properties of matrix addition and scalar multiplication.
+*   Key distinctions in matrix multiplication, including non-commutativity.
+*   Special matrices: zero matrices and identity matrices.
+*   The concept of a matrix inverse and methods for $2 \times 2$ matrices.
+*   Properties of matrix powers, polynomials, and transposes.
+
+::: {.notes}
+Good morning, everyone! Building on our understanding of basic matrix operations from last time, today we dive into the fascinating world of matrix algebra. Just like real numbers have rules for addition, subtraction, and multiplication, matrices do too. However, matrix arithmetic has some unique behaviors that make it distinct and powerful.
+
+For electrical and computer engineers, understanding these algebraic properties is paramount. They govern how linear systems behave, how transformations unfold, and how we computationally manage large datasets. We'll start with the familiar, like commutativity for addition, then quickly move to the less intuitive, like why simple cancellation rules don't always apply to matrices. Get ready for some crucial insights!
+:::
+
+---
+
+## Properties of Matrix Arithmetic (Theorem 1.4.1)
+
+Assuming matrix sizes allow operations, these rules hold:
+
+*   **Commutative Law for Addition**:
+    $(a) \ A + B = B + A$
+*   **Associative Law for Addition**:
+    $(b) \ A + (B + C) = (A + B) + C$
+*   **Associative Law for Multiplication**:
+    $(c) \ A(BC) = (AB)C$
+*   **Distributive Laws**:
+    $(d) \ A(B + C) = AB + AC$ (Left distributive)
+    $(e) \ (B + C)A = BA + CA$ (Right distributive)
+*   **Scalar Properties**:
+    $(l) \ a(bC) = (ab)C$
+    $(m) \ a(BC) = (aB)C = B(aC)$
+
+::: {.notes}
+Let's start with the good news: many properties you're familiar with from real number arithmetic *do* apply to matrices, provided the dimensions are compatible for the operations.
+
+*   **Commutativity of Addition**: Just like $2+3 = 3+2$, matrix addition order doesn't matter. This makes sense as it's element-wise.
+*   **Associativity of Addition and Multiplication**: This means you don't need parentheses for sums or products of three or more matrices. The grouping of terms doesn't change the final result. For example, in control systems, if you apply several linear transformations in sequence, the associative property ensures the order of grouping calculations doesn't matter.
+*   **Distributive Laws**: Multiplication distributes over addition, from both the left and right. This is highly useful for simplifying matrix expressions, much like in scalar algebra.
+*   **Scalar Properties**: Scalars can be factored out, grouped, or moved around in products, which simplifies many computations.
+
+These properties form the bedrock of matrix algebra, allowing us to manipulate matrix expressions with confidence, much like we do with scalar variables.
+:::
+
+---
+
+## Example: Associativity of Matrix Multiplication
+
+Let's illustrate the Associative Law for matrix multiplication: $A(BC) = (AB)C$.
+
+Given matrices:
+$$
+A={\left[\begin{array}{l l}{1}&{2}\\{3}&{4}\\{0}&{1}\end{array}\right]},\quad B={\left[\begin{array}{l l}{4}&{3}\\{2}&{1}\end{array}\right]},\quad C={\left[\begin{array}{l l}{1}&{0}\\{2}&{3}\end{array}\right]}
+$$
+
+Expected result: $(AB)C$ should equal $A(BC)$.
+
+```{pyodide}
+#| max-lines: 10
+import numpy as np
+
+A = np.array([[1, 2], [3, 4], [0, 1]])
+B = np.array([[4, 3], [2, 1]])
+C = np.array([[1, 0], [2, 3]])
+
+print("Matrix A:\n", A)
+print("\nMatrix B:\n", B)
+print("\nMatrix C:\n", C)
+
+# Calculate (A @ B) @ C
+AB = A @ B
+print("\nAB (A @ B):\n", AB)
+ABC1 = AB @ C
+print("\n(AB)C:\n", ABC1)
+
+# Calculate A @ (B @ C)
+BC = B @ C
+print("\nBC (B @ C):\n", BC)
+ABC2 = A @ BC
+print("\nA(BC):\n", ABC2)
+
+print("\nAre (AB)C and A(BC) equal?", np.array_equal(ABC1, ABC2))
+```
+
+::: {.notes}
+Let's use Python to verify the associative property for matrix multiplication immediately. This visual confirmation is quite powerful.
+
+We've defined three matrices: A (3x2), B (2x2), and C (2x2).
+First, we compute `(AB)C`: We multiply A and B, then multiply the result by C.
+Then, we compute `A(BC)`: We multiply B and C, then multiply A by that result.
+
+As the output verifies using `np.array_equal()`, both calculations yield the exact same matrix. This is a crucial property for manipulating complex transformation sequences in computer graphics, signal processing chains where filters are applied sequentially, or in control systems where multiple feedback loops interact. The order of applying the sequence of transformations doesn't matter if you maintain the relative order.
+:::
+
+---
+
+## Differences from Real Number Arithmetic: Non-Commutativity
+
+A major difference from real number arithmetic ($ab=ba$) is that **matrix multiplication is generally NOT commutative**: $AB \ne BA$.
+
+This can happen for three reasons:
+
+1.  $AB$ may be defined, but $BA$ may not be. (e.g., $A$ is $2 \times 3$, $B$ is $3 \times 4$)
+2.  Both $AB$ and $BA$ may be defined, but have different sizes. (e.g., $A$ is $2 \times 3$, $B$ is $3 \times 2$)
+3.  Both $AB$ and $BA$ may be defined and have the same size, but $AB \ne BA$.
+
+::: {.notes}
+Now for the critical difference: unlike real numbers, matrix multiplication is *not* commutative. This is a source of common errors if you blindly apply rules from scalar algebra.
+
+I've sketched out three scenarios using Mermaid diagrams:
+1.  **Dimension Mismatch**: The simplest case. If $A$ is 2x3 and $B$ is 3x4, $AB$ is defined (2x4), but $BA$ is not defined because $B$'s columns (4) do not match $A$'s rows (2).
+2.  **Size Mismatch**: What if $A$ is 2x3 and $B$ is 3x2? Both $AB$ (2x2) and $BA$ (3x3) are defined, but they result in matrices of different sizes, so they cannot be equal.
+3.  **Same Size, Different Result**: Even if both products are defined *and* result in matrices of the same size, they might not be equal. This is the most subtle case.
+
+This non-commutativity is fundamental in many engineering fields. For example, in computer graphics, applying a rotation then a translation is generally not the same as applying a translation then a rotation. In control systems, the order of cascaded system components can significantly alter overall system behavior because their transfer functions are multiplied as matrices.
+:::
+
+---
+
+## Example 2: Order Matters in Matrix Multiplication ($AB \ne BA$)
+
+Consider matrices $A$ and $B$:
+$$
+A={\left[\begin{array}{l l}{-1}&{0}\\{2}&{3}\end{array}\right]}\quad{\mathrm{and}}\quad B={\left[\begin{array}{l l}{1}&{2}\\{3}&{0}\end{array}\right]}
+$$
+Both are $2 \times 2$ matrices, so $AB$ and $BA$ are both defined and are both $2 \times 2$.
+
+Let's perform the multiplications:
+```{pyodide}
+#| max-lines: 10
+import numpy as np
+
+A = np.array([[-1, 0], [2, 3]])
+B = np.array([[1, 2], [3, 0]])
+
+print("Matrix A:\n", A)
+print("\nMatrix B:\n", B)
+
+AB = A @ B
+print("\nProduct AB (A @ B):\n", AB)
+
+BA = B @ A
+print("\nProduct BA (B @ A):\n", BA)
+
+print("\nIs AB equal to BA?", np.array_equal(AB, BA))
+```
+As you can see, $AB \ne BA$.
+
+::: {.notes}
+Let's see the third scenario of non-commutativity in action with a concrete example. Here, matrices A and B are both 2x2, so both products AB and BA are defined and will result in 2x2 matrices.
+
+However, when we compute them, the results are clearly different. This visually confirms that even if sizes align, the order of matrix multiplication is generally critical. You cannot simply swap the order.
+
+This behavior is not a flaw; it reflects the underlying operations these matrices represent. In ECE, this means that the sequence of operations matters.
+
+*   In **signal processing**, applying Filter 1 then Filter 2 is rarely the same as Filter 2 then Filter 1.
+*   In **robotics**, the order of joint movements or transformations (e.g., rotating a robot arm then extending it, versus extending then rotating) directly corresponds to matrix multiplication. If the order is swapped, the end effector winds up in a different position.
+:::
+
+---
+
+## Zero Matrices and Their Properties
+
+A **zero matrix** ($\boldsymbol{\theta}$) is a matrix whose entries are all zero.
+Examples: $\left[\begin{smallmatrix} 0 & 0 \\ 0 & 0 \end{smallmatrix}\right]$, $\left[\begin{smallmatrix} 0 & 0 & 0 \\ 0 & 0 & 0 \end{smallmatrix}\right]$.
+
+**Properties of Zero Matrices (Theorem 1.4.2)**:
+
+*   $(a) \ A + \boldsymbol{\theta} = \boldsymbol{\theta} + A = A$ (Zero matrix acts as additive identity)
+*   $(c) \ A - A = \boldsymbol{\theta}$
+*   $(d) \ \boldsymbol{\theta} A = \boldsymbol{\theta}$ and $A \boldsymbol{\theta} = \boldsymbol{\theta}$ (Multiplication by zero matrix gives zero matrix)
+
+**Key Difference with Scalars (Failure of Zero Product Property):**
+Unlike real numbers ($ab=0 \implies a=0$ or $b=0$), for matrices:
+
+*   If $AB = \boldsymbol{\theta}$, it does **not** imply $A = \boldsymbol{\theta}$ or $B = \boldsymbol{\theta}$.
+
+::: {.notes}
+Just as scalar arithmetic has the concept of zero, matrix algebra has **zero matrices**, which are simply matrices filled entirely with zeros.
+
+The first few properties are completely analogous to scalar zero: adding a zero matrix doesn't change a matrix, and subtracting a matrix from itself gives the zero matrix. Also, multiplying any matrix by a zero matrix (if compatible dimensions) will always result in a zero matrix.
+
+However, here's another crucial departure from scalar arithmetic that engineers must be aware of: the **zero product property** does not hold for matrices. In regular algebra, if $ab=0$, then either $a$ or $b$ must be zero. This is NOT true for matrices. You can multiply two non-zero matrices together and still get a zero matrix. This has implications in areas like control systems where you might be looking for conditions that generate no output but it doesn't mean the input or the system itself is zero.
+:::
+
+---
+
+## Failure of the Cancellation Law & Zero Product Example
+
+### Failure of the Cancellation Law ($AB=AC \implies B=C$ ?)
+If $A \ne \boldsymbol{\theta}$ and $AB=AC$, we **cannot** generally conclude $B=C$.
+
+Example: $A={\left[\begin{smallmatrix}{0}&{1}\\{0}&{2}\end{smallmatrix}\right]}$, $B={\left[\begin{smallmatrix}{1}&{1}\\{3}&{4}\end{smallmatrix}\right]}$, $C={\left[\begin{smallmatrix}{2}&{5}\\{3}&{4}\end{smallmatrix}\right]}$
+
+```{pyodide}
+#| max-lines: 10
+import numpy as np
+
+A = np.array([[0, 1], [0, 2]])
+B = np.array([[1, 1], [3, 4]])
+C = np.array([[2, 5], [3, 4]])
+
+print("Matrix A:\n", A)
+print("\nMatrix B:\n", B)
+print("\nMatrix C:\n", C)
+
+AB = A @ B
+print("\nProduct AB:\n", AB)
+
+AC = A @ C
+print("\nProduct AC:\n", AC)
+
+print("\nIs AB equal to AC?", np.array_equal(AB, AC))
+print("Is B equal to C?", np.array_equal(B, C))
+```
+Here, $AB=AC$ but $B \ne C$.
+
+---
+
+## Failure of the Cancellation Law & Zero Product Example
+
+### A Zero Product with Nonzero Factors
+Example: $A={\left[\begin{smallmatrix}{0}&{1}\\{0}&{2}\end{smallmatrix}\right]}$, $B={\left[\begin{smallmatrix}{3}&{7}\\{0}&{0}\end{smallmatrix}\right]}$
+$A \ne \boldsymbol{\theta}$ and $B \ne \boldsymbol{\theta}$, but $AB = \boldsymbol{\theta}$.
+```{pyodide}
+#| max-lines: 10
+import numpy as np
+
+A = np.array([[0, 1], [0, 2]])
+B = np.array([[3, 7], [0, 0]])
+
+print("Matrix A:\n", A)
+print("\nMatrix B:\n", B)
+
+AB = A @ B
+print("\nProduct AB:\n", AB)
+```
+
+::: {.notes}
+These two examples illustrate the critical departures from scalar arithmetic.
+
+First, the **cancellation law** ($if \ ab=ac \ and \ a \ne 0, then \ b=c$) does not generally hold for matrices. In the example, matrix A is clearly non-zero. When we compute AB and AC, they turn out to be identical. However, matrix B and matrix C are distinctly different. This means you cannot simply "cancel" A from both sides of a matrix equation like you would with scalars. This is crucial for avoiding incorrect conclusions in areas like signal processing, where certain inputs might produce the same output from a linear system, but the inputs themselves are not identical.
+
+Second, the **zero product property** ($if \ ab=0, then \ a=0 \ or \ b=0$) also fails for matrices. The second example shows two matrices A and B, neither of which is the zero matrix. Yet, their product AB results in the zero matrix. This highlights that a system can produce a zero output using non-zero components or inputs, which is important in control engineering and understanding system redundancies.
+:::
+
+---
+
+## Identity Matrices
+
+An **identity matrix** ($I_n$) is a square matrix with 1s on the main diagonal and 0s elsewhere.
+Examples:
+$$
+I_2 = {\left[\begin{array}{l l}{1}&{0}\\{0}&{1}\end{array}\right]},\quad I_3 = {\left[\begin{array}{l l l}{1}&{0}&{0}\\{0}&{1}&{0}\\{0}&{0}&{1}\end{array}\right]}
+$$
+The identity matrix acts as the multiplicative identity:
+
+*   If $A$ is $m \times n$, then $A I_n = A$ and $I_m A = A$.
+
+**Theorem 1.4.3**: If $R$ is the reduced row echelon form (RREF) of an $n \times n$ matrix $A$, then either $R$ has a row of zeros OR $R$ is the identity matrix $I_n$.
+This implies a fundamental test for invertibility for square matrices.
+
+```{pyodide}
+#| max-lines: 10
+import numpy as np
+
+A = np.array([[2, 3, 1],
+              [4, 0, 5]])
+
+I_3 = np.identity(3)
+I_2 = np.identity(2)
+
+print("Matrix A:\n", A)
+print("\nIdentity Matrix I_3:\n", I_3)
+print("\nIdentity Matrix I_2:\n", I_2)
+
+# A * I_3
+AI = A @ I_3
+print("\nA @ I_3:\n", AI)
+
+# I_2 * A
+IA = I_2 @ A
+print("\nI_2 @ A:\n", IA)
+
+print("\nIs A @ I_3 equal to A?", np.array_equal(A, AI))
+print("Is I_2 @ A equal to A?", np.array_equal(A, IA))
+```
+
+::: {.notes}
+Just as the number "1" is the multiplicative identity in scalar arithmetic ($a \cdot 1 = a$), **identity matrices** play the same role in matrix multiplication. An identity matrix is always square, with $1$s on the main diagonal and $0$s everywhere else. We denote the $n \times n$ identity matrix as $I_n$.
+
+When you multiply any matrix $A$ by an appropriately sized identity matrix, the matrix $A$ remains unchanged. This is demonstrated by the Python code.
+
+**Theorem 1.4.3** is significant: for any square matrix, its RREF will either be the identity matrix or it will contain at least one row of zeros. This provides a quick check from the row reduction process whether a square matrix has certain properties related to its invertibility, which we discuss next.
+:::
+
+---
+
+## Inverse of a Matrix
+
+For real numbers, $a^{-1}$ is the reciprocal ($a \cdot a^{-1} = 1$).
+For a square matrix $A$, its **inverse** (if it exists) is a matrix $B$ of the same size such that:
+$$
+AB = BA = I
+$$
+
+*   If such a matrix $B$ can be found, $A$ is **invertible** (or **nonsingular**), and $B$ is *the* inverse of $A$.
+*   If no such $B$ exists, $A$ is **singular**.
+
+**Theorem 1.4.4**: If $B$ and $C$ are both inverses of the matrix $A$, then $B=C$.
+
+*   This means an invertible matrix has exactly **one unique inverse**, which we denote $A^{-1}$. ($A A^{-1} = I$ and $A^{-1} A = I$).
+
+Example 5: $A = {\left[\begin{smallmatrix}{2}&{-5}\\{-1}&{3}\end{smallmatrix}\right]}$ and $B = {\left[\begin{smallmatrix}{3}&{5}\\{1}&{2}\end{smallmatrix}\right]}$.
+$AB = I$ and $BA = I$. Thus, $A$ and $B$ are inverses of each other.
+
+**Application in ECE:** Essential for solving linear systems ($A\mathbf{x}=\mathbf{b} \implies \mathbf{x}=A^{-1}\mathbf{b}$), system control, signal reconstruction, and filter design.
+
+::: {.notes}
+The concept of a matrix inverse is analogous to a reciprocal in scalar arithmetic. If you can "un-do" a matrix transformation, the matrix is invertible.
+
+For a square matrix $A$, its inverse, $A^{-1}$, is a matrix that, when multiplied by $A$ in either order, results in the identity matrix $I$. This implies that the transformation represented by $A^{-1}$ effectively nullifies the transformation represented by $A$. If no such inverse exists, the matrix is **singular**.
+
+The uniqueness of the inverse (Theorem 1.4.4) is very important. It means we can speak of "the" inverse, not "an" inverse. This simplifies notation and ensures consistency.
+
+In engineering, if you have a linear system described by $A\mathbf{x} = \mathbf{b}$, and $A$ is invertible, you can find the input $\mathbf{x}$ simply by multiplying $\mathbf{b}$ by $A^{-1}$. This is invaluable for solving circuit problems, identifying sources from sensor data, optimizing communication channels, and in control theory to achieve desired system states.
+:::
+
+---
+
+## Invertibility of $2 \times 2$ Matrices
+
+**Theorem 1.4.5**: The matrix $A = \left[\begin{smallmatrix} a & b \\ c & d \end{smallmatrix}\right]$ is invertible if and only if $ad - bc \ne 0$.
+In this case, the inverse is given by:
+$$
+A^{-1} = \frac{1}{ad - bc} \left[ \begin{array}{cc}d & -b \\ -c & a \end{array} \right]
+$$
+The value $ad - bc$ is called the **determinant of $A$**, denoted $\operatorname{det}(A)$ or $|A|$.
+
+Example 7(a): $A={\left[\begin{smallmatrix}{6}&{1}\\{5}&{2}\end{smallmatrix}\right]}$
+$\operatorname{det}(A) = (6)(2) - (1)(5) = 12 - 5 = 7$. Since $7 \ne 0$, $A$ is invertible.
+$A^{-1} = \frac{1}{7} \left[\begin{smallmatrix}{2}&{-1}\\{-5}&{6}\end{smallmatrix}\right] = \left[\begin{smallmatrix}{\frac{2}{7}}&{-\frac{1}{7}}\\{-\frac{5}{7}}&{\frac{6}{7}}\end{smallmatrix}\right]$
+
+Example 7(b): $A={\left[\begin{smallmatrix}{-1}&{2}\\{3}&{-6}\end{smallmatrix}\right]}$
+$\operatorname{det}(A) = (-1)(-6) - (2)(3) = 6 - 6 = 0$. Since $\operatorname{det}(A) = 0$, $A$ is **not invertible** (it's singular).
+
+::: {.notes}
+For $2 \times 2$ matrices, there's a simple, direct formula for the inverse. This is the first place we encounter the concept of the **determinant**, which is a single scalar value derived from a square matrix.
+
+For a $2 \times 2$ matrix $\left[\begin{smallmatrix} a & b \\ c & d \end{smallmatrix}\right]$, the determinant is $ad - bc$. **The key takeaway here is that a $2 \times 2$ matrix is invertible if and only if its determinant is non-zero.** This tiny value $ad-bc$ holds immense power over invertibility.
+
+The examples demonstrate this. For the first matrix, $det(A)=7$, which means an inverse exists and can be computed directly using the formula. For the second, $det(A)=0$, so it's singular, with no inverse. This determinant concept extends to larger matrices and is central to topics like eigenvalues and system stability in ECE.
+:::
+
+---
+
+## Solving Linear Systems using Matrix Inversion
+
+A linear system $A\mathbf{x} = \mathbf{b}$ can be solved by matrix inversion (if $A$ is invertible):
+$$
+A\mathbf{x} = \mathbf{b} \implies A^{-1}(A\mathbf{x}) = A^{-1}\mathbf{b} \implies (A^{-1}A)\mathbf{x} = A^{-1}\mathbf{b} \implies I\mathbf{x} = A^{-1}\mathbf{b} \implies \mathbf{x} = A^{-1}\mathbf{b}
+$$
+
+Example 8: Solve for $x, y$ in terms of $u, v$:
+$u = ax + by$
+$v = cx + dy$
+
+In matrix form: $\left[\begin{smallmatrix} u \\ v \end{smallmatrix}\right] = \left[\begin{smallmatrix} a & b \\ c & d \end{smallmatrix}\right] \left[\begin{smallmatrix} x \\ y \end{smallmatrix}\right]$
+
+Let $A = \left[\begin{smallmatrix} a & b \\ c & d \end{smallmatrix}\right]$. If $\operatorname{det}(A) = ad-bc \ne 0$, then:
+$$
+\left[\begin{smallmatrix} x \\ y \end{smallmatrix}\right] = A^{-1} \left[\begin{smallmatrix} u \\ v \end{smallmatrix}\right] = \frac{1}{ad - bc} \left[\begin{smallmatrix} d & -b \\ -c & a \end{smallmatrix}\right] \left[\begin{smallmatrix} u \\ v \end{smallmatrix}\right]
+$$
+Resulting in:
+$$
+x = \frac{du - bv}{ad - bc}, \quad y = \frac{av - cu}{ad - bc}
+$$
+
+::: {.notes}
+One of the most immediate and practical applications of the matrix inverse for engineers is solving systems of linear equations. If you recall $A\mathbf{x} = \mathbf{b}$ from our previous section, when $A$ is an invertible square matrix, we can directly solve for the unknown vector $\mathbf{x}$ by multiplying both sides by $A^{-1}$ from the left.
+
+This method is extremely powerful. Instead of using Gaussian elimination every time, if $A^{-1}$ is known or can be efficiently computed, then solving for $\mathbf{x}$ is a simple matrix-vector multiplication.
+
+The example shows how a general $2 \times 2$ system, often seen in circuit equations or transformation problems, can be solved explicitly using the inverse formula. This direct solution for $\mathbf{x}$ is a cornerstone for designing and analyzing linear systems where inputs and outputs are related by a matrix. It is the basis for simulation tools that automatically determine circuit currents or voltages given specific system configurations.
+:::
+
+---
+
+## Properties of Inverses
+
+**Theorem 1.4.6 (Inverse of a Product)**: If $A$ and $B$ are invertible matrices of the same size, then $AB$ is invertible, and
+$$(A B)^{-1} = B^{-1}A^{-1}$$
+This generalizes: $(A_1 A_2 \dots A_n)^{-1} = A_n^{-1} \dots A_2^{-1} A_1^{-1}$.
+
+**Theorem 1.4.7 (Powers of a Matrix & Other Properties)**: If $A$ is invertible and $n$ is a nonnegative integer:
+
+*   $(a) \ (A^{-1})^{-1} = A$
+*   $(b) \ (A^n)^{-1} = A^{-n} = (A^{-1})^n$
+*   $(c) \ (kA)^{-1} = k^{-1}A^{-1}$ for any nonzero scalar $k$.
+
+We define integer powers for square matrices:
+
+*   $A^0 = I$
+*   $A^n = A \cdot A \dots A$ ($n$ factors for $n > 0$)
+*   $A^{-n} = (A^{-1})^n$ ($n$ factors for $n > 0$, if $A$ invertible)
+
+::: {.notes}
+The inverse operation also has important algebraic properties.
+**Theorem 1.4.6** is incredibly important and often counter-intuitive: the inverse of a *product* of matrices is the product of their *inverses in reverse order*. This is a direct consequence of non-commutativity. Think of it as carefully "un-doing" a sequence of operations. If you put on your socks then shoes, to reverse, you take off shoes then socks.
+
+**Theorem 1.4.7** extends these ideas to powers of matrices. These properties mean you can work with matrix powers (positive and negative) much like scalar powers, as long as you respect the order when products are involved.
+
+These properties are fundamental in control systems for analyzing cascades of systems, in cryptography using matrix transformations, and in circuit analysis, especially for time-varying systems where matrices might represent discrete time steps. For example, if $A$ describes a transformation, $(A^n)$ describes applying that transformation $n$ times.
+:::
+
+---
+
+## Example 9: The Inverse of a Product
+
+Let $A={\left[\begin{smallmatrix}{1}&{2}\\{1}&{3}\end{smallmatrix}\right]}$ and $B={\left[\begin{smallmatrix}{3}&{2}\\{2}&{2}\end{smallmatrix}\right]}$.
+Let's verify that $(AB)^{-1} = B^{-1}A^{-1}$.
+
+```{pyodide}
+#| max-lines: 10
+import numpy as np
+
+A = np.array([[1, 2], [1, 3]])
+B = np.array([[3, 2], [2, 2]])
+
+# 1. Compute AB and its inverse
+AB = A @ B
+print("AB:\n", AB)
+det_AB = AB[0,0]*AB[1,1] - AB[0,1]*AB[1,0]
+inv_AB = (1/det_AB) * np.array([[AB[1,1], -AB[0,1]], [-AB[1,0], AB[0,0]]])
+print("\n(AB)^-1:\n", inv_AB)
+
+# 2. Compute A^-1 and B^-1
+det_A = A[0,0]*A[1,1] - A[0,1]*A[1,0]
+inv_A = (1/det_A) * np.array([[A[1,1], -A[0,1]], [-A[1,0], A[0,0]]])
+print("\nA^-1:\n", inv_A)
+
+det_B = B[0,0]*B[1,1] - B[0,1]*B[1,0]
+inv_B = (1/det_B) * np.array([[B[1,1], -B[0,1]], [-B[1,0], B[0,0]]])
+print("\nB^-1:\n", inv_B)
+
+# 3. Compute B^-1 * A^-1
+inv_B_inv_A = inv_B @ inv_A
+print("\nB^-1 A^-1:\n", inv_B_inv_A)
+
+print("\nIs (AB)^-1 equal to B^-1 A^-1?", np.array_equal(inv_AB, inv_B_inv_A))
+
+# Demonstrate matrix powers
+print("\nA^3:\n", np.linalg.matrix_power(A, 3))
+print("\n(A^-1)^3:\n", np.linalg.matrix_power(inv_A, 3))
+print("\n(A^3)^-1:\n", np.linalg.inv(np.linalg.matrix_power(A, 3)))
+```
+
+::: {.notes}
+Let's confirm Theorem 1.4.6 with another Python example. We'll compute $(AB)^{-1}$ directly and then $B^{-1}A^{-1}$ and check if they're equal.
+The code performs step-by-step calculation: first computes $AB$ and its inverse, then computes individual inverses $A^{-1}$ and $B^{-1}$, and finally their product $B^{-1}A^{-1}$. As you can see, the final matrices match, confirming the theorem.
+
+I've also added a quick demo of matrix powers using `np.linalg.matrix_power()` and `np.linalg.inv()`. You can see that $(A^3)^{-1}$ is indeed equal to $(A^{-1})^3$.
+
+This property is crucial in areas like linear time-invariant systems in control theory and signal processing, where transformations are often applied in sequence, and you need to reverse the entire process. For instance, if $A$ represents a system at time $t_1$ and $B$ at $t_2$, then $(AB)^{-1}$ could represent the inverse process going from $t_2$ back to $t_0$, and this involves reversing the sequence of operations.
+:::
+
+---
+
+## Matrix Polynomials
+
+If $A$ is a square matrix, and $p(x) = a_0 + a_1x + a_2x^2 + \dots + a_m x^m$ is a polynomial, then the matrix polynomial $p(A)$ is defined as:
+$$
+p(A) = a_0I + a_1A + a_2A^2 + \dots + a_mA^m
+$$
+Here, $I$ is the identity matrix of the same size as $A$, ensuring all terms are compatible for addition.
+
+Example 12: Find $p(A)$ for $p(x) = x^2 - 2x - 3$ and $A = \begin{bmatrix} -1 & 2 \\ 0 & 3 \end{bmatrix}$.
+
+Solution:
+$p(A) = A^2 - 2A - 3I$
+
+$A^2 = \begin{bmatrix} -1 & 2 \\ 0 & 3 \end{bmatrix} \begin{bmatrix} -1 & 2 \\ 0 & 3 \end{bmatrix} = \begin{bmatrix} 1 & 4 \\ 0 & 9 \end{bmatrix}$
+
+$2A = \begin{bmatrix} -2 & 4 \\ 0 & 6 \end{bmatrix}$
+
+$3I = \begin{bmatrix} 3 & 0 \\ 0 & 3 \end{bmatrix}$
+
+$p(A) = \begin{bmatrix} 1 & 4 \\ 0 & 9 \end{bmatrix} - \begin{bmatrix} -2 & 4 \\ 0 & 6 \end{bmatrix} - \begin{bmatrix} 3 & 0 \\ 0 & 3 \end{bmatrix} = \begin{bmatrix} 1-(-2)-3 & 4-4-0 \\ 0-0-0 & 9-6-3 \end{bmatrix} = \begin{bmatrix} 0 & 0 \\ 0 & 0 \end{bmatrix}$
+
+So, $p(A) = \boldsymbol{\theta}$.
+
+::: {.notes}
+Matrix polynomials are an extension of the polynomial concept to matrices. Instead of plugging in a scalar value for $x$, we plug in a matrix $A$. The constant term $a_0$ is replaced by $a_0I$ to ensure that all terms in the sum are matrices of the same size and can be added.
+
+The example shows a calculation where a quadratic polynomial applied to a specific matrix results in the zero matrix. This is not a coincidence; it's a profound result related to the **Cayley-Hamilton Theorem**, which states that every square matrix satisfies its own characteristic equation (a specific polynomial).
+
+In ECE, matrix polynomials are fundamental in:
+
+*   **Linear system theory**: Describing the behavior of dynamic systems over time, where $A$ might represent system dynamics.
+*   **Control engineering**: Analyzing system stability and response characteristics, defining state-space models.
+*   **Linear algebra applications in digital signal processing and image processing**: For filtering and transformations.
+Understanding matrix polynomials provides deeper insight into how matrix properties manifest in the temporal evolution or transformation of systems.
+:::
+
+---
+
+## Properties of the Transpose
+
+**Theorem 1.4.8**: If sizes allow:
+
+*   $(a) \ (A^T)^T = A$ (Transposing twice returns original matrix)
+*   $(b) \ (A + B)^T = A^T + B^T$ (Transpose distributes over addition)
+*   $(c) \ (A - B)^T = A^T - B^T$ (Transpose distributes over subtraction)
+*   $(d) \ (kA)^T = kA^T$ (Scalar multiple distributes over transpose)
+*   $(e) \ (AB)^T = B^T A^T$ (Transpose of a product is product of transposes in reverse order) &nbsp;&mdash;&nbsp; another crucial reversal!
+
+**Theorem 1.4.9 (Inverse of Transpose)**: If $A$ is an invertible matrix, then $A^T$ is also invertible and:
+$$
+(A^{T})^{-1} = (A^{-1})^{T}
+$$
+
+::: {.notes}
+The transpose operation also has a set of intuitive and some not-so-intuitive properties.
+Properties (a) through (d) are quite straightforward and intuitive. For example, transposing a matrix twice just gets you back to the original matrix. Scalar multiplication and matrix addition/subtraction behave as expected with the transpose operation.
+
+However, Property (e) is another critical one involving a reversal of order, similar to the inverse of a product: the transpose of a product $AB$ is $B^T A^T$. Remember this as part of the "socks and shoes" rule – to transpose a sequence of operations, you reverse the order of operations and take the transpose of each.
+
+Finally, **Theorem 1.4.9** is valuable: the inverse of a transpose is the transpose of the inverse. This means you can compute them in any order and get the same result.
+
+These properties are indispensable in various ECE applications:
+
+*   In **optimizing calculations** in signal processing and machine learning, particularly in algorithms involving gradients and covariance matrices.
+*   For **simplifying complex matrix expressions** in controls design.
+*   For understanding **symmetry and duality** in electrical circuits or electromagnetic fields.
+:::
+
+---
+
+## Example 13: Inverse of a Transpose
+
+Consider a general $2 \times 2$ matrix and its transpose:
+$A = \left[\begin{smallmatrix} a & b \\ c & d \end{smallmatrix}\right] \quad \text{and} \quad A^T = \left[\begin{smallmatrix} a & c \\ b & d \end{smallmatrix}\right]$
+Assume $A$ is invertible, i.e., $ad-bc \ne 0$.
+
+Let's compute $(A^T)^{-1}$ and $(A^{-1})^T$ and verify they are equal.
+
+```{pyodide}
+#| max-lines: 10
+import numpy as np
+
+# Example matrix A
+A = np.array([[2, 1],
+              [3, 2]])
+
+print("Matrix A:\n", A)
+
+# Compute A^-1
+det_A = A[0,0]*A[1,1] - A[0,1]*A[1,0]
+inv_A = (1/det_A) * np.array([[A[1,1], -A[0,1]], [-A[1,0], A[0,0]]])
+print("\nA^-1:\n", inv_A)
+
+# Compute (A^-1)^T
+inv_A_T = inv_A.T
+print("\n(A^-1)^T:\n", inv_A_T)
+
+# Compute A^T
+A_T = A.T
+print("\nA^T:\n", A_T)
+
+# Compute (A^T)^-1
+det_AT = A_T[0,0]*A_T[1,1] - A_T[0,1]*A_T[1,0]
+inv_A_T_direct = (1/det_AT) * np.array([[A_T[1,1], -A_T[0,1]], [-A_T[1,0], A_T[0,0]]])
+print("\n(A^T)^-1:\n", inv_A_T_direct)
+
+print("\nIs (A^-1)^T equal to (A^T)^-1?", np.array_equal(inv_A_T, inv_A_T_direct))
+```
+
+::: {.notes}
+Let's use a numerical example in Python to confirm this theorem.
+We take a $2 \times 2$ matrix $A$.
+First, we compute the inverse of $A$, then transpose that result.
+Second, we transpose $A$ first, and then compute the inverse of $A^T$.
+As the `np.array_equal` confirms, both results are the same. This means you can perform these operations in any order and get the same valid outcome.
+
+This property is useful in various optimizations and theoretical proofs. For example, in electrical engineering, when dealing with passive networks and their impedance matrices, this property assures certain symmetrical relationships in analysis. It also appears in antenna array processing and in the formulation of least squares problems, where properties of the transpose are used to find optimal solutions.
+:::
+
+---
+
+## Conclusion
+
+*   **Matrix Arithmetic Rules:** Many scalar arithmetic rules (associative, distributive) apply to matrices, but key differences exist.
+*   **Non-Commutativity ($AB \ne BA$):** Order in matrix multiplication matters; it's generally NOT commutative.
+*   **Failure of Laws:** Cancellation law and zero product property usually *fail* for matrices.
+*   **Special Matrices:**
+    *   **Zero Matrix ($\boldsymbol{\theta}$):** Additive identity.
+    *   **Identity Matrix ($I$):** Multiplicative identity.
+*   **Matrix Inverse ($A^{-1}$):** "Un-does" a matrix operation ($AA^{-1}=I$). Exists iff $\operatorname{det}(A) \ne 0$ for $2 \times 2$ matrices.
+*   **Transpose ($A^T$):** Swaps rows and columns. $(AB)^T = B^T A^T$.
+*   **Matrix Powers & Polynomials:** Apply scalar polynomial concepts to matrices.
+*   **Direct Application in ECE:** These properties are fundamental for understanding and solving problems in:
+    *   **Circuit Analysis** (e.g., node-voltage method, mesh analysis)
+    *   **Control Systems** (e.g., state-space representations, system stability)
+    *   **Signal Processing** (e.g., filters, transformations)
+    *   **Computer Graphics** (e.g., 3D transformations)
+    *   **Machine Learning** (e.g., linear regression, deep learning)
+
+::: {.notes}
+To conclude our detailed exploration of matrix algebraic properties:
+
+We've seen that while matrices share many algebraic properties with real numbers, particularly for addition and scalar multiplication, they fundamentally differ in one critical aspect: matrix multiplication is generally not commutative. This non-commutativity then leads to the failure of other familiar laws, like the cancellation law and the zero product property from scalar algebra.
+
+We introduced special matrices – the zero matrix (additive identity) and the identity matrix (multiplicative identity) – which play analogous roles to 0 and 1 in scalar arithmetic.
+
+Crucially, we defined the concept of the matrix inverse, a powerful tool for "undoing" matrix transformations, and learned how to compute it for $2 \times 2$ matrices using the determinant. We also explored properties of matrix powers and how polynomials can be applied to matrices. Finally, we revisited the transpose operation and its important properties, especially how it interacts with matrix products and inverses.
+
+These algebraic properties are not just theoretical constructs; they are the foundation upon which nearly all advanced topics in linear algebra, and by extension, most computational and analytical methods in Electrical and Computer Engineering are built. Mastering these rules is absolutely essential for your success in this course and in your future engineering career, as they provide the language and tools to precisely describe, analyze, and manipulate complex systems.
+
+Thank you. Next, we will be discussing elementary matrices and a method for finding the inverse of any invertible square matrix using row operations.
+:::
