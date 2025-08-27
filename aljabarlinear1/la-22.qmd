@@ -1,0 +1,501 @@
+---
+title: "Linear Algebra"
+subtitle: "2.2 Evaluating Determinants by Row Reduction"
+author: "Imron Rosyadi"
+format:
+  live-revealjs:
+    logo: "qrjs_assets/unsoed_logo.png"
+    footer: "[irosyadi-2025](https://imron-slide.vercel.app)"
+    slide-number: true
+    chalkboard: true
+    scrollable: true
+    controls: true
+    progress: true
+    preview-links: false
+    transition: fade
+    incremental: false
+    smaller: false
+    theme: [default, qrjs_assets/ir_style.scss]
+filters:
+  - pyodide
+---
+
+# Linear Algebra
+
+## 2.2 Evaluating Determinants by Row Reduction
+
+### Imron Rosyadi
+
+---
+
+## Introduction: Why Row Reduction?
+
+In the previous section, we learned about cofactor expansion. While conceptually important, it becomes computationally intensive for large matrices.
+
+### Our Goal Today: Faster Determinant Calculation
+- Evaluate determinants by reducing matrices to row echelon form.
+- This method is generally more efficient for larger matrices than cofactor expansion.
+
+### Relevance to ECE
+- **Computational Efficiency**: In engineering, matrices often represent large systems (e.g., signal processing, power networks). Efficient determinant calculation is critical for performance.
+- **System Analysis**: Determinants tell us about matrix invertibility, which in turn tells us if a system has a unique solution.
+
+::: {.notes}
+For a $25 \times 25$ matrix, cofactor expansion would take millions of years even with today's fastest computers. This highlights the necessity of more efficient methods like row reduction. While we'll mostly see smaller matrices in examples, understanding the principles for large matrices is key for future advanced ECE courses involving numerical methods.
+:::
+
+---
+
+## Basic Properties of Determinants
+
+We start with two fundamental theorems.
+
+### Theorem 2.2.1: Zero Rows or Columns
+If a square matrix $A$ has a row of zeros or a column of zeros, then $\operatorname *{det}(A) = 0$.
+
+**Proof sketch:**
+We can find the determinant by a cofactor expansion along the row or column of zeros. Since every entry in that row or column is zero, each term in the expansion $a_{ij}C_{ij}$ will be zero.
+$$
+\operatorname *{det}(A) = 0 \cdot C_1 + 0 \cdot C_2 + \dots + 0 \cdot C_n = 0
+$$
+
+### Theorem 2.2.2: Determinant of a Transpose
+Let $A$ be a square matrix. Then $\operatorname *{det}(A) = \operatorname *{det}(A^T)$.
+
+**Proof sketch:**
+Transposing a matrix swaps its rows and columns. A cofactor expansion of $A$ along any row is equivalent to a cofactor expansion of $A^T$ along the corresponding column. Thus, their determinants are the same.
+
+::: {.notes}
+The first theorem is an immediate shortcut: spotting a row or column of zeros instantly tells you the determinant is zero. This can save a lot of computation time. The second theorem is powerful because it implies that any property about rows of a matrix's determinant also applies to its columns, and vice versa. This duality simplifies many future proofs and derivations in linear algebra, useful for understanding matrix symmetry in applications like finite element analysis or graph theory.
+:::
+
+---
+
+## Impact of Elementary Row Operations on Determinants
+
+Elementary row operations (EROs) are the backbone of Gaussian elimination. They systematically transform a matrix. How do they affect the determinant?
+
+### Theorem 2.2.3: Effects of EROs on $\operatorname{det}(A)$
+Let $A$ be an $n \times n$ matrix.
+
+(a) If $B$ is formed by **multiplying a single row (or column) of $A$ by a scalar $k$**, then $\operatorname{det}(B) = k \operatorname{det}(A)$.
+
+    *   Example for $3 \times 3$ (multiplying row 1 by $k$):
+        $\operatorname *{det}\left[ \begin{array}{ccc}k a_{11} & k a_{12} & k a_{13} \\ a_{21} & a_{22} & a_{23} \\ a_{31} & a_{32} & a_{33} \end{array} \right] = k a_{11}C_{11} + k a_{12}C_{12} + k a_{13}C_{13}$
+        $= k(a_{11}C_{11} + a_{12}C_{12} + a_{13}C_{13}) = k \operatorname{det}(A)$  
+
+(b) If $B$ is formed by **interchanging two rows (or columns) of $A$**, then $\operatorname{det}(B) = - \operatorname{det}(A)$.
+    *   A row swap flips the sign of the determinant.
+
+(c) If $B$ is formed by **adding a multiple of one row (or column) of $A$ to another**, then $\operatorname{det}(B) = \operatorname{det}(A)$.
+    *   This operation does *not* change the determinant value. This is the most useful ERO for row reduction in this context.
+
+::: {.notes}
+These properties are critical because they allow us to track changes to the determinant as we perform row reduction.
+For ECE: imagine a system of equations where each row represents a constraint or an equation (e.g., KVL loop, KCL node). Scaling a single row corresponds to scaling one of those equations, which scales the system. Swapping rows is just reordering equations, which changes the sign of the determinant but not its magnitude. Adding multiples of rows is equivalent to linear combinations of system equations, which preserve the solution set, and thus the determinant's value.
+:::
+
+---
+
+## Determinants of Elementary Matrices
+
+Recall that an elementary matrix $E$ is formed by performing a single ERO on the identity matrix $I_n$.
+Theorem 2.2.3 has a special case for $A = I_n$.
+
+### Theorem 2.2.4: Determinants of Elementary Matrices
+Let $E$ be an $n \times n$ elementary matrix.
+(a) If $E$ results from multiplying a row of $I_n$ by a nonzero scalar $k$, then $\operatorname{det}(E) = k$.
+(b) If $E$ results from interchanging two rows of $I_n$, then $\operatorname{det}(E) = -1$.
+(c) If $E$ results from adding a multiple of one row of $I_n$ to another, then $\operatorname{det}(E) = 1$.
+
+**Observation**: The determinant of an elementary matrix can never be zero.
+
+---
+
+## Determinants of Elementary Matrices
+
+### Example 1: Determinants of Elementary Matrices
+$$
+E_1 = {\left|\begin{array}{llll}{1}&{0}&{0}&{0}\\ {0}&{\bf{3}}&{0}&{0}\\ {0}&{0}&{1}&{0}\\ {0}&{0}&{0}&{1}\end{array}\right|}=3 \quad \text{(Row 2 of } I_4 \text{ multiplied by 3)}
+$$
+$$
+E_2 = {\left|\begin{array}{llll}{0}&{0}&{0}&{\bf{1}}\\ {0}&{1}&{0}&{0}\\ {0}&{0}&{1}&{0}\\ {\bf{1}}&{0}&{0}&{0}\end{array}\right|}=-1 \quad \text{(Row 1 and Row 4 of } I_4 \text{ interchanged)}
+$$
+$$
+E_3 = {\left|\begin{array}{llll}{1}&{0}&{0}&{\bf{7}}\\ {0}&{1}&{0}&{0}\\ {0}&{0}&{1}&{0}\\ {0}&{0}&{0}&{1}\end{array}\right|}=1 \quad \text{(7 times Row 4 of } I_4 \text{ added to Row 1)}
+$$
+
+::: {.notes}
+Every elementary row operation can be represented by multiplying by an elementary matrix. These determinant rules allow us to track how the determinant changes through a sequence of elementary operations. This is crucial for numerical stability in large-scale computations often found in embedded systems or scientific computing within ECE.
+:::
+
+---
+
+## Interactive Example: Elementary Matrices
+
+Let's compute the determinant of some elementary matrices using Pyodide to confirm Theorem 2.2.4.
+
+```pyodide
+#| max-lines: 10
+import numpy as np
+
+# Elementary matrix type 1: Scalar multiplication
+I = np.identity(4)
+E1 = I.copy()
+E1[1, 1] = 5 # Multiply second row by 5
+print(f"E1 (Row 2 * 5):\n{E1}\nDet(E1): {np.linalg.det(E1):.0f}\n")
+
+# Elementary matrix type 2: Row interchange
+I = np.identity(4)
+E2 = I.copy()
+E2[[0, 2]] = E2[[2, 0]] # Swap row 0 and row 2
+print(f"E2 (Row 0 <-> Row 2):\n{E2}\nDet(E2): {np.linalg.det(E2):.0f}\n")
+
+# Elementary matrix type 3: Adding a multiple of a row to another
+I = np.identity(4)
+E3 = I.copy()
+E3[0, 3] = 7 # 7 * Row 3 added to Row 0
+print(f"E3 (Row 0 + 7*Row 3):\n{E3}\nDet(E3): {np.linalg.det(E3):.0f}")
+```
+
+::: {.notes}
+You can observe how each operation on the identity matrix immediately gives the determinant specified by the theorem. Try changing the scalar in `E1` or the rows swapped in `E2`, or the multiple in `E3`, and see how the determinant changes. This quick interactive check visually and numerically confirms the properties of elementary matrices' determinants.
+:::
+
+---
+
+## Matrices with Proportional Rows or Columns
+
+This is another shortcut for finding zero determinants.
+
+### Theorem 2.2.5
+If $A$ is a square matrix with two proportional rows or two proportional columns, then $\det(A) = 0$.
+
+**Proof sketch:**
+If a matrix $A$ has two proportional rows (e.g., row $i = k \cdot$ row $j$), we can perform an ERO of type (c) (adding a multiple of one row to another) to create a row of zeros. For example, add $-k$ times row $j$ to row $i$. This operation does not change the determinant (Theorem 2.2.3c). Since the resulting matrix now has a row of zeros, its determinant is 0 (Theorem 2.2.1). Therefore, $\det(A)=0$.
+
+---
+
+## Matrices with Proportional Rows or Columns
+
+#### Example 2: Proportional Rows or Columns
+Each of the following matrices has a determinant of zero because they have proportional rows or columns:
+
+$$
+{\left[\begin{array}{l l}{-1}&{4}\\ {-2}&{8}\end{array}\right]} \quad (\text{Row 2} = 2 \times \text{Row 1})
+$$
+
+$$
+{\left[\begin{array}{l l l}{1}&{-2}&{7}\\ {-4}&{8}&{5}\\ {2}&{-4}&{3}\end{array}\right]} \quad (\text{Col 2} = -2 \times \text{Col 1})
+$$
+
+$$
+{\left[\begin{array}{l l l l}{3}&{-1}&{4}&{-5}\\ {6}&{-2}&{5}&{2}\\ {5}&{8}&{1}&{4}\\ {-9}&{3}&{-12}&{15}\end{array}\right]} \quad (\text{Row 4} = -3 \times \text{Row 1})
+$$
+
+::: {.notes}
+This theorem is a very quick way to identify singular (non-invertible) matrices without any complex calculations. In ECE, if a system's matrix has proportional rows or columns, it implies a linear dependency, meaning redundant information or an under-constrained/over-constrained system, which prevents a unique solution. For example, in circuit analysis, two KVL loops that are just scalar multiples of each other would lead to a singular matrix, meaning the system of equations is linearly dependent.
+:::
+
+---
+
+## Evaluating Determinants by Row Reduction: The Method
+
+The strategy is:
+
+1.  **Reduce to Triangular Form**: Use elementary row operations to transform the given matrix $A$ into a row echelon form $U$ (which is always upper triangular).
+2.  **Keep Track of Changes**: As you perform EROs, record how each operation affects the determinant according to Theorem 2.2.3.
+
+    *   Row swap: multiply determinant by $-1$.
+    *   Row scalar multiplication: factor out the scalar.
+    *   Adding multiple of row: no change.
+
+3.  **Compute $\operatorname{det}(U)$**: Since $U$ is triangular, $\operatorname{det}(U)$ is simply the product of its diagonal entries (Theorem 2.1.2).
+4.  **Relate Back to $\operatorname{det}(A)$**: Use the accumulated factors from step 2 to find $\operatorname{det}(A)$.
+
+This method is generally much faster than cofactor expansion for large matrices, as it converts the problem into one of simple diagonal multiplication after reduction.
+
+::: {.notes}
+This procedure is the workhorse for computational linear algebra. While numerical libraries handle the specifics, understanding this process for smaller matrices builds intuition for how larger systems are handled efficiently in practice, particularly in optimized algorithms used in engineering software.
+:::
+
+---
+
+## Example 3: Using Row Reduction
+
+Evaluate $\det(A)$ where
+$$
+A = \left[ \begin{array}{ccc}0 & 1 & 5 \\ 3 & -6 & 9 \\ 2 & 6 & 1 \end{array} \right]
+$$
+
+**Solution:**
+
+1.  **Swap R1 and R2**: 
+
+$$
+\det(A) = - \left| \begin{array}{ccc}3 & -6 & 9 \\ 0 & 1 & 5 \\ 2 & 6 & 1 \end{array} \right|
+$$ 
+
+(multiply by -1 for row swap)
+
+2.  **Factor 3 from R1**: 
+
+$$
+= -3 \left| \begin{array}{ccc}1 & -2 & 3 \\ 0 & 1 & 5 \\ 2 & 6 & 1 \end{array} \right|
+$$ 
+
+(factor out 3)
+
+---
+
+## Example 3: Using Row Reduction
+
+3.  **R3 = R3 - 2\*R1**:
+
+$$ 
+= -3 \left| \begin{array}{ccc}1 & -2 & 3 \\ 0 & 1 & 5 \\ 0 & 10 & -5 \end{array} \right|
+$$ 
+
+(no change to determinant)
+
+4.  **R3 = R3 - 10\*R2**: 
+
+$$ 
+= -3 \left| \begin{array}{ccc}1 & -2 & 3 \\ 0 & 1 & 5 \\ 0 & 0 & -55 \end{array} \right|
+$$ 
+
+(no change to determinant)
+
+---
+
+## Example 3: Using Row Reduction
+
+5.  **Factor -55 from R3**: 
+
+$$
+= (-3)(-55) \left| \begin{array}{ccc}1 & -2 & 3 \\ 0 & 1 & 5 \\ 0 & 0 & 1 \end{array} \right|
+$$ 
+
+(factor out -55)
+
+6.  **Calculate determinant of triangular matrix**: The final matrix is upper triangular.
+
+$\operatorname *{det}(A) = (-3)(-55) \cdot (1 \cdot 1 \cdot 1) = 165 \cdot 1 = 165$.
+
+::: {.notes}
+Notice how each step using row operations is explicitly linked to its effect on the determinant. The final upper triangular matrix has a determinant that is simply the product of its diagonal entries. This process is much more manageable than repeatedly computing cofactors for a $3 \times 3$ matrix.
+:::
+
+---
+
+## Interactive Verification: Example 3
+
+Let's verify the result of Example 3 using Pyodide (Numpy `linalg.det`).
+
+```pyodide
+#| max-lines: 10
+import numpy as np
+
+A = np.array([
+    [0, 1, 5],
+    [3, -6, 9],
+    [2, 6, 1]
+])
+
+print("Original Matrix A:")
+print(A)
+
+# Calculate determinant using numpy
+det_A = np.linalg.det(A)
+print(f"\nDeterminant of A: {det_A:.2f}")
+
+# Manual step-by-step confirmation in comments:
+# 1. Swap R1, R2 => -1 factor
+#    A_swap = np.array([[3, -6, 9], [0, 1, 5], [2, 6, 1]])
+#    det = -np.linalg.det(A_swap) # should be 165
+# 2. R1 -> (1/3)R1 => 3 factor
+#    A_factor = np.array([[1, -2, 3], [0, 1, 5], [2, 6, 1]])
+#    det = -3 * np.linalg.det(A_factor) # should be 165
+# ... and so on for all steps. The final calculation confirms our result.
+```
+
+::: {.notes}
+This interactive example serves to quickly confirm our manual calculation. It's a valuable check, particularly in ECE applications where errors in matrix operations can lead to significant issues (e.g., control system instability, incorrect circuit behavior).
+:::
+
+---
+
+## Example 4: Using Column Operations
+
+Remember Theorem 2.2.2 stated $\det(A) = \det(A^T)$, meaning rules for row operations also apply to column operations. We can strategically use column operations to simplify the matrix.
+
+Compute the determinant of
+$$
+A = {\left[ \begin{array}{llll}{1} & 0 & 0 & 3\\ 2 & 7 & 0 & 6\\ 0 & 6 & 3 & 0\\ 7 & 3 & 1 & {-5} \end{array} \right]}
+$$
+
+**Solution:**
+We can put $A$ into a lower triangular form (another type of triangular matrix, for which Theorem 2.1.2 applies) in one step by a column operation.
+
+1.  **C4 = C4 - 3\*C1**: This operation does not change the determinant according to Theorem 2.2.3(c) applied to columns.
+    $$
+    \operatorname *{det}(A) = \operatorname *{det}{\left[ \begin{array}{llll}{1} & 0 & 0 & 0\\ 2 & 7 & 0 & 0\\ 0 & 6 & 3 & 0\\ 7 & 3 & 1 & {-26} \end{array} \right]}
+    $$
+2.  **Calculate determinant of lower triangular matrix**:
+    The resulting matrix is lower triangular. Its determinant is the product of its diagonal entries:
+    $\operatorname *{det}(A) = (1)(7)(3)(-26) = -546$.
+
+::: {.notes}
+This example highlights that recognizing opportunities for column operations can also significantly simplify computations. Engineering problems often involve matrices with sparse (many zeros) or structured patterns, making these targeted operations very efficient. It pays to inspect the matrix before blindly applying a full row reduction.
+:::
+
+---
+
+## Interactive Verification: Example 4
+
+Let's quickly verify the result from Example 4.
+
+```pyodide
+#| max-lines: 10
+import numpy as np
+
+A = np.array([
+    [1, 0, 0, 3],
+    [2, 7, 0, 6],
+    [0, 6, 3, 0],
+    [7, 3, 1, -5]
+])
+
+print("Original Matrix A:")
+print(A)
+
+# Calculate determinant using numpy
+det_A = np.linalg.det(A)
+print(f"\nDeterminant of A: {det_A:.2f}")
+
+# Apply column operation C4 = C4 - 3*C1 and verify
+A_mod = A.copy()
+A_mod[:, 3] = A_mod[:, 3] - 3 * A_mod[:, 0]
+print(f"\nMatrix after C4 = C4 - 3*C1:\n{A_mod}")
+print(f"Determinant of modified A: {np.linalg.det(A_mod):.2f}")
+print("Product of diagonal entries of modified A (lower triangular):")
+print(f"{np.prod(np.diag(A_mod)):.0f}")
+```
+
+---
+
+## Example 5: Row Operations and Cofactor Expansion (Hybrid)
+
+For larger matrices, a hybrid approach combining row operations with cofactor expansion can be highly effective:
+
+1.  Perform EROs to create many zero entries in a a specific row or column.
+2.  Then, use cofactor expansion along that simplified row/column.
+
+Evaluate $\det(A)$ where
+$$
+A={\left[\begin{array}{llll}{3}&{5}&{-2}&{6}\\ {1}&{2}&{-1}&{1}\\ {2}&{4}&{1}&{5}\\ {3}&{7}&{5}&{3}\end{array}\right]}
+$$
+
+**Solution:**
+We target **row 2** to introduce zeros efficiently because its first entry is 1.
+
+1.  **R1 = R1 - 3\*R2**
+2.  **R3 = R3 - 2\*R2**
+3.  **R4 = R4 - 3\*R2**
+
+---
+
+## Example 5: Row Operations and Cofactor Expansion (Hybrid)
+
+These operations do not change the determinant:
+$$
+\operatorname *{det}(A) = {\left| \begin{array}{rrrr}{0} & {-1} & 1 & 3\\ 1 & 2 & {-1} & 1\\ {0} & {0} & 3 & 3\\ {0} & 1 & 8 & 0 \end{array} \right|}
+$$
+Now, expand along the **first column**. Only $a_{21}=1$ is non-zero.
+$\operatorname *{det}(A) = a_{21}C_{21} = 1 \cdot (-1)^{2+1}M_{21} = -M_{21}$
+$$
+= - \operatorname{det}\left| \begin{array}{ccc} -1 & 1 & 3 \\ 0 & 3 & 3 \\ 1 & 8 & 0 \end{array} \right|
+$$
+
+---
+
+## Example 5: Row Operations and Cofactor Expansion (Hybrid)
+
+Now, we can expand this $3 \times 3$ determinant, e.g., along its first column:
+$$
+= - [ (-1) \cdot \operatorname{det}\left| \begin{array}{cc}3 & 3 \\ 8 & 0 \end{array} \right| - (0)C_{21} + (1) \cdot \operatorname{det}\left| \begin{array}{cc}1 & 3 \\ 3 & 3 \end{array} \right| ]
+$$
+$$
+= - [ (-1)((3)(0) - (3)(8)) + ((1)(3) - (3)(3)) ]
+$$
+$$
+= - [ (-1)(-24) + (3 - 9) ]
+$$
+$$
+= - [ 24 - 6 ] = - [18] = -18
+$$
+
+::: {.notes}
+The visual from the prompt corresponds to the intermediate matrix after applying the row operations to create zeros in the first column. This mixed strategy is powerful for larger matrices, turning a complex problem into a simpler one, which can then be tackled by an easier $3 \times 3$ determinant calculation. This approach mirrors techniques in numerical analysis, where matrix sparsity and structure are exploited for computational gains.
+:::
+
+---
+
+## Interactive Verification: Example 5
+
+Confirm the determinant of the matrix from Example 5.
+
+```pyodide
+#| max-lines: 10
+import numpy as np
+
+A = np.array([
+    [3, 5, -2, 6],
+    [1, 2, -1, 1],
+    [2, 4, 1, 5],
+    [3, 7, 5, 3]
+])
+
+print("Original Matrix A:")
+print(A)
+
+det_A = np.linalg.det(A)
+print(f"\nDeterminant of A: {det_A:.2f}")
+
+# Verification of intermediate matrix through row operations (optional, for debugging)
+# A_mod = A.copy()
+# A_mod[0, :] = A_mod[0, :] - 3 * A_mod[1, :]
+# A_mod[2, :] = A_mod[2, :] - 2 * A_mod[1, :]
+# A_mod[3, :] = A_mod[3, :] - 3 * A_mod[1, :]
+# print(f"\nMatrix after EROs:\n{A_mod}")
+# print(f"Det of A_mod: {np.linalg.det(A_mod):.2f}") # Should be the same as det_A
+```
+
+---
+
+## Summary and Key Takeaways
+
+### Key Concepts
+- **Theorem 2.2.1 (Zero Rows/Columns)**: $\det(A)=0$ if $A$ has a row or column of zeros.
+- **Theorem 2.2.2 (Transpose)**: $\det(A) = \det(A^T)$.
+- **Theorem 2.2.3 (EROs Effects)**:
+    - Multiply row by $k \implies \det(B) = k \det(A)$
+    - Swap two rows $\implies \det(B) = - \det(A)$
+    - Add multiple of row to another $\implies \det(B) = \det(A)$
+- **Theorem 2.2.4 (Elementary Matrices)**: $\det(E)$ is $k$, $-1$, or $1$ depending on the ERO.
+- **Theorem 2.2.5 (Proportional Rows/Columns)**: $\det(A)=0$ if $A$ has two proportional rows or columns.
+- **Row Reduction Method**: Efficiently compute determinants by reducing $A$ to triangular form, tracking factors, and then multiplying diagonal entries.
+- **Hybrid Approach**: Combine EROs to create zeros, then use cofactor expansion.
+
+---
+
+## Summary and Key Takeaways
+
+### ECE Connections
+- **System Stability**: Determinants of characteristic matrices (e.g., in control systems) are crucial. Efficient computation helps analyze larger, more complex systems.
+- **Circuit Analysis**: Quick determination of singular matrices indicates issues like linear dependency or abnormal circuit behavior.
+- **Numerical Methods**: Gaussian elimination and LU decomposition, fundamental to solving large linear systems in ECE, heavily rely on these determinant properties.
+
+::: {.notes}
+This section has equipped you with powerful tools for evaluating determinants efficiently. Understanding how elementary row operations affect determinants is fundamental, not just for matrix calculations, but for a deeper intuition of how linear systems behave and how their properties can be transformed or preserved. These principles underpin many numerical algorithms used in engineering software.
+:::

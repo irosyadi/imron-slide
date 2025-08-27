@@ -1,0 +1,505 @@
+---
+title: "Linear Algebra"
+subtitle: "1.7 Diagonal, Triangular, and Symmetric Matrices"
+author: "Imron Rosyadi"
+format:
+  live-revealjs:
+    logo: "qrjs_assets/unsoed_logo.png"
+    footer: "[irosyadi-2025](https://imron-slide.vercel.app)"
+    slide-number: true
+    controls: true
+    progress: true
+    preview-links: false
+    transition: fade
+    incremental: false
+    smaller: false
+    theme: [default, qrjs_assets/ir_style.scss]
+filters:
+  - pyodide
+---
+
+# Linear Algebra in ECE
+## 1.7 Diagonal, Triangular, and Symmetric Matrices
+
+### Imron Rosyadi
+
+<br>
+<br>
+*Exploring special matrix forms critical for efficient computation and understanding system properties in ECE.*
+
+::: {.notes}
+Good morning everyone! Today, we're going to dive into some special types of matrices: diagonal, triangular, and symmetric matrices. These matrices are not just theoretical curiosities; they show up constantly in various engineering applications, from signal processing and image compression to control systems and machine learning. Understanding their unique properties allows for more efficient computations and deeper insights into the systems they represent.
+:::
+
+---
+
+## Diagonal Matrices
+
+A **diagonal matrix** is a square matrix in which all the entries off the main diagonal are zero.
+
+**Examples:**
+$$
+{\left[\begin{array}{l l}{2}&{0}\\ {0}&{-5}\end{array}\right]},\quad{\left[\begin{array}{l l l}{1}&{0}&{0}\\ {0}&{1}&{0}\\ {0}&{0}&{1}\end{array}\right]},\quad{\left[\begin{array}{l l l l}{6}&{0}&{0}&{0}\\ {0}&{-4}&{0}&{0}\\ {0}&{0}&{0}&{0}\\ {0}&{0}&{0}&{8}\end{array}\right]}
+$$
+
+A general $n \times n$ diagonal matrix $D$ can be written as:
+$$
+D = \left[ \begin{array}{c c c c}{d_{1}} & 0 & \dots & 0\\ 0 & {d_{2}} & \dots & 0\\ \vdots & \vdots & & \vdots \\ 0 & 0 & \dots & {d_{n}} \end{array} \right]
+$$
+
+::: {.notes}
+Diagonal matrices are perhaps the simplest form of matrices beyond the identity matrix. They only have non-zero entries on the main diagonal. They are incredibly common in ECE applications. For instance, in digital signal processing, if you're scaling different frequency components independently, this can often be represented by multiplication with a diagonal matrix. Similarly, in circuit analysis, if components are perfectly decoupled, their impedance matrix might be diagonal.
+:::
+
+---
+
+## Diagonal Matrices: Inverses and Powers
+
+If $D = \text{diag}(d_1, d_2, \ldots, d_n)$ is a diagonal matrix:
+
+*   **Inverse:** $D$ is invertible if and only if all diagonal entries $d_i$ are nonzero. In this case,
+    $$
+    D^{-1} = \left[ \begin{array}{c c c c}{1/d_{1}} & 0 & \dots & 0\\ 0 & {1/d_{2}} & \dots & 0\\ \vdots & \vdots & & \vdots \\ 0 & 0 & \dots & {1/d_{n}} \end{array} \right]
+    $$
+
+*   **Powers:** For any positive integer $k$,
+    $$
+    D^{k} = \left[ \begin{array}{c c c c}{d_{1}^{k}} & 0 & \dots & 0\\ 0 & {d_{2}^{k}} & \dots & 0\\ \vdots & \vdots & & \vdots \\ 0 & 0 & \dots & {d_{n}^{k}} \end{array} \right]
+    $$
+    This property also extends to negative powers if $D$ is invertible ($D^{-k} = (D^{-1})^k$).
+
+::: {.notes}
+One of the greatest advantages of diagonal matrices is how simple their inverses and powers are to compute. You simply invert or raise each diagonal element to the desired power. There's no complex matrix multiplication involved. This is why transforming matrices into diagonal or near-diagonal forms, like in eigenvalue decomposition, is such a powerful technique in numerical linear algebra and various areas of ECE for simplifying complex problems.
+:::
+
+---
+
+## Example 1: Inverses and Powers of Diagonal Matrices
+
+Given $A = \left[ \begin{array}{ccc}1 & 0 & 0 \\ 0 & -3 & 0 \\ 0 & 0 & 2 \end{array} \right]$, compute $A^{-1}, A^5, A^{-5}$.
+
+```{.pyodide}
+#| max-lines: 10
+import numpy as np
+from scipy.linalg import fractional_matrix_power
+
+A = np.array([
+    [1, 0, 0],
+    [0, -3, 0],
+    [0, 0, 2]
+])
+
+# Inverse: simply 1/d_i
+A_inv = np.diag(1 / np.diag(A))
+
+# Powers
+A_power_5 = np.diag(np.diag(A)**5)
+A_power_neg5 = np.diag(np.diag(A)**-5) # same as (1/diag(A))**5
+
+print("Matrix A:\n", A)
+print("\nA^-1:\n", A_inv)
+print("\nA^5:\n", A_power_5)
+print("\nA^-5:\n", A_power_neg5)
+```
+
+The computations are straightforward due to the diagonal structure.
+
+::: {.notes}
+Let's see this in action using Python. For diagonal matrices, `numpy.diag` is very useful. To get the diagonal elements of A, we use `np.diag(A)`. To construct a diagonal matrix from an array of diagonal elements, we use `np.diag(array)`. You can see how easy it is to perform these operations, confirming the formulas for inverse and powers. Compare this to the effort of inverting or raising a full matrix to a power. This efficiency makes diagonal matrices highly desirable in computational applications like image processing filters, where specific channels or features can be scaled independently.
+:::
+
+---
+
+## Diagonal Matrices: Matrix Products
+
+Matrix products involving diagonal factors are especially easy to compute:
+
+*   **Multiplying on the left by $D$ (scales rows):**
+    $$
+    \left[ \begin{array}{ccc}d_{1} & 0 & 0 \\ 0 & d_{2} & 0 \\ 0 & 0 & d_{3} \end{array} \right]\left[ \begin{array}{cccc}a_{11} & a_{12} & a_{13} & a_{14} \\ a_{21} & a_{22} & a_{23} & a_{24} \\ a_{31} & a_{32} & a_{33} & a_{34} \end{array} \right] = \left[ \begin{array}{cccc}d_{1}a_{11} & d_{1}a_{12} & d_{1}a_{13} & d_{1}a_{14} \\ d_{2}a_{21} & d_{2}a_{22} & d_{2}a_{23} & d_{2}a_{24} \\ d_{3}a_{31} & d_{3}a_{32} & d_{3}a_{33} & d_{3}a_{34} \end{array} \right]
+    $$
+    (Multiply successive rows of $A$ by successive diagonal entries of $D$.)
+
+*   **Multiplying on the right by $D$ (scales columns):**
+    $$
+    \left[ \begin{array}{ccc}a_{11} & a_{12} & a_{13} \\ a_{21} & a_{22} & a_{23} \\ a_{31} & a_{32} & a_{33} \\ a_{41} & a_{42} & a_{43} \end{array} \right]\left[ \begin{array}{ccc}d_{1} & 0 & 0 \\ 0 & d_{2} & 0 \\ 0 & 0 & d_{3} \end{array} \right] = \left[ \begin{array}{ccc}d_{1}a_{11} & d_{2}a_{12} & d_{3}a_{13} \\ d_{1}a_{21} & d_{2}a_{22} & d_{3}a_{23} \\ d_{1}a_{31} & d_{2}a_{32} & d_{3}a_{33} \\ d_{1}a_{41} & d_{2}a_{42} & d_{3}a_{43} \end{array} \right]
+    $$
+    (Multiply successive columns of $A$ by successive diagonal entries of $D$.)
+
+::: {.notes}
+These properties are incredibly useful for constructing and manipulating matrices in certain applications. When a diagonal matrix multiplies another matrix from the left, it scales the rows of that matrix. This is common in sensor data normalization or signal amplification. When it multiplies from the right, it scales the columns, which might be seen in adjusting gains for different features or parameters.
+:::
+
+---
+
+## Diagonal Matrix Multiplication Example
+
+Let's confirm the column-scaling property with Pyodide.
+
+```{.pyodide}
+#| max-lines: 10
+import numpy as np
+
+A = np.array([
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+    [10, 11, 12]
+])
+
+D = np.array([
+    [2, 0, 0],
+    [0, 0.5, 0],
+    [0, 0, 3]
+])
+
+# Matrix multiplication A @ D
+AD = A @ D
+
+print("Matrix A:\n", A)
+print("\nDiagonal Matrix D:\n", D)
+print("\nProduct A @ D (scaling columns of A):\n", AD)
+```
+
+Observe how each column of $A$ is scaled by the corresponding diagonal entry of $D$.
+
+::: {.notes}
+Let's verify the column-scaling property using Python's numpy library. We define a sample matrix A and a diagonal matrix D. When we perform matrix multiplication A @ D, you can clearly see that the first column of A is multiplied by 2, the second by 0.5, and the third by 3, which are the diagonal entries of D. This direct and simple scaling behavior is very valuable when you need to apply different weights or factors to different features or variables represented by columns in your data.
+:::
+
+---
+
+## Triangular Matrices
+
+A square matrix is **triangular** if all entries above the main diagonal are zero (lower triangular) or all entries below the main diagonal are zero (upper triangular).
+
+*   **Lower Triangular:** $a_{ij} = 0$ if $i < j$ (entries above diagonal are zero).
+*   **Upper Triangular:** $a_{ij} = 0$ if $i > j$ (entries below diagonal are zero).
+
+**Example 2: Upper and Lower Triangular Matrices**
+
+<p align="center">
+  <img src="https://cdn-mineru.openxlab.org.cn/result/2025-08-19/d28de157-cffb-4586-85b2-10e6c17e5d20/2b6d794d7c64df35fee7728335aa7502588425d7dd2eb8cdf2b956b9c74f3636.jpg" alt="Upper and Lower Triangular Matrices" style="width:70%;">
+</p>
+
+::: {.notes}
+Triangular matrices are fundamental in linear algebra because they naturally arise during Gaussian elimination and LU decomposition, which are workhorses for solving linear systems and performing matrix factorization. They are also prevalent in areas like circuit simulation and numerical analysis.
+The image shows clear examples of both upper and lower triangular matrices. Notice how all the non-zero elements are confined to either the upper or lower triangle, including the diagonal.
+:::
+
+---
+
+## Properties of Triangular Matrices (Theorem 1.7.1)
+
+(a) The transpose of a lower triangular matrix is upper triangular, and vice versa.
+(b) The product of lower triangular matrices is lower triangular, and the product of upper triangular matrices is upper triangular.
+(c) A triangular matrix is invertible if and only if its diagonal entries are all nonzero.
+(d) The inverse of an invertible lower triangular matrix is lower triangular, and the inverse of an invertible upper triangular matrix is upper triangular.
+
+**Why these matter in ECE:**
+
+*   (b) LU decomposition (e.g., $A=LU$) is a critical tool for solving systems efficiently, where L and U are triangular. The product property ensures this structure is maintained.
+*   (c) Provides a quick check for invertibility without full row reduction. This helps identify if a system represented by a triangular matrix has a unique solution.
+*   (d) Inverse computations for triangular matrices are significantly simpler than for general matrices, making them computationally attractive.
+
+::: {.notes}
+These properties make triangular matrices very practical. Property (b) is crucial for justifying why LU decomposition works, allowing us to break down complex matrix problems into simpler, triangular ones. Property (c) offers a very fast way to check if a matrix is invertible. For instance, in a circuit simulation if you end up with a triangular system matrix, you can instantly tell if a unique solution exists by just checking the diagonal elements. Property (d) means that when you invert a triangular matrix, you don't lose that useful sparsity, which speeds up further calculations.
+:::
+
+---
+
+## Example 3: Computations with Triangular Matrices
+
+Consider the upper triangular matrices:
+$$
+A = \left[ \begin{array}{rrr}1 & 3 & -1 \\ 0 & 2 & 4 \\ 0 & 0 & 5 \end{array} \right], \quad B = \left[ \begin{array}{rrr}3 & -2 & 2 \\ 0 & 0 & -1 \\ 0 & 0 & 1 \end{array} \right]
+$$
+From Theorem 1.7.1(c):
+
+*   $A$ is invertible because its diagonal entries (1, 2, 5) are all nonzero.
+*   $B$ is not invertible because one of its diagonal entries (0) is zero.
+
+Theorem 1.7.1 also tells us that $A^{-1}$, $AB$, and $BA$ are upper triangular.
+$$
+A^{-1} = \left[ \begin{array}{rrr}1 & -\frac{3}{2} & -\frac{3}{5} \\ 0 & \frac{1}{2} & -\frac{2}{5} \\ 0 & 0 & \frac{1}{5} \end{array} \right] \quad AB = \left[ \begin{array}{rrr}3 & -2 & -2 \\ 0 & 0 & 2 \\ 0 & 0 & 5 \end{array} \right] \quad BA = \left[ \begin{array}{rrr}3 & 5 & -1 \\ 0 & 0 & -5 \\ 0 & 0 & 5 \end{array} \right]
+$$
+
+::: {.notes}
+Let's see these properties in action. Matrix A is upper triangular, and all its diagonal elements are non-zero, so it is invertible. Matrix B also upper triangular, but has a zero on its diagonal (the middle element is 0), so it is not invertible.
+Observe the products AB and BA. Both are still upper triangular, confirming property (b). Also, the inverse of A is upper triangular, as stated by property (d). This shows how the triangular structure is preserved through these operations.
+:::
+
+---
+
+## Symmetric Matrices
+
+A square matrix $A$ is said to be **symmetric** if $A = A^T$.
+This means that for all $i, j$, the entry $(A)_{ij} = (A)_{ji}$.
+
+**Example 4: Symmetric Matrices**
+$$
+\left[ \begin{array}{rr}7 & -3 \\ -3 & 5 \end{array} \right], \quad \left[ \begin{array}{rrr}1 & 4 & 5 \\ 4 & -3 & 0 \\ 5 & 0 & 7 \end{array} \right], \quad \left[ \begin{array}{llll}d_1 & 0 & 0 & 0 \\ 0 & d_2 & 0 & 0 \\ 0 & 0 & d_3 & 0 \\ 0 & 0 & 0 & d_4 \end{array} \right]
+$$
+
+You can recognize a symmetric matrix by inspection: entries are mirrored across the main diagonal.
+
+::: {.notes}
+Symmetric matrices are extremely common in engineering and physics, especially when dealing with concepts like energy, variance, or relationships where the interaction between two elements is the same regardless of the order. For example, covariance matrices in statistics, stiffness matrices in structural analysis, and adjacency matrices in graphs are often symmetric. The defining characteristic is easy to check visually: elements across the main diagonal are identical.
+:::
+
+---
+
+## Properties of Symmetric Matrices (Theorem 1.7.2)
+
+If $A$ and $B$ are symmetric matrices of the same size, and $k$ is any scalar, then:
+
+(a) $A^T$ is symmetric (trivial, as $A^T = A$).
+(b) $A + B$ and $A - B$ are symmetric.
+(c) $kA$ is symmetric.
+
+**Important Note:** The product of two symmetric matrices is **not necessarily** symmetric.
+$(AB)^T = B^T A^T = BA$. So, $(AB)^T = AB$ if and only if $AB = BA$ (i.e., $A$ and $B$ commute).
+
+**THEOREM 1.7.3:** The product of two symmetric matrices is symmetric if and only if the matrices commute.
+
+::: {.notes}
+These basic properties of symmetric matrices are straightforward consequences of the definition of symmetry and matrix operations. However, the product property is crucial: unlike sums or scalar multiples, the product of two symmetric matrices is not always symmetric. This is a common pitfall. The product is symmetric *only if* the matrices commute, which means their order of multiplication doesn't matter. This has implications when modeling sequential operations—if the order matters, the combined effect might not inherit the symmetry of its parts.
+:::
+
+---
+
+## Example 5: Products of Symmetric Matrices
+
+Let's confirm Theorem 1.7.3.
+Matrices $A = \left[ \begin{array}{rr}1 & 2 \\ 2 & 3 \end{array} \right]$ (Symmetric)
+
+*   **Case 1: Product NOT symmetric.**
+    $B = \left[ \begin{array}{rr}-4 & 1 \\ 1 & 0 \end{array} \right]$ (Symmetric)
+    $AB = \left[ \begin{array}{rr}-2 & 1 \\ -5 & 2 \end{array} \right]$ (NOT Symmetric)
+    *Conclusion: $A$ and $B$ do not commute.*
+
+*   **Case 2: Product IS symmetric.**
+    $C = \left[ \begin{array}{rr}-4 & 3 \\ 3 & -1 \end{array} \right]$ (Symmetric)
+    $AC = \left[ \begin{array}{rr}2 & 1 \\ 1 & 3 \end{array} \right]$ (IS Symmetric)
+    *Conclusion: $A$ and $C$ commute.*
+
+::: {.notes}
+Take matrix A, which is symmetric.
+In the first case, we multiply A by B. Both are symmetric. But their product AB is not symmetric. This tells us immediately, without computing BA, that A and B do not commute.
+In the second case, we multiply A by C. Both are symmetric. Their product AC *is* symmetric. This implies that A and C must commute. Let's verify this numerically.
+:::
+
+---
+
+## Example 5: Python Verification
+
+Let's compute the products and check for symmetry.
+
+```{.pyodide}
+#| max-lines: 10
+import numpy as np
+
+A = np.array([[1, 2], [2, 3]])
+B = np.array([[-4, 1], [1, 0]])
+C = np.array([[-4, 3], [3, -1]])
+
+print("Matrix A (symmetric):\n", A)
+print("\nMatrix B (symmetric):\n", B)
+print("Matrix C (symmetric):\n", C)
+
+# Case 1: AB and BA
+AB = A @ B
+BA = B @ A
+print("\nProduct AB:\n", AB)
+print("Is AB symmetric?", np.allclose(AB, AB.T))
+print("Is AB == BA?", np.allclose(AB, BA)) # Check if they commute
+
+# Case 2: AC and CA
+AC = A @ C
+CA = C @ A
+print("\nProduct AC:\n", AC)
+print("Is AC symmetric?", np.allclose(AC, AC.T))
+print("Is AC == CA?", np.allclose(AC, CA)) # Check if they commute
+```
+
+The output confirms that symmetric products only occur when matrices commute.
+
+::: {.notes}
+Here's the live compute to prove the point. We define A, B, and C.
+First, we compute AB and BA. You'll see AB is not symmetric, and AB is not equal to BA (they don't commute).
+Second, we compute AC and CA. You'll see AC *is* symmetric, and AC is indeed equal to CA (they commute).
+This perfectly illustrates Theorem 1.7.3. It emphasizes that while individual components might be symmetric, their combined effect is only symmetric if the processes commute. This is a subtle but important point in systems modeling.
+:::
+
+---
+
+## Invertibility of Symmetric Matrices
+
+**THEOREM 1.7.4:** If $A$ is an invertible symmetric matrix, then $A^{-1}$ is symmetric.
+
+**Proof Idea:**
+If $A$ is symmetric, $A = A^T$.
+If $A$ is invertible, $(A^{-1})^T = (A^T)^{-1}$ (Property of Transpose).
+Substituting $A^T=A$: $(A^{-1})^T = A^{-1}$.
+This means $A^{-1}$ is symmetric.
+
+**Products $AA^T$ and $A^TA$ are Symmetric:**
+For any $m \times n$ matrix $A$, the products $AA^T$ (size $m \times m$) and $A^TA$ (size $n \times n$) are always symmetric.
+**Proof:**
+$(AA^T)^T = (A^T)^T A^T = A A^T$.
+$(A^TA)^T = A^T (A^T)^T = A^T A$.
+
+::: {.notes}
+Theorem 1.7.4 is a comforting result: if a symmetric matrix has an inverse, that inverse also preserves its symmetry. This is very useful. For example, inverting a covariance matrix doesn't change its symmetric properties, which is fortunate since covariance matrices are inherently symmetric.
+The products "$AA^T$" and "$A^TA$" are particularly important in applications like least squares approximation, principal component analysis (PCA), and in creating positive semi-definite matrices. The fact that these products are always symmetric, regardless of whether A itself is square or symmetric, is a powerful and very useful property.
+:::
+
+---
+
+## Example 6: The Product of a Matrix and Its Transpose Is Symmetric
+
+Let $A$ be the $2 \times 3$ matrix:
+$$
+A = \left[ \begin{array}{rrr}1 & -2 & 4 \\ 3 & 0 & -5 \end{array} \right]
+$$
+Compute $A^TA$ and $AA^T$:
+
+```{.pyodide}
+#| max-lines: 10
+import numpy as np
+
+A = np.array([
+    [1, -2, 4],
+    [3, 0, -5]
+])
+
+AT_A = A.T @ A
+A_AT = A @ A.T
+
+print("Matrix A:\n", A)
+print("\nProduct A.T @ A:\n", AT_A)
+print("Is A.T @ A symmetric?", np.allclose(AT_A, AT_A.T))
+
+print("\nProduct A @ A.T:\n", A_AT)
+print("Is A @ A.T symmetric?", np.allclose(A_AT, A_AT.T))
+```
+Observe that $A^TA$ and $AA^T$ are symmetric, as expected.
+
+::: {.notes}
+Let's confirm this using our Pyodide environment. We define a non-square matrix A. Then, we compute A transpose A and A A transpose. As you can see, even though A is not symmetric itself (it's not even square), both of these products turn out to be symmetric. This property is heavily utilized in optimization, data analysis, and statistical modeling in ECE, as it guarantees certain positive definite properties and simplifies numerical algorithms.
+:::
+
+---
+
+## Theorem 1.7.5: Invertibility of $AA^T$ and $A^TA$
+
+If $A$ is an invertible matrix (and thus square), then $AA^T$ and $A^TA$ are also invertible.
+
+**Proof:**
+Since $A$ is invertible, $A^T$ is also invertible (by Theorem 1.4.9).
+Since $AA^T$ and $A^TA$ are products of invertible matrices, they are themselves invertible (by Theorem 1.6.5).
+
+This theorem is particularly useful in areas where invertibility is crucial, such as unique solutions in least squares problems or system stability analysis.
+
+::: {.notes}
+This theorem gives us even more confidence in these special products. If our original matrix $A$ is invertible, then not only are $AA^T$ and $A^TA$ symmetric, but they are also guaranteed to be invertible. This is important because it ensures that operations involving these products, like finding inverses in optimization problems or solving associated linear systems, will lead to unique solutions. It leverages our prior theorems about the invertibility of transposes and products of invertible matrices.
+:::
+
+---
+
+## Working with Technology: Block Diagonal Matrices
+
+A **block diagonal matrix** has square matrices (blocks) on its main diagonal and zero matrices elsewhere.
+Example:
+$$
+\left[ \begin{array}{cc}D_{1} & 0 \\ 0 & D_{2} \end{array} \right]
+$$
+where $D_1, D_2$ are square matrices and $0$ represents zero matrices of appropriate sizes.
+
+**Task:** If $D_1$ and $D_2$ are invertible, derive a formula for the inverse of this block diagonal matrix.
+
+**Solution:** The inverse is given by
+$$
+\left[ \begin{array}{cc}D_{1}^{-1} & 0 \\ 0 & D_{2}^{-1} \end{array} \right]
+$$
+This can be verified by multiplying the original matrix by this proposed inverse:
+$$
+\left[ \begin{array}{cc}D_{1} & 0 \\ 0 & D_{2} \end{array} \right] \left[ \begin{array}{cc}D_{1}^{-1} & 0 \\ 0 & D_{2}^{-1} \end{array} \right] = \left[ \begin{array}{cc}D_{1}D_{1}^{-1} & D_{1}0 + 0D_{2}^{-1} \\ 0D_{1}^{-1} + D_{2}0 & D_{2}D_{2}^{-1} \end{array} \right] = \left[ \begin{array}{cc}I & 0 \\ 0 & I \end{array} \right]
+$$
+This property greatly simplifies computations for systems represented by such matrices.
+
+::: {.notes}
+Block diagonal matrices are essentially a generalization of diagonal matrices. They appear in scenarios like decomposing a large, complex system into smaller, independent subsystems. The beauty of them is that inverting them is almost as easy as inverting a simple diagonal matrix: you just invert the individual blocks. This property significantly speeds up complex calculations in large-scale system analysis, such as in parallel processing of independent sensor data or in modeling modular control systems.
+:::
+
+---
+
+## Working with Technology Example: Inverse of Block Diagonal Matrix
+
+Compute the inverse of $M = \left[ \begin{array}{ccccc}1.24 & 2.37 & 0 & 0 \\ 3.08 & -1.01 & 0 & 0 \\ 0 & 0 & 2.76 & 4.92 \\ 0 & 0 & 3.23 & 5.54 \end{array} \right]$
+This is a block diagonal matrix, with:
+$D_1 = \left[ \begin{array}{cc}1.24 & 2.37 \\ 3.08 & -1.01 \end{array} \right]$
+$D_2 = \left[ \begin{array}{cc}2.76 & 4.92 \\ 3.23 & 5.54 \end{array} \right]$
+
+```{.pyodide}
+#| max-lines: 10
+import numpy as np
+
+M = np.array([
+    [1.24, 2.37, 0, 0],
+    [3.08, -1.01, 0, 0],
+    [0, 0, 2.76, 4.92],
+    [0, 0, 3.23, 5.54]
+])
+
+# Extract blocks
+D1 = M[:2, :2]
+D2 = M[2:, 2:]
+
+# Compute inverses of blocks
+D1_inv = np.linalg.inv(D1)
+D2_inv = np.linalg.inv(D2)
+
+# Assemble M_inv
+M_inv = np.zeros_like(M)
+M_inv[:2, :2] = D1_inv
+M_inv[2:, 2:] = D2_inv
+
+print("Original Block Diagonal Matrix M:\n", M)
+print("\nInverse of D1:\n", D1_inv)
+print("\nInverse of D2:\n", D2_inv)
+print("\nInverse of M (assembled from D1_inv, D2_inv):\n", M_inv)
+```
+
+The inverse of $M$ is formed by inverting its diagonal blocks.
+
+::: {.notes}
+Let's apply the block diagonal inverse formula to a specific example. Here, matrix M is a 4x4 block diagonal matrix composed of two 2x2 blocks, D1 and D2. In Python, we can easily extract these blocks using slicing. Then, we compute the inverse of each block independently using `np.linalg.inv`. Finally, we reassemble these inverse blocks into the overall inverse of M. This process is much faster and numerically more stable than trying to invert the entire 4x4 matrix, especially for very large, sparse block diagonal matrices that arise in big data or complex system modeling.
+:::
+
+---
+
+## ECE Applications & Summary
+
+**Key Concepts for ECE:**
+
+*   **Computational Efficiency:** Diagonal and triangular matrices allow for significantly faster matrix inversions, powers, and multiplications. This is critical for real-time systems and large-scale simulations (e.g., in VLSI design, power system analysis).
+*   **System Decomposition:** Block diagonal matrices represent independent subsystems, simplifying analysis and parallel processing (e.g., modular control designs).
+*   **Properties in Data Analysis:** Symmetric matrices are fundamental in statistics (covariance matrices), optimization (Hessian matrices), and machine learning (kernel matrices, graph representations). Their properties (e.g., real eigenvalues, orthogonal eigenvectors) are heavily utilized.
+*   **Matrix Factorizations:** LU, Cholesky, and Spectral Decompositions leverage these special forms to solve complex problems in signal processing, communications, and controls.
+
+---
+
+## ECE Applications & Summary
+
+**Today We Covered:**
+
+*   Definitions and properties of **Diagonal**, **Triangular**, and **Symmetric** matrices.
+*   Simple rules for computing inverses and powers of diagonal matrices.
+*   Behavior of products involving these special matrices.
+*   Conditions for invertibility and symmetry of products.
+*   Introduction to **Block Diagonal Matrices** and their efficient inversion.
+
+::: {.notes}
+To summarize, understanding diagonal, triangular, and symmetric matrices goes beyond mere definitions. These special forms are computational workhorses in ECE. Their inherent structure allows for significant gains in computational efficiency, which is vital for designing real-time systems, simulating complex networks, and processing large datasets. They underpin powerful techniques like matrix factorizations, which break down daunting problems into manageable, structured components. From filters in digital signal processing to covariance estimation in communications, and numerical solvers in circuit analysis, these matrices are indispensable tools for every engineer.
+:::

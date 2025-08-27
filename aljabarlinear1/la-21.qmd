@@ -1,0 +1,535 @@
+---
+title: "Linear Algebra"
+subtitle: "2.1 Determinants by Cofactor Expansion"
+author: "Imron Rosyadi"
+format:
+  live-revealjs:
+    logo: "qrjs_assets/unsoed_logo.png"
+    footer: "[irosyadi-2025](https://imron-slide.vercel.app)"
+    slide-number: true
+    chalkboard: true
+    scrollable: true
+    controls: true
+    progress: true
+    preview-links: false
+    transition: fade
+    incremental: false
+    smaller: false
+    theme: [default, qrjs_assets/ir_style.scss]
+filters:
+  - pyodide
+---
+
+# Linear Algebra
+
+## 2.1 Determinants by Cofactor Expansion
+
+### Imron Rosyadi
+
+---
+
+## What are Determinants?
+
+Determinants are fundamental to Linear Algebra, providing scalar values that encapsulate key properties of a square matrix.
+
+### Why do we care?
+- **Matrix Invertibility**: A square matrix $A$ is invertible if and only if $\operatorname{det}(A) \ne 0$.
+- **Solving Linear Systems**: Determinants are crucial in Cramer's Rule for solving systems of linear equations.
+- **Geometric Interpretation**: Represent the scaling factor of the linear transformation defined by the matrix (area, volume).
+- **Eigenvalues**: Used to find eigenvalues, critical for understanding system stability in ECE (e.g., control systems, signal processing).
+
+::: {.notes}
+Today, we'll start with the definition of determinants using cofactor expansion, focusing on how to compute them and why they are important. We'll build up from simple $2 \times 2$ matrices to higher orders, connecting these mathematical concepts to real-world engineering problems.
+:::
+
+---
+
+## $2 \times 2$ Matrix Determinants
+
+Recall from previous discussions, a $2 \times 2$ matrix $A$ is invertible if its determinant is non-zero.
+
+$$
+A = \left[ \begin{array}{ll}a & b \\ c & d \end{array} \right]
+$$
+
+The **determinant** of $A$ is a scalar value:
+$$
+\operatorname {det}(A) = a d - b c \quad \text{or} \quad \left| \begin{array}{ll}a & b \\ c & d \end{array} \right| = a d - b c
+$$
+
+**Important**: $\operatorname{det}(A)$ is a **number**, while $A$ is a **matrix**.
+
+### Inverse of a $2 \times 2$ Matrix
+If $\operatorname{det}(A) \ne 0$, the inverse of $A$ can be expressed as:
+$$
+A^{-1} = \frac{1}{\operatorname{det}(A)} \left[ \begin{array}{rr}d & -b \\ -c & a \end{array} \right]
+$$
+
+::: {.notes}
+For ECE students, knowing if a system matrix is invertible is critical. For example, in circuit analysis, if the system matrix of nodal equations is singular (i.e., its determinant is zero), it implies the circuit has no unique solution or is improperly designed (e.g., a short circuit or open circuit that prevents a unique voltage/current distribution).
+:::
+
+---
+
+## Minors and Cofactors: Building Blocks
+
+To define determinants for larger matrices inductively, we use new terminology: **minors** and **cofactors**.
+
+First, let's use subscripted entries for a general $2 \times 2$ matrix:
+$$
+A = \left[ \begin{array}{ll}a_{11} & a_{12} \\ a_{21} & a_{22} \end{array} \right] \implies \operatorname *{det}(A) = a_{11}a_{22} - a_{12}a_{21}
+$$
+
+Base case for induction: The determinant of a $1 \times 1$ matrix $[a_{11}]$ is $\operatorname *{det}[a_{11}] = a_{11}$.
+
+### Definition 1: Minors and Cofactors
+If $A$ is a square matrix:
+- The **minor** of entry $a_{ij}$, denoted $M_{ij}$, is the determinant of the submatrix that remains after deleting the $i$-th row and $j$-th column from $A$.
+- The **cofactor** of entry $a_{ij}$, denoted $C_{ij}$, is given by $C_{ij} = (- 1)^{i + j}M_{ij}$.
+
+::: {.notes}
+The concept of minors and cofactors allows us to break down a larger determinant calculation into smaller, more manageable determinant calculations. This is similar to how we might analyze a complex system (like a control system) by breaking it into smaller sub-systems. This inductive definition lets us define determinants for any $n \times n$ matrix.
+:::
+
+---
+
+## Visualizing Cofactor Signs and Examples
+
+The sign factor $(-1)^{i+j}$ follows a "checkerboard" pattern:
+
+$$
+\left[{\begin{array}{l l l l l l}{+}&{-}&{+}&{-}&{+}&{\cdots}\\ {-}&{+}&{-}&{+}&{-}&{\cdots}\\ {+}&{-}&{+}&{-}&{+}&{\cdots}\\ {-}&{+}&{-}&{+}&{-}&{\cdots}\\ {\vdots}&{\vdots}&{\vdots}&{\vdots}&{\vdots}\end{array}}\right]
+$$
+
+This means $C_{ij} = M_{ij}$ if $i+j$ is even (positive sign), and $C_{ij} = -M_{ij}$ if $i+j$ is odd (negative sign).
+
+---
+
+## Visualizing Cofactor Signs and Examples
+
+:::: {.columns}
+
+::: {.column width="50%"}
+### Example: $M_{11}$ and $C_{11}$
+Let
+$$
+A = \left[ \begin{array}{ccc}3 & 1 & -4 \\ 2 & 5 & 6 \\ 1 & 4 & 8 \end{array} \right]
+$$
+To find $M_{11}$, delete row 1 and column 1:
+$$
+M_{11} = \operatorname{det}\left| \begin{array}{cc}5 & 6 \\ 4 & 8 \end{array} \right| = (5)(8) - (6)(4) = 40 - 24 = 16
+$$
+Since $1+1=2$ (even), $C_{11} = (-1)^{1+1}M_{11} = M_{11} = 16$.
+:::
+
+::: {.column width="50%"}
+### Example: $M_{32}$ and $C_{32}$
+To find $M_{32}$, delete row 3 and column 2:
+$$
+M_{32}=\operatorname{det}\left|\begin{array}{cc}{3}&{-4}\\ {2}&{6}\end{array}\right|=(3)(6)-(-4)(2) = 18 - (-8) = 26
+$$
+Since $3+2=5$ (odd), $C_{32} = (-1)^{3+2}M_{32} = -M_{32} = -26$.
+:::
+
+::::
+
+::: {.notes}
+For students, it's often easier and less error-prone to first compute the minor $M_{ij}$, and then apply the sign from the checkerboard pattern rather than explicitly calculating $(-1)^{i+j}$ every time. This visual aid helps to quickly determine the correct sign.
+:::
+
+---
+
+## Cofactor Expansions of a $2 \times 2$ Matrix
+
+Let's re-examine the $2 \times 2$ determinant using cofactors.
+For $A = \left[ \begin{array}{ll}a_{11} & a_{12} \\ a_{21} & a_{22} \end{array} \right]$, the checkerboard pattern for signs is $\left[{\begin{array}{c c}{+}&{-}\\ {-}&{+}\end{array}}\right]$.
+
+The cofactors are:
+
+- $C_{11} = M_{11} = a_{22}$
+- $C_{12} = -M_{12} = -a_{21}$
+- $C_{21} = -M_{21} = -a_{12}$
+- $C_{22} = M_{22} = a_{11}$
+
+Using these, $\operatorname{det}(A)$ can be expressed in terms of cofactors in four ways:
+
+- **First row expansion**: $\operatorname{det}(A) = a_{11}C_{11} + a_{12}C_{12}$
+- **Second row expansion**: $\operatorname{det}(A) = a_{21}C_{21} + a_{22}C_{22}$
+- **First column expansion**: $\operatorname{det}(A) = a_{11}C_{11} + a_{21}C_{21}$
+- **Second column expansion**: $\operatorname{det}(A) = a_{12}C_{12} + a_{22}C_{22}$
+
+All four expansions evaluate to $\operatorname{det}(A) = a_{11}a_{22} - a_{12}a_{21}$.
+
+::: {.notes}
+The fact that all four cofactor expansions yield the *same* determinant is a powerful result, formalized in Theorem 2.1.1 for general $n \times n$ matrices. This flexibility is key: it means we have a choice of which row or column to expand along, which can be used to simplify calculations significantly, especially for higher-order matrices.
+:::
+
+---
+
+## General Definition of a Determinant
+
+**Theorem 2.1.1 (Uniqueness of Cofactor Expansion)**
+If $A$ is an $n \times n$ matrix, then regardless of which row or column of $A$ is chosen, the number obtained by multiplying the entries in that row or column by the corresponding cofactors and adding the resulting products is always the same.
+
+This allows for the formal definition for general $n \times n$ matrices:
+
+### Definition 2: Determinant of an $n \times n$ Matrix
+The determinant of an $n \times n$ matrix $A$ is the number obtained by any of the following cofactor expansions:
+
+- **Cofactor expansion along the $j$-th column**:
+  $$
+  \operatorname *{det}(A) = a_{1j}C_{1j} + a_{2j}C_{2j} + \dots +a_{nj}C_{nj}
+  $$
+
+- **Cofactor expansion along the $i$-th row**:
+  $$
+  \operatorname *{det}(A) = a_{i1}C_{i1} + a_{i2}C_{i2} + \dots +a_{in}C_{in}
+  $$
+
+::: {.notes}
+This theorem reinforces the consistency of the determinant value regardless of the expansion path chosen. This property is crucial for making computations efficient. For instance, in analysis of large-scale systems in ECE, we often need to determine matrix properties. While direct computation of determinants by hand is infeasible for these large systems, the underlying principle of cofactor expansion is fundamental to understanding more advanced numerical algorithms.
+:::
+
+---
+
+## Example: $3 \times 3$ Cofactor Expansion (Row)
+
+Let's find the determinant of $A$ by cofactor expansion along the **first row**:
+
+$$
+A=\left[{\begin{array}{r r r}{3}&{1}&{0}\\ {-2}&{-4}&{3}\\ {5}&{4}&{-2}\end{array}}\right]
+$$
+
+$\operatorname *{det}(A) = a_{11}C_{11} + a_{12}C_{12} + a_{13}C_{13}$
+
+$$
+\begin{aligned}
+\operatorname *{det}(A) &= 3 \cdot \operatorname{det}\left| \begin{array}{cc}{-4} & 3\\ 4 & {-2} \end{array} \right| - 1 \cdot \operatorname{det}\left| \begin{array}{cc}{-2} & 3\\ 5 & {-2} \end{array} \right| + 0 \cdot \operatorname{det}\left| \begin{array}{cc}{-2} & {-4}\\ 5 & 4 \end{array} \right| \\
+&= 3((-4)(-2) - (3)(4)) - 1((-2)(-2) - (3)(5)) + 0 \cdot (\text{any value}) \\
+&= 3(8 - 12) - 1(4 - 15) + 0 \\
+&= 3(-4) - 1(-11) + 0 \\
+&= -12 + 11 + 0 \\
+&= -1
+\end{aligned}
+$$
+
+::: {.notes}
+Notice how the term multiplied by zero ($a_{13}C_{13}$) conveniently disappears. This is our first practical clue for a smart strategy: always choose rows or columns with the most zeros! This significantly reduces the number of minors you have to compute, making the process much faster—a critical skill for efficiency in engineering calculations.
+:::
+
+---
+
+## Smart Choice for Cofactor Expansion
+
+The best strategy for cofactor expansion is to expand along a row or column with the **most zero entries**. This reduces the number of minors you need to compute.
+
+Let's use the same matrix and evaluate $\operatorname{det}(A)$ by cofactor expansion along the **first column**:
+
+$$
+A=\left[{\begin{array}{r r r}{3}&{1}&{0}\\ {-2}&{-4}&{3}\\ {5}&{4}&{-2}\end{array}}\right]
+$$
+
+$\operatorname *{det}(A) = a_{11}C_{11} + a_{21}C_{21} + a_{31}C_{31}$
+
+$$
+\begin{aligned}
+\operatorname *{det}(A) &= 3 \cdot \operatorname{det}\left| \begin{array}{cc}{-4} & 3\\ 4 & {-2} \end{array} \right| - (-2) \cdot \operatorname{det}\left| \begin{array}{cc}{1} & 0\\ 4 & {-2} \end{array} \right| + 5 \cdot \operatorname{det}\left| \begin{array}{cc}{1} & 0\\ {-4} & 3 \end{array} \right| \\
+&= 3((-4)(-2) - (3)(4)) + 2((1)(-2) - (0)(4)) + 5((1)(3) - (0)(-4)) \\
+&= 3(8 - 12) + 2(-2 - 0) + 5(3 - 0) \\
+&= 3(-4) + 2(-2) + 5(3) \\
+&= -12 - 4 + 15 \\
+&= -1
+\end{aligned}
+$$
+This agrees with the result from the first-row expansion.
+
+::: {.notes}
+Emphasize this consistency. Whether we expanded along the first row or first column, the determinant is the same. This reinforces Theorem 2.1.1. It also highlights the strategic choice: although this matrix didn't have many zeros in any single column, the principle applies strongly to larger matrices, where such a choice can save a huge amount of work.
+:::
+
+---
+
+## Interactive Example: Optimal Expansion
+
+Consider this $4 \times 4$ matrix. Which row or column would you choose for expansion to minimize calculations?
+
+$$
+A = \left[ \begin{array}{cccc}1 & 0 & 0 & -1 \\ 3 & 1 & 2 & 2 \\ 1 & 0 & -2 & 1 \\ 2 & 0 & 0 & 1 \end{array} \right]
+$$
+
+The **second column** is the optimal choice as it contains three zeros: $a_{12}=0$, $a_{32}=0$, $a_{42}=0$.
+Expanding along the second column:
+$$
+\operatorname *{det}(A) = a_{12}C_{12} + a_{22}C_{22} + a_{32}C_{32} + a_{42}C_{42}
+$$
+Since $a_{12}, a_{32}, a_{42}$ are zero, only the $a_{22}C_{22}$ term remains:
+$$
+\operatorname *{det}(A) = 1 \cdot C_{22} = 1 \cdot (-1)^{2+2} M_{22} = M_{22}
+$$
+Now we need to calculate $M_{22}$, which is the determinant of the $3 \times 3$ submatrix after deleting row 2 and column 2:
+$$
+M_{22} = \operatorname{det}\left| \begin{array}{ccc} 1 & 0 & -1 \\ 1 & -2 & 1 \\ 2 & 0 & 1 \end{array} \right| \quad (\text{again, second column has zeros!})
+$$
+
+---
+
+## Interactive Example: Optimal Expansion
+
+Calculating $M_{22}$ by expanding along its second column:
+$M_{22} = 0 \cdot C_{12}^{(M_{22})} + (-2) \cdot C_{22}^{(M_{22})} + 0 \cdot C_{32}^{(M_{22})}$  
+$M_{22} = (-2) \cdot (-1)^{2+2} \operatorname{det}\left| \begin{array}{cc}{1}&{{-1}}\\ {{2}}&{{1}}\end{array}\right|$  
+$M_{22} = -2 \cdot ((1)(1) - (-1)(2))$  
+$M_{22} = -2 \cdot (1 + 2) = -2 \cdot 3 = -6$  
+
+Thus, $\operatorname *{det}(A) = -6$.
+
+---
+
+## Interactive Example: Optimal Expansion
+
+Let's verify this with Python (using NumPy):
+```pyodide
+#| max-lines: 10
+import numpy as np
+
+A = np.array([
+    [1, 0, 0, -1],
+    [3, 1, 2, 2],
+    [1, 0, -2, 1],
+    [2, 0, 0, 1]
+])
+
+print("Original Matrix A:")
+print(A)
+
+det_A = np.linalg.det(A)
+print(f"\nDeterminant of A: {det_A:.2f}")
+
+# Extract M_22 for verification
+M_22_submatrix = np.array([
+    [1, 0, -1],
+    [1, -2, 1],
+    [2, 0, 1]
+])
+det_M_22 = np.linalg.det(M_22_submatrix)
+print(f"Determinant of M_22 (for a_22 cofactor): {det_M_22:.2f}")
+```
+
+
+::: {.notes}
+This example perfectly illustrates the power of strategic choice. By picking the column with most zeros, we reduced a $4 \times 4$ problem to a single $3 \times 3$ problem, and then again simplified that $3 \times 3$ problem to a single $2 \times 2$ problem. This significantly streamlines complex calculations. This computational strategy of minimizing steps is highly valued in all areas of engineering.
+:::
+
+---
+
+## Determinants of Triangular Matrices
+
+A special and very useful case involves triangular matrices, common in system analysis after methods like Gaussian elimination.
+
+**Theorem 2.1.2**
+If $A$ is an $n \times n$ triangular matrix (upper triangular, lower triangular, or diagonal), then $\det(A)$ is the product of the entries on the main diagonal of the matrix; that is, $\det(A) = a_{11} a_{22} \dots a_{nn}$.
+
+### Example: $4 \times 4$ Lower Triangular Matrix
+$$
+\operatorname *{det}\left[ \begin{array}{cccc}a_{11} & 0 & 0 & 0 \\ a_{21} & a_{22} & 0 & 0 \\ a_{31} & a_{32} & a_{33} & 0 \\ a_{41} & a_{42} & a_{43} & a_{44} \end{array} \right]
+$$
+Expanding along the first row (which has many zeros) simplifies quickly:
+$= a_{11} \cdot \operatorname *{det}\left[ \begin{array}{ccc}a_{22} & 0 & 0 \\ a_{32} & a_{33} & 0 \\ a_{42} & a_{43} & a_{44} \end{array} \right]$
+$= a_{11}a_{22} \cdot \operatorname *{det}\left[ \begin{array}{cc}a_{33} & 0 \\ a_{43} & a_{44} \end{array} \right]$
+$= a_{11}a_{22}a_{33}a_{44}$
+
+::: {.notes}
+Triangular matrices are frequently encountered in ECE, for instance, as a result of Gaussian elimination or LU decomposition used to solve linear systems or analyze circuit models. Knowing this property allows for quick verification or computation of determinants without resorting to a full cofactor expansion, especially useful for large systems or state-space models. This property is a huge computational shortcut.
+:::
+
+---
+
+## Engineering Applications of Determinants
+
+Determinants are more than just mathematical curiosities; they have critical applications in Electrical and Computer Engineering.
+
+### Circuit Analysis
+- **KVL/KCL systems**: Determinants confirm if a unique solution exists for nodal voltages or mesh currents.
+- **Cramer's Rule**: Can solve small systems of circuit equations directly.
+- **Network stability**: Related to matrix eigenvalues (roots of characteristic equation), which involve determinants.
+
+### Control Systems
+- **Characteristic Equation**: Finding eigenvalues involves calculating $\operatorname{det}(sI - A) = 0$, which dictates system stability and response.
+- **Controllability/Observability**: Gramian matrices, which assess system properties, involve determinants.
+
+---
+
+## Engineering Applications of Determinants
+
+### Signal Processing
+- **Filter Design**: Determinants can be involved in analyzing and verifying properties of digital or analog filters.
+- **Principal Component Analysis (PCA)**: The determinant of the covariance matrix is related to the generalized variance preserved by the principal components.
+
+### Simple Resistive Circuit
+A common engineering problem is solving for unknown currents or voltages in a circuit. This often leads to a system of linear equations represented by a matrix.
+
+A unique solution for voltages/currents exists if the determinant of the circuit's system matrix is non-zero. If the determinant is zero, it might indicate a redundant equation, a short circuit, or an open circuit, leading to non-unique or no solution for certain variables.
+
+::: {.notes}
+Highlight that while full cofactor expansion for large matrices isn't always practical for direct computation in large-scale real-world problems (other numerical methods like LU decomposition are faster), the *concept* of the determinant and its properties derived from these definitions are indispensable for theoretical understanding and diagnosing system behavior in ECE.
+:::
+
+---
+
+## "Arrow Technique" for $2 \times 2$ and $3 \times 3$ Matrices
+
+This technique offers a quick visual shortcut for small matrices, but **it only works for $2 \times 2$ and $3 \times 3$ determinants!** It does **not** generalize to $4 \times 4$ or higher.
+
+<p align="center">
+  <img src="https://cdn-mineru.openxlab.org.cn/result/2025-08-19/b795988b-d30b-4518-98a2-a7bff0a22bec/8dcd05efafcbc2788bd5c6d5549e4bbeaa9a90f5c9cbe85a352cc6fbbdb51c4c.jpg" alt="Arrow technique for 2x2 and 3x3 determinants" style="width:70%;">
+</p>
+
+---
+
+## "Arrow Technique" for $2 \times 2$ and $3 \times 3$ Matrices
+
+### $2 \times 2$ Case
+Multiply entries on the rightward arrow and subtract the product of entries on the leftward arrow.
+$$
+\left| \begin{array}{ll}a_{11} & a_{12} \\ a_{21} & a_{22} \end{array} \right| = a_{11} a_{22} - a_{12} a_{21}
+$$
+
+### $3 \times 3$ Case
+1. Recopy the first and second columns to the right of the matrix.
+2. Sum the products of entries on the three rightward (down-right) arrows.
+3. Subtract the sum of the products of entries on the three leftward (down-left) arrows.
+
+::: {.notes}
+This mnemonic is great for quick calculations on assessments or for checking results, but it's vital that students understand its limitations. For larger matrices, this visual trick completely breaks down and applying it incorrectly is a common mistake. It's an application-specific shortcut, not a general theorem or method.
+:::
+
+---
+
+## Interactive Example: "Arrow Technique" for $2 \times 2$
+
+Calculate the determinant of $\left[ \begin{array}{cc}3 & 1 \\ 4 & -2 \end{array} \right]$ using the arrow technique.
+
+$$
+\left| \begin{array}{cc}3 & 1 \\ 4 & -2 \end{array} \right| = (3)(-2) - (1)(4) = -6 - 4 = -10
+$$
+
+Verify this with Python:
+
+```pyodide
+#| max-lines: 10
+import numpy as np
+
+def calculate_2x2_det(a11, a12, a21, a22):
+    """Calculates determinant of a 2x2 matrix using the arrow technique."""
+    det = (a11 * a22) - (a12 * a21)
+    return det
+
+a = 3
+b = 1
+c = 4
+d = -2
+
+det_val = calculate_2x2_det(a, b, c, d)
+print(f"Matrix: [[{a}, {b}], [{c}, {d}]]")
+print(f"Determinant using arrow technique: {det_val}")
+
+# Also confirm with numpy's robust calculation
+matrix_2x2 = np.array([[a, b], [c, d]])
+print(f"Determinant using NumPy: {np.linalg.det(matrix_2x2):.2f}")
+```
+
+::: {.notes}
+Here's a chance to quickly test the $2 \times 2$ arrow method. Encourage students to try changing the numbers in the Python code and re-running it to see how the determinant changes. This interactive element helps solidify their understanding of the calculation process.
+:::
+
+---
+
+## Interactive Example: "Arrow Technique" for $3 \times 3$
+
+Calculate the determinant of $\left[ \begin{array}{ccc}1 & 2 & 3 \\ -4 & 5 & 6 \\ 7 & -8 & 9 \end{array} \right]$ using the arrow technique.
+
+$$
+\left[ (1)(5)(9) + (2)(6)(7) + (3)(-4)(-8) \right] \\
+- \left[ (3)(5)(7) + (1)(6)(-8) + (2)(-4)(9) \right]
+$$
+$$
+= [45 + 84 + 96] - [105 - 48 - 72]
+$$
+$$
+= [225] - [-15] = 225 + 15 = 240
+$$
+
+---
+
+## Interactive Example: "Arrow Technique" for $3 \times 3$
+
+Verify with Python:
+
+```pyodide
+#| max-lines: 12
+import numpy as np
+
+def calculate_3x3_det_arrow(m):
+    """Calculates determinant of a 3x3 matrix using the arrow technique."""
+    if m.shape != (3, 3):
+        return "Input matrix must be 3x3"
+      
+    a11, a12, a13 = m[0,0], m[0,1], m[0,2]
+    a21, a22, a23 = m[1,0], m[1,1], m[1,2]
+    a31, a32, a33 = m[2,0], m[2,1], m[2,2]
+  
+    # Sum of products along rightward diagonals
+    pos_diagonals = (a11 * a22 * a33) + \
+                    (a12 * a23 * a31) + \
+                    (a13 * a21 * a32)
+                  
+    # Sum of products along leftward diagonals
+    neg_diagonals = (a13 * a22 * a31) + \
+                    (a11 * a23 * a32) + \
+                    (a12 * a21 * a33)
+  
+    return pos_diagonals - neg_diagonals
+
+M = np.array([
+    [1, 2, 3],
+    [-4, 5, 6],
+    [7, -8, 9]
+])
+
+print("Matrix M:")
+print(M)
+det_val = calculate_3x3_det_arrow(M)
+print(f"\nDeterminant using arrow technique: {det_val}")
+
+# Also confirm with numpy
+print(f"Determinant using NumPy: {np.linalg.det(M):.2f}")
+```
+
+::: {.notes}
+Similar to the $2 \times 2$ example, let students experiment with different 3x3 matrices in the Python code. This interactive check reinforces the "arrow technique" and demonstrates its equivalence to more general methods for these specific matrix sizes. It also provides confidence by comparing with NumPy's robust determinant calculation.
+:::
+
+---
+
+## Summary and Key Takeaways
+
+### Core Concepts
+- **Definition of Determinant**: Scalar value that quantifies properties of a square matrix.
+- **Minors and Cofactors**: Building blocks for inductive definition of determinants, especially useful for higher orders.
+- **Cofactor Expansion**: A method to calculate determinants by expanding along any chosen row or column.
+    - **Strategic Choice**: Always choose the row or column with the most zeros to simplify calculations.
+- **Determinant of Triangular Matrices**: Simply the product of diagonal entries! A major shortcut for ECE systems.
+- **"Arrow Technique"**: A quick, visual method specific to $2 \times 2$ and $3 \times 3$ matrices (do not apply to higher orders!).
+
+---
+
+## Summary and Key Takeaways
+
+### Relevance to ECE
+- **System Analysis**: Crucial for determining invertibility of system matrices (e.g., in circuits, control systems) and ensuring unique solutions.
+- **Eigenvalue Problems**: Formation of characteristic equations, fundamental for stability analysis in control and signal processing.
+- **Numerical Efficiency**: Understanding these concepts informs more advanced numerical algorithms used in computational engineering.
+
+::: {.notes}
+We've covered the theoretical foundation and practical methods for computing determinants. Understanding these concepts is essential not just for passing Linear Algebra, but for practical problem-solving and deeper analysis across many ECE disciplines. Make sure to practice these techniques!
+:::
