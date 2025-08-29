@@ -35,6 +35,67 @@ Good morning everyone! Today, we're diving into a crucial topic in linear algebr
 
 ---
 
+## Moment of Silence {background-color="black"}
+
+
+---
+
+## 1D elastic collision {background-color="black"}
+
+A mass $M1$ (moving) with initial velocity $U_1$ hits another mass $m_2$ that is initially at rest. We assume a perfectly elastic collision in one dimension. Unknown final velocities are:
+
+* $V_1$ — final velocity of mass $M1$,
+* $v_2$ — final velocity of mass $m2$.
+
+Two equations govern the collision:
+
+1. Conservation of linear momentum
+
+$$
+M_1 U_1 = M_1 V_1 + m_2 v_2
+$$
+
+2. Elastic collision condition (relative velocity reversal)
+
+$$
+V_1 - v_2 = -(U_1 - 0) = -U_1
+$$
+
+Rewrite as a linear system $A\mathbf{x}=\mathbf{b}$ with $\mathbf{x}=[V_1,\,v_2]^\top$:
+
+$$
+\begin{bmatrix} M_1 & m_2 \\[4pt] 1 & -1 \end{bmatrix}
+\begin{bmatrix} V_1 \\ v_2 \end{bmatrix}
+=
+\begin{bmatrix} M_1 U_1 \\ -U_1 \end{bmatrix}.
+$$
+
+```{.pyodide}
+#| max-lines: 10
+import numpy as np
+
+# === Set parameters here ===
+M1 = 4800   # mass of moving object (kg)
+m2 = 80   # mass of initially static object (kg)
+U1 = 13.89   # initial velocity of M1 (m/s), m2 starts at rest (100 km/h = 27.78 m/s)
+
+# Build linear system A x = b, where x = [V1, v2]
+A = np.array([[M1, m2],
+              [1.0, -1.0]])
+b = np.array([M1 * U1, -U1])
+
+# Solve using numpy linear algebra
+V1, v2 = np.linalg.solve(A, b)
+
+# Print results
+print("--- Collision Results ---")
+print(f"Final velocity of mass M1: {V1:.4f} m/s")
+print(f"Final velocity of mass m2: {v2:.4f} m/s")
+```
+
+
+---
+
 ## Introduction: Why Elementary Matrices?
 
 *   How do we systematically find the inverse of a matrix?
