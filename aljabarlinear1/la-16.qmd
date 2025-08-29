@@ -77,8 +77,15 @@ If $A$ is an invertible $n \times n$ matrix, then for each $n \times 1$ matrix $
 
 **Proof Idea:**
 
-1.  **Existence:** Verify that $\mathbf{x} = A^{-1}\mathbf{b}$ is indeed a solution: $A(A^{-1}\mathbf{b}) = (AA^{-1})\mathbf{b} = I\mathbf{b} = \mathbf{b}$.
-2.  **Uniqueness:** Assume $\mathbf{x}_0$ is any solution, so $A\mathbf{x}_0 = \mathbf{b}$. Multiply by $A^{-1}$ from the left: $A^{-1}(A\mathbf{x}_0) = A^{-1}\mathbf{b} \implies (A^{-1}A)\mathbf{x}_0 = A^{-1}\mathbf{b} \implies I\mathbf{x}_0 = A^{-1}\mathbf{b} \implies \mathbf{x}_0 = A^{-1}\mathbf{b}$.
+1.  **Existence:** 
+
+Verify that $\mathbf{x} = A^{-1}\mathbf{b}$ is indeed a solution: $A(A^{-1}\mathbf{b}) = (AA^{-1})\mathbf{b} = I\mathbf{b} = \mathbf{b}$.
+
+2.  **Uniqueness:** 
+
+Assume $\mathbf{x}_0$ is any solution, so $A\mathbf{x}_0 = \mathbf{b}$. 
+
+Multiply by $A^{-1}$ from the left: $A^{-1}(A\mathbf{x}_0) = A^{-1}\mathbf{b} \implies (A^{-1}A)\mathbf{x}_0 = A^{-1}\mathbf{b} \implies I\mathbf{x}_0 = A^{-1}\mathbf{b} \implies \mathbf{x}_0 = A^{-1}\mathbf{b}$.
 
 This method provides a direct formula to find the solution.
 
@@ -196,8 +203,13 @@ Reducing this to reduced row echelon form yields:
 $$
 \left[ \begin{array}{lllll}1 & 0 & 0 & 1 & 2 \\ 0 & 1 & 0 & 0 & 1 \\ 0 & 0 & 1 & 1 & -1 \end{array} \right]
 $$
-Solution for (a): $x_1 = 1, x_2 = 0, x_3 = 1$.
-Solution for (b): $x_1 = 2, x_2 = 1, x_3 = -1$.
+Solution for (a): 
+
+$x_1 = 1, x_2 = 0, x_3 = 1$.
+
+Solution for (b): 
+
+$x_1 = 2, x_2 = 1, x_3 = -1$.
 
 ::: {.notes}
 Here, we have two systems with the same $A$ matrix, which we already know is invertible from previous examples. We form the combined augmented matrix. After performing Gauss-Jordan elimination (the steps are omitted here for brevity, but you can verify them), the RREF directly gives us the solutions. The fourth column corresponds to the solution of system (a), and the fifth column to the solution of system (b). This illustrates how compact and efficient solving multiple systems simultaneously can be.
@@ -253,6 +265,8 @@ Let $A$ be a square matrix.
 
 **Significance:** To show that $B$ is the inverse of $A$, you only need to verify *one* of the conditions ($AB=I$ or $BA=I$). The other condition holds automatically for square matrices.
 
+::: {.notes}
+
 **Proof Idea for (a):**
 
 Assume $BA=I$. We need to show $A$ is invertible. If $A$ is invertible, then $(BA)A^{-1} = IA^{-1} \implies B(AA^{-1}) = A^{-1} \implies BI = A^{-1} \implies B=A^{-1}$.
@@ -260,7 +274,6 @@ Assume $BA=I$. We need to show $A$ is invertible. If $A$ is invertible, then $(B
 To show $A$ is invertible, we use Theorem 1.5.3: show $A\mathbf{x}=\mathbf{0}$ has only the trivial solution.
 If $A\mathbf{x}_0 = \mathbf{0}$, then $B(A\mathbf{x}_0) = B\mathbf{0} \implies I\mathbf{x}_0 = \mathbf{0} \implies \mathbf{x}_0 = \mathbf{0}$. So $A$ is invertible.
 
-::: {.notes}
 This theorem often simplifies theoretical work and proofs involving matrix inverses. You might wonder, given the definition of an inverse requires both $AB=I$ and $BA=I$, why do we need both? Theorem 1.6.3 states that for square matrices, if you find a matrix that satisfies *one* of these conditions, it automatically satisfies the other. This isn't true for non-square matrices, but it's a very helpful property for square matrices. The proof relies on connecting back to the equivalent statements theorem from the last lecture, particularly that if $A\mathbf{x}=\mathbf{0}$ has only the trivial solution, then $A$ is invertible.
 :::
 
@@ -294,13 +307,14 @@ Let $A$ and $B$ be square matrices of the same size. If $AB$ is invertible, then
 **ECE Relevance:**
 This theorem is important when considering cascading systems or transformations. If you have two operations represented by matrices $A$ and $B$ performing sequentially ($AB$), and their combined effect is reversible (invertible), then each individual operation ($A$ and $B$) must also be reversible. This applies to signal processing chains, control system components, or multi-stage filters.
 
+::: {.notes}
+
 **Proof Idea for B invertible:**
 Assume $\mathbf{x}_0$ is a solution to $B\mathbf{x}=\mathbf{0}$.
 Then $(AB)\mathbf{x}_0 = A(B\mathbf{x}_0) = A\mathbf{0} = \mathbf{0}$.
 Since $AB$ is invertible, by Theorem 1.6.4 (a) $\Leftrightarrow$ (b), the system $(AB)\mathbf{x}=\mathbf{0}$ has only the trivial solution. Thus $\mathbf{x}_0 = \mathbf{0}$. Therefore, $B$ is invertible.
 Once $B$ is invertible, then $A = (AB)B^{-1}$, which is a product of invertible matrices, therefore $A$ is also invertible.
 
-::: {.notes}
 This theorem is quite intuitive in a practical sense. If you combine two devices or processes in series, and the overall system is reversible (meaning you can undo its effect), then each individual device or process must also be reversible. If either $A$ or $B$ were singular (not invertible), it would "destroy" information and make the combined product $AB$ singular as well, preventing it from being invertible. This theorem assures us that for a reversible cascade, all components must also be reversible.
 :::
 
