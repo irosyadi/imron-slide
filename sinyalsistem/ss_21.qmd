@@ -1,0 +1,405 @@
+---
+title: "Signal and Systems"
+subtitle: "2.1 The Convolution Sum"
+author: "Imron Rosyadi"
+format:
+  live-revealjs:
+    logo: "qrjs_assets/unsoed_logo.png"
+    footer: "[irosyadi-2025](https://imron-slide.vercel.app)"
+    slide-number: true
+    chalkboard: true
+    scrollable: true
+    controls: true
+    progress: true
+    preview-links: true
+    transition: fade
+    incremental: false
+    theme: [default, qrjs_assets/ir_style.scss]
+    mermaid:
+        theme: forest
+pyodide:
+  packages:
+    - numpy
+    - plotly
+    - nbformat
+---
+
+# Signals and Systems
+## DISCRETE-TIME LTI SYSTEMS: THE CONVOLUTION SUM
+
+**ECE Undergraduate Course**
+
+Imron Rosyadi
+
+::: {.notes}
+Welcome everyone. Today, we're diving into one of the most fundamental concepts in Signals and Systems: The Convolution Sum. This operation is the key to understanding how Linear Time-Invariant, or LTI, systems work. By the end of this lecture, you'll be able to represent any discrete-time signal in a new way and use that representation to find the output of any LTI system for any given input.
+:::
+
+---
+
+## Moment of Silence {background-color="black"}
+
+---
+
+## What is a System?
+
+A **system** is a process by which **input signals** are `transformed` to produce **output signals**.
+
+```{mermaid}
+graph LR
+    A[Input Signal] --> B(System);
+    B --> C[Output Signal];
+```
+
+---
+
+## Signal Decomposition with Impulses
+
+Any discrete-time signal $x[n]$ can be represented as a sum of scaled and shifted unit impulses.
+
+Think of it as breaking down a signal into its most basic building blocks.
+
+### The "Sifting Property"
+This decomposition is also known as the ***sifting property*** of the unit impulse:
+
+$$
+x[n] = \sum_{k=-\infty}^{\infty} x[k] \delta[n-k]
+$$
+
+For any given $n$, the summation "sifts" through all values of $x[k]$ and picks out only the one where $k=n$.
+
+---
+
+## Signal Decomposition with Impulses
+
+```{mermaid}
+graph TD
+    subgraph Decomposing x[n]
+        XN("x[n]") --> IMP1("x[-1]δ[n+1]")
+        XN --> IMP0("x[0]δ[n]")
+        XN --> IMP2("x[1]δ[n-1]")
+        XN --> ETC(...)
+    end
+    subgraph Reconstructing x[n]
+        IMP1 --> SUM("(&Sigma;)")
+        IMP0 --> SUM
+        IMP2 --> SUM
+        ETC --> SUM
+        SUM --> XN_OUT("x[n]")
+    end
+```
+
+::: {.notes}
+The core idea here is incredibly powerful. We take a complex signal, $x[n]$, and express it as a linear combination of the simplest possible signal: the unit impulse, $\delta[n]$. Each term in the sum, $x[k]\delta[n-k]$, isolates a single point from the original signal. The weight of each impulse is simply the value of the signal at that point in time. This representation is the foundation for everything that follows.
+:::
+
+---
+
+## Visualizing Decomposition
+
+Let's see this in action. The signal $x[n]$ is built by summing its individual impulse components.
+
+```{pyodide}
+#| max-lines: 15
+import numpy as np
+import matplotlib.pyplot as plt
+
+n_range = np.arange(-2, 3)
+x_vals = { -2: 0.5, -1: -1.0, 0: 2.0, 1: 1.0, 2: -0.5 }
+x = np.array([x_vals.get(i, 0) for i in n_range])
+
+fig, axs = plt.subplots(3, 2, figsize=(7, 5), sharex=True, sharey=True)
+fig.suptitle('Decomposition of x[n] into Scaled Impulses')
+
+# Plot original signal
+axs[0, 0].stem(n_range, x)
+axs[0, 0].set_title('Original Signal $x[n]$')
+
+# Plot individual components
+components = [(-1, x_vals[-1]), (0, x_vals[0]), (1, x_vals[1]), (2, x_vals[2])]
+ax_flat = axs.flat[1:]
+
+for i, (k, val) in enumerate(components):
+    if i < len(ax_flat):
+      impulse = np.zeros_like(n_range, dtype=float)
+      impulse[n_range == k] = val
+      ax_flat[i].stem(n_range, impulse)
+      ax_flat[i].set_title(f'$x[{k}]\\delta[n-{k}]$')
+
+# Sum subplot
+axs[2, 1].stem(n_range, x)
+axs[2, 1].set_title('Sum of Components = $x[n]$')
+
+for ax in axs.flat: ax.grid(True)
+plt.tight_layout(rect=[0, 0, 1, 0.96])
+plt.show()
+```
+
+::: {.notes}
+Here you can see the process graphically, just like in Figure 2.1 from the textbook. The top-left plot shows our original signal, $x[n]$. The next four plots each show a single, scaled impulse. For example, the plot titled $x[0]\delta[n-0]$ is a signal that's zero everywhere except at $n=0$, where its value is $x[0]=2.0$. When we add all these simple impulse components together, as shown in the bottom-right plot, we perfectly reconstruct the original signal.
+:::
+
+---
+
+## LTI Systems & The Convolution Sum
+
+How does an **LTI** system respond to an input $x[n]$?
+
+1.  **Linearity:** The response to a sum of inputs is the sum of the individual responses.
+    -   Input: $x[n] = \sum_k x[k] \delta[n-k]$
+    -   Output: $y[n] = \sum_k x[k] \cdot \{\text{Response to } \delta[n-k]\}$
+
+2.  **Time-Invariance:** A shift in the input causes the same shift in the output.
+    -   Response to $\delta[n]$ is the **impulse response**, $h[n]$.
+    -   Response to $\delta[n-k]$ is just a shifted impulse response, $h[n-k]$.
+
+Combining these gives the **Convolution Sum**:
+
+$$
+y[n] = \sum_{k=-\infty}^{\infty} x[k] h[n-k]
+$$
+
+We denote this operation with an asterisk: $y[n] = x[n] * h[n]$.
+
+::: {.notes}
+This is the central result. Because the system is linear, we can find the output by summing the responses to all the simple impulse components of the input. And because the system is time-invariant, the response to a shifted impulse $\delta[n-k]$ is just a shifted version of the response to a non-shifted impulse $\delta[n]$. We call the response to $\delta[n]$ the "impulse response" and denote it $h[n]$. By putting these two properties together, we arrive at the convolution sum. It tells us that the output $y[n]$ is a weighted sum of shifted versions of the impulse response. The weights are the values of the input signal, $x[k]$.
+:::
+
+---
+
+## The "Flip-and-Slide" Method
+
+The convolution sum $y[n]=\sum_{k=-\infty}^{\infty} x[k] h[n-k]$ can be computed graphically for each output sample `n`.
+
+**Procedure for a fixed `n`:**
+
+1.  **Plot signals vs. `k`:** Plot the input $x[k]$ and the impulse response $h[k]$.
+2.  **Flip:** Time-reverse $h[k]$ to get $h[-k]$.
+3.  **Slide:** Shift $h[-k]$ by $n$ to get $h[n-k]$.
+    -   Shift right for $n > 0$; left for $n < 0$.
+4.  **Multiply:** Point-wise multiply the sequences $x[k]$ and $h[n-k]$.
+5.  **Sum:** Sum all the values of the product sequence. The result is $y[n]$.
+
+Repeat for all values of `n` to find the entire output signal $y[n]$.
+
+::: {.notes}
+While the formula looks abstract, there's a very mechanical, graphical way to compute it, which we call the "flip-and-slide" method. The key is to think of `n` as a fixed value for now. We are trying to compute a single output point, y[n]. The expression involves a sum over the dummy variable `k`. So, we plot both signals, x and h, as functions of `k`. The tricky part is the term $h[n-k]$. As a function of `k`, it's a flipped and shifted version of the original impulse response. Once you have $x[k]$ and $h[n-k]$ plotted, you just multiply them point by point and add up all the results. That sum gives you the single value $y[n]$. Then you change `n` and do it all over again.
+:::
+
+---
+
+## Interactive Demo: Flip-and-Slide
+
+-   $x[n] = 0.5\delta[n] + 2\delta[n-1]$
+-   $h[n] = u[n] - u[n-3]$
+
+Use the slider to change the value of `n` and observe the convolution process.
+
+```{ojs}
+viewof n = Inputs.range([-4, 12], {value: 2, step: 1, label: "Time shift (n)"});
+```
+
+```{pyodide}
+#| edit: false
+#| echo: false
+#| input:
+#|   - n
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define the signals
+k_range = np.arange(-2, 7)
+x = np.zeros_like(k_range, dtype=float)
+x[k_range == 0] = 0.5
+x[k_range == 1] = 2.0
+
+h_base = np.zeros_like(k_range, dtype=float)
+h_base[(k_range >= 0) & (k_range <= 2)] = 1.0
+
+# Pre-compute the full convolution result y[n]
+y_full = np.convolve(x, h_base, 'full')
+y_range = np.arange(k_range[0]*2, len(y_full) + k_range[0]*2)
+
+
+def plot_convolution_step(n_val):
+    fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(8, 6), sharex=True)
+    fig.tight_layout(pad=3.0)
+
+    # 1. Flip & Slide
+    h_flipped_shifted = np.zeros_like(k_range, dtype=float)
+    # Calculate the indices for the flipped and shifted h
+    h_indices = n_val - k_range
+    # Create a mask for the valid indices of h (0 to 2)
+    mask = (h_indices >= 0) & (h_indices <= 2)
+    h_flipped_shifted[mask] = 1.0
+    
+    ax1.stem(k_range, x, label='$x[k]$', basefmt=" ")
+    ax1.stem(k_range, h_flipped_shifted, label=f'$h[{n_val}-k]$', linefmt='r-', markerfmt='ro', basefmt=" ")
+    ax1.set_title(f'1. Flip & Slide (for n={n_val})')
+    ax1.legend()
+    ax1.grid(True)
+    ax1.set_ylim(0, 3)
+
+    # 2. Multiply
+    product = x * h_flipped_shifted
+    ax2.stem(k_range, product, linefmt='g-', markerfmt='go', basefmt=" ")
+    ax2.set_title(f'2. Multiply: $x[k]h[{n_val}-k]$')
+    ax2.grid(True)
+    ax2.set_ylim(0, 3)
+  
+    # 3. Sum
+    y_val = np.sum(product)
+    ax3.stem(y_range, y_full, linefmt='k-', markerfmt='ko', basefmt=' ')
+    ax3.stem([n_val], [y_val], 'c^', label=f'$y[{n_val}] = \\Sigma = {y_val:.1f}$', basefmt=' ', markerfmt='c^', linefmt='c-')
+    ax3.set_title('3. Sum to get Output $y[n]$')
+    ax3.legend()
+    ax3.grid(True)
+    ax3.set_xlabel('n (time)')
+    ax3.set_xlim(y_range[0], y_range[-1])
+    ax3.set_ylim(0, 3)
+  
+    plt.show()
+
+# Call the function with the value from the slider
+plot_convolution_step(n)
+```
+
+::: {.notes}
+This interactive demo brings the flip-and-slide method to life. The top plot shows the stationary input signal $x[k]$ in blue and the *flipped and shifted* impulse response, $h[n-k]$, in red. As you move the slider for `n`, you can see the red signal slide. The middle plot shows the point-wise product. The bottom plot shows the final output signal $y[n]$. The cyan triangle shows the value of $y[n]$ for the *current* `n`, which is calculated by summing the green stems in the middle plot.
+:::
+
+---
+
+## Example: Accumulator System
+
+Let's convolve an exponential signal with a unit step. This models a system called an **accumulator**.
+
+**Problem**
+
+- Input: $x[n] = \alpha^n u[n]$, for $0 < \alpha < 1$.
+- Impulse Response: $h[n] = u[n]$.
+
+**Analysis**
+
+- For $n < 0$, there's no overlap between $x[k]$ and $h[n-k]$. So, $y[n] = 0$.
+- For $n \ge 0$, the overlap is for $0 \le k \le n$.
+  $$
+  y[n] = \sum_{k=0}^{n} \alpha^k = \frac{1 - \alpha^{n+1}}{1 - \alpha}
+  $$
+**Result:** $y[n] = \left(\frac{1 - \alpha^{n+1}}{1 - \alpha}\right) u[n]$.
+
+---
+
+## Example: Accumulator System
+
+```{pyodide}
+#| max-lines: 10
+import numpy as np
+import matplotlib.pyplot as plt
+
+alpha = 0.8; n = np.arange(-2, 21)
+x = (alpha**n) * (n >= 0)
+h = (n >= 0).astype(float)
+y = ((1 - alpha**(n + 1)) / (1 - alpha)) * (n >= 0)
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(7, 3.5))
+
+ax1.stem(n, x, 'b', markerfmt='bo', label='$x[n]$')
+ax1.stem(n, h, 'r', markerfmt='ro', label='$h[n]$')
+ax1.set_title('Input & Impulse Response'); ax1.legend(); ax1.grid(True)
+
+ax2.stem(n, y, 'g', markerfmt='go')
+ax2.set_title('Output $y[n]=x[n]*h[n]$'); ax2.grid(True)
+
+fig.supxlabel('n'); plt.tight_layout(); plt.show()
+```
+
+::: {.notes}
+This is a classic example. The impulse response, $h[n]=u[n]$, defines an accumulator. We feed in a decaying exponential signal. As seen in the derivation, the output is zero for $n<0$ because there is no overlap. For $n \ge 0$, the sum is a finite geometric series. The plot on the right shows the output starting at $y[0]=1$ and rising to a final value of $1/(1-\alpha)$.
+:::
+
+---
+
+## Example: Convolving Two Pulses
+
+Let's convolve two finite-length pulses. The output shape and length depend on the inputs.
+
+-   $x[n] = 1$ for $0 \le n \le 4$.
+-   $h[n] = \alpha^n$ for $0 \le n \le 6$ (with $\alpha > 1$).
+
+The convolution $y[n]$ is non-zero for $0 \le n \le 10$, with a trapezoidal shape due to changing overlap.
+
+```{pyodide}
+#| max-lines: 15
+import numpy as np
+import matplotlib.pyplot as plt
+
+alpha = 1.1; N_x = 5; N_h = 7
+n_x = np.arange(0, N_x); x = np.ones_like(n_x)
+n_h = np.arange(0, N_h); h = alpha**n_h
+y = np.convolve(x, h); n_y = np.arange(0, len(y))
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(7, 3.5))
+
+ax1.stem(n_x, x, 'b', markerfmt='bo', label='$x[n]$')
+ax1.stem(n_h, h, 'r', markerfmt='ro', label='$h[n]$')
+ax1.set_title('Input Pulses'); ax1.legend(); ax1.grid(True)
+
+ax2.stem(n_y, y, 'g', markerfmt='go')
+ax2.set_title('Output $y[n]=x[n]*h[n]$'); ax2.grid(True)
+fig.supxlabel('n'); plt.tight_layout(); plt.show()
+```
+
+::: {.notes}
+Here we convolve two pulses of finite length. The key to solving this analytically is to break it down into five regions for `n` based on the overlap: no overlap, partial increasing overlap, full overlap, partial decreasing overlap, and no overlap again. The result has a trapezoidal shape and its length is $N_x + N_h - 1 = 5 + 7 - 1 = 11$ samples. This length property is general for the convolution of two finite-length sequences.
+:::
+
+---
+
+## Application: Digital Audio Reverb
+
+Convolution is used in audio engineering to create effects like reverberation (reverb).
+
+-   **Input Signal $x[n]$:** A "dry" audio signal (e.g., a single clap).
+-   **Impulse Response $h[n]$:** The "room response." This is what you would record if you made a perfect impulse (like a starter pistol shot) in a concert hall. It captures all the echoes.
+-   **Output Signal $y[n]$:** The "wet" audio signal, with reverb.
+    $$y[n] = x[n] * h[n]$$
+
+By convolving any dry sound with the impulse response of a space, we can make it sound like it was recorded there!
+
+---
+
+## Application: Digital Audio Reverb
+
+
+```{mermaid}
+graph TD
+    A["Dry Audio<br>x[n]"] --> C{"Convolution<br>y[n] = x[n]*h[n]"};
+    B["Room Impulse Response<br>h[n]"] --> C;
+    C --> D["Audio with Reverb<br>y[n]"];
+```
+
+
+::: {.notes}
+Let's talk about a fun, real-world application: creating artificial reverb for music and movies. Imagine you record a singer in a perfectly "dead" room with no echoes. This is your dry input signal, $x[n]$. Now, you go to a large cathedral and pop a balloon. The sound you record—a series of echoes that die out—is the impulse response, $h[n]$, of the cathedral. If you convolve the singer's dry vocal track with the cathedral's impulse response, the output will sound exactly as if the singer was performing there! This is the principle behind most digital reverb plugins.
+:::
+
+---
+
+## Summary
+
+- **Signal Decomposition:** Any discrete signal $x[n]$ can be written as a sum of scaled, shifted impulses: $x[n] = \sum_k x[k]\delta[n-k]$.
+
+- **LTI System Response:** The output $y[n]$ of an LTI system is the input $x[n]$ convolved with the system's **impulse response** $h[n]$.
+
+- **The Convolution Sum:** This fundamental operation is defined as:
+  $$ y[n] = x[n] * h[n] = \sum_{k=-\infty}^{\infty} x[k]h[n-k] $$
+
+- **Calculation:** We can compute this using the graphical **"flip-and-slide"** method.
+
+- **Key Insight:** The impulse response $h[n]$ is a complete characterization of an LTI system. If you know $h[n]$, you know how the system will react to *any* input.
+
+::: {.notes}
+Let's recap. We started with the idea that any signal can be broken down into impulses. This allowed us to derive the convolution sum, which is the mathematical tool for finding the output of any LTI system. We learned the practical "flip-and-slide" method for computing it. And most importantly, we established that the impulse response, $h[n]$, is the ultimate fingerprint of an LTI system. It tells you everything you need to know about its behavior.
+:::
