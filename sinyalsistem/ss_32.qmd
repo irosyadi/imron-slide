@@ -1,0 +1,409 @@
+---
+title: "Signals and Systems"
+subtitle: "Eigenfunctions of LTI Systems: Complex Exponentials"
+author: "Imron Rosyadi"
+format:
+  live-revealjs:
+    # Ensure these assets are available in your project directory
+    logo: "qrjs_assets/unsoed_logo.png" 
+    footer: "[irosyadi-2025](https://imron-slide.vercel.app)"
+    slide-number: true
+    chalkboard: true
+    scrollable: true
+    controls: true
+    progress: true
+    preview-links: false
+    transition: fade
+    incremental: false
+    smaller: false
+    theme: [default, qrjs_assets/ir_style.scss]
+---
+
+# Signals and Systems
+## Eigenfunctions of LTI Systems: Complex Exponentials
+
+### Imron Rosyadi
+
+---
+
+## 1. Introduction: Why Basic Signals?
+
+In Signals and Systems, we seek "basic signals" with two crucial properties:
+
+1.  **Broad Applicability:**
+    They can construct a wide range of useful signals.
+2.  **Simple Response:**
+    The system's response to them is simple enough for convenient analysis.
+
+Complex exponentials ($e^{st}$ and $z^n$) fit these criteria perfectly.
+
+::: {.notes}
+To effectively analyze and design systems, we often look for fundamental building blocks. Imagine trying to understand complex machinery without knowing about simple gears or levers. In signals, we want signals that, when fed into an LTI system, behave predictably and simply. This predictability allows us to analyze the system's overall behavior for any input that can be decomposed into these basic signals. The complex exponential is precisely this kind of fundamental building block for LTI systems. It simplifies the inherently complex operation of convolution into something much more manageable.
+:::
+
+---
+
+## 2. Eigentheory for LTI Systems
+
+A signal for which the system output is a (possibly complex) constant times the input is called an **eigenfunction** of the system.
+
+:::: {.columns}
+::: {.column width="50%"}
+**Continuous-Time**
+Input: $x(t) = e^{st}$
+Output: $y(t) = H(s) e^{st}$
+
+Here, $e^{st}$ is the eigenfunction, and $H(s)$ is the corresponding eigenvalue.
+:::
+::: {.column width="50%"}
+**Discrete-Time**
+Input: $x[n] = z^n$
+Output: $y[n] = H(z) z^n$
+
+Here, $z^n$ is the eigenfunction, and $H(z)$ is the corresponding eigenvalue.
+:::
+::::
+
+::: {.notes}
+The term "eigen" comes from German, meaning "own" or "characteristic". So, an eigenfunction is a characteristic function of the system. It means that when you apply this specific type of signal to an LTI system, its fundamental form doesn't change; only its amplitude and phase might be modified. This property is incredibly powerful for simplifying system analysis, as we only need to understand how the system scales these specific basic signals, rather than performing complex convolutions for every possible input.
+:::
+
+---
+
+## 3. Derivation: Continuous-Time Case
+
+Let an LTI system have impulse response $h(t)$.
+Input: $x(t) = e^{st}$.
+
+The output $y(t)$ is given by the convolution integral:
+$$
+y(t) = \int_{-\infty}^{+\infty} h(\tau) x(t-\tau) d \tau
+$$
+
+Substitute $x(t-\tau) = e^{s(t-\tau)}$:
+$$
+y(t) = \int_{-\infty}^{+\infty} h(\tau) e^{s(t-\tau)} d \tau
+$$
+$$
+y(t) = \int_{-\infty}^{+\infty} h(\tau) e^{st} e^{-s\tau} d \tau
+$$
+
+Since $e^{st}$ is independent of $\tau$, we can pull it out of the integral:
+$$
+y(t) = e^{st} \int_{-\infty}^{+\infty} h(\tau) e^{-s\tau} d \tau
+$$
+
+Thus, the output is:
+$$
+y(t) = H(s) e^{st}
+$$
+where the eigenvalue $H(s)$ is:
+$$
+H(s) = \int_{-\infty}^{+\infty} h(\tau) e^{-s\tau} d \tau
+$$
+
+::: {.notes}
+This derivation explicitly illustrates how the convolution integral simplifies when the input is a complex exponential. The integral term, $\int_{-\infty}^{+\infty} h(\tau) e^{-s\tau} d \tau$, is a fundamental transformation of the system's impulse response. For particular values of 's', this expression corresponds to the Laplace Transform of $h(t)$, or more specifically, the Fourier Transform if $s=j\omega$. This $H(s)$ completely characterizes how the system behaves for each specific complex exponential frequency, providing a direct link between the system's time-domain properties and its response in the complex frequency domain.
+:::
+
+---
+
+## 4. Derivation: Discrete-Time Case
+
+Similarly, for a discrete-time LTI system with impulse response $h[n]$.
+Input: $x[n] = z^n$.
+
+The output $y[n]$ is given by the convolution sum:
+$$
+y[n] = \sum_{k=-\infty}^{+\infty} h[k] x[n-k]
+$$
+
+Substitute $x[n-k] = z^{n-k}$:
+$$
+y[n] = \sum_{k=-\infty}^{+\infty} h[k] z^{n-k}
+$$
+$$
+y[n] = \sum_{k=-\infty}^{+\infty} h[k] z^n z^{-k}
+$$
+
+Since $z^n$ is independent of $k$, we can pull it out of the sum:
+$$
+y[n] = z^n \sum_{k=-\infty}^{+\infty} h[k] z^{-k}
+$$
+
+Thus, the output is:
+$$
+y[n] = H(z) z^n
+$$
+where the eigenvalue $H(z)$ is:
+$$
+H(z) = \sum_{k=-\infty}^{+\infty} h[k] z^{-k}
+$$
+
+::: {.notes}
+The discrete-time derivation strongly parallels the continuous-time one, demonstrating the consistent mathematical framework for LTI systems in both domains. The sum, $\sum_{k=-\infty}^{+\infty} h[k] z^{-k}$, represents the Z-Transform of $h[n]$. This again highlights how the eigenvalue function, $H(z)$, is a transform of the system's impulse response, providing a direct link between the system's internal characteristics (its impulse response) and its external behavior when excited by discrete-time complex exponentials. This parallel makes the concepts transferable and reinforces the universality of eigenfunctions for LTI analysis.
+:::
+
+---
+
+## 5. Power of Superposition
+
+The eigenfunction property, combined with the linearity of LTI systems (superposition), significantly simplifies analysis.
+
+Consider an input composed of a sum of complex exponentials:
+$$
+x(t) = a_1 e^{s_1 t} + a_2 e^{s_2 t} + a_3 e^{s_3 t}
+$$
+
+By superposition, the response to the sum is the sum of individual responses:
+
+*   $a_1 e^{s_1 t} \longrightarrow a_1 H(s_1) e^{s_1 t}$
+*   $a_2 e^{s_2 t} \longrightarrow a_2 H(s_2) e^{s_2 t}$
+*   $a_3 e^{s_3 t} \longrightarrow a_3 H(s_3) e^{s_3 t}$
+
+Summing these up, the total output $y(t)$ is:
+$$
+y(t) = a_1 H(s_1) e^{s_1 t} + a_2 H(s_2) e^{s_2 t} + a_3 H(s_3) e^{s_3 t}
+$$
+
+::: {.notes}
+This is the core insight that underpins Fourier analysis. If we can represent any complex-looking signal as a sum (or integral) of these simple complex exponentials, then finding the system's output just means multiplying each component's amplitude coefficient by the corresponding eigenvalue. We completely avoid the computationally intensive process of performing a full convolution for the entire input signal. This drastically simplifies the problem of finding system responses and provides a powerful alternative to time-domain analysis.
+:::
+
+---
+
+## 6. General Form: Continuous-Time
+
+If the input to a continuous-time LTI system is a linear combination of complex exponentials:
+
+:::: {.columns}
+::: {.column width="50%"}
+**Input Signal**
+$$
+x(t) = \sum_{k} a_k e^{s_k t}
+$$
+:::
+::: {.column width="50%"}
+**Output Signal**
+$$
+y(t) = \sum_{k} a_k H(s_k) e^{s_k t}
+$$
+:::
+::::
+
+The output is simply a linear combination of the *same* complex exponentials, but each scaled by its corresponding eigenvalue $H(s_k)$.
+
+::: {.notes}
+This equation is truly fundamental in Signals and Systems. It means that the LTI system *preserves the frequency components* of the input complex exponentials. It doesn't generate new frequencies; it only changes their amplitudes and phases. This property is why LTI systems are often called "linear filters." They selectively pass or attenuate different frequency components based on the value of $H(s_k)$ at that specific complex frequency $s_k$.
+:::
+
+---
+
+## 7. General Form: Discrete-Time
+
+Similarly, for a discrete-time LTI system:
+
+:::: {.columns}
+::: {.column width="50%"}
+**Input Signal**
+$$
+x[n] = \sum_{k} a_k z_k^n
+$$
+:::
+::: {.column width="50%"}
+**Output Signal**
+$$
+y[n] = \sum_{k} a_k H(z_k) z_k^n
+$$
+:::
+::::
+
+The output is also a linear combination of the *same* complex exponential sequences, each scaled by its corresponding eigenvalue $H(z_k)$.
+
+::: {.notes}
+The strong parallelism between continuous-time and discrete-time systems in this context is both elegant and important. It demonstrates that the underlying principles of how LTI systems interact with complex exponentials are consistent across both domains, whether the signals are continuous or sampled. This makes the concepts widely applicable and reinforces the universality of eigenfunctions for LTI analysis, simplifying the transition between analog and digital signal processing.
+:::
+
+---
+
+## 8. Restriction for Fourier Analysis
+
+While $s$ and $z$ can be arbitrary complex numbers, Fourier analysis focuses on specific values:
+
+:::: {.columns}
+::: {.column width="50%"}
+**Continuous-Time**
+We restrict $s$ to purely imaginary values:
+$$
+s = j\omega
+$$
+This focuses on complex exponentials of the form $e^{j\omega t}$.
+:::
+::: {.column width="50%"}
+**Discrete-Time**
+We restrict $z$ to values of unit magnitude:
+$$
+z = e^{j\omega}
+$$
+This focuses on complex exponentials of the form $e^{j\omega n}$.
+:::
+::::
+
+```{mermaid}
+graph TD
+    A[Complex Plane for s] --> B(Real Axis);
+    A --> C(Imaginary Axis);
+    C -- "Fourier Analysis Focus" --> D(j&omega; Axis);
+    classDef highlight fill:#add8e6,stroke:#333,stroke-width:2px;
+    class D highlight;
+
+    X[Complex Plane for z] --> E(Real Axis);
+    X --> F(Imaginary Axis);
+    subgraph Polar Plane for z
+        direction LR
+        G(Center) --- H(Unit Circle)
+        H -- "Fourier Analysis Focus" --> I(e^j&omega; on Unit Circle);
+    end
+    class I highlight;
+```
+::: {.notes}
+The restriction to $s=j\omega$ and $z=e^{j\omega}$ is profoundly important. These specific forms represent sinusoidal signals, which are ubiquitous in electrical and computer engineering (e.g., AC circuits, oscillations, modulation). $e^{j\omega t}$ can be decomposed into $\cos(\omega t)$ and $\sin(\omega t)$ using Euler's formula. By focusing on these values, we are effectively analyzing the system's *frequency response*. The values of $H(j\omega)$ and $H(e^{j\omega})$ directly tell us how the system passes or attenuates different frequencies, analogous to how an audio equalizer or a radio filter works.
+:::
+
+
+---
+
+## 9. Example 3.1: Time Shift System
+
+Consider an LTI system where the output $y(t)$ is a time-shifted version of the input $x(t)$:
+$$
+y(t)=x(t-3).
+$$
+This system represents a pure time delay of 3 units.
+
+**Part 1: Response to a single complex exponential input**
+Input: $x(t) = e^{j2t}$.
+
+To find the output, we directly substitute $x(t)$ into the system equation:
+$$
+y(t) = e^{j2(t-3)} = e^{-j6} e^{j2t}.
+$$
+
+Comparing $y(t) = e^{-j6} e^{j2t}$ with the eigenfunction form $y(t) = H(s) e^{st}$, we can identify:
+The eigenvalue $H(j2) = e^{-j6}$.
+
+::: {.notes}
+This simple example clearly illustrates the eigenfunction property in action. The output is still a complex exponential of the exact same frequency ($2$ rad/sec), but its amplitude has been modified by the complex constant $e^{-j6}$. This complex constant is crucial: its magnitude (which is 1 here, meaning no gain or attenuation) and its phase ($-6$ radians, indicating a lag) reveal how the system affects this specific frequency component. It's a phase shift corresponding to the time delay at that particular frequency.
+:::
+
+---
+
+## 10. Example 3.1: Impulse Response Verification
+
+Let's verify the eigenvalue $H(s)$ by first determining the system's impulse response $h(t)$.
+
+For a system defined by $y(t)=x(t-3)$, the impulse response is a delayed impulse function:
+$h(t) = \delta(t-3)$.
+
+Now, we use the formula for $H(s)$ derived earlier:
+$$
+H(s) = \int_{-\infty}^{+\infty} h(\tau) e^{-s\tau} d \tau
+$$
+Substitute $h(\tau) = \delta(\tau-3)$:
+$$
+H(s) = \int_{-\infty}^{+\infty} \delta(\tau-3) e^{-s\tau} d \tau
+$$
+Due to the sifting property of the Dirac delta function, this integral evaluates to:
+$$
+H(s) = e^{-s(3)} = e^{-3s}
+$$
+
+Finally, we evaluate $H(s)$ at $s=j2$ (the frequency of our input $x(t)=e^{j2t}$):
+$$
+H(j2) = e^{-j3(2)} = e^{-j6}
+$$
+This result precisely matches the eigenvalue we found by direct substitution on the previous slide!
+
+::: {.notes}
+This verification step is important because it shows the consistency of the eigenfunction framework. Whether we calculate the eigenvalue by observing the output directly or by transforming the system's impulse response, we get the same result. The use of the Dirac delta function here significantly simplifies the integral, demonstrating its powerful sifting property. This consistency reinforces the fundamental relationship between a system's time-domain characteristic (its impulse response) and its frequency-domain characteristic (its eigenvalue function).
+:::
+
+---
+
+
+## 11. Example 3.1: Superposition with Cosines
+
+Consider a more complex input signal composed of a sum of two cosine waves:
+$$
+x(t) = \cos(4t) + \cos(7t)
+$$
+
+**Direct approach:** From $y(t)=x(t-3)$, the output is simply:
+$$
+y(t) = \cos(4(t-3)) + \cos(7(t-3))
+$$
+
+**Using Eigenfunctions & Superposition:**
+First, we express $x(t)$ using Euler's formula to decompose it into complex exponentials:
+$$
+x(t) = \frac{1}{2}e^{j4t} + \frac{1}{2}e^{-j4t} + \frac{1}{2}e^{j7t} + \frac{1}{2}e^{-j7t}
+$$
+
+We already found the system's eigenvalue $H(j\omega)$ for a time delay of 3: $H(j\omega) = e^{-j3\omega}$.
+
+::: {.notes}
+This example transitions from a single exponential to a sum of real sinusoids. This is where the true power of the eigenfunction approach, combined with linearity, becomes apparent. By using Euler's formula, we transform the real-valued input into a sum of complex exponentials. Each of these complex exponential components is an eigenfunction of the LTI system, allowing us to find their individual responses simply by scaling. This decomposition is the critical first step in applying Fourier analysis to real-world signals.
+:::
+
+---
+
+## 12. Example 3.1: Superposition (Cont.)
+
+Now, we apply the eigenfunction property to each complex exponential component of $x(t)$:
+
+*   For $\frac{1}{2}e^{j4t}$: The eigenvalue is $H(j4) = e^{-j3(4)} = e^{-j12}$.
+    Output component: $\frac{1}{2} H(j4) e^{j4t} = \frac{1}{2} e^{-j12} e^{j4t} = \frac{1}{2} e^{j(4t-12)} = \frac{1}{2} e^{j4(t-3)}$
+
+*   For $\frac{1}{2}e^{-j4t}$: The eigenvalue is $H(-j4) = e^{-j3(-4)} = e^{j12}$.
+    Output component: $\frac{1}{2} H(-j4) e^{-j4t} = \frac{1}{2} e^{j12} e^{-j4t} = \frac{1}{2} e^{-j(4t-12)} = \frac{1}{2} e^{-j4(t-3)}$
+
+*   For $\frac{1}{2}e^{j7t}$: The eigenvalue is $H(j7) = e^{-j3(7)} = e^{-j21}$.
+    Output component: $\frac{1}{2} H(j7) e^{j7t} = \frac{1}{2} e^{-j21} e^{j7t} = \frac{1}{2} e^{j(7t-21)} = \frac{1}{2} e^{j7(t-3)}$
+
+*   For $\frac{1}{2}e^{-j7t}$: The eigenvalue is $H(-j7) = e^{-j3(-7)} = e^{j21}$.
+    Output component: $\frac{1}{2} H(-j7) e^{-j7t} = \frac{1}{2} e^{j21} e^{-j7t} = \frac{1}{2} e^{-j(7t-21)} = \frac{1}{2} e^{-j7(t-3)}$
+
+Summing these individual outputs, we get the total output $y(t)$:
+$$
+y(t) = \frac{1}{2} e^{j4(t-3)} + \frac{1}{2} e^{-j4(t-3)} + \frac{1}{2} e^{j7(t-3)} + \frac{1}{2} e^{-j7(t-3)}
+$$
+Applying Euler's formula in reverse (recall $\cos(\theta) = \frac{e^{j\theta} + e^{-j\theta}}{2}$):
+$$
+y(t) = \cos(4(t-3)) + \cos(7(t-3))
+$$
+This result precisely matches the direct calculation, demonstrating the power of the eigenfunction approach!
+
+::: {.notes}
+This detailed breakdown confirms that the eigenfunction approach, coupled with the principle of superposition, correctly and systematically determines the system's output for complex inputs. While direct substitution was trivial for this particular simple time-delay system, the eigenfunction method is *universally applicable* and becomes absolutely indispensable for more complex LTI systems where direct convolution or time-domain manipulation is cumbersome or intractable. This systematically transforms complex time-domain problems into simpler frequency-domain multiplications, paving the way for advanced frequency-domain analysis and filter design.
+:::
+
+---
+
+## 14. Conclusion & Next Steps
+
+**Key Takeaways:**
+
+*   Complex exponentials ($e^{st}$, $z^n$) are the **eigenfunctions** of LTI systems.
+*   LTI systems respond to these signals by simply scaling them by an **eigenvalue** ($H(s)$, $H(z)$).
+*   This property, combined with **superposition**, simplifies the analysis of complex signals through LTI systems from convolution to simple multiplication.
+
+**What's Next?**
+
+This lays the essential foundation for **Fourier Analysis**:
+
+*   **Fourier Series:** A powerful tool for representing **periodic** signals as sums of complex exponentials.
+*   **Fourier Transform:** Extending this representation to **aperiodic** signals, enabling universal frequency-domain analysis.
+
+::: {.notes}
+Understanding eigenfunctions is the critical bridge that connects time-domain convolution with the powerful frequency-domain analysis techniques. It's the "why" behind transforms like the Fourier, Laplace, and Z-transforms. These transforms don't just calculate; they inherently leverage this eigenfunction property to transform the complex operation of convolution into simpler multiplication operations in the frequency domain. This shift makes system analysis and design immensely more intuitive and manageable, forming the backbone for nearly all aspects of electrical and computer engineering, from communication systems and audio processing to control theory and image processing. This is a concept that truly permeates the entire field.
+:::
