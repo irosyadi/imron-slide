@@ -1,0 +1,315 @@
+---
+title: "Linear Algebra"
+subtitle: "GNU Octave Tutorial"
+author: "Imron Rosyadi"
+format:
+  live-revealjs:
+    logo: "qrjs_assets/unsoed_logo.png"
+    footer: "[irosyadi-2025](https://imron-slide.vercel.app)"
+    slide-number: true
+    chalkboard: true
+    scrollable: true
+    controls: true
+    progress: true
+    preview-links: false
+    transition: fade
+    incremental: false
+    smaller: false
+    theme: [default, qrjs_assets/ir_style.scss]
+    mermaid:
+        theme: neutral
+pyodide:
+  packages:
+    - numpy
+    - plotly
+    - nbformat
+---
+
+# GNU Octave Tutorial for Linear Algebra
+
+A Hands-on Approach for ECE Students
+
+---
+
+## Why Octave for ECE Linear Algebra?
+
+Octave is a powerful, open-source numerical computation environment.
+It's highly compatible with MATLAB, making it an excellent tool for ECE.
+
+**Key Benefits**  
+
+-   **Free & Open-Source:** Accessible to everyone.
+-   **Matrix-Oriented:** Designed for vector and matrix operations, core to Linear Algebra.
+-   **Prototyping:** Quickly test algorithms and theories.
+-   **Visualization:** Generate plots and graphs to understand data.
+-   **Industry Relevance:** Similar syntax to MATLAB, widely used in engineering.
+
+::: {.notes}
+Octave provides a robust platform for numerical analysis directly applicable to many ECE fields like signal processing, control systems, and circuit analysis. Its matrix-centric nature simplifies complex computations.
+:::
+
+---
+
+## Getting Started: Installation & Basics
+
+**Installation Guide**  
+
+1.  **Download:** Visit [GNU Octave](https://octave.org/).
+2.  **Install:** Follow platform-specific instructions (Windows, macOS, Linux).
+3.  **Launch:** Open the Octave GUI or command-line interface.
+
+**Online Octave**
+
+Visit [octave-online.net](https://octave-online.net/)  
+
+**Command Line Interface (CLI) Basics**  
+Octave operates like a powerful calculator.
+
+---
+
+## Getting Started: Installation & Basics
+
+```octave
+# Basic Arithmetic
+2 + 3
+5 * 4.5
+pi / 2
+
+# Variable Assignment
+x = 10;  # Semicolon suppresses output
+y = x + 5
+z = 'Hello Octave'
+
+# Predefined Constants
+pi
+e   # Euler's number
+inf # Infinity
+nan # Not-a-Number
+```
+
+::: {.notes}
+Encourage students to try these commands as you speak. Emphasize the semicolon to suppress output, which is crucial for larger computations.
+Also mention `clc` to clear the command window and `clear` to clear variables from memory.
+`who` and `whos` can list variables.
+:::
+
+---
+
+## Working with Vectors in Octave
+
+Vectors are fundamental building blocks in Linear Algebra.
+
+**Creating Vectors**  
+
+-   **Row Vector:** `v_row = [1 2 3]`
+-   **Column Vector:** `v_col = [4; 5; 6]`
+-   **Range:** `1:5` (produces `[1 2 3 4 5]`)
+-   **`linspace`:** `linspace(0, 10, 5)` (5 points from 0 to 10)
+
+**Vector Operations**  
+
+-   **Addition:** `v1 + v2`
+-   **Scalar Multiplication:** `3 * v1`
+-   **Dot Product:** `dot(v1, v2)` or `v1 * v2'` (if `v1` is row, `v2` is row)
+-   **Cross Product:** `cross(v1, v2)` (for 3D vectors)
+-   **Magnitude (Norm):** `norm(v)`
+
+---
+
+## Working with Vectors in Octave
+
+**Example: Vector Addition**
+
+$$
+\mathbf{u} = \begin{bmatrix} 2 \\ 1 \end{bmatrix}, \quad \mathbf{v} = \begin{bmatrix} -1 \\ 3 \end{bmatrix} \\
+\mathbf{u} + \mathbf{v} = \begin{bmatrix} 2 + (-1) \\ 1 + 3 \end{bmatrix} = \begin{bmatrix} 1 \\ 4 \end{bmatrix}
+$$
+
+```octave
+u = [2; 1];
+v = [-1; 3];
+sum_vec = u + v
+```
+
+::: {.notes}
+Emphasize that Octave handles vector operations intuitively. The interactive plot, although using Python, demonstrates the geometric interpretation of vector addition, which is identical whether calculated in Octave or Python.
+Explain the difference between `*` (matrix multiplication) and `.*` (element-wise multiplication) for later. For vectors, `*` behaves as a dot product if dimensions align correctly.
+:::
+
+---
+
+## Mastering Matrices in Octave
+
+Matrices are central to solving systems of equations, transformations, and more.
+
+**Creating Matrices**  
+
+-   Rows separated by `;`, elements by space/comma.
+    `A = [1 2; 3 4]`
+-   **Special Matrices:**
+    -   `zeros(2,3)`: 2x3 matrix of zeros.
+    -   `ones(3)`: 3x3 matrix of ones.
+    -   `eye(4)`: 4x4 identity matrix.
+    -   `diag([1 2 3])`: Diagonal matrix.
+    -   `rand(2,2)`: Random matrix.
+
+**Accessing Elements**  
+
+-   `A(row, col)`: `A(1,2)` (element at row 1, col 2)
+-   `A(1,:)`: First row.
+-   `A(:,2)`: Second column.
+
+---
+
+## Mastering Matrices in Octave
+
+**Matrix Operations**  
+
+-   **Addition/Subtraction:** `A + B`, `A - B` (must be same size)
+-   **Scalar Multiplication:** `5 * A`
+-   **Matrix Multiplication:** `A * B` (inner dimensions must match)
+-   **Element-wise Multiplication:** `A .* B` (must be same size)
+-   **Transpose:** `A'`
+-   **Inverse:** `inv(A)`
+-   **Determinant:** `det(A)`
+
+```octave
+A = [2 1; 1 3];
+B = [4 0; -1 2];
+
+C_mult = A * B
+D_inv = inv(A)
+E_det = det(A)
+```
+
+::: {.notes}
+Emphasize the difference between `*` (matrix multiplication) and `.*` (element-wise multiplication). This is a common source of error for beginners.
+Discuss why the inverse and determinant are important (e.g., for solving systems, checking singularity).
+Mention that `inv(A)` can be computationally expensive for large matrices, and often direct solution methods are preferred.
+:::
+
+---
+
+## Solving Linear Systems: `Ax = b`
+
+One of the most common applications of linear algebra in ECE.
+
+$$
+\mathbf{A}\mathbf{x} = \mathbf{b}
+$$
+
+Where:  
+
+-   $\mathbf{A}$ is the coefficient matrix.
+-   $\mathbf{x}$ is the unknown vector.
+-   $\mathbf{b}$ is the constant vector.
+
+**Solving in Octave using Left Division**
+Octave uses the backslash operator (`\`) for efficient and numerically stable solutions.
+
+```octave
+# Example: 
+# 2x + y = 5
+# x - y = 1
+
+A = [2 1; 1 -1];
+b = [5; 1];
+
+x = A \ b  # Solves Ax = b for x
+```
+
+::: {.notes}
+Explain that `A \ b` is equivalent to `inv(A) * b` but is computationally more efficient and numerically stable, especially for large or ill-conditioned matrices.
+Provide a simple ECE context: Kirchhoff's laws for circuit analysis often lead to systems of linear equations.
+:::
+
+---
+
+## Scripting in Octave: `.m` Files
+
+For more complex tasks, write scripts or functions in `.m` files.
+
+**Creating a Script**
+
+1.  Open Octave Editor (File -> New -> Script).
+2.  Save as `my_script.m`.
+3.  Run from CLI: `my_script` (no `.m` needed).
+
+**Example: Vector Magnitude Script**
+
+```octave
+# my_magnitude.m
+# Calculates the magnitude of a 3D vector
+
+clc;        # Clear command window
+clear;      # Clear workspace variables
+
+% Define a vector
+v = [3; 4; 0]; 
+
+% Calculate magnitude
+mag_v = norm(v);
+
+% Display result
+fprintf('The magnitude of v is: %.2f\n', mag_v); 
+```
+
+---
+
+## Scripting in Octave: `.m` Files
+
+**Functions in Octave**
+Functions allow reusable code blocks.
+
+```octave
+# my_area_triangle.m
+function area = my_area_triangle(base, height)
+  % MY_AREA_TRIANGLE Calculates the area of a triangle.
+  %   area = MY_AREA_TRIANGLE(base, height)
+  %   Example: my_area_triangle(10, 5)
+
+  area = 0.5 * base * height;
+endfunction
+```
+
+**Using the Function**
+```octave
+# In CLI or another script:
+result = my_area_triangle(7, 3) 
+```
+
+
+::: {.notes}
+Explain why scripting is important: automation, reproducibility, and handling larger problems.
+Discuss comments (`#` or `%`) and the `fprintf` function for formatted output.
+Highlight the structure of a function file: `function output = func_name(input) ... endfunction`.
+Mention that function names should match the filename for Octave to find them automatically.
+:::
+
+---
+
+## Conclusion & Further Resources
+
+**Key Takeaways**
+
+-   Octave is a powerful, free tool for Linear Algebra.
+-   It simplifies vector and matrix operations.
+-   Essential for solving systems and understanding transformations.
+-   Scripting enhances efficiency and reproducibility.
+
+**Next Steps**
+
+-   **Practice:** The best way to learn is by doing.
+-   **Octave Documentation:** `doc` command or online manual.
+-   **Linear Algebra Textbooks:** Apply concepts with Octave.
+-   **ECE Applications:** Explore how these concepts are used in your specific field of interest.
+
+---
+
+## Thank You!
+### Happy Computing!
+
+::: {.notes}
+Encourage questions and provide contact information if applicable.
+Reinforce the practical utility of Octave in their ECE curriculum and future careers.
+:::

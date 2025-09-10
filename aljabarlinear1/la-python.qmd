@@ -1,0 +1,500 @@
+---
+title: "Linear Algebra"
+subtitle: "Python Tutorial for Linear Algebra"
+author: "Imron Rosyadi"
+format:
+  live-revealjs:
+    logo: "qrjs_assets/unsoed_logo.png"
+    footer: "[irosyadi-2025](https://imron-slide.vercel.app)"
+    slide-number: true
+    chalkboard: true
+    scrollable: true
+    controls: true
+    progress: true
+    preview-links: false
+    transition: fade
+    incremental: false
+    smaller: false
+    theme: [default, qrjs_assets/ir_style.scss]
+    mermaid:
+        theme: neutral
+pyodide:
+  packages:
+    - numpy
+    - plotly
+    - nbformat
+---
+
+# Python Tutorial for Linear Algebra
+A Hands-on Approach for ECE Students
+
+---
+
+## Why Python for ECE Linear Algebra?
+
+Python is a versatile, high-level programming language widely used in engineering and science.
+It's an indispensable tool for numerical computation, data analysis, and machine learning.
+
+**Key Benefits**
+
+-   **Free & Open-Source:** Accessible to everyone.
+-   **Rich Ecosystem:** Powerful libraries like NumPy, SciPy, Matplotlib.
+-   **Versatility:** Used in data science, AI, web development, embedded systems.
+-   **Industry Standard:** High demand for Python skills in ECE fields.
+-   **Prototyping & Simulation:** Quickly build and test models.
+
+::: {.notes}
+Python's popularity stems from its readability and vast community support. For ECE students, it's particularly valuable for signal processing, control systems, machine learning, and circuit simulation, where linear algebra is paramount. NumPy provides the foundational array object that makes numerical operations incredibly efficient.
+:::
+
+---
+
+## Getting Started: Installation (Alternative 1)
+
+Here are two common ways to set up your Python environment for linear algebra.
+
+### Alternative 1: Using Miniconda (Recommended)
+
+Miniconda is a lightweight version of Anaconda that includes just Python and the `conda` package manager. This is a clean and efficient way to manage project-specific environments.
+
+1.  **Download Miniconda:** Visit the [Miniconda documentation](https://docs.conda.io/en/latest/miniconda.html) and download the installer for your operating system.
+
+2.  **Install Miniconda:** Run the installer, accepting the default options. It's recommended to allow the installer to initialize `conda`.
+
+3.  **Create a Conda Environment:** Open your terminal (or Anaconda Prompt on Windows) and run:
+
+    ```bash
+    conda create --name la_env python=3.9 numpy spyder -y
+    ```
+
+    This command creates a new environment named `la_env` with Python 3.9, NumPy, and the Spyder IDE.
+
+4.  **Activate the Environment:**
+
+    ```bash
+    conda activate la_env
+    ```
+
+    You must activate this environment every time you want to work on your linear algebra projects.
+
+5.  **Launch Spyder:** With the environment active, simply type `spyder` in your terminal.
+
+---
+
+## Getting Started: Installation (Alternative 2)
+
+### Alternative 2: Manual Installation (Python + pip)
+
+This approach gives you full control over your Python installation without a special package manager.
+
+1.  **Install Python:**
+
+    -   Go to `python.org/downloads`.
+    -   Download and install the latest stable version of Python (e.g., Python 3.9+).
+    -   **On Windows:** Make sure to check the box that says "Add Python to PATH" during installation.
+
+2.  **Install Packages with pip:** Open your terminal or command prompt and use `pip` (Python's package installer) to install the necessary libraries:
+
+    ```bash
+    pip install numpy
+    pip install spyder
+    ```
+    *Note: Spyder will automatically pull in other required dependencies like `scipy` and `matplotlib`.*
+
+---
+
+## Getting Started: Spyder
+
+**Launch Spyder:** Once installed, you can launch Spyder by typing `spyder` in your terminal.
+
+**Spyder IDE Overview**
+
+-   **Editor Pane:** Write your Python code (`.py` files).
+-   **IPython Console:** Interactive command line for executing code snippets.
+-   **Variable Explorer:** Inspect variables in memory.
+-   **Plots Pane:** View generated plots.
+
+---
+
+## Python Basics: Interpreter & Variables
+
+The IPython Console in Spyder (or a standalone terminal) acts as your interactive Python interpreter.
+
+```{pyodide}
+# Basic Arithmetic
+2 + 3
+5 * 4.5
+10 / 3  # Division results in float
+10 // 3 # Integer division
+
+# Variable Assignment
+x = 10
+y = x + 5
+name = 'Linear Algebra'
+is_active = True
+
+# Check variable types
+type(x)
+type(name)
+
+# Print values
+print("Value of y:", y)
+```
+
+::: {.notes}
+Encourage students to type these commands directly into the IPython console. Explain that Python is dynamically typed. Emphasize that the console is great for quick tests, but for larger programs, you'll write scripts.
+`#` is used for comments in Python.
+:::
+
+---
+
+## NumPy: The Powerhouse for Linear Algebra
+
+NumPy (Numerical Python) is the fundamental package for scientific computing with Python.
+It provides support for large, multi-dimensional arrays and matrices, along with a collection of high-level mathematical functions.
+
+**The `ndarray` Object**
+
+-   NumPy's core is the `ndarray` object, an N-dimensional array.
+-   It's significantly more efficient for numerical operations than Python's built-in lists.
+
+**Importing NumPy**
+
+```{pyodide}
+import numpy as np  # Standard convention
+
+# Create a NumPy array
+my_array = np.array([1, 2, 3, 4, 5])
+print(my_array)
+print(type(my_array))
+print(my_array.shape) # Output: (5,) for a 1D array
+```
+
+::: {.notes}
+Stress the importance of `import numpy as np`. This alias `np` is universally accepted. Explain that `ndarray` is specifically designed for numerical data and optimized for performance, unlike generic Python lists which can hold mixed types. The `shape` attribute is crucial for understanding array dimensions.
+:::
+
+---
+
+## Working with Vectors in NumPy
+
+Vectors are represented as 1D `ndarray` objects.
+
+**Creating Vectors**
+
+-   **From List:** `v1 = np.array([1, 2, 3])`
+-   **Range:** `v2 = np.arange(1, 6)` (1 to 5)
+-   **`linspace`:** `v3 = np.linspace(0, 10, 5)` (5 points from 0 to 10)
+
+**Vector Operations**
+
+-   **Addition:** `v_a + v_b`
+-   **Scalar Multiplication:** `3 * v_a`
+-   **Dot Product:** `np.dot(v_a, v_b)` or `v_a @ v_b` (Python 3.5+)
+-   **Cross Product:** `np.cross(v_a, v_b)` (for 3D vectors)
+-   **Magnitude (Norm):** `np.linalg.norm(v_a)`
+
+---
+
+## Working with Vectors in NumPy
+
+**Example: Vector Addition**
+
+$$
+\mathbf{u} = \begin{bmatrix} 2 \\ 1 \end{bmatrix}, \quad \mathbf{v} = \begin{bmatrix} -1 \\ 3 \end{bmatrix} \\
+\mathbf{u} + \mathbf{v} = \begin{bmatrix} 2 + (-1) \\ 1 + 3 \end{bmatrix} = \begin{bmatrix} 1 \\ 4 \end{bmatrix}
+$$
+
+```{pyodide}
+#| max-lines: 10
+import numpy as np
+
+u = np.array([2, 1])
+v = np.array([-1, 3])
+sum_vec = u + v
+print("u + v =", sum_vec)
+```
+
+---
+
+## Working with Vectors in NumPy
+
+**Interactive Vector Visualization**
+
+```{pyodide}
+#| echo: true
+import numpy as np
+import plotly.graph_objects as go
+
+u = np.array([2, 1])
+v = np.array([-1, 3])
+sum_vec = u + v
+
+fig = go.Figure()
+fig.add_trace(go.Scatter(x=[0, u[0]], y=[0, u[1]], mode='lines', name='u', line=dict(color='blue', width=2)))
+fig.add_trace(go.Scatter(x=[0, v[0]], y=[0, v[1]], mode='lines', name='v', line=dict(color='red', width=2)))
+fig.add_trace(go.Scatter(x=[0, sum_vec[0]], y=[0, sum_vec[1]], mode='lines', name='u+v', line=dict(color='green', width=3, dash='dash')))
+
+fig.update_layout(
+    title='Vector Addition',
+    xaxis_title='X-axis',
+    yaxis_title='Y-axis',
+    xaxis_range=[-2, 4],
+    yaxis_range=[-1, 5],
+    showlegend=True,
+    margin=dict(l=20, r=20, t=40, b=20),
+    height=300
+)
+fig
+```
+
+
+::: {.notes}
+Explain that NumPy handles element-wise operations by default when you use standard arithmetic operators (`+`, `-`, `*`, `/`). For dot products, use `np.dot()` or the `@` operator. The interactive plot visually reinforces the parallelogram rule for vector addition.
+:::
+
+---
+
+## Mastering Matrices in NumPy
+
+Matrices are represented as 2D `ndarray` objects.
+
+**Creating Matrices**
+
+-   From nested lists: `M = np.array([[1, 2], [3, 4]])`
+-   **Special Matrices:**
+
+    -   `np.zeros((2,3))`: 2x3 matrix of zeros.
+    -   `np.ones((3,3))`: 3x3 matrix of ones.
+    -   `np.eye(4)`: 4x4 identity matrix.
+    -   `np.diag([1, 2, 3])`: Diagonal matrix.
+    -   `np.random.rand(2,2)`: Random matrix.
+
+**Accessing Elements**
+
+-   `M[row, col]`: `M[0,1]` (element at row 0, col 1)
+-   `M[0,:]`: First row.
+-   `M[:,1]`: Second column.
+-   **Slicing:** `M[0:2, 1:3]`
+
+---
+
+## Mastering Matrices in NumPy
+
+**Matrix Operations**
+
+-   **Addition/Subtraction:** `A + B`, `A - B` (element-wise)
+-   **Scalar Multiplication:** `5 * A`
+-   **Matrix Multiplication:** `A @ B` (use `@` or `np.dot()`)
+-   **Element-wise Multiplication:** `A * B` (use `*`)
+-   **Transpose:** `A.T` or `np.transpose(A)`
+-   **Inverse:** `np.linalg.inv(A)`
+-   **Determinant:** `np.linalg.det(A)`
+
+---
+
+## Mastering Matrices in NumPy
+
+```{pyodide}
+#| max-lines: 10
+import numpy as np
+
+A = np.array([[2, 1], [1, 3]])
+B = np.array([[4, 0], [-1, 2]])
+
+C_mult = A @ B
+D_inv = np.linalg.inv(A)
+E_det = np.linalg.det(A)
+print("A @ B =\n", C_mult)
+print("\ninv(A) =\n", D_inv)
+print("\ndet(A) =", E_det)
+```
+
+
+::: {.notes}
+Crucially distinguish between `*` (element-wise multiplication) and `@` (matrix multiplication). This is a common pitfall. Explain that NumPy's indexing is 0-based, like standard Python. Briefly touch upon why `inv(A)` and `det(A)` are important (e.g., checking singularity, solving systems).
+:::
+
+---
+
+## Solving Linear Systems: $Ax = b$
+
+One of the most fundamental applications of linear algebra in ECE is solving systems of linear equations.
+
+$$
+\mathbf{A}\mathbf{x} = \mathbf{b}
+$$
+
+Where:
+
+-   $\mathbf{A}$ is the coefficient matrix.
+-   $\mathbf{x}$ is the unknown vector.
+-   $\mathbf{b}$ is the constant vector.
+
+**Solving in NumPy using `np.linalg.solve()`**
+This function provides an efficient and numerically stable way to find $\mathbf{x}$.
+
+---
+
+## Solving Linear Systems: $Ax = b$
+
+```{pyodide}
+#| max-lines: 10
+import numpy as np
+
+# Example: 
+# 2x + y = 5
+# x - y = 1
+
+A = np.array([[2, 1], [1, -1]])
+b = np.array([5, 1])
+
+x = np.linalg.solve(A, b)  # Solves Ax = b for x
+print("Solution x =", x)
+# Expected output: [2. 1.]
+```
+
+::: {.notes}
+Explain that `np.linalg.solve(A, b)` is preferred over `np.linalg.inv(A) @ b` because it's more robust and faster for large systems. Give a real-world ECE example, such as solving for currents or voltages in a circuit using Kirchhoff's laws, which often leads to such systems.
+:::
+
+---
+
+## Visualizing Linear Systems (Interactive)
+
+For a 2D system, each equation represents a line. The solution is their intersection point.
+
+```{pyodide}
+#| echo: true
+import numpy as np
+import plotly.graph_objects as go
+
+# Define the system:
+# 2x + y = 5  => y = 5 - 2x
+# x - y = 1   => y = x - 1
+
+x_vals = np.linspace(-1, 6, 100)
+y1_vals = 5 - 2 * x_vals
+y2_vals = x_vals - 1
+
+# Solution (from previous slide: x=2, y=1)
+solution_x = 2
+solution_y = 1
+
+fig = go.Figure()
+
+fig.add_trace(go.Scatter(x=x_vals, y=y1_vals, mode='lines', name='2x + y = 5', line=dict(color='blue')))
+fig.add_trace(go.Scatter(x=x_vals, y=y2_vals, mode='lines', name='x - y = 1', line=dict(color='red')))
+fig.add_trace(go.Scatter(x=[solution_x], y=[solution_y], mode='markers', name='Solution (2, 1)',
+                         marker=dict(size=10, color='green', symbol='circle')))
+
+fig.update_layout(
+    title='Graphical Solution of a 2D Linear System',
+    xaxis_title='x',
+    yaxis_title='y',
+    xaxis_range=[-1, 6],
+    yaxis_range=[-2, 6],
+    showlegend=True,
+    margin=dict(l=20, r=20, t=40, b=20),
+    height=400
+)
+fig
+```
+
+::: {.notes}
+This interactive plot helps immensely in understanding the geometric meaning of solving `Ax=b`. Discuss what happens when lines are parallel (no solution) or coincident (infinite solutions) and how `np.linalg.solve` would handle such cases (it would raise an error for singular matrices).
+:::
+
+---
+
+## Scripting in Python: `.py` Files
+
+For more complex tasks, you'll write Python scripts (saved as `.py` files).
+
+**Creating and Running a Script**
+
+1.  In Spyder's editor, create a new file.
+2.  Save it as `my_script.py`.
+3.  Run it from Spyder (green play button) or from terminal: `python my_script.py`.
+
+---
+
+## Scripting in Python: `.py` Files
+
+**Example: Vector Magnitude Script**
+
+```{pyodide}
+# my_magnitude.py
+# Calculates the magnitude of a 3D vector
+
+import numpy as np # Import numpy
+
+# Define a vector
+v = np.array([3, 4, 0]) 
+
+# Calculate magnitude
+mag_v = np.linalg.norm(v)
+
+# Display result
+print(f"The magnitude of v is: {mag_v:.2f}") 
+```
+
+---
+
+## Scripting in Python: `.py` Files
+
+**Functions in Python**
+
+Functions allow you to organize, reuse, and modularize your code.
+
+```{pyodide}
+# my_area_triangle.py
+def my_area_triangle(base, height):
+  """
+  Calculates the area of a triangle.
+  Args:
+    base (float): The base length of the triangle.
+    height (float): The height of the triangle.
+  Returns:
+    float: The calculated area.
+  """
+  area = 0.5 * base * height
+  return area
+
+# Example usage (often put in a separate script or main block)
+if __name__ == "__main__":
+    result = my_area_triangle(7, 3) 
+    print(f"Area of triangle: {result}")
+```
+
+::: {.notes}
+Explain the importance of scripting for larger projects, reproducibility, and automation. Emphasize `import` statements at the top of scripts. Introduce `def` keyword for functions and docstrings for documentation. Explain `if __name__ == "__main__":` as a common Python idiom to ensure code runs only when the script is executed directly.
+:::
+
+---
+
+## Conclusion & Further Resources
+
+**Key Takeaways**  
+
+-   Python with NumPy is a powerful, free tool for Linear Algebra.
+-   Anaconda/Spyder provides an excellent environment for ECE students.
+-   NumPy arrays (`ndarray`) are fundamental for vector and matrix operations.
+-   Python allows for efficient scripting and function development.
+-   These tools are essential for solving systems and understanding transformations.
+
+**Next Steps**  
+
+-   **Practice:** The best way to learn is by doing. Experiment with the code examples.
+-   **NumPy Documentation:** `numpy.org/doc/` for comprehensive details.
+-   **Linear Algebra Textbooks:** Apply theoretical concepts using Python.
+-   **ECE Applications:** Explore how these concepts and tools are used in your specific ECE courses and projects.
+
+---
+
+## Thank You!
+### Happy Computing!
+
+::: {.notes}
+Encourage active learning and highlight the practical utility of Python in their ECE curriculum and future careers. Offer to answer questions and provide contact information if appropriate.
+:::
