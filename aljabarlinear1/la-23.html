@@ -223,7 +223,10 @@ A = \left[ \begin{array}{ll}1 &amp; 2 \\ 2 &amp; 5 \end{array} \right], \quad B 
 \]</span> The same result holds for columns.</p>
 <h4 id="example-2-times-2-illustration">Example: <span class="math inline">\(2 \times 2\)</span> Illustration</h4>
 <p>If <span class="math inline">\(A = \left[ \begin{array}{ll}a_{11} &amp; a_{12} \\ a_{21} &amp; a_{22} \end{array} \right]\)</span> and <span class="math inline">\(B = \left[ \begin{array}{ll}a_{11} &amp; a_{12} \\ b_{21} &amp; b_{22} \end{array} \right]\)</span>, then <span class="math inline">\(C = \left[ \begin{array}{cc}{a_{11}} &amp; {a_{12}}\\ {a_{21} + b_{21}} &amp; {a_{22} + b_{22}} \end{array} \right]\)</span>.</p>
-<p>Calculating: <span class="math inline">\(\operatorname{det}(A) + \operatorname{det}(B) = (a_{11}a_{22} - a_{12}a_{21}) + (a_{11}b_{22} - a_{12}b_{21})\)</span> <span class="math inline">\(= a_{11}(a_{22} + b_{22}) - a_{12}(a_{21} + b_{21})\)</span> This is exactly <span class="math inline">\(\operatorname{det}(C)\)</span>, expanded along the second row.</p>
+<p>Calculating:</p>
+<p><span class="math inline">\(\operatorname{det}(A) + \operatorname{det}(B) = (a_{11}a_{22} - a_{12}a_{21}) + (a_{11}b_{22} - a_{12}b_{21})\)</span></p>
+<p><span class="math inline">\(= a_{11}(a_{22} + b_{22}) - a_{12}(a_{21} + b_{21})\)</span></p>
+<p>This is exactly <span class="math inline">\(\operatorname{det}(C)\)</span>, expanded along the second row.</p>
 <aside class="notes">
 <p>This property is less intuitive but can sometimes simplify calculations if you can decompose a matrix into two simpler ones that differ by only one row or column. It’s a precise condition, not a general one. While less frequently applied directly than other properties in typical ECE problem-solving, it is fundamental in proving other more advanced determinant properties and in some theoretical developments in linear algebra.</p>
 <style type="text/css">
@@ -251,11 +254,19 @@ A = \left[ \begin{array}{ll}1 &amp; 2 \\ 2 &amp; 5 \end{array} \right], \quad B 
 <ul>
 <li>This is shown by considering the three types of EROs and how they affect the determinant (Theorem 2.2.3 and 2.2.4).</li>
 </ul></li>
+</ol>
+</section>
+<section id="determinant-of-a-matrix-product-1" class="slide level2 scrollable">
+<h2>Determinant of a Matrix Product</h2>
+<ol start="2" type="1">
 <li><p><strong>Determinant Test for Invertibility (Theorem 2.3.3)</strong>: A square matrix <span class="math inline">\(A\)</span> is invertible if and only if <span class="math inline">\(\operatorname{det}(A) \ne 0\)</span>.</p>
 <ul>
 <li>This critical theorem implies that if <span class="math inline">\(\operatorname{det}(A)=0\)</span>, then <span class="math inline">\(AB\)</span> is also not invertible, meaning <span class="math inline">\(\operatorname{det}(AB)=0\)</span>, so <span class="math inline">\(0 = 0 \cdot \operatorname{det}(B)\)</span>.</li>
 </ul></li>
-<li><p><strong>General Case</strong>: If <span class="math inline">\(A\)</span> is invertible, it can be written as a product of elementary matrices <span class="math inline">\(A = E_1 E_2 \cdots E_r\)</span>. Then, using Lemma 2.3.2 repeatedly: <span class="math inline">\(\operatorname{det}(AB) = \operatorname{det}(E_1 E_2 \cdots E_r B) = \operatorname{det}(E_1)\operatorname{det}(E_2)\cdots\operatorname{det}(E_r)\operatorname{det}(B)\)</span> And <span class="math inline">\(\operatorname{det}(A) = \operatorname{det}(E_1 E_2 \cdots E_r) = \operatorname{det}(E_1)\operatorname{det}(E_2)\cdots\operatorname{det}(E_r)\)</span>. Combining these gives <span class="math inline">\(\operatorname{det}(AB) = \operatorname{det}(A)\operatorname{det}(B)\)</span>.</p></li>
+<li><p><strong>General Case</strong>: If <span class="math inline">\(A\)</span> is invertible, it can be written as a product of elementary matrices <span class="math inline">\(A = E_1 E_2 \cdots E_r\)</span>. Then, using Lemma 2.3.2 repeatedly:</p>
+<p><span class="math inline">\(\operatorname{det}(AB) = \operatorname{det}(E_1 E_2 \cdots E_r B) = \operatorname{det}(E_1)\operatorname{det}(E_2)\cdots\operatorname{det}(E_r)\operatorname{det}(B)\)</span></p>
+<p>And <span class="math inline">\(\operatorname{det}(A) = \operatorname{det}(E_1 E_2 \cdots E_r) = \operatorname{det}(E_1)\operatorname{det}(E_2)\cdots\operatorname{det}(E_r)\)</span>.</p>
+<p>Combining these gives <span class="math inline">\(\operatorname{det}(AB) = \operatorname{det}(A)\operatorname{det}(B)\)</span>.</p></li>
 </ol>
 <aside class="notes">
 <p>This theorem is incredibly useful in ECE, especially in transform domains (e.g., Fourier, Laplace) where operations might involve matrix products. For example, if you’re chaining linear transformations (like processing a signal through multiple filters represented by matrices), the overall scaling effect on the “volume” (determinant) is simply the product of the individual scalings. This property is also critical when dealing with system stability where product matrices arise, e.g., in cascaded control systems.</p>
@@ -312,9 +323,11 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1w
 <p>If <span class="math inline">\(A\)</span> is invertible, then: <span class="math display">\[
 \operatorname *{det}(A^{-1}) = \frac{1}{\operatorname*{det}(A)}
 \]</span></p>
-<p><strong>Proof sketch:</strong> Since <span class="math inline">\(A^{-1}A = I\)</span>, by Theorem 2.3.4, we have <span class="math inline">\(\operatorname{det}(A^{-1}A) = \operatorname{det}(A^{-1})\operatorname{det}(A)\)</span>. Also, <span class="math inline">\(\operatorname{det}(I) = 1\)</span>. Thus, <span class="math inline">\(\operatorname{det}(A^{-1})\operatorname{det}(A) = 1\)</span>. Since <span class="math inline">\(A\)</span> is invertible, <span class="math inline">\(\operatorname{det}(A) \ne 0\)</span>, so we can divide by <span class="math inline">\(\operatorname{det}(A)\)</span> to get <span class="math inline">\(\operatorname{det}(A^{-1}) = 1/\operatorname{det}(A)\)</span>.</p>
-<h3 id="ece-application-stability-analysis">ECE Application: Stability Analysis</h3>
-<p>In control systems, if a system matrix <span class="math inline">\(A\)</span> needs to be inverted (e.g., to find state transitions), a non-zero determinant is essential. The value <span class="math inline">\(1/\operatorname{det}(A)\)</span> provides insight into how sensitive the inverse operation might be to small changes in <span class="math inline">\(A\)</span>. A very small <span class="math inline">\(\operatorname{det}(A)\)</span> implies a very large <span class="math inline">\(\operatorname{det}(A^{-1})\)</span>, indicating the system might be close to singularity or numerically ill-conditioned, which is a critical concern in signal processing and numerical simulations.</p>
+<p><strong>Proof sketch:</strong></p>
+<p>Since <span class="math inline">\(A^{-1}A = I\)</span>, by Theorem 2.3.4, we have <span class="math inline">\(\operatorname{det}(A^{-1}A) = \operatorname{det}(A^{-1})\operatorname{det}(A)\)</span>.</p>
+<p>Also, <span class="math inline">\(\operatorname{det}(I) = 1\)</span>.</p>
+<p>Thus, <span class="math inline">\(\operatorname{det}(A^{-1})\operatorname{det}(A) = 1\)</span>.</p>
+<p>Since <span class="math inline">\(A\)</span> is invertible, <span class="math inline">\(\operatorname{det}(A) \ne 0\)</span>, so we can divide by <span class="math inline">\(\operatorname{det}(A)\)</span> to get <span class="math inline">\(\operatorname{det}(A^{-1}) = 1/\operatorname{det}(A)\)</span>.</p>
 <aside class="notes">
 <p>This theorem reinforces the link between invertibility (<span class="math inline">\(\operatorname{det}(A) \ne 0\)</span>) and the determinant. Its direct application is when you have to calculate a determinant of an inverse, you don’t actually have to calculate the inverse matrix itself. For system stability analysis or filter design in ECE, understanding the determinant of <span class="math inline">\(A^{-1}\)</span> can indicate how “robust” a system is to perturbations.</p>
 <style type="text/css">
@@ -413,7 +426,10 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1w
 <p>If <span class="math inline">\(A\mathbf{x} = \mathbf{b}\)</span> is a system of <span class="math inline">\(n\)</span> linear equations in <span class="math inline">\(n\)</span> unknowns such that <span class="math inline">\(\operatorname *{det}(A) \neq 0\)</span>, then the system has a unique solution given by: <span class="math display">\[
 x_{1} = \frac{\operatorname*{det}(A_{1})}{\operatorname*{det}(A)}, x_{2} = \frac{\operatorname*{det}(A_{2})}{\operatorname*{det}(A)}, \ldots , x_{n} = \frac{\operatorname*{det}(A_{n})}{\operatorname*{det}(A)}
 \]</span> where <span class="math inline">\(A_{j}\)</span> is the matrix obtained by replacing the <span class="math inline">\(j\)</span>-th column of <span class="math inline">\(A\)</span> with the column vector <span class="math inline">\(\mathbf{b}\)</span>.</p>
-<p><strong>Proof sketch:</strong> The proof uses the formula <span class="math inline">\(\mathbf{x} = A^{-1}\mathbf{b} = \frac{1}{\operatorname{det}(A)}\operatorname{adj}(A)\mathbf{b}\)</span>. Expanding this matrix multiplication term by term reveals that the <span class="math inline">\(j\)</span>-th component <span class="math inline">\(x_j\)</span> is precisely <span class="math inline">\(\frac{b_1 C_{1j} + b_2 C_{2j} + \dots + b_n C_{nj}}{\operatorname{det}(A)}\)</span>. The numerator is precisely the cofactor expansion of <span class="math inline">\(\operatorname{det}(A_j)\)</span> along its <span class="math inline">\(j\)</span>-th column.</p>
+<p><strong>Proof sketch:</strong></p>
+<p>The proof uses the formula <span class="math inline">\(\mathbf{x} = A^{-1}\mathbf{b} = \frac{1}{\operatorname{det}(A)}\operatorname{adj}(A)\mathbf{b}\)</span>.</p>
+<p>Expanding this matrix multiplication term by term reveals that the <span class="math inline">\(j\)</span>-th component <span class="math inline">\(x_j\)</span> is precisely <span class="math inline">\(\frac{b_1 C_{1j} + b_2 C_{2j} + \dots + b_n C_{nj}}{\operatorname{det}(A)}\)</span>.</p>
+<p>The numerator is precisely the cofactor expansion of <span class="math inline">\(\operatorname{det}(A_j)\)</span> along its <span class="math inline">\(j\)</span>-th column.</p>
 <aside class="notes">
 <p>Cramer’s Rule is a classic result with conceptual importance. In ECE, it’s particularly useful for small systems (like 2x2 or 3x3) where you might need an analytical solution or when parameters are involved, allowing calculation of a symbolic rather than just numerical result. In signal processing, for example, if you have a transfer function denominator polynomial, calculating its roots often involves solving systems of equations, and Cramer’s rule can sometimes provide the explicit functions for these roots. For large systems, however, direct numerical solvers are preferable due to computational cost.</p>
 <style type="text/css">
@@ -496,49 +512,13 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1w
 <h3 id="ece-significance">ECE Significance</h3>
 <p>This theorem is a cornerstone for understanding and diagnosing linear systems in engineering.</p>
 <ul>
-<li><strong>System Solvability</strong>: In circuit analysis or control, if <span class="math inline">\(\det(A) = 0\)</span>, the system might have no unique solution, indicating a design flaw or dependency.</li>
-<li><strong>Control &amp; State Space</strong>: An invertible system matrix ensures controllability or observability (depends on specific matrix, e.g., controllability matrix), crucial for designing stable and responsive systems.</li>
-<li><strong>Hardware/Software Implications</strong>: Non-invertible matrices often lead to numerical instability or errors in computational simulations and algorithms used in embedded systems or scientific computing.</li>
+<li><p><strong>System Solvability</strong>: In circuit analysis or control, if <span class="math inline">\(\det(A) = 0\)</span>, the system might have no unique solution, indicating a design flaw or dependency.</p></li>
+<li><p><strong>Control &amp; State Space</strong>: An invertible system matrix ensures controllability or observability (depends on specific matrix, e.g., controllability matrix), crucial for designing stable and responsive systems.</p></li>
+<li><p><strong>Hardware/Software Implications</strong>: Non-invertible matrices often lead to numerical instability or errors in computational simulations and algorithms used in embedded systems or scientific computing.</p></li>
+<li><p><strong>Stability Analysis</strong> In control systems, if a system matrix <span class="math inline">\(A\)</span> needs to be inverted (e.g., to find state transitions), a non-zero determinant is essential. The value <span class="math inline">\(1/\operatorname{det}(A)\)</span> provides insight into how sensitive the inverse operation might be to small changes in <span class="math inline">\(A\)</span>. A very small <span class="math inline">\(\operatorname{det}(A)\)</span> implies a very large <span class="math inline">\(\operatorname{det}(A^{-1})\)</span>, indicating the system might be close to singularity or numerically ill-conditioned, which is a critical concern in signal processing and numerical simulations.</p></li>
 </ul>
 <aside class="notes">
 <p>Emphasize this theorem as a grand unifying theory up to this point in Linear Algebra. For ECE students, it’s not just a list to memorize; it’s a set of diagnostic tools. For example, if you’re trying to find an inverse and <span class="math inline">\(\operatorname{det}(A)=0\)</span>, you immediately know <code>A</code> is not invertible, which in turn tells you <code>Ax=0</code> has non-trivial solutions, and its RREF is not the identity.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="proof-highlights-invertibility-and-triangular-matrices" class="slide level2">
-<h2>Proof Highlights: Invertibility and Triangular Matrices</h2>
-<p>Recall Theorem 1.7.1, which we can now fully prove:</p>
-<h3 id="theorem-1.7.1-c-triangular-matrix-invertibility">Theorem 1.7.1 (c): Triangular Matrix Invertibility</h3>
-<p>A triangular matrix is invertible if and only if its diagonal entries are all nonzero.</p>
-<p><strong>Proof Sketch:</strong></p>
-<ul>
-<li>We know from Theorem 2.1.2 that for a triangular matrix <span class="math inline">\(A\)</span>, <span class="math inline">\(\operatorname{det}(A) = a_{11}a_{22}\dots a_{nn}\)</span> (product of diagonal entries).</li>
-<li>From Theorem 2.3.8(g), <span class="math inline">\(A\)</span> is invertible if and only if <span class="math inline">\(\operatorname{det}(A) \ne 0\)</span>.</li>
-<li>Combining these, <span class="math inline">\(\operatorname{det}(A) \ne 0\)</span> if and only if <span class="math inline">\(a_{11}a_{22}\dots a_{nn} \ne 0\)</span>, which means all diagonal entries (<span class="math inline">\(a_{ii}\)</span>) must be nonzero.</li>
-</ul>
-</section>
-<section id="proof-highlights-invertibility-and-triangular-matrices-1" class="slide level2">
-<h2>Proof Highlights: Invertibility and Triangular Matrices</h2>
-<h3 id="theorem-1.7.1-d-inverse-of-triangular-matrix">Theorem 1.7.1 (d): Inverse of Triangular Matrix</h3>
-<p>The inverse of an invertible lower triangular matrix is lower triangular, and the inverse of an invertible upper triangular matrix is upper triangular.</p>
-<p><strong>Proof Sketch (for Upper Triangular):</strong></p>
-<ul>
-<li>Use <span class="math inline">\(A^{-1} = \frac{1}{\operatorname{det}(A)}\operatorname{adj}(A)\)</span>.</li>
-<li>To show <span class="math inline">\(A^{-1}\)</span> is upper triangular, means its matrix of cofactors (transposed) must be lower triangular.</li>
-<li>This requires showing <span class="math inline">\(C_{ij}=0\)</span> for <span class="math inline">\(i&lt;j\)</span>.</li>
-<li><span class="math inline">\(C_{ij} = (-1)^{i+j}M_{ij}\)</span>. For <span class="math inline">\(i&lt;j\)</span>, the submatrix <span class="math inline">\(B_{ij}\)</span> (for minor <span class="math inline">\(M_{ij}\)</span>) will have a row of zeros within its first <span class="math inline">\(i\)</span> rows if <span class="math inline">\(A\)</span> is upper triangular. This makes <span class="math inline">\(M_{ij} = \operatorname{det}(B_{ij})=0\)</span>.</li>
-</ul>
-<aside class="notes">
-<p>These proofs are great examples of how the theoretical tools we’ve developed (determinant properties, EROs, adjoint) are used to establish more advanced results. Triangular matrices are crucial in numerical algorithms (like LU decomposition for solving linear systems) so understanding their invertibility and the nature of their inverses is very practical for designing efficient and stable computational methods in ECE.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

@@ -128,10 +128,6 @@
   </style>
   <script type="module" src="la-markov_files/libs/quarto-ojs/quarto-ojs-runtime.js"></script>
   <link href="la-markov_files/libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
-  <meta name="mermaid-theme" content="neutral">
-  <script src="la-markov_files/libs/quarto-diagram/mermaid.min.js"></script>
-  <script src="la-markov_files/libs/quarto-diagram/mermaid-init.js"></script>
-  <link href="la-markov_files/libs/quarto-diagram/mermaid.css" rel="stylesheet">
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -291,11 +287,13 @@ Imron Rosyadi
 <section id="key-properties-of-markov-chains" class="slide level2">
 <h2>Key Properties of Markov Chains</h2>
 <p>Understanding these properties helps characterize the behavior of Markov chains.</p>
-<p><strong>Reducibility</strong> A Markov chain is <strong>irreducible</strong> if it is possible to get to any state from any other state (maybe through several steps). There exists a chain of steps between any two states with positive probability.</p>
-<p><strong>Periodicity</strong> A state <span class="math inline">\(i\)</span> is <strong>periodic</strong> if the chain can return to the state only at multiples of some integer <span class="math inline">\(k &gt; 1\)</span>. It’s <strong>aperiodic</strong> if <span class="math inline">\(k=1\)</span>.</p>
-<p><strong>Transience and Recurrence</strong> A state <span class="math inline">\(i\)</span> is <strong>transient</strong> if, starting in <span class="math inline">\(i\)</span>, there’s a non-zero probability of never returning to <span class="math inline">\(i\)</span>. The system might never return to this state. A state <span class="math inline">\(i\)</span> is <strong>recurrent</strong> (or persistent) if it is not transient. The system is certain to return eventually</p>
-<p><strong>Ergodicity</strong> A state <span class="math inline">\(i\)</span> is <strong>ergodic</strong> if it is aperiodic and positive recurrent. If all states in an irreducible Markov chain are ergodic, the chain is <strong>ergodic</strong>. Ergodic chains have a unique stationary distribution.</p>
-<p><strong>Absorbing State</strong> A state <span class="math inline">\(i\)</span> is <strong>absorbing</strong> if it is impossible to leave this state. Therefore, <span class="math inline">\(P_{ii} = 1\)</span> and <span class="math inline">\(P_{ij} = 0\)</span> for <span class="math inline">\(i \ne j\)</span>. Once entered, the process cannot leave i.e.&nbsp;no outgoing transitions. If every state can reach an absorbing state, the Markov chain is an <strong>absorbing Markov chain</strong>.</p>
+<ul>
+<li><p><strong>Reducibility</strong>. A Markov chain is <strong>irreducible</strong> if it is possible to get to any state from any other state (maybe through several steps). There exists a chain of steps between any two states with positive probability.</p></li>
+<li><p><strong>Periodicity</strong>. A state <span class="math inline">\(i\)</span> is <strong>periodic</strong> if the chain can return to the state only at multiples of some integer <span class="math inline">\(k &gt; 1\)</span>. It’s <strong>aperiodic</strong> if <span class="math inline">\(k=1\)</span>.</p></li>
+<li><p><strong>Transience and Recurrence</strong>. A state <span class="math inline">\(i\)</span> is <strong>transient</strong> if, starting in <span class="math inline">\(i\)</span>, there’s a non-zero probability of never returning to <span class="math inline">\(i\)</span>. The system might never return to this state. A state <span class="math inline">\(i\)</span> is <strong>recurrent</strong> (or persistent) if it is not transient. The system is certain to return eventually</p></li>
+<li><p><strong>Ergodicity</strong>. A state <span class="math inline">\(i\)</span> is <strong>ergodic</strong> if it is aperiodic and positive recurrent. If all states in an irreducible Markov chain are ergodic, the chain is <strong>ergodic</strong>. Ergodic chains have a unique stationary distribution.</p></li>
+<li><p><strong>Absorbing State</strong>. A state <span class="math inline">\(i\)</span> is <strong>absorbing</strong> if it is impossible to leave this state. Therefore, <span class="math inline">\(P_{ii} = 1\)</span> and <span class="math inline">\(P_{ij} = 0\)</span> for <span class="math inline">\(i \ne j\)</span>. Once entered, the process cannot leave i.e.&nbsp;no outgoing transitions. If every state can reach an absorbing state, the Markov chain is an <strong>absorbing Markov chain</strong>.</p></li>
+</ul>
 <aside class="notes">
 <p>These properties are vital for analyzing the long-term behavior of dynamic systems. For example, in a control system, we might want to ensure that certain failure states are absorbing, meaning once the system enters them, it stays there. Or we might want an ergodic system, which implies that over long periods, the system will spend a predictable proportion of its time in each state, regardless of the starting point. This is crucial for stability analysis.</p>
 <style type="text/css">
@@ -353,24 +351,98 @@ Imron Rosyadi
 <p>Let’s consider a simple example to understand these concepts. EE Student’s sad day activities: Sleep, Run, Icecream.</p>
 <h3 id="state-diagram">State Diagram</h3>
 <p>Visualizing the transitions and their probabilities:</p>
-<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class=""><p></p>
 <div>
-<pre class="mermaid mermaid-js">graph TD
-    A[Sleep] --&gt;|0.6| B(Run)
-    A --&gt;|0.2| A
-    A --&gt;|0.2| C(Icecream)
-
-    B[Run] --&gt;|0.6| B
-    B --&gt;|0.1| A
-    B --&gt;|0.3| C
-
-    C[Icecream] --&gt;|0.7| B
-    C --&gt;|0.2| A
-    C --&gt;|0.1| C
-</pre>
+<svg width="960" height="480" viewbox="0.00 0.00 327.07 168.35" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none; display: block; margin: auto auto auto auto">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 164.35)">
+<title>MarkovChain</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-164.35 323.07,-164.35 323.07,4 -4,4"></polygon>
+<!-- A -->
+<g id="node1" class="node">
+<title>A</title>
+<ellipse fill="lightgrey" stroke="black" cx="32.49" cy="-46.41" rx="32.48" ry="32.48"></ellipse>
+<text text-anchor="middle" x="32.49" y="-42.21" font-family="Times,serif" font-size="14.00">Sleep</text>
+</g>
+<!-- A&#45;&gt;A -->
+<g id="edge2" class="edge">
+<title>A-&gt;A</title>
+<path fill="none" stroke="black" d="M21.62,-77.47C21.5,-88.22 25.13,-96.9 32.49,-96.9 37.32,-96.9 40.55,-93.16 42.16,-87.56"></path>
+<polygon fill="black" stroke="black" points="45.65,-87.82 43.36,-77.47 38.7,-86.99 45.65,-87.82"></polygon>
+<text text-anchor="middle" x="32.49" y="-101.1" font-family="Times,serif" font-size="14.00">0.2</text>
+</g>
+<!-- B -->
+<g id="node2" class="node">
+<title>B</title>
+<ellipse fill="lightgrey" stroke="black" cx="145.62" cy="-98.41" rx="27.27" ry="27.27"></ellipse>
+<text text-anchor="middle" x="145.62" y="-94.21" font-family="Times,serif" font-size="14.00">Run</text>
+</g>
+<!-- A&#45;&gt;B -->
+<g id="edge1" class="edge">
+<title>A-&gt;B</title>
+<path fill="none" stroke="black" d="M58.39,-66.54C65.96,-71.95 74.52,-77.4 82.98,-81.41 91.06,-85.24 100.15,-88.34 108.82,-90.79"></path>
+<polygon fill="black" stroke="black" points="108.16,-94.23 118.72,-93.38 109.93,-87.46 108.16,-94.23"></polygon>
+<text text-anchor="middle" x="91.73" y="-91.61" font-family="Times,serif" font-size="14.00">0.6</text>
+</g>
+<!-- C -->
+<g id="node3" class="node">
+<title>C</title>
+<ellipse fill="lightgrey" stroke="black" cx="272.66" cy="-46.41" rx="46.32" ry="46.32"></ellipse>
+<text text-anchor="middle" x="272.66" y="-42.21" font-family="Times,serif" font-size="14.00">Icecream</text>
+</g>
+<!-- A&#45;&gt;C -->
+<g id="edge3" class="edge">
+<title>A-&gt;C</title>
+<path fill="none" stroke="black" d="M65.37,-46.04C81.32,-45.87 100.92,-45.69 118.48,-45.61 150.69,-45.46 186.72,-45.63 215.73,-45.85"></path>
+<polygon fill="black" stroke="black" points="216.06,-49.35 226.08,-45.94 216.11,-42.36 216.06,-49.35"></polygon>
+<text text-anchor="middle" x="145.62" y="-49.61" font-family="Times,serif" font-size="14.00">0.2</text>
+</g>
+<!-- B&#45;&gt;A -->
+<g id="edge5" class="edge">
+<title>B-&gt;A</title>
+<path fill="none" stroke="black" d="M126.37,-79.17C118.94,-72.36 109.89,-65.26 100.48,-60.61 92.59,-56.71 83.66,-53.88 74.95,-51.83"></path>
+<polygon fill="black" stroke="black" points="75.41,-48.35 64.91,-49.76 73.99,-55.21 75.41,-48.35"></polygon>
+<text text-anchor="middle" x="91.73" y="-64.61" font-family="Times,serif" font-size="14.00">0.1</text>
+</g>
+<!-- B&#45;&gt;B -->
+<g id="edge4" class="edge">
+<title>B-&gt;B</title>
+<path fill="none" stroke="black" d="M135.95,-123.93C135.29,-134.55 138.51,-143.55 145.62,-143.55 150.28,-143.55 153.27,-139.67 154.59,-134"></path>
+<polygon fill="black" stroke="black" points="158.09,-134.15 155.28,-123.93 151.11,-133.67 158.09,-134.15"></polygon>
+<text text-anchor="middle" x="145.62" y="-147.75" font-family="Times,serif" font-size="14.00">0.6</text>
+</g>
+<!-- B&#45;&gt;C -->
+<g id="edge6" class="edge">
+<title>B-&gt;C</title>
+<path fill="none" stroke="black" d="M172.25,-92.78C183.5,-89.94 196.74,-86.1 208.25,-81.41 213.27,-79.37 218.4,-77.02 223.46,-74.52"></path>
+<polygon fill="black" stroke="black" points="225.15,-77.59 232.45,-69.92 221.96,-71.36 225.15,-77.59"></polygon>
+<text text-anchor="middle" x="199.5" y="-90.61" font-family="Times,serif" font-size="14.00">0.3</text>
+</g>
+<!-- C&#45;&gt;A -->
+<g id="edge8" class="edge">
+<title>C-&gt;A</title>
+<path fill="none" stroke="black" d="M227.8,-33.9C197.2,-26.72 155.39,-19.95 118.48,-24.61 103.65,-26.48 87.69,-30.13 73.65,-33.9"></path>
+<polygon fill="black" stroke="black" points="72.5,-30.59 63.82,-36.66 74.39,-37.33 72.5,-30.59"></polygon>
+<text text-anchor="middle" x="145.62" y="-28.61" font-family="Times,serif" font-size="14.00">0.2</text>
+</g>
+<!-- C&#45;&gt;B -->
+<g id="edge7" class="edge">
+<title>C-&gt;B</title>
+<path fill="none" stroke="black" d="M226.26,-50.03C214.32,-52.13 201.71,-55.44 190.75,-60.61 184.38,-63.62 178.19,-67.8 172.57,-72.29"></path>
+<polygon fill="black" stroke="black" points="170.08,-69.82 164.78,-78.99 174.65,-75.13 170.08,-69.82"></polygon>
+<text text-anchor="middle" x="199.5" y="-64.61" font-family="Times,serif" font-size="14.00">0.7</text>
+</g>
+<!-- C&#45;&gt;C -->
+<g id="edge9" class="edge">
+<title>C-&gt;C</title>
+<path fill="none" stroke="black" d="M259.32,-90.96C260.2,-102.31 264.65,-110.82 272.66,-110.82 278.05,-110.82 281.82,-106.98 283.98,-101.01"></path>
+<polygon fill="black" stroke="black" points="287.47,-101.46 286,-90.96 280.6,-100.08 287.47,-101.46"></polygon>
+<text text-anchor="middle" x="272.66" y="-115.02" font-family="Times,serif" font-size="14.00">0.1</text>
+</g>
+</g>
+</svg>
 </div>
 <p></p></figure><p></p>
 </div>
@@ -556,28 +628,125 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiIyBBIG1vZGlmaWVkIGZ1bmN0
 <h3 id="state-diagram-1">State Diagram</h3>
 <p>Illustrating transitions between driver behaviors:</p>
 
-<img data-src="https://i0.wp.com/www.gaussianwaves.com/gaussianwaves/wp-content/uploads/2020/03/Markov-chain-example-using-driver-behavior-transition-probabilities-and-starting-probabilities.png?w=600&amp;ssl=1" class="r-stretch"><div class="cell" data-reveal="true" data-layout-align="default">
+<img data-src="https://i0.wp.com/www.gaussianwaves.com/gaussianwaves/wp-content/uploads/2020/03/Markov-chain-example-using-driver-behavior-transition-probabilities-and-starting-probabilities.png?w=600&amp;ssl=1" class="r-stretch"><div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class=""><p></p>
 <div>
-<pre class="mermaid mermaid-js">graph TD
-    A[accelerate] --&gt;|0.3| A
-    A --&gt;|0.2| B(constant speed)
-    A --&gt;|0.5| D(brake)
-
-    B[constant speed] --&gt;|0.1| A
-    B --&gt;|0.4| B
-    B --&gt;|0.5| D
-
-    C[idling] --&gt;|0.8| A
-    C --&gt;|0.2| C
-
-    D[brake] --&gt;|0.4| A
-    D --&gt;|0.05| B
-    D --&gt;|0.5| C
-    D --&gt;|0.05| D
-</pre>
+<svg width="960" height="480" viewbox="0.00 0.00 542.09 322.37" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none; display: block; margin: auto auto auto auto">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 318.37)">
+<title>VehicleStates</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-318.37 538.09,-318.37 538.09,4 -4,4"></polygon>
+<!-- A -->
+<g id="node1" class="node">
+<title>A</title>
+<ellipse fill="lightgrey" stroke="black" cx="49.62" cy="-125.57" rx="49.74" ry="49.74"></ellipse>
+<text text-anchor="middle" x="49.62" y="-121.37" font-family="Times,serif" font-size="14.00">accelerate</text>
+</g>
+<!-- A&#45;&gt;A -->
+<g id="edge1" class="edge">
+<title>A-&gt;A</title>
+<path fill="none" stroke="black" d="M35.62,-173.28C36.72,-184.72 41.38,-193.19 49.62,-193.19 55.16,-193.19 59.08,-189.37 61.39,-183.39"></path>
+<polygon fill="black" stroke="black" points="64.88,-183.8 63.62,-173.28 58.05,-182.29 64.88,-183.8"></polygon>
+<text text-anchor="middle" x="49.62" y="-197.39" font-family="Times,serif" font-size="14.00">0.3</text>
+</g>
+<!-- B -->
+<g id="node2" class="node">
+<title>B</title>
+<ellipse fill="lightgrey" stroke="black" cx="220.36" cy="-165.57" rx="67.74" ry="67.74"></ellipse>
+<text text-anchor="middle" x="220.36" y="-161.37" font-family="Times,serif" font-size="14.00">constant speed</text>
+</g>
+<!-- A&#45;&gt;B -->
+<g id="edge2" class="edge">
+<title>A-&gt;B</title>
+<path fill="none" stroke="black" d="M97.86,-138.66C104.36,-140.36 110.96,-142.05 117.24,-143.57 125.92,-145.68 135.03,-147.78 144.09,-149.82"></path>
+<polygon fill="black" stroke="black" points="143.36,-153.24 153.88,-151.99 144.87,-146.4 143.36,-153.24"></polygon>
+<text text-anchor="middle" x="125.99" y="-150.77" font-family="Times,serif" font-size="14.00">0.2</text>
+</g>
+<!-- D -->
+<g id="node4" class="node">
+<title>D</title>
+<ellipse fill="lightgrey" stroke="black" cx="380.97" cy="-125.57" rx="32.46" ry="32.46"></ellipse>
+<text text-anchor="middle" x="380.97" y="-121.37" font-family="Times,serif" font-size="14.00">brake</text>
+</g>
+<!-- A&#45;&gt;D -->
+<g id="edge3" class="edge">
+<title>A-&gt;D</title>
+<path fill="none" stroke="black" d="M91.5,-98.2C109.48,-87.74 131.35,-77.06 152.74,-71.77 211.09,-57.34 229.97,-56.05 287.98,-71.77 308.82,-77.42 329.76,-89.09 346.39,-100.12"></path>
+<polygon fill="black" stroke="black" points="344.45,-103.03 354.68,-105.8 348.41,-97.26 344.45,-103.03"></polygon>
+<text text-anchor="middle" x="220.36" y="-76.77" font-family="Times,serif" font-size="14.00">0.5</text>
+</g>
+<!-- B&#45;&gt;A -->
+<g id="edge4" class="edge">
+<title>B-&gt;A</title>
+<path fill="none" stroke="black" d="M161.54,-131.94C152.81,-128.16 143.71,-124.91 134.74,-122.77 126.57,-120.82 117.83,-119.89 109.18,-119.62"></path>
+<polygon fill="black" stroke="black" points="109.12,-116.12 99.11,-119.57 109.09,-123.12 109.12,-116.12"></polygon>
+<text text-anchor="middle" x="125.99" y="-127.77" font-family="Times,serif" font-size="14.00">0.1</text>
+</g>
+<!-- B&#45;&gt;B -->
+<g id="edge5" class="edge">
+<title>B-&gt;B</title>
+<path fill="none" stroke="black" d="M203.77,-231.26C205.93,-243 211.46,-251.19 220.36,-251.19 226.49,-251.19 231.01,-247.32 233.94,-241.08"></path>
+<polygon fill="black" stroke="black" points="237.37,-241.85 236.96,-231.26 230.68,-239.8 237.37,-241.85"></polygon>
+<text text-anchor="middle" x="220.36" y="-255.39" font-family="Times,serif" font-size="14.00">0.4</text>
+</g>
+<!-- B&#45;&gt;D -->
+<g id="edge6" class="edge">
+<title>B-&gt;D</title>
+<path fill="none" stroke="black" d="M280.85,-134.65C289.11,-131.44 297.63,-128.67 305.98,-126.77 316.23,-124.45 327.47,-123.49 338.03,-123.25"></path>
+<polygon fill="black" stroke="black" points="338.31,-126.75 348.31,-123.24 338.3,-119.75 338.31,-126.75"></polygon>
+<text text-anchor="middle" x="318.23" y="-130.77" font-family="Times,serif" font-size="14.00">0.5</text>
+</g>
+<!-- C -->
+<g id="node3" class="node">
+<title>C</title>
+<ellipse fill="lightgrey" stroke="black" cx="500.52" cy="-33.57" rx="33.64" ry="33.64"></ellipse>
+<text text-anchor="middle" x="500.52" y="-29.37" font-family="Times,serif" font-size="14.00">idling</text>
+</g>
+<!-- C&#45;&gt;A -->
+<g id="edge7" class="edge">
+<title>C-&gt;A</title>
+<path fill="none" stroke="black" d="M466.83,-31.68C404.56,-28.95 265.09,-27.11 152.74,-56.57 131.93,-62.03 111.72,-73.84 94.84,-86.18"></path>
+<polygon fill="black" stroke="black" points="92.68,-83.42 86.83,-92.25 96.91,-89 92.68,-83.42"></polygon>
+<text text-anchor="middle" x="318.23" y="-37.77" font-family="Times,serif" font-size="14.00">0.8</text>
+</g>
+<!-- C&#45;&gt;C -->
+<g id="edge8" class="edge">
+<title>C-&gt;C</title>
+<path fill="none" stroke="black" d="M489.27,-65.3C489.15,-76.28 492.9,-85.14 500.52,-85.14 505.52,-85.14 508.85,-81.32 510.52,-75.6"></path>
+<polygon fill="black" stroke="black" points="514.04,-75.65 511.77,-65.3 507.09,-74.8 514.04,-75.65"></polygon>
+<text text-anchor="middle" x="500.52" y="-89.34" font-family="Times,serif" font-size="14.00">0.2</text>
+</g>
+<!-- D&#45;&gt;A -->
+<g id="edge9" class="edge">
+<title>D-&gt;A</title>
+<path fill="none" stroke="black" d="M371.2,-156.59C359.11,-192.81 333.48,-251.01 287.98,-276.57 235.58,-306.01 205.83,-304.76 152.74,-276.57 114.93,-256.49 88.56,-215.47 72.1,-181.24"></path>
+<polygon fill="black" stroke="black" points="75.11,-179.39 67.72,-171.79 68.75,-182.34 75.11,-179.39"></polygon>
+<text text-anchor="middle" x="220.36" y="-301.77" font-family="Times,serif" font-size="14.00">0.4</text>
+</g>
+<!-- D&#45;&gt;B -->
+<g id="edge10" class="edge">
+<title>D-&gt;B</title>
+<path fill="none" stroke="black" d="M350.37,-137.15C343.88,-139.47 337,-141.74 330.48,-143.57 319.76,-146.58 308.34,-149.35 297.07,-151.84"></path>
+<polygon fill="black" stroke="black" points="296.28,-148.43 287.24,-153.95 297.75,-155.27 296.28,-148.43"></polygon>
+<text text-anchor="middle" x="318.23" y="-153.77" font-family="Times,serif" font-size="14.00">0.05</text>
+</g>
+<!-- D&#45;&gt;C -->
+<g id="edge11" class="edge">
+<title>D-&gt;C</title>
+<path fill="none" stroke="black" d="M407.18,-105.83C424.23,-92.5 446.93,-74.73 465.56,-60.15"></path>
+<polygon fill="black" stroke="black" points="467.81,-62.83 473.53,-53.91 463.5,-57.32 467.81,-62.83"></polygon>
+<text text-anchor="middle" x="440.2" y="-89.77" font-family="Times,serif" font-size="14.00">0.5</text>
+</g>
+<!-- D&#45;&gt;D -->
+<g id="edge12" class="edge">
+<title>D-&gt;D</title>
+<path fill="none" stroke="black" d="M370.09,-156.63C369.98,-167.37 373.6,-176.05 380.97,-176.05 385.8,-176.05 389.02,-172.32 390.63,-166.71"></path>
+<polygon fill="black" stroke="black" points="394.12,-166.97 391.84,-156.63 387.17,-166.14 394.12,-166.97"></polygon>
+<text text-anchor="middle" x="380.97" y="-180.25" font-family="Times,serif" font-size="14.00">0.05</text>
+</g>
+</g>
+</svg>
 </div>
 <p></p></figure><p></p>
 </div>

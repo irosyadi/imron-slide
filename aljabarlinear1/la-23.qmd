@@ -102,8 +102,11 @@ If $A = \left[ \begin{array}{ll}a_{11} & a_{12} \\ a_{21} & a_{22} \end{array} \
 then $C = \left[ \begin{array}{cc}{a_{11}} & {a_{12}}\\ {a_{21} + b_{21}} & {a_{22} + b_{22}} \end{array} \right]$.
 
 Calculating:
+
 $\operatorname{det}(A) + \operatorname{det}(B) = (a_{11}a_{22} - a_{12}a_{21}) + (a_{11}b_{22} - a_{12}b_{21})$
+
 $= a_{11}(a_{22} + b_{22}) - a_{12}(a_{21} + b_{21})$
+
 This is exactly $\operatorname{det}(C)$, expanded along the second row.
 
 ::: {.notes}
@@ -127,11 +130,19 @@ $$
 1.  **Lemma 2.3.2 (Elementary Matrices)**: First, show for an elementary matrix $E$ and any matrix $B$, $\operatorname{det}(EB) = \operatorname{det}(E)\operatorname{det}(B)$.
 
     *   This is shown by considering the three types of EROs and how they affect the determinant (Theorem 2.2.3 and 2.2.4).
+
+---
+
+## Determinant of a Matrix Product
+
 2.  **Determinant Test for Invertibility (Theorem 2.3.3)**: A square matrix $A$ is invertible if and only if $\operatorname{det}(A) \ne 0$.
     *   This critical theorem implies that if $\operatorname{det}(A)=0$, then $AB$ is also not invertible, meaning $\operatorname{det}(AB)=0$, so $0 = 0 \cdot \operatorname{det}(B)$.
 3.  **General Case**: If $A$ is invertible, it can be written as a product of elementary matrices $A = E_1 E_2 \cdots E_r$. Then, using Lemma 2.3.2 repeatedly:
+
     $\operatorname{det}(AB) = \operatorname{det}(E_1 E_2 \cdots E_r B) = \operatorname{det}(E_1)\operatorname{det}(E_2)\cdots\operatorname{det}(E_r)\operatorname{det}(B)$
+
     And $\operatorname{det}(A) = \operatorname{det}(E_1 E_2 \cdots E_r) = \operatorname{det}(E_1)\operatorname{det}(E_2)\cdots\operatorname{det}(E_r)$.
+
     Combining these gives $\operatorname{det}(AB) = \operatorname{det}(A)\operatorname{det}(B)$.
 
 ::: {.notes}
@@ -207,13 +218,14 @@ $$
 $$
 
 **Proof sketch:**
-Since $A^{-1}A = I$, by Theorem 2.3.4, we have $\operatorname{det}(A^{-1}A) = \operatorname{det}(A^{-1})\operatorname{det}(A)$.
-Also, $\operatorname{det}(I) = 1$.
-Thus, $\operatorname{det}(A^{-1})\operatorname{det}(A) = 1$.
-Since $A$ is invertible, $\operatorname{det}(A) \ne 0$, so we can divide by $\operatorname{det}(A)$ to get $\operatorname{det}(A^{-1}) = 1/\operatorname{det}(A)$.
 
-### ECE Application: Stability Analysis
-In control systems, if a system matrix $A$ needs to be inverted (e.g., to find state transitions), a non-zero determinant is essential. The value $1/\operatorname{det}(A)$ provides insight into how sensitive the inverse operation might be to small changes in $A$. A very small $\operatorname{det}(A)$ implies a very large $\operatorname{det}(A^{-1})$, indicating the system might be close to singularity or numerically ill-conditioned, which is a critical concern in signal processing and numerical simulations.
+Since $A^{-1}A = I$, by Theorem 2.3.4, we have $\operatorname{det}(A^{-1}A) = \operatorname{det}(A^{-1})\operatorname{det}(A)$.
+
+Also, $\operatorname{det}(I) = 1$.
+
+Thus, $\operatorname{det}(A^{-1})\operatorname{det}(A) = 1$.
+
+Since $A$ is invertible, $\operatorname{det}(A) \ne 0$, so we can divide by $\operatorname{det}(A)$ to get $\operatorname{det}(A^{-1}) = 1/\operatorname{det}(A)$.
 
 ::: {.notes}
 This theorem reinforces the link between invertibility ($\operatorname{det}(A) \ne 0$) and the determinant. Its direct application is when you have to calculate a determinant of an inverse, you don't actually have to calculate the inverse matrix itself. For system stability analysis or filter design in ECE, understanding the determinant of $A^{-1}$ can indicate how "robust" a system is to perturbations.
@@ -349,7 +361,12 @@ $$
 where $A_{j}$ is the matrix obtained by replacing the $j$-th column of $A$ with the column vector $\mathbf{b}$.
 
 **Proof sketch:**
-The proof uses the formula $\mathbf{x} = A^{-1}\mathbf{b} = \frac{1}{\operatorname{det}(A)}\operatorname{adj}(A)\mathbf{b}$. Expanding this matrix multiplication term by term reveals that the $j$-th component $x_j$ is precisely $\frac{b_1 C_{1j} + b_2 C_{2j} + \dots + b_n C_{nj}}{\operatorname{det}(A)}$. The numerator is precisely the cofactor expansion of $\operatorname{det}(A_j)$ along its $j$-th column.
+
+The proof uses the formula $\mathbf{x} = A^{-1}\mathbf{b} = \frac{1}{\operatorname{det}(A)}\operatorname{adj}(A)\mathbf{b}$. 
+
+Expanding this matrix multiplication term by term reveals that the $j$-th component $x_j$ is precisely $\frac{b_1 C_{1j} + b_2 C_{2j} + \dots + b_n C_{nj}}{\operatorname{det}(A)}$. 
+
+The numerator is precisely the cofactor expansion of $\operatorname{det}(A_j)$ along its $j$-th column.
 
 ::: {.notes}
 Cramer's Rule is a classic result with conceptual importance. In ECE, it's particularly useful for small systems (like 2x2 or 3x3) where you might need an analytical solution or when parameters are involved, allowing calculation of a symbolic rather than just numerical result. In signal processing, for example, if you have a transfer function denominator polynomial, calculating its roots often involves solving systems of equations, and Cramer's rule can sometimes provide the explicit functions for these roots. For large systems, however, direct numerical solvers are preferable due to computational cost.
@@ -472,41 +489,13 @@ This theorem is a cornerstone for understanding and diagnosing linear systems in
 - **Control & State Space**: An invertible system matrix ensures controllability or observability (depends on specific matrix, e.g., controllability matrix), crucial for designing stable and responsive systems.
 - **Hardware/Software Implications**: Non-invertible matrices often lead to numerical instability or errors in computational simulations and algorithms used in embedded systems or scientific computing.
 
+- **Stability Analysis**
+In control systems, if a system matrix $A$ needs to be inverted (e.g., to find state transitions), a non-zero determinant is essential. The value $1/\operatorname{det}(A)$ provides insight into how sensitive the inverse operation might be to small changes in $A$. A very small $\operatorname{det}(A)$ implies a very large $\operatorname{det}(A^{-1})$, indicating the system might be close to singularity or numerically ill-conditioned, which is a critical concern in signal processing and numerical simulations.
+
+
+
 ::: {.notes}
 Emphasize this theorem as a grand unifying theory up to this point in Linear Algebra. For ECE students, it's not just a list to memorize; it's a set of diagnostic tools. For example, if you're trying to find an inverse and $\operatorname{det}(A)=0$, you immediately know `A` is not invertible, which in turn tells you `Ax=0` has non-trivial solutions, and its RREF is not the identity.
-:::
-
----
-
-## Proof Highlights: Invertibility and Triangular Matrices
-
-Recall Theorem 1.7.1, which we can now fully prove:
-
-### Theorem 1.7.1 (c): Triangular Matrix Invertibility
-A triangular matrix is invertible if and only if its diagonal entries are all nonzero.
-
-**Proof Sketch:**
-
-- We know from Theorem 2.1.2 that for a triangular matrix $A$, $\operatorname{det}(A) = a_{11}a_{22}\dots a_{nn}$ (product of diagonal entries).
-- From Theorem 2.3.8(g), $A$ is invertible if and only if $\operatorname{det}(A) \ne 0$.
-- Combining these, $\operatorname{det}(A) \ne 0$ if and only if $a_{11}a_{22}\dots a_{nn} \ne 0$, which means all diagonal entries ($a_{ii}$) must be nonzero.
-
----
-
-## Proof Highlights: Invertibility and Triangular Matrices
-
-### Theorem 1.7.1 (d): Inverse of Triangular Matrix
-The inverse of an invertible lower triangular matrix is lower triangular, and the inverse of an invertible upper triangular matrix is upper triangular.
-
-**Proof Sketch (for Upper Triangular):**
-
-- Use $A^{-1} = \frac{1}{\operatorname{det}(A)}\operatorname{adj}(A)$.
-- To show $A^{-1}$ is upper triangular, means its matrix of cofactors (transposed) must be lower triangular.
-- This requires showing $C_{ij}=0$ for $i<j$.
-- $C_{ij} = (-1)^{i+j}M_{ij}$. For $i<j$, the submatrix $B_{ij}$ (for minor $M_{ij}$) will have a row of zeros within its first $i$ rows if $A$ is upper triangular. This makes $M_{ij} = \operatorname{det}(B_{ij})=0$.
-
-::: {.notes}
-These proofs are great examples of how the theoretical tools we've developed (determinant properties, EROs, adjoint) are used to establish more advanced results. Triangular matrices are crucial in numerical algorithms (like LU decomposition for solving linear systems) so understanding their invertibility and the nature of their inverses is very practical for designing efficient and stable computational methods in ECE.
 :::
 
 ---

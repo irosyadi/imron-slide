@@ -20,11 +20,20 @@ Develop an interactive Quarto-based presentation using reveal.js tailored for un
   - Speaker notes for additional context.
 
 ## 3. Diagrams  
-- Create diagrams using Mermaid.js, formatted as:  
+- Create diagrams using Mermaid.js or Graphviz
+- Format for Mermaid.js:  
 
 ```
 \`\`\`\{mermaid\}
 Mermaid code here
+\`\`\`\
+```
+
+- Format for Graphviz:  
+
+```
+\`\`\`\{dot\}
+Graphviz code here
 \`\`\`\
 ```
 

@@ -84,6 +84,7 @@ Base case for induction: The determinant of a $1 \times 1$ matrix $[a_{11}]$ is 
 
 ### Definition 1: Minors and Cofactors
 If $A$ is a square matrix:
+
 - The **minor** of entry $a_{ij}$, denoted $M_{ij}$, is the determinant of the submatrix that remains after deleting the $i$-th row and $j$-th column from $A$.
 - The **cofactor** of entry $a_{ij}$, denoted $C_{ij}$, is given by $C_{ij} = (- 1)^{i + j}M_{ij}$.
 
@@ -107,9 +108,6 @@ This means $C_{ij} = M_{ij}$ if $i+j$ is even (positive sign), and $C_{ij} = -M_
 
 ## Visualizing Cofactor Signs and Examples
 
-:::: {.columns}
-
-::: {.column width="50%"}
 ### Example: $M_{11}$ and $C_{11}$
 Let
 $$
@@ -120,18 +118,13 @@ $$
 M_{11} = \operatorname{det}\left| \begin{array}{cc}5 & 6 \\ 4 & 8 \end{array} \right| = (5)(8) - (6)(4) = 40 - 24 = 16
 $$
 Since $1+1=2$ (even), $C_{11} = (-1)^{1+1}M_{11} = M_{11} = 16$.
-:::
 
-::: {.column width="50%"}
 ### Example: $M_{32}$ and $C_{32}$
 To find $M_{32}$, delete row 3 and column 2:
 $$
 M_{32}=\operatorname{det}\left|\begin{array}{cc}{3}&{-4}\\ {2}&{6}\end{array}\right|=(3)(6)-(-4)(2) = 18 - (-8) = 26
 $$
 Since $3+2=5$ (odd), $C_{32} = (-1)^{3+2}M_{32} = -M_{32} = -26$.
-:::
-
-::::
 
 ::: {.notes}
 For students, it's often easier and less error-prone to first compute the minor $M_{ij}$, and then apply the sign from the checkerboard pattern rather than explicitly calculating $(-1)^{i+j}$ every time. This visual aid helps to quickly determine the correct sign.
@@ -300,6 +293,7 @@ A = np.array([
 ])
 
 print("Original Matrix A:")
+
 print(A)
 
 det_A = np.linalg.det(A)
@@ -340,38 +334,6 @@ $= a_{11}a_{22}a_{33}a_{44}$
 
 ::: {.notes}
 Triangular matrices are frequently encountered in ECE, for instance, as a result of Gaussian elimination or LU decomposition used to solve linear systems or analyze circuit models. Knowing this property allows for quick verification or computation of determinants without resorting to a full cofactor expansion, especially useful for large systems or state-space models. This property is a huge computational shortcut.
-:::
-
----
-
-## Engineering Applications of Determinants
-
-Determinants are more than just mathematical curiosities; they have critical applications in Electrical and Computer Engineering.
-
-### Circuit Analysis
-- **KVL/KCL systems**: Determinants confirm if a unique solution exists for nodal voltages or mesh currents.
-- **Cramer's Rule**: Can solve small systems of circuit equations directly.
-- **Network stability**: Related to matrix eigenvalues (roots of characteristic equation), which involve determinants.
-
-### Control Systems
-- **Characteristic Equation**: Finding eigenvalues involves calculating $\operatorname{det}(sI - A) = 0$, which dictates system stability and response.
-- **Controllability/Observability**: Gramian matrices, which assess system properties, involve determinants.
-
----
-
-## Engineering Applications of Determinants
-
-### Signal Processing
-- **Filter Design**: Determinants can be involved in analyzing and verifying properties of digital or analog filters.
-- **Principal Component Analysis (PCA)**: The determinant of the covariance matrix is related to the generalized variance preserved by the principal components.
-
-### Simple Resistive Circuit
-A common engineering problem is solving for unknown currents or voltages in a circuit. This often leads to a system of linear equations represented by a matrix.
-
-A unique solution for voltages/currents exists if the determinant of the circuit's system matrix is non-zero. If the determinant is zero, it might indicate a redundant equation, a short circuit, or an open circuit, leading to non-unique or no solution for certain variables.
-
-::: {.notes}
-Highlight that while full cofactor expansion for large matrices isn't always practical for direct computation in large-scale real-world problems (other numerical methods like LU decomposition are faster), the *concept* of the determinant and its properties derived from these definitions are indispensable for theoretical understanding and diagnosing system behavior in ECE.
 :::
 
 ---
@@ -507,6 +469,38 @@ print(f"Determinant using NumPy: {np.linalg.det(M):.2f}")
 
 ::: {.notes}
 Similar to the $2 \times 2$ example, let students experiment with different 3x3 matrices in the Python code. This interactive check reinforces the "arrow technique" and demonstrates its equivalence to more general methods for these specific matrix sizes. It also provides confidence by comparing with NumPy's robust determinant calculation.
+:::
+
+---
+
+## Engineering Applications of Determinants
+
+Determinants are more than just mathematical curiosities; they have critical applications in Electrical and Computer Engineering.
+
+### Circuit Analysis
+- **KVL/KCL systems**: Determinants confirm if a unique solution exists for nodal voltages or mesh currents.
+- **Cramer's Rule**: Can solve small systems of circuit equations directly.
+- **Network stability**: Related to matrix eigenvalues (roots of characteristic equation), which involve determinants.
+
+### Control Systems
+- **Characteristic Equation**: Finding eigenvalues involves calculating $\operatorname{det}(sI - A) = 0$, which dictates system stability and response.
+- **Controllability/Observability**: Gramian matrices, which assess system properties, involve determinants.
+
+---
+
+## Engineering Applications of Determinants
+
+### Signal Processing
+- **Filter Design**: Determinants can be involved in analyzing and verifying properties of digital or analog filters.
+- **Principal Component Analysis (PCA)**: The determinant of the covariance matrix is related to the generalized variance preserved by the principal components.
+
+### Simple Resistive Circuit
+A common engineering problem is solving for unknown currents or voltages in a circuit. This often leads to a system of linear equations represented by a matrix.
+
+A unique solution for voltages/currents exists if the determinant of the circuit's system matrix is non-zero. If the determinant is zero, it might indicate a redundant equation, a short circuit, or an open circuit, leading to non-unique or no solution for certain variables.
+
+::: {.notes}
+Highlight that while full cofactor expansion for large matrices isn't always practical for direct computation in large-scale real-world problems (other numerical methods like LU decomposition are faster), the *concept* of the determinant and its properties derived from these definitions are indispensable for theoretical understanding and diagnosing system behavior in ECE.
 :::
 
 ---
