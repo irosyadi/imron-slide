@@ -1,0 +1,111 @@
+<html>
+ 	<head>
+ 		<title>Circles Sines and Signals - Sine and Cosine</title>
+	  	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	  	<script type="text/javascript" src="third_party/d3/d3.min.js"></script>
+
+		<script type="text/x-mathjax-config">
+			MathJax.Hub.Config({
+			  jax: ["input/TeX","input/MathML","output/SVG"],
+			  extensions: ["tex2jax.js","mml2jax.js","MathMenu.js","MathZoom.js"],
+			  TeX: {
+			    extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"]
+			  }
+			});
+		</script>
+
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({ TeX: { extensions: ["color.js"] }});
+		</script>
+
+		<script type="text/x-mathjax-config">
+		    MathJax.Hub.Config(
+		    	{
+		        	SVG: {linebreaks: { automatic:true }},
+		        	displayAlign: "center"
+		       	}
+		        );
+		</script>
+
+		<script type="text/javascript"
+		   src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_SVG">
+		</script>
+
+
+		<link href='//fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+		<link href='//fonts.googleapis.com/css?family=Vollkorn:400italic,400' rel='stylesheet' type='text/css'>
+
+		<style>
+			@import url("fontello-b1d57784/css/fontello.css");
+			@import url("style.css");
+		</style>
+
+
+ 	<link rel="icon" type="" href="favicon.ico"></head>
+ 	<body>
+
+	<div class="littleheader"> THE SINE WAVE
+		<div class="subheader" style="font-size: 14px"> PERIODIC MOVEMENT AND THE CIRCLE </div>
+	</div>
+
+	<script>
+		var PHASOR_FREQUENCY = 2;
+		var PHASOR_AMPLITUDE = 1;
+		var TARGET_PHASOR_FREQUENCY = 2;
+		var TARGET_PHASOR_AMPLITUDE = 1;
+		var PHASOR_INTERPOLATOR = d3.interpolateNumber(PHASOR_FREQUENCY, TARGET_PHASOR_FREQUENCY);
+		var PHASOR_AMP_INTERPOLATOR = d3.interpolateNumber(PHASOR_AMPLITUDE, TARGET_PHASOR_AMPLITUDE);
+		var PHASOR_INTERPOLATION = 1.0;
+		var PHASOR_AMP_INTERPOLATION = 1.0;
+		function GET_PHASOR_FREQUENCY() {
+			return PHASOR_INTERPOLATOR(Math.min(PHASOR_INTERPOLATION, 1.0));
+		}
+		function GET_PHASOR_AMPLITUDE() {
+			return PHASOR_AMP_INTERPOLATOR(Math.min(PHASOR_AMP_INTERPOLATION, 1.0));
+		}
+		function updateFreq(freq) {
+			PHASOR_FREQUENCY = GET_PHASOR_FREQUENCY();
+			TARGET_PHASOR_FREQUENCY = freq;
+			PHASOR_INTERPOLATION = 0.0;
+			PHASOR_INTERPOLATOR = d3.interpolateNumber(PHASOR_FREQUENCY, TARGET_PHASOR_FREQUENCY);
+		}
+		function updateAmp(amp) {
+			PHASOR_AMPLITUDE = GET_PHASOR_AMPLITUDE();
+			TARGET_PHASOR_AMPLITUDE = amp / 5000;
+			PHASOR_AMP_INTERPOLATION = 0.0;
+			PHASOR_AMP_INTERPOLATOR = d3.interpolateNumber(PHASOR_AMPLITUDE, TARGET_PHASOR_AMPLITUDE);
+		}
+	</script>
+
+  	<table class="figureTable">
+		<tr>
+			<td style="vertical-align: top;">
+				<div class="text" style="margin-left: 0px">
+				<br/>
+				<table>
+						<tr class="figureCaption">
+							<td width="100%">
+							<b>Figure 1.</b>&nbsp; The Sine Wave
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<svg id="phasor" class="svgWithText" width="600" height="150" style="margin-left: 50px; margin-right: 100px;"></svg>
+								<script type="text/javascript" src="js/phasor_sine.js"></script>
+
+								<div class="controls">
+									<label for=freqFader>Frequency</label><br/>
+									<input type=range min=2 max=16 value=2 id=freqFader step=1 width=150 oninput="updateFreq(value);"><br/>
+									<label for=ampFader>Amplitude</label><br/>
+									<input type=range min=0 max=5000 value=5000 id=ampFader step=1 width=150 oninput="updateAmp(value);">
+								</div>
+  							</td>
+						</tr>
+  				</table>
+  				<br/>
+  				</td>
+		</tr>
+	</table>
+	
+  </body>
+</html>
