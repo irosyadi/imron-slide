@@ -1,0 +1,968 @@
+
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+        <title>Understanding Fourier Approximations &amp; Oscillators</title>
+        <style>
+            /* Override to make the text appear white on the dark bg */
+            md-select.md-hue-3:not([disabled]):focus .md-select-value {
+                border-bottom-color: rgb(167,255,235);
+                color: rgba(255,255,255,1);
+            }
+            
+        </style>
+    </head>
+    <body ng-app="Fourier" fourier-app ng-cloak  style="background-color: #E0F2F1;">
+         <md-content style="background-color: #E0F2F1;">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                   <md-button class="md-icon-button" aria-label="Settings">
+                    <md-icon class="md-icon-button">timeline</md-icon>
+                   </md-button>
+                    <h2>
+                        <span> Understanding Fourier Approximations &amp; Oscillators</span>
+                    </h2>
+                    <span flex></span>
+                    <md-button ng-click="app.status.visualizationPaused = !app.status.visualizationPaused" class="md-icon-button" aria-label="PlayPause">
+                        <md-icon>{{!app.status.visualizationPaused? 'pause':'play_arrow'}}</md-icon>
+                        <md-tooltip md-direction="left">
+                        {{!app.status.visualizationPaused? 'Pause the visualization':'Play the visualization'}} [SPACE]
+                        </md-tooltip>
+                    </md-button>
+                    <md-button ng-disabled="!app.status.visualizationPaused" ng-mousedown="app.status.step = true" class="md-icon-button" aria-label="Next">
+                        <md-icon>skip_next</md-icon>
+                        <md-tooltip>
+                        Step one frame at a time [S]
+                        </md-tooltip>
+                    </md-button>
+                    <md-button ng-click="app.status.audioPaused = !app.status.audioPaused" class="md-icon-button" aria-label="Mute" id="playpause">
+                         <md-icon>{{app.status.audioPaused? 'volume_off': 'volume_up'}}</md-icon>
+                         <md-tooltip>
+                        {{app.status.audioPaused? 'Hear the wave at a base frequency of 220hz':'Mute'}} [M]
+                        </md-tooltip>
+                    </md-button>
+                    <div layout flex="10" flex-gt-md="20">
+                        <md-slider class="md-primary md-hue-3" aria-label="Volume" flex min="0" max="1" step="0.01" ng-model="app.options.volume" ng-disabled="app.status.audioPaused">
+                        </md-slider>
+                    </div>
+                    <md-button ng-click="showHelpModal()" class="md-icon-button" aria-label="Help">
+                        <md-icon>help</md-icon>
+                        <md-tooltip md-direction="left">
+                        Show the help modal
+                        </md-tooltip>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <md-toolbar class="md-primary md-hue-2" style="padding: 25px;">
+            <div layout layout-align="center stretch">
+                <div layout flex="20">
+                    <div flex="initial" layout layout-align="center center">
+                        <span flex>Waveform:
+                            <md-tooltip md-direction="right">
+                            Change the waveform being approximated
+                            </md-tooltip>
+                        </span>
+                    </div>
+                    <div flex layout layout-margin layout-align="center center">      
+                        <md-select class="md-primary md-hue-3" ng-model="app.options.wave" aria-label="Waveform">
+                            <md-option ng-repeat="wave in app.waves" ng-value="wave">
+                            {{wave.name}}
+                            </md-option>
+                        </md-select>
+                    </div>
+                </div>
+                <div layout flex="">
+                    <div flex="initial" layout layout-align="center center">
+                        <span flex style="min-width: 80px;cursor:pointer;">N = {{app.options.evaluation.value}}:&nbsp;
+                            <md-tooltip>
+                            Set the series's maximum evalutation number [LEFT/RIGHT]
+                            </md-tooltip>
+                        </span>
+                    </div>
+                    <div flex layout layout-margin layout-align="center center">
+                        <md-slider class="md-primary md-hue-3" aria-label="N" flex min="{{app.options.evaluation.min}}" max="{{app.options.evaluation.max}}" step="{{app.options.evaluation.step}}" ng-model="app.options.evaluation.value">
+                        </md-slider>
+                    </div>
+                </div>
+                <div layout flex="">
+                    <div flex="initial" layout layout-align="center center">
+                        <span flex style="min-width: 80px;cursor:pointer;">&nbsp;Period:
+                            <md-tooltip>
+                                Change how long the wave is and what tone it produces
+                            </md-tooltip>
+                        </span>
+                    </div>
+                    <div flex layout layout-margin layout-align="center center">
+                        <md-slider aria-label="Frequency" flex min="3000" max="12000" step="1000" ng-model="app.options.rate" class="md-primary md-hue-3">
+                        </md-slider>
+                    </div>
+                </div>
+            </div>
+            <div layout layout-align="center stretch">
+                <div layout flex="">
+                    <div flex layout layout-align="center center">
+                        <md-switch class="md-primary md-hue-3" ng-model="app.options.useLanczosFactor" aria-label="Switch 1">
+                        Use Lanczos &#963; Factor
+                            <md-tooltip>
+                                Reduce the Gibbs Phenomenon (over/under-shooting at discontunities)
+                            </md-tooltip>
+                        </md-switch>
+                    </div>
+                </div>
+                <div layout flex="">
+                    <div flex layout layout-align="center center">
+                        <md-switch class="md-primary md-hue-3" ng-model="app.options.singleWave" aria-label="Switch 1">
+                            Term {{app.options.evaluation.value}} Only
+                            <md-tooltip>
+                            Only show/hear the latest term in the series 
+                            </md-tooltip>
+                        </md-switch>
+                    </div>
+                </div>
+                <div layout flex="">
+                    <div flex layout layout-align="center center">
+                        <md-switch class="md-primary md-hue-3" ng-model="app.options.overlayComponents" aria-label="Switch 1">
+                            Overlay Components
+                            <md-tooltip>
+                            Show every wave being added together
+                            </md-tooltip>
+                        </md-switch>
+                    </div>
+                </div>
+            </div>
+            </md-toolbar>
+            <div layout="row" layout-align="center center">
+                <div fourier-canvas=""></div>
+            </div>
+            <div style="padding: 20px; text-align: center;">
+                 <a md-button href="https://commons.wikimedia.org/wiki/File:Fourier_series_square_wave_circles_animation.gif#/media/File:Fourier_series_square_wave_circles_animation.gif" target="_blank">Original inspiration</a>
+                 <a md-button href="https://en.wikipedia.org/wiki/Fourier_series" target="_blank">More about Fourier series</a>
+                 <a md-button href="https://en.wikipedia.org/wiki/Gibbs_phenomenon" target="_blank">More about the Gibbs Phenomenon</a>
+                 <a md-button href="https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createPeriodicWave" target="_blank">More about generating the audio</a>
+                 <br>
+                 <span class="md-body-1">&mdash; Made by <a href="https://bgrawi.com" target="_blank">Ben Grawi</a>, 2016 &mdash;</span>
+            </div>
+        </md-content>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+
+        <!-- Angular Material Library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+        
+        <!-- Your application bootstrap  -->
+        <script type="text/javascript"> 
+            /**
+             * You must include the dependency on 'ngMaterial' 
+             */
+            angular.module('Fourier', ['ngMaterial'])
+            .config(function($mdThemingProvider) {
+                $mdThemingProvider.theme('default')
+                    .primaryPalette('teal')
+                    .accentPalette('indigo');
+                })
+            .directive('fourierApp', function() {
+                
+                return {
+                  controller: FourierAppCtrl,
+                  controllerAs: 'app',
+                  link: FourierAppLink,
+                  bindToController: true
+                };
+                
+                
+                function FourierAppCtrl($scope, $mdDialog, $mdMedia) {
+                    
+                    this.options = {
+                        evaluation: {
+                            min: 1,
+                            max: 79,
+                            step: 2,
+                            value: 7
+                        },
+                        useLanczosFactor: false,
+                        rate: 6000,
+                        volume: .5,
+                        wave: null,
+                        singleWave: false,
+                        overlayComponents: false
+                    };
+                    $scope.options = this.options;
+                    
+                    $scope.$watch("options.wave", function(newWave) {
+                        if($scope.options.evaluation.min == 1 && newWave.start == 2) {
+                            $scope.options.evaluation.min = 2;
+                            $scope.options.evaluation.value++;
+                            $scope.options.evaluation.max++;
+                        } else if($scope.options.evaluation.min == 2 && newWave.start == 1) {
+                            $scope.options.evaluation.min = 1;
+                            $scope.options.evaluation.value--;
+                            $scope.options.evaluation.max--;
+                        }
+                    });
+
+                    function lanczosFactor(f_number) {
+                        if(!$scope.options.useLanczosFactor) return 1;
+                        var x = (f_number * Math.PI) / $scope.options.evaluation.value;
+                        return Math.sin(x) / x;
+                    }                    
+                    
+                    function basicFourierFunction(theta, f_number) {
+                        return ((4 * Math.sin(f_number * theta)) / (f_number * Math.PI)) * lanczosFactor(f_number);
+                    }
+
+                    function basicFourierFunctionMax(f_number) {
+                        return (4 / (f_number * Math.PI)) * lanczosFactor(f_number);
+                    }
+                    
+                    function triangleFourierFunction(theta, f_number) {
+                        return ((8 * (Math.pow(-1, (f_number - 1) / 2) ) * Math.sin( f_number * theta)) / (f_number * f_number * Math.PI * Math.PI)) * lanczosFactor(f_number);
+                    }
+                    
+                    function triangleFourierFunctionCoef(f_number) {
+                        return ((8 * (Math.pow(-1, (f_number - 1) / 2)))  / (f_number * f_number * Math.PI * Math.PI)) * lanczosFactor(f_number);
+                    }
+
+                    function triangleFourierFunctionMax(f_number) {
+                        return Math.abs(triangleFourierFunctionCoef(f_number));
+                    }
+                    
+                    function getDisplayLanczosFactor(n) {
+                        var total = $scope.options.evaluation.value;
+                        if(n == 1) n = '';
+                        
+                        if(total > 1 && total != n) {
+                            return n + '\u03C0' + '/' + total;
+                        } else {
+                            return '\u03C0';
+                        }
+                    }
+                    
+                    function getDisplayLanczosNumerator(n) {
+                        if(!$scope.options.useLanczosFactor) {
+                            return '';
+                        }
+                        return " \u00D7 sin(" + getDisplayLanczosFactor(n) + ")";
+                    }
+                    
+                    function getDisplayLanczosDenominator(n) {
+                        if(!$scope.options.useLanczosFactor) {
+                            return '';
+                        }
+                        return " \u00D7 " + getDisplayLanczosFactor(n);
+                    }
+
+                    
+                    this.waves = [
+                        {
+                            name: 'Square',
+                            start: 1,
+                            actualWave: function (theta) {
+                                return (theta % (2 * Math.PI)) > Math.PI? -1: 1;
+                            },
+                            fourierFunction: basicFourierFunction,
+                            fourierFunctionMax: basicFourierFunctionMax,
+                            getAudioWaveCoefficients: function(f_pos) {
+                                var imag = ((f_pos  % 2) === 1)? basicFourierFunctionMax(f_pos): 0;
+                                return [0, imag];
+                            },
+                            getDisplayNumerator: function(n) {
+                                if(n == 1) n = '';
+                                return "4sin(" + n + "\u03B8)" + getDisplayLanczosNumerator(n);
+                            },
+                            getDisplayDenominator: function(n) {
+                                if(n == 1) n = '';
+                                return n + "\u03C0" + getDisplayLanczosDenominator(n);
+                            }
+                        },
+                        {
+                            name: 'Sawtooth',
+                            start: 2,
+                            actualWave: function (theta) {
+                                return 1 - ( (theta % (Math.PI)) / (Math.PI / 2));
+                            },
+                            fourierFunction: basicFourierFunction,
+                            fourierFunctionMax: basicFourierFunctionMax,
+                            getAudioWaveCoefficients: function(f_pos) {
+                                var imag = ((f_pos  % 2) === 0 && f_pos > 0)? -basicFourierFunctionMax(f_pos): 0;
+                                
+                                return [0, imag];
+                            },
+                            getDisplayNumerator: function(n) {
+                                if(n == 1) n = '';
+                                return "4sin(" + n + "\u03B8)" + getDisplayLanczosNumerator(n);
+                            },
+                            getDisplayDenominator: function(n) {
+                                if(n == 1) n = '';
+                                return n + "\u03C0" + getDisplayLanczosDenominator(n);
+                            }
+                        },
+                        {
+                            name: 'Triangle',
+                            start: 1,
+                            actualWave: function (theta) {
+                                var mod_theta = theta % ( 2 * Math.PI);
+                                if(mod_theta > Math.PI / 2 && mod_theta <= (3 * Math.PI) / 2) {
+                                    return (1 - ((2/Math.PI) * (mod_theta - (Math.PI/2))));
+                                } else if(mod_theta > (3 * Math.PI) / 2) {
+                                    return ((2/(Math.PI)) * (mod_theta % Math.PI) ) - 2;
+                                } else {
+                                    return ((2/Math.PI) * mod_theta);
+                                }
+                                //return (mod_theta > Math.PI / 2 && mod_theta > (3 * Math.PI) / 2)? (1 - ((2/Math.PI) * (mod_theta - (Math.PI/2)))): ;
+                            },
+                            fourierFunction: triangleFourierFunction,
+                            fourierFunctionMax: triangleFourierFunctionMax,
+                            getAudioWaveCoefficients: function(f_pos) {
+                                var imag = ((f_pos  % 2) === 1)? -triangleFourierFunctionCoef(f_pos): 0;
+                                return [0, imag];
+                            },
+                            getDisplayNumerator: function(n) {
+                                var sign = (Math.pow(-1, (n - 1) / 2) > 0)?'':'-';
+                                if(n == 1) n = '';
+                                return sign + "8sin(" + n + "\u03B8)" + getDisplayLanczosNumerator(n);
+                            },
+                            getDisplayDenominator: function(n) {
+                                var disp = n;
+                                if(disp == 1) {
+                                    disp = '\u03C0\u00B2';
+                                } else {
+                                    disp = "(" + disp + "\u03C0)\u00B2";
+                                }
+                                return disp + "" + getDisplayLanczosDenominator(n);
+                            }
+                        }
+                    ];
+                    $scope.waves = this.waves;
+                    
+                    this.options.wave = this.waves[0]
+                    
+                    this.status = {
+                        visualizationPaused: false,
+                        step: false,
+                        audioPaused: true
+                    };
+                    $scope.status = this.status;
+                    
+                    function HelpDialogController($scope, $mdDialog) {
+                        $scope.hide = function() {
+                            $mdDialog.hide();
+                        };
+                        $scope.cancel = function() {
+                            $mdDialog.cancel();
+                        };
+                        $scope.answer = function(answer) {
+                            $mdDialog.hide(answer);
+                        };
+                    }
+                    
+                    $scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
+                    $scope.showHelpModal = function() {
+                        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
+                        $mdDialog.show({
+                            controller: HelpDialogController,
+                            templateUrl: 'helpdialog.html',
+                            parent: angular.element(document.body),
+                            clickOutsideToClose:true,
+                            fullscreen: useFullScreen
+                        });
+                        $scope.$watch(function() {
+                            return $mdMedia('xs') || $mdMedia('sm');
+                        }, function(wantsFullScreen) {
+                            $scope.customFullscreen = (wantsFullScreen === true);
+                        });
+                    };
+                    
+                    var showHelpModal = localStorage.getItem('showedHelpModal') !== 'true';
+                    if(showHelpModal) {
+                        localStorage.setItem('showedHelpModal', 'true');
+                        $scope.showHelpModal();
+                    }
+                    
+                    this.scope = $scope;
+                }
+                
+                function FourierAppLink(scope, elm, attrs, app) {
+                    
+                    document.addEventListener("keydown", function(event) {
+                        if(event.keyCode === 32) {
+                            app.scope.status.visualizationPaused = !app.scope.status.visualizationPaused;
+                        } else if(event.keyCode === 77) {
+                            app.scope.status.audioPaused = !app.scope.status.audioPaused;
+                        } else if(app.status.visualizationPaused && event.keyCode == 83 ) {
+                            app.scope.status.step = true;
+                        } else if(event.keyCode == 39 ) {
+                            if(app.scope.options.evaluation.value + 2 <= app.scope.options.evaluation.max) {
+                                app.scope.options.evaluation.value+=2;
+                            }
+                        }  else if(event.keyCode == 37 ) {
+                            if(app.scope.options.evaluation.value - 2 >= app.scope.options.evaluation.min) {
+                                app.scope.options.evaluation.value-=2;
+                            }
+                        }
+                        app.scope.$digest();
+                    });
+                    
+                    // var query = elm[0].querySelector.bind(elm[0]);
+                    
+                    // query()
+                }
+            })
+            .directive('dragUpdate', function() {
+                return {
+                    restrict: 'A',
+                    link: function(scope, element, attrs) {
+                        element.on('$md.drag', function() {
+                            console.info('Drag Ended');
+                        })
+                    }
+                }
+            })
+            .directive("fourierCanvas", function() {
+                return {
+                    require: '^fourierApp',
+                    template: '<canvas width="1200" height="600"></canvas>',
+                    restrict: 'A',
+                    link: FourierCanvasLink
+                };
+                
+                
+                function FourierCanvasLink(scope, elm, attrs, fourierApp) {
+                    var clear = false;
+                    
+                    
+                    fourierApp.scope.$watch('status.visualizationPaused', function(newVal, oldVal) {
+                        if(newVal === oldVal) return;
+                        
+                        if(!newVal) {
+                            update();
+                        }
+                    });
+                    
+                    fourierApp.scope.$watch('status.step', function(newVal, oldVal) {
+                        if(newVal === oldVal) return;
+                        
+                        if(newVal) {
+                            update();
+                        }
+                    });
+                    
+                    fourierApp.scope.$watch('options', function(newVal, oldVal) {
+                        clear = true;
+                    }, true);
+                    
+                    var TOTAL_HEIGHT = 600;
+                    var TOTAL_WIDTH = 1200;
+                    var HEIGHT = 120;
+                    var LEFT = 750;
+                    var WIDTH = 400;
+                    var PADDING = 40;
+                    
+                    var bgColor = '#E0F2F1';
+                    
+                    var canvasElm = elm[0].querySelector('canvas');
+
+                    /**
+                     * @type CanvasRenderingContext2D
+                     */
+                    var ctx = canvasElm.getContext("2d");
+                    
+
+                    var positions = [];
+
+                    var actualWave = [];
+
+                    
+
+                    var TOP = 100;
+
+                    var colors = ['#F44336', '#424242', '#FF9800', '#4CAF50', '#795548', '#2196F3', '#673AB7'];
+
+                    var fourierFunction = fourierApp.options.wave.fourierFunction,
+                        fourierFunctionMax = fourierApp.options.wave.fourierFunctionMax;
+
+
+                    function fourierValue(theta, f_number) {
+                        if(f_number <= 0) return 0;
+                        
+                        var components = new Array(f_number + 1);
+                        
+                        var total = 0, componentValue = 0;
+                        
+                        for(; f_number > 0; f_number -= 2) {
+                            componentValue = fourierFunction(theta, f_number);
+                            total += componentValue;
+                            components.splice(f_number, 1, componentValue);
+                        }
+                        
+                        return {
+                            components: components,
+                            total: total
+                        };
+                    }
+
+
+                    function x(value) {
+                        return value + LEFT;
+                    }
+
+                    function y(value, offset) {
+                        if(!offset) {
+                            offset = HEIGHT;
+                        }
+                        return offset + (-value * offset) + TOP;
+                    }
+
+                    var prevFValue = 1;
+
+
+                    var ac = new AudioContext();
+                    var oscStub = {frequency: {value: 0}, stop: function() {}, setPeriodicWave: function() {}};
+                    osc = oscStub;
+                    
+                    var gainNode = ac.createGain();
+                    
+                    gainNode.gain.value = fourierApp.options.volume;
+
+                    function updateAudioWaveTable(f_value) {
+                        var parts = [new Float32Array(200), new Float32Array(200)];
+                        var result;
+                        
+                        if(fourierApp.options.singleWave) {
+                            result = fourierApp.options.wave.getAudioWaveCoefficients(f_value);
+                            gainNode.gain.value = fourierApp.options.volume * (result[1] / fourierApp.options.wave.getAudioWaveCoefficients(fourierApp.options.wave.start)[1]);
+                            parts[0][f_value] = result[0];
+                            parts[1][f_value] = result[1];
+                        } else {
+                            gainNode.gain.value = fourierApp.options.volume;
+                            var f_pos = 0;
+                            do {
+                                result = fourierApp.options.wave.getAudioWaveCoefficients(f_pos);
+                                parts[0][f_pos] = result[0];
+                                parts[1][f_pos] = result[1];
+                            } while(f_pos++ <= f_value);
+                        }
+                        
+                        var wave = ac.createPeriodicWave(parts[0], parts[1]);
+
+                        osc.setPeriodicWave(wave);
+                    }
+
+
+                    fourierApp.scope.$watch('status', function(newVal, oldVal) {
+                        if(newVal === oldVal) return;
+                        
+                        if(!newVal.visualizationPaused && !newVal.audioPaused) {
+                            osc = ac.createOscillator();
+                            osc.frequency.value = 220 * (6000 / fourierApp.options.rate);
+                            osc.connect(gainNode);
+                            gainNode.connect(ac.destination);
+                            updateAudioWaveTable(prevFValue);
+                            osc.start();
+                        } else {
+                            osc.stop();
+                            
+                            // stub out the oscilator
+                            osc = oscStub;
+                        }
+                    }, true);
+                    
+                    fourierApp.scope.$watch('options.volume', function(newVal, oldVal) {
+                        if(newVal === oldVal) return;
+                        
+                        updateAudioWaveTable(f_value);
+                    });
+                    fourierApp.scope.$watch('options.rate', function(newVal, oldVal) {
+                        if(newVal === oldVal) return;
+                        osc.frequency.value = 220 * (6000 / fourierApp.options.rate);
+                    });
+                    
+                    
+                    function drawArrow(x, y, s, w, color) {
+                        ctx.stokeStyle = color;
+                        ctx.lineWidth = w;
+                        
+                        ctx.beginPath();
+                        ctx.moveTo(x - s, y - (s * .6));
+                        ctx.lineTo(x, y);
+                        ctx.lineTo(x - s, y + (s * .6));
+                        ctx.stroke();
+                    }
+                    
+                    function drawShadeCircle(cx, cy, r, color, width) {
+                        ctx.strokeStyle = color;
+                            ctx.fillStyle = '#FFFFFF';
+                            ctx.lineWidth = width;
+                            ctx.globalAlpha = 0.15;
+                            ctx.beginPath();
+                            ctx.arc(cx,cy,r,0,2*Math.PI);
+                            
+                            ctx.stroke();
+                            ctx.globalAlpha = 1;
+                    }
+                   
+                    
+                    function drawCircle(cx, cy, r, armX, armY, color) {
+
+                        ctx.strokeStyle = color;
+                        ctx.fillStyle = '#FFFFFF';
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.arc(cx,cy,r,0,2*Math.PI);
+
+                        ctx.stroke();
+
+                        ctx.fillStyle = color;
+                        ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        
+                        ctx.moveTo(cx, cy);
+                        ctx.lineTo(armX, armY);
+                        ctx.stroke();
+                        ctx.lineWidth = 1;
+                        
+                        ctx.beginPath();
+                        ctx.arc(armX,armY,Math.max(r / 20, 2),0,2*Math.PI);
+                        ctx.closePath();
+                        ctx.fill();
+                    }
+                    
+                    function drawFourierCircle(cx, cy, h, num, theta) {
+                        var max_h = fourierFunctionMax(num);
+                        
+                        var r = Math.max(max_h * h, 0);
+                        
+                        if(r === 0) {
+                            return [cx, cy];
+                        }
+
+                        var y_val = fourierFunction(theta, num);
+                        
+                        var x_val = -fourierFunction(theta + ((Math.PI /2) / num), num);
+                        
+                        armY = cy + (-y_val * h);
+                        
+                        armX = cx + (-x_val * h);
+                        
+                        //console.log(useLanczosFactor);
+                        if(fourierApp.options.useLanczosFactor) {
+
+                            fourierApp.options.useLanczosFactor = false;
+                            var new_r = h * fourierFunctionMax(num);
+                            var width = new_r - r;
+                            if(width > 0) {
+                                new_r -= width/2;
+                                drawShadeCircle(cx, cy, new_r, colors[num % colors.length], width);
+                            } 
+                            fourierApp.options.useLanczosFactor = true;
+                        }
+
+                        drawCircle(cx, cy, r, armX, armY, colors[num % colors.length]);
+                        
+                        return [armX, armY];
+                    }
+                    
+                    function drawTotalCircles(cx, cy, theta) {
+                        var cur_pos;
+                        if(!fourierApp.options.singleWave) { 
+                            for(var num = fourierApp.options.wave.start; num <= f_value; num+=2, cx = cur_pos[0], cy = cur_pos[1]) {
+                                cur_pos = drawFourierCircle(cx, cy, HEIGHT, num, theta);
+                            }
+                        } else {
+                            cur_pos = drawFourierCircle(cx, cy, HEIGHT, f_value, theta);
+                            cx = cur_pos[0]
+                        }
+                        
+                        return cx;
+                    }
+
+
+                    function drawComponents(positions, theta) {
+                        
+                        var x = 220,
+                            top = 550,
+                            h = 25,
+                            width = 170,
+                            min_width = width,
+                            history_count = 50,
+                            text_top = 470;
+                            
+                        var val1, val2, cur_pos, r, x_start;
+                        
+                        var x1, x2, y1, y2;
+                        
+                        var plus_pos;
+                        
+                        var angle = (theta % (2* Math.PI));
+                        var angleRad = angle.toFixed(2);
+                    
+                        ctx.fillStyle = "#444";
+                        ctx.font = "20px \"Cambria Math\"";
+                        ctx.textAlign = "left";
+                        ctx.textBaseline = "middle";
+                        ctx.fillText("f(\u03B8) = ", 115, text_top);
+                        ctx.fillText("f("+ angleRad + "\u33AD) \u2245 " + positions[0].total.toFixed(2) + " \u2245 ", 5, top);
+                        ctx.textBaseline = "alphabetic";
+                        
+                        for(var num = f_value; num >= fourierApp.options.wave.start && x + width < TOTAL_WIDTH; num-=2, x+=width) {
+                            cur_pos = drawFourierCircle(x, top, h, num, theta);
+                            
+                            r = h * fourierFunctionMax(num);
+                            x_start = x + (r) + 30;
+                            
+                            x1 = x_start;
+                            
+                            ctx.strokeStyle = colors[num % colors.length];
+                            ctx.beginPath();
+                            
+                            for(var index = 0; index < Math.min(positions.length - 1, history_count); index++) {
+                                val1 =  positions[index].components[num];
+                                val2 =  positions[index + 1].components[num];
+                               
+                                x2 = x1 + 1;
+                                
+                                y1 = (-val1 * h) + (top);
+                                y2 = (-val2 * h) + (top);
+                                
+                                ctx.moveTo(x1, y1);
+                                ctx.lineTo(x2, y2);
+                                
+                                x1 = x2;
+                            }
+                            ctx.stroke();
+                            
+                            val2 = positions[0].components[num];
+                            y2 = (-val2 * h) + (top);
+                            
+                            ctx.beginPath();
+                            ctx.moveTo(cur_pos[0], y2);
+                            ctx.lineTo(x_start, y2);
+                            ctx.stroke();
+                            
+                            drawArrow(x_start, y2, 3, 1, colors[num % colors.length]);
+                            
+                            ctx.beginPath();
+                            ctx.moveTo(x_start, top - r);
+                            ctx.lineTo(x_start, top + r);
+                            ctx.stroke();
+                            
+                            ctx.beginPath();
+                            ctx.moveTo(x_start + history_count, top - r);
+                            ctx.lineTo(x_start + history_count, top + r);
+                            ctx.stroke();
+                            
+                            var text_x = x - h;
+                            var text_x_start = text_x;
+                            
+                            ctx.font = "10px \"Cambria Math\"";
+                            ctx.textAlign = "right";     
+                            ctx.fillText(positions[0].components[num].toFixed(2), x_start - 3, y2 - 2);
+                            
+                            
+                            ctx.font = "20px \"Cambria Math\"";
+                            ctx.textAlign = "center";   
+                            ctx.textBaseline = "alphabetic";   
+                            
+                            var numerator_text = fourierApp.options.wave.getDisplayNumerator(num),
+                                denominator_text = fourierApp.options.wave.getDisplayDenominator(num);
+                             
+                            
+                            var measurement = ctx.measureText(numerator_text);
+                                
+                            text_x += measurement.width / 2;
+                            
+                            
+                            ctx.fillText(numerator_text, text_x, text_top - 10);
+                            ctx.fillText(denominator_text, text_x, text_top + 20);
+                            
+                            
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.moveTo(text_x_start - 3, text_top);
+                            ctx.lineTo(text_x_start + measurement.width + 3, text_top);
+                            ctx.stroke();
+                            
+                            plus_pos = Math.max(text_x_start + measurement.width + 30, x_start + history_count + 10);
+                            
+                            if(num - 2 >= fourierApp.options.wave.start) {
+                                ctx.fillStyle = "#444";
+                                ctx.font = "40px sans-serif";
+                                ctx.textAlign = "left";
+                                ctx.textBaseline = "middle";    
+                                ctx.fillText("+", plus_pos, text_top);
+                                ctx.fillText("+", plus_pos, top);
+                                ctx.textBaseline = "alphabetic";
+                            }
+                            
+                            width = Math.max(min_width, plus_pos -x + 60);
+                        }
+                        
+                        
+                        if(x + (2 * width) > TOTAL_WIDTH && num >= fourierApp.options.wave.start) {
+                            ctx.fillStyle = "#444";
+                            ctx.font = "40px sans-serif";
+                            ctx.textAlign = "left";
+                            ctx.textBaseline = "middle";    
+                            ctx.fillText("   \u22EF", plus_pos, text_top);
+                            ctx.fillText("   \u22EF", plus_pos, top);
+                            ctx.textBaseline = "alphabetic";    
+                        }
+                        
+                        
+                    }
+
+                    var f_value = fourierApp.options.evaluation.value;
+                    var time = 0;
+                         
+                    function update() {
+                        
+                        if(fourierApp.status.visualizationPaused && !fourierApp.status.step) {
+                            return;
+                        }
+                        
+                        if(fourierApp.status.step) {
+                            fourierApp.status.step = false;
+                        }
+                        
+                        ctx.globalCompositeOperation = 'destination-over';
+                        ctx.clearRect(0,0,1200,600);
+                       
+                        
+                        f_value = fourierApp.options.evaluation.value;
+                        fourierFunction = fourierApp.options.wave.fourierFunction;
+                        fourierFunctionMax = fourierApp.options.wave.fourierFunctionMax;
+
+                        time += 16.67;
+                        
+                        var theta = (((2*Math.PI)/fourierApp.options.rate)*time);
+         
+                        
+                        if(clear) {
+                            positions.length = 0;
+                            actualWave.length = 0;
+                            
+                            updateAudioWaveTable(f_value);
+                            clear = false;
+                        }
+                        
+                        prevFValue = f_value;
+                        
+                        positions.unshift(fourierValue(theta, f_value));
+                        actualWave.unshift(fourierApp.options.wave.actualWave(theta));
+                        
+                        if(positions.length > WIDTH) {
+                            positions.pop();
+                            actualWave.pop();
+                        }
+                        
+                        var positionsCount = positions.length;
+                        var x1, x2, y1, y2;
+                        
+                        ctx.strokeStyle = "#00000";
+                        ctx.strokeRect(LEFT, TOP- PADDING, WIDTH, 2*HEIGHT + 2*PADDING);
+                        
+                        
+                        if(fourierApp.options.overlayComponents) {
+                            for(var num = fourierApp.options.wave.start; num <= f_value; num+=2) {
+                                
+                                ctx.strokeStyle = colors[num % colors.length];
+                                ctx.globalAlpha = .3;
+                                ctx.lineWidth = 1;
+                                ctx.beginPath();
+                                for(var i = 0; i < positionsCount - 1; i++) {
+                                    x1 = x(i);
+                                    x2 = x(i + 1);
+                                    y1 = y(positions[i].components[num]);
+                                    y2 = y(positions[i + 1].components[num]);
+                                    ctx.moveTo(x1, y1);
+                                    ctx.lineTo(x2, y2);
+                                }
+                                ctx.stroke();
+                                ctx.globalAlpha = 1;
+                            }
+                        }
+                        
+                        
+                        
+
+                        ctx.strokeStyle = "#555";
+                        ctx.beginPath();
+                        for(var i = 0; i < positionsCount - 1; i++) {
+                            x1 = x(i);
+                            x2 = x(i + 1);
+                            
+                            y1 = y(actualWave[i]);
+                            y2 = y(actualWave[i + 1]);
+                            ctx.moveTo(x1, y1);
+                            ctx.lineTo(x2, y2);
+                            
+                        }
+                        ctx.stroke();
+                        
+                        ctx.strokeStyle = "#000000";
+                        ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        for(var i = 0; i < positionsCount - 1; i++) {
+                            x1 = x(i);
+                            x2 = x(i + 1);
+                            if(!fourierApp.options.singleWave) {
+                                y1 = y(positions[i].total);
+                                y2 = y(positions[i + 1].total);
+                            } else {
+                                y1 = y(positions[i].components[f_value]);
+                                y2 = y(positions[i + 1].components[f_value]);
+                            }
+                            ctx.moveTo(x1, y1);
+                            ctx.lineTo(x2, y2);
+                        }
+                        ctx.stroke();
+                        ctx.lineWidth = 1;
+                        
+                        
+                        
+                        drawComponents(positions, theta);
+                        
+                        var final_cx = drawTotalCircles(300, TOP + HEIGHT, theta);
+                        
+                        var yVal = fourierApp.options.singleWave?positions[0].components[f_value]: positions[0].total;
+                        
+                        var yPos = y(yVal);
+                        
+                        ctx.lineWidth = 2;
+                        ctx.strokeStyle = "#000000";
+                        ctx.beginPath();
+                        ctx.moveTo(final_cx, yPos);
+                        ctx.lineTo(LEFT, yPos);
+                        ctx.stroke();
+                        ctx.lineWidth = 1;
+                        
+                        ctx.font = "20px \"Cambria Math\"";
+                        ctx.textAlign = "right";
+                        ctx.fillStyle = "#000000";
+                        ctx.fillText(yVal.toFixed(2), LEFT - 5, yPos - 5);
+                        
+                        drawArrow(LEFT, yPos, 7, 2, "#000");
+                        
+                        ctx.fillStyle = '#E0F2F1';
+                        ctx.fillRect(0,0,1200,600);
+                       
+                        requestAnimationFrame(update);
+                    }
+                    update();
+                }
+            });
+        </script>
+        <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-73112632-1', 'auto');
+        ga('send', 'pageview');
+
+        </script>
+    </body>
+</html>
