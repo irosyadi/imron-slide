@@ -1,0 +1,644 @@
+---
+title: "Signals and Systems"
+subtitle: "Fourier Series Representation of Continuous-Time Periodic Signals"
+author: "Imron Rosyadi"
+format:
+  live-revealjs:
+    logo: "qrjs_assets/unsoed_logo.png"
+    footer: "[irosyadi-2025](https://imron-slide.vercel.app)"
+    slide-number: true
+    chalkboard: true
+    scrollable: true
+    controls: true
+    progress: true
+    preview-links: false
+    transition: fade
+    incremental: false
+    smaller: false
+    theme: [default, qrjs_assets/ir_style.scss]
+    mermaid:
+        theme: neutral
+pyodide:
+  packages:
+    - numpy
+    - plotly
+    - nbformat
+---
+
+# Fourier Series Representation of Continuous-Time Periodic Signals
+## Unlocking the Frequency Domain
+
+::: {.notes}
+Welcome to this lecture on Fourier Series. Today, we'll explore how to represent complex periodic signals as a sum of simpler, harmonically related sinusoids or complex exponentials. This concept is fundamental in Signals and Systems and has vast applications in various engineering fields. We'll cover the theoretical foundations, the analysis and synthesis equations, and illustrate these concepts with interactive examples.
+:::
+
+---
+
+## 1. Introduction to Periodic Signals
+
+A signal $x(t)$ is **periodic** if, for some positive value of $T$,
+
+$$
+x(t)=x(t+T) \quad \text { for all } t \tag{3.21}
+$$
+
+The **fundamental period** $T$ is the minimum positive, nonzero value satisfying this condition.
+The **fundamental frequency** $\omega_{0}$ is related by $\omega_{0} = 2\pi/T$.
+
+::: {.notes}
+Recall from Chapter 1 that periodic signals repeat themselves over a fixed interval. The fundamental period is the shortest time for one complete cycle, and the fundamental frequency tells us how often that cycle occurs in radians per second.
+:::
+
+---
+
+## Basic Periodic Signals
+
+The building blocks of Fourier Series are complex exponentials.
+
+**Sinusoidal Signal:**
+
+$$
+x(t)=\cos \omega_{0} t \tag{3.22}
+$$
+
+**Complex Exponential:**
+
+$$
+x(t)=e^{j \omega_{0} t} \tag{3.23}
+$$
+
+
+Both are periodic with fundamental frequency $\omega_{0}$ and period $T=2\pi/\omega_{0}$.
+
+**Harmonically Related Complex Exponentials:**
+
+$$
+\phi_{k}(t)=e^{j k \omega_{0} t}=e^{j k(2 \pi / T) t}, \quad k=0, \pm 1, \pm 2, \ldots \tag{3.24}
+$$
+Each $\phi_k(t)$ is periodic with period $T$.
+
+::: {.notes}
+While real sinusoids are intuitive, complex exponentials are mathematically more convenient for analysis. Notice that each harmonically related exponential `φ_k(t)` has a frequency that is an integer multiple of the fundamental frequency `ω₀`. This is key to building complex signals.
+:::
+
+---
+
+## 2. The Fourier Series Representation
+
+A periodic signal $x(t)$ can be represented as a linear combination of harmonically related complex exponentials:
+
+$$
+x(t)=\sum_{k=-\infty}^{+\infty} a_{k} e^{j k \omega_{0} t}=\sum_{k=-\infty}^{+\infty} a_{k} e^{j k(2 \pi / T) t} \tag{3.25}
+$$
+
+-   The coefficients $a_k$ are called **Fourier Series Coefficients**.
+-   $k=0$: **DC component** (constant term).
+-   $k=\pm 1$: **Fundamental components** (first harmonic).
+-   $k=\pm N$: **$N$th harmonic components**.
+
+::: {.notes}
+This equation is the heart of the Fourier Series. It states that any periodic signal can be decomposed into a sum of simple sinusoids (or complex exponentials) at integer multiples of the fundamental frequency. The coefficients `a_k` tell us the amplitude and phase of each frequency component. Think of it like a recipe, where `a_k` are the ingredients and `e^(jkω₀t)` are the basic flavors.
+:::
+
+---
+
+## Example 3.2: Constructing a Signal (Part 1)
+
+Consider a periodic signal $x(t)$ with fundamental frequency $2\pi$ (so $T=1$).
+It is expressed as:
+
+$$
+x(t)=\sum_{k=-3}^{+3} a_{k} e^{j k 2 \pi t} \tag{3.26}
+$$
+
+With coefficients:
+
+-   $a_{0}=1$
+-   $a_{1}=a_{-1}=\frac{1}{4}$
+-   $a_{2}=a_{-2}=\frac{1}{2}$
+-   $a_{3}=a_{-3}=\frac{1}{3}$
+
+::: {.notes}
+Here, we are given the Fourier series coefficients and are going to reconstruct the time-domain signal. The fundamental frequency is `2π`, meaning the fundamental period is 1 second. We only have components up to the 3rd harmonic.
+:::
+
+---
+
+## Example 3.2: Constructing a Signal (Part 2)
+
+Rewriting the sum and grouping terms:
+
+$$
+\begin{align*}
+x(t)= & 1+\frac{1}{4}\left(e^{j 2 \pi t}+e^{-j 2 \pi t}\right)+\frac{1}{2}\left(e^{j 4 \pi t}+e^{-j 4 \pi t}\right) \tag{3.27} \\
+& +\frac{1}{3}\left(e^{j 6 \pi t}+e^{-j 6 \pi t}\right)
+\end{align*}
+$$
+
+Using Euler's relation ($e^{j\theta} + e^{-j\theta} = 2\cos\theta$), this simplifies to:
+
+$$
+x(t)=1+\frac{1}{2} \cos 2 \pi t+\cos 4 \pi t+\frac{2}{3} \cos 6 \pi t \tag{3.28}
+$$
+
+::: {.notes}
+By grouping the complex conjugate exponential terms, we can convert them into real cosine functions. This shows how complex exponentials combine to form real sinusoids, which are often easier to visualize in the time domain.
+:::
+
+---
+
+## Example 3.2: Interactive Signal Synthesis
+### See how a signal is built from its harmonics.
+
+This interactive plot shows the individual harmonic components and their sum.
+Adjust the checkboxes to see how each harmonic contributes to the overall signal.
+
+```{ojs}
+viewof dc_on = html`<label><input type="checkbox" checked> DC</label>`
+viewof fundamental_on = html`<label><input type="checkbox" checked> Fundamental</label>`
+viewof second_harmonic_on = html`<label><input type="checkbox" checked> Second Harmonic</label>`
+viewof third_harmonic_on = html`<label><input type="checkbox" checked> Third Harmonic</label>`
+```
+
+```{pyodide}
+#| echo: false
+#| output: true
+#| input:
+#|   - dc_on
+#|   - fundamental_on
+#|   - second_harmonic_on
+#|   - third_harmonic_on
+
+import numpy as np
+import plotly.graph_objects as go
+
+
+t = np.linspace(0, 2, 500) # Two periods
+
+# Components
+dc = np.ones_like(t)
+fundamental = 0.5 * np.cos(2 * np.pi * t)
+second_harmonic = 1.0 * np.cos(4 * np.pi * t)
+third_harmonic = (2/3) * np.cos(6 * np.pi * t)
+
+# Sum
+x_t = np.zeros_like(t)
+if dc_on:
+    x_t += dc
+if fundamental_on:
+    x_t += fundamental
+if second_harmonic_on:
+    x_t += second_harmonic
+if third_harmonic_on:
+    x_t += third_harmonic
+
+fig = go.Figure()
+
+if dc_on:
+    fig.add_trace(go.Scatter(x=t, y=dc, mode='lines', name='DC (a0)', line=dict(dash='dot', color='gray')))
+if fundamental_on:
+    fig.add_trace(go.Scatter(x=t, y=fundamental, mode='lines', name='1st Harmonic', line=dict(dash='dash', color='blue')))
+if second_harmonic_on:
+    fig.add_trace(go.Scatter(x=t, y=second_harmonic, mode='lines', name='2nd Harmonic', line=dict(dash='dash', color='green')))
+if third_harmonic_on:
+    fig.add_trace(go.Scatter(x=t, y=third_harmonic, mode='lines', name='3rd Harmonic', line=dict(dash='dash', color='red')))
+
+fig.add_trace(go.Scatter(x=t, y=x_t, mode='lines', name='x(t) (Sum)', line=dict(color='black', width=3)))
+
+fig.update_layout(
+    title='Signal Synthesis from Harmonics',
+    xaxis_title='Time (t)',
+    yaxis_title='Amplitude',
+    hovermode='x unified',
+    height=400,
+    margin=dict(l=20, r=20, t=40, b=20),
+    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+)
+
+fig.show()
+```
+
+
+
+::: {.notes}
+This interactive plot helps visualize the concept of signal synthesis. You can enable or disable individual harmonic components to see how they add up to form the final signal `x(t)`. Notice how the signal becomes more complex as higher harmonics are added. This demonstrates the power of Fourier series in representing any periodic signal.
+:::
+
+---
+
+## 3. Properties for Real Periodic Signals
+
+If $x(t)$ is a real periodic signal, its Fourier series coefficients $a_k$ have a specific property:
+
+$$
+a_{k}^{*}=a_{-k} \tag{3.29}
+$$
+This means the coefficients for negative frequencies are the complex conjugates of the coefficients for positive frequencies.
+
+This property leads to alternative forms for the Fourier Series.
+
+::: {.notes}
+This property is very useful for simplifying calculations and understanding the symmetry of the spectrum for real-world signals. It implies that the magnitude spectrum is even, and the phase spectrum is odd.
+:::
+
+---
+
+## Alternative Forms for Real Signals
+
+If $x(t)$ is real, we can express its Fourier series in terms of real sinusoids:
+
+**Form 1 (Amplitude-Phase):**
+If $a_{k}=A_{k} e^{j \theta_{k}}$, then:
+
+$$
+x(t)=a_{0}+2 \sum_{k=1}^{\infty} A_{k} \cos \left(k \omega_{0} t+\theta_{k}\right) \tag{3.31}
+$$
+
+**Form 2 (Cosine-Sine):**
+If $a_{k}=B_{k}+j C_{k}$, then:
+
+$$
+x(t)=a_{0}+2 \sum_{k=1}^{\infty}\left[B_{k} \cos k \omega_{0} t-C_{k} \sin k \omega_{0} t\right] \tag{3.32}
+$$
+
+::: {.callout-note}
+The complex exponential form (Eq. 3.25) is generally more convenient for analysis and manipulation in ECE, despite these real-valued alternatives.
+:::
+
+::: {.notes}
+These trigonometric forms are often used in introductory texts, but the complex exponential form is more powerful for advanced analysis, especially when dealing with system responses. It unifies the representation and simplifies mathematical operations.
+:::
+
+---
+
+## 4. Determination of Fourier Series Coefficients
+### The Analysis Equation
+
+To find the coefficients $a_k$ for a given $x(t)$, we use the following derivation:
+
+1.  Multiply $x(t)$ by $e^{-j n \omega_{0} t}$:
+    $$
+    x(t) e^{-j n \omega_{0} t}=\sum_{k=-\infty}^{+\infty} a_{k} e^{j k \omega_{0} t} e^{-j n \omega_{0} t} \tag{3.33}
+    $$
+
+2.  Integrate both sides over one period $T$:
+    $$
+    \int_{0}^{T} x(t) e^{-j n \omega_{0} t} d t=\int_{0}^{T} \sum_{k=-\infty}^{+\infty} a_{k} e^{j(k-n) \omega_{0} t} d t \tag{3.34}
+    $$
+
+3.  Interchange summation and integration:
+    $$
+    \int_{0}^{T} x(t) e^{-j n \omega_{0} t} d t=\sum_{k=-\infty}^{+\infty} a_{k}\left[\int_{0}^{T} e^{j(k-n) \omega_{0} t} d t\right]
+    $$
+
+::: {.notes}
+This derivation is crucial. It shows how we "extract" each individual coefficient `a_k` from the signal `x(t)`. The key step is the orthogonality property of complex exponentials over a period, which makes all terms in the summation zero except when `k=n`.
+:::
+
+---
+
+## The Orthogonality of Complex Exponentials
+
+The integral $\int_{0}^{T} e^{j(k-n) \omega_{0} t} d t$ evaluates as:
+
+$$
+\int_{0}^{T} e^{j(k-n) \omega_{0} t} d t=\left\{\begin{array}{ll}
+T, & k=n \\
+0, & k \neq n
+\end{array}\right.
+$$
+
+This property is called **orthogonality**.
+Applying this to the summation yields $T a_n$.
+
+Therefore, the formula for the Fourier Series coefficients is:
+
+$$
+a_{n}=\frac{1}{T} \int_{T} x(t) e^{-j n \omega_{0} t} d t \tag{3.37}
+$$
+The integration can be over any interval of length $T$.
+
+::: {.notes}
+The orthogonality property is what makes Fourier series analysis possible. It allows us to isolate each harmonic component. The integral effectively acts as a "filter" that picks out the `n`-th harmonic.
+:::
+
+---
+
+## The Fourier Series Pair
+
+The Fourier Series is defined by a pair of equations:
+
+:::: {.columns}
+::: {.column width="50%"}
+**Synthesis Equation (Time Domain to Frequency Domain):**
+
+Reconstructs $x(t)$ from its coefficients.
+
+$$
+x(t)=\sum_{k=-\infty}^{+\infty} a_{k} e^{j k \omega_{0} t} \tag{3.38}
+$$
+:::
+::: {.column width="50%"}
+**Analysis Equation (Frequency Domain to Time Domain):**
+
+Determines the coefficients $a_k$ from $x(t)$.
+
+$$
+a_{k}=\frac{1}{T} \int_{T} x(t) e^{-j k \omega_{0} t} d t \tag{3.39}
+$$
+:::
+::::
+
+::: {.callout-important}
+These two equations are fundamental to understanding and applying Fourier Series. They represent the bridge between the time domain and the frequency domain.
+:::
+
+::: {.notes}
+The `a_k` coefficients are also called **spectral coefficients**. They describe the signal's content at different frequencies. The coefficient `a₀` (when `k=0`) is simply the average value of $x(t)$ over one period.
+$$
+a_{0}=\frac{1}{T} \int_{T} x(t) d t \tag{3.40}
+$$
+:::
+
+---
+
+## Example 3.3: Fourier Series of a Simple Sinusoid
+
+Consider the signal $x(t)=\sin \omega_{0} t$.
+
+We can determine its Fourier series coefficients by inspection using Euler's formula:
+
+$$
+\sin \omega_{0} t=\frac{1}{2 j} e^{j \omega_{0} t}-\frac{1}{2 j} e^{-j \omega_{0} t}
+$$
+
+Comparing this to the synthesis equation (Eq. 3.38), we find:
+
+-   $a_{1}=\frac{1}{2 j}$
+-   $a_{-1}=-\frac{1}{2 j}$
+-   $a_{k}=0$, for $k \neq +1$ or $-1$.
+
+::: {.notes}
+This example shows that a pure sinusoid only has two non-zero frequency components: one at `+ω₀` and one at `-ω₀`. This is a very clean spectrum. Notice the `j` in the denominator, indicating a phase shift.
+:::
+
+---
+
+## Example 3.4: More Complex Sum of Sinusoids (Part 1)
+
+Let $x(t)=1+\sin \omega_{0} t+2 \cos \omega_{0} t+\cos \left(2 \omega_{0} t+\frac{\pi}{4}\right)$.
+
+Expanding into complex exponentials and collecting terms:
+
+$$
+x(t)=1+\left(1-\frac{1}{2} j\right) e^{j \omega_{0} t}+\left(1+\frac{1}{2} j\right) e^{-j \omega_{0} t}+\left(\frac{1}{2} e^{j(\pi / 4)}\right) e^{j 2 \omega_{0} t}+\left(\frac{1}{2} e^{-j(\pi / 4)}\right) e^{-j 2 \omega_{0} t}
+$$
+
+The Fourier series coefficients are:
+
+-   $a_{0}=1$
+-   $a_{1}=1-\frac{1}{2} j$
+-   $a_{-1}=1+\frac{1}{2} j$
+-   $a_{2}=\frac{1}{2} e^{j(\pi / 4)}=\frac{\sqrt{2}}{4}(1+j)$
+-   $a_{-2}=\frac{1}{2} e^{-j(\pi / 4)}=\frac{\sqrt{2}}{4}(1-j)$
+-   $a_{k}=0$, for $|k|>2$.
+
+::: {.notes}
+Here, we're combining different sinusoids with varying amplitudes and phases. The resulting `a_k` coefficients are complex, reflecting both the amplitude and phase contribution of each harmonic. Notice how `a_k` and `a_-k` are complex conjugates, as expected for a real signal.
+:::
+
+---
+
+## Example 3.4: Interactive Spectrum Visualization
+### Magnitude and Phase Spectrum
+
+This plot shows the magnitude and phase of the Fourier coefficients $a_k$ for Example 3.4.
+Interact with the plot to examine the spectral content.
+
+```{pyodide}
+#| max-lines: 10
+
+import numpy as np
+import plotly.graph_objects as go
+
+# Coefficients from Example 3.4
+a0 = 1
+a1 = 1 - 0.5j
+a_minus1 = 1 + 0.5j
+a2 = 0.5 * np.exp(1j * np.pi / 4)
+a_minus2 = 0.5 * np.exp(-1j * np.pi / 4)
+
+# k values
+k_values = np.array([-2, -1, 0, 1, 2])
+coefficients = np.array([a_minus2, a_minus1, a0, a1, a2])
+
+magnitudes = np.abs(coefficients)
+phases = np.angle(coefficients, deg=True) # in degrees
+
+fig_mag = go.Figure(data=[go.Bar(x=k_values, y=magnitudes, marker_color='blue')])
+fig_mag.update_layout(
+    title='Magnitude Spectrum |a_k|',
+    xaxis_title='k (Harmonic Index)',
+    yaxis_title='Magnitude',
+    xaxis_tickvals=k_values,
+    height=300,
+    margin=dict(l=20, r=20, t=40, b=20)
+)
+
+fig_phase = go.Figure(data=[go.Bar(x=k_values, y=phases, marker_color='red')])
+fig_phase.update_layout(
+    title='Phase Spectrum ∠a_k (degrees)',
+    xaxis_title='k (Harmonic Index)',
+    yaxis_title='Phase (degrees)',
+    xaxis_tickvals=k_values,
+    height=300,
+    margin=dict(l=20, r=20, t=40, b=20)
+)
+
+fig_mag.show()
+fig_phase.show()
+```
+
+::: {.notes}
+The magnitude spectrum shows how much "energy" each harmonic contributes to the signal. The phase spectrum shows the relative phase shift of each harmonic. Notice the symmetry for real signals: magnitude is even (`|a_k| = |a_-k|`) and phase is odd (`∠a_k = -∠a_-k`). The DC component `a₀` has zero phase, as it's a real constant.
+:::
+
+
+---
+
+## Example 3.5: Periodic Square Wave (Part 1)
+
+The periodic square wave is a canonical signal in ECE.
+
+```{mermaid}
+graph TD
+    A["x(t)"] --> B{"1 for |t|<T1"};
+    A --> C{"0 for T1<|t|<T/2"};
+    B --> D[Period T];
+    C --> D;
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bbf,stroke:#333,stroke-width:2px
+```
+
+Defined over one period as:
+
+$$
+x(t)= \begin{cases}1, & |t|<T_{1} \\ 0, & T_{1}<|t|<T / 2\end{cases} \tag{3.41}
+$$
+
+This signal is periodic with fundamental period $T$ and fundamental frequency $\omega_{0}=2 \pi / T$.
+
+::: {.notes}
+The square wave is a fundamental signal for understanding Fourier series because it's simple yet contains an infinite number of harmonics. It's used in digital communications, clock signals, and many other areas. We'll derive its Fourier series coefficients.
+:::
+
+---
+
+## Example 3.5: Periodic Square Wave (Part 2)
+### Calculating $a_0$ and $a_k$
+
+**For $k=0$ (DC component):**
+$$
+a_{0}=\frac{1}{T} \int_{-T_{1}}^{T_{1}} 1 \, dt=\frac{2 T_{1}}{T} \tag{3.42}
+$$
+$a_0$ is the average value of $x(t)$ over one period.
+
+**For $k \neq 0$:**
+$$
+a_{k}=\frac{1}{T} \int_{-T_{1}}^{T_{1}} e^{-j k \omega_{0} t} d t = \frac{1}{T} \left[ \frac{e^{-j k \omega_{0} t}}{-j k \omega_{0}} \right]_{-T_{1}}^{T_{1}}
+$$
+$$
+a_{k}=\frac{2}{k \omega_{0} T}\left[\frac{e^{j k \omega_{0} T_{1}}-e^{-j k \omega_{0} T_{1}}}{2 j}\right] \tag{3.43}
+$$
+Recognizing the term in brackets as $\sin(k\omega_0 T_1)$, and using $\omega_0 T = 2\pi$:
+
+$$
+a_{k}=\frac{2 \sin \left(k \omega_{0} T_{1}\right)}{k \omega_{0} T}=\frac{\sin \left(k \omega_{0} T_{1}\right)}{k \pi}, \quad k \neq 0 \tag{3.44}
+$$
+
+::: {.notes}
+The calculation of `a₀` is straightforward: it's simply the fraction of the period for which the signal is 'on' (at value 1). For `a_k` where `k≠0`, the integration results in a `sinc` function shape in the frequency domain. This is a very common and important result.
+:::
+
+---
+
+## Example 3.5: Periodic Square Wave (Part 3)
+### Spectrum for a 50% Duty Cycle
+
+Consider the case where $T=4T_1$ (a 50% duty cycle, i.e., $x(t)=1$ for half the period).
+In this case, $\omega_0 T_1 = \frac{2\pi}{T} T_1 = \frac{2\pi}{4T_1} T_1 = \frac{\pi}{2}$.
+
+-   $a_{0}=\frac{1}{2} \tag{3.46}$
+-   $a_{k}=\frac{\sin (k \pi / 2)}{k \pi}, \quad k \neq 0 \tag{3.45}$
+
+This implies:
+-   $a_k = 0$ for $k$ even and non-zero.
+-   $a_k$ alternates sign for odd $k$:
+    -   $a_1 = a_{-1} = \frac{1}{\pi}$
+    -   $a_3 = a_{-3} = -\frac{1}{3\pi}$
+    -   $a_5 = a_{-5} = \frac{1}{5\pi}$
+
+::: {.notes}
+For a symmetric square wave, all even harmonics (except DC) are zero. This is a characteristic of signals with odd symmetry around the midpoint of the pulse. The coefficients decrease in magnitude as `1/k`, which is typical for signals with discontinuities.
+:::
+
+---
+
+## Example 3.5: Interactive Square Wave Spectrum
+### Observe the effect of pulse width on the spectrum.
+
+Adjust the **duty cycle** (ratio of pulse width $2T_1$ to period $T$) to see how the frequency spectrum changes.
+The envelope of the spectrum is a $\text{sinc}$ function.
+
+```{ojs}
+viewof duty_cycle = html`<label><input type="range" min="0.1" max="0.9" step="0.05" value="0.5">Duty Cycle</label>`
+```
+
+```{pyodide}
+#| echo: false
+#| output: true
+#| input: 
+#|   - duty_cycle
+
+import numpy as np
+import plotly.graph_objects as go
+
+duty_cycle = float(duty_cycle)
+
+# Assume T=1 for simplicity, so T1 = duty_cycle / 2
+T = 1.0
+T1 = duty_cycle * T / 2
+omega0 = 2 * np.pi / T
+
+k_values = np.arange(-10, 11) # From -10th to 10th harmonic
+
+a_k = np.zeros_like(k_values, dtype=complex)
+
+for i, k in enumerate(k_values):
+    if k == 0:
+        a_k[i] = 2 * T1 / T
+    else:
+        a_k[i] = np.sin(k * omega0 * T1) / (k * np.pi)
+
+magnitudes = np.abs(a_k)
+# phases = np.angle(a_k, deg=True) # Not explicitly asked for, but good to know
+
+fig = go.Figure()
+fig.add_trace(go.Bar(x=k_values, y=magnitudes, marker_color='teal'))
+
+# Plot sinc envelope for visualization (continuous version)
+k_cont = np.linspace(-10.5, 10.5, 500)
+sinc_envelope = np.zeros_like(k_cont)
+for i, k_val in enumerate(k_cont):
+    if k_val == 0:
+        sinc_envelope[i] = 2 * T1 / T
+    else:
+        sinc_envelope[i] = np.sin(k_val * omega0 * T1) / (k_val * np.pi)
+
+fig.add_trace(go.Scatter(x=k_cont, y=sinc_envelope, mode='lines', name='Sinc Envelope', line=dict(color='orange', dash='dot')))
+
+
+fig.update_layout(
+    title=f'Magnitude Spectrum of Square Wave (Duty Cycle: {duty_cycle:.2f})',
+    xaxis_title='k (Harmonic Index)',
+    yaxis_title='Magnitude |a_k|',
+    xaxis_tickvals=k_values,
+    height=450,
+    margin=dict(l=20, r=20, t=40, b=20),
+    hovermode='x unified',
+    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+)
+
+fig.show()
+```
+
+::: {.notes}
+This interactive plot vividly demonstrates the relationship between the time-domain characteristics (pulse width/duty cycle) and the frequency-domain spectrum. As you change the duty cycle, observe how the nulls of the sinc envelope shift. A narrower pulse spreads the energy across more frequencies (wider sinc), while a wider pulse concentrates energy (narrower sinc). This is a fundamental concept in signal analysis.
+:::
+
+---
+
+## Summary & Applications
+
+**Key Takeaways:**
+
+-   Periodic signals can be uniquely represented by their Fourier series coefficients.
+-   The Fourier Series provides a powerful tool to move between time and frequency domains.
+-   Complex exponentials are the fundamental building blocks.
+
+**Real-World Engineering Applications:**
+
+-   **Audio Processing:** Equalization, compression (MP3).
+-   **Image Processing:** JPEG compression, filtering.
+-   **Communication Systems:** Modulation, multiplexing, channel analysis.
+-   **Filter Design:** Understanding how circuits respond to different frequencies.
+-   **Vibration Analysis:** Identifying resonant frequencies in mechanical systems.
+
+::: {.callout-tip}
+Practice deriving Fourier Series for different signals and interpreting their spectra. Understanding the relationship between time-domain features and frequency-domain characteristics is crucial!
+:::
+
+::: {.notes}
+Fourier Series is not just a theoretical concept; it's a cornerstone of modern engineering. From the music you listen to, to the images you see, and the wireless communication you use, Fourier analysis plays a critical role. Mastering this topic will give you a powerful lens through which to view and design systems.
+:::

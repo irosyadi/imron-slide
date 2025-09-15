@@ -1,0 +1,136 @@
+---
+title: "Embed HTML"
+format:
+  live-revealjs:
+    logo: "qrjs_assets/unsoed_logo.png"
+    footer: "[irosyadi-2025](https://imron-slide.vercel.app)"
+    slide-number: true
+    chalkboard: true
+    scrollable: true
+    controls: true
+    progress: true
+    preview-links: true
+    transition: fade
+    incremental: false
+    theme: [default, qrjs_assets/ir_style.scss]
+---
+
+## HTML Example
+
+```{=html}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sine Wave Listener</title>
+  <script src="https://jackschaedler.github.io/circles-sines-signals/third_party/d3/d3.min.js"></script>
+</head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sine Wave Listener</title>
+  <script src="https://jackschaedler.github.io/circles-sines-signals/third_party/d3/d3.min.js"></script>
+</head>
+<body>
+	  <table class="figureTable">
+			<tr>
+				<td style="vertical-align: top;">
+					<table>
+							<tr class="figureCaption">
+								<td width="100%">
+								<b>Figure 2.</b>&nbsp; Listen to a Sine Wave<br/>
+									<sub>Click and Drag to Change the Frequency</sub><br/>
+									<sub>X-Axis: Frequency in Hz</sub><br/>
+									<sub>Y-Axis: Magnitude</sub><br/>
+								</td>
+							</tr>
+							<tr>
+								<td>
+								<div id="animatedWrapper" class="animation" style="position: relative;">
+									<svg id="sineListen" class="svgWithText" width="750" height="250" style="cursor:pointer;"></svg>
+									<script type="text/javascript" src="https://jackschaedler.github.io/circles-sines-signals/js/sine_listen.js"></script>
+	  							</div>
+	  							</td>
+							</tr>
+	  				</table>
+	  			</td>
+			</tr>
+		</table>
+</body>
+</html>
+</body>
+</html>
+```
+
+---
+
+## Sound Wave
+
+```{=html}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sine Wave Listener</title>
+  <script src="https://jackschaedler.github.io/circles-sines-signals/third_party/d3/d3.min.js"></script>
+</head>
+<body>
+    <script>
+        var WAVE_FREQUENCY = 0.12;
+        var WAVE_AMPLITUDE = 0.50;
+        var TARGET_WAVE_FREQUENCY = 0.12;
+        var TARGET_WAVE_AMPLITUDE = 0.50;
+        var WAVE_INTERPOLATOR = d3.interpolateNumber(WAVE_FREQUENCY, TARGET_WAVE_FREQUENCY);
+        var WAVE_AMP_INTERPOLATOR = d3.interpolateNumber(WAVE_AMPLITUDE, TARGET_WAVE_AMPLITUDE);
+        var WAVE_INTERPOLATION = 1.0;
+        var WAVE_AMP_INTERPOLATION = 1.0;
+        function GET_WAVE_FREQUENCY() {
+            return WAVE_INTERPOLATOR(Math.min(WAVE_INTERPOLATION, 1.0));
+        }
+        function GET_WAVE_AMPLITUDE() {
+            return WAVE_AMP_INTERPOLATOR(Math.min(WAVE_AMP_INTERPOLATION, 1.0));
+        }
+        function updateSpeed(freq) {
+            WAVE_FREQUENCY = GET_WAVE_FREQUENCY();
+            TARGET_WAVE_FREQUENCY = freq / 100;
+            WAVE_INTERPOLATION = 0.0;
+            WAVE_INTERPOLATOR = d3.interpolateNumber(WAVE_FREQUENCY, TARGET_WAVE_FREQUENCY);
+        }
+        function updateAmount(amp) {
+            WAVE_AMPLITUDE = GET_WAVE_AMPLITUDE();
+            TARGET_WAVE_AMPLITUDE = amp / 100;
+            WAVE_AMP_INTERPOLATION = 0.0;
+            WAVE_AMP_INTERPOLATOR = d3.interpolateNumber(WAVE_AMPLITUDE, TARGET_WAVE_AMPLITUDE);
+        }
+    </script>
+
+    <table>
+            <tr class="figureCaption">
+                <td width="100%">
+                <b>Figure 1.</b>&nbsp; A Sound Wave. <br/> <sub> Very much slowed down and very much zoomed in </sub>
+                </td><br/><br/>
+            </tr>
+            <tr>
+                <td>
+                <svg id="physicalWave" class="svgWithText" width="695" height="205" style="margin-left: 55px; padding: 20px"></svg>
+                <script type="text/javascript" src="https://jackschaedler.github.io/circles-sines-signals/js/sound_wave.js"></script>
+
+                <div class="controls" style="padding-top: 10px;">
+                    <table width="100%">
+                        <tr>
+                            <td style="text-align: center;" width="50%">
+                                <label for=vibSpeedFader style="margin-left: auto; margin-right: auto">Vibration Speed</label><br/>
+                                <input type=range min=4 max=20 value=12 id=vibSpeedFader step=1 oninput="updateSpeed(value);">
+                            </td>
+
+                            <td style="text-align: center;" width="50%">
+                                <label for=vibAmountFader style="margin-left: auto; margin-right: auto">Vibration Intensity</label><br/>
+                                <input type=range min=0 max=100 value=25 id=vibAmountFader step=1 oninput="updateAmount(value);">
+                            </td>
+                    </table>
+                </div>
+                </td>
+            </tr>
+    </table>
+</body>
+</html>
+```

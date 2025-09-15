@@ -12,19 +12,29 @@ Develop an interactive Quarto-based presentation using reveal.js tailored for un
 ## 2. Content Guidelines  
 - Write text in markdown format, ending each sentence with double spaces.  
 - Enhance slides with:  
-  - Diagrams (using Mermaid.js).  
+  - Diagrams (using Mermaid.js or Graphviz).  
   - Executable Python code blocks (using Pyodide).  
   - Interactive visualizations (using Python, Pyodide, Observable.js, and Plotly).  
   - Math formulas (using LaTeX).  
   - Multi-column layouts.  
   - Speaker notes for additional context.
+  - Callout for drawing extra attention.
 
 ## 3. Diagrams  
-- Create diagrams using Mermaid.js, formatted as:  
+- Create diagrams using Mermaid.js or Graphviz
+- Format for Mermaid.js:  
 
 ```
 \`\`\`\{mermaid\}
-%% Mermaid code here
+Mermaid code here
+\`\`\`\
+```
+
+- Format for Graphviz:  
+
+```
+\`\`\`\{dot\}
+Graphviz code here
 \`\`\`\
 ```
 
@@ -34,7 +44,7 @@ Develop an interactive Quarto-based presentation using reveal.js tailored for un
 ```
 \`\`\`\{pyodide\}
 #| max-lines: 10
-# Python code here
+Python code here
 \`\`\`\
 ```
 
@@ -43,12 +53,12 @@ Develop an interactive Quarto-based presentation using reveal.js tailored for un
 
 ```
 \`\`\`\{ojs\}
-%% Observable.js code here
+Observable.js code here
 ```
 \`\`\`\{pyodide\}
 #| echo: false
 #| input:
-# Python code here
+Python code here
 \`\`\`\
 ```
 
@@ -60,9 +70,7 @@ Develop an interactive Quarto-based presentation using reveal.js tailored for un
     ```
   - **Block:**  
     ```
-    $$
-    E=mc^2
-    $$
+    $$ E=mc^2 $$
     ```
 
 ## 7. Multi-Column Layout  
@@ -97,7 +105,21 @@ Develop an interactive Quarto-based presentation using reveal.js tailored for un
   :::
   ```
 
-## 9. Course-Specific Requirements  
+## 9. Callout
+- There are five different types of callouts available: `callout-note`, `callout-warning`, `callout-important`, `callout-tip`, and `callout-caution`.
+- Include callout for extra attention, formatted as:  
+
+```
+**Slide Content:**  
+- Point 1  
+- Point 2  
+
+::: {.callout-note}
+Callout notes here.
+:::
+```
+
+## 10. Course-Specific Requirements  
 1. **Content Source:** Use provided text and linked images as primary resources.  
 2. **Academic Context:** Ensure explanations, examples, and terminology align with ECE standards for *Signals and Systems*.  
 3. **Interactivity:**  
@@ -107,7 +129,7 @@ Develop an interactive Quarto-based presentation using reveal.js tailored for un
 5. **Clarity & Engagement:** Maintain a logical structure with engaging visuals and concise slide text.  
 6. **Conciseness:** Limit text on slides; elaborate in speaker notes. Split dense slides into multiple slides for clarity.
 
-## 10. Presentation YAML  
+## 11. Presentation YAML  
 Use the following YAML header, replacing `{Lecture Title}` with the specific lecture subtitle:  
 ```yaml
 ---
@@ -128,6 +150,8 @@ format:
     incremental: false
     smaller: false
     theme: [default, qrjs_assets/ir_style.scss]
+    mermaid:
+        theme: neutral
 pyodide:
   packages:
     - numpy
