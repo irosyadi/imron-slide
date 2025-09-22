@@ -145,10 +145,7 @@ format:
     scrollable: true
     controls: true
     progress: true
-    preview-links: false
     transition: fade
-    incremental: false
-    smaller: false
     theme: [default, qrjs_assets/ir_style.scss]
     mermaid:
         theme: neutral

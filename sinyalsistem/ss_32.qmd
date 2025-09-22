@@ -4,25 +4,21 @@ subtitle: "Eigenfunctions of LTI Systems: Complex Exponentials"
 author: "Imron Rosyadi"
 format:
   live-revealjs:
-    # Ensure these assets are available in your project directory
-    logo: "qrjs_assets/unsoed_logo.png" 
+    logo: "qrjs_assets/unsoed_logo.png"
     footer: "[irosyadi-2025](https://imron-slide.vercel.app)"
     slide-number: true
     chalkboard: true
     scrollable: true
     controls: true
     progress: true
-    preview-links: false
     transition: fade
-    incremental: false
-    smaller: false
     theme: [default, qrjs_assets/ir_style.scss]
+    mermaid:
+        theme: neutral
 ---
 
 # Signals and Systems
-## Eigenfunctions of LTI Systems: Complex Exponentials
-
-### Imron Rosyadi
+**3.2 Eigenfunctions of LTI Systems: Complex Exponentials**
 
 ---
 
@@ -47,22 +43,30 @@ To effectively analyze and design systems, we often look for fundamental buildin
 
 A signal for which the system output is a (possibly complex) constant times the input is called an **eigenfunction** of the system.
 
+For a system $\mathcal{H}$, if: 
+$$
+\mathcal{H}\{x(t)\} = y(t) = \lambda x(t)
+$$
+
+then $x(t)$ is an **eigenfunction** of the system, and $\lambda$ is the corresponding **eigenvalue**.
+
 :::: {.columns}
 ::: {.column width="50%"}
-**Continuous-Time**
-Input: $x(t) = e^{st}$
-Output: $y(t) = H(s) e^{st}$
+**Continuous-Time**  
+Input: $x(t) = e^{st}$  
+Output: $y(t) = H(s) e^{st}$  
 
 Here, $e^{st}$ is the eigenfunction, and $H(s)$ is the corresponding eigenvalue.
 :::
 ::: {.column width="50%"}
-**Discrete-Time**
-Input: $x[n] = z^n$
-Output: $y[n] = H(z) z^n$
+**Discrete-Time**  
+Input: $x[n] = z^n$  
+Output: $y[n] = H(z) z^n$  
 
 Here, $z^n$ is the eigenfunction, and $H(z)$ is the corresponding eigenvalue.
 :::
 ::::
+
 
 ::: {.notes}
 The term "eigen" comes from German, meaning "own" or "characteristic". So, an eigenfunction is a characteristic function of the system. It means that when you apply this specific type of signal to an LTI system, its fundamental form doesn't change; only its amplitude and phase might be modified. This property is incredibly powerful for simplifying system analysis, as we only need to understand how the system scales these specific basic signals, rather than performing complex convolutions for every possible input.
@@ -72,7 +76,7 @@ The term "eigen" comes from German, meaning "own" or "characteristic". So, an ei
 
 ## 3. Derivation: Continuous-Time Case
 
-Let an LTI system have impulse response $h(t)$.
+Let an LTI system have impulse response $h(t)$.  
 Input: $x(t) = e^{st}$.
 
 The output $y(t)$ is given by the convolution integral:
@@ -87,6 +91,10 @@ $$
 $$
 y(t) = \int_{-\infty}^{+\infty} h(\tau) e^{st} e^{-s\tau} d \tau
 $$
+
+---
+
+## 3. Derivation: Continuous-Time Case (cont.)
 
 Since $e^{st}$ is independent of $\tau$, we can pull it out of the integral:
 $$
@@ -110,7 +118,7 @@ This derivation explicitly illustrates how the convolution integral simplifies w
 
 ## 4. Derivation: Discrete-Time Case
 
-Similarly, for a discrete-time LTI system with impulse response $h[n]$.
+Similarly, for a discrete-time LTI system with impulse response $h[n]$.  
 Input: $x[n] = z^n$.
 
 The output $y[n]$ is given by the convolution sum:
@@ -125,6 +133,10 @@ $$
 $$
 y[n] = \sum_{k=-\infty}^{+\infty} h[k] z^n z^{-k}
 $$
+
+---
+
+## 4. Derivation: Discrete-Time Case (cont.)
 
 Since $z^n$ is independent of $k$, we can pull it out of the sum:
 $$
@@ -249,23 +261,6 @@ This focuses on complex exponentials of the form $e^{j\omega n}$.
 :::
 ::::
 
-```{mermaid}
-graph TD
-    A[Complex Plane for s] --> B(Real Axis);
-    A --> C(Imaginary Axis);
-    C -- "Fourier Analysis Focus" --> D(j&omega; Axis);
-    classDef highlight fill:#add8e6,stroke:#333,stroke-width:2px;
-    class D highlight;
-
-    X[Complex Plane for z] --> E(Real Axis);
-    X --> F(Imaginary Axis);
-    subgraph Polar Plane for z
-        direction LR
-        G(Center) --- H(Unit Circle)
-        H -- "Fourier Analysis Focus" --> I(e^j&omega; on Unit Circle);
-    end
-    class I highlight;
-```
 ::: {.notes}
 The restriction to $s=j\omega$ and $z=e^{j\omega}$ is profoundly important. These specific forms represent sinusoidal signals, which are ubiquitous in electrical and computer engineering (e.g., AC circuits, oscillations, modulation). $e^{j\omega t}$ can be decomposed into $\cos(\omega t)$ and $\sin(\omega t)$ using Euler's formula. By focusing on these values, we are effectively analyzing the system's *frequency response*. The values of $H(j\omega)$ and $H(e^{j\omega})$ directly tell us how the system passes or attenuates different frequencies, analogous to how an audio equalizer or a radio filter works.
 :::
@@ -281,7 +276,7 @@ y(t)=x(t-3).
 $$
 This system represents a pure time delay of 3 units.
 
-**Part 1: Response to a single complex exponential input**
+**Part 1: Response to a single complex exponential input**  
 Input: $x(t) = e^{j2t}$.
 
 To find the output, we directly substitute $x(t)$ into the system equation:
@@ -313,6 +308,11 @@ Substitute $h(\tau) = \delta(\tau-3)$:
 $$
 H(s) = \int_{-\infty}^{+\infty} \delta(\tau-3) e^{-s\tau} d \tau
 $$
+
+---
+
+## 10. Example 3.1: Impulse Response Verification (cont.)
+
 Due to the sifting property of the Dirac delta function, this integral evaluates to:
 $$
 H(s) = e^{-s(3)} = e^{-3s}
@@ -362,16 +362,24 @@ This example transitions from a single exponential to a sum of real sinusoids. T
 Now, we apply the eigenfunction property to each complex exponential component of $x(t)$:
 
 *   For $\frac{1}{2}e^{j4t}$: The eigenvalue is $H(j4) = e^{-j3(4)} = e^{-j12}$.
+
     Output component: $\frac{1}{2} H(j4) e^{j4t} = \frac{1}{2} e^{-j12} e^{j4t} = \frac{1}{2} e^{j(4t-12)} = \frac{1}{2} e^{j4(t-3)}$
 
 *   For $\frac{1}{2}e^{-j4t}$: The eigenvalue is $H(-j4) = e^{-j3(-4)} = e^{j12}$.
+
     Output component: $\frac{1}{2} H(-j4) e^{-j4t} = \frac{1}{2} e^{j12} e^{-j4t} = \frac{1}{2} e^{-j(4t-12)} = \frac{1}{2} e^{-j4(t-3)}$
 
 *   For $\frac{1}{2}e^{j7t}$: The eigenvalue is $H(j7) = e^{-j3(7)} = e^{-j21}$.
+
     Output component: $\frac{1}{2} H(j7) e^{j7t} = \frac{1}{2} e^{-j21} e^{j7t} = \frac{1}{2} e^{j(7t-21)} = \frac{1}{2} e^{j7(t-3)}$
 
 *   For $\frac{1}{2}e^{-j7t}$: The eigenvalue is $H(-j7) = e^{-j3(-7)} = e^{j21}$.
+
     Output component: $\frac{1}{2} H(-j7) e^{-j7t} = \frac{1}{2} e^{j21} e^{-j7t} = \frac{1}{2} e^{-j(7t-21)} = \frac{1}{2} e^{-j7(t-3)}$
+
+---
+
+## 12. Example 3.1: Superposition (Cont.)
 
 Summing these individual outputs, we get the total output $y(t)$:
 $$
@@ -407,3 +415,4 @@ This lays the essential foundation for **Fourier Analysis**:
 ::: {.notes}
 Understanding eigenfunctions is the critical bridge that connects time-domain convolution with the powerful frequency-domain analysis techniques. It's the "why" behind transforms like the Fourier, Laplace, and Z-transforms. These transforms don't just calculate; they inherently leverage this eigenfunction property to transform the complex operation of convolution into simpler multiplication operations in the frequency domain. This shift makes system analysis and design immensely more intuitive and manageable, forming the backbone for nearly all aspects of electrical and computer engineering, from communication systems and audio processing to control theory and image processing. This is a concept that truly permeates the entire field.
 :::
+
