@@ -11,11 +11,15 @@ format:
     scrollable: true
     controls: true
     progress: true
-    preview-links: false
     transition: fade
-    incremental: false
-    smaller: false
     theme: [default, qrjs_assets/ir_style.scss]
+    mermaid:
+        theme: neutral
+pyodide:
+  packages:
+    - numpy
+    - plotly
+    - nbformat
 ---
 
 # Signals and Systems
@@ -41,6 +45,7 @@ $x[n] = z^n \quad \xrightarrow{\text{LTI System}} \quad y[n] = H(z) z^n$
 ::::
 
 This means:
+
 *   LTI systems only scale complex exponentials, they don't change their fundamental form.
 *   The system's behavior is fully characterized by $H(s)$ or $H(z)$ at specific values of $s$ or $z$.
 
@@ -61,7 +66,8 @@ Start by reminding students of the crucial eigenfunction property. This sets the
 
 :::: {.columns}
 ::: {.column width="40%"}
-![](https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Jean-Baptiste_Joseph_Fourier.jpg/220px-Jean-Baptiste_Joseph_Fourier.jpg){fig-align="center" width="80%"}
+![](https://upload.wikimedia.org/wikipedia/commons/d/df/Fourier2_-_restoration1.jpg){fig-align="center" width="80%"}
+
 *Mathematica, quae ad calorem deduxi, sunt mihi graviora.*
 (The mathematics that I have derived concerning heat, are to me of greater importance.)
 --- *Joseph Fourier*
@@ -95,6 +101,10 @@ $$
 c_k = \frac{1}{T_0} \int_{T_0} x(t) e^{-jk\omega_0 t} dt
 $$
 (The integral is over any single period $T_0$).
+
+---
+
+## 3. Fourier Series: Representing Periodic Signals
 
 ### 3.2 Trigonometric Fourier Series (Alternative Form)
 $$
@@ -217,9 +227,14 @@ The **Fourier Transform (FT)** extends this concept to **aperiodic signals**.
 
 Imagine a periodic signal whose period $T_0$ approaches infinity ($T_0 \to \infty$).
 As $T_0 \to \infty$:  
+
 *   The fundamental frequency $\omega_0 = 2\pi/T_0 \to 0$.
 *   The discrete sum over harmonics becomes a continuous integral over frequency.
 *   The Fourier coefficients $c_k$ become a continuous function of frequency, $X(j\omega)$.
+
+---
+
+## 5. Fourier Transform: For Aperiodic Signals
 
 ### 5.2 The Fourier Transform Pair
 
@@ -259,8 +274,12 @@ The FT reveals powerful properties crucial for ECE:
 
     Here, $H(j\omega) = \mathcal{F}\{h(t)\}$ is the **frequency response** of the LTI system.
 
+---
+
+## 6. Key Properties of the Fourier Transform in LTI Systems
+
 ```{mermaid}
-graph LR
+graph TD
     A[Time Domain] -- "Convolution: x(t) * h(t)" --> B["Time Domain Result: y(t)"]
 
     C[Frequency Domain] -- "FT: X(j&omega;), H(j&omega;)" --> D["Frequency Domain Result: Y(j&omega;)"]
@@ -292,6 +311,7 @@ Highlight these properties, especially the convolution property. This is the "AH
 Let's apply a simple Low-Pass Filter (LPF) to a signal composed of two sine waves with different frequencies.
 
 Observe:
+
 1.  The input signal's time-domain plot and its frequency spectrum.
 2.  The filter's frequency response (magnitude).
 3.  The output signal's time-domain plot and its frequency spectrum.
@@ -416,35 +436,40 @@ This directly illustrates the meaning of $Y(j\omega) = X(j\omega)H(j\omega)$ in 
 
 Fourier Analysis is fundamental to almost every area of Electrical and Computer Engineering.
 
-:::: {.columns}
-::: {.column width="50%"}
 **1. Communication Systems**
+
 *   **Modulation/Demodulation:** Shifting a signal's spectrum to a different carrier frequency for transmission (radio, WiFi).
 *   **Multiplexing:** Combining multiple signals into one channel by allocating different frequency bands.
 *   **Spectrum Analysis:** Understanding bandwidth requirements, interference.
 
 **2. Audio & Speech Processing**
+
 *   **Equalizers:** Boosting or cutting specific frequency ranges.
 *   **Noise Reduction:** Filtering out unwanted frequency components.
 *   **Compression (e.g., MP3):** Discarding inaudible frequency components.
 
 **3. Image & Video Processing**
+
 *   **Filtering:** Sharpening (high-pass), blurring (low-pass), edge detection.
 *   **Compression (e.g., JPEG):** Representing images efficiently in the frequency domain.
-:::
-::: {.column width="50%"}
+
+---
+
+## 8. ECE Applications of Fourier Analysis 
+
 **4. Circuit Analysis**
+
 *   **AC Steady-State Analysis:** Transforming differential equations into algebraic equations in the frequency domain (phasors).
 *   **Filter Design:** Designing circuits that pass or block specific frequencies (e.g., Butterworth, Chebyshev filters).
 
 **5. Control Systems**
+
 *   **Frequency Response Analysis:** Assessing system stability and performance by analyzing how different input frequencies are processed.
 *   **System Identification:** Determining a system's characteristics by observing its response to various frequencies.
 
 **6. Digital Signal Processing (DSP)**
+
 *   **Discrete Fourier Transform (DFT) / Fast Fourier Transform (FFT):** Efficient algorithms for computing the FT on discrete (sampled) data, enabling real-time applications.
-:::
-::::
 
 ::: {.notes}
 Dedicate a slide to the sheer breadth of applications. This motivates students and shows them how theoretical concepts translate directly into real-world technologies they encounter daily. Emphasize that Fourier analysis is not just a mathematical tool, but a core component of how these systems are designed, analyzed, and implemented. Mention the FFT as the computational backbone that made many of these applications practical.
@@ -461,6 +486,10 @@ Dedicate a slide to the sheer breadth of applications. This motivates students a
 **In essence, Fourier Analysis is the lens through which engineers view and manipulate signals and systems in the frequency domain.**
 
 It is a cornerstone of modern electrical and computer engineering, underpinning technologies from your smartphone to medical imaging, and from radar to robotics.
+
+---
+
+## 9. Conclusion: The Ubiquity of Fourier
 
 ```{mermaid}
 graph TD
