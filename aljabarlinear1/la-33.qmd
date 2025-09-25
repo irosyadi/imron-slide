@@ -1,0 +1,742 @@
+---
+title: "Linear Algebra"
+subtitle: "3.3 Orthogonality"
+author: "Imron Rosyadi"
+format:
+  live-revealjs:
+    logo: "qrjs_assets/unsoed_logo.png"
+    footer: "[irosyadi-2025](https://imron-slide.vercel.app)"
+    slide-number: true
+    chalkboard: true
+    scrollable: true
+    controls: true
+    progress: true
+    preview-links: false
+    transition: fade
+    incremental: false
+    smaller: false
+    theme: [default, qrjs_assets/ir_style.scss]
+    mermaid:
+        theme: neutral
+pyodide:
+  packages:
+    - numpy
+    - plotly
+    - nbformat
+---
+
+# Linear Algebra for ECE
+**Orthogonality**
+
+---
+
+## Introduction to Orthogonality
+In the previous section, we defined the "angle" between vectors using the dot product.
+Now, we focus on **perpendicularity**, a special case of the angle between vectors.
+Perpendicular (orthogonal) vectors are crucial in many applications, especially in ECE.
+
+Recall the angle $\theta$ between nonzero vectors $\mathbf{u}$ and $\mathbf{v}$ in $R^n$:
+$$
+\theta = \cos^{-1}\left(\frac{\mathbf{u}\cdot\mathbf{v}}{\|\mathbf{u}\|\|\mathbf{v}\|}\right)
+$$
+From this, $\theta = \pi/2$ (90 degrees) if and only if $\mathbf{u}\cdot \mathbf{v} = 0$.
+
+::: {.notes}
+Orthogonality is a cornerstone concept in linear algebra.
+It's the algebraic way of saying "perpendicular."
+In ECE, orthogonal signals are uncorrelated, orthogonal basis vectors simplify coordinate transformations, and orthogonal transformations preserve length and angle.
+:::
+
+---
+
+## Orthogonal Vectors (Definition 1)
+Two nonzero vectors $\mathbf{u}$ and $\mathbf{v}$ in $R^n$ are **orthogonal** (or perpendicular) if $\mathbf{u}\cdot \mathbf{v} = 0$.
+The zero vector $\mathbf{0}$ is defined to be orthogonal to every vector in $R^n$.
+
+### EXAMPLE 1: Orthogonal Vectors
+(a) Show that $\mathbf{u} = (-2,3,1,4)$ and $\mathbf{v} = (1,2,0,-1)$ are orthogonal in $R^4$.
+$$
+\mathbf{u}\cdot \mathbf{v} = (-2)(1) + (3)(2) + (1)(0) + (4)(-1) = -2 + 6 + 0 - 4 = 0
+$$
+Since $\mathbf{u}\cdot \mathbf{v} = 0$, they are orthogonal.
+
+(b) Show that standard unit vectors in $R^3$ are orthogonal.
+$\mathbf{i} = (1,0,0), \mathbf{j} = (0,1,0), \mathbf{k} = (0,0,1)$
+$\mathbf{i}\cdot \mathbf{j} = (1)(0) + (0)(1) + (0)(0) = 0$
+$\mathbf{i}\cdot \mathbf{k} = (1)(0) + (0)(0) + (0)(1) = 0$
+$\mathbf{j}\cdot \mathbf{k} = (0)(0) + (1)(0) + (0)(1) = 0$
+Each pair is orthogonal. This extends to $R^n$.
+
+::: {.notes}
+The simple dot product check is the most efficient way to determine orthogonality.
+Standard unit vectors are a classic example of an orthogonal set, which forms the basis for Cartesian coordinate systems.
+This property is fundamental for simplifying many problems by rotating coordinate systems.
+:::
+
+---
+
+## Interactive Orthogonality Checker
+Enter two vectors in $R^n$ to check if they are orthogonal.
+
+```{pyodide}
+#| max-lines: 10
+
+import numpy as np
+
+# Enter vector u components, e.g., "-2, 3, 1, 4"
+u_orth_str = "-2, 3, 1, 4" # Try "1, 0, 0"
+
+# Enter vector v components, e.g., "1, 2, 0, -1"
+v_orth_str = "1, 2, 0, -1" # Try "0, 1, 0"
+
+try:
+    u_orth_comp = [float(x.strip()) for x in u_orth_str.split(',')]
+    v_orth_comp = [float(x.strip()) for x in v_orth_str.split(',')]
+
+    if len(u_orth_comp) != len(v_orth_comp):
+        print("Vectors must have the same number of components.")
+    else:
+        u_orth_vec = np.array(u_orth_comp)
+        v_orth_vec = np.array(v_orth_comp)
+        dot_product_orth = np.dot(u_orth_vec, v_orth_vec)
+
+        print(f"Vector u: {tuple(u_orth_comp)}")
+        print(f"Vector v: {tuple(v_orth_comp)}")
+        print(f"Dot Product (u . v): {dot_product_orth:.4f}")
+
+        if np.isclose(dot_product_orth, 0):
+            print("\nResult: The vectors are ORTHOGONAL.")
+        else:
+            print(f"\nResult: The vectors are NOT orthogonal (dot product is {dot_product_orth:.4f}).")
+
+except ValueError:
+    print("Invalid input. Please enter comma-separated numbers.")
+```
+
+::: {.notes}
+This interactive tool allows you to quickly test for orthogonality.
+Input various pairs of vectors. Try some from the examples, and then create your own.
+What happens if one of the vectors is the zero vector?
+:::
+
+---
+
+## Lines and Planes Determined by Normals
+A line in $R^2$ or a plane in $R^3$ can be uniquely defined by a point $P_0$ and a nonzero **normal vector** $\mathbf{n}$ that is orthogonal to the line/plane.
+
+The vector equation for both cases is:
+$$
+\mathbf{n}\cdot \overrightarrow{P_0P} = 0 \tag{1}
+$$
+where $P$ is an arbitrary point on the line/plane.
+
+:::: {.columns}
+::: {.column width="50%"}
+**For a line in $R^2$:**
+$P_0(x_0,y_0)$, $\mathbf{n}=(a,b)$, $P(x,y)$
+$\overrightarrow{P_0P} = (x-x_0, y-y_0)$
+**Point-Normal Equation:**
+$$
+a(x - x_0) + b(y - y_0) = 0 \tag{2}
+$$
+:::
+::: {.column width="50%"}
+**For a plane in $R^3$:**
+$P_0(x_0,y_0,z_0)$, $\mathbf{n}=(a,b,c)$, $P(x,y,z)$
+$\overrightarrow{P_0P} = (x-x_0, y-y_0, z-z_0)$
+**Point-Normal Equation:**
+$$
+a(x - x_0) + b(y - y_0) + c(z - z_0) = 0 \tag{3}
+$$
+:::
+::::
+
+![Figure 3.3.1: Line in $R^2$ and plane in $R^3$ with normal vectors.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/5d40f4105a9593154d0381829cc8acd33355f8f21a7a91f335491ded194d9de4.jpg)
+
+::: {.notes}
+The normal vector is like a compass for the line or plane, indicating its orientation.
+This formulation is very powerful because it allows us to describe these geometric objects using vector algebra.
+In ECE, understanding normal vectors is crucial for fields like computer graphics (lighting calculations), electromagnetics (surface integrals), and control systems (defining constraint surfaces).
+:::
+
+---
+
+## EXAMPLE 2: Point-Normal Equations
+-   In $R^2$, the equation $6(x - 3) + (y + 7) = 0$ represents the line through $P_0(3, -7)$ with normal $\mathbf{n}=(6,1)$.
+-   In $R^3$, the equation $4(x - 3) + 2y - 5(z - 7) = 0$ represents the plane through $P_0(3,0,7)$ with normal $\mathbf{n}=(4,2,-5)$.
+
+### THEOREM 3.3.1 (General Forms)
+(a) A line in $R^2$ with normal $\mathbf{n}=(a,b)$ has equation:
+$$
+ax + by + c = 0 \tag{4}
+$$
+(b) A plane in $R^3$ with normal $\mathbf{n}=(a,b,c)$ has equation:
+$$
+ax + by + cz + d = 0 \tag{5}
+$$
+(where $a,b$ are not both zero, and $a,b,c$ are not all zero, respectively)
+
+::: {.notes}
+These examples show how to interpret the point-normal form and how it simplifies to the general linear equation.
+The coefficients of $x, y, z$ in the general form directly give you the normal vector. This is a quick way to find the orientation of a line or plane.
+:::
+
+---
+
+## EXAMPLE 3: Vectors Orthogonal to Lines and Planes Through the Origin
+(a) The equation $ax + by = 0$ represents a line through the origin in $R^2$. Show that $\mathbf{n}_1 = (a,b)$ is orthogonal to every vector along the line.
+
+(b) The equation $ax + by + cz = 0$ represents a plane through the origin in $R^3$. Show that $\mathbf{n}_2 = (a,b,c)$ is orthogonal to every vector in the plane.
+
+**Solution:**
+Both equations can be written in the vector form:
+$$
+\mathbf{n}\cdot \mathbf{x} = 0 \tag{6}
+$$
+where $\mathbf{n}$ is the vector of coefficients (e.g., $(a,b)$ or $(a,b,c)$) and $\mathbf{x}$ is the vector of unknowns (e.g., $(x,y)$ or $(x,y,z)$).
+This equation directly states that $\mathbf{n}$ is orthogonal to any vector $\mathbf{x}$ that satisfies the equation (i.e., lies on the line or in the plane).
+
+::: {.notes}
+This example specifically addresses lines and planes passing through the origin.
+The vector form $\mathbf{n}\cdot \mathbf{x} = 0$ is a very compact and powerful way to express orthogonality.
+It shows that the set of all vectors orthogonal to a given vector forms a line (in 2D) or a plane (in 3D) through the origin.
+:::
+
+---
+
+## Orthogonal Projections
+Often, we need to decompose a vector $\mathbf{u}$ into two components:
+
+1.  One component ($\mathbf{w}_1$) that is a scalar multiple of a specified nonzero vector $\mathbf{a}$.
+2.  Another component ($\mathbf{w}_2$) that is orthogonal to $\mathbf{a}$.
+
+Visually:
+Drop a perpendicular from the tip of $\mathbf{u}$ to the line containing $\mathbf{a}$.
+$\mathbf{w}_1$ is the vector from the initial point to the foot of the perpendicular.
+$\mathbf{w}_2 = \mathbf{u} - \mathbf{w}_1$.
+Then $\mathbf{u} = \mathbf{w}_1 + \mathbf{w}_2$, where $\mathbf{w}_1$ is parallel to $\mathbf{a}$ and $\mathbf{w}_2$ is orthogonal to $\mathbf{a}$.
+
+![Figure 3.3.2a: Orthogonal projection where angle is acute.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/b655889869c3846d47229fa36c096b459919169fba9b07101041b9efd0f60a52.jpg)
+![Figure 3.3.2b: Orthogonal projection where angle is obtuse.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/e0889848b8695501b3bbd6b8a18bc5226fd13a0ad0b2a29f3007fb27938f4d54.jpg)
+![Figure 3.3.2c: Orthogonal projection where vectors are orthogonal.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/fbdb3421d9ed025f6b1fa7e5f9294607fabc2347b31bbc95c10202b16d1d8255.jpg)
+
+::: {.notes}
+Orthogonal projection is a core concept with wide-ranging applications.
+Think of it as finding the "shadow" of one vector onto another.
+In ECE, this is used in signal processing (e.g., separating components of a signal), least squares approximation, and image compression.
+:::
+
+---
+
+## Projection Theorem (Theorem 3.3.2)
+If $\mathbf{u}$ and $\mathbf{a}$ are vectors in $R^n$, and $\mathbf{a} \neq \mathbf{0}$, then $\mathbf{u}$ can be expressed in exactly one way as:
+$$
+\mathbf{u} = \mathbf{w}_1 + \mathbf{w}_2
+$$
+where $\mathbf{w}_1$ is a scalar multiple of $\mathbf{a}$ and $\mathbf{w}_2$ is orthogonal to $\mathbf{a}$.
+
+**Key Formulas:**
+
+-   The vector $\mathbf{w}_1$ is called the **orthogonal projection of $\mathbf{u}$ on $\mathbf{a}$**, denoted $\text{proj}_{\mathbf{a}}\mathbf{u}$.
+    $$
+    \text{proj}_{\mathbf{a}}\mathbf{u} = \frac{\mathbf{u}\cdot\mathbf{a}}{\|\mathbf{a}\|^2}\mathbf{a} \tag{10}
+    $$
+-   The vector $\mathbf{w}_2$ is the **vector component of $\mathbf{u}$ orthogonal to $\mathbf{a}$**.
+    $$
+    \mathbf{w}_2 = \mathbf{u} - \text{proj}_{\mathbf{a}}\mathbf{u} \tag{11}
+    $$
+
+::: {.notes}
+The proof (outlined in the text) shows how $k$ in $\mathbf{w}_1 = k\mathbf{a}$ is derived by ensuring $\mathbf{w}_2$ is orthogonal to $\mathbf{a}$.
+These formulas are fundamental. Memorize them!
+They allow us to mathematically perform the decomposition we visualized earlier.
+:::
+
+---
+
+## EXAMPLE 4: Orthogonal Projection on a Line
+Find the orthogonal projections of $\mathbf{e}_1=(1,0)$ and $\mathbf{e}_2=(0,1)$ on the line $L$ that makes an angle $\theta$ with the positive x-axis in $R^2$.
+
+Let $\mathbf{a} = (\cos \theta, \sin \theta)$ be a unit vector along line $L$.
+$\|\mathbf{a}\| = 1$.
+
+**For $\mathbf{e}_1=(1,0)$:**
+$\mathbf{e}_1\cdot \mathbf{a} = (1,0)\cdot (\cos \theta, \sin \theta) = \cos \theta$
+$$
+\text{proj}_{\mathbf{a}}\mathbf{e}_1 = \frac{\mathbf{e}_1\cdot\mathbf{a}}{\|\mathbf{a}\|^2}\mathbf{a} = (\cos \theta)(\cos \theta, \sin \theta) = (\cos^2\theta, \sin \theta \cos \theta)
+$$
+
+**For $\mathbf{e}_2=(0,1)$:**
+$\mathbf{e}_2\cdot \mathbf{a} = (0,1)\cdot (\cos \theta, \sin \theta) = \sin \theta$
+$$
+\text{proj}_{\mathbf{a}}\mathbf{e}_2 = \frac{\mathbf{e}_2\cdot\mathbf{a}}{\|\mathbf{a}\|^2}\mathbf{a} = (\sin \theta)(\cos \theta, \sin \theta) = (\sin \theta \cos \theta, \sin^2\theta)
+$$
+
+::: {.notes}
+This example provides a concrete geometric interpretation of orthogonal projection in 2D.
+It shows how the projection depends on the angle of the line.
+Such projections are used in coordinate transformations and rotations in computer graphics and signal processing.
+:::
+
+---
+
+## EXAMPLE 5: Vector Component of $\mathbf{u}$ Along $\mathbf{a}$
+Let $\mathbf{u} = (2, -1, 3)$ and $\mathbf{a} = (4, -1, 2)$.
+Find $\text{proj}_{\mathbf{a}}\mathbf{u}$ and the vector component of $\mathbf{u}$ orthogonal to $\mathbf{a}$.
+
+**Solution:**
+
+1.  Calculate $\mathbf{u}\cdot\mathbf{a}$:
+    $\mathbf{u}\cdot\mathbf{a} = (2)(4) + (-1)(-1) + (3)(2) = 8 + 1 + 6 = 15$
+2.  Calculate $\|\mathbf{a}\|^2$:
+    $\|\mathbf{a}\|^2 = 4^2 + (-1)^2 + 2^2 = 16 + 1 + 4 = 21$
+3.  Calculate $\text{proj}_{\mathbf{a}}\mathbf{u}$:
+    $$
+    \text{proj}_{\mathbf{a}}\mathbf{u} = \frac{15}{21}(4, -1, 2) = \frac{5}{7}(4, -1, 2) = \left(\frac{20}{7}, -\frac{5}{7}, \frac{10}{7}\right)
+    $$
+4.  Calculate $\mathbf{u} - \text{proj}_{\mathbf{a}}\mathbf{u}$:
+    $$
+    \mathbf{u} - \text{proj}_{\mathbf{a}}\mathbf{u} = (2, -1, 3) - \left(\frac{20}{7}, -\frac{5}{7}, \frac{10}{7}\right) = \left(\frac{14-20}{7}, \frac{-7+5}{7}, \frac{21-10}{7}\right) = \left(-\frac{6}{7}, -\frac{2}{7}, \frac{11}{7}\right)
+    $$
+You can verify that $\left(-\frac{6}{7}, -\frac{2}{7}, \frac{11}{7}\right)$ is orthogonal to $(4, -1, 2)$ by checking their dot product.
+
+::: {.notes}
+This step-by-step example walks through the calculation of both components.
+The verification step is important to ensure the calculations are correct and reinforces the definition of orthogonality.
+:::
+
+---
+
+## Interactive Orthogonal Projection Calculator
+Calculate the orthogonal projection of $\mathbf{u}$ onto $\mathbf{a}$.
+
+```{pyodide}
+#| max-lines: 10
+
+import numpy as np
+
+# Enter vector u components, e.g., "2, -1, 3"
+u_proj_str = "2, -1, 3"
+
+# Enter vector a components, e.g., "4, -1, 2"
+a_proj_str = "4, -1, 2"
+
+try:
+    u_proj_comp = [float(x.strip()) for x in u_proj_str.split(',')]
+    a_proj_comp = [float(x.strip()) for x in a_proj_str.split(',')]
+
+    if len(u_proj_comp) != len(a_proj_comp):
+        print("Vectors u and a must have the same number of components.")
+    else:
+        u_vec = np.array(u_proj_comp)
+        a_vec = np.array(a_proj_comp)
+
+        norm_a_sq = np.dot(a_vec, a_vec)
+        if norm_a_sq == 0:
+            print("Vector 'a' cannot be the zero vector for projection.")
+        else:
+            proj_u_on_a = (np.dot(u_vec, a_vec) / norm_a_sq) * a_vec
+            orth_comp = u_vec - proj_u_on_a
+
+            print(f"Vector u: {tuple(u_proj_comp)}")
+            print(f"Vector a: {tuple(a_proj_comp)}")
+            print(f"\nOrthogonal Projection of u on a (proj_a u): {tuple(proj_u_on_a.round(4))}")
+            print(f"Vector component of u orthogonal to a: {tuple(orth_comp.round(4))}")
+
+            # Verification
+            dot_prod_check = np.dot(orth_comp, a_vec)
+            if np.isclose(dot_prod_check, 0):
+                print(f"\nVerification: Orthogonal component is indeed orthogonal to a (dot product = {dot_prod_check:.4f}).")
+            else:
+                print(f"\nVerification FAILED: Orthogonal component is NOT orthogonal to a (dot product = {dot_prod_check:.4f}).")
+
+except ValueError:
+    print("Invalid input. Please enter comma-separated numbers.")
+```
+
+::: {.notes}
+This interactive tool lets you compute orthogonal projections for any vectors $\mathbf{u}$ and $\mathbf{a}$ in $R^n$.
+Experiment with different vectors, including those where $\mathbf{u}$ is already orthogonal to $\mathbf{a}$, or parallel to $\mathbf{a}$.
+Observe how the `proj_a u` and the orthogonal component change.
+:::
+
+---
+
+## Norm of the Orthogonal Projection
+Sometimes, we're only interested in the length of the projected vector.
+$$
+\| \text{proj}_{\mathbf{a}}\mathbf{u}\| = \left\| \frac{\mathbf{u}\cdot\mathbf{a}}{\|\mathbf{a}\|^2}\mathbf{a}\right\| = \left|\frac{\mathbf{u}\cdot\mathbf{a}}{\|\mathbf{a}\|^2}\right|\|\mathbf{a}\| = \frac{|\mathbf{u}\cdot\mathbf{a}|}{\|\mathbf{a}\|} \tag{12}
+$$
+If $\theta$ is the angle between $\mathbf{u}$ and $\mathbf{a}$, then $\mathbf{u}\cdot\mathbf{a} = \|\mathbf{u}\|\|\mathbf{a}\|\cos\theta$.
+Substituting this into (12):
+$$
+\| \text{proj}_{\mathbf{a}}\mathbf{u}\| = \frac{|\|\mathbf{u}\|\|\mathbf{a}\|\cos\theta|}{\|\mathbf{a}\|} = \|\mathbf{u}\||\cos\theta| \tag{13}
+$$
+
+![Figure 3.3.4: Geometric interpretation of $\| \text{proj}_{\mathbf{a}}\mathbf{u}\|$.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/67fd1eb595b8ead192545c3d780d2de0914117e2a8a0c44ac1b223b3df3945f5.jpg)
+
+::: {.notes}
+This formula tells us that the length of the projection is the length of $\mathbf{u}$ scaled by the absolute cosine of the angle between the vectors.
+This makes intuitive sense: if the vectors are aligned ($\cos\theta = 1$), the projection length is $\|\mathbf{u}\|$; if they are orthogonal ($\cos\theta = 0$), the projection length is 0.
+:::
+
+---
+
+## The Theorem of Pythagoras in $R^n$
+This theorem generalizes the familiar Pythagorean theorem to $n$-dimensional space.
+
+**Theorem 3.3.3 (Theorem of Pythagoras in $R^n$):**
+If $\mathbf{u}$ and $\mathbf{v}$ are orthogonal vectors in $R^n$, then:
+$$
+\| \mathbf{u} + \mathbf{v}\|^2 = \| \mathbf{u}\|^2 + \| \mathbf{v}\|^2 \tag{14}
+$$
+
+**Proof:**
+Since $\mathbf{u}$ and $\mathbf{v}$ are orthogonal, $\mathbf{u}\cdot \mathbf{v} = 0$.
+$$
+\begin{aligned}
+\| \mathbf{u} + \mathbf{v}\|^2 &= (\mathbf{u} + \mathbf{v})\cdot (\mathbf{u} + \mathbf{v}) \\
+&= \mathbf{u}\cdot \mathbf{u} + 2(\mathbf{u}\cdot \mathbf{v}) + \mathbf{v}\cdot \mathbf{v} \\
+&= \| \mathbf{u}\|^2 + 2(0) + \| \mathbf{v}\|^2 \\
+&= \| \mathbf{u}\|^2 + \| \mathbf{v}\|^2
+\end{aligned}
+$$
+
+![Figure 3.3.5: Pythagorean Theorem for orthogonal vectors.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/2c67d6f5c9ebe5db3e9fa6debeb94660657e5417c6478c5332cfb75a18642e1d.jpg)
+
+::: {.notes}
+This is a direct and elegant generalization.
+It shows that the algebraic properties of the dot product nicely extend fundamental geometric theorems.
+This is heavily used in signal processing (e.g., energy conservation in orthogonal decompositions), and in understanding variance components in statistics.
+:::
+
+---
+
+## EXAMPLE 6: Theorem of Pythagoras in $R^4$
+Vectors $\mathbf{u} = (-2, 3, 1, 4)$ and $\mathbf{v} = (1, 2, 0, -1)$ are orthogonal (from Example 1).
+Verify the Theorem of Pythagoras for these vectors.
+
+**Solution:**
+
+1.  Calculate $\mathbf{u} + \mathbf{v}$:
+    $\mathbf{u} + \mathbf{v} = (-2+1, 3+2, 1+0, 4-1) = (-1, 5, 1, 3)$
+2.  Calculate $\| \mathbf{u} + \mathbf{v}\|^2$:
+    $\| \mathbf{u} + \mathbf{v}\|^2 = (-1)^2 + 5^2 + 1^2 + 3^2 = 1 + 25 + 1 + 9 = 36$
+3.  Calculate $\| \mathbf{u}\|^2$:
+    $\| \mathbf{u}\|^2 = (-2)^2 + 3^2 + 1^2 + 4^2 = 4 + 9 + 1 + 16 = 30$
+4.  Calculate $\| \mathbf{v}\|^2$:
+    $\| \mathbf{v}\|^2 = 1^2 + 2^2 + 0^2 + (-1)^2 = 1 + 4 + 0 + 1 = 6$
+5.  Check $\| \mathbf{u}\|^2 + \| \mathbf{v}\|^2$:
+    $\| \mathbf{u}\|^2 + \| \mathbf{v}\|^2 = 30 + 6 = 36$
+
+Since $36 = 36$, the theorem holds.
+
+::: {.notes}
+This example provides a numerical verification of the Pythagorean theorem in $R^4$.
+It's important to first confirm the vectors are indeed orthogonal before applying the theorem.
+:::
+
+---
+
+## Interactive Pythagoras Verifier
+Enter two vectors and verify the Theorem of Pythagoras if they are orthogonal.
+
+```{pyodide}
+#| max-lines: 10
+
+import numpy as np
+
+# Enter vector u components, e.g., "-2, 3, 1, 4"
+u_pyth_str = "-2, 3, 1, 4"
+
+# Enter vector v components, e.g., "1, 2, 0, -1"
+v_pyth_str = "1, 2, 0, -1"
+
+try:
+    u_pyth_comp = [float(x.strip()) for x in u_pyth_str.split(',')]
+    v_pyth_comp = [float(x.strip()) for x in v_pyth_str.split(',')]
+
+    if len(u_pyth_comp) != len(v_pyth_comp):
+        print("Vectors u and v must have the same number of components.")
+    else:
+        u_vec = np.array(u_pyth_comp)
+        v_vec = np.array(v_pyth_comp)
+
+        dot_prod = np.dot(u_vec, v_vec)
+        if not np.isclose(dot_prod, 0):
+            print(f"Vectors are NOT orthogonal (u . v = {dot_prod:.4f}). Theorem of Pythagoras does not apply directly.")
+        else:
+            print(f"Vectors are orthogonal (u . v = {dot_prod:.4f}). Verifying Theorem of Pythagoras...")
+
+            # Calculate LHS: ||u+v||^2
+            u_plus_v = u_vec + v_vec
+            lhs = np.dot(u_plus_v, u_plus_v)
+
+            # Calculate RHS: ||u||^2 + ||v||^2
+            rhs = np.dot(u_vec, u_vec) + np.dot(v_vec, v_vec)
+
+            print(f"\n||u + v||^2 = {lhs:.4f}")
+            print(f"||u||^2 + ||v||^2 = {rhs:.4f}")
+
+            if np.isclose(lhs, rhs):
+                print("\nVerification successful: ||u + v||^2 == ||u||^2 + ||v||^2")
+            else:
+                print("\nVerification FAILED: The values do not match.")
+
+except ValueError:
+    print("Invalid input. Please enter comma-separated numbers.")
+```
+
+::: {.notes}
+This interactive tool allows you to test the Pythagorean theorem for any two vectors.
+First, it checks if the vectors are orthogonal. If they are, it proceeds to verify the theorem.
+Try changing the vectors. What happens if they are not orthogonal?
+:::
+
+---
+
+## Distance Problems Solved with Orthogonal Projections
+Orthogonal projections can be used to solve distance problems:
+
+1.  **Distance between a point and a line in $R^2$.**
+2.  **Distance between a point and a plane in $R^3$.**
+3.  **Distance between two parallel planes in $R^3$.**
+
+### THEOREM 3.3.4 (Distance Formulas)
+(a) In $R^2$, distance $D$ between point $P_0(x_0,y_0)$ and line $ax + by + c = 0$:
+
+$$
+D = \frac{|ax_0 + by_0 + c|}{\sqrt{a^2 + b^2}} \tag{15}
+$$
+
+(b) In $R^3$, distance $D$ between point $P_0(x_0,y_0,z_0)$ and plane $ax + by + cz + d = 0$:
+
+$$
+D = \frac{|ax_0 + by_0 + cz_0 + d|}{\sqrt{a^2 + b^2 + c^2}} \tag{16}
+$$
+
+::: {.notes}
+These formulas are incredibly useful in practical geometry problems.
+They are derived directly from the concept of orthogonal projection, as the shortest distance is always along the normal vector.
+In ECE, these could be used for collision detection, path planning for robots, or optimizing sensor placement.
+:::
+
+---
+
+## Proof of Theorem 3.3.4(b) (Point-Plane Distance)
+Let $Q(x_1,y_1,z_1)$ be any point in the plane. Let $\mathbf{n}=(a,b,c)$ be the normal vector.
+The distance $D$ is the length of the orthogonal projection of $\overrightarrow{QP_0}$ onto $\mathbf{n}$.
+
+![Figure 3.3.6: Geometric idea behind point-plane distance.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/c5eace9fa8902e26b29dcc626e9863c64626245bf3241cd0e92d4267b5c361c4.jpg)
+
+Using Formula (12) for the norm of projection:
+$$
+D = \| \text{proj}_{\mathbf{n}}\overrightarrow{QP_0}\| = \frac{|\overrightarrow{QP_0}\cdot\mathbf{n}|}{\|\mathbf{n}\|}
+$$
+Substitute $\overrightarrow{QP_0} = (x_0 - x_1, y_0 - y_1, z_0 - z_1)$ and $\|\mathbf{n}\| = \sqrt{a^2+b^2+c^2}$.
+Since $Q$ is in the plane, $ax_1 + by_1 + cz_1 + d = 0 \implies d = -ax_1 - by_1 - cz_1$.
+The numerator becomes $|a(x_0 - x_1) + b(y_0 - y_1) + c(z_0 - z_1)| = |ax_0 + by_0 + cz_0 - (ax_1 + by_1 + cz_1)| = |ax_0 + by_0 + cz_0 + d|$.
+This yields Formula (16).
+
+::: {.notes}
+This proof beautifully connects the geometric intuition of orthogonal projection with the algebraic distance formula.
+It demonstrates why the normal vector is central to finding the shortest distance.
+:::
+
+---
+
+## EXAMPLE 7: Distance Between a Point and a Plane
+Find the distance $D$ between the point $P_0(1, -4, -3)$ and the plane $2x - 3y + 6z = -1$.
+
+**Solution:**
+First, rewrite the plane equation as $2x - 3y + 6z + 1 = 0$.
+Here, $(x_0,y_0,z_0) = (1,-4,-3)$ and $(a,b,c,d) = (2,-3,6,1)$.
+Using Formula (16):
+$$
+D = \frac{|2(1) + (-3)(-4) + 6(-3) + 1|}{\sqrt{2^2 + (-3)^2 + 6^2}} = \frac{|2 + 12 - 18 + 1|}{\sqrt{4 + 9 + 36}} = \frac{|-3|}{\sqrt{49}} = \frac{3}{7}
+$$
+
+::: {.notes}
+This is a direct application of the distance formula.
+Remember to ensure the plane equation is in the form $ax+by+cz+d=0$ before plugging into the formula.
+:::
+
+---
+
+## Interactive Point-Plane Distance Calculator
+Calculate the distance between a point and a plane in $R^3$.
+
+```{pyodide}
+#| max-lines: 10
+
+import numpy as np
+
+# Point P0(x0, y0, z0)
+x0 = 1
+y0 = -4
+z0 = -3
+
+# Plane equation: ax + by + cz + d = 0
+a = 2
+b = -3
+c = 6
+d = 1
+
+print(f"Point P0: ({x0}, {y0}, {z0})")
+print(f"Plane: {a}x + {b}y + {c}z + {d} = 0")
+
+# Calculate numerator: |ax0 + by0 + cz0 + d|
+numerator = abs(a * x0 + b * y0 + c * z0 + d)
+
+# Calculate denominator: sqrt(a^2 + b^2 + c^2)
+denominator = np.sqrt(a**2 + b**2 + c**2)
+
+if denominator == 0:
+    print("\nError: Normal vector (a,b,c) cannot be zero. Invalid plane equation.")
+else:
+    distance = numerator / denominator
+    print(f"\nCalculated Distance D: {distance:.4f}")
+
+# Try changing the point or plane parameters!
+# x0 = 0; y0 = 0; z0 = 0 # origin
+# a = 1; b = 0; c = 0; d = 0 # yz-plane
+```
+
+::: {.notes}
+Use this interactive tool to practice calculating point-plane distances.
+Modify the point coordinates and the plane's coefficients.
+This is a quick way to check your understanding of the formula.
+:::
+
+---
+
+## Distance Between Parallel Planes
+To find the distance between two parallel planes in $R^3$:
+
+1.  Find any point $P_0$ in one of the planes.
+2.  Compute the distance between $P_0$ and the other plane using Formula (16).
+
+![Figure 3.3.7: Distance between parallel planes.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/3d5ee117c250930c7d07425f813b025fa56017a60430b91b73452762ae533962.jpg)
+
+### EXAMPLE 8: Distance Between Parallel Planes
+Find the distance between:
+
+Plane 1: $x + 2y - 2z = 3$
+
+Plane 2: $2x + 4y - 4z = 7$
+
+**Solution:**
+Normals are $(1, 2, -2)$ and $(2, 4, -4)$, which are parallel (one is twice the other).
+
+1.  Find a point in Plane 1: Set $y=0, z=0 \implies x=3$. So, $P_0(3,0,0)$ is in Plane 1.
+2.  Compute distance from $P_0(3,0,0)$ to Plane 2 ($2x + 4y - 4z - 7 = 0$).
+    Here, $(x_0,y_0,z_0) = (3,0,0)$ and $(a,b,c,d) = (2,4,-4,-7)$.
+    $$
+    D = \frac{|2(3) + 4(0) + (-4)(0) - 7|}{\sqrt{2^2 + 4^2 + (-4)^2}} = \frac{|6 - 7|}{\sqrt{4 + 16 + 16}} = \frac{|-1|}{\sqrt{36}} = \frac{1}{6}
+    $$
+
+::: {.notes}
+This is a clever trick that simplifies the problem.
+The core idea is that the distance between parallel planes is constant, so finding it for any point in one plane to the other plane works.
+:::
+
+---
+
+## Interactive Parallel Plane Distance Calculator
+Calculate the distance between two parallel planes in $R^3$.
+
+```{pyodide}
+#| max-lines: 10
+
+import numpy as np
+
+# Plane 1: a1x + b1y + c1z + d1 = 0
+a1 = 1
+b1 = 2
+c1 = -2
+d1 = -3 # Original equation x + 2y - 2z = 3, so d1 = -3
+
+# Plane 2: a2x + b2y + c2z + d2 = 0
+a2 = 2
+b2 = 4
+c2 = -4
+d2 = -7 # Original equation 2x + 4y - 4z = 7, so d2 = -7
+
+print(f"Plane 1: {a1}x + {b1}y + {c1}z + ({d1}) = 0")
+print(f"Plane 2: {a2}x + {b2}y + {c2}z + ({d2}) = 0")
+
+# Check if planes are parallel (normals are scalar multiples)
+normal1 = np.array([a1, b1, c1])
+normal2 = np.array([a2, b2, c2])
+
+norm_n1 = np.linalg.norm(normal1)
+norm_n2 = np.linalg.norm(normal2)
+
+if norm_n1 == 0 or norm_n2 == 0:
+    print("\nError: Invalid plane equation(s) (zero normal vector).")
+else:
+    # Check for parallelism by comparing scaled normals or dot product of normalized normals
+    cos_angle_normals = np.dot(normal1, normal2) / (norm_n1 * norm_n2)
+    if not np.isclose(abs(cos_angle_normals), 1):
+        print("\nError: The planes are NOT parallel. This calculator is for parallel planes only.")
+    else:
+        # Find a point on Plane 1 (set two variables to 0, solve for the third)
+        # Try to find a point by setting z=0, y=0. If a1 is 0, try other combinations.
+        if a1 != 0:
+            x_p0 = -d1 / a1
+            p0 = np.array([x_p0, 0, 0])
+        elif b1 != 0:
+            y_p0 = -d1 / b1
+            p0 = np.array([0, y_p0, 0])
+        elif c1 != 0:
+            z_p0 = -d1 / c1
+            p0 = np.array([0, 0, z_p0])
+        else:
+            print("\nError: Plane 1 has no valid point (all coefficients a1,b1,c1 are zero).")
+            p0 = np.array([0,0,0]) # dummy point
+
+        print(f"\nPoint P0 on Plane 1: {tuple(p0.round(4))}")
+
+        # Calculate distance from P0 to Plane 2
+        distance = abs(a2 * p0[0] + b2 * p0[1] + c2 * p0[2] + d2) / norm_n2
+        print(f"Calculated Distance D between parallel planes: {distance:.4f}")
+
+# Try changing plane coefficients, e.g., for intersecting planes and see error message.
+# a2 = 1; b2 = 1; c2 = 1; d2 = 0 # intersecting
+# a1 = 1; b1 = 2; c1 = -2; d1 = -3
+# a2 = 1; b2 = 2; c2 = -2; d2 = -10 # parallel, different distance
+```
+
+::: {.notes}
+This interactive tool calculates the distance between two parallel planes.
+It first verifies that the planes are indeed parallel by checking their normal vectors.
+Observe how changing the coefficients `d1` or `d2` (while keeping `a,b,c` proportional) changes the distance.
+This is a more complex application, combining point finding and distance calculation.
+:::
+
+---
+
+## Summary and Key Takeaways
+
+-   **Orthogonal Vectors:** Vectors whose dot product is zero, representing perpendicularity.
+-   **Normal Vectors:** Define orientation of lines (in $R^2$) and planes (in $R^3$).
+-   **Orthogonal Projection:** Decomposing a vector into components parallel and orthogonal to another vector.
+    -   $\text{proj}_{\mathbf{a}}\mathbf{u} = \frac{\mathbf{u}\cdot\mathbf{a}}{\|\mathbf{a}\|^2}\mathbf{a}$
+-   **Pythagoras Theorem:** Extends to $R^n$ for orthogonal vectors: $\| \mathbf{u} + \mathbf{v}\|^2 = \| \mathbf{u}\|^2 + \| \mathbf{v}\|^2$.
+-   **Distance Formulas:** Efficiently calculate distances between points, lines, and planes using normal vectors and projections.
+
+::: {.callout-important}
+**Applications in ECE:**
+
+-   **Signal Processing:** Orthogonal bases (e.g., Fourier, Wavelets) for signal decomposition and analysis.
+-   **Control Systems:** State-space analysis, defining constraint surfaces.
+-   **Computer Graphics:** Lighting, camera transformations, collision detection.
+-   **Machine Learning:** Principal Component Analysis (PCA) uses orthogonal projections to reduce dimensionality.
+:::
+
+::: {.notes}
+Orthogonality is a pervasive concept in linear algebra and its applications.
+It simplifies calculations, provides geometric insights, and forms the basis for many powerful algorithms.
+Make sure you are comfortable with the definitions, formulas, and their geometric interpretations.
+Any final questions on orthogonality?
+:::

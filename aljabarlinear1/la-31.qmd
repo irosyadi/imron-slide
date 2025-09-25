@@ -1,0 +1,1047 @@
+---
+title: "Linear Algebra"
+subtitle: "3.1 Vectors in 2-Space, 3-Space, and n-Space"
+author: "Imron Rosyadi"
+format:
+  live-revealjs:
+    logo: "qrjs_assets/unsoed_logo.png"
+    footer: "[irosyadi-2025](https://imron-slide.vercel.app)"
+    slide-number: true
+    chalkboard: true
+    scrollable: true
+    controls: true
+    progress: true
+    preview-links: false
+    transition: fade
+    incremental: false
+    smaller: false
+    theme: [default, qrjs_assets/ir_style.scss]
+    mermaid:
+        theme: neutral
+pyodide:
+  packages:
+    - numpy
+    - plotly
+    - nbformat
+---
+
+# Linear Algebra for ECE
+**Chapter 3: Vectors in Space**
+
+---
+
+## Introduction to Vectors
+Linear algebra focuses on **matrices** and **vectors**.
+We've explored matrices in Chapter 1.
+This section extends your understanding of vectors from 2D/3D to $n$-space.
+
+::: {.notes}
+Today, we're diving into vectors, fundamental building blocks in linear algebra.
+We'll start with familiar geometric concepts in 2D and 3D, then generalize them to higher dimensions, which are crucial in many ECE applications.
+Think about how vectors represent physical quantities like force, velocity, or even signals.
+:::
+
+---
+
+## Geometric Vectors
+Engineers and physicists represent vectors using **arrows**.
+
+-   **Direction:** Specified by the arrowhead.
+-   **Magnitude (Length):** Specified by the length of the arrow.
+-   **Initial Point:** The tail of the arrow.
+-   **Terminal Point:** The tip of the arrow.
+
+![Figure 3.1.1: A geometric vector represented by an arrow.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/193a31bdbf83e57a51864478e43a42654f888e42ae6d0646f6e3c97f86d28cf7.jpg)
+
+::: {.notes}
+Geometric vectors are our intuitive starting point.
+They're visual representations that help us understand the abstract concepts.
+In ECE, these could represent anything from a current flow direction to an electric field's strength and direction.
+The key characteristics are direction and magnitude.
+:::
+
+---
+
+## Vector Notation
+A vector $\mathbf{v}$ with initial point $A$ and terminal point $B$ is written as:
+
+$$
+\mathbf{v} = \overrightarrow{AB}
+$$
+
+![Figure 3.1.2: Vector $\overrightarrow{AB}$ with initial point A and terminal point B.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/c7bcbc80acbd96bb03e420645ded75d88ae9ca98b131ba755a1944d0d85a7ba4.jpg)
+
+**Boldface Notation:**
+We denote vectors in boldface type, like $\mathbf{a}, \mathbf{b}, \mathbf{v}, \mathbf{w}, \mathbf{x}$.
+Scalars are in lowercase italic type, like $a, k, v, w, x$.
+
+::: {.notes}
+The notation $\overrightarrow{AB}$ clearly indicates the start and end points.
+However, for general vectors, we use boldface letters. This distinction between vectors and scalars is important throughout linear algebra.
+Remember that a vector is defined by its magnitude and direction, not its specific location in space.
+:::
+
+---
+
+## Equivalent Vectors and the Zero Vector
+
+-   **Equivalent Vectors:** Vectors with the same length and direction are considered equivalent (or equal).
+    $$
+    \mathbf{v} = \mathbf{w}
+    $$
+    This means they are the "same vector" even if located differently.
+
+-   **Zero Vector ($\mathbf{0}$):** A vector whose initial and terminal points coincide, having zero length.
+    -   It has no natural direction, so we can assign any convenient direction.
+
+![Figure 3.1.3: Equivalent vectors.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/53bd7effe17c3c63dea6a5cd687f2cad95a81338dcd8c876179404ab3d0e93bb.jpg)
+
+::: {.notes}
+The concept of equivalent vectors is crucial. It means we can move a vector around in space as long as we don't change its length or direction. This is fundamental for operations like vector addition.
+The zero vector is like the number zero in arithmetic – it's the additive identity.
+:::
+
+---
+
+## Vector Addition: Geometric Rules
+
+**Parallelogram Rule:**
+If $\mathbf{v}$ and $\mathbf{w}$ share an initial point, their sum $\mathbf{v} + \mathbf{w}$ is the diagonal of the parallelogram formed by $\mathbf{v}$ and $\mathbf{w}$.
+
+**Triangle Rule (Tip-to-Tail):**
+If the initial point of $\mathbf{w}$ is at the terminal point of $\mathbf{v}$, then $\mathbf{v} + \mathbf{w}$ is the vector from the initial point of $\mathbf{v}$ to the terminal point of $\mathbf{w}$.
+
+$$
+\mathbf{v} + \mathbf{w} = \mathbf{w} + \mathbf{v} \tag{1}
+$$
+
+:::: {.columns}
+::: {.column width="50%"}
+![Figure 3.1.4a: Parallelogram Rule.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/23d61a51268e1198a8f9417ee5b879337c192ad5c64eb640daf2ff5c6633366c.jpg)
+:::
+::: {.column width="50%"}
+![Figure 3.1.4b: Triangle Rule.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/1d4c4b584bd755170129e5899c56c7e815b0bcac114c387e329314b7059099a6.jpg)
+![Figure 3.1.4c: Commutativity.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/3efe0eba4d170354912933a6d3b3934f86bb12c36cdafbe8c36bbc3d0b09d6c6.jpg)
+:::
+::::
+
+::: {.notes}
+These two rules are geometrically equivalent ways to visualize vector addition.
+The parallelogram rule is great when vectors start from the same point, like forces acting on an object.
+The triangle rule is useful for sequential movements or displacements.
+The commutative property ($\mathbf{v} + \mathbf{w} = \mathbf{w} + \mathbf{v}$) is clear from both rules.
+:::
+
+---
+
+## Interactive Vector Addition (2D)
+Adjust the components of $\mathbf{v}$ and $\mathbf{w}$ to see their sum.
+
+```{ojs}
+viewof v1 = Inputs.range([-5, 5], {step: 0.1, label: "v1"});
+viewof v2 = Inputs.range([-5, 5], {step: 0.1, label: "v2"});
+viewof w1 = Inputs.range([-5, 5], {step: 0.1, label: "w1"});
+viewof w2 = Inputs.range([-5, 5], {step: 0.1, label: "w2"});
+```
+
+```{pyodide}
+#| echo: false
+#| input:
+#|   - v1
+#|   - v2
+#|   - w1
+#|   - w2
+
+import plotly.graph_objects as go
+import numpy as np
+
+# Get values from Observable inputs
+v1_val = v1
+v2_val = v2
+w1_val = w1
+w2_val = w2
+
+v = np.array([v1_val, v2_val])
+w = np.array([w1_val, w2_val])
+v_plus_w = v + w
+
+fig = go.Figure()
+
+# Add vector v
+fig.add_trace(go.Scatter(x=[0, v[0]], y=[0, v[1]], mode='lines+markers', name='v',
+                         line=dict(color='blue', width=2), marker=dict(symbol='arrow', size=10, angleref='previous')))
+
+# Add vector w (starting from origin)
+fig.add_trace(go.Scatter(x=[0, w[0]], y=[0, w[1]], mode='lines+markers', name='w',
+                         line=dict(color='green', width=2), marker=dict(symbol='arrow', size=10, angleref='previous')))
+
+# Add sum vector v+w (starting from origin)
+fig.add_trace(go.Scatter(x=[0, v_plus_w[0]], y=[0, v_plus_w[1]], mode='lines+markers', name='v+w',
+                         line=dict(color='red', width=3, dash='dash'), marker=dict(symbol='arrow', size=10, angleref='previous')))
+
+# Add parallelogram lines (dashed)
+fig.add_trace(go.Scatter(x=[v[0], v_plus_w[0]], y=[v[1], v_plus_w[1]], mode='lines', name='v parallel',
+                         line=dict(color='green', width=1, dash='dot'), showlegend=False))
+fig.add_trace(go.Scatter(x=[w[0], v_plus_w[0]], y=[w[1], v_plus_w[1]], mode='lines', name='w parallel',
+                         line=dict(color='blue', width=1, dash='dot'), showlegend=False))
+
+# Set plot limits
+max_coord = max(abs(v1_val), abs(v2_val), abs(w1_val), abs(w2_val), abs(v_plus_w[0]), abs(v_plus_w[1]))
+range_val = max(5, max_coord * 1.2) # Ensure at least a range of 5
+
+fig.update_layout(
+    xaxis=dict(range=[-range_val, range_val], zeroline=True, zerolinecolor='lightgray', showgrid=True, gridcolor='lightgray'),
+    yaxis=dict(range=[-range_val, range_val], zeroline=True, zerolinecolor='lightgray', showgrid=True, gridcolor='lightgray', scaleanchor="x", scaleratio=1),
+    title='Geometric Vector Addition (Parallelogram Rule)',
+    hovermode='closest',
+    height=400,
+    margin=dict(l=40, r=40, b=40, t=40)
+)
+fig.show()
+```
+
+::: {.notes}
+This interactive plot helps visualize the parallelogram rule.
+You can manipulate the components of vectors $\mathbf{v}$ and $\mathbf{w}$ using the sliders.
+Observe how the resultant sum vector $\mathbf{v} + \mathbf{w}$ changes dynamically.
+This is a great way to build intuition about vector addition before moving to more abstract definitions.
+:::
+
+---
+
+## Vector Addition as Translation
+Vector addition can also be seen as translating points.
+
+-   The terminal point of $\mathbf{v} + \mathbf{w}$ is the point resulting from translating the terminal point of $\mathbf{v}$ in the direction of $\mathbf{w}$ by a distance equal to the length of $\mathbf{w}$.
+    -   *Equivalently:* translating the terminal point of $\mathbf{w}$ in the direction of $\mathbf{v}$ by the length of $\mathbf{v}$.
+
+![Figure 3.1.5a: Translation of $\mathbf{v}$ by $\mathbf{w}$.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/00f8a0568fede2811a08379eee93e18769be15eda799c4ce0ceab899e499d877.jpg)
+
+::: {.notes}
+This perspective is particularly useful in computer graphics and robotics, where vectors often represent displacements.
+Imagine moving an object. The first vector is the initial movement, and the second vector is an additional movement from that new position.
+The final position is the sum of the two vectors from the original starting point.
+:::
+
+---
+
+## Vector Subtraction
+Subtraction is defined in terms of addition: $a - b = a + (-b)$.
+
+-   **Negative of a Vector ($\mathbf{-v}$):** Has the same length as $\mathbf{v}$ but is oppositely directed.
+-   **Vector Subtraction ($\mathbf{w} - \mathbf{v}$):** Defined as the sum $\mathbf{w} + (-\mathbf{v})$.
+    $$
+    \mathbf{w} - \mathbf{v} = \mathbf{w} + (-\mathbf{v}) \tag{2}
+    $$
+
+Geometrically, $\mathbf{w} - \mathbf{v}$ is the vector from the terminal point of $\mathbf{v}$ to the terminal point of $\mathbf{w}$, when both start at the same initial point.
+
+![Figure 3.1.6: Vector Subtraction.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/1caa63b8e024ab6ecfe3ed97d1dc852d28e8365aa578e7b08e2dcfde8dfaa687.jpg)
+
+::: {.notes}
+Vector subtraction is essentially adding the negative vector.
+The visual representation of $\mathbf{w} - \mathbf{v}$ as the vector connecting the tips of $\mathbf{v}$ and $\mathbf{w}$ (when origins coincide) is very important for understanding relative positions or changes.
+In physics, if $\mathbf{v}$ and $\mathbf{w}$ are position vectors, $\mathbf{w} - \mathbf{v}$ gives the displacement from the end of $\mathbf{v}$ to the end of $\mathbf{w}$.
+:::
+
+---
+
+## Interactive Vector Subtraction (2D)
+Adjust $\mathbf{v}$ and $\mathbf{w}$ to see their difference $\mathbf{w} - \mathbf{v}$.
+
+```{ojs}
+viewof sv1 = Inputs.range([-5, 5], {step: 0.1, label: "v1"});
+viewof sv2 = Inputs.range([-5, 5], {step: 0.1, label: "v2"});
+viewof sw1 = Inputs.range([-5, 5], {step: 0.1, label: "w1"});
+viewof sw2 = Inputs.range([-5, 5], {step: 0.1, label: "w2"});
+```
+
+```{pyodide}
+#| echo: false
+#| input:
+#|   - sv1
+#|   - sv2
+#|   - sw1
+#|   - sw2
+
+import plotly.graph_objects as go
+import numpy as np
+
+v_sub = np.array([sv1, sv2])
+w_sub = np.array([sw1, sw2])
+w_minus_v = w_sub - v_sub
+
+fig = go.Figure()
+
+# Add vector v
+fig.add_trace(go.Scatter(x=[0, v_sub[0]], y=[0, v_sub[1]], mode='lines+markers', name='v',
+                         line=dict(color='blue', width=2), marker=dict(symbol='arrow', size=10, angleref='previous')))
+
+# Add vector w
+fig.add_trace(go.Scatter(x=[0, w_sub[0]], y=[0, w_sub[1]], mode='lines+markers', name='w',
+                         line=dict(color='green', width=2), marker=dict(symbol='arrow', size=10, angleref='previous')))
+
+# Add vector w-v (from tip of v to tip of w)
+fig.add_trace(go.Scatter(x=[v_sub[0], w_sub[0]], y=[v_sub[1], w_sub[1]], mode='lines+markers', name='w - v',
+                         line=dict(color='red', width=3, dash='dash'), marker=dict(symbol='arrow', size=10, angleref='previous')))
+
+# Set plot limits
+max_coord_sub = max(abs(sv1), abs(sv2), abs(sw1), abs(sw2), abs(w_minus_v[0]), abs(w_minus_v[1]))
+range_val_sub = max(5, max_coord_sub * 1.2)
+
+fig.update_layout(
+    xaxis=dict(range=[-range_val_sub, range_val_sub], zeroline=True, zerolinecolor='lightgray', showgrid=True, gridcolor='lightgray'),
+    yaxis=dict(range=[-range_val_sub, range_val_sub], zeroline=True, zerolinecolor='lightgray', showgrid=True, gridcolor='lightgray', scaleanchor="x", scaleratio=1),
+    title='Geometric Vector Subtraction',
+    hovermode='closest',
+    height=400,
+    margin=dict(l=40, r=40, b=40, t=40)
+)
+fig.show()
+```
+
+::: {.notes}
+This interactive plot demonstrates vector subtraction.
+Notice how $\mathbf{w} - \mathbf{v}$ connects the *terminal point* of $\mathbf{v}$ to the *terminal point* of $\mathbf{w}$ when both vectors originate from the same initial point.
+This is a direct visual representation of the difference between two position vectors.
+:::
+
+---
+
+## Scalar Multiplication
+Scalars change the length and/or reverse the direction of a vector.
+
+-   If $k > 0$, $k\mathbf{v}$ has the same direction as $\mathbf{v}$ and length $|k|$ times $\mathbf{v}$.
+-   If $k < 0$, $k\mathbf{v}$ has the opposite direction of $\mathbf{v}$ and length $|k|$ times $\mathbf{v}$.
+-   If $k = 0$ or $\mathbf{v} = \mathbf{0}$, then $k\mathbf{v} = \mathbf{0}$.
+
+From this, we see:
+$$
+(-1)\mathbf{v} = -\mathbf{v} \tag{3}
+$$
+
+![Figure 3.1.7: Scalar multiples of a vector $\mathbf{v}$.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/6200b7996a0952ae6a10cae4d12effa68c8436c0089e815d5be3ccbb4552eb6d.jpg)
+
+::: {.notes}
+Scalar multiplication is how we scale vectors.
+In ECE, scaling a voltage vector by a gain factor, or scaling a force vector, are common applications.
+The magnitude of the scalar $k$ stretches or shrinks the vector, while its sign determines the direction.
+:::
+
+---
+
+## Interactive Scalar Multiplication (2D)
+Adjust the scalar $k$ and vector $\mathbf{v}$ to see the result $k\mathbf{v}$.
+
+```{ojs}
+viewof k_scalar = Inputs.range([-2, 2], {step: 0.1, label: "k"});
+viewof sv_x = Inputs.range([-3, 3], {step: 0.1, label: "v_x"});
+viewof sv_y = Inputs.range([-3, 3], {step: 0.1, label: "v_y"});
+```
+
+```{pyodide}
+#| echo: false
+#| input:
+#|   - k_scalar
+#|   - sv_x
+#|   - sv_y
+
+import plotly.graph_objects as go
+import numpy as np
+
+k_val = k_scalar
+v_vec = np.array([sv_x, sv_y])
+kv_vec = k_val * v_vec
+
+fig = go.Figure()
+
+# Add original vector v
+fig.add_trace(go.Scatter(x=[0, v_vec[0]], y=[0, v_vec[1]], mode='lines+markers', name='v',
+                         line=dict(color='blue', width=2), marker=dict(symbol='arrow', size=10, angleref='previous')))
+
+# Add scaled vector kv
+fig.add_trace(go.Scatter(x=[0, kv_vec[0]], y=[0, kv_vec[1]], mode='lines+markers', name='kv',
+                         line=dict(color='red', width=3, dash='dash'), marker=dict(symbol='arrow', size=10, angleref='previous')))
+
+# Set plot limits
+max_val = max(abs(sv_x), abs(sv_y), abs(kv_vec[0]), abs(kv_vec[1]))
+range_val = max(5, max_val * 1.2)
+
+fig.update_layout(
+    xaxis=dict(range=[-range_val, range_val], zeroline=True, zerolinecolor='lightgray', showgrid=True, gridcolor='lightgray'),
+    yaxis=dict(range=[-range_val, range_val], zeroline=True, zerolinecolor='lightgray', showgrid=True, gridcolor='lightgray', scaleanchor="x", scaleratio=1),
+    title=f'Scalar Multiplication: k={k_val:.1f} * v',
+    hovermode='closest',
+    height=400,
+    margin=dict(l=40, r=40, b=40, t=40)
+)
+fig.show()
+```
+
+::: {.notes}
+Here, you can experiment with scalar multiplication.
+Change `k` and observe how the vector `kv` scales and potentially reverses direction.
+What happens when `k` is 0? What about `k=1` or `k=-1`?
+This interactive element helps solidify the geometric interpretation of scalar multiplication.
+:::
+
+---
+
+## Parallel and Collinear Vectors
+If one vector is a scalar multiple of another ($\mathbf{w} = k\mathbf{v}$), they are **parallel**.
+
+-   If they share a common initial point, they are also **collinear**.
+-   Translating a vector does not change it, so parallel and collinear mean the same thing for vectors.
+-   The zero vector $\mathbf{0}$ is regarded as parallel to all vectors.
+
+![Figure 3.1.8: Parallel and collinear vectors.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/e716df4586c9b95d6c737a67acd43e7b4d66ad1cb1629ee0f780606c91d47874.jpg)
+
+::: {.notes}
+The distinction between parallel and collinear can be confusing in everyday language.
+In linear algebra, when we say vectors are parallel, we mean they point in the same or opposite directions, regardless of their starting points.
+Collinear implies they lie on the same line. Since vectors can be moved, these terms become interchangeable.
+:::
+
+---
+
+## Sums of Three or More Vectors
+
+Vector addition is **associative**:
+$$
+\mathbf{u} + (\mathbf{v} + \mathbf{w}) = (\mathbf{u} + \mathbf{v}) + \mathbf{w}
+$$
+This means the order of grouping doesn't matter.
+
+**Tip-to-Tail Method:**
+Place vectors sequentially (tip-to-tail). The sum is from the initial point of the first to the terminal point of the last.
+
+![Figure 3.1.9a: Sum of three vectors (tip-to-tail).](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/77be23315a5e88a53cf3a2b895f61ca04629146c300a62c81358ebce73611f26.jpg)
+
+::: {.notes}
+The associative property simplifies multi-vector additions.
+The tip-to-tail method is a powerful visualization for any number of vectors.
+Think of navigating a robot: each vector is a movement command. The total displacement is the sum.
+The image on the right (3.1.9c) also shows the sum of three vectors as the main diagonal of a parallelepiped, extending the parallelogram rule to 3D.
+:::
+
+---
+
+## Vectors in Coordinate Systems
+Computations are simpler with coordinate systems.
+
+-   If a vector $\mathbf{v}$ has its initial point at the origin, its **components** are the coordinates of its terminal point.
+    -   2-space: $\mathbf{v} = (v_1, v_2)$
+    -   3-space: $\mathbf{v} = (v_1, v_2, v_3)$
+
+-   The zero vector: $\mathbf{0} = (0,0)$ in 2-space, $\mathbf{0} = (0,0,0)$ in 3-space.
+
+![Figure 3.1.10: Vectors in coordinate systems.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/2eb36f8549f1610f6664aac666e7df8191771dbe855d3240086b5bcf64092704.jpg)
+
+::: {.notes}
+Moving from geometric intuition to coordinate systems is where linear algebra becomes computational.
+This allows us to perform operations numerically, which is essential for ECE applications like signal processing or control systems.
+The components essentially give us a unique "address" for each vector.
+:::
+
+---
+
+## Equivalent Vectors in Coordinates
+Two vectors are equivalent if and only if their corresponding components are equal.
+
+For $\mathbf{v} = (v_1, v_2, v_3)$ and $\mathbf{w} = (w_1, w_2, w_3)$ in 3-space:
+$$
+\mathbf{v} = \mathbf{w} \quad \text{if and only if} \quad v_1 = w_1, \quad v_2 = w_2, \quad v_3 = w_3
+$$
+
+::: {.callout-note}
+**Point vs. Vector:**
+An ordered pair $(v_1, v_2)$ can represent a **point** (a location) or a **vector** (a displacement from the origin). The context determines the interpretation.
+:::
+
+![Figure 3.1.11: The ordered pair $(v_1, v_2)$ can represent a point or a vector.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/73d0459921096a8c8bed00d3050a6518afb974d70272f888153c64e1a8484026.jpg)
+
+::: {.notes}
+This definition of equivalence is crucial for algebraic manipulation.
+It means we can compare vectors component by component.
+The callout highlights a common source of confusion: the dual interpretation of coordinates. In ECE, sometimes we care about the specific coordinates of a sensor, and sometimes about the vector representing its measurement.
+:::
+
+---
+
+## Vectors Not at the Origin
+If a vector's initial point is not the origin, its components are found by subtracting the initial point's coordinates from the terminal point's.
+
+-   For $\overrightarrow{P_1P_2}$ with $P_1(x_1,y_1)$ and $P_2(x_2,y_2)$:
+    $$
+    \overrightarrow{P_1P_2} = (x_2 - x_1, y_2 - y_1) \tag{4}
+    $$
+-   For $\overrightarrow{P_1P_2}$ with $P_1(x_1,y_1,z_1)$ and $P_2(x_2,y_2,z_2)$:
+    $$
+    \overrightarrow{P_1P_2} = (x_2 - x_1, y_2 - y_1, z_2 - z_1) \tag{5}
+    $$
+
+![Figure 3.1.12: Vector $\overrightarrow{P_1P_2}$ as difference of position vectors.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/f0fef5d6581e80bbb037d6ac1654829585f4e3fc526cf20a2e0eac43e5faf86d.jpg)
+
+::: {.notes}
+This formula effectively translates any vector so its tail is at the origin, allowing us to represent it by its terminal point's coordinates.
+This is a standard way to represent displacement vectors in engineering.
+For example, the relative position of two components on a circuit board can be described this way.
+:::
+
+---
+
+## EXAMPLE 1: Finding the Components of a Vector
+Find the components of the vector $\mathbf{v} = \overrightarrow{P_1P_2}$ with:
+Initial point $P_1(2, -1, 4)$
+Terminal point $P_2(7, 5, -8)$
+
+$$
+\mathbf{v} = (7 - 2, 5 - (-1), (-8) - 4) = (5, 6, -12)
+$$
+
+### Interactive Component Calculator
+Enter coordinates to find vector components.
+
+```pyodide
+#| max-lines: 10
+
+# Define the points
+P1_x = 2
+P1_y = -1
+P1_z = 4
+
+P2_x = 7
+P2_y = 5
+P2_z = -8
+
+# Calculate components
+v_x = P2_x - P1_x
+v_y = P2_y - P1_y
+v_z = P2_z - P1_z
+
+print(f"Initial Point P1: ({P1_x}, {P1_y}, {P1_z})")
+print(f"Terminal Point P2: ({P2_x}, {P2_y}, {P2_z})")
+print(f"Vector components v = (P2 - P1): ({v_x}, {v_y}, {v_z})")
+
+# You can modify these values and re-run:
+# P1_x = 1; P1_y = 2; P1_z = 3
+# P2_x = 4; P2_y = 5; P2_z = 6
+# (Re-calculate and print as above)
+```
+
+::: {.notes}
+This example shows a direct application of the formula.
+The interactive calculator allows students to practice this skill with different coordinate sets.
+It's a straightforward but fundamental calculation.
+:::
+
+---
+
+## $n$-Space: Generalizing Dimensions
+What if we need more than three dimensions?
+
+-   **Ordered $n$-tuple:** A sequence of $n$ real numbers $(v_1, v_2, \ldots, v_n)$.
+-   **$n$-Space ($R^n$):** The set of all ordered $n$-tuples.
+
+::: {.callout-tip}
+**Think of $n$-tuples as:**
+-   Coordinates of a generalized point.
+-   Components of a generalized vector.
+The choice depends on the problem context.
+:::
+
+::: {.notes}
+This is where linear algebra truly generalizes beyond our visual intuition.
+While we can't *see* 4D or 11D space, the algebraic rules extend perfectly.
+This abstraction is powerful for modeling complex systems in ECE.
+For example, in signal processing, a signal sampled at $N$ points can be represented as a vector in $R^N$.
+:::
+
+---
+
+## Applications of $n$-tuples in ECE and Beyond
+
+:::: {.columns}
+::: {.column width="50%"}
+-   **Experimental Data:** $n$ measurements form a vector $\mathbf{y} = (y_1, \ldots, y_n)$ in $R^n$.
+    -   *Example:* Sensor readings from an array.
+-   **Storage/Warehousing:** Distribution of items across $n$ locations: $\mathbf{x} = (x_1, \ldots, x_n)$.
+    -   *Example:* Inventory levels in a distributed system.
+-   **Electrical Circuits:** Input/output voltages for a chip.
+    -   Input $\mathbf{v} \in R^4$, Output $\mathbf{w} \in R^3$. Chip maps $R^4 \to R^3$.
+:::
+::: {.column width="50%"}
+-   **Graphical Images:** Pixel data (x, y, hue, saturation, brightness) as a 5-tuple.
+    -   $\mathbf{v} = (x, y, h, s, b)$.
+-   **Economics:** Economic output of $n$ sectors as $\mathbf{s} = (s_1, \ldots, s_n)$.
+-   **Mechanical Systems:** State of particles (position, velocity, time).
+    -   $\mathbf{v} = (x_1, \ldots, x_6, v_1, \ldots, v_6, t)$ in $R^{13}$.
+:::
+::::
+
+::: {.notes}
+These examples illustrate the wide applicability of $n$-space.
+In ECE, think of state-space representations in control systems, feature vectors in machine learning, or even the parameters of a complex circuit model.
+The ability to represent diverse information as vectors in $R^n$ is a cornerstone of modern engineering analysis.
+:::
+
+---
+
+## Vector Equivalence in $R^n$
+Vectors $\mathbf{v} = (v_1, \ldots, v_n)$ and $\mathbf{w} = (w_1, \ldots, w_n)$ in $R^n$ are **equivalent** (equal) if:
+
+$$
+v_1 = w_1, \quad v_2 = w_2, \quad \ldots, \quad v_n = w_n
+$$
+We write this as $\mathbf{v} = \mathbf{w}$.
+
+### EXAMPLE 2: Equality of Vectors
+$$
+(a, b, c, d) = (1, -4, 2, 7)
+$$
+if and only if $a = 1, b = -4, c = 2,$ and $d = 7$.
+
+::: {.notes}
+This definition of equality is a direct extension from 2D and 3D.
+It means that for two vectors to be considered the same, every single one of their corresponding components must match.
+This is fundamental for solving vector equations and verifying identities.
+:::
+
+---
+
+## Algebraic Operations in $R^n$ (Component-wise)
+Operations on vectors in $R^n$ are natural extensions of those in $R^2$ and $R^3$.
+
+For $\mathbf{v} = (v_1, v_2)$ and $\mathbf{w} = (w_1, w_2)$ in $R^2$:
+$$
+\begin{array}{l}
+\mathbf{v} + \mathbf{w} = (v_1 + w_1, v_2 + w_2) \\
+k\mathbf{v} = (k v_1, k v_2)
+\end{array} \tag{7}
+$$
+And similarly for subtraction and negative vectors:
+$$
+-\mathbf{v} = (-v_1, -v_2) \tag{8}
+$$
+$$
+\mathbf{w} - \mathbf{v} = (w_1 - v_1, w_2 - v_2) \tag{9}
+$$
+
+![Figure 3.1.13: Geometric interpretation of component-wise operations.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/1e77e9ef800c9f94449c6576160248bfaed5b2c539e1b335e680a03582f3ea04.jpg)
+
+::: {.notes}
+The beauty of coordinate systems is that vector operations become simple arithmetic on their components.
+This 'component-wise' approach is the workhorse of computational linear algebra.
+This slide shows how these operations are defined for 2D vectors, setting the stage for $n$-space.
+:::
+
+---
+
+## Formal Definitions of Operations in $R^n$
+If $\mathbf{v} = (v_1, \ldots, v_n)$ and $\mathbf{w} = (w_1, \ldots, w_n)$ are vectors in $R^n$, and $k$ is a scalar:
+
+$$
+\begin{array}{r l}
+\mathbf{v} + \mathbf{w} &= (v_1 + w_1, v_2 + w_2, \ldots, v_n + w_n)\\
+k\mathbf{v} &= (k v_1, k v_2, \ldots, k v_n)\\
+-\mathbf{v} &= (-v_1, -v_2, \ldots, -v_n)\\
+\mathbf{w} - \mathbf{v} &= (w_1 - v_1, w_2 - v_2, \ldots, w_n - v_n)
+\end{array} \tag{13}
+$$
+
+### EXAMPLE 3: Algebraic Operations Using Components
+If $\mathbf{v} = (1, -3, 2)$ and $\mathbf{w} = (4, 2, 1)$, then:
+$$
+\begin{array}{r l}
+\mathbf{v} + \mathbf{w} &= (5, -1, 3) \\
+2\mathbf{v} &= (2, -6, 4) \\
+-\mathbf{w} &= (-4, -2, -1) \\
+\mathbf{v} - \mathbf{w} &= (-3, -5, 1)
+\end{array}
+$$
+
+::: {.notes}
+These are the formal definitions for $n$-space.
+It's crucial to understand that all these operations are performed element-by-element on the vector components.
+The example illustrates these calculations with specific 3D vectors.
+:::
+
+---
+
+## Interactive Vector Operations in $R^3$
+Perform vector addition, subtraction, and scalar multiplication.
+
+```pyodide
+#| max-lines: 10
+
+import numpy as np
+
+# Define vectors
+v = np.array([1, -3, 2])
+w = np.array([4, 2, 1])
+k = 2  # Scalar for multiplication
+
+print(f"Vector v: {v}")
+print(f"Vector w: {w}")
+print(f"Scalar k: {k}\n")
+
+# Addition
+v_plus_w = v + w
+print(f"v + w = {v_plus_w}")
+
+# Scalar Multiplication
+k_times_v = k * v
+print(f"k * v = {k_times_v}")
+
+# Negative of w
+neg_w = -w
+print(f"-w = {neg_w}")
+
+# Subtraction
+v_minus_w = v - w
+print(f"v - w = {v_minus_w}")
+
+# Try changing v, w, or k and re-running!
+# v = np.array([0, 1, 0])
+# w = np.array([1, 0, 0])
+# k = 5
+```
+
+::: {.notes}
+This Pyodide block lets you directly compute vector operations using NumPy.
+NumPy is a standard library in Python for numerical computing and handles vector/matrix operations very efficiently.
+You can modify the vectors `v`, `w`, and the scalar `k` in the code block and re-run to see different results.
+This is how these operations are typically performed in engineering software.
+:::
+
+---
+
+## Properties of Vector Operations (Theorem 3.1.1)
+If $\mathbf{u},\mathbf{v},$ and $\mathbf{w}$ are vectors in $R^n$, and $k$ and $m$ are scalars:
+
+(a) $\mathbf{u} + \mathbf{v} = \mathbf{v} + \mathbf{u}$ (Commutative Law for Addition)
+(b) $(\mathbf{u} + \mathbf{v}) + \mathbf{w} = \mathbf{u} + (\mathbf{v} + \mathbf{w})$ (Associative Law for Addition)
+(c) $\mathbf{u} + \mathbf{0} = \mathbf{0} + \mathbf{u} = \mathbf{u}$ (Additive Identity)
+(d) $\mathbf{u} + (-\mathbf{u}) = \mathbf{0}$ (Additive Inverse)
+(e) $k(\mathbf{u} + \mathbf{v}) = k\mathbf{u} + k\mathbf{v}$ (Distributive Law)
+(f) $(k + m)\mathbf{u} = k\mathbf{u} + m\mathbf{u}$ (Distributive Law)
+(g) $k(m\mathbf{u}) = (km)\mathbf{u}$ (Associative Law for Scalar Multiplication)
+(h) $1\mathbf{u} = \mathbf{u}$ (Multiplicative Identity)
+
+::: {.notes}
+These properties are fundamental axioms that define a vector space.
+They are essential for manipulating vector equations and proving more complex theorems.
+They are direct extensions of properties you know from real number arithmetic.
+:::
+
+---
+
+## Proof of Associative Law (b)
+Let $\mathbf{u} = (u_1, \ldots, u_n)$, $\mathbf{v} = (v_1, \ldots, v_n)$, $\mathbf{w} = (w_1, \ldots, w_n)$.
+
+$$
+\begin{array}{r l}
+(\mathbf{u} + \mathbf{v}) + \mathbf{w} &= \big((u_1,\ldots,u_n) + (v_1,\ldots,v_n)\big) + (w_1,\ldots,w_n)\\
+&= (u_1 + v_1, \ldots, u_n + v_n) + (w_1,\ldots,w_n) & \text{[Vector addition]} \\
+&= \big((u_1 + v_1) + w_1, \ldots, (u_n + v_n) + w_n\big) & \text{[Vector addition]} \\
+&= \big(u_1 + (v_1 + w_1), \ldots, u_n + (v_n + w_n)\big) & \text{[Regroup real numbers]} \\
+&= (u_1,\ldots,u_n) + (v_1 + w_1, \ldots, v_n + w_n) & \text{[Vector addition]} \\
+&= \mathbf{u} + (\mathbf{v} + \mathbf{w})
+\end{array}
+$$
+
+::: {.notes}
+This proof demonstrates how vector properties are derived directly from the properties of real numbers applied to their components.
+The key step is "Regroup real numbers," where the associative property of scalar addition is used.
+This shows the consistency of our definitions.
+:::
+
+---
+
+## Additional Vector Properties (Theorem 3.1.2)
+If $\mathbf{v}$ is a vector in $R^n$ and $k$ is a scalar:
+
+(a) $0\mathbf{v} = \mathbf{0}$
+(b) $k\mathbf{0} = \mathbf{0}$
+(c) $(-1)\mathbf{v} = -\mathbf{v}$
+
+::: {.notes}
+These properties are also straightforward to prove using component-wise operations.
+They highlight the behavior of the zero scalar and the zero vector, and reinforce the definition of the negative of a vector.
+:::
+
+---
+
+## Calculating Without Components
+These theorems allow algebraic manipulation of vector equations without explicit component calculations.
+
+**Example:** Solve $\mathbf{x} + \mathbf{a} = \mathbf{b}$ for $\mathbf{x}$.
+
+$$
+\begin{array}{r l r l}
+\mathbf{x} + \mathbf{a} &= \mathbf{b} & & \mathrm{[Given]}\\
+(\mathbf{x} + \mathbf{a}) + (-\mathbf{a}) &= \mathbf{b} + (-\mathbf{a}) & & \mathrm{[Add~negative~of~a~to~both~sides]}\\
+\mathbf{x} + (\mathbf{a} + (-\mathbf{a})) &= \mathbf{b} - \mathbf{a} & & \mathrm{[Part~}(b)\mathrm{~of~Thm~}3.1.1]\\
+\mathbf{x} + \mathbf{0} &= \mathbf{b} - \mathbf{a} & & \mathrm{[Part~}(d)\mathrm{~of~Thm~}3.1.1]\\
+\mathbf{x} &= \mathbf{b} - \mathbf{a} & & \mathrm{[Part~}(c)\mathrm{~of~Thm~}3.1.1]
+\end{array}
+$$
+
+::: {.notes}
+While it seems more cumbersome for $R^n$, this abstract method is crucial when dealing with more general vector spaces where components might not be as straightforward (e.g., function spaces).
+It shows that the algebraic structure of vector operations is consistent and powerful.
+:::
+
+---
+
+## Linear Combinations
+A vector $\mathbf{w}$ in $R^n$ is a **linear combination** of vectors $\mathbf{v}_1, \ldots, \mathbf{v}_r$ in $R^n$ if it can be expressed as:
+
+$$
+\mathbf{w} = k_1\mathbf{v}_1 + k_2\mathbf{v}_2 + \dots + k_r\mathbf{v}_r \tag{14}
+$$
+where $k_1, \ldots, k_r$ are scalars (coefficients).
+
+**Example:** If $\mathbf{v}_1, \mathbf{v}_2, \mathbf{v}_3$ are vectors:
+$\mathbf{u} = 2\mathbf{v}_1 + 3\mathbf{v}_2 + \mathbf{v}_3$
+$\mathbf{w} = 7\mathbf{v}_1 - 6\mathbf{v}_2 + 8\mathbf{v}_3$
+
+::: {.callout-important}
+Linear combinations are central to many concepts in linear algebra, including span, basis, and transformations.
+:::
+
+::: {.notes}
+Linear combinations are one of the most important concepts in linear algebra.
+They allow us to build new vectors from existing ones.
+In ECE, think of superposition in circuits, where the total response is a linear combination of responses to individual inputs.
+:::
+
+---
+
+## Interactive Linear Combination
+Calculate a linear combination of two 2D vectors.
+
+```{ojs}
+viewof lc_k1 = Inputs.range([-2, 2], {step: 0.1, label: "k1"});
+viewof lc_k2 = Inputs.range([-2, 2], {step: 0.1, label: "k2"});
+viewof lc_v1x = Inputs.range([-3, 3], {step: 0.1, label: "v1_x"});
+viewof lc_v1y = Inputs.range([-3, 3], {step: 0.1, label: "v1_y"});
+viewof lc_v2x = Inputs.range([-3, 3], {step: 0.1, label: "v2_x"});
+viewof lc_v2y = Inputs.range([-3, 3], {step: 0.1, label: "v2_y"});
+```
+
+```{pyodide}
+#| echo: false
+#| input:
+#|   - lc_k1
+#|   - lc_k2
+#|   - lc_v1x
+#|   - lc_v1y
+#|   - lc_v2x
+#|   - lc_v2y
+
+import plotly.graph_objects as go
+import numpy as np
+
+k1 = lc_k1
+k2 = lc_k2
+v1 = np.array([lc_v1x, lc_v1y])
+v2 = np.array([lc_v2x, lc_v2y])
+
+result_vec = k1 * v1 + k2 * v2
+
+fig = go.Figure()
+
+# Add v1
+fig.add_trace(go.Scatter(x=[0, v1[0]], y=[0, v1[1]], mode='lines+markers', name='v1',
+                         line=dict(color='blue', width=2), marker=dict(symbol='arrow', size=10, angleref='previous')))
+# Add v2
+fig.add_trace(go.Scatter(x=[0, v2[0]], y=[0, v2[1]], mode='lines+markers', name='v2',
+                         line=dict(color='green', width=2), marker=dict(symbol='arrow', size=10, angleref='previous')))
+
+# Add k1*v1 (intermediate)
+fig.add_trace(go.Scatter(x=[0, k1*v1[0]], y=[0, k1*v1[1]], mode='lines', name='k1*v1',
+                         line=dict(color='lightblue', width=1, dash='dot'), showlegend=False))
+# Add k2*v2 (intermediate)
+fig.add_trace(go.Scatter(x=[0, k2*v2[0]], y=[0, k2*v2[1]], mode='lines', name='k2*v2',
+                         line=dict(color='lightgreen', width=1, dash='dot'), showlegend=False))
+
+# Add result vector
+fig.add_trace(go.Scatter(x=[0, result_vec[0]], y=[0, result_vec[1]], mode='lines+markers', name='k1*v1 + k2*v2',
+                         line=dict(color='red', width=3, dash='dash'), marker=dict(symbol='arrow', size=10, angleref='previous')))
+
+# Set plot limits
+max_val = max(abs(v1[0]), abs(v1[1]), abs(v2[0]), abs(v2[1]), abs(k1*v1[0]), abs(k1*v1[1]), abs(k2*v2[0]), abs(k2*v2[1]), abs(result_vec[0]), abs(result_vec[1]))
+range_val = max(5, max_val * 1.2)
+
+fig.update_layout(
+    xaxis=dict(range=[-range_val, range_val], zeroline=True, zerolinecolor='lightgray', showgrid=True, gridcolor='lightgray'),
+    yaxis=dict(range=[-range_val, range_val], zeroline=True, zerolinecolor='lightgray', showgrid=True, gridcolor='lightgray', scaleanchor="x", scaleratio=1),
+    title='Linear Combination: k1*v1 + k2*v2',
+    hovermode='closest',
+    height=400,
+    margin=dict(l=40, r=40, b=40, t=40)
+)
+fig.show()
+```
+
+::: {.notes}
+This interactive visualization demonstrates how a linear combination of two vectors creates a new vector.
+By adjusting the scalars `k1`, `k2` and the vectors `v1`, `v2`, you can explore how the resultant vector `k1*v1 + k2*v2` changes.
+Notice that the resultant vector always lies within the plane defined by `v1` and `v2` (if they are not collinear).
+:::
+
+---
+
+## Alternative Notations for Vectors
+Vectors can be written in several forms, depending on context and convenience.
+
+1.  **Comma-delimited form:**
+    $$
+    \mathbf{v} = (v_1, v_2, \ldots, v_n) \tag{15}
+    $$
+2.  **Row-vector form:**
+    $$
+    \mathbf{v} = [v_1 \quad v_2 \quad \dots \quad v_n] \tag{16}
+    $$
+3.  **Column-vector form:**
+    $$
+    \mathbf{v} = \left[ \begin{array}{c}v_1 \\ v_2 \\ \vdots \\ v_n \end{array} \right] \tag{17}
+    $$
+
+::: {.notes}
+While the comma-delimited form is common for general vector concepts, row and column vector forms are frequently used when vectors interact with matrices, like in matrix multiplication.
+In MATLAB or NumPy, column vectors are often preferred for certain linear algebra operations.
+It's important to be comfortable with all notations.
+:::
+
+---
+
+## Application: RGB Color Models
+RGB color model: colors on computer monitors are created by adding percentages of Red (R), Green (G), and Blue (B).
+
+-   Primary colors as vectors in $R^3$:
+    -   $\mathbf{r} = (1,0,0)$ (pure red)
+    -   $\mathbf{g} = (0,1,0)$ (pure green)
+    -   $\mathbf{b} = (0,0,1)$ (pure blue)
+
+-   Any color $\mathbf{c}$ in the RGB color cube is a linear combination:
+    $$
+    \begin{array}{rl}
+    \mathbf{c} &= k_1\mathbf{r} + k_2\mathbf{g} + k_3\mathbf{b}\\
+    &= k_1(1,0,0) + k_2(0,1,0) + k_3(0,0,1)\\
+    &= (k_1,k_2,k_3)
+    \end{array}
+    $$
+    where $0 \leq k_i \leq 1$.
+
+![Figure 3.1.14: RGB Color Cube.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/698f27a1f4e006d567ec0df70a174a807d0d618af2065798016e92afdfcd2600.jpg)
+
+::: {.notes}
+The RGB color model is a perfect real-world application of linear combinations and vectors in $R^3$.
+Each color is a point (or vector) in a 3D space, where the axes represent red, green, and blue intensity.
+This is directly relevant to ECE students working with displays, image processing, or digital media.
+:::
+
+---
+
+## Interactive RGB Color Mixer
+Adjust the Red, Green, and Blue components ($k_1, k_2, k_3$) to mix colors.
+
+```{ojs}
+viewof red_comp = Inputs.range([0, 1], {step: 0.01, label: "Red (k1)"});
+viewof green_comp = Inputs.range([0, 1], {step: 0.01, label: "Green (k2)"});
+viewof blue_comp = Inputs.range([0, 1], {step: 0.01, label: "Blue (k3)"});
+```
+
+```{pyodide}
+#| echo: false
+#| input:
+#|   - red_comp
+#|   - green_comp
+#|   - blue_comp
+
+import plotly.graph_objects as go
+import numpy as np
+
+k1 = red_comp
+k2 = green_comp
+k3 = blue_comp
+
+# Define primary colors as vectors
+r_vec = np.array([1, 0, 0])
+g_vec = np.array([0, 1, 0])
+b_vec = np.array([0, 0, 1])
+
+# Calculate the resulting color vector
+color_vec = k1 * r_vec + k2 * g_vec + k3 * b_vec
+
+# Create a hex color string for display
+hex_color = '#%02x%02x%02x' % (int(color_vec[0]*255), int(color_vec[1]*255), int(color_vec[2]*255))
+
+# Create a 3D scatter plot for the color cube
+fig = go.Figure()
+
+# Plot the primary colors
+fig.add_trace(go.Scatter3d(x=[1], y=[0], z=[0], mode='markers', name='Red', marker=dict(size=10, color='red')))
+fig.add_trace(go.Scatter3d(x=[0], y=[1], z=[0], mode='markers', name='Green', marker=dict(size=10, color='green')))
+fig.add_trace(go.Scatter3d(x=[0], y=[0], z=[1], mode='markers', name='Blue', marker=dict(size=10, color='blue')))
+fig.add_trace(go.Scatter3d(x=[0], y=[0], z=[0], mode='markers', name='Black', marker=dict(size=10, color='black')))
+fig.add_trace(go.Scatter3d(x=[1], y=[1], z=[0], mode='markers', name='Yellow', marker=dict(size=10, color='yellow')))
+fig.add_trace(go.Scatter3d(x=[1], y=[0], z=[1], mode='markers', name='Magenta', marker=dict(size=10, color='magenta')))
+fig.add_trace(go.Scatter3d(x=[0], y=[1], z=[1], mode='markers', name='Cyan', marker=dict(size=10, color='cyan')))
+fig.add_trace(go.Scatter3d(x=[1], y=[1], z=[1], mode='markers', name='White', marker=dict(size=10, color='white', line=dict(color='black', width=1))))
+
+# Plot the current mixed color
+fig.add_trace(go.Scatter3d(x=[color_vec[0]], y=[color_vec[1]], z=[color_vec[2]], mode='markers', name='Mixed Color',
+                         marker=dict(size=15, color=hex_color, symbol='diamond', line=dict(color='black', width=2))))
+
+fig.update_layout(
+    scene=dict(
+        xaxis_title='Red',
+        yaxis_title='Green',
+        zaxis_title='Blue',
+        xaxis=dict(range=[0,1], autorange=False),
+        yaxis=dict(range=[0,1], autorange=False),
+        zaxis=dict(range=[0,1], autorange=False),
+    ),
+    title=f'RGB Color Mixer: Current Color {hex_color.upper()}',
+    height=500,
+    margin=dict(l=0, r=0, b=0, t=40)
+)
+fig.show()
+
+print(f"Current Color Vector: ({color_vec[0]:.2f}, {color_vec[1]:.2f}, {color_vec[2]:.2f})")
+print(f"Hex Code: {hex_color.upper()}")
+```
+
+::: {.notes}
+This is a highly interactive demonstration of linear combinations in a practical ECE context.
+Adjust the `Red`, `Green`, and `Blue` sliders.
+Observe how the "Mixed Color" point moves within the RGB color cube and how its color changes.
+You can create a wide spectrum of colors by varying these three components.
+This directly shows how any color within the cube is a linear combination of the primary basis vectors.
+:::
+
+---
+
+## Summary and Key Takeaways
+-   **Geometric Vectors:** Visualized as arrows, defined by magnitude and direction.
+-   **Vector Operations:** Addition, subtraction, and scalar multiplication have clear geometric and algebraic interpretations.
+-   **Coordinate Systems:** Allow for algebraic manipulation of vectors via components.
+-   **$n$-Space:** Generalizes vector concepts to higher dimensions, crucial for complex data.
+-   **Linear Combinations:** Fundamental for building new vectors and understanding vector relationships.
+-   **Real-world Applications:** Vectors are ubiquitous in ECE, from signal processing to computer graphics.
+
+::: {.callout-tip}
+**Next Steps:**
+Practice vector operations in component form.
+Think about how vectors represent physical quantities in your ECE courses.
+:::
+
+::: {.notes}
+We've covered the foundational concepts of vectors, moving from intuitive geometric representations to formal algebraic definitions in $n$-space.
+Understanding these basics is essential for the rest of your linear algebra journey.
+Remember, linear algebra is the language of modern engineering and data science.
+Feel free to ask any questions!
+:::

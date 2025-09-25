@@ -1,0 +1,931 @@
+---
+title: "Linear Algebra"
+subtitle: "3.2 Norm, Dot Product, and Distance in Rⁿ"
+author: "Imron Rosyadi"
+format:
+  live-revealjs:
+    logo: "qrjs_assets/unsoed_logo.png"
+    footer: "[irosyadi-2025](https://imron-slide.vercel.app)"
+    slide-number: true
+    chalkboard: true
+    scrollable: true
+    controls: true
+    progress: true
+    preview-links: false
+    transition: fade
+    incremental: false
+    smaller: false
+    theme: [default, qrjs_assets/ir_style.scss]
+    mermaid:
+        theme: neutral
+pyodide:
+  packages:
+    - numpy
+    - plotly
+    - nbformat
+---
+
+# Linear Algebra for ECE
+**Norm, Dot Product, and Distance**
+
+---
+
+## Introduction
+In this section, we explore concepts of **length** and **distance** as they apply to vectors.
+We'll start with familiar 2D and 3D spaces, then generalize these ideas algebraically to $R^n$.
+
+::: {.notes}
+Connecting geometric intuition from 2D and 3D with the abstract world of $n$-space is a key theme in linear algebra.
+These concepts are fundamental for understanding vector spaces, optimization, and many signal processing techniques in ECE.
+For example, signal power relates to vector norm, and signal similarity relates to the dot product.
+:::
+
+---
+
+## Norm of a Vector
+The length of a vector $\mathbf{v}$ is called its **norm**, denoted by $\| \mathbf{v}\|$.
+It's also referred to as the length or magnitude of $\mathbf{v}$.
+
+**In $R^2$ (Pythagorean Theorem):**
+For $\mathbf{v} = (v_1, v_2)$,
+$$
+\| \mathbf{v}\| = \sqrt{v_1^2 + v_2^2} \tag{1}
+$$
+
+**In $R^3$ (Pythagorean Theorem twice):**
+For $\mathbf{v} = (v_1, v_2, v_3)$,
+$$
+\| \mathbf{v}\| = \sqrt{v_1^2 + v_2^2 + v_3^2} \tag{2}
+$$
+
+---
+
+## Norm of a Vector
+
+![Figure 3.2.1: Geometric interpretation of vector norm in $R^2$ and $R^3$.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/5dab2f1d1856320a2d39792a6741cff491b61c0319c33833f06ad8bc3186baca.jpg)
+
+::: {.notes}
+The norm is essentially the distance from the origin to the vector's terminal point.
+It's a direct generalization of the Pythagorean theorem.
+In ECE, the norm of a signal vector can represent its energy or power.
+:::
+
+---
+
+## Norm in $R^n$ (Definition 1)
+For a vector $\mathbf{v} = (v_1, v_2, \ldots, v_n)$ in $R^n$, its norm is defined as:
+
+$$
+\| \mathbf{v}\| = \sqrt{v_1^2 + v_2^2 + \cdots + v_n^2} \tag{3}
+$$
+
+### EXAMPLE 1: Calculating Norms
+-   Norm of $\mathbf{v} = (-3, 2, 1)$ in $R^3$:
+    $$
+    \| \mathbf{v}\| = \sqrt{(-3)^2 + 2^2 + 1^2} = \sqrt{9 + 4 + 1} = \sqrt{14}
+    $$
+-   Norm of $\mathbf{v} = (2, -1, 3, -5)$ in $R^4$:
+    $$
+    \| \mathbf{v}\| = \sqrt{2^2 + (-1)^2 + 3^2 + (-5)^2} = \sqrt{4 + 1 + 9 + 25} = \sqrt{39}
+    $$
+
+::: {.notes}
+This definition extends the Pythagorean theorem to any number of dimensions.
+It's a scalar value, always non-negative.
+The examples show how straightforward the calculation is, even for higher dimensions.
+:::
+
+---
+
+## Interactive Norm Calculator
+Calculate the norm for a vector in $R^n$.
+Enter components as a comma-separated list.
+
+```{pyodide}
+#| max-lines: 10
+
+import numpy as np
+
+# Enter vector components here, e.g., "2, -1, 3, -5" or "1, 2, 3"
+vector_str = "2, -1, 3, -5" # Try changing this! e.g., "3, 4" or "1, 1, 1"
+
+try:
+    v_components = [float(x.strip()) for x in vector_str.split(',')]
+    v = np.array(v_components)
+    norm_v = np.linalg.norm(v)
+
+    print(f"Vector v: {tuple(v_components)}")
+    print(f"Number of dimensions (n): {len(v_components)}")
+    print(f"Norm of v (||v||): {norm_v:.4f}")
+    print(f"Squared norm (||v||^2): {norm_v**2:.4f}")
+except ValueError:
+    print("Invalid input. Please enter comma-separated numbers.")
+```
+
+::: {.notes}
+This interactive tool allows you to compute the norm for any vector in $R^n$.
+Just modify the `vector_str` variable in the code block and click run.
+This helps reinforce the calculation and shows how NumPy handles it efficiently.
+:::
+
+---
+
+## Properties of the Norm (Theorem 3.2.1)
+For a vector $\mathbf{v}$ in $R^n$ and any scalar $k$:
+
+(a) $\| \mathbf{v}\| \geq 0$  (Norm is non-negative)
+(b) $\| \mathbf{v}\| = 0$ if and only if $\mathbf{v} = \mathbf{0}$  (Only the zero vector has zero norm)
+(c) $\| k\mathbf{v}\| = |k| \| \mathbf{v}\|$  (Scaling a vector scales its norm by the absolute value of the scalar)
+
+**Proof (c):**
+If $\mathbf{v} = (v_1, \ldots, v_n)$, then $k\mathbf{v} = (kv_1, \ldots, kv_n)$.
+$$
+\begin{aligned}
+\| k\mathbf{v}\| &= \sqrt{(kv_1)^2 + (kv_2)^2 + \cdots + (kv_n)^2} \\
+&= \sqrt{k^2 v_1^2 + k^2 v_2^2 + \cdots + k^2 v_n^2} \\
+&= \sqrt{k^2(v_1^2 + v_2^2 + \cdots + v_n^2)} \\
+&= \sqrt{k^2} \sqrt{v_1^2 + v_2^2 + \cdots + v_n^2} \\
+&= |k| \| \mathbf{v}\|
+\end{aligned}
+$$
+
+::: {.notes}
+These properties are intuitive extensions of what we know about length.
+Property (c) is particularly important for understanding how scaling affects a vector's magnitude.
+It means that if you double a vector, its length doubles; if you negate a vector, its length remains the same.
+:::
+
+---
+
+## Unit Vectors
+A vector with a norm of 1 is called a **unit vector**.
+Unit vectors are useful for specifying direction without concern for length.
+
+To obtain a unit vector $\mathbf{u}$ that has the same direction as a nonzero vector $\mathbf{v}$, we **normalize** $\mathbf{v}$:
+$$
+\mathbf{u} = \frac{1}{\| \mathbf{v}\|} \mathbf{v} \tag{4}
+$$
+
+::: {.callout-warning}
+**Notation Alert:** You might also see this written as $\mathbf{u} = \frac{\mathbf{v}}{\| \mathbf{v}\|}$. This is just a compact way of writing the scalar multiplication, not actual vector division.
+:::
+
+We can confirm $\| \mathbf{u}\| = 1$ using Theorem 3.2.1(c):
+$$
+\| \mathbf{u}\| = \left\| \frac{1}{\| \mathbf{v}\|} \mathbf{v} \right\| = \left| \frac{1}{\| \mathbf{v}\|} \right| \| \mathbf{v}\| = \frac{1}{\| \mathbf{v}\|} \| \mathbf{v}\| = 1
+$$
+
+::: {.notes}
+Unit vectors are crucial in many ECE applications, such as defining directions for antennas, forces, or normalizing data to prevent features with larger magnitudes from dominating analyses.
+Normalizing a vector makes it a unit vector while preserving its direction.
+:::
+
+---
+
+## EXAMPLE 2: Normalizing a Vector
+Find the unit vector $\mathbf{u}$ that has the same direction as $\mathbf{v} = (2, 2, -1)$.
+
+**Solution:**
+First, find the norm of $\mathbf{v}$:
+$$
+\| \mathbf{v}\| = \sqrt{2^2 + 2^2 + (-1)^2} = \sqrt{4 + 4 + 1} = \sqrt{9} = 3
+$$
+Now, normalize $\mathbf{v}$:
+$$
+\mathbf{u} = \frac{1}{3} (2, 2, -1) = \left(\frac{2}{3}, \frac{2}{3}, -\frac{1}{3}\right)
+$$
+You can verify that $\| \mathbf{u}\| = \sqrt{(2/3)^2 + (2/3)^2 + (-1/3)^2} = \sqrt{4/9 + 4/9 + 1/9} = \sqrt{9/9} = 1$.
+
+::: {.notes}
+This example clearly shows the two steps: calculate the norm, then divide each component by the norm.
+The check confirms that the resulting vector indeed has a length of 1.
+:::
+
+---
+
+## Interactive Vector Normalization
+Enter a vector in $R^n$ and normalize it.
+
+```{pyodide}
+#| max-lines: 10
+
+import numpy as np
+
+# Enter vector components here, e.g., "2, 2, -1" or "5, 0, 12"
+vector_str_norm = "2, 2, -1" # Try changing this!
+
+try:
+    v_comp_norm = [float(x.strip()) for x in vector_str_norm.split(',')]
+    v_norm = np.array(v_comp_norm)
+
+    if np.linalg.norm(v_norm) == 0:
+        print("Cannot normalize the zero vector.")
+    else:
+        unit_v = v_norm / np.linalg.norm(v_norm)
+        print(f"Original Vector v: {tuple(v_comp_norm)}")
+        print(f"Norm of v (||v||): {np.linalg.norm(v_norm):.4f}")
+        print(f"Unit Vector u (normalized v): {tuple(unit_v.round(4))}")
+        print(f"Norm of u (||u||): {np.linalg.norm(unit_v):.4f}")
+except ValueError:
+    print("Invalid input. Please enter comma-separated numbers.")
+```
+
+::: {.notes}
+Use this code block to practice normalizing vectors.
+Input different vectors, including those with fractions or higher dimensions.
+Observe that the output `u` always has a norm of 1 (or very close due to floating-point precision).
+:::
+
+---
+
+## The Standard Unit Vectors
+These are unit vectors along the positive coordinate axes.
+
+**In $R^2$:**
+$\mathbf{i} = (1,0)$ and $\mathbf{j} = (0,1)$
+
+**In $R^3$:**
+$\mathbf{i} = (1,0,0)$, $\mathbf{j} = (0,1,0)$, and $\mathbf{k} = (0,0,1)$
+
+Any vector $\mathbf{v}$ can be expressed as a linear combination of these:
+
+-   **$R^2$:** $\mathbf{v} = (v_1, v_2) = v_1\mathbf{i} + v_2\mathbf{j}$ (Eq. 5)
+-   **$R^3$:** $\mathbf{v} = (v_1, v_2, v_3) = v_1\mathbf{i} + v_2\mathbf{j} + v_3\mathbf{k}$ (Eq. 6)
+
+::: {.notes}
+Standard unit vectors form a fundamental basis for $R^2$ and $R^3$.
+They are mutually orthogonal and have unit length.
+This representation is very common in physics and engineering for breaking down forces or fields into their orthogonal components.
+:::
+
+---
+
+## Standard Unit Vectors in $R^n$
+The concept extends to $R^n$:
+
+$$
+\mathbf{e}_1 = (1,0,0,\ldots,0), \quad \mathbf{e}_2 = (0,1,0,\ldots,0), \quad \ldots, \quad \mathbf{e}_n = (0,0,0,\ldots,1) \tag{7}
+$$
+Any vector $\mathbf{v} = (v_1, v_2, \ldots, v_n)$ in $R^n$ can be expressed as:
+$$
+\mathbf{v} = v_1\mathbf{e}_1 + v_2\mathbf{e}_2 + \dots + v_n\mathbf{e}_n \tag{8}
+$$
+
+### EXAMPLE 3: Linear Combinations of Standard Unit Vectors
+-   $(2, -3, 4) = 2\mathbf{i} - 3\mathbf{j} + 4\mathbf{k}$
+-   $(7, 3, -4, 5) = 7\mathbf{e}_1 + 3\mathbf{e}_2 - 4\mathbf{e}_3 + 5\mathbf{e}_4$
+
+::: {.notes}
+The standard unit vectors $\{\mathbf{e}_1, \ldots, \mathbf{e}_n\}$ form the **standard basis** for $R^n$.
+They are incredibly useful because they simplify many calculations and provide a clear way to represent any vector.
+In signal processing, these can represent basis functions or orthogonal components of a signal.
+:::
+
+---
+
+## Distance in $R^n$
+The distance between two points $P_1$ and $P_2$ is the length of the vector $\overrightarrow{P_1P_2}$.
+
+**In $R^2$:** For $P_1(x_1,y_1)$ and $P_2(x_2,y_2)$,
+$$
+d = \| \overrightarrow{P_1P_2}\| = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2} \tag{9}
+$$
+**In $R^3$:** For $P_1(x_1,y_1,z_1)$ and $P_2(x_2,y_2,z_2)$,
+$$
+d = \| \overrightarrow{P_1P_2}\| = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2 + (z_2 - z_1)^2} \tag{10}
+$$
+
+![Figure 3.2.3: Distance between two points in $R^2$.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/6af15deb36b7def7433c12f96effe7ca8dbea211215c38abac3dba753d880882.jpg)
+
+::: {.notes}
+The distance formula is a direct application of the norm of the difference vector between two points.
+This is a fundamental concept in geometry and has vast applications in ECE, such as calculating the distance between sensor readings, or the error between an actual and desired output.
+:::
+
+---
+
+## Distance in $R^n$ (Definition 2)
+For points $\mathbf{u} = (u_1, \ldots, u_n)$ and $\mathbf{v} = (v_1, \ldots, v_n)$ in $R^n$, the distance $d(\mathbf{u},\mathbf{v})$ is:
+
+$$
+d(\mathbf{u},\mathbf{v}) = \| \mathbf{u} - \mathbf{v}\| = \sqrt{(u_1 - v_1)^2 + (u_2 - v_2)^2 + \cdots + (u_n - v_n)^2} \tag{11}
+$$
+
+### EXAMPLE 4: Calculating Distance in $R^n$
+If $\mathbf{u} = (1, 3, -2, 7)$ and $\mathbf{v} = (0, 7, 2, 2)$, then the distance is:
+$$
+\begin{aligned}
+d(\mathbf{u},\mathbf{v}) &= \sqrt{(1 - 0)^2 + (3 - 7)^2 + (-2 - 2)^2 + (7 - 2)^2} \\
+&= \sqrt{1^2 + (-4)^2 + (-4)^2 + 5^2} \\
+&= \sqrt{1 + 16 + 16 + 25} = \sqrt{58}
+\end{aligned}
+$$
+
+::: {.notes}
+This formal definition shows that distance in $R^n$ is simply the norm of the vector representing the displacement from one point to another.
+The example illustrates the calculation for points in $R^4$.
+:::
+
+---
+
+## Interactive Distance Calculator
+Calculate the distance between two points in $R^n$.
+Enter components as comma-separated lists.
+
+```{pyodide}
+#| max-lines: 10
+
+import numpy as np
+
+# Enter vector u components here, e.g., "1, 3, -2, 7"
+u_str = "1, 3, -2, 7" # Try changing this!
+
+# Enter vector v components here, e.g., "0, 7, 2, 2"
+v_str = "0, 7, 2, 2" # Try changing this!
+
+try:
+    u_comp = [float(x.strip()) for x in u_str.split(',')]
+    v_comp = [float(x.strip()) for x in v_str.split(',')]
+
+    if len(u_comp) != len(v_comp):
+        print("Vectors must have the same number of components.")
+    else:
+        u_vec = np.array(u_comp)
+        v_vec = np.array(v_comp)
+        distance = np.linalg.norm(u_vec - v_vec)
+
+        print(f"Vector u: {tuple(u_comp)}")
+        print(f"Vector v: {tuple(v_comp)}")
+        print(f"Dimension n: {len(u_comp)}")
+        print(f"Distance d(u,v): {distance:.4f}")
+except ValueError:
+    print("Invalid input. Please enter comma-separated numbers.")
+```
+
+::: {.notes}
+This interactive tool lets you compute the distance between any two points in $R^n$.
+Ensure both vectors have the same number of components.
+This is useful for understanding error metrics or similarity measures in high-dimensional data, common in machine learning and data science.
+:::
+
+---
+
+## Dot Product: Geometric Definition
+To define the "angle" between vectors, we use the **dot product**.
+
+For nonzero vectors $\mathbf{u}, \mathbf{v}$ in $R^2$ or $R^3$ (with initial points coinciding), the angle $\theta$ ($0 \leq \theta \leq \pi$) between them is shown below:
+
+![Figure 3.2.4: Angle between two vectors.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/870d5ebb694d51f3645d51d9105337cdf1518a45388da9f0264f329f52e6ff85.jpg)
+
+**Definition 3 (Geometric Dot Product):**
+$$
+\mathbf{u}\cdot \mathbf{v} = \| \mathbf{u}\| \| \mathbf{v}\| \cos \theta \tag{12}
+$$
+If $\mathbf{u} = \mathbf{0}$ or $\mathbf{v} = \mathbf{0}$, then $\mathbf{u}\cdot \mathbf{v} = 0$.
+
+::: {.notes}
+The dot product is a scalar value that captures the relationship between two vectors in terms of their magnitudes and the angle between them.
+It's a foundational concept in physics (e.g., work done by a force) and ECE (e.g., correlation between signals).
+:::
+
+---
+
+## Angle from Dot Product
+From the geometric definition, we can find the angle:
+$$
+\cos \theta = \frac{\mathbf{u}\cdot\mathbf{v}}{\| \mathbf{u}\| \| \mathbf{v}\|} \tag{13}
+$$
+Since $0 \leq \theta \leq \pi$:
+
+-   $\mathbf{u}\cdot \mathbf{v} > 0 \implies \theta$ is **acute** ($0 < \theta < \pi/2$)
+-   $\mathbf{u}\cdot \mathbf{v} < 0 \implies \theta$ is **obtuse** ($\pi/2 < \theta < \pi$)
+-   $\mathbf{u}\cdot \mathbf{v} = 0 \implies \theta = \pi/2$ (**orthogonal** vectors)
+
+![Figure 3.2.5: Angle types based on dot product sign.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/d7191441c5046a399fa9f65cf167a33accf17f17e325d06457f80e5bb44412ba.jpg)
+
+::: {.notes}
+The sign of the dot product tells us a lot about the orientation of the vectors.
+Orthogonality (vectors at 90 degrees) is especially important in ECE for concepts like independent signals or perpendicular fields.
+If two signals have a dot product of zero, they are uncorrelated.
+:::
+
+---
+
+## EXAMPLE 5: Dot Product (Geometric)
+Find the dot product of the vectors $\mathbf{u}$ and $\mathbf{v}$ shown in Figure 3.2.5.
+
+The lengths are:
+
+$\| \mathbf{u}\| = 1$
+
+$\| \mathbf{v}\| = \sqrt{2^2 + 2^2} = \sqrt{8} = 2\sqrt{2}$
+
+The angle between them is $\theta = 45^\circ$, so $\cos(45^\circ) = 1/\sqrt{2}$.
+
+Thus,
+$$
+\mathbf{u}\cdot \mathbf{v} = \| \mathbf{u}\| \| \mathbf{v}\| \cos \theta = (1)(2\sqrt{2})(1/\sqrt{2}) = 2
+$$
+
+::: {.notes}
+This example uses the geometric definition directly.
+It's a good way to visualize what the dot product means before we move to the component-wise calculation.
+:::
+
+---
+
+## Component Form of the Dot Product
+For computational purposes, we need a formula in terms of components.
+Using the Law of Cosines for the triangle formed by $\mathbf{u}$, $\mathbf{v}$, and $\mathbf{v}-\mathbf{u}$:
+
+![Figure 3.2.6: Derivation of component form of dot product.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/40ad58acaeba25b9c271e572286f5579d41f7f23c0179251605e6cc0843b0225.jpg)
+
+This leads to:
+-   **In $R^2$:** $\mathbf{u}\cdot \mathbf{v} = u_1v_1 + u_2v_2$ (Eq. 16)
+-   **In $R^3$:** $\mathbf{u}\cdot \mathbf{v} = u_1v_1 + u_2v_2 + u_3v_3$ (Eq. 15)
+
+::: {.notes}
+The derivation, though not fully shown here, is an important connection between geometry and algebra.
+It demonstrates that the component-wise definition is consistent with the geometric one.
+:::
+
+---
+
+## Dot Product in $R^n$ (Definition 4)
+For vectors $\mathbf{u} = (u_1, \ldots, u_n)$ and $\mathbf{v} = (v_1, \ldots, v_n)$ in $R^n$, the **dot product** is:
+
+$$
+\mathbf{u}\cdot \mathbf{v} = u_1v_1 + u_2v_2 + \dots + u_nv_n \tag{17}
+$$
+**In words:** Multiply corresponding components and add the products.
+
+### EXAMPLE 6: Calculating Dot Products Using Components
+(a) For $\mathbf{u} = (0,0,1)$ and $\mathbf{v} = (0,2,2)$ (from Example 5):
+    $$
+    \mathbf{u}\cdot \mathbf{v} = (0)(0) + (0)(2) + (1)(2) = 2
+    $$
+    (This agrees with the geometric calculation.)
+(b) For $\mathbf{u} = (-1,3,5,7)$ and $\mathbf{v} = (-3,-4,1,0)$ in $R^4$:
+    $$
+    \mathbf{u}\cdot \mathbf{v} = (-1)(-3) + (3)(-4) + (5)(1) + (7)(0) = 3 - 12 + 5 + 0 = -4
+    $$
+
+::: {.notes}
+This component-wise definition is the most practical for computation.
+It's simple, efficient, and extends perfectly to $n$-dimensions.
+In ECE, this is how inner products are typically computed in digital signal processing, control systems, and machine learning algorithms.
+:::
+
+---
+
+## Interactive Dot Product Calculator
+Compute the dot product of two vectors in $R^n$.
+Enter components as comma-separated lists.
+
+```{pyodide}
+#| max-lines: 10
+
+import numpy as np
+
+# Enter vector u components here, e.g., "-1, 3, 5, 7"
+u_dp_str = "-1, 3, 5, 7" # Try changing this!
+
+# Enter vector v components here, e.g., "-3, -4, 1, 0"
+v_dp_str = "-3, -4, 1, 0" # Try changing this!
+
+try:
+    u_dp_comp = [float(x.strip()) for x in u_dp_str.split(',')]
+    v_dp_comp = [float(x.strip()) for x in v_dp_str.split(',')]
+
+    if len(u_dp_comp) != len(v_dp_comp):
+        print("Vectors must have the same number of components for dot product.")
+    else:
+        u_dp_vec = np.array(u_dp_comp)
+        v_dp_vec = np.array(v_dp_comp)
+        dot_product = np.dot(u_dp_vec, v_dp_vec) # or (u_dp_vec @ v_dp_vec)
+
+        print(f"Vector u: {tuple(u_dp_comp)}")
+        print(f"Vector v: {tuple(v_dp_comp)}")
+        print(f"Dot Product (u . v): {dot_product:.4f}")
+
+        # Calculate angle if non-zero vectors
+        norm_u = np.linalg.norm(u_dp_vec)
+        norm_v = np.linalg.norm(v_dp_vec)
+        if norm_u > 1e-9 and norm_v > 1e-9: # Check for non-zero norms
+            cos_theta = dot_product / (norm_u * norm_v)
+            # Clip cos_theta to [-1, 1] to avoid numerical errors with arccos
+            cos_theta = np.clip(cos_theta, -1.0, 1.0)
+            angle_rad = np.arccos(cos_theta)
+            angle_deg = np.degrees(angle_rad)
+            print(f"Angle between u and v: {angle_deg:.2f} degrees ({angle_rad:.2f} radians)")
+        elif dot_product == 0:
+            print("One or both vectors are zero, or they are orthogonal.")
+        else:
+            print("One or both vectors are zero.")
+
+except ValueError:
+    print("Invalid input. Please enter comma-separated numbers.")
+```
+
+::: {.notes}
+This interactive Python block computes the dot product and the angle between two vectors.
+Experiment with different vectors to see how the dot product and angle change.
+Pay attention to when the dot product is zero, and what that implies about the angle.
+:::
+
+---
+
+## EXAMPLE 7: A Geometry Problem Solved Using Dot Product
+Find the angle between a diagonal of a cube and one of its edges.
+
+Let the cube have edge length $k$.
+Place one vertex at the origin $(0,0,0)$.
+-   An edge vector: $\mathbf{u}_1 = (k,0,0)$
+-   A diagonal vector (from origin to opposite corner): $\mathbf{d} = (k,k,k)$
+
+Using the formula $\cos \theta = \frac{\mathbf{u}\cdot\mathbf{v}}{\| \mathbf{u}\| \| \mathbf{v}\|}$:
+$$
+\cos \theta = \frac{\mathbf{u}_1\cdot\mathbf{d}}{\| \mathbf{u}_1\| \| \mathbf{d}\|} = \frac{(k)(k) + (0)(k) + (0)(k)}{\sqrt{k^2}\sqrt{k^2+k^2+k^2}} = \frac{k^2}{k\sqrt{3k^2}} = \frac{k^2}{k(k\sqrt{3})} = \frac{1}{\sqrt{3}}
+$$
+$$
+\theta = \cos^{-1}\left(\frac{1}{\sqrt{3}}\right) \approx 54.74^{\circ}
+$$
+
+::: {.callout-note}
+The angle $\theta$ does not depend on $k$. This is expected because scaling a cube doesn't change its internal angles.
+:::
+
+![Figure 3.2.7: Diagonal of a cube and one of its edges.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/1938d86d92f311ee699cf9124d291a4ecad042dfeffddac9f554011de8f24b0f.jpg)
+
+::: {.notes}
+This is a classic problem demonstrating the power of vectors and dot products in geometry.
+It's a good example of how abstract linear algebra tools can solve concrete visual problems.
+This type of angular analysis is relevant in applications like antenna design or robotic arm kinematics.
+:::
+
+---
+
+## Algebraic Properties of the Dot Product
+
+**Relationship between Norm and Dot Product:**
+$$
+\mathbf{v}\cdot \mathbf{v} = v_1^2 + \dots + v_n^2 = \| \mathbf{v}\|^2 \tag{18}
+$$
+So, $\| \mathbf{v}\| = \sqrt{\mathbf{v}\cdot \mathbf{v}}$ (Eq. 19)
+
+**Theorem 3.2.2:** For $\mathbf{u}, \mathbf{v}, \mathbf{w}$ in $R^n$, scalar $k$:
+
+(a) $\mathbf{u}\cdot \mathbf{v} = \mathbf{v}\cdot \mathbf{u}$ (Symmetry)
+
+(b) $\mathbf{u}\cdot (\mathbf{v} + \mathbf{w}) = \mathbf{u}\cdot \mathbf{v} + \mathbf{u}\cdot \mathbf{w}$ (Distributive)
+
+(c) $k(\mathbf{u}\cdot \mathbf{v}) = (k\mathbf{u})\cdot \mathbf{v} = \mathbf{u}\cdot (k\mathbf{v})$ (Homogeneity)
+
+(d) $\mathbf{v}\cdot \mathbf{v} \geq 0$ and $\mathbf{v}\cdot \mathbf{v} = 0$ iff $\mathbf{v} = \mathbf{0}$
+
+**Theorem 3.2.3 (Additional Properties):**
+
+(a) $\mathbf{0}\cdot \mathbf{v} = \mathbf{v}\cdot \mathbf{0} = 0$
+
+(b) $(\mathbf{u} + \mathbf{v})\cdot \mathbf{w} = \mathbf{u}\cdot \mathbf{w} + \mathbf{v}\cdot \mathbf{w}$
+
+(c) $\mathbf{u}\cdot (\mathbf{v} - \mathbf{w}) = \mathbf{u}\cdot \mathbf{v} - \mathbf{u}\cdot \mathbf{w}$
+
+(d) $(\mathbf{u} - \mathbf{v})\cdot \mathbf{w} = \mathbf{u}\cdot \mathbf{w} - \mathbf{v}\cdot \mathbf{w}$
+
+::: {.notes}
+These theorems establish the algebraic rules for working with dot products.
+They are crucial for simplifying expressions and proving other theorems without always resorting to component-wise calculations.
+They are analogous to the properties of multiplication of real numbers.
+:::
+
+---
+
+## EXAMPLE 8: Calculating with Dot Products
+Simplify $(\mathbf{u} - 2\mathbf{v})\cdot (3\mathbf{u} + 4\mathbf{v})$.
+
+Using distributive and homogeneity properties:
+$$
+\begin{aligned}
+(\mathbf{u} - 2\mathbf{v})\cdot (3\mathbf{u} + 4\mathbf{v}) &= \mathbf{u}\cdot (3\mathbf{u} + 4\mathbf{v}) - 2\mathbf{v}\cdot (3\mathbf{u} + 4\mathbf{v}) \\
+&= (3\mathbf{u}\cdot \mathbf{u} + 4\mathbf{u}\cdot \mathbf{v}) - (6\mathbf{v}\cdot \mathbf{u} + 8\mathbf{v}\cdot \mathbf{v}) \\
+&= 3(\mathbf{u}\cdot \mathbf{u}) + 4(\mathbf{u}\cdot \mathbf{v}) - 6(\mathbf{u}\cdot \mathbf{v}) - 8(\mathbf{v}\cdot \mathbf{v}) & \text{[Symmetry: }\mathbf{v}\cdot \mathbf{u} = \mathbf{u}\cdot \mathbf{v}] \\
+&= 3\| \mathbf{u}\|^2 - 2(\mathbf{u}\cdot \mathbf{v}) - 8\| \mathbf{v}\|^2 & \text{[Since }\mathbf{x}\cdot \mathbf{x} = \| \mathbf{x}\|^2]
+\end{aligned}
+$$
+
+::: {.notes}
+This example shows how to algebraically expand and simplify expressions involving dot products.
+It's a good exercise in applying the properties from Theorems 3.2.2 and 3.2.3.
+This skill is vital for derivations in various ECE fields, such as optimizing controller gains or analyzing signal processing filter responses.
+:::
+
+---
+
+## Cauchy-Schwarz Inequality
+To define the angle in $R^n$ using $\cos \theta = \frac{\mathbf{u}\cdot\mathbf{v}}{\| \mathbf{u}\| \| \mathbf{v}\|}$, we need to ensure the argument of $\cos^{-1}$ is between -1 and 1.
+This is guaranteed by the **Cauchy-Schwarz Inequality**:
+
+**Theorem 3.2.4 (Cauchy-Schwarz Inequality):**
+If $\mathbf{u} = (u_1, \ldots, u_n)$ and $\mathbf{v} = (v_1, \ldots, v_n)$ are vectors in $R^n$, then:
+$$
+|\mathbf{u}\cdot \mathbf{v}|\leq \| \mathbf{u}\| \| \mathbf{v}\| \tag{22}
+$$
+Or in component form:
+$$
+|u_1v_1 + \dots + u_nv_n| \leq (u_1^2 + \dots + u_n^2)^{1/2}(v_1^2 + \dots + v_n^2)^{1/2} \tag{23}
+$$
+
+**Implication for Angle:**
+Dividing by $\| \mathbf{u}\| \| \mathbf{v}\|$ (for nonzero vectors) gives:
+$$
+\left|\frac{\mathbf{u}\cdot\mathbf{v}}{\| \mathbf{u}\| \| \mathbf{v}\|}\right|\leq 1 \quad \implies \quad -1 \leq \frac{\mathbf{u}\cdot\mathbf{v}}{\| \mathbf{u}\| \| \mathbf{v}\|} \leq 1
+$$
+This confirms that the angle formula is well-defined for all nonzero vectors in $R^n$.
+
+::: {.notes}
+The Cauchy-Schwarz inequality is one of the most important inequalities in mathematics.
+It has profound implications in many fields, including signal processing, information theory, and quantum mechanics in ECE.
+It essentially states that the dot product of two vectors cannot exceed the product of their lengths.
+Equality holds if and only if the vectors are collinear (one is a scalar multiple of the other).
+:::
+
+---
+
+## Triangle Inequality for Vectors and Distances
+These generalize familiar geometric results.
+
+**Theorem 3.2.5:** For vectors $\mathbf{u},\mathbf{v},\mathbf{w}$ in $R^n$:
+(a) $\| \mathbf{u} + \mathbf{v}\| \leq \| \mathbf{u}\| + \| \mathbf{v}\|$ (Triangle inequality for vectors)
+(b) $d(\mathbf{u},\mathbf{v})\leq d(\mathbf{u},\mathbf{w}) + d(\mathbf{w},\mathbf{v})$ (Triangle inequality for distances)
+
+![Figure 3.2.8: Triangle inequality for vectors.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/02b403eb055df1a15b15c89b9aa97326f785916ac139a12f0e25fa8d50476c28.jpg)
+*Figure 3.2.9: Shortest distance between two points is a straight line.*
+
+---
+
+## Triangle Inequality for Vectors and Distances
+
+**Proof (a):**
+Starting with $\| \mathbf{u} + \mathbf{v}\|^2 = (\mathbf{u} + \mathbf{v})\cdot (\mathbf{u} + \mathbf{v}) = \| \mathbf{u}\|^2 + 2(\mathbf{u}\cdot \mathbf{v}) + \| \mathbf{v}\|^2$.
+Using $\mathbf{u}\cdot \mathbf{v} \leq |\mathbf{u}\cdot \mathbf{v}|$ and Cauchy-Schwarz $|\mathbf{u}\cdot \mathbf{v}| \leq \| \mathbf{u}\| \| \mathbf{v}\|$:
+$$
+\| \mathbf{u} + \mathbf{v}\|^2 \leq \| \mathbf{u}\|^2 + 2\| \mathbf{u}\| \| \mathbf{v}\| + \| \mathbf{v}\|^2 = (\| \mathbf{u}\| + \| \mathbf{v}\|)^2
+$$
+Taking the square root (both sides non-negative) gives the result.
+
+::: {.notes}
+The triangle inequality is a very intuitive geometric concept: the shortest path between two points is a straight line.
+It's fundamental in metric spaces and has applications in network routing, error correction codes, and signal reconstruction in ECE.
+:::
+
+---
+
+## Parallelogram Equation
+This theorem generalizes the property that the sum of the squares of the diagonals of a parallelogram equals the sum of the squares of its four sides.
+
+**Theorem 3.2.6 (Parallelogram Equation):**
+If $\mathbf{u}$ and $\mathbf{v}$ are vectors in $R^n$, then:
+$$
+\| \mathbf{u} + \mathbf{v}\|^2 + \| \mathbf{u} - \mathbf{v}\|^2 = 2\left(\| \mathbf{u}\|^2 + \| \mathbf{v}\|^2\right) \tag{24}
+$$
+
+![Figure 3.2.10: Parallelogram formed by $\mathbf{u}$, $\mathbf{v}$, $\mathbf{u}+\mathbf{v}$, and $\mathbf{u}-\mathbf{v}$.](https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/a6387cb2ba8b9f1bf02735e779f9898248b7ad853680f3592b6a6606b1728bec.jpg)
+
+**Theorem 3.2.7 (Dot Product from Norms):**
+For vectors $\mathbf{u}, \mathbf{v}$ in $R^n$:
+$$
+\mathbf{u}\cdot \mathbf{v} = \frac{1}{4}\| \mathbf{u} + \mathbf{v}\|^2 - \frac{1}{4}\| \mathbf{u} - \mathbf{v}\|^2 \tag{25}
+$$
+This formula expresses the dot product solely in terms of norms.
+
+::: {.notes}
+The parallelogram equation provides an identity relating sums and differences of vectors to their norms.
+Theorem 3.2.7 is particularly interesting as it defines the dot product purely from the concept of length, reinforcing the deep connections between these fundamental vector operations.
+This is important in abstract vector spaces where an inner product (dot product generalization) might be defined through a norm.
+:::
+
+---
+
+## Dot Products as Matrix Multiplication
+The dot product can be expressed using matrix notation, depending on whether vectors are row or column matrices.
+
+:::: {.columns}
+::: {.column width="50%"}
+| Form                       | Dot Product      |
+|:---------------------------|:-----------------|
+| $\mathbf{u}$ column, $\mathbf{v}$ column | $\mathbf{u}^T\mathbf{v} = \mathbf{v}^T\mathbf{u}$ |
+| $\mathbf{u}$ row, $\mathbf{v}$ column   | $\mathbf{u}\mathbf{v} = \mathbf{v}^T\mathbf{u}^T$ |
+| $\mathbf{u}$ column, $\mathbf{v}$ row   | $\mathbf{v}\mathbf{u} = \mathbf{u}^T\mathbf{v}^T$ |
+| $\mathbf{u}$ row, $\mathbf{v}$ row     | $\mathbf{u}\mathbf{v}^T = \mathbf{v}\mathbf{u}^T$ |
+
+*(Partial Table 1 from text)*
+:::
+::: {.column width="50%"}
+**Key Identities:**
+For an $n \times n$ matrix $A$ and $n \times 1$ column vectors $\mathbf{u}, \mathbf{v}$:
+$$
+A\mathbf{u}\cdot \mathbf{v} = \mathbf{u}\cdot A^T\mathbf{v} \tag{26}
+$$
+$$
+\mathbf{u}\cdot A\mathbf{v} = A^T\mathbf{u}\cdot \mathbf{v} \tag{27}
+$$
+These link matrix multiplication with the transpose.
+:::
+::::
+
+::: {.notes}
+This section highlights the close relationship between dot products and matrix operations.
+The identities involving the transpose are extremely important in proofs and algorithms in linear algebra, especially in optimization, least squares, and signal processing.
+For instance, in machine learning, the gradient of a loss function often involves transposes and dot products.
+:::
+
+---
+
+## EXAMPLE 9: Verifying $A\mathbf{u}\cdot \mathbf{v} = \mathbf{u}\cdot A^T\mathbf{v}$
+Given:
+$$
+A={\left[\begin{array}{l l l}{1}&{-2}&{3}\\ {2}&{4}&{1}\\ {-1}&{0}&{1}\end{array}\right]}, \quad \mathbf{u}={\left[\begin{array}{l}{-1}\\ {2}\\ {4}\end{array}\right]}, \quad \mathbf{v}={\left[\begin{array}{l}{-2}\\ {0}\\ {5}\end{array}\right]}
+$$
+Calculate $A\mathbf{u}\cdot \mathbf{v}$ and $\mathbf{u}\cdot A^T\mathbf{v}$.
+
+**$A\mathbf{u}$ calculation:**
+$$
+A\mathbf{u}={\left[\begin{array}{l}{1(-1) - 2(2) + 3(4)}\\ {2(-1) + 4(2) + 1(4)}\\ {-1(-1) + 0(2) + 1(4)}\end{array}\right]}={\left[\begin{array}{l}{7}\\ {10}\\ {5}\end{array}\right]}
+$$
+Then $A\mathbf{u}\cdot \mathbf{v} = (7)(-2) + (10)(0) + (5)(5) = -14 + 0 + 25 = 11$.
+
+**$A^T\mathbf{v}$ calculation:**
+$$
+A^T={\left[\begin{array}{l l l}{1}&{2}&{-1}\\ {-2}&{4}&{0}\\ {3}&{1}&{1}\end{array}\right]} \implies A^T\mathbf{v}={\left[\begin{array}{l}{1(-2) + 2(0) - 1(5)}\\ {-2(-2) + 4(0) + 0(5)}\\ {3(-2) + 1(0) + 1(5)}\end{array}\right]}={\left[\begin{array}{l}{-7}\\ {4}\\ {-1}\end{array}\right]}
+$$
+Then $\mathbf{u}\cdot A^T\mathbf{v} = (-1)(-7) + (2)(4) + (4)(-1) = 7 + 8 - 4 = 11$.
+Thus, $A\mathbf{u}\cdot \mathbf{v} = \mathbf{u}\cdot A^T\mathbf{v}$ is verified.
+
+::: {.notes}
+This example numerically confirms the important identity $A\mathbf{u}\cdot \mathbf{v} = \mathbf{u}\cdot A^T\mathbf{v}$.
+Understanding this relationship is key for advanced topics like singular value decomposition and eigenvalue problems.
+:::
+
+---
+
+## Interactive Identity Verification
+Verify $A\mathbf{u}\cdot \mathbf{v} = \mathbf{u}\cdot A^T\mathbf{v}$ with custom matrices and vectors.
+
+```{pyodide}
+#| max-lines: 10
+
+import numpy as np
+
+# Define A (3x3 matrix)
+A = np.array([
+    [1, -2, 3],
+    [2,  4, 1],
+    [-1, 0, 1]
+])
+
+# Define vector u
+u = np.array([-1, 2, 4])
+
+# Define vector v
+v = np.array([-2, 0, 5])
+
+print("Matrix A:\n", A)
+print("\nVector u:", u)
+print("Vector v:", v)
+
+# Calculate Au
+Au = A @ u
+print("\nAu:", Au)
+
+# Calculate (Au) . v
+Au_dot_v = np.dot(Au, v)
+print("(Au) . v =", Au_dot_v)
+
+# Calculate A_transpose
+A_T = A.T
+print("\nA_T:\n", A_T)
+
+# Calculate (A_T)v
+A_Tv = A_T @ v
+print("(A_T)v:", A_Tv)
+
+# Calculate u . (A_T)v
+u_dot_A_Tv = np.dot(u, A_Tv)
+print("u . (A_T)v =", u_dot_A_Tv)
+
+if np.isclose(Au_dot_v, u_dot_A_Tv):
+    print("\nVerification successful: (Au) . v == u . (A_T)v")
+else:
+    print("\nVerification failed: (Au) . v != u . (A_T)v")
+
+# Try changing A, u, or v and re-running!
+# A = np.array([[1, 0], [0, 1]]) # Identity matrix
+# u = np.array([1, 2])
+# v = np.array([3, 4])
+```
+
+::: {.notes}
+This interactive code block allows you to experiment with different matrices and vectors to confirm the identity $A\mathbf{u}\cdot \mathbf{v} = \mathbf{u}\cdot A^T\mathbf{v}$.
+Modify `A`, `u`, and `v` to see how the calculations change.
+This practical demonstration reinforces the theoretical identity and its computational aspects using NumPy.
+:::
+
+---
+
+## Application: ISBN Check Digits
+The International Standard Book Number (ISBN) uses a check digit based on the dot product.
+
+-   An older 10-digit ISBN (e.g., 0-471-15307-9) consists of 9 data digits and a 10th check digit.
+-   Let $\mathbf{b} = (b_1, b_2, \ldots, b_9)$ be the first nine digits.
+-   Let $\mathbf{a} = (1, 2, 3, 4, 5, 6, 7, 8, 9)$.
+-   The check digit $c$ is the remainder when $\mathbf{a}\cdot \mathbf{b}$ is divided by 11.
+    -   If $c=10$, it's written as 'X'.
+
+**Example:** ISBN 0-471-15307-9
+
+$\mathbf{b} = (0, 4, 7, 1, 1, 5, 3, 0, 7)$
+
+$\mathbf{a}\cdot \mathbf{b} = (1)(0) + (2)(4) + (3)(7) + (4)(1) + (5)(1) + (6)(5) + (7)(3) + (8)(0) + (9)(7)$
+
+$= 0 + 8 + 21 + 4 + 5 + 30 + 21 + 0 + 63 = 152$
+
+$152 \div 11 = 13$ with a remainder of $9$. So, $c=9$.
+
+::: {.notes}
+This is a real-world application of the dot product for error detection.
+This algorithm ensures that single-digit errors or transpositions of adjacent digits can be detected.
+This concept of error detection and correction is vital in digital communication and data storage in ECE.
+:::
+
+---
+
+## Interactive ISBN Check Digit Calculator
+Enter the first 9 digits of an ISBN to calculate its check digit.
+
+```{pyodide}
+#| max-lines: 10
+
+import numpy as np
+
+# Enter the first 9 digits of an ISBN as a string, e.g., "047115307"
+isbn_digits_str = "047115307" # Try "013065265" (check digit 6) or "020100028" (check digit 2)
+
+try:
+    if len(isbn_digits_str) != 9 or not isbn_digits_str.isdigit():
+        print("Please enter exactly 9 digits for the ISBN.")
+    else:
+        b_vec = np.array([int(d) for d in isbn_digits_str])
+        a_vec = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9])
+
+        dot_product_isbn = np.dot(a_vec, b_vec)
+        check_digit_val = dot_product_isbn % 11
+
+        check_digit = str(int(check_digit_val))
+        if check_digit_val == 10:
+            check_digit = "X"
+
+        print(f"ISBN first 9 digits: {isbn_digits_str}")
+        print(f"Dot product (a . b): {dot_product_isbn}")
+        print(f"Check digit (c): {check_digit}")
+        print(f"Full ISBN: {isbn_digits_str}{check_digit}")
+
+except ValueError:
+    print("Invalid input. Please enter digits only.")
+```
+
+::: {.notes}
+Use this interactive tool to calculate ISBN check digits.
+You can input any 9-digit sequence and see the resulting check digit.
+This helps solidify the understanding of how the dot product is used in a very practical error-checking scheme.
+It's a simple yet effective application of linear algebra in daily life.
+:::
+
+---
+
+## Summary and Key Takeaways
+-   **Norm:** Measures the length or magnitude of a vector. Derived from Pythagorean theorem, generalized to $R^n$.
+-   **Unit Vectors:** Vectors with norm 1, used to specify direction. Obtained by normalizing a vector.
+-   **Distance:** The norm of the difference between two vectors (points) in $R^n$.
+-   **Dot Product:** A scalar product that measures the "alignment" of two vectors.
+    -   Geometric: $\| \mathbf{u}\| \| \mathbf{v}\| \cos \theta$
+    -   Algebraic: $\sum u_iv_i$
+    -   Indicates angle (acute, obtuse, orthogonal).
+-   **Cauchy-Schwarz Inequality:** Fundamental for defining angles in $R^n$.
+-   **Key Identities:** Triangle Inequality, Parallelogram Equation, and matrix multiplication identities.
+-   **Applications:** Error detection (ISBN), geometric analysis (cube angles), signal processing (energy, correlation).
+
+::: {.callout-tip}
+**Practical Importance for ECE:**
+
+-   **Signal Processing:** Norm for signal energy, dot product for correlation.
+-   **Control Systems:** State vectors, error distances.
+-   **Machine Learning:** Distance metrics, similarity measures, feature scaling.
+:::
+
+::: {.notes}
+This section has laid the groundwork for understanding vector magnitudes, proximity, and relationships.
+These concepts are not just theoretical; they are the bedrock of quantitative analysis in electrical and computer engineering.
+Ensure you're comfortable with both the geometric and algebraic interpretations of norms, distances, and dot products.
+Any questions before we move on?
+:::
