@@ -1,0 +1,590 @@
+[
+  {
+    "objectID": "mdt_course_3.html#todays-mission",
+    "href": "mdt_course_3.html#todays-mission",
+    "title": "Management Decision Tools",
+    "section": "Today’s Mission",
+    "text": "Today’s Mission\nWe’ll explore how Linear Programming (LP) helps make critical decisions in different areas of a business.\n\nMarketing: How to design a cost-effective survey.\nFinance: How to invest millions for maximum return.\nOperations: How to schedule a workforce to meet production goals.\n\n\nToday, we move from the “how” of LP to the “why.” We’ll see that the same structured thinking—defining variables, an objective, and constraints—can be applied to solve very different kinds of business puzzles."
+  },
+  {
+    "objectID": "mdt_course_3.html#marketing-application-msi-research",
+    "href": "mdt_course_3.html#marketing-application-msi-research",
+    "title": "Management Decision Tools",
+    "section": "Marketing Application: MSI Research",
+    "text": "Marketing Application: MSI Research\nThe Scenario: Market Survey Inc. (MSI) needs to conduct 1000 door-to-door interviews for a new product. They want to do it as cheaply as possible, but they have a lot of rules to follow.\nThe Puzzle: How do you plan the interviews to meet all the requirements at the minimum cost? This is a classic resource allocation problem perfect for LP.\n\nThink of this like planning a big event on a tight budget. You have to invite specific groups of people (the constraints) and want to spend as little as possible (the objective)."
+  },
+  {
+    "objectID": "mdt_course_3.html#msi-breaking-down-the-problem",
+    "href": "mdt_course_3.html#msi-breaking-down-the-problem",
+    "title": "Management Decision Tools",
+    "section": "MSI: Breaking Down the Problem",
+    "text": "MSI: Breaking Down the Problem\nFirst, let’s identify the core components of our LP model.\n\n\n1. Decisions (Variables) We need to decide how many interviews to conduct in each category.\n\n\\(DC\\): Daytime, with Children\n\\(EC\\): Evening, with Children\n\\(DNC\\): Daytime, No Children\n\\(ENC\\): Evening, No Children\n\n\n2. Objective (The Goal) Minimize the total survey cost.\n\n\n\nInterview Type\nCost\n\n\n\n\nDaytime, with Children\n$20\n\n\nEvening, with Children\n$25\n\n\nDaytime, No Children\n$18\n\n\nEvening, No Children\n$20\n\n\n\nMinimize Cost: 20DC + 25EC + 18DNC + 20ENC"
+  },
+  {
+    "objectID": "mdt_course_3.html#msi-the-rules-constraints",
+    "href": "mdt_course_3.html#msi-the-rules-constraints",
+    "title": "Management Decision Tools",
+    "section": "MSI: The Rules (Constraints)",
+    "text": "MSI: The Rules (Constraints)\nThese are the rules MSI must follow, translated into math.\n\n\n\n\n\n\n\nRule in Plain English\nMathematical Constraint\n\n\n\n\n1. Conduct exactly 1000 interviews in total.\n\\(DC+EC+DNC+ENC = 1000\\)\n\n\n2. At least 400 households with children.\n\\(DC+EC \\geq 400\\)\n\n\n3. At least 400 households without children.\n\\(DNC+ENC \\geq 400\\)\n\n\n4. Evening interviews must be \\(\\geq\\) daytime.\n\\(EC+ENC \\geq DC+DNC\\)\n\n\n5. \\(\\geq 40\\%\\) of “with children” interviews in evening.\n\\(EC \\geq 0.4(DC+EC)\\)\n\n\n6. \\(\\geq 60\\%\\) of “no children” interviews in evening.\n\\(ENC \\geq 0.6(DNC+ENC)\\)\n\n\n\n\nEach rule becomes a line in our LP model. Notice how we rearrange some constraints (like #4, #5, #6) to have all the variables on one side (-DC + EC - DNC + ENC &gt;= 0) before putting them into a solver."
+  },
+  {
+    "objectID": "mdt_course_3.html#msi-the-optimal-solution",
+    "href": "mdt_course_3.html#msi-the-optimal-solution",
+    "title": "Management Decision Tools",
+    "section": "MSI: The Optimal Solution",
+    "text": "MSI: The Optimal Solution\nAfter running this model through a solver, we get the cheapest plan.\nOptimal Interview Plan:\n\n\n\nVariable\nDescription\nNumber of Interviews\n\n\n\n\nDC\nDaytime, with Children\n240\n\n\nEC\nEvening, with Children\n160\n\n\nDNC\nDaytime, No Children\n240\n\n\nENC\nEvening, No Children\n360\n\n\n\nMinimum Total Cost: $20,320\nYou can verify the cost with this simple calculator:"
+  },
+  {
+    "objectID": "mdt_course_3.html#financial-application-winslow-portfolio",
+    "href": "mdt_course_3.html#financial-application-winslow-portfolio",
+    "title": "Management Decision Tools",
+    "section": "Financial Application: Winslow Portfolio",
+    "text": "Financial Application: Winslow Portfolio\nThe Scenario: Winslow Savings has $20 million to invest over the next 4 months. They want to maximize their interest earnings.\nThe Puzzle: How should they allocate their money each month between different investment options to get the highest return, while making sure they have enough cash for a big project later? This is a multi-period planning problem.\n\nThink of this like a 4-level video game. In each level (month), you invest resources. Your earnings from one level carry over to the next. You need a strategy to maximize your score (interest) while making sure you have enough power-ups ($10M) for the final boss fight (the building venture)."
+  },
+  {
+    "objectID": "mdt_course_3.html#winslow-variables-and-objective",
+    "href": "mdt_course_3.html#winslow-variables-and-objective",
+    "title": "Management Decision Tools",
+    "section": "Winslow: Variables and Objective",
+    "text": "Winslow: Variables and Objective\nThis model is dynamic, so our variables need to track investments in each month i (where i=1, 2, 3, 4).\n\n\\(G_i\\): New investment in Government bonds in month i. (2% return over 2 months)\n\\(C_i\\): New investment in Construction loans in month i. (6% return over 3 months)\n\\(L_i\\): Liquid funds invested locally in month i. (0.75% return per month)\n\nObjective: Maximize Total Interest \\[\n\\text{Max } 0.02(G_1+...+G_4) + 0.06(C_1+...+C_4) + 0.0075(L_1+...+L_4)\n\\]"
+  },
+  {
+    "objectID": "mdt_course_3.html#winslow-cash-flow-constraints",
+    "href": "mdt_course_3.html#winslow-cash-flow-constraints",
+    "title": "Management Decision Tools",
+    "section": "Winslow: Cash Flow Constraints",
+    "text": "Winslow: Cash Flow Constraints\nThis is the tricky part. The money available to invest each month depends on what investments from previous months have matured.\n\nMonth 1: Start with $20M.\n\n\\(G_1 + C_1 + L_1 = 20,000,000\\)\n\nMonth 2: Money available is the cash (\\(L_1\\)) from Month 1 plus its interest.\n\n\\(G_2 + C_2 + L_2 = 1.0075 L_1\\)\n\nMonth 3: Money comes from bonds from Month 1 (\\(G_1\\)) and cash from Month 2 (\\(L_2\\)) maturing.\n\n\\(G_3 + C_3 + L_3 = 1.02 G_1 + 1.0075 L_2\\)\n\nMonth 4: Money from loans from M1 (\\(C_1\\)), bonds from M2 (\\(G_2\\)), and cash from M3 (\\(L_3\\)).\n\n\\(G_4 + C_4 + L_4 = 1.06 C_1 + 1.02 G_2 + 1.0075 L_3\\)"
+  },
+  {
+    "objectID": "mdt_course_3.html#winslow-other-constraints-solution",
+    "href": "mdt_course_3.html#winslow-other-constraints-solution",
+    "title": "Management Decision Tools",
+    "section": "Winslow: Other Constraints & Solution",
+    "text": "Winslow: Other Constraints & Solution\nThere are a few more critical rules to follow.\n\n\n\n\n\n\n\nConstraint\nExplanation\n\n\n\n\n\\(1.06C_2 + 1.02G_3 + 1.0075L_4 \\ge 10,000,000\\)\nMust have 10M cash available at start of Month 5.\n\n\n\\(G_1+G_2 \\le 8,000,000\\), etc.\nTotal Gov’t bonds held at any time must not exceed 8M.\n\n\n\\(C_1+C_2+C_3 \\le 8,000,000\\), etc.\nTotal Const. loans held at any time must not exceed 8M.\n\n\n\nThe Optimal Solution: The solver provides a detailed month-by-month investment plan that results in a maximum interest of $1,429,214.\n\nThe full solution table is complex, but the key takeaway is that LP can map out this entire 4-month strategy, balancing risk (investment limits) and reward (interest) to meet all of the bank’s goals perfectly."
+  },
+  {
+    "objectID": "mdt_course_3.html#operations-application-nwc-workforce",
+    "href": "mdt_course_3.html#operations-application-nwc-workforce",
+    "title": "Management Decision Tools",
+    "section": "Operations Application: NWC Workforce",
+    "text": "Operations Application: NWC Workforce\nThe Scenario: National Wing Company (NWC) has a contract to produce a specific number of airplane wings each month for three months. They need to manage their workforce to meet these targets.\nThe Puzzle: How can NWC hire, train, and assign workers each month to meet the production schedule at the minimum possible payroll cost?\n\nThis is like managing a sports team for a championship run. You have veterans (producers), rookies (apprentices), and prospects (recruits). Some veterans need to step back from playing to coach (trainers). You need to find the right mix each month to win all your games (meet production targets) while staying under the salary cap (minimizing cost)."
+  },
+  {
+    "objectID": "mdt_course_3.html#nwc-the-workforce-flow",
+    "href": "mdt_course_3.html#nwc-the-workforce-flow",
+    "title": "Management Decision Tools",
+    "section": "NWC: The Workforce Flow",
+    "text": "NWC: The Workforce Flow\nA key part of this problem is understanding how the workforce changes over time. A new recruit isn’t immediately productive.\n\n\n\n\n\ngraph TD\n    subgraph Month 1 - April\n        R1(Recruits)\n        T1(Trainers)\n    end\n    subgraph Month 2 - May\n        A2(Apprentices)\n        R2(Recruits)\n        T2(Trainers)\n    end\n    subgraph Month 3 - June\n        A3(Apprentices)\n        QW3(Qualified Workers)\n    end\n  \n    R1 -- 1 month training --&gt; A2\n    A2 -- 1 month experience --&gt; QW3\n    T1 -- Train --&gt; R1\n    T2 -- Train --&gt; R2\n\n\n\n\n\n\n\nA Recruit needs one month of training to become an Apprentice.\nAn Apprentice needs one more month to become a fully Qualified Worker."
+  },
+  {
+    "objectID": "mdt_course_3.html#nwc-variables-and-objective",
+    "href": "mdt_course_3.html#nwc-variables-and-objective",
+    "title": "Management Decision Tools",
+    "section": "NWC: Variables and Objective",
+    "text": "NWC: Variables and Objective\nLet’s define our decision variables and goal for April (i=1), May (i=2), and June (i=3).\n\n\\(P_i\\): Number of Producers in month i\n\\(T_i\\): Number of Trainers in month i\n\\(A_i\\): Number of Apprentices in month i\n\\(R_i\\): Number of Recruits in month i\n\nObjective: Minimize Total Wage Cost \\[\n\\text{Min } 3000P_1 + 3300T_1 + ... + 3000P_3 + 2600A_3\n\\]"
+  },
+  {
+    "objectID": "mdt_course_3.html#nwc-key-constraints",
+    "href": "mdt_course_3.html#nwc-key-constraints",
+    "title": "Management Decision Tools",
+    "section": "NWC: Key Constraints",
+    "text": "NWC: Key Constraints\nThis model links months together.\n\nProduction Targets: The number of wings produced each month must meet the contract. \\(0.6P_1 + 0.3T_1 + 0.05R_1 \\ge 20\\) (April’s production)\nWorkforce Balance: The number of qualified workers flows from one month to the next. \\(P_2 + T_2 = P_1 + T_1\\) (Qualified workers don’t disappear) \\(A_2 = R_1\\) (April’s recruits become May’s apprentices)\nTraining Capacity: Each trainer can handle two recruits. \\(2T_1 \\ge R_1\\)\nBoundary Conditions: Start with 100 workers, end with at least 140. \\(P_1 + T_1 = 100\\) \\(P_3 + A_3 \\ge 140\\)"
+  },
+  {
+    "objectID": "mdt_course_3.html#nwc-the-optimal-workforce-plan",
+    "href": "mdt_course_3.html#nwc-the-optimal-workforce-plan",
+    "title": "Management Decision Tools",
+    "section": "NWC: The Optimal Workforce Plan",
+    "text": "NWC: The Optimal Workforce Plan\nThe LP solver gives NWC a detailed, cost-effective staffing plan for the entire quarter.\nOptimal Plan Summary:\n\n\n\nEmployee Type\nApril\nMay\nJune\n\n\n\n\nProducers\n100\n80\n100\n\n\nTrainers\n0\n20\n0\n\n\nApprentices\n0\n0\n40\n\n\nRecruits\n0\n40\n0\n\n\n\nMinimum Total Wage Cost: $1,098,000\nInsight: The model shows it’s cheapest to start with everyone producing. Then, in May, some producers switch to being trainers to hire and train 40 new recruits, who become apprentices in June, helping to meet the final production targets and the goal of having 140 workers by July."
+  },
+  {
+    "objectID": "mdt_course_1.html#outline",
+    "href": "mdt_course_1.html#outline",
+    "title": "Management Decision Tools",
+    "section": "Outline",
+    "text": "Outline\n\nProblem Solving and Decision Making\nModels of Cost, Revenue, and Profit\nIntroduction to Linear Programming\nProblem Formulation\nA Simple Maximization and Minimization Problem\n\n\nWelcome! Today, we’ll explore how businesses use mathematical models to make better decisions. We’ll start with basic concepts like cost and profit, and then move on to a powerful tool called Linear Programming."
+  },
+  {
+    "objectID": "mdt_course_1.html#what-is-a-mathematical-model",
+    "href": "mdt_course_1.html#what-is-a-mathematical-model",
+    "title": "Management Decision Tools",
+    "section": "What is a Mathematical Model?",
+    "text": "What is a Mathematical Model?\nA model is a simplified representation of a real-world situation. We use it to understand problems and test solutions before applying them in real life.\n\n\nDeterministic Model\n\nAll inputs are known and fixed.\nNo uncertainty involved.\nExample: Calculating the area of a room. You know the length and width for sure.\n\n\nStochastic (Probabilistic) Model\n\nSome inputs are uncertain or random.\nInvolves probabilities.\nExample: Forecasting next week’s sales. It might be affected by weather, holidays, or other random events.\n\n\n\nThink of a deterministic model like a recipe: if you follow the instructions exactly, you get the same cake every time. A stochastic model is more like predicting the weather; you have good information, but you can’t be 100% certain. In business, we often have to choose between a simple, cheap model and a complex, expensive one. Sometimes, simpler is better!"
+  },
+  {
+    "objectID": "mdt_course_1.html#example-1-austin-auto-auction",
+    "href": "mdt_course_1.html#example-1-austin-auto-auction",
+    "title": "Management Decision Tools",
+    "section": "Example 1: Austin Auto Auction",
+    "text": "Example 1: Austin Auto Auction\nLet’s build a model to help an auctioneer set a starting bid for a used car.\nThe Goal: Set the starting bid (B) at 70% of the predicted final winning bid.\nThe Logic:\n\nStart with the car’s original price (P).\nDeduct for age (A): $800 per year.\nDeduct for mileage (M): $0.025 per mile.\n\n\nThis is a classic example of a descriptive model. It takes known information and uses a formula to describe a situation—in this case, a car’s estimated value."
+  },
+  {
+    "objectID": "mdt_course_1.html#example-1-building-the-model",
+    "href": "mdt_course_1.html#example-1-building-the-model",
+    "title": "Management Decision Tools",
+    "section": "Example 1: Building the Model",
+    "text": "Example 1: Building the Model\nFirst, let’s write an equation for the expected winning bid:\n\\[\n\\text{Expected Bid} = P - 800A - 0.025M\n\\]\nNow, we can build the full model for the starting bid (B), which is 70% of that value:\n\\[\n\\begin{aligned}\nB &= 0.7 \\times (\\text{Expected Winning Bid}) \\\\\nB &= 0.7 \\times (P - 800A - 0.025M) \\\\\nB &= 0.7P - 560A - 0.0175M\n\\end{aligned}\n\\]\nThis is our final model! It’s a simple linear equation."
+  },
+  {
+    "objectID": "mdt_course_1.html#example-1-using-the-model",
+    "href": "mdt_course_1.html#example-1-using-the-model",
+    "title": "Management Decision Tools",
+    "section": "Example 1: Using the Model",
+    "text": "Example 1: Using the Model\nQuestion: A car is 4 years old with 60,000 miles. Its original price was $12,500. What should the starting bid be?\nAnswer: We just plug the numbers into our model.\n\nP = $12,500\nA = 4 years\nM = 60,000 miles\n\n\\[\n\\begin{aligned}\nB &= 0.7(12,500) - 560(4) - 0.0175(60,000) \\\\\nB &= 8750 - 2240 - 1050 \\\\\nB &= \\$5,460\n\\end{aligned}\n\\]\nThe auctioneer should set the starting bid at $5,460."
+  },
+  {
+    "objectID": "mdt_course_1.html#example-1-what-are-we-assuming",
+    "href": "mdt_course_1.html#example-1-what-are-we-assuming",
+    "title": "Management Decision Tools",
+    "section": "Example 1: What Are We Assuming?",
+    "text": "Example 1: What Are We Assuming?\nEvery model has assumptions. It’s important to know what they are!\nWhat assumptions does this model make?\n\nOnly three factors matter: Original price, age, and mileage. It ignores things like the car’s condition, color, brand reputation, or if it’s a rare model.\nValue loss is linear: It assumes a car loses exactly $800 in value every year and $0.025 every mile, forever. In reality, this isn’t true. A very old car could have a negative starting bid with this model, which doesn’t make sense!\n\n\nThis is a crucial lesson in modeling: models simplify reality. They are useful tools, but not perfect reflections of the world. Always question the assumptions behind a model."
+  },
+  {
+    "objectID": "mdt_course_1.html#example-2-ponderosa-development-corp.",
+    "href": "mdt_course_1.html#example-2-ponderosa-development-corp.",
+    "title": "Management Decision Tools",
+    "section": "Example 2: Ponderosa Development Corp.",
+    "text": "Example 2: Ponderosa Development Corp.\nThis company builds and sells one style of house. Let’s model its costs, revenue, and profit to find its break-even point—the number of houses it needs to sell just to cover its costs.\n\n\nKey Financials (per house, per month):\n\nSelling Price: $115,000\nVariable Costs (per house):\n\nLand: $55,000\nMaterials: $28,000\nLabor: $20,000\nSales Commission: $2,000\nTotal Variable Cost: $105,000\n\nFixed Costs (per month):\n\nOffice lease, utilities, etc.: $5,000\nEmployee Salaries: $35,000\nTotal Fixed Cost: $40,000\n\n\n\nMonthly Salaries\n\n\n\nEmployee\nSalary\n\n\n\n\nPresident\n$10,000\n\n\nVP, Development\n$6,000\n\n\nVP, Marketing\n$4,500\n\n\nProject Manager\n$5,500\n\n\nController\n$4,000\n\n\nOffice Manager\n$3,000\n\n\nReceptionist\n$2,000\n\n\nTotal\n$35,000\n\n\n\n\n\nHere we distinguish between two types of costs. Variable costs change with the number of houses built (like lumber). Fixed costs stay the same each month whether they sell 1 house or 10 houses (like the president’s salary)."
+  },
+  {
+    "objectID": "mdt_course_1.html#example-2-the-profit-model",
+    "href": "mdt_course_1.html#example-2-the-profit-model",
+    "title": "Management Decision Tools",
+    "section": "Example 2: The Profit Model",
+    "text": "Example 2: The Profit Model\nLet ‘x’ be the number of houses sold in a month.\n1. Revenue Function r(x): How much money comes in? \\[\nr(x) = 115,000x\n\\]\n2. Cost Function c(x): How much money goes out? \\[\nc(x) = \\underbrace{105,000x}_{\\text{Variable Costs}} + \\underbrace{40,000}_{\\text{Fixed Costs}}\n\\]\n3. Profit Function p(x): Revenue minus Cost. \\[\n\\begin{aligned}\np(x) &= r(x) - c(x) \\\\\np(x) &= 115,000x - (105,000x + 40,000) \\\\\np(x) &= 10,000x - 40,000\n\\end{aligned}\n\\]"
+  },
+  {
+    "objectID": "mdt_course_1.html#example-2-break-even-and-profit",
+    "href": "mdt_course_1.html#example-2-break-even-and-profit",
+    "title": "Management Decision Tools",
+    "section": "Example 2: Break-Even and Profit",
+    "text": "Example 2: Break-Even and Profit\nWhat is the break-even point? Break-even is when profit is zero, or when Revenue = Cost. \\[\n\\begin{aligned}\n115,000x &= 105,000x + 40,000 \\\\\n10,000x &= 40,000 \\\\\nx &= 4\n\\end{aligned}\n\\] Ponderosa needs to sell 4 houses per month to break even.\nWhat is the profit if they sell 12 houses? \\[\np(12) = 10,000(12) - 40,000 = \\$80,000\n\\] They would make an $80,000 profit."
+  },
+  {
+    "objectID": "mdt_course_1.html#example-2-visualizing-the-break-even-point",
+    "href": "mdt_course_1.html#example-2-visualizing-the-break-even-point",
+    "title": "Management Decision Tools",
+    "section": "Example 2: Visualizing the Break-Even Point",
+    "text": "Example 2: Visualizing the Break-Even Point\nA graph makes this crystal clear. Let’s plot the Cost and Revenue functions."
+  },
+  {
+    "objectID": "mdt_course_1.html#introduction-to-linear-programming-lp",
+    "href": "mdt_course_1.html#introduction-to-linear-programming-lp",
+    "title": "Management Decision Tools",
+    "section": "Introduction to Linear Programming (LP)",
+    "text": "Introduction to Linear Programming (LP)\nLinear Programming is a powerful mathematical tool used to find the best possible outcome (like maximum profit or minimum cost) in a given situation with certain limits or constraints.\n\nObjective: The goal you want to maximize (e.g., profit) or minimize (e.g., cost).\nConstraints: The rules or limitations you must follow (e.g., limited budget, time, or materials).\nFeasible Solution: Any solution that satisfies all the constraints.\nOptimal Solution: The feasible solution that gives the best possible value for the objective function.\n\n\nThink of it like planning a diet. Your objective is to minimize calorie intake. Your constraints are that you must get enough protein, vitamins, and minerals, and you only have a certain budget for groceries. LP helps you find the perfect meal plan that meets all your needs while keeping calories as low as possible."
+  },
+  {
+    "objectID": "mdt_course_1.html#the-linear-in-linear-programming",
+    "href": "mdt_course_1.html#the-linear-in-linear-programming",
+    "title": "Management Decision Tools",
+    "section": "The “Linear” in Linear Programming",
+    "text": "The “Linear” in Linear Programming\nSo, what makes it “linear”?\n\nLinear Functions: Each variable is simple (like x or y, not \\(x^2\\) or \\(\\sqrt{y}\\)) and is multiplied by a constant.\n\nLinear: 3A + 5B\nNot Linear: 3A² + 5/B\n\nLinear Constraints: These are linear functions restricted by inequalities or equalities.\n\nLinear: 2x + 3y ≤ 50\nLinear: A = 100\n\n\nThis linearity makes the problems solvable with efficient methods."
+  },
+  {
+    "objectID": "mdt_course_1.html#lp-problem-formulation-the-blueprint",
+    "href": "mdt_course_1.html#lp-problem-formulation-the-blueprint",
+    "title": "Management Decision Tools",
+    "section": "LP Problem Formulation: The Blueprint",
+    "text": "LP Problem Formulation: The Blueprint\nEvery LP problem follows the same basic structure. Your goal is to translate a real-world problem into this mathematical format.\n\n\n\n\n\nflowchart TD\n    A[Start: Understand the Business Problem] --&gt; B{What are the Decisions to be Made?};\n    B --&gt; C[Define Decision Variables &lt;br&gt; e.g., x₁, x₂];\n    C --&gt; D{What is the Goal? &lt;br&gt; Maximize or Minimize?};\n    D --&gt; E[Define the Objective Function &lt;br&gt; e.g., Profit = 10x₁ + 20x₂];\n    E --&gt; F{What are the Limitations? &lt;br&gt; Resources, Demands?};\n    F --&gt; G[Define the Constraints &lt;br&gt; e.g., 2x₁ + 3x₂ ≤ 100];\n    G --&gt; H[State Non-Negativity &lt;br&gt; e.g., x₁, x₂ ≥ 0];\n    H --&gt; I[Solve the Model for the &lt;br&gt; Optimal Solution];"
+  },
+  {
+    "objectID": "mdt_course_1.html#lp-example-3-md-chemicals-minimization",
+    "href": "mdt_course_1.html#lp-example-3-md-chemicals-minimization",
+    "title": "Management Decision Tools",
+    "section": "LP Example 3: M&D Chemicals (Minimization)",
+    "text": "LP Example 3: M&D Chemicals (Minimization)\nProblem: M&D Chemicals needs to produce two products, A and B, at the lowest possible cost while meeting certain production demands.\n\nProduction Target: Total production of A and B must be at least 350 gallons.\nCustomer Order: Must produce at least 125 gallons of A.\nResource Limit: Only 600 hours of processing time are available.\n\nProduct A takes 2 hours/gallon.\nProduct B takes 1 hour/gallon.\n\nCosts:\n\nProduct A costs $2/gallon.\nProduct B costs $3/gallon.\n\n\nObjective: Minimize total production cost."
+  },
+  {
+    "objectID": "mdt_course_1.html#example-3-md-chemicals-formulation",
+    "href": "mdt_course_1.html#example-3-md-chemicals-formulation",
+    "title": "Management Decision Tools",
+    "section": "Example 3: M&D Chemicals Formulation",
+    "text": "Example 3: M&D Chemicals Formulation\nLet A = number of gallons of product A, and B = number of gallons of product B.\nMinimize Cost: \\[\n\\text{Min } 2A + 3B\n\\]\nSubject to (s.t.): \\[\n\\begin{array}{rll}\nA &\\ge 125 & \\text{(Customer Demand)} \\\\\nA + B &\\ge 350 & \\text{(Total Production)} \\\\\n2A + B &\\le 600 & \\text{(Processing Time)} \\\\\nA, B &\\ge 0 & \\text{(Non-negativity)}\n\\end{array}\n\\]\nOptimal Solution: Produce 250 gallons of A and 100 gallons of B for a minimum cost of $800."
+  },
+  {
+    "objectID": "mdt_course_1.html#example-3-visualizing-the-md-solution",
+    "href": "mdt_course_1.html#example-3-visualizing-the-md-solution",
+    "title": "Management Decision Tools",
+    "section": "Example 3: Visualizing the M&D Solution",
+    "text": "Example 3: Visualizing the M&D Solution\nThe valid production plans are in the shaded “Feasible Region”. The model finds the corner point in this region with the lowest cost."
+  },
+  {
+    "objectID": "mdt_course_1.html#lp-example-4-iron-works-inc.-maximization",
+    "href": "mdt_course_1.html#lp-example-4-iron-works-inc.-maximization",
+    "title": "Management Decision Tools",
+    "section": "LP Example 4: Iron Works, Inc. (Maximization)",
+    "text": "LP Example 4: Iron Works, Inc. (Maximization)\nProblem: Iron Works makes two products from steel. They want to maximize their profit for the month.\n\nResource Limit: 2000 pounds of steel available.\n\nProduct 1 needs 2 lbs of steel.\nProduct 2 needs 3 lbs of steel.\n\nContract: Must make at least 60 units of Product 1.\nProduction Limit: Can make at most 720 units of Product 2.\nProfits:\n\nProduct 1: $100 per unit.\nProduct 2: $200 per unit.\n\n\nObjective: Maximize total profit."
+  },
+  {
+    "objectID": "mdt_course_1.html#example-4-iron-works-formulation",
+    "href": "mdt_course_1.html#example-4-iron-works-formulation",
+    "title": "Management Decision Tools",
+    "section": "Example 4: Iron Works Formulation",
+    "text": "Example 4: Iron Works Formulation\nLet \\(x_1\\) = number of units of Product 1, and \\(x_2\\) = number of units of Product 2.\nMaximize Profit: \\[\n\\text{Max } 100x_1 + 200x_2\n\\]\nSubject to (s.t.): \\[\n\\begin{array}{rll}\n2x_1 + 3x_2 &\\le 2000 & \\text{(Steel limit)} \\\\\nx_1 &\\ge 60 & \\text{(Contract)} \\\\\nx_2 &\\le 720 & \\text{(Production limit)} \\\\\nx_1, x_2 &\\ge 0 & \\text{(Non-negativity)}\n\\end{array}\n\\]\nOptimal Solution: From solver analysis, the best plan is to make 60 units of Product 1 and 626.67 units of Product 2."
+  },
+  {
+    "objectID": "mdt_course_1.html#example-4-visualizing-the-iron-works-solution",
+    "href": "mdt_course_1.html#example-4-visualizing-the-iron-works-solution",
+    "title": "Management Decision Tools",
+    "section": "Example 4: Visualizing the Iron Works Solution",
+    "text": "Example 4: Visualizing the Iron Works Solution\nAgain, we can map out the “Feasible Region”. The goal is to find the corner point that gives the highest profit."
+  },
+  {
+    "objectID": "bullying.html#what-is-bullying",
+    "href": "bullying.html#what-is-bullying",
+    "title": "Bullying",
+    "section": "What is Bullying?",
+    "text": "What is Bullying?\nBullying is more than just a conflict or disagreement. It’s a pattern of aggressive behavior. It involves certain key characteristics."
+  },
+  {
+    "objectID": "bullying.html#defining-bullying",
+    "href": "bullying.html#defining-bullying",
+    "title": "Bullying",
+    "section": "Defining Bullying",
+    "text": "Defining Bullying\nKey Characteristics\n\nImbalance of Power:\n\nThe aggressor has more power, real or perceived.\nThis could be physical strength, social status, or access to embarrassing information.\n\nRepetition:\n\nBullying behaviors occur multiple times.\nIt’s not an isolated incident but a pattern over time.\n\nIntent to Harm:\n\nThe primary goal is to cause distress, fear, or damage.\nThis harm can be physical, emotional, social, or reputational.\n\n\n\nHighlight that all three elements usually need to be present for an interaction to be classified as bullying. An isolated unkind act, while wrong, isn’t necessarily bullying. The power imbalance is crucial, as it makes it difficult for the victim to defend themselves effectively."
+  },
+  {
+    "objectID": "bullying.html#visualizing-bullying-characteristics",
+    "href": "bullying.html#visualizing-bullying-characteristics",
+    "title": "Bullying",
+    "section": "Visualizing Bullying Characteristics",
+    "text": "Visualizing Bullying Characteristics\n\n\n\n\n\n\n\nG\n\n\n\nA\n\nBullying\n\n\n\nB\n\nImbalance of Power\n\n\n\nA-&gt;B\n\n\n\n\n\nC\n\nRepetition\n\n\n\nA-&gt;C\n\n\n\n\n\nD\n\nIntent to Harm\n\n\n\nA-&gt;D\n\n\n\n\n\nB1\n\nPerceived Advantage\n\n\n\nB-&gt;B1\n\n\nPhysical, Social, Digital\n\n\n\nC1\n\nPattern of Behavior\n\n\n\nC-&gt;C1\n\n\nOver Time\n\n\n\nD1\n\nDesire to Cause Distress\n\n\n\nD-&gt;D1\n\n\nEmotional, Physical, Social\n\n\n\n\n\n\n\n\n\nThis diagram visually represents the three core components that define bullying behavior. It helps students quickly grasp the interconnected nature of these characteristics."
+  },
+  {
+    "objectID": "bullying.html#types-of-bullying-1",
+    "href": "bullying.html#types-of-bullying-1",
+    "title": "Bullying",
+    "section": "Types of Bullying (1)",
+    "text": "Types of Bullying (1)\n1. Physical Bullying\n\nDirect harm: Hitting, kicking, pushing, tripping.\nProperty damage: Destroying belongings, stealing.\nIntimidation: Threatening gestures, invading personal space.\n\n2. Verbal Bullying\n\nWords as weapons: Teasing, name-calling, insults.\nThreats: Expressing intent to harm or cause fear.\nDerogatory remarks: Spreading rumors, prejudiced comments."
+  },
+  {
+    "objectID": "bullying.html#types-of-bullying-2",
+    "href": "bullying.html#types-of-bullying-2",
+    "title": "Bullying",
+    "section": "Types of Bullying (2)",
+    "text": "Types of Bullying (2)\n3. Social/Relational Bullying\n\nExclusion: Deliberately leaving someone out of activities.\nRumor spreading: Damaging reputation, gossiping.\nManipulation: Damaging friendships, influencing others to dislike someone.\n\n4. Cyberbullying\n\nOnline harassment: Mean messages, hurtful posts, spreading rumors online.\nImpersonation: Pretending to be someone else to cause trouble.\nNon-consensual sharing: Distributing private images or information without permission.\n\n\nEmphasize that cyberbullying is particularly insidious because it can reach victims 24/7 and content can be permanent. Also, mention that these types can often overlap. For example, verbal bullying can easily turn into cyberbullying if comments are posted online."
+  },
+  {
+    "objectID": "bullying.html#why-does-bullying-happen",
+    "href": "bullying.html#why-does-bullying-happen",
+    "title": "Bullying",
+    "section": "Why Does Bullying Happen?",
+    "text": "Why Does Bullying Happen?\n\nIndividual Factors:\n\nInsecurity or low self-esteem in the bully.\nLack of empathy or understanding of others’ feelings.\nPersonal history of being bullied or witnessing violence.\n\nSocial & Environmental Factors:\n\nPeer pressure and desire for social dominance.\nLack of effective supervision by adults.\nCultural norms that tolerate aggression.\nStressful home environments or lack of emotional support."
+  },
+  {
+    "objectID": "bullying.html#why-do-people-bully",
+    "href": "bullying.html#why-do-people-bully",
+    "title": "Bullying",
+    "section": "Why Do People Bully?",
+    "text": "Why Do People Bully?\n\n\n\n\n\n\n\nG\n\n\n\nBully's Behavior\n\nBully's Behavior\n\n\n\nSeek Control/Power\n\nSeek Control/Power\n\n\n\nSeek Control/Power-&gt;Bully's Behavior\n\n\n\n\n\nInsecurity/Low Self-Esteem\n\nInsecurity/Low Self-Esteem\n\n\n\nInsecurity/Low Self-Esteem-&gt;Bully's Behavior\n\n\n\n\n\nPast Victimization\n\nPast Victimization\n\n\n\nPast Victimization-&gt;Bully's Behavior\n\n\n\n\n\nLack of Empathy\n\nLack of Empathy\n\n\n\nLack of Empathy-&gt;Bully's Behavior\n\n\n\n\n\nPeer Pressure\n\nPeer Pressure\n\n\n\nPeer Pressure-&gt;Bully's Behavior\n\n\n\n\n\nHome Environment\n\nHome Environment\n\n\n\nHome Environment-&gt;Bully's Behavior\n\n\n\n\n\nAttention Seeking\n\nAttention Seeking\n\n\n\nAttention Seeking-&gt;Bully's Behavior\n\n\n\n\n\n\n\n\n\n\n\nThe Graphviz diagram illustrates common motivations. While these factors explain why someone might bully, they never excuse the behavior. Understanding these motivations can help in developing targeted interventions. For example, addressing a bully’s insecurity might be more effective than simply punishing them."
+  },
+  {
+    "objectID": "bullying.html#impact-of-bullying-on-victims-1",
+    "href": "bullying.html#impact-of-bullying-on-victims-1",
+    "title": "Bullying",
+    "section": "Impact of Bullying on Victims (1)",
+    "text": "Impact of Bullying on Victims (1)\n\nMental and Emotional Health:\n\nAnxiety, depression, and increased stress levels.\nLow self-esteem, feelings of worthlessness.\nIncreased risk of self-harm and suicidal thoughts.\n\nPhysical Health:\n\nSleep disturbances, headaches, stomach aches.\nWeakened immune system due to chronic stress."
+  },
+  {
+    "objectID": "bullying.html#impact-of-bullying-on-victims-2",
+    "href": "bullying.html#impact-of-bullying-on-victims-2",
+    "title": "Bullying",
+    "section": "Impact of Bullying on Victims (2)",
+    "text": "Impact of Bullying on Victims (2)\n\nAcademic Performance:\n\nDifficulty concentrating, lower grades.\nIncreased absenteeism or school refusal.\n\nSocial Development:\n\nSocial isolation, difficulty forming trusting relationships.\nFear of social situations, withdrawal from activities.\n\n\n\n\n\n\n\n\nNote\n\n\nThe long-term psychological impact can be as devastating, if not more so, than immediate physical harm. Support is crucial!\n\n\n\n\nEmphasize the serious public health implications of bullying. It’s not just a “childhood phase” but a significant contributor to mental health issues that can persist into adulthood."
+  },
+  {
+    "objectID": "bullying.html#impact-of-bullying-on-perpetrators",
+    "href": "bullying.html#impact-of-bullying-on-perpetrators",
+    "title": "Bullying",
+    "section": "Impact of Bullying on Perpetrators",
+    "text": "Impact of Bullying on Perpetrators\nWhile victims suffer visible harm, bullies themselves also face significant negative consequences.\n\nBehavioral Issues:\n\nIncreased risk of substance abuse, and criminal behavior later in life.\nDifficulty maintaining healthy adult relationships.\n\nSocial Repercussions:\n\nNegative perceptions from peers, teachers, and adults.\nPotential for social isolation or association with other aggressive individuals.\n\nAcademic & Professional Setbacks:\n\nDisciplinary actions, suspension, expulsion from school.\nDifficulties finding employment due to behavioral history.\n\n\n\nIt’s important to understand that bullying is often a cry for help or a learned behavior. Addressing the bully’s issues, rather than just punishing them, is essential for breaking the cycle."
+  },
+  {
+    "objectID": "bullying.html#signs-someone-is-being-bullied-1",
+    "href": "bullying.html#signs-someone-is-being-bullied-1",
+    "title": "Bullying",
+    "section": "Signs Someone is Being Bullied (1)",
+    "text": "Signs Someone is Being Bullied (1)\nBehavioral Changes\n\nSudden withdrawal from social activities or interests.\nChanges in eating or sleeping patterns (e.g., nightmares, loss of appetite).\nIncreased irritability, unexplained outbursts.\nAvoiding school or specific places.\n\nEmotional Distress\n\nAppearing anxious, sad, or depressed.\nFrequent crying spells or mood swings.\nExpressing feelings of helplessness or hopelessness."
+  },
+  {
+    "objectID": "bullying.html#signs-someone-is-being-bullied-2",
+    "href": "bullying.html#signs-someone-is-being-bullied-2",
+    "title": "Bullying",
+    "section": "Signs Someone is Being Bullied (2)",
+    "text": "Signs Someone is Being Bullied (2)\nPhysical Signs\n\nUnexplained bruises, cuts, or scratches.\nMissing or damaged personal belongings.\nFrequent reasons to avoid school or class.\n\nAcademic Decline\n\nDrop in grades or sudden disinterest in schoolwork.\nDifficulty concentrating in class.\nReluctance to participate in class discussions.\n\n\nStress the importance of observation and empathy. Not all signs will be present, and some might be subtle. These are general indicators, and any significant change in behavior warrants concern and a gentle approach."
+  },
+  {
+    "objectID": "bullying.html#how-to-avoid-bullying",
+    "href": "bullying.html#how-to-avoid-bullying",
+    "title": "Bullying",
+    "section": "How to Avoid Bullying",
+    "text": "How to Avoid Bullying\nBuilding Resilience and Safety\n\nBoost Self-Esteem:\n\nFocus on strengths, pursue hobbies, celebrate small victories.\nConfidence can make you less of a target.\n\nDevelop Assertiveness:\n\nLearn to say “no” firmly and clearly.\nMaintain eye contact and use a steady voice.\n\nBuild a Strong Support Network:\n\nSurround yourself with positive friends and trusted adults.\nStrength in numbers, and people to confide in.\n\n\n\nEmphasize that “avoiding bullying” does not mean the victim is at fault. These are strategies for self-protection and empowerment, not blame. Also, discuss online safety: never share personal information, report harmful content immediately, and block bullies."
+  },
+  {
+    "objectID": "bullying.html#what-to-do-if-bullied-1",
+    "href": "bullying.html#what-to-do-if-bullied-1",
+    "title": "Bullying",
+    "section": "What to Do If Bullied (1)",
+    "text": "What to Do If Bullied (1)\nTaking Action and Seeking Help\n\nSpeak Up:\n\nTell a trusted adult: parent, teacher, counselor, coach.\nDon’t keep it a secret; secrets give power to the bully.\n\nDocument Everything:\n\nKeep records of incidents: dates, times, locations, what happened, who was involved.\nSave messages, screenshots if it’s cyberbullying."
+  },
+  {
+    "objectID": "bullying.html#what-to-do-if-bullied-2",
+    "href": "bullying.html#what-to-do-if-bullied-2",
+    "title": "Bullying",
+    "section": "What to Do If Bullied (2)",
+    "text": "What to Do If Bullied (2)\nTaking Action and Seeking Help\n\nStay Calm & Walk Away:\n\nReacting emotionally can sometimes fuel the bully.\nIf possible, remove yourself from the situation.\n\nPractice Self-Care:\n\nEngage in activities you enjoy, get enough rest, eat well.\nIt’s important to prioritize your well-being.\n\n\n\nReiterate the message: “It’s not your fault, and you do not deserve to be bullied.” Provide actionable steps and reassure students that seeking help is a sign of strength, not weakness. Discuss school policies and reporting mechanisms briefly."
+  },
+  {
+    "objectID": "bullying.html#how-to-stop-the-bully-cycle-1",
+    "href": "bullying.html#how-to-stop-the-bully-cycle-1",
+    "title": "Bullying",
+    "section": "How to Stop the Bully Cycle (1)",
+    "text": "How to Stop the Bully Cycle (1)\nCollective Responsibility\n\nStudents: Intervention:\n\nDon’t be a passive observer; your inaction can empower the bully.\nSupport the victim, distract the bully, or report the incident.\n\nStudents: Promote Empathy & Kindness:\n\nEducate and encourage understanding of others’ feelings.\nOrganize campaigns for kindness and inclusion."
+  },
+  {
+    "objectID": "bullying.html#how-to-stop-the-bully-cycle-2",
+    "href": "bullying.html#how-to-stop-the-bully-cycle-2",
+    "title": "Bullying",
+    "section": "How to Stop the Bully Cycle (2)",
+    "text": "How to Stop the Bully Cycle (2)\nCollective Responsibility\n\nSchools: Establish Clear Policies:\n\nSchools and institutions need explicit anti-bullying policies.\nConsistent enforcement and consequences are crucial.\n\nSchools and Teachers: Open Communication:\n\nFoster environments where students feel safe to report.\nAdults must listen actively and take concerns seriously.\n\n\n\nEmphasize the power of the bystander. Changing bystander behavior is one of the most effective ways to reduce bullying, as bullies often thrive on the perceived approval or silence of others."
+  },
+  {
+    "objectID": "bullying.html#lets-stop-bullying",
+    "href": "bullying.html#lets-stop-bullying",
+    "title": "Bullying",
+    "section": "Let’s Stop Bullying",
+    "text": "Let’s Stop Bullying\nFostering a Culture of Respect\nLet’s build communities where everyone feels safe, valued, and respected.\n\\[\n\\text{Empathy} + \\text{Respect} \\times \\text{Action} = \\text{Safer Community}\n\\]\n\n“Stand Up, Speak Out”:\n\nYour voice has power. Use it to defend others and challenge bullying.\n\n“Kindness is Contagious”:\n\nOne act of kindness can inspire many more, creating a ripple effect.\n\n“Celebrate Differences”:\n\nDiversity enriches us all; embracing our unique qualities makes our community stronger.\n\n“We Are All In This Together”:\n\nA safe environment is a shared responsibility. Support each other.\n\n\n\nThe LaTeX formula is a symbolic representation, not a literal mathematical equation, designed to be impactful. Focus on the core messages and how they translate into daily actions and mindset shifts."
+  },
+  {
+    "objectID": "bullying.html#call-to-action",
+    "href": "bullying.html#call-to-action",
+    "title": "Bullying",
+    "section": "Call to Action",
+    "text": "Call to Action\nBe the Change\n\nEducate Yourself: Continue to learn about bullying and its impact.\nIntervene Safely: If you see bullying, intervene if safe, or report it to an adult.\nBe an Ally: Support those who are being bullied; let them know they’re not alone.\nPromote Inclusivity: Welcome new people, stand against exclusion, and champion diversity.\nSpeak Up: If you or someone you know is being bullied, reach out. Help is available.\n\n\nEnd with a strong, empowering message. Provide specific, actionable steps tailored to undergraduate students. Maybe suggest campus resources like counseling services, student support offices, or specific anti-bullying initiatives."
+  },
+  {
+    "objectID": "9_things.html#wisdom-from-edward-packard-2025",
+    "href": "9_things.html#wisdom-from-edward-packard-2025",
+    "title": "Nine Things I Learned in Ninety Years — Wisdom for a Lifetime",
+    "section": "Wisdom from Edward Packard (© 2025)",
+    "text": "Wisdom from Edward Packard (© 2025)\nPrepared by Imron Rosyadi for students."
+  },
+  {
+    "objectID": "9_things.html#introduction-learning-lifes-big-lessons",
+    "href": "9_things.html#introduction-learning-lifes-big-lessons",
+    "title": "Nine Things I Learned in Ninety Years — Wisdom for a Lifetime",
+    "section": "Introduction: Learning Life’s Big Lessons",
+    "text": "Introduction: Learning Life’s Big Lessons\n\nThe author, Edward Packard, looks back at age ninety.\nHe realized he “went off the rails” often, and luck helped him survive.\nMany mistakes could have been avoided if he’d grasped a few principles sooner.\nThis presentation shares those 9 things, hoping you learn them earlier!\n\n\nStart by making it relatable: everyone makes mistakes, but learning from others can save you trouble. Packard offers a lifetime of wisdom distilled into actionable advice."
+  },
+  {
+    "objectID": "9_things.html#be-self-constituted-build-your-inner-compass",
+    "href": "9_things.html#be-self-constituted-build-your-inner-compass",
+    "title": "Nine Things I Learned in Ninety Years — Wisdom for a Lifetime",
+    "section": "1) Be Self-Constituted: Build Your Inner Compass",
+    "text": "1) Be Self-Constituted: Build Your Inner Compass\n\nWhat it means: Being “consistent, unified, and whole” – having integrity.\nIt’s about setting your own “virtuous moral framework” to guide your actions.\nThink of good values like kindness, honesty, and fairness.\nWithout it, you’re “ruled by a heap of impulses”—a bit of a mess.\n\n\n\nHow your moral framework works:\n\n\n\n\n\ngraph TD\n    A[Virtuous Moral Framework] --&gt; B{Decision Making};\n    B --&gt; C[Consistent Actions];\n    C --&gt; D[Integrity and Self-Assurance];\n    E[Impulses] --x B;\n    style A fill:#DCEFFB,stroke:#333,stroke-width:1px\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nThink of a raft on a river:\nYou’re poling, trying to steer the best course. Your “self-constitution” is your strong paddle and clear direction.\n\n\n\n\n\nReal-world connection: Imagine facing peer pressure to cheat. If you’re self-constituted with a moral framework of honesty, you’ll naturally decline because it aligns with your core principles, not just fear of getting caught. Kant’s “universal law” suggests acting only on principles you’d want everyone to follow."
+  },
+  {
+    "objectID": "9_things.html#keep-awake-and-aware-dont-sleepwalk-through-life",
+    "href": "9_things.html#keep-awake-and-aware-dont-sleepwalk-through-life",
+    "title": "Nine Things I Learned in Ninety Years — Wisdom for a Lifetime",
+    "section": "2) Keep Awake and Aware: Don’t Sleepwalk Through Life",
+    "text": "2) Keep Awake and Aware: Don’t Sleepwalk Through Life\n\nSleepwalking: Doing things without thinking about their purpose or consequences.\nIt affects judgment, even in smart people or leaders making big decisions (like leaders before WWI).\nAvoiding “mental lethargy” means confronting uncomfortable facts instead of ignoring them.\n\n\n\nBeing Awake & Aware\n\nFully present in the moment.\nUnderstand why you’re doing something.\nConsider effects on self and others.\nMakes you “a buddha” (Thich Nhat Hanh: understanding, compassionate, loving).\n\n\nSleepwalking\n\nAutopilot mode.\nIgnoring unpleasant facts.\nCan lead to catastrophic outcomes.\nFailure to weigh risks.\n\n\n\n\n\n\n\n\nWarning\n\n\nHabitual sleepwalking can lead to acting (or not acting) in ways that cause obvious future problems if you were truly awake.\n\n\n\n\nContemporary example: Mindlessly scrolling social media for hours without a purpose is a form of sleepwalking. Being awake means setting an intention, like “I will spend 15 minutes checking news, then do something productive.” Think about how easily we can just react instead of choose."
+  },
+  {
+    "objectID": "9_things.html#consider-what-others-may-be-thinking-and-feeling",
+    "href": "9_things.html#consider-what-others-may-be-thinking-and-feeling",
+    "title": "Nine Things I Learned in Ninety Years — Wisdom for a Lifetime",
+    "section": "3) Consider What Others May Be Thinking and Feeling",
+    "text": "3) Consider What Others May Be Thinking and Feeling\n\nEmpathy: Sensing how others feel.\nTheory of Mind: Guessing how they are thinking.\nFor a long time, the author only thought about his own best interests.\nHe learned that considering others helps avoid awkward moments and builds good relationships."
+  },
+  {
+    "objectID": "9_things.html#consider-what-others-may-be-thinking-and-feeling-1",
+    "href": "9_things.html#consider-what-others-may-be-thinking-and-feeling-1",
+    "title": "Nine Things I Learned in Ninety Years — Wisdom for a Lifetime",
+    "section": "3) Consider What Others May Be Thinking and Feeling",
+    "text": "3) Consider What Others May Be Thinking and Feeling\nInteraction Flow\n\n\n\n\n\n\n\nG\n\n\n\nYour Action/Words\n\nYour Action/Words\n\n\n\nTheir Thoughts\n\nTheir Thoughts\n\n\n\nYour Action/Words-&gt;Their Thoughts\n\n\nConsider:\n\n\n\nYour Goal for Interaction\n\nYour Goal for Interaction\n\n\n\nYour Action/Words-&gt;Your Goal for Interaction\n\n\n\n\n\nTheir Feelings\n\nTheir Feelings\n\n\n\nTheir Thoughts-&gt;Their Feelings\n\n\nLeads to:\n\n\n\nTheir Reaction\n\nTheir Reaction\n\n\n\nTheir Feelings-&gt;Their Reaction\n\n\nInfluences:\n\n\n\nYour Goal for Interaction-&gt;Their Reaction\n\n\nCompare with:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTip\n\n\nBefore speaking or acting, pause for a few seconds. Ask yourself: 1. How would I feel if someone said/did this to me? 2. What might be going on in their mind right now? This small pause can prevent big regrets.\n\n\n\n\nClassic example: The author talks about making a “witty” remark about someone’s boat that he now realizes was crude and offensive. He thought it would impress, but he didn’t consider how it would land for the other person."
+  },
+  {
+    "objectID": "9_things.html#make-happiness-your-default-state-of-mind",
+    "href": "9_things.html#make-happiness-your-default-state-of-mind",
+    "title": "Nine Things I Learned in Ninety Years — Wisdom for a Lifetime",
+    "section": "4) Make Happiness Your Default State of Mind",
+    "text": "4) Make Happiness Your Default State of Mind\n\nCan happiness be simple? The Dalai Lama suggests yes!\nIt’s less about complex meditation and more about how you interact with the world.\nKey ingredients: Love for others, respect for their rights/dignity, compassion, and self-restraint.\n\n\\[ \\text{Happiness} = (\\text{Love Given} + \\text{Compassion}) \\times \\text{Responsibility} \\]\n\nEven more important: The warmth and affection we give is more crucial than what we receive.\nTo love is more important than to be loved.\n\n\n\n\n\n\n\nNote\n\n\nThis perspective suggests happiness isn’t something you get, but something you practice by giving of yourself positively.\n\n\n\n\nPractical application: Instead of waiting for good things to happen to make you happy, actively seek opportunities to be kind, helpful, or understanding. Helping a classmate, volunteering, or simply listening to a friend can activate this “giving” happiness."
+  },
+  {
+    "objectID": "9_things.html#seek-an-eternal-perspective-look-beyond-yourself",
+    "href": "9_things.html#seek-an-eternal-perspective-look-beyond-yourself",
+    "title": "Nine Things I Learned in Ninety Years — Wisdom for a Lifetime",
+    "section": "5) Seek an Eternal Perspective: Look Beyond Yourself",
+    "text": "5) Seek an Eternal Perspective: Look Beyond Yourself\n\nWhat it is: Expanding your view beyond your ego to include others, nature, and the entire cosmos.\nPhilosopher Spinoza found joy and calmness (equanimity) in understanding the natural order.\nThis perspective is like “compassion without attachment” – you’re active, but not controlled by fear or desire for specific outcomes.\n\n\n\nBenefits of an Eternal Perspective\n\nReduces anger, envy, pride.\nEmotional disengagement from specific outcomes can bring inner peace.\nYou can stay “alive, in action” without being swept away by desires or fears.\nSee the beauty in the journey, not just the destination (like the snow leopard trek).\n\n\nPotential Challenges (and replies from text)\n\n“Will life be colorless?” “Won’t it drain excitement?”\n\nReply: Not necessarily. The expedition itself (the looking at nature, the walking) was wonderful, even without seeing the snow leopard. The monk’s “Isn’t that wonderful!” when they found nothing showed release from attachment.\n\n“Is it at odds with self-interest?”\n\nReply: Spinoza would say it’s a necessary condition for a truly fulfilling life, bringing equanimity and joy.\n\n\n\n\nModern thinking: Think about climate change or conservation. An “eternal perspective” acknowledges our tiny place in a vast, ongoing system and encourages actions that benefit future generations or the planet, not just immediate personal gain."
+  },
+  {
+    "objectID": "9_things.html#guard-against-self-deception-be-honest-with-yourself",
+    "href": "9_things.html#guard-against-self-deception-be-honest-with-yourself",
+    "title": "Nine Things I Learned in Ninety Years — Wisdom for a Lifetime",
+    "section": "6) Guard Against Self-Deception: Be Honest With Yourself",
+    "text": "6) Guard Against Self-Deception: Be Honest With Yourself\n\nSelf-deception: When your beliefs and decisions are skewed by biased emotions, wishful thinking, or subconscious justifications.\nConfirmation bias: A common example where you favor information that supports what you already believe, ignoring anything that contradicts it.\nEven brilliant people fall prey to it, using their intellect to justify flawed conclusions.\n\n\n\n\n\n\n\nWarning\n\n\n“Certitude is not the test of certainty.” – Oliver Wendell Holmes, Jr. Feeling sure about something doesn’t mean you’re right.\n\n\n\n\nFrancis Bacon: The mind “pulls everything else into agreement with and support” for its favored views.\nDaniel Kahneman: Strong beliefs are often sustained by a “community of likeminded believers.”"
+  },
+  {
+    "objectID": "9_things.html#guard-against-self-deception-be-honest-with-yourself-1",
+    "href": "9_things.html#guard-against-self-deception-be-honest-with-yourself-1",
+    "title": "Nine Things I Learned in Ninety Years — Wisdom for a Lifetime",
+    "section": "6) Guard Against Self-Deception: Be Honest With Yourself",
+    "text": "6) Guard Against Self-Deception: Be Honest With Yourself\nInteractive Demo: See how we can selectively ‘confirm’ a belief\n\n\nAll observations: [4.59, -4.62, -0.87, -1.65, 6.05, 5.15, 8.38, -3.7, 1.33, -4.55, -1.72, 2.58, -4.6, -2.02, 4.75, 3.17, -1.69, 3.84, 7.14, -4.9]\n\nEvidence confirming belief (positive outcomes): [4.59, 6.05, 5.15, 8.38, 1.33, 2.58, 4.75, 3.17, 3.84, 7.14]\n  (Count: 10 out of 20 total)\n\n\n\n\nExplaining the demo: This simple code shows how easily we can zero in on data that supports our existing ideas (confirming_evidence), potentially ignoring other data. This is what confirmation bias does in real life – leading us to believe we’re right because we only “see” what proves it."
+  },
+  {
+    "objectID": "9_things.html#how-to-confront-mortality-facing-lifes-end",
+    "href": "9_things.html#how-to-confront-mortality-facing-lifes-end",
+    "title": "Nine Things I Learned in Ninety Years — Wisdom for a Lifetime",
+    "section": "7) How to Confront Mortality: Facing Life’s End",
+    "text": "7) How to Confront Mortality: Facing Life’s End\n\nStoics (ancient Greeks/Romans): Contemplate death often to not be shocked when it comes.\nSpinoza’s approach (author’s preference): Find peace and self-control by gaining an “eternal perspective” through knowledge.\nRejects supernatural claims; focuses on the natural world.\n\n\n\nFamous Views on Mortality\n\nGeorge Eliot: “I try to delight in the sunshine that will be when I shall never see it any more.” Focus on what endures beyond your individual life.\nBertrand Russell: Overcome fear of death by making your “interests gradually wider and more impersonal,” merging with “universal life.”\n\n\nFearlessness & Acceptance\n\nKatharine Hepburn: “I look forward to oblivion.” A brave acceptance of the end.\nMichel de Montaigne: “I want death to find me planting my cabbages, neither worrying about it, nor about the unfinished gardening.” Live fully, without preoccupation.\n\n\n\n\n\n\n\n\nImportant\n\n\nConfronting mortality isn’t about being gloomy; it’s about shifting your focus from the “small bundle of facts that make our own personality” to something larger, which can bring calmness and richer participation in life.\n\n\n\n\nPersonal reflection: How can thinking about your own limited time make you value what you do each day more? This isn’t about dread, but about thoughtful living and prioritizing."
+  },
+  {
+    "objectID": "9_things.html#what-an-outsized-role-is-played-by-luck",
+    "href": "9_things.html#what-an-outsized-role-is-played-by-luck",
+    "title": "Nine Things I Learned in Ninety Years — Wisdom for a Lifetime",
+    "section": "8) What an Outsized Role is Played by Luck",
+    "text": "8) What an Outsized Role is Played by Luck\n\nLuck isn’t just winning the lottery: It includes your genetic make-up, family, where you grew up, and random opportunities.\nActor Wallace Shawn noted that being born to “well-heeled, sophisticated, highly intelligent” parents is a form of luck.\nEven basic needs like peace and food are forms of luck for many.\nKey takeaway: If you’ve achieved a lot, luck played a significant part in the opportunities you had.\n\n\n\n\n\n\ngraph TD\n    A[Genetic Makeup] --&gt; B(Your Disposition);\n    C[Family & Upbringing] --&gt; B;\n    D[Opportunities & Resources] --&gt; B;\n    E[Random Events] --&gt; B;\n    B --&gt; F[Life Path & Accomplishments];\n    style F fill:#FEE7D8,stroke:#333,stroke-width:1px\n\n\n\n\n\n\n\nImplications of understanding luck:\n\nIf lucky: Cultivate humility and generosity.\nIf unlucky: Cultivate compassion for yourself and “irrepressible resolve.”\n\n\n\nDiscussion point: This isn’t to say hard work isn’t important, but it rebalances the perspective. A student who excels in school likely had the luck of a stable home environment, good teachers, and innate ability. Recognizing this can foster less judgment of others and more desire to create opportunities."
+  },
+  {
+    "objectID": "9_things.html#to-consider-what-you-have-at-the-moment",
+    "href": "9_things.html#to-consider-what-you-have-at-the-moment",
+    "title": "Nine Things I Learned in Ninety Years — Wisdom for a Lifetime",
+    "section": "9) To Consider What You Have at the Moment",
+    "text": "9) To Consider What You Have at the Moment\n\nBe dynamic and take initiative, but also mindful.\nSometimes, it’s vital to pause and appreciate what’s right in front of you.\nWe often don’t truly value things until they are lost.\n\n\\[\\text{Value Lost} &gt; \\text{Value Possessed}\\]\nThis isn’t a strict formula, but a common human tendency.\n\nShakespeare (Much Ado About Nothing):\nThat what we have we prize not to the worth Whiles we enjoy it, but being lacked and lost, Why, then we rack the value, then we find The virtue that possession would not show us While it was ours.\n\n\n\n\n\n\n\nTip\n\n\nTake a moment each day to consciously acknowledge and appreciate something you have right now – a friendship, a quiet moment, a skill you possess.\n\n\n\n\nContemporary example: Think about how easily we take our smartphones for granted. It’s a powerful tool, but if it’s lost, its “virtue” (its utility and convenience) becomes incredibly apparent. Appreciating things proactively can deepen life’s richness."
+  },
+  {
+    "objectID": "9_things.html#quick-recap-nine-lessons-for-a-better-life",
+    "href": "9_things.html#quick-recap-nine-lessons-for-a-better-life",
+    "title": "Nine Things I Learned in Ninety Years — Wisdom for a Lifetime",
+    "section": "Quick Recap: Nine Lessons for a Better Life",
+    "text": "Quick Recap: Nine Lessons for a Better Life\n\n\n1. Build a strong moral character.\n2. Stay awake and aware.\n3. Think about others’ feelings.\n4. Choose happiness as your default.\n5. See the bigger picture (eternal perspective).\n\n6. Watch out for self-deception.\n7. Understand and face mortality.\n8. Recognize the role of luck.\n9. Appreciate what you have now."
+  },
+  {
+    "objectID": "9_things.html#applying-these-lessons-to-your-life",
+    "href": "9_things.html#applying-these-lessons-to-your-life",
+    "title": "Nine Things I Learned in Ninety Years — Wisdom for a Lifetime",
+    "section": "Applying These Lessons to Your Life",
+    "text": "Applying These Lessons to Your Life\n\nThese aren’t just ideas; they’re practices.\nPick one lesson that resonated most with you today.\nTry to apply it in a small way this week.\nEven small changes, consistently done, can make a big difference over time.\n\n\nEncourage students to choose one point and try to implement it directly. Ask them to reflect on a specific situation where this lesson could be applied in their daily lives (e.g., before sending a text, giving a compliment, making a decision about their future)."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "My presentations"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Other Presentaton",
+    "section": "",
+    "text": "These are my presentations."
+  },
+  {
+    "objectID": "index.html#management-decision-tools",
+    "href": "index.html#management-decision-tools",
+    "title": "Other Presentaton",
+    "section": "Management Decision Tools",
+    "text": "Management Decision Tools\n\nMDT Course 1\nMDT Course 2\nMDT Course 3"
+  },
+  {
+    "objectID": "index.html#others",
+    "href": "index.html#others",
+    "title": "Other Presentaton",
+    "section": "Others",
+    "text": "Others\n\nBullying\n9 Things"
+  },
+  {
+    "objectID": "mdt_course_2.html#outline",
+    "href": "mdt_course_2.html#outline",
+    "title": "Management Decision Tools",
+    "section": "Outline",
+    "text": "Outline\n\nIntroduction to Sensitivity Analysis\nInterpreting Computer Solutions\nRange of Optimality (for Objective Coefficients)\nReduced Cost (for Decision Variables)\nRange of Feasibility (for RHS Constraints)\nShadow Price (for Constraints)\nSimultaneous Changes (The 100% Rule)\n\n\nIn our last session, we learned how to find the single best solution. But the real world is messy and numbers change. Today, we’ll learn how to analyze what happens to our solution when costs, profits, or resources change. This is called Sensitivity Analysis."
+  },
+  {
+    "objectID": "mdt_course_2.html#introduction-to-sensitivity-analysis",
+    "href": "mdt_course_2.html#introduction-to-sensitivity-analysis",
+    "title": "Management Decision Tools",
+    "section": "Introduction to Sensitivity Analysis",
+    "text": "Introduction to Sensitivity Analysis\nSensitivity analysis (or post-optimality analysis) is the study of how changes in a linear programming model’s coefficients affect the optimal solution.\nIt helps us answer “what-if” questions like:\n\nWhat if our profit per unit for Product A increases? Will we make more of it?\nWhat if the cost of a raw material goes down? How does that change our total cost?\nWhat if we get 10 more hours of labor available? How much more profit can we make?\n\nThis is crucial for managers who work in a dynamic environment where estimates are not always perfect."
+  },
+  {
+    "objectID": "mdt_course_2.html#interpreting-a-sensitivity-report",
+    "href": "mdt_course_2.html#interpreting-a-sensitivity-report",
+    "title": "Management Decision Tools",
+    "section": "Interpreting a Sensitivity Report",
+    "text": "Interpreting a Sensitivity Report\nWhen we solve an LP problem using software like Excel Solver, it gives us the optimal solution and a “Sensitivity Report”. This report is our main tool for this analysis.\n\n\nVariables Section This part tells us about our decision variables (e.g., how much of a product to make).\n\nFinal Value: The optimal quantity to produce.\nObjective Coefficient: The original profit/cost per unit.\nAllowable Increase/Decrease: This defines the Range of Optimality.\nReduced Cost: The “penalty” for forcing a non-optimal variable into the solution.\n\n\nConstraints Section This part tells us about our limitations (e.g., resources, demand).\n\nFinal Value: The amount of the resource used (LHS).\nConstraint R.H. Side: The original limit.\nAllowable Increase/Decrease: This defines the Range of Feasibility.\nShadow Price: The value of one extra unit of a resource."
+  },
+  {
+    "objectID": "mdt_course_2.html#example-olympic-bike-co.-problem",
+    "href": "mdt_course_2.html#example-olympic-bike-co.-problem",
+    "title": "Management Decision Tools",
+    "section": "Example: Olympic Bike Co. Problem",
+    "text": "Example: Olympic Bike Co. Problem\nOlympic Bike Co. is making two new bike frames: Deluxe and Professional.\n\nObjective: Maximize weekly profit.\nProfit: $10/Deluxe, $15/Professional.\nResources:\n\n100 lbs of Aluminum Alloy\n80 lbs of Steel Alloy\n\n\n\n\n\nFrame\nAluminum (lbs)\nSteel (lbs)\n\n\n\n\nDeluxe\n2\n3\n\n\nProfessional\n4\n2\n\n\n\nLP Solution: Produce 15 Deluxe and 17.5 Professional frames for a max profit of $412.50."
+  },
+  {
+    "objectID": "mdt_course_2.html#range-of-optimality",
+    "href": "mdt_course_2.html#range-of-optimality",
+    "title": "Management Decision Tools",
+    "section": "Range of Optimality",
+    "text": "Range of Optimality\nThe Range of Optimality is the range a profit or cost coefficient can change without changing the optimal production plan (the Final Values).\nLet’s look at the report for Olympic Bike:\n\n\n\nVariable\nFinal Value\nObjective Coeff\nAllowable Increase\nAllowable Decrease\n\n\n\n\nDeluxe (D)\n15\n10\n12.5\n2.5\n\n\nProfessional (P)\n17.5\n15\n5\n8.33\n\n\n\nFor the Deluxe frame, the profit is $10. The allowable increase is $12.5 and decrease is $2.5.\nSo, the Range of Optimality for Deluxe profit is:\n[$10 - $2.5, $10 + $12.5] ⇒ [$7.5, $22.5]"
+  },
+  {
+    "objectID": "mdt_course_2.html#range-of-optimality-what-if",
+    "href": "mdt_course_2.html#range-of-optimality-what-if",
+    "title": "Management Decision Tools",
+    "section": "Range of Optimality: “What If?”",
+    "text": "Range of Optimality: “What If?”\nQuestion 1: The profit on Deluxe frames increases to $20. Is the solution (15 Deluxe, 17.5 Professional) still optimal?\nAnswer: Yes. $20 is within the range [$7.5, $22.5].\nThe production plan does not change.\nHowever, the total profit will increase: \\[\n\\text{New Profit} = (\\mathbf{\\$20} \\times 15) + (\\$15 \\times 17.5) = \\$300 + \\$262.50 = \\mathbf{\\$562.50}\n\\]\nQuestion 2: The profit on Deluxe frames drops to $6. Does the solution change?\nAnswer: Yes, it might. $6 is outside the range [$7.5, $22.5]. The current production plan is no longer guaranteed to be optimal. We would need to re-solve the LP to find the new best plan."
+  },
+  {
+    "objectID": "mdt_course_2.html#reduced-cost",
+    "href": "mdt_course_2.html#reduced-cost",
+    "title": "Management Decision Tools",
+    "section": "Reduced Cost",
+    "text": "Reduced Cost\nReduced Cost applies to variables whose optimal value is zero.\nIt tells you how much the variable’s profit/cost coefficient must improve (increase for profit, decrease for cost) before it becomes a good idea to include it in the solution.\n\nIf a variable is already in the optimal solution (Final Value &gt; 0), its reduced cost is always 0.\nIf a variable has a Final Value of 0, its reduced cost is the “penalty” for forcing one unit of it into the solution.\n\n\nImagine you have a choice between making product A (profit $5) and product B (profit $3). The model tells you to only make A. The “reduced cost” for B might be $2. This means you would lose $2 in overall profit for every unit of B you force into the production plan. The profit on B would need to increase by at least $2 (to over $5) before it’s worth making."
+  },
+  {
+    "objectID": "mdt_course_2.html#shadow-price",
+    "href": "mdt_course_2.html#shadow-price",
+    "title": "Management Decision Tools",
+    "section": "Shadow Price",
+    "text": "Shadow Price\nThe Shadow Price (or Dual Value) of a constraint is one of the most powerful concepts in LP.\n\nIt is the amount the objective function value will improve for every one-unit increase in the Right-Hand Side (RHS) of that constraint.\n\n\nIt’s the “price” you’d be willing to pay for one more unit of a scarce resource.\nA constraint is binding if it’s fully used (LHS = RHS). Binding constraints have non-zero shadow prices.\nA constraint is non-binding if there is slack. Non-binding constraints always have a shadow price of 0.\n\n\nThink about it: if you have leftover aluminum alloy (a non-binding constraint), how much would you pay for one more pound? Nothing! You haven’t even used what you have. But if you’ve used up all your steel (a binding constraint), one extra pound would let you make more bikes and more profit. The shadow price tells you exactly how much more profit."
+  },
+  {
+    "objectID": "mdt_course_2.html#range-of-feasibility",
+    "href": "mdt_course_2.html#range-of-feasibility",
+    "title": "Management Decision Tools",
+    "section": "Range of Feasibility",
+    "text": "Range of Feasibility\nThe Range of Feasibility is the range the RHS of a constraint can change while the shadow price remains valid.\nLet’s look at the constraints report for Olympic Bike:\n\n\n\nConstraint\nFinal Value (LHS)\nShadow Price\nConstraint R.H. Side\nAllowable Increase\nAllowable Decrease\n\n\n\n\nAluminum\n100\n3.125\n100\n60\n46.67\n\n\nSteel\n80\n1.25\n80\n70\n30\n\n\n\nFor Aluminum, the shadow price is $3.125. This means for every extra pound of aluminum we get, our total profit will increase by $3.125.\nThis is only true within the Range of Feasibility: [100 - 46.67, 100 + 60] ⇒ [53.33, 160]."
+  },
+  {
+    "objectID": "mdt_course_2.html#slack-surplus-variables",
+    "href": "mdt_course_2.html#slack-surplus-variables",
+    "title": "Management Decision Tools",
+    "section": "Slack & Surplus Variables",
+    "text": "Slack & Surplus Variables\nTo understand binding vs. non-binding constraints, it helps to know about slack and surplus variables. Software uses them behind the scenes to convert inequalities into standard equations.\n\nSlack Variables (for ≤ constraints): Represents the amount of an unused resource. 2x + 3y ≤ 100 becomes 2x + 3y + s₁ = 100. If s₁ &gt; 0, the constraint is non-binding (there is slack).\nSurplus Variables (for ≥ constraints): Represents the amount produced above a minimum requirement. A + B ≥ 350 becomes A + B - s₂ = 350. If s₂ &gt; 0, the constraint is non-binding (we produced more than the minimum).\n\nKey idea: if slack or surplus is 0, the constraint is binding."
+  },
+  {
+    "objectID": "mdt_course_2.html#simultaneous-changes-the-100-rule",
+    "href": "mdt_course_2.html#simultaneous-changes-the-100-rule",
+    "title": "Management Decision Tools",
+    "section": "Simultaneous Changes: The 100% Rule",
+    "text": "Simultaneous Changes: The 100% Rule\nWhat if multiple things change at once? We can use the 100% Rule.\n\nThe 100% Rule states that the solution (and shadow prices) will remain valid as long as the sum of the percentages of the changes (relative to their maximum allowable changes) does not exceed 100%.\n\nFormula: \\[\n\\sum_{i} \\frac{|\\text{Actual Change}_i|}{\\text{Allowable Change}_i} \\le 1\n\\]\nThis rule applies separately to Objective Coefficients (testing the Range of Optimality) and RHS values (testing the Range of Feasibility)."
+  },
+  {
+    "objectID": "mdt_course_2.html#rule-example-objective-coefficients",
+    "href": "mdt_course_2.html#rule-example-objective-coefficients",
+    "title": "Management Decision Tools",
+    "section": "100% Rule Example: Objective Coefficients",
+    "text": "100% Rule Example: Objective Coefficients\nQuestion: At Olympic Bike, what if the profit on Deluxe frames rises to $16 and the profit on Professional frames rises to $17 at the same time? Will the solution (15 D, 17.5 P) still be optimal?\n\nAnalyze change in Deluxe profit:\n\nActual change: $16 - $10 = $6.\nAllowable increase: $12.5.\nPercentage of change: \\(6 / 12.5 = 48\\%\\).\n\nAnalyze change in Professional profit:\n\nActual change: $17 - $15 = $2.\nAllowable increase: $5.\nPercentage of change: \\(2 / 5 = 40\\%\\).\n\nSum the percentages:\n\n\\(48\\% + 40\\% = 88\\%\\).\n\n\nConclusion: Since 88% is less than 100%, the optimal solution will not change. The production plan remains 15 Deluxe and 17.5 Professional frames."
+  },
+  {
+    "objectID": "mdt_course_2.html#rule-example-rhs-values",
+    "href": "mdt_course_2.html#rule-example-rhs-values",
+    "title": "Management Decision Tools",
+    "section": "100% Rule Example: RHS Values",
+    "text": "100% Rule Example: RHS Values\nQuestion: For M&D Chemicals (our minimization problem from last time), what if the minimum total production (Constraint 2) is decreased by 25 gallons, and the available processing time (Constraint 3) is increased by 30 hours?\nSensitivity Report Snippet:\n\n\n\nConstraint\nChange\nAllowable Change\nShadow Price\n\n\n\n\nTotal Prod.\n↓ 25\n↓ 50\n4\n\n\nProc. Time\n↑ 30\n↑ 100\n-1\n\n\n\n\nAnalyze change in Total Production RHS:\n\nPercentage of change: \\(25 / 50 = 50\\%\\).\n\nAnalyze change in Processing Time RHS:\n\nPercentage of change: \\(30 / 100 = 30\\%\\).\n\nSum the percentages:\n\n\\(50\\% + 30\\% = 80\\%\\).\n\n\nConclusion: Since 80% &lt; 100%, the shadow prices are still valid. We can calculate the change in total cost: \\[\n\\begin{aligned}\n\\text{Change in Cost} &= (-25 \\times \\text{ShadowPrice}_2) + (30 \\times \\text{ShadowPrice}_3) \\\\\n&= (-25 \\times 4) + (30 \\times -1) \\\\\n&= -100 - 30 = -\\mathbf{\\$130}\n\\end{aligned}\n\\] The total cost will decrease by $130. New Cost = $800 - $130 = $670."
+  }
+]
