@@ -739,12 +739,14 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiXG5p
 <section id="example-3.6-using-linearity-and-time-shifting" class="slide level2">
 <h2>Example 3.6: Using Linearity and Time Shifting</h2>
 <p>Consider the signal <span class="math inline">\(g(t)\)</span> with period 4.</p>
+<p>We know <span class="math inline">\(g(t) = x(t-1) - 1/2\)</span>, where <span class="math inline">\(x(t)\)</span> is a symmetric square wave with <span class="math inline">\(T=4, T_1=1\)</span>.</p>
+<p>The coefficients <span class="math inline">\(a_k\)</span> for <span class="math inline">\(x(t)\)</span> are <span class="math inline">\(\frac{\sin(\pi k/2)}{k\pi}\)</span> (for <span class="math inline">\(k \neq 0\)</span>) and <span class="math inline">\(a_0 = 1/2\)</span>.</p>
 <div class="cell" data-reveal="true" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class=""><p></p>
 <div>
-<pre class="mermaid mermaid-js">graph TD
+<pre class="mermaid mermaid-js">graph LR
     A["x(t) - Square Wave T=4, T1=1"] --&gt; B{"Shift by 1: x(t-1)"}
     C["Constant -1/2"] --&gt; D{Add to B}
     B --&gt; E["g(t) = x(t-1) - 1/2"]
@@ -755,8 +757,6 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiXG5p
 </div>
 </div>
 </div>
-<p>We know <span class="math inline">\(g(t) = x(t-1) - 1/2\)</span>, where <span class="math inline">\(x(t)\)</span> is a symmetric square wave with <span class="math inline">\(T=4, T_1=1\)</span>.</p>
-<p>The coefficients <span class="math inline">\(a_k\)</span> for <span class="math inline">\(x(t)\)</span> are <span class="math inline">\(\frac{\sin(\pi k/2)}{k\pi}\)</span> (for <span class="math inline">\(k \neq 0\)</span>) and <span class="math inline">\(a_0 = 1/2\)</span>.</p>
 <aside class="notes">
 <p>This example shows how to leverage properties to find Fourier coefficients without direct integration. We’re given a signal <span class="math inline">\(g(t)\)</span> that looks like a shifted and DC-offset version of a standard square wave <span class="math inline">\(x(t)\)</span>. The square wave <span class="math inline">\(x(t)\)</span> has easily derivable coefficients. By recognizing <span class="math inline">\(g(t)\)</span> as a transformation of <span class="math inline">\(x(t)\)</span>, we can use the linearity and time-shifting properties.</p>
 <style type="text/css">
@@ -857,6 +857,11 @@ e_{0}=\frac{1}{T} \int_T x(t) dt = \frac{1}{4} \times (\text{Area of triangle}) 
 <section id="example-3.8-impulse-train-coefficients" class="slide level2">
 <h2>Example 3.8: Impulse Train Coefficients</h2>
 <p>The impulse train <span class="math inline">\(x(t) = \sum_{k=-\infty}^{\infty} \delta(t-kT)\)</span> with period <span class="math inline">\(T\)</span>.</p>
+<p>The Fourier series coefficients <span class="math inline">\(a_k\)</span> are found by integrating over one period (e.g., <span class="math inline">\([-T/2, T/2]\)</span>):</p>
+<p><span class="math display">\[
+a_{k}=\frac{1}{T} \int_{-T / 2}^{T / 2} \delta(t) e^{-j k 2 \pi / T} d t=\frac{1}{T}
+\]</span></p>
+<p>All coefficients are equal: <span class="math inline">\(a_k = 1/T\)</span>.</p>
 <div class="cell" data-reveal="true" data-layout-align="default">
 <div class="cell-output-display">
 <div>
@@ -875,11 +880,6 @@ e_{0}=\frac{1}{T} \int_T x(t) dt = \frac{1}{4} \times (\text{Area of triangle}) 
 </div>
 </div>
 </div>
-<p>The Fourier series coefficients <span class="math inline">\(a_k\)</span> are found by integrating over one period (e.g., <span class="math inline">\([-T/2, T/2]\)</span>):</p>
-<p><span class="math display">\[
-a_{k}=\frac{1}{T} \int_{-T / 2}^{T / 2} \delta(t) e^{-j k 2 \pi / T} d t=\frac{1}{T}
-\]</span></p>
-<p>All coefficients are equal: <span class="math inline">\(a_k = 1/T\)</span>.</p>
 <aside class="notes">
 <p>The impulse train is a very important signal in signal processing. It consists of a series of Dirac delta functions equally spaced in time. To find its Fourier coefficients, we use the analysis equation and integrate over a single period that contains one impulse, typically at <span class="math inline">\(t=0\)</span>. Due to the sifting property of the delta function, the integral simply evaluates to the value of the exponential at <span class="math inline">\(t=0\)</span>, which is 1. Thus, all Fourier coefficients for an impulse train are constant, <span class="math inline">\(1/T\)</span>. This also aligns with the property that a real and even signal (like the impulse train) has real and even coefficients.</p>
 <style type="text/css">
@@ -900,6 +900,12 @@ a_{k}=\frac{1}{T} \int_{-T / 2}^{T / 2} \delta(t) e^{-j k 2 \pi / T} d t=\frac{1
 <p><span class="math display">\[
 q(t)=x\left(t+T_{1}\right)-x\left(t-T_{1}\right)
 \]</span></p>
+<ul>
+<li><p>Coefficients for <span class="math inline">\(x(t)\)</span> are <span class="math inline">\(a_k = 1/T\)</span>.</p></li>
+<li><p>By time-shifting and linearity, coefficients <span class="math inline">\(b_k\)</span> for <span class="math inline">\(q(t)\)</span> are:</p>
+<p><span class="math inline">\(b_k = a_k e^{j k \omega_0 T_1} - a_k e^{-j k \omega_0 T_1}\)</span></p>
+<p><span class="math inline">\(b_k = \frac{1}{T} (e^{j k \omega_0 T_1} - e^{-j k \omega_0 T_1}) = \frac{2j \sin(k \omega_0 T_1)}{T}\)</span></p></li>
+</ul>
 <div class="cell" data-reveal="true" data-layout-align="default">
 <div class="cell-output-display">
 <div>
@@ -924,12 +930,6 @@ q(t)=x\left(t+T_{1}\right)-x\left(t-T_{1}\right)
 </div>
 </div>
 </div>
-<ul>
-<li><p>Coefficients for <span class="math inline">\(x(t)\)</span> are <span class="math inline">\(a_k = 1/T\)</span>.</p></li>
-<li><p>By time-shifting and linearity, coefficients <span class="math inline">\(b_k\)</span> for <span class="math inline">\(q(t)\)</span> are:</p>
-<p><span class="math inline">\(b_k = a_k e^{j k \omega_0 T_1} - a_k e^{-j k \omega_0 T_1}\)</span></p>
-<p><span class="math inline">\(b_k = \frac{1}{T} (e^{j k \omega_0 T_1} - e^{-j k \omega_0 T_1}) = \frac{2j \sin(k \omega_0 T_1)}{T}\)</span></p></li>
-</ul>
 <aside class="notes">
 <p>This part of the example cleverly connects several properties. We observe that the derivative of a square wave is a series of positive and negative impulses. This <code>q(t)</code> can be seen as the difference between two time-shifted impulse trains. We already know the coefficients for a basic impulse train. By applying the time-shifting property to get the coefficients for <span class="math inline">\(x(t+T_1)\)</span> and <span class="math inline">\(x(t-T_1)\)</span>, and then the linearity property for their difference, we can quickly derive the Fourier coefficients <span class="math inline">\(b_k\)</span> for <span class="math inline">\(q(t)\)</span>.</p>
 <style type="text/css">
