@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-html/tabby.min.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.24">
+
+  <meta name="author" content="Imron Rosyadi">
+  <title>Linear Algebra</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-b0356e9119c1bdfd0db189d130feb51c.css">
+  <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+  <link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Linear Algebra</h1>
+  <p class="subtitle">3.4 The Geometry of Linear Systems</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Imron Rosyadi 
+</div>
+</div>
+</div>
+
+</section>
+<section>
+<section id="the-geometry-of-linear-systems" class="title-slide slide level1 center">
+<h1>The Geometry of Linear Systems</h1>
+<p><strong>Unveiling Vector &amp; Parametric Equations</strong></p>
+</section>
+<section id="introduction-visualizing-linear-algebra" class="slide level2">
+<h2>Introduction: Visualizing Linear Algebra</h2>
+<p>In ECE, understanding linear systems isn’t just about solving equations; it’s about visualizing their geometric interpretations.</p>
+<p>This lecture explores how to represent solution sets of linear systems as geometric objects like points, lines, and planes.</p>
+<aside class="notes">
+<p>Welcome to this session on the geometry of linear systems. For ECE students, abstract mathematical concepts become much more tangible and useful when we can visualize them. Today, we’ll bridge the gap between algebraic equations and their geometric counterparts, which is crucial for fields like signal processing, control theory, and computer graphics.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="lines-in-r2-and-r3-vector-form" class="slide level2">
+<h2>Lines in <span class="math inline">\(R^2\)</span> and <span class="math inline">\(R^3\)</span>: Vector Form</h2>
+<div class="columns">
+<div class="column" style="width:70%;">
+<p>A unique line <code>L</code> is determined by a point <span class="math inline">\(\mathbf{x}_0\)</span> on the line and a non-zero vector <span class="math inline">\(\mathbf{v}\)</span> parallel to the line.</p>
+<p>The vector <span class="math inline">\(\mathbf{x} - \mathbf{x}_0\)</span> is a scalar multiple of <span class="math inline">\(\mathbf{v}\)</span>. <span class="math display">\[ \mathbf{x} - \mathbf{x}_0 = t\mathbf{v} \]</span> This leads to the <strong>vector equation of a line</strong>: <span class="math display">\[ \mathbf{x} = \mathbf{x}_0 + t\mathbf{v} \quad \text{(1)} \]</span> Where <span class="math inline">\(t\)</span> is the parameter, varying from <span class="math inline">\(-\infty\)</span> to <span class="math inline">\(\infty\)</span>.</p>
+<p>If <span class="math inline">\(\mathbf{x}_0 = \mathbf{0}\)</span>, the line passes through the origin: <span class="math display">\[ \mathbf{x} = t\mathbf{v} \quad \text{(2)} \]</span></p>
+</div><div class="column" style="width:30%;">
+<p><img data-src="https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/0b85d47552bd3e3fcca757e0847560f257c674a45bc676c2145c8e58a3e4f087.jpg"> Figure 3.4.2</p>
+</div></div>
+<aside class="notes">
+<p>Imagine a point <code>x0</code> in space. Now, imagine a direction vector <code>v</code>. Any point <code>x</code> on the line starting from <code>x0</code> and moving in direction <code>v</code> can be reached by adding a scaled version of <code>v</code> to <code>x0</code>. The scalar <code>t</code> dictates how far along <code>v</code> we move, and its variation covers the entire line. This concept is fundamental in robotics for path planning or in control systems for describing system trajectories.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-line-plot-in-r2" class="slide level2">
+<h2>Interactive Line Plot in <span class="math inline">\(R^2\)</span></h2>
+<p>Adjust the starting point <span class="math inline">\(\mathbf{x}_0\)</span> and direction vector <span class="math inline">\(\mathbf{v}\)</span> to see how the line changes.</p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Try changing the values of <code>x0_val</code>, <code>y0_val</code>, <code>vx_val</code>, and <code>vy_val</code> below. Observe how the line shifts and rotates.</p>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-1" class="exercise-cell">
+
+</div>
+<script type="pyodide-1-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImZpZy1jYXAiOiJJbnRlcmFjdGl2ZSAyRCBMaW5lIFBsb3QiLCJsYWJlbCI6ImZpZy1saW5lLTJkIiwibWF4LWxpbmVzIjoxMCwib3V0cHV0Ijp0cnVlfSwiY29kZSI6IlxuaW1wb3J0IHBsb3RseS5ncmFwaF9vYmplY3RzIGFzIGdvXG5pbXBvcnQgbnVtcHkgYXMgbnBcblxuIyBEZWZpbmUgaW5pdGlhbCB2YWx1ZXMgZm9yIHgwIGFuZCB2XG54MF92YWwgPSAxXG55MF92YWwgPSAyXG52eF92YWwgPSAzXG52eV92YWwgPSAtMVxuXG4jIENyZWF0ZSBhIHJhbmdlIGZvciB0aGUgcGFyYW1ldGVyIHRcbnQgPSBucC5saW5zcGFjZSgtNSwgNSwgMTAwKVxuXG4jIENhbGN1bGF0ZSB4IGFuZCB5IGNvb3JkaW5hdGVzIG9mIHRoZSBsaW5lXG54X2Nvb3JkcyA9IHgwX3ZhbCArIHQgKiB2eF92YWxcbnlfY29vcmRzID0geTBfdmFsICsgdCAqIHZ5X3ZhbFxuXG4jIENyZWF0ZSB0aGUgcGxvdFxuZmlnID0gZ28uRmlndXJlKClcblxuIyBBZGQgdGhlIGxpbmUgdHJhY2VcbmZpZy5hZGRfdHJhY2UoZ28uU2NhdHRlcih4PXhfY29vcmRzLCB5PXlfY29vcmRzLCBtb2RlPSdsaW5lcycsIG5hbWU9J0xpbmUnKSlcblxuIyBBZGQgeDAgcG9pbnRcbmZpZy5hZGRfdHJhY2UoZ28uU2NhdHRlcih4PVt4MF92YWxdLCB5PVt5MF92YWxdLCBtb2RlPSdtYXJrZXJzJywgbWFya2VyPWRpY3Qoc2l6ZT0xMCwgY29sb3I9J3JlZCcpLCBuYW1lPSd4MCcpKVxuXG4jIEFkZCB2IHZlY3RvciAoZnJvbSB4MClcbmZpZy5hZGRfdHJhY2UoZ28uU2NhdHRlcih4PVt4MF92YWwsIHgwX3ZhbCArIHZ4X3ZhbF0sIHk9W3kwX3ZhbCwgeTBfdmFsICsgdnlfdmFsXSwgbW9kZT0nbGluZXMrbWFya2VycycsIGxpbmU9ZGljdChjb2xvcj0nZ3JlZW4nLCB3aWR0aD0yKSwgbWFya2VyPWRpY3Qoc3ltYm9sPSdhcnJvdycsIHNpemU9MTAsIGFuZ2xlcmVmPSdwcmV2aW91cycpLCBuYW1lPSd2JykpXG5cbiMgVXBkYXRlIGxheW91dCBmb3IgYmV0dGVyIHZpc3VhbGl6YXRpb25cbmZpZy51cGRhdGVfbGF5b3V0KFxuICAgIHRpdGxlPWYnTGluZTogeCA9ICh7eDBfdmFsfSwge3kwX3ZhbH0pICsgdCooe3Z4X3ZhbH0sIHt2eV92YWx9KScsXG4gICAgeGF4aXNfdGl0bGU9J1gtYXhpcycsXG4gICAgeWF4aXNfdGl0bGU9J1ktYXhpcycsXG4gICAgaG92ZXJtb2RlPVwiY2xvc2VzdFwiLFxuICAgIHNob3dsZWdlbmQ9VHJ1ZSxcbiAgICB4YXhpc19yYW5nZT1bLTEwLCAxMF0sXG4gICAgeWF4aXNfcmFuZ2U9Wy0xMCwgMTBdLFxuICAgIGhlaWdodD00MDBcbilcblxuZmlnLnNob3coKSJ9
+</script>
+</div>
+<aside class="notes">
+<p>This interactive plot allows you to directly manipulate the parameters <code>x0</code> and <code>v</code>. Think about how changing the components of <code>v</code> affects the slope and direction of the line. Changing <code>x0</code> simply translates the entire line without altering its orientation. This is a perfect example of how vector addition works geometrically. In signal processing, a line can represent a signal’s trajectory over time, where <code>x0</code> is the initial state and <code>v</code> is the rate of change.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="planes-in-r3-vector-form" class="slide level2">
+<h2>Planes in <span class="math inline">\(R^3\)</span>: Vector Form</h2>
+<div class="columns">
+<div class="column" style="width:70%;">
+<p>A unique plane <code>W</code> is determined by a point <span class="math inline">\(\mathbf{x}_0\)</span> in the plane and two non-collinear vectors <span class="math inline">\(\mathbf{v}_1, \mathbf{v}_2\)</span> parallel to the plane.</p>
+<p>The vector <span class="math inline">\(\mathbf{x} - \mathbf{x}_0\)</span> can be expressed as a linear combination of <span class="math inline">\(\mathbf{v}_1\)</span> and <span class="math inline">\(\mathbf{v}_2\)</span>. <span class="math display">\[ \mathbf{x} - \mathbf{x}_0 = t_1\mathbf{v}_1 + t_2\mathbf{v}_2 \]</span> This leads to the <strong>vector equation of a plane</strong>: <span class="math display">\[ \mathbf{x} = \mathbf{x}_0 + t_1\mathbf{v}_1 + t_2\mathbf{v}_2 \quad \text{(3)} \]</span> Where <span class="math inline">\(t_1, t_2\)</span> are parameters, varying from <span class="math inline">\(-\infty\)</span> to <span class="math inline">\(\infty\)</span>.</p>
+<p>If <span class="math inline">\(\mathbf{x}_0 = \mathbf{0}\)</span>, the plane passes through the origin: <span class="math display">\[ \mathbf{x} = t_1\mathbf{v}_1 + t_2\mathbf{v}_2 \quad \text{(4)} \]</span></p>
+</div><div class="column" style="width:30%;">
+<p><img data-src="https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/d2531b49bff70264feef968305aa0f19139108d2a784c62a5ea78a211db58790.jpg"> Figure 3.4.3</p>
+</div></div>
+<aside class="notes">
+<p>For a plane, instead of one direction, we need two <em>independent</em> directions. These vectors, <code>v1</code> and <code>v2</code>, span the plane when added to <code>x0</code>. The parameters <code>t1</code> and <code>t2</code> allow us to reach any point within that plane. Think of this as defining a 2D surface within a 3D space. This is relevant for defining surfaces in CAD software, or understanding the solution space of certain optimization problems in ECE.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-plane-plot-in-r3" class="slide level2">
+<h2>Interactive Plane Plot in <span class="math inline">\(R^3\)</span></h2>
+<p>Visualize a plane defined by a point and two direction vectors.</p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Modify the components of <code>x0</code>, <code>v1</code>, and <code>v2</code> to explore different planes. Notice how <code>v1</code> and <code>v2</code> must be non-collinear to define a plane.</p>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-2" class="exercise-cell">
+
+</div>
+<script type="pyodide-2-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImZpZy1jYXAiOiJJbnRlcmFjdGl2ZSAzRCBQbGFuZSBQbG90IiwibGFiZWwiOiJmaWctcGxhbmUtM2QiLCJtYXgtbGluZXMiOjEwLCJvdXRwdXQiOnRydWV9LCJjb2RlIjoiaW1wb3J0IHBsb3RseS5ncmFwaF9vYmplY3RzIGFzIGdvXG5pbXBvcnQgbnVtcHkgYXMgbnBcblxuIyBEZWZpbmUgaW5pdGlhbCB2YWx1ZXMgZm9yIHgwLCB2MSwgdjJcbngwID0gbnAuYXJyYXkoWzEsIDIsIDNdKVxudjEgPSBucC5hcnJheShbMSwgMSwgMF0pXG52MiA9IG5wLmFycmF5KFswLCAxLCAxXSlcblxuIyBDcmVhdGUgYSBtZXNoZ3JpZCBmb3IgcGFyYW1ldGVycyB0MSBhbmQgdDJcbnQxX3JhbmdlID0gbnAubGluc3BhY2UoLTIsIDIsIDIwKVxudDJfcmFuZ2UgPSBucC5saW5zcGFjZSgtMiwgMiwgMjApXG5UMSwgVDIgPSBucC5tZXNoZ3JpZCh0MV9yYW5nZSwgdDJfcmFuZ2UpXG5cbiMgQ2FsY3VsYXRlIHgsIHksIHogY29vcmRpbmF0ZXMgb2YgdGhlIHBsYW5lXG5YID0geDBbMF0gKyBUMSAqIHYxWzBdICsgVDIgKiB2MlswXVxuWSA9IHgwWzFdICsgVDEgKiB2MVsxXSArIFQyICogdjJbMV1cblogPSB4MFsyXSArIFQxICogdjFbMl0gKyBUMiAqIHYyWzJdXG5cbiMgQ3JlYXRlIHRoZSBwbG90XG5maWcgPSBnby5GaWd1cmUoKVxuXG4jIEFkZCB0aGUgcGxhbmUgc3VyZmFjZVxuZmlnLmFkZF90cmFjZShnby5TdXJmYWNlKHg9WCwgeT1ZLCB6PVosIG9wYWNpdHk9MC43LCBjb2xvcnNjYWxlPSdWaXJpZGlzJywgbmFtZT0nUGxhbmUnKSlcblxuIyBBZGQgeDAgcG9pbnRcbmZpZy5hZGRfdHJhY2UoZ28uU2NhdHRlcjNkKHg9W3gwWzBdXSwgeT1beDBbMV1dLCB6PVt4MFsyXV0sIG1vZGU9J21hcmtlcnMnLCBtYXJrZXI9ZGljdChzaXplPTUsIGNvbG9yPSdyZWQnKSwgbmFtZT0neDAnKSlcblxuIyBBZGQgdjEgdmVjdG9yIChmcm9tIHgwKVxuZmlnLmFkZF90cmFjZShnby5TY2F0dGVyM2QoeD1beDBbMF0sIHgwWzBdK3YxWzBdXSwgeT1beDBbMV0sIHgwWzFdK3YxWzFdXSwgej1beDBbMl0sIHgwWzJdK3YxWzJdXSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBtb2RlPSdsaW5lcycsIGxpbmU9ZGljdChjb2xvcj0nZ3JlZW4nLCB3aWR0aD0zKSwgbmFtZT0ndjEnKSlcblxuIyBBZGQgdjIgdmVjdG9yIChmcm9tIHgwKVxuZmlnLmFkZF90cmFjZShnby5TY2F0dGVyM2QoeD1beDBbMF0sIHgwWzBdK3YyWzBdXSwgeT1beDBbMV0sIHgwWzFdK3YyWzFdXSwgej1beDBbMl0sIHgwWzJdK3YyWzJdXSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBtb2RlPSdsaW5lcycsIGxpbmU9ZGljdChjb2xvcj0nYmx1ZScsIHdpZHRoPTMpLCBuYW1lPSd2MicpKVxuXG5cbiMgVXBkYXRlIGxheW91dFxuZmlnLnVwZGF0ZV9sYXlvdXQoXG4gICAgdGl0bGU9ZidQbGFuZTogeCA9ICh7eDBbMF19LCB7eDBbMV19LCB7eDBbMl19KSArIHQxKih7djFbMF19LCB7djFbMV19LCB7djFbMl19KSArIHQyKih7djJbMF19LCB7djJbMV19LCB7djJbMl19KScsXG4gICAgc2NlbmU9ZGljdChcbiAgICAgICAgeGF4aXNfdGl0bGU9J1gnLFxuICAgICAgICB5YXhpc190aXRsZT0nWScsXG4gICAgICAgIHpheGlzX3RpdGxlPSdaJyxcbiAgICAgICAgeGF4aXNfcmFuZ2U9Wy01LCA1XSxcbiAgICAgICAgeWF4aXNfcmFuZ2U9Wy01LCA1XSxcbiAgICAgICAgemF4aXNfcmFuZ2U9Wy01LCA1XSxcbiAgICAgICAgYXNwZWN0bW9kZT0nY3ViZSdcbiAgICApLFxuICAgIGhlaWdodD01MDBcbilcblxuZmlnLnNob3coKSJ9
+</script>
+</div>
+<aside class="notes">
+<p>This interactive plot lets us visualize a plane in 3D space. Notice how the two vectors <code>v1</code> and <code>v2</code> define the orientation of the plane. If <code>v1</code> and <code>v2</code> were collinear, they would only define a line, not a plane. This is an important condition: the vectors must be linearly independent. This kind of visualization is critical for understanding concepts like subspaces and basis vectors in higher dimensions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="generalizing-to-rn" class="slide level2">
+<h2>Generalizing to <span class="math inline">\(R^n\)</span></h2>
+<p>The concepts of lines and planes extend naturally to higher dimensions.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h4 id="definition-1-line-in-rn">Definition 1: Line in <span class="math inline">\(R^n\)</span></h4>
+<p>If <span class="math inline">\(\mathbf{x}_0\)</span> and <span class="math inline">\(\mathbf{v}\)</span> are vectors in <span class="math inline">\(R^n\)</span>, and if <span class="math inline">\(\mathbf{v}\)</span> is nonzero, then the equation <span class="math display">\[ \mathbf{x} = \mathbf{x}_0 + t\mathbf{v} \quad \text{(5)} \]</span> defines the line through <span class="math inline">\(\mathbf{x}_0\)</span> that is parallel to <span class="math inline">\(\mathbf{v}\)</span>.</p>
+<p>In the special case where <span class="math inline">\(\mathbf{x}_0 = \mathbf{0}\)</span>, the line is said to pass through the origin.</p>
+</div><div class="column" style="width:50%;">
+<h4 id="definition-2-plane-in-rn">Definition 2: Plane in <span class="math inline">\(R^n\)</span></h4>
+<p>If <span class="math inline">\(\mathbf{x}_0\)</span>, <span class="math inline">\(\mathbf{v}_1\)</span>, and <span class="math inline">\(\mathbf{v}_2\)</span> are vectors in <span class="math inline">\(R^n\)</span>, and if <span class="math inline">\(\mathbf{v}_1\)</span> and <span class="math inline">\(\mathbf{v}_2\)</span> are not collinear, then the equation <span class="math display">\[ \mathbf{x} = \mathbf{x}_0 + t_1\mathbf{v}_1 + t_2\mathbf{v}_2 \quad \text{(6)} \]</span> defines the plane through <span class="math inline">\(\mathbf{x}_0\)</span> that is parallel to <span class="math inline">\(\mathbf{v}_1\)</span> and <span class="math inline">\(\mathbf{v}_2\)</span>.</p>
+<p>In the special case where <span class="math inline">\(\mathbf{x}_0 = \mathbf{0}\)</span>, the plane is said to pass through the origin.</p>
+</div></div>
+<aside class="notes">
+<p>While we can’t visualize <span class="math inline">\(R^n\)</span> directly for <span class="math inline">\(n &gt; 3\)</span>, the algebraic forms remain the same. These vector forms are powerful because they generalize easily. In ECE, working with high-dimensional data is common, for example, in machine learning or large-scale control systems, where <code>x</code> could represent a state vector with many components.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-1-lines-in-r2-and-r3" class="slide level2">
+<h2>Example 1: Lines in <span class="math inline">\(R^2\)</span> and <span class="math inline">\(R^3\)</span></h2>
+<h4 id="part-a-line-in-r2-through-origin-parallel-to-mathbfv--23">Part (a): Line in <span class="math inline">\(R^2\)</span> through origin, parallel to <span class="math inline">\(\mathbf{v} = (-2,3)\)</span></h4>
+<p>Vector equation: <span class="math inline">\((x,y) = t(-2,3)\)</span></p>
+<p>Parametric equations: <span class="math inline">\(x = -2t, \quad y = 3t\)</span></p>
+<h4 id="part-b-line-in-r3-through-p_012-3-parallel-to-mathbfv-4-51">Part (b): Line in <span class="math inline">\(R^3\)</span> through <span class="math inline">\(P_0(1,2,-3)\)</span>, parallel to <span class="math inline">\(\mathbf{v} = (4,-5,1)\)</span></h4>
+<p>Vector equation: <span class="math inline">\((x, y, z) = (1, 2, -3) + t(4, -5, 1)\)</span></p>
+<p>Parametric equations: <span class="math inline">\(x = 1 + 4t, \quad y = 2 - 5t, \quad z = -3 + t\)</span></p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>The parameter <span class="math inline">\(t\)</span> allows us to trace any point on the line. Different values of <span class="math inline">\(t\)</span> correspond to different points.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>These examples illustrate how to translate between vector and parametric forms. The parametric form is particularly useful when you need to substitute coordinates into other equations or perform calculations component-wise. For instance, in trajectory planning for a drone, you might need to know its exact coordinates <span class="math inline">\((x, y, z)\)</span> at a given time <span class="math inline">\(t\)</span>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-example-1c-points-on-a-line" class="slide level2">
+<h2>Interactive Example 1(c): Points on a Line</h2>
+<p>Using the vector equation from Example 1(b): <span class="math display">\[ (x, y, z) = (1, 2, -3) + t(4, -5, 1) \]</span> Let’s find points for different values of <span class="math inline">\(t\)</span>.</p>
+<div>
+<div id="pyodide-3" class="exercise-cell">
+
+</div>
+<script type="pyodide-3-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImZpZy1jYXAiOiJDYWxjdWxhdGluZyBwb2ludHMgb24gYSBsaW5lIGZvciBkaWZmZXJlbnQgdCB2YWx1ZXMuIiwibGFiZWwiOiJleDFjLXBvaW50cyIsIm1heC1saW5lcyI6MTAsIm91dHB1dCI6dHJ1ZX0sImNvZGUiOiJcbmltcG9ydCBudW1weSBhcyBucFxuXG54MCA9IG5wLmFycmF5KFsxLCAyLCAtM10pXG52ID0gbnAuYXJyYXkoWzQsIC01LCAxXSlcblxuIyBEZWZpbmUgYSBsaXN0IG9mIHQgdmFsdWVzIHRvIHRlc3RcbnRfdmFsdWVzID0gWzAsIDEsIC0xLCAwLjUsIDJdXG5cbnByaW50KFwiUG9pbnRzIG9uIHRoZSBsaW5lIGZvciB2YXJpb3VzIHQgdmFsdWVzOlwiKVxucHJpbnQoXCItLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1cIilcbmZvciB0X3ZhbCBpbiB0X3ZhbHVlczpcbiAgICBwb2ludCA9IHgwICsgdF92YWwgKiB2XG4gICAgcHJpbnQoZlwiRm9yIHQgPSB7dF92YWx9OiAoeCwgeSwgeikgPSAoe3BvaW50WzBdfSwge3BvaW50WzFdfSwge3BvaW50WzJdfSlcIikifQ==
+</script>
+</div>
+<aside class="notes">
+<p>As you can see, for each value of <code>t</code>, we get a distinct point on the line. <code>t=0</code> yields the starting point <code>P0</code>. <code>t=1</code> moves us one unit along the <code>v</code> vector from <code>P0</code>. <code>t=-1</code> moves us in the opposite direction. This is a direct application of vector addition and scalar multiplication.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-2-plane-from-rectangular-equation" class="slide level2 scrollable">
+<h2>Example 2: Plane from Rectangular Equation</h2>
+<p>Find vector and parametric equations for the plane <span class="math inline">\(x - y + 2z = 5\)</span>.</p>
+<ol type="1">
+<li><p><strong>Solve for one variable:</strong> Solve for <span class="math inline">\(x\)</span>: <span class="math inline">\(x = 5 + y - 2z\)</span></p></li>
+<li><p><strong>Introduce parameters:</strong> Let <span class="math inline">\(y = t_1\)</span> and <span class="math inline">\(z = t_2\)</span>.</p></li>
+<li><p><strong>Parametric equations:</strong> <span class="math inline">\(x = 5 + t_1 - 2t_2\)</span> <span class="math inline">\(y = t_1\)</span> <span class="math inline">\(z = t_2\)</span></p></li>
+<li><p><strong>Vector Equation:</strong> Rewrite in vector form:</p>
+<p><span class="math inline">\((x, y, z) = (5 + t_1 - 2t_2, t_1, t_2)\)</span></p>
+<p>Split into components:</p>
+<p><span class="math inline">\((x, y, z) = (5, 0, 0) + t_1(1, 1, 0) + t_2(-2, 0, 1)\)</span></p></li>
+</ol>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>Note that we could have chosen to solve for <span class="math inline">\(y\)</span> or <span class="math inline">\(z\)</span> instead, leading to different parametric forms, but representing the <em>same</em> geometric plane.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>This example demonstrates how to convert a standard Cartesian equation of a plane into its vector and parametric forms. The choice of which variable to solve for is arbitrary, but it affects the specific vectors <code>v1</code> and <code>v2</code> you obtain. However, the plane itself, the geometric object, remains the same. This transformation is useful in computer graphics, for example, where you might need to define a surface for rendering from an implicit equation.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-example-2-plane-visualization" class="slide level2">
+<h2>Interactive Example 2: Plane Visualization</h2>
+<p>Visualize the plane <span class="math inline">\(x - y + 2z = 5\)</span>.</p>
+<div>
+<div id="pyodide-4" class="exercise-cell">
+
+</div>
+<script type="pyodide-4-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImZpZy1jYXAiOiJJbnRlcmFjdGl2ZSB2aXN1YWxpemF0aW9uIG9mIHRoZSBwbGFuZSB4IC0geSArIDJ6ID0gNS4iLCJoZWlnaHQiOjUwMCwibGFiZWwiOiJleDItcGxhbmUtdmlzIiwibWF4LWxpbmVzIjoxMCwib3V0cHV0Ijp0cnVlfSwiY29kZSI6IlxuaW1wb3J0IHBsb3RseS5ncmFwaF9vYmplY3RzIGFzIGdvXG5pbXBvcnQgbnVtcHkgYXMgbnBcblxuIyBEZWZpbmUgdGhlIHBsYW5lIGVxdWF0aW9uOiB4IC0geSArIDJ6ID0gNSAgPT4geCA9IDUgKyB5IC0gMnpcbiMgV2UgY2FuIHBhcmFtZXRlcml6ZSBpdCB1c2luZyB5IGFuZCB6XG55X3JhbmdlID0gbnAubGluc3BhY2UoLTUsIDUsIDIwKVxuel9yYW5nZSA9IG5wLmxpbnNwYWNlKC01LCA1LCAyMClcblksIFogPSBucC5tZXNoZ3JpZCh5X3JhbmdlLCB6X3JhbmdlKVxuWCA9IDUgKyBZIC0gMiAqIFpcblxuZmlnID0gZ28uRmlndXJlKGRhdGE9W2dvLlN1cmZhY2UoeD1YLCB5PVksIHo9Wiwgb3BhY2l0eT0wLjgsIGNvbG9yc2NhbGU9J1BsYXNtYScpXSlcblxuZmlnLnVwZGF0ZV9sYXlvdXQoXG4gICAgdGl0bGU9J1BsYW5lOiB4IC0geSArIDJ6ID0gNScsXG4gICAgc2NlbmU9ZGljdChcbiAgICAgICAgeGF4aXNfdGl0bGU9J1gnLFxuICAgICAgICB5YXhpc190aXRsZT0nWScsXG4gICAgICAgIHpheGlzX3RpdGxlPSdaJyxcbiAgICAgICAgeGF4aXNfcmFuZ2U9Wy01LCAxMF0sXG4gICAgICAgIHlheGlzX3JhbmdlPVstNSwgNV0sXG4gICAgICAgIHpheGlzX3JhbmdlPVstNSwgNV0sXG4gICAgICAgIGFzcGVjdG1vZGU9J2N1YmUnXG4gICAgKSxcbiAgICBoZWlnaHQ9NTAwXG4pXG5cbmZpZy5zaG93KCkifQ==
+</script>
+</div>
+<aside class="notes">
+<p>This visualization allows you to rotate and explore the plane defined by <code>x - y + 2z = 5</code>. Notice how it extends infinitely in all directions. In control systems, the solution space of certain linear equations can represent a constraint surface within which system states must operate.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="lines-through-two-points-in-rn" class="slide level2">
+<h2>Lines Through Two Points in <span class="math inline">\(R^n\)</span></h2>
+<div class="columns">
+<div class="column" style="width:70%;">
+<p>A line can also be defined by two distinct points <span class="math inline">\(\mathbf{x}_0\)</span> and <span class="math inline">\(\mathbf{x}_1\)</span>.</p>
+<p>The line determined by <span class="math inline">\(\mathbf{x}_0\)</span> and <span class="math inline">\(\mathbf{x}_1\)</span> is parallel to the vector <span class="math inline">\(\mathbf{v} = \mathbf{x}_1 - \mathbf{x}_0\)</span>.</p>
+<p>Using the general line equation <span class="math inline">\(\mathbf{x} = \mathbf{x}_0 + t\mathbf{v}\)</span>: <span class="math display">\[ \mathbf{x} = \mathbf{x}_0 + t(\mathbf{x}_1 - \mathbf{x}_0) \quad \text{(9)} \]</span></p>
+<p>This can be rewritten as: <span class="math display">\[ \mathbf{x} = (1 - t)\mathbf{x}_0 + t\mathbf{x}_1 \quad \text{(10)} \]</span></p>
+<p>These are the <strong>two-point vector equations</strong> of a line.</p>
+</div><div class="column" style="width:30%;">
+<p><img data-src="https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/078589b49c520fefee8db09e193fc6c1dfd166901ed299b748ae963061f8d797.jpg"> Figure 3.4.5</p>
+</div></div>
+<aside class="notes">
+<p>This formulation is very intuitive. If you have two points, you can find the direction vector between them. Then, any point on the line can be seen as starting at one point and moving along that direction. The form <code>(1-t)x0 + t*x1</code> is particularly elegant as it clearly shows the weighted average of the two points, which is useful in interpolation.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-line-through-two-points" class="slide level2">
+<h2>Interactive: Line Through Two Points</h2>
+<p>Find the vector and parametric equations for a line passing through two given points.</p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Enter coordinates for <span class="math inline">\(\mathbf{x}_0\)</span> and <span class="math inline">\(\mathbf{x}_1\)</span> to generate the line equations and visualize it.</p>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-5" class="exercise-cell">
+
+</div>
+<script type="pyodide-5-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImZpZy1jYXAiOiJJbnRlcmFjdGl2ZSBMaW5lIFRocm91Z2ggVHdvIFBvaW50cyIsImhlaWdodCI6NDUwLCJsYWJlbCI6InR3by1wb2ludHMtbGluZSIsIm1heC1saW5lcyI6MTAsIm91dHB1dCI6dHJ1ZX0sImNvZGUiOiJcbmltcG9ydCBwbG90bHkuZ3JhcGhfb2JqZWN0cyBhcyBnb1xuaW1wb3J0IG51bXB5IGFzIG5wXG5cbiMgSW5wdXQgcG9pbnRzXG54MF9wb2ludCA9IG5wLmFycmF5KFswLCA3XSkgIyBQKDAsNylcbngxX3BvaW50ID0gbnAuYXJyYXkoWzUsIDBdKSAjIFEoNSwwKVxuXG4jIENhbGN1bGF0ZSBkaXJlY3Rpb24gdmVjdG9yIHZcbnZfdmVjID0geDFfcG9pbnQgLSB4MF9wb2ludFxuXG4jIFZlY3RvciBlcXVhdGlvbjogeCA9IHgwICsgdCp2XG5wcmludChmXCJWZWN0b3IgRXF1YXRpb246ICh4LHkpID0gKHt4MF9wb2ludFswXX0sIHt4MF9wb2ludFsxXX0pICsgdCooe3ZfdmVjWzBdfSwge3ZfdmVjWzFdfSlcIilcblxuIyBQYXJhbWV0cmljIGVxdWF0aW9uc1xucHJpbnQoZlwiUGFyYW1ldHJpYyBFcXVhdGlvbnM6IHggPSB7eDBfcG9pbnRbMF19ICsge3ZfdmVjWzBdfXQsICB5ID0ge3gwX3BvaW50WzFdfSArIHt2X3ZlY1sxXX10XCIpXG5wcmludChcIlxcblwiKVxuXG4jIEZvciB2aXN1YWxpemF0aW9uXG50X3ZhbHMgPSBucC5saW5zcGFjZSgtMiwgMiwgMTAwKVxubGluZV94ID0geDBfcG9pbnRbMF0gKyB0X3ZhbHMgKiB2X3ZlY1swXVxubGluZV95ID0geDBfcG9pbnRbMV0gKyB0X3ZhbHMgKiB2X3ZlY1sxXVxuXG5maWcgPSBnby5GaWd1cmUoKVxuXG5maWcuYWRkX3RyYWNlKGdvLlNjYXR0ZXIoeD1saW5lX3gsIHk9bGluZV95LCBtb2RlPSdsaW5lcycsIG5hbWU9J0xpbmUnKSlcbmZpZy5hZGRfdHJhY2UoZ28uU2NhdHRlcih4PVt4MF9wb2ludFswXV0sIHk9W3gwX3BvaW50WzFdXSwgbW9kZT0nbWFya2VycycsIG1hcmtlcj1kaWN0KHNpemU9MTAsIGNvbG9yPSdyZWQnKSwgbmFtZT0neDAnKSlcbmZpZy5hZGRfdHJhY2UoZ28uU2NhdHRlcih4PVt4MV9wb2ludFswXV0sIHk9W3gxX3BvaW50WzFdXSwgbW9kZT0nbWFya2VycycsIG1hcmtlcj1kaWN0KHNpemU9MTAsIGNvbG9yPSdibHVlJyksIG5hbWU9J3gxJykpXG5cbmZpZy51cGRhdGVfbGF5b3V0KFxuICAgIHRpdGxlPSdMaW5lIHRocm91Z2ggVHdvIFBvaW50cycsXG4gICAgeGF4aXNfdGl0bGU9J1gnLFxuICAgIHlheGlzX3RpdGxlPSdZJyxcbiAgICBzaG93bGVnZW5kPVRydWUsXG4gICAgeGF4aXNfcmFuZ2U9Wy0xMCwgMTBdLFxuICAgIHlheGlzX3JhbmdlPVstMTAsIDEwXSxcbiAgICBoZWlnaHQ9NDAwXG4pXG5cbmZpZy5zaG93KCkifQ==
+</script>
+</div>
+<aside class="notes">
+<p>This interactive tool calculates both the vector and parametric forms and plots the line. You can easily change the input points <code>x0_point</code> and <code>x1_point</code> to see how the line adjusts. This is highly practical in engineering, for example, when defining paths for robots or data interpolation.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="line-segments" class="slide level2">
+<h2>Line Segments</h2>
+<div class="columns">
+<div class="column" style="width:70%;">
+<p>A line segment is a portion of a line between two specific points.</p>
+<p>If <span class="math inline">\(\mathbf{x}_0\)</span> and <span class="math inline">\(\mathbf{x}_1\)</span> are vectors in <span class="math inline">\(R^n\)</span>, the equation: <span class="math display">\[ \mathbf{x} = \mathbf{x}_0 + t(\mathbf{x}_1 - \mathbf{x}_0) \quad (0 \leq t \leq 1) \quad \text{(13)} \]</span> defines the line segment from <span class="math inline">\(\mathbf{x}_0\)</span> to <span class="math inline">\(\mathbf{x}_1\)</span>.</p>
+<p>Equivalently: <span class="math display">\[ \mathbf{x} = (1 - t)\mathbf{x}_0 + t\mathbf{x}_1 \quad (0 \leq t \leq 1) \quad \text{(14)} \]</span></p>
+<ul>
+<li>When <span class="math inline">\(t=0\)</span>, <span class="math inline">\(\mathbf{x} = \mathbf{x}_0\)</span>.</li>
+<li>When <span class="math inline">\(t=1\)</span>, <span class="math inline">\(\mathbf{x} = \mathbf{x}_1\)</span>.</li>
+<li>For <span class="math inline">\(0 &lt; t &lt; 1\)</span>, <span class="math inline">\(\mathbf{x}\)</span> lies between <span class="math inline">\(\mathbf{x}_0\)</span> and <span class="math inline">\(\mathbf{x}_1\)</span>.</li>
+</ul>
+</div><div class="column" style="width:30%;">
+<p><img data-src="https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/5a8e6023902b8471307b608564f600878ed079ec1f40cd46e717bcb4a1d4b6d7.jpg"> Figure 3.4.6</p>
+</div></div>
+<aside class="notes">
+<p>Restricting the parameter <span class="math inline">\(t\)</span> to the interval <code>[0, 1]</code> transforms a full line into a line segment. This is extremely important in computer graphics for drawing edges, in robotics for defining specific movement trajectories, or in signal processing for windowing functions. The form <code>(1-t)x0 + t*x1</code> is often called a linear interpolation formula.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-line-segment" class="slide level2">
+<h2>Interactive Line Segment</h2>
+<p>Visualize a line segment between two points and explore intermediate points.</p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Adjust the value of <code>t_slider</code> to see how a point moves along the segment. Change <code>x0_coords</code> and <code>x1_coords</code> to define a new segment.</p>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="569" data-source-offset="-46"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 568;"><span id="cb1-569"><a></a>x0_coords <span class="op">=</span> [<span class="dv">1</span><span class="op">,</span> <span class="op">-</span><span class="dv">3</span>]</span>
+<span id="cb1-570"><a></a>x1_coords <span class="op">=</span> [<span class="dv">5</span><span class="op">,</span> <span class="dv">6</span>]</span>
+<span id="cb1-571"><a></a></span>
+<span id="cb1-572"><a></a><span class="co">// Create a slider for parameter t</span></span>
+<span id="cb1-573"><a></a>viewof t_slider <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Parameter t"</span>})</span>
+<span id="cb1-574"><a></a></span>
+<span id="cb1-575"><a></a><span class="co">// Calculate the point on the segment</span></span>
+<span id="cb1-576"><a></a>current_point <span class="op">=</span> [</span>
+<span id="cb1-577"><a></a>  (<span class="dv">1</span> <span class="op">-</span> t_slider) <span class="op">*</span> x0_coords[<span class="dv">0</span>] <span class="op">+</span> t_slider <span class="op">*</span> x1_coords[<span class="dv">0</span>]<span class="op">,</span></span>
+<span id="cb1-578"><a></a>  (<span class="dv">1</span> <span class="op">-</span> t_slider) <span class="op">*</span> x0_coords[<span class="dv">1</span>] <span class="op">+</span> t_slider <span class="op">*</span> x1_coords[<span class="dv">1</span>]</span>
+<span id="cb1-579"><a></a>]</span>
+<span id="cb1-580"><a></a></span>
+<span id="cb1-581"><a></a><span class="co">// Create the plot using Observable Plot</span></span>
+<span id="cb1-582"><a></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb1-583"><a></a>  <span class="dt">title</span><span class="op">:</span> <span class="st">"Line Segment Visualization"</span><span class="op">,</span></span>
+<span id="cb1-584"><a></a>  <span class="dt">x</span><span class="op">:</span> {<span class="dt">domain</span><span class="op">:</span> [<span class="op">-</span><span class="dv">6</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"X-axis"</span>}<span class="op">,</span></span>
+<span id="cb1-585"><a></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">domain</span><span class="op">:</span> [<span class="op">-</span><span class="dv">6</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Y-axis"</span>}<span class="op">,</span></span>
+<span id="cb1-586"><a></a>  <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb1-587"><a></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb1-588"><a></a>    Plot<span class="op">.</span><span class="fu">line</span>([[x0_coords[<span class="dv">0</span>]<span class="op">,</span> x1_coords[<span class="dv">0</span>]]<span class="op">,</span> [x0_coords[<span class="dv">1</span>]<span class="op">,</span> x1_coords[<span class="dv">1</span>]]]<span class="op">,</span> {<span class="dt">stroke</span><span class="op">:</span> <span class="st">"lightgray"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">3</span>})<span class="op">,</span></span>
+<span id="cb1-589"><a></a>    Plot<span class="op">.</span><span class="fu">dot</span>([x0_coords]<span class="op">,</span> {<span class="dt">r</span><span class="op">:</span> <span class="dv">8</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"red"</span><span class="op">,</span> <span class="dt">title</span><span class="op">:</span> <span class="vs">`x0: (</span><span class="sc">${</span>x0_coords[<span class="dv">0</span>]<span class="sc">}</span><span class="vs">, </span><span class="sc">${</span>x0_coords[<span class="dv">1</span>]<span class="sc">}</span><span class="vs">)`</span>})<span class="op">,</span></span>
+<span id="cb1-590"><a></a>    Plot<span class="op">.</span><span class="fu">dot</span>([x1_coords]<span class="op">,</span> {<span class="dt">r</span><span class="op">:</span> <span class="dv">8</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"blue"</span><span class="op">,</span> <span class="dt">title</span><span class="op">:</span> <span class="vs">`x1: (</span><span class="sc">${</span>x1_coords[<span class="dv">0</span>]<span class="sc">}</span><span class="vs">, </span><span class="sc">${</span>x1_coords[<span class="dv">1</span>]<span class="sc">}</span><span class="vs">)`</span>})<span class="op">,</span></span>
+<span id="cb1-591"><a></a>    Plot<span class="op">.</span><span class="fu">dot</span>([current_point]<span class="op">,</span> {<span class="dt">r</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"green"</span><span class="op">,</span> <span class="dt">title</span><span class="op">:</span> <span class="vs">`Current Point (t=</span><span class="sc">${</span>t_slider<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">): (</span><span class="sc">${</span>current_point[<span class="dv">0</span>]<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">, </span><span class="sc">${</span>current_point[<span class="dv">1</span>]<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">)`</span>})</span>
+<span id="cb1-592"><a></a>  ]</span>
+<span id="cb1-593"><a></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-5" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>This Observable.js visualization allows direct manipulation of the <code>t</code> parameter. You can drag the slider to see the point <code>x</code> move from <code>x0</code> to <code>x1</code>. This is a visual representation of linear interpolation, a core concept in various ECE applications, such as digital signal processing for creating intermediate samples or in computer graphics for blending colors or positions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="dot-product-form-of-a-linear-system" class="slide level2">
+<h2>Dot Product Form of a Linear System</h2>
+<p>Linear equations can be expressed concisely using dot products.</p>
+<p>A linear equation <span class="math inline">\(a_1x_1 + \dots + a_nx_n = b\)</span> can be written as: <span class="math display">\[ \mathbf{a} \cdot \mathbf{x} = b \quad \text{(17)} \]</span> where <span class="math inline">\(\mathbf{a} = (a_1, \dots, a_n)\)</span> and <span class="math inline">\(\mathbf{x} = (x_1, \dots, x_n)\)</span>.</p>
+<p>For a homogeneous equation (<span class="math inline">\(\mathbf{b}=0\)</span>): <span class="math display">\[ \mathbf{a} \cdot \mathbf{x} = 0 \quad \text{(18)} \]</span> This implies that every solution vector <span class="math inline">\(\mathbf{x}\)</span> is <strong>orthogonal</strong> to the coefficient vector <span class="math inline">\(\mathbf{a}\)</span>.</p>
+</section>
+<section id="dot-product-form-of-a-linear-system-1" class="slide level2">
+<h2>Dot Product Form of a Linear System</h2>
+<h4 id="homogeneous-system-amathbfx-mathbf0">Homogeneous System <span class="math inline">\(A\mathbf{x} = \mathbf{0}\)</span></h4>
+<p>If <span class="math inline">\(A\)</span> has row vectors <span class="math inline">\(\mathbf{r}_1, \dots, \mathbf{r}_m\)</span>, the system becomes: <span class="math display">\[
+\begin{array}{r}{\mathbf{r}_{1}\cdot \mathbf{x} = \mathbf{0}}\\ {\mathbf{r}_{2}\cdot \mathbf{x} = \mathbf{0}}\\ \vdots \quad \vdots \\ {\mathbf{r}_{m}\cdot \mathbf{x} = \mathbf{0}} \end{array} \quad \text{(19)}
+\]</span> <strong>Theorem 3.4.3:</strong> The solution set of <span class="math inline">\(A\mathbf{x}=\mathbf{0}\)</span> consists of all vectors in <span class="math inline">\(R^n\)</span> that are orthogonal to <em>every</em> row vector of <span class="math inline">\(A\)</span>.</p>
+<aside class="notes">
+<p>The dot product notation simplifies the representation of linear equations and systems. The geometric interpretation of <code>a . x = 0</code> is crucial: <code>x</code> lies in the space orthogonal to <code>a</code>. When we extend this to a system <code>Ax = 0</code>, the solution space is orthogonal to <em>all</em> row vectors of <code>A</code>. This concept is fundamental in understanding null spaces, which are vital in signal processing for noise reduction and in control theory for system stability analysis.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-orthogonality-check" class="slide level2">
+<h2>Interactive Orthogonality Check</h2>
+<p>Verify the orthogonality between a solution vector and a row vector.</p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Change the <code>solution_vector</code> or <code>row_vector</code> to test different scenarios. A dot product of zero indicates orthogonality.</p>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-6" class="exercise-cell">
+
+</div>
+<script type="pyodide-6-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImxhYmVsIjoib3J0aG9nb25hbGl0eS1jaGVjayIsIm1heC1saW5lcyI6MTAsIm91dHB1dCI6dHJ1ZX0sImNvZGUiOiJcbmltcG9ydCBudW1weSBhcyBucFxuXG4jIEV4YW1wbGUgZnJvbSB0ZXh0IChzaW1wbGlmaWVkIGZvciBpbnRlcmFjdGl2aXR5KVxuIyByMSA9ICgxLDMsLTIsMCwyLDApXG4jIHggPSAoLTNyIC0gNHMgLSAydCwgciwgLTJzLCBzLCB0LCAwKVxuIyBMZXQgcj0xLCBzPTEsIHQ9MSBmb3IgYSBzcGVjaWZpYyBzb2x1dGlvbiB2ZWN0b3JcbiMgVGhpcyByZXN1bHRzIGluIHggPSAoLTksIDEsIC0yLCAxLCAxLCAwKVxuICBcbiMgVGVzdCBTb2x1dGlvbiBWZWN0b3IgKGUuZy4sIGZyb20gRXggNiwgd2l0aCByPTEsIHM9MSwgdD0xKVxuc29sdXRpb25fdmVjdG9yID0gbnAuYXJyYXkoWy05LCAxLCAtMiwgMSwgMSwgMF0pXG5cbiMgUm93IFZlY3RvciAxIGZyb20gcHJldmlvdXMgZXhhbXBsZVxucm93X3ZlY3Rvcl9yMSA9IG5wLmFycmF5KFsxLCAzLCAtMiwgMCwgMiwgMF0pXG5cbiMgQ2FsY3VsYXRlIGRvdCBwcm9kdWN0XG5kb3RfcHJvZHVjdCA9IG5wLmRvdChyb3dfdmVjdG9yX3IxLCBzb2x1dGlvbl92ZWN0b3IpXG5cbnByaW50KGZcIlNvbHV0aW9uIFZlY3RvciB4OiB7c29sdXRpb25fdmVjdG9yfVwiKVxucHJpbnQoZlwiUm93IFZlY3RvciByMToge3Jvd192ZWN0b3JfcjF9XCIpXG5wcmludChmXCJEb3QgUHJvZHVjdCAocjEgLiB4KToge2RvdF9wcm9kdWN0fVwiKVxuXG5pZiBkb3RfcHJvZHVjdCA9PSAwOlxuICAgIHByaW50KFwiUmVzdWx0OiBUaGUgc29sdXRpb24gdmVjdG9yIGlzIG9ydGhvZ29uYWwgdG8gdGhlIHJvdyB2ZWN0b3IuXCIpXG5lbHNlOlxuICAgIHByaW50KFwiUmVzdWx0OiBUaGUgc29sdXRpb24gdmVjdG9yIGlzIE5PVCBvcnRob2dvbmFsIHRvIHRoZSByb3cgdmVjdG9yLlwiKVxuXG4jIFRyeSBhbm90aGVyIGNhc2UgKG5vdCBvcnRob2dvbmFsKVxucHJpbnQoXCJcXG4tLS0gQW5vdGhlciBUZXN0IChOb24tT3J0aG9nb25hbCkgLS0tXCIpXG5iYWRfc29sdXRpb25fdmVjdG9yID0gbnAuYXJyYXkoWzEsIDEsIDEsIDEsIDEsIDFdKVxuZG90X3Byb2R1Y3RfYmFkID0gbnAuZG90KHJvd192ZWN0b3JfcjEsIGJhZF9zb2x1dGlvbl92ZWN0b3IpXG5wcmludChmXCJTb2x1dGlvbiBWZWN0b3IgeCAoYmFkKToge2JhZF9zb2x1dGlvbl92ZWN0b3J9XCIpXG5wcmludChmXCJSb3cgVmVjdG9yIHIxOiB7cm93X3ZlY3Rvcl9yMX1cIilcbnByaW50KGZcIkRvdCBQcm9kdWN0IChyMSAuIHgpOiB7ZG90X3Byb2R1Y3RfYmFkfVwiKVxuaWYgZG90X3Byb2R1Y3RfYmFkID09IDA6XG4gICAgcHJpbnQoXCJSZXN1bHQ6IFRoZSBzb2x1dGlvbiB2ZWN0b3IgaXMgb3J0aG9nb25hbCB0byB0aGUgcm93IHZlY3Rvci5cIilcbmVsc2U6XG4gICAgcHJpbnQoXCJSZXN1bHQ6IFRoZSBzb2x1dGlvbiB2ZWN0b3IgaXMgTk9UIG9ydGhvZ29uYWwgdG8gdGhlIHJvdyB2ZWN0b3IuXCIpIn0=
+</script>
+</div>
+<aside class="notes">
+<p>This interactive code verifies the geometric property of orthogonality. It’s a direct numerical check of Theorem 3.4.3. Notice how the first calculation, using a derived solution vector, correctly yields a dot product of zero. This has significant implications in signal processing for designing filters that eliminate certain signal components, or in error correction codes where orthogonal vectors represent distinct codewords.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="relationship-between-amathbfxmathbf0-and-amathbfxmathbfb" class="slide level2">
+<h2>Relationship Between <span class="math inline">\(A\mathbf{x}=\mathbf{0}\)</span> and <span class="math inline">\(A\mathbf{x}=\mathbf{b}\)</span></h2>
+<div class="columns">
+<div class="column" style="width:70%;">
+<p>The solutions of a nonhomogeneous system are a translation of the solutions of its corresponding homogeneous system.</p>
+<p>Consider a consistent linear system <span class="math inline">\(A\mathbf{x} = \mathbf{b}\)</span>.</p>
+<p>Let <span class="math inline">\(\mathbf{x}_p\)</span> be any <em>particular</em> solution to <span class="math inline">\(A\mathbf{x} = \mathbf{b}\)</span>.</p>
+<p>Let <span class="math inline">\(\mathbf{x}_h\)</span> be the <em>general solution</em> to the homogeneous system <span class="math inline">\(A\mathbf{x} = \mathbf{0}\)</span>.</p>
+<p><strong>Theorem 3.4.4:</strong> The general solution of <span class="math inline">\(A\mathbf{x} = \mathbf{b}\)</span> is given by: <span class="math display">\[ \mathbf{x} = \mathbf{x}_p + \mathbf{x}_h \]</span></p>
+<p>This means the solution set of <span class="math inline">\(A\mathbf{x}=\mathbf{b}\)</span> is a translation of the solution space of <span class="math inline">\(A\mathbf{x}=\mathbf{0}\)</span> by the particular solution <span class="math inline">\(\mathbf{x}_p\)</span>.</p>
+</div><div class="column" style="width:30%;">
+<p><img data-src="https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/008cd4028d0099148ea2252d9ec807c08f165d422c8ff3b66036fcf972cea8b6.jpg"> Figure 3.4.7</p>
+</div></div>
+<aside class="notes">
+<p>This theorem is incredibly powerful. It tells us that to find all solutions to a nonhomogeneous system, we just need one specific solution and then add all possible solutions to the homogeneous system. Geometrically, if the homogeneous solution set is a plane through the origin, the nonhomogeneous solution set is the <em>same plane</em>, just shifted to pass through <code>xp</code>. This concept is vital in solving differential equations, control system responses (forced vs.&nbsp;natural response), and understanding the structure of solution spaces in general.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-solution-space-translation" class="slide level2">
+<h2>Interactive: Solution Space Translation</h2>
+<p>Visualize how the solution set of <span class="math inline">\(A\mathbf{x} = \mathbf{b}\)</span> is a translated version of the solution space of <span class="math inline">\(A\mathbf{x} = \mathbf{0}\)</span>.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Here, we simulate a 1D solution space (a line) in 2D for simplicity. The homogeneous solution is a line through the origin. The nonhomogeneous solution is the same line, translated by <span class="math inline">\(\mathbf{x}_p\)</span>.</p>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-7" class="exercise-cell">
+
+</div>
+<script type="pyodide-7-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImZpZy1jYXAiOiJWaXN1YWxpemF0aW9uIG9mIHNvbHV0aW9uIHNwYWNlIHRyYW5zbGF0aW9uLiIsImhlaWdodCI6NTAwLCJsYWJlbCI6InNvbHV0aW9uLXRyYW5zbGF0aW9uIiwibWF4LWxpbmVzIjoxMCwib3V0cHV0Ijp0cnVlfSwiY29kZSI6IlxuaW1wb3J0IHBsb3RseS5ncmFwaF9vYmplY3RzIGFzIGdvXG5pbXBvcnQgbnVtcHkgYXMgbnBcblxuIyBTaW11bGF0ZSBhIDFEIHNvbHV0aW9uIHNwYWNlIGluIDJEIChhIGxpbmUpXG4jIEhvbW9nZW5lb3VzIHNvbHV0aW9uOiB4X2ggPSB0ICogdl9kaXJcbnZfZGlyID0gbnAuYXJyYXkoWzEsIDAuNV0pICMgRGlyZWN0aW9uIHZlY3RvciBmb3IgdGhlIGxpbmVcbnRfcmFuZ2UgPSBucC5saW5zcGFjZSgtMywgMywgNTApXG54X2hfY29vcmRzID0gdF9yYW5nZVs6LCBucC5uZXdheGlzXSAqIHZfZGlyICMgQWxsIHBvaW50cyBvbiB0aGUgaG9tb2dlbmVvdXMgbGluZVxuXG4jIFBhcnRpY3VsYXIgc29sdXRpb24gZm9yIEF4ID0gYlxueF9wID0gbnAuYXJyYXkoWzIsIDFdKVxuXG4jIE5vbmhvbW9nZW5lb3VzIHNvbHV0aW9uOiB4X25oID0geF9wICsgdCAqIHZfZGlyXG54X25oX2Nvb3JkcyA9IHhfcCArIHRfcmFuZ2VbOiwgbnAubmV3YXhpc10gKiB2X2RpclxuXG5maWcgPSBnby5GaWd1cmUoKVxuXG4jIEhvbW9nZW5lb3VzIHNvbHV0aW9uIGxpbmUgKHRocm91Z2ggb3JpZ2luKVxuZmlnLmFkZF90cmFjZShnby5TY2F0dGVyKHg9eF9oX2Nvb3Jkc1s6LCAwXSwgeT14X2hfY29vcmRzWzosIDFdLCBtb2RlPSdsaW5lcycsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxpbmU9ZGljdChjb2xvcj0nYmx1ZScsIHdpZHRoPTMpLCBuYW1lPSdTb2x1dGlvbiB0byBBPGI+eDwvYj49PGI+MDwvYj4nKSlcblxuIyBOb25ob21vZ2VuZW91cyBzb2x1dGlvbiBsaW5lICh0cmFuc2xhdGVkKVxuZmlnLmFkZF90cmFjZShnby5TY2F0dGVyKHg9eF9uaF9jb29yZHNbOiwgMF0sIHk9eF9uaF9jb29yZHNbOiwgMV0sIG1vZGU9J2xpbmVzJyxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGluZT1kaWN0KGNvbG9yPSdncmVlbicsIHdpZHRoPTMsIGRhc2g9J2Rhc2gnKSwgbmFtZT0nU29sdXRpb24gdG8gQTxiPng8L2I+PTxiPmI8L2I+JykpXG5cbiMgT3JpZ2luXG5maWcuYWRkX3RyYWNlKGdvLlNjYXR0ZXIoeD1bMF0sIHk9WzBdLCBtb2RlPSdtYXJrZXJzJywgbWFya2VyPWRpY3Qoc2l6ZT04LCBjb2xvcj0nYmxhY2snKSwgbmFtZT0nT3JpZ2luJykpXG5cbiMgUGFydGljdWxhciBzb2x1dGlvbiB4X3BcbmZpZy5hZGRfdHJhY2UoZ28uU2NhdHRlcih4PVt4X3BbMF1dLCB5PVt4X3BbMV1dLCBtb2RlPSdtYXJrZXJzJywgbWFya2VyPWRpY3Qoc2l6ZT04LCBjb2xvcj0ncmVkJyksIG5hbWU9J1BhcnRpY3VsYXIgU29sdXRpb24geF9wJykpXG5cbiMgVmVjdG9yIHhfcCBmcm9tIG9yaWdpbiB0byB4X3BcbmZpZy5hZGRfdHJhY2UoZ28uU2NhdHRlcih4PVswLCB4X3BbMF1dLCB5PVswLCB4X3BbMV1dLCBtb2RlPSdsaW5lcycsIGxpbmU9ZGljdChjb2xvcj0ncmVkJywgd2lkdGg9MSwgZGFzaD0nZG90JyksIG5hbWU9J1RyYW5zbGF0aW9uIFZlY3RvcicpKVxuXG5maWcudXBkYXRlX2xheW91dChcbiAgICB0aXRsZT0nVHJhbnNsYXRpb24gb2YgU29sdXRpb24gU3BhY2VzJyxcbiAgICB4YXhpc190aXRsZT0nWCcsXG4gICAgeWF4aXNfdGl0bGU9J1knLFxuICAgIHNob3dsZWdlbmQ9VHJ1ZSxcbiAgICB4YXhpc19yYW5nZT1bLTUsIDVdLFxuICAgIHlheGlzX3JhbmdlPVstNSwgNV0sXG4gICAgaGVpZ2h0PTQ1MCxcbiAgICB5YXhpc19zY2FsZWFuY2hvcj0neCdcbilcblxuZmlnLnNob3coKSJ9
+</script>
+</div>
+<aside class="notes">
+<p>This plot vividly demonstrates the translation property. The blue line represents the solution space of <code>Ax=0</code>, always passing through the origin. The dashed green line represents the solution space of <code>Ax=b</code>, which is simply the blue line shifted by the particular solution <code>xp</code> (the red point). This visualization reinforces the idea that the structure of the homogeneous solution space determines the “shape” of the general solution, while <code>xp</code> merely positions it in space. This is analogous to the concept of steady-state and transient responses in circuit analysis.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="conclusion-key-takeaways" class="slide level2">
+<h2>Conclusion: Key Takeaways</h2>
+<ul>
+<li><strong>Vector &amp; Parametric Equations:</strong> Powerful tools to describe lines and planes using points and direction vectors.</li>
+<li><strong>Generalization to <span class="math inline">\(R^n\)</span>:</strong> These geometric concepts extend directly to higher dimensions, crucial for ECE applications.</li>
+<li><strong>Orthogonality in Linear Systems:</strong> Solution vectors of <span class="math inline">\(A\mathbf{x}=\mathbf{0}\)</span> are orthogonal to the row vectors of <span class="math inline">\(A\)</span>.</li>
+<li><strong>Solution Space Translation:</strong> The solution set of <span class="math inline">\(A\mathbf{x}=\mathbf{b}\)</span> is a translation of the solution space of <span class="math inline">\(A\mathbf{x}=\mathbf{0}\)</span>.</li>
+</ul>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>Understanding the geometry behind linear systems is essential for intuitive problem-solving and deeper insights in fields like signal processing, control systems, and machine learning.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>To wrap up, remember that linear algebra isn’t just about symbols and numbers; it’s about geometric relationships. These geometric interpretations provide intuition, help visualize complex data, and are directly applicable in many ECE domains. From designing filters to understanding system stability, these geometric insights are invaluable. Keep practicing these concepts and visualizing them!</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+
+<script type="pyodide-data">
+eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yNy4wL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIiwibnVtcHkiLCJwbG90bHkiLCJuYmZvcm1hdCJdfX0=
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTciLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl83ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS03LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzcgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzcsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTYiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl82ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS02LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzYgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzYsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl81ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS01LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzUgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzUsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTQiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl80ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS00LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNC1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzQgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzQsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTMiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8zID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0zLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzMgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzMsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8yID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzIgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzIsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8xID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0xLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzEgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzEsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLXByZWx1ZGUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJweW9kaWRlT2pzID0ge1xuICBjb25zdCB7XG4gICAgUHlvZGlkZUV2YWx1YXRvcixcbiAgICBQeW9kaWRlRW52aXJvbm1lbnRNYW5hZ2VyLFxuICAgIHNldHVwUHl0aG9uLFxuICAgIHN0YXJ0UHlvZGlkZVdvcmtlcixcbiAgICBiNjREZWNvZGUsXG4gICAgY29sbGFwc2VQYXRoLFxuICB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzdGF0dXNDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctc3RhdHVzXCIpO1xuICBjb25zdCBpbmRpY2F0b3JDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpbmRpY2F0b3JDb250YWluZXIuY2xhc3NMaXN0LnJlbW92ZShcImQtbm9uZVwiKTtcblxuICBsZXQgc3RhdHVzVGV4dCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIilcbiAgc3RhdHVzVGV4dC5jbGFzc0xpc3QgPSBcImV4ZXJjaXNlLWxvYWRpbmctZGV0YWlsc1wiO1xuICBzdGF0dXNUZXh0ID0gc3RhdHVzQ29udGFpbmVyLmFwcGVuZENoaWxkKHN0YXR1c1RleHQpO1xuICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYEluaXRpYWxpc2VgO1xuXG4gIC8vIEhvaXN0IGluZGljYXRvciBvdXQgZnJvbSBmaW5hbCBzbGlkZSB3aGVuIHJ1bm5pbmcgdW5kZXIgcmV2ZWFsXG4gIGNvbnN0IHJldmVhbFN0YXR1cyA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsIC5leGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaWYgKHJldmVhbFN0YXR1cykge1xuICAgIHJldmVhbFN0YXR1cy5yZW1vdmUoKTtcbiAgICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCA+IC5zbGlkZXNcIikuYXBwZW5kQ2hpbGQocmV2ZWFsU3RhdHVzKTtcbiAgfVxuXG4gIC8vIE1ha2UgYW55IHJldmVhbCBzbGlkZXMgd2l0aCBsaXZlIGNlbGxzIHNjcm9sbGFibGVcbiAgZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbChcIi5yZXZlYWwgLmV4ZXJjaXNlLWNlbGxcIikuZm9yRWFjaCgoZWwpID0+IHtcbiAgICBlbC5jbG9zZXN0KCdzZWN0aW9uLnNsaWRlJykuY2xhc3NMaXN0LmFkZChcInNjcm9sbGFibGVcIik7XG4gIH0pXG5cbiAgLy8gUHlvZGlkZSBzdXBwbGVtZW50YWwgZGF0YSBhbmQgb3B0aW9uc1xuICBjb25zdCBkYXRhQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLWRhdGFcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBkYXRhID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZGF0YUNvbnRlbnQpKTtcblxuICAvLyBHcmFiIGxpc3Qgb2YgcmVzb3VyY2VzIHRvIGJlIGRvd25sb2FkZWRcbiAgY29uc3QgZmlsZXNDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInZmcy1maWxlXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZmlsZXMgPSBKU09OLnBhcnNlKGI2NERlY29kZShmaWxlc0NvbnRlbnQpKTtcblxuICBsZXQgcHlvZGlkZVByb21pc2UgPSAoYXN5bmMgKCkgPT4ge1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgUHlvZGlkZWA7XG4gICAgY29uc3QgcHlvZGlkZSA9IGF3YWl0IHN0YXJ0UHlvZGlkZVdvcmtlcihkYXRhLm9wdGlvbnMpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiBtaWNyb3BpcGA7XG4gICAgYXdhaXQgcHlvZGlkZS5sb2FkUGFja2FnZShcIm1pY3JvcGlwXCIpO1xuICAgIGNvbnN0IG1pY3JvcGlwID0gYXdhaXQgcHlvZGlkZS5weWltcG9ydChcIm1pY3JvcGlwXCIpO1xuICAgIGF3YWl0IGRhdGEucGFja2FnZXMucGtncy5tYXAoKHBrZykgPT4gKCkgPT4ge1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiAke3BrZ31gO1xuICAgICAgcmV0dXJuIG1pY3JvcGlwLmluc3RhbGwocGtnKTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcbiAgICBhd2FpdCBtaWNyb3BpcC5kZXN0cm95KCk7XG5cbiAgICAvLyBEb3dubG9hZCBhbmQgaW5zdGFsbCByZXNvdXJjZXNcbiAgICBhd2FpdCBmaWxlcy5tYXAoKGZpbGUpID0+IGFzeW5jICgpID0+IHtcbiAgICAgIGNvbnN0IG5hbWUgPSBmaWxlLnN1YnN0cmluZyhmaWxlLmxhc3RJbmRleE9mKCcvJykgKyAxKTtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcmVzb3VyY2U6ICR7bmFtZX1gO1xuICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChmaWxlKTtcbiAgICAgIGlmICghcmVzcG9uc2Uub2spIHtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBDYW4ndCBkb3dubG9hZCBcXGAke2ZpbGV9XFxgLiBFcnJvciAke3Jlc3BvbnNlLnN0YXR1c306IFwiJHtyZXNwb25zZS5zdGF0dXNUZXh0fVwiLmApO1xuICAgICAgfVxuICAgICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlc3BvbnNlLmFycmF5QnVmZmVyKCk7XG5cbiAgICAgIC8vIFN0b3JlIFVSTHMgaW4gdGhlIGN3ZCB3aXRob3V0IGFueSBzdWJkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBpZiAoZmlsZS5pbmNsdWRlcyhcIjovL1wiKSkge1xuICAgICAgICBmaWxlID0gbmFtZTtcbiAgICAgIH1cblxuICAgICAgLy8gQ29sbGFwc2UgaGlnaGVyIGRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGZpbGUgPSBjb2xsYXBzZVBhdGgoZmlsZSk7XG5cbiAgICAgIC8vIENyZWF0ZSBkaXJlY3RvcnkgdHJlZSwgaWdub3JpbmcgXCJkaXJlY3RvcnkgZXhpc3RzXCIgVkZTIGVycm9yc1xuICAgICAgY29uc3QgcGFydHMgPSBmaWxlLnNwbGl0KCcvJykuc2xpY2UoMCwgLTEpO1xuICAgICAgbGV0IHBhdGggPSAnJztcbiAgICAgIHdoaWxlIChwYXJ0cy5sZW5ndGggPiAwKSB7XG4gICAgICAgIHBhdGggKz0gcGFydHMuc2hpZnQoKSArICcvJztcbiAgICAgICAgdHJ5IHtcbiAgICAgICAgICBhd2FpdCBweW9kaWRlLkZTLm1rZGlyKHBhdGgpO1xuICAgICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgICAgaWYgKGUuZXJybm8gIT09IDIwKSB7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICAgICAgY29uc3QgZXJyb3JUZXh0ID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLlVURjhUb1N0cmluZyhlcnJvclRleHRQdHIpO1xuICAgICAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICAgIH1cblxuICAgICAgLy8gV3JpdGUgdGhpcyBmaWxlIHRvIHRoZSBWRlNcbiAgICAgIHRyeSB7XG4gICAgICAgIHJldHVybiBhd2FpdCBweW9kaWRlLkZTLndyaXRlRmlsZShmaWxlLCBuZXcgVWludDhBcnJheShkYXRhKSk7XG4gICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgIGlmIChlLm5hbWUgIT09IFwiRXJybm9FcnJvclwiKSB0aHJvdyBlO1xuICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgRmlsZXN5c3RlbSBFcnJvciAke2UuZXJybm99IFwiJHtlcnJvclRleHR9XCIuYCk7XG4gICAgICB9XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYFB5b2RpZGUgZW52aXJvbm1lbnQgc2V0dXBgO1xuICAgIGF3YWl0IHNldHVwUHl0aG9uKHB5b2RpZGUpO1xuXG4gICAgc3RhdHVzVGV4dC5yZW1vdmUoKTtcbiAgICBpZiAoc3RhdHVzQ29udGFpbmVyLmNoaWxkcmVuLmxlbmd0aCA9PSAwKSB7XG4gICAgICBzdGF0dXNDb250YWluZXIucGFyZW50Tm9kZS5yZW1vdmUoKTtcbiAgICB9XG4gICAgcmV0dXJuIHB5b2RpZGU7XG4gIH0pKCkuY2F0Y2goKGVycikgPT4ge1xuICAgIHN0YXR1c1RleHQuc3R5bGUuY29sb3IgPSBcInZhcigtLWV4ZXJjaXNlLWVkaXRvci1obC1lciwgI0FEMDAwMClcIjtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gZXJyLm1lc3NhZ2U7XG4gICAgLy9pbmRpY2F0b3JDb250YWluZXIucXVlcnlTZWxlY3RvcihcIi5zcGlubmVyLWdyb3dcIikuY2xhc3NMaXN0LmFkZChcImQtbm9uZVwiKTtcbiAgICB0aHJvdyBlcnI7XG4gIH0pO1xuXG4gIC8vIEtlZXAgdHJhY2sgb2YgaW5pdGlhbCBPSlMgYmxvY2sgcmVuZGVyXG4gIGNvbnN0IHJlbmRlcmVkT2pzID0ge307XG5cbiAgY29uc3QgcHJvY2VzcyA9IGFzeW5jIChjb250ZXh0LCBpbnB1dHMpID0+IHtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgcHlvZGlkZVByb21pc2U7XG4gICAgY29uc3QgZXZhbHVhdG9yID0gbmV3IFB5b2RpZGVFdmFsdWF0b3IocHlvZGlkZSwgY29udGV4dCk7XG4gICAgYXdhaXQgZXZhbHVhdG9yLnByb2Nlc3MoaW5wdXRzKTtcbiAgICByZXR1cm4gZXZhbHVhdG9yLmNvbnRhaW5lcjtcbiAgfVxuXG4gIHJldHVybiB7XG4gICAgcHlvZGlkZVByb21pc2UsXG4gICAgcmVuZGVyZWRPanMsXG4gICAgcHJvY2VzcyxcbiAgfTtcbn1cbiJ9XX0=
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="qrjs_pics/unsoed_logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="https://imron-slide.vercel.app">irosyadi-2025</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script type="ojs-module-contents">
+    eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Ii8vIERlZmluZSBpbml0aWFsIHBvaW50cyBmb3IgdGhlIGxpbmUgc2VnbWVudFxueDBfY29vcmRzID0gWzEsIC0zXVxueDFfY29vcmRzID0gWzUsIDZdXG5cbi8vIENyZWF0ZSBhIHNsaWRlciBmb3IgcGFyYW1ldGVyIHRcbnZpZXdvZiB0X3NsaWRlciA9IElucHV0cy5yYW5nZShbMCwgMV0sIHtzdGVwOiAwLjAxLCB2YWx1ZTogMC41LCBsYWJlbDogXCJQYXJhbWV0ZXIgdFwifSlcblxuLy8gQ2FsY3VsYXRlIHRoZSBwb2ludCBvbiB0aGUgc2VnbWVudFxuY3VycmVudF9wb2ludCA9IFtcbiAgKDEgLSB0X3NsaWRlcikgKiB4MF9jb29yZHNbMF0gKyB0X3NsaWRlciAqIHgxX2Nvb3Jkc1swXSxcbiAgKDEgLSB0X3NsaWRlcikgKiB4MF9jb29yZHNbMV0gKyB0X3NsaWRlciAqIHgxX2Nvb3Jkc1sxXVxuXVxuXG4vLyBDcmVhdGUgdGhlIHBsb3QgdXNpbmcgT2JzZXJ2YWJsZSBQbG90XG5QbG90LnBsb3Qoe1xuICB0aXRsZTogXCJMaW5lIFNlZ21lbnQgVmlzdWFsaXphdGlvblwiLFxuICB4OiB7ZG9tYWluOiBbLTYsIDEwXSwgbGFiZWw6IFwiWC1heGlzXCJ9LFxuICB5OiB7ZG9tYWluOiBbLTYsIDEwXSwgbGFiZWw6IFwiWS1heGlzXCJ9LFxuICBncmlkOiB0cnVlLFxuICBtYXJrczogW1xuICAgIFBsb3QubGluZShbW3gwX2Nvb3Jkc1swXSwgeDFfY29vcmRzWzBdXSwgW3gwX2Nvb3Jkc1sxXSwgeDFfY29vcmRzWzFdXV0sIHtzdHJva2U6IFwibGlnaHRncmF5XCIsIHN0cm9rZVdpZHRoOiAzfSksXG4gICAgUGxvdC5kb3QoW3gwX2Nvb3Jkc10sIHtyOiA4LCBmaWxsOiBcInJlZFwiLCB0aXRsZTogYHgwOiAoJHt4MF9jb29yZHNbMF19LCAke3gwX2Nvb3Jkc1sxXX0pYH0pLFxuICAgIFBsb3QuZG90KFt4MV9jb29yZHNdLCB7cjogOCwgZmlsbDogXCJibHVlXCIsIHRpdGxlOiBgeDE6ICgke3gxX2Nvb3Jkc1swXX0sICR7eDFfY29vcmRzWzFdfSlgfSksXG4gICAgUGxvdC5kb3QoW2N1cnJlbnRfcG9pbnRdLCB7cjogMTAsIGZpbGw6IFwiZ3JlZW5cIiwgdGl0bGU6IGBDdXJyZW50IFBvaW50ICh0PSR7dF9zbGlkZXIudG9GaXhlZCgyKX0pOiAoJHtjdXJyZW50X3BvaW50WzBdLnRvRml4ZWQoMil9LCAke2N1cnJlbnRfcG9pbnRbMV0udG9GaXhlZCgyKX0pYH0pXG4gIF1cbn0pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ3Rfc2xpZGVyJykifV19
+    </script>
+    <script type="module">
+    if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+    window._ojs.paths.runtimeToDoc = "../..";
+    window._ojs.paths.runtimeToRoot = "../..";
+    window._ojs.paths.docToRoot = "";
+    window._ojs.selfContained = false;
+    window._ojs.runtime.interpretFromScriptTags();
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
