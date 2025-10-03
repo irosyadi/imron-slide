@@ -6,10 +6,10 @@
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
 <link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.24">
+  <meta name="generator" content="quarto-1.8.25">
 
   <meta name="author" content="Imron Rosyadi">
   <title>Linear Algebra</title>
@@ -245,6 +245,25 @@ Imron Rosyadi
 </div><div class="column" style="width:30%;">
 <p><img data-src="https://cdn-mineru.openxlab.org.cn/result/2025-08-19/f59e50f2-8dda-4dce-b79e-a9918d3c60b5/0b85d47552bd3e3fcca757e0847560f257c674a45bc676c2145c8e58a3e4f087.jpg"> Figure 3.4.2</p>
 </div></div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>To define a line in either 2D (ℝ²) or 3D (ℝ³), you need:</p>
+<ul>
+<li>A point 𝑥0 on the line.</li>
+<li>A direction vector 𝑣 that is parallel to the line.</li>
+</ul>
+<p>Any point 𝑥 on the line satisfies: 𝑥−𝑥0=𝑡𝑣</p>
+<p>Which rearranges to the vector equation of a line: 𝑥 =𝑥0+𝑡𝑣</p>
+</div>
+</div>
+</div>
 <aside class="notes">
 <p>Imagine a point <code>x0</code> in space. Now, imagine a direction vector <code>v</code>. Any point <code>x</code> on the line starting from <code>x0</code> and moving in direction <code>v</code> can be reached by adding a scaled version of <code>v</code> to <code>x0</code>. The scalar <code>t</code> dictates how far along <code>v</code> we move, and its variation covers the entire line. This concept is fundamental in robotics for path planning or in control systems for describing system trajectories.</p>
 <style type="text/css">
@@ -620,31 +639,31 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImZpZy1jYXAiOiJJbnRlcmFjdGl2ZSBMaW5l
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="569" data-source-offset="-46"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 568;"><span id="cb1-569"><a></a>x0_coords <span class="op">=</span> [<span class="dv">1</span><span class="op">,</span> <span class="op">-</span><span class="dv">3</span>]</span>
-<span id="cb1-570"><a></a>x1_coords <span class="op">=</span> [<span class="dv">5</span><span class="op">,</span> <span class="dv">6</span>]</span>
-<span id="cb1-571"><a></a></span>
-<span id="cb1-572"><a></a><span class="co">// Create a slider for parameter t</span></span>
-<span id="cb1-573"><a></a>viewof t_slider <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Parameter t"</span>})</span>
-<span id="cb1-574"><a></a></span>
-<span id="cb1-575"><a></a><span class="co">// Calculate the point on the segment</span></span>
-<span id="cb1-576"><a></a>current_point <span class="op">=</span> [</span>
-<span id="cb1-577"><a></a>  (<span class="dv">1</span> <span class="op">-</span> t_slider) <span class="op">*</span> x0_coords[<span class="dv">0</span>] <span class="op">+</span> t_slider <span class="op">*</span> x1_coords[<span class="dv">0</span>]<span class="op">,</span></span>
-<span id="cb1-578"><a></a>  (<span class="dv">1</span> <span class="op">-</span> t_slider) <span class="op">*</span> x0_coords[<span class="dv">1</span>] <span class="op">+</span> t_slider <span class="op">*</span> x1_coords[<span class="dv">1</span>]</span>
-<span id="cb1-579"><a></a>]</span>
-<span id="cb1-580"><a></a></span>
-<span id="cb1-581"><a></a><span class="co">// Create the plot using Observable Plot</span></span>
-<span id="cb1-582"><a></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
-<span id="cb1-583"><a></a>  <span class="dt">title</span><span class="op">:</span> <span class="st">"Line Segment Visualization"</span><span class="op">,</span></span>
-<span id="cb1-584"><a></a>  <span class="dt">x</span><span class="op">:</span> {<span class="dt">domain</span><span class="op">:</span> [<span class="op">-</span><span class="dv">6</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"X-axis"</span>}<span class="op">,</span></span>
-<span id="cb1-585"><a></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">domain</span><span class="op">:</span> [<span class="op">-</span><span class="dv">6</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Y-axis"</span>}<span class="op">,</span></span>
-<span id="cb1-586"><a></a>  <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
-<span id="cb1-587"><a></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb1-588"><a></a>    Plot<span class="op">.</span><span class="fu">line</span>([[x0_coords[<span class="dv">0</span>]<span class="op">,</span> x1_coords[<span class="dv">0</span>]]<span class="op">,</span> [x0_coords[<span class="dv">1</span>]<span class="op">,</span> x1_coords[<span class="dv">1</span>]]]<span class="op">,</span> {<span class="dt">stroke</span><span class="op">:</span> <span class="st">"lightgray"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">3</span>})<span class="op">,</span></span>
-<span id="cb1-589"><a></a>    Plot<span class="op">.</span><span class="fu">dot</span>([x0_coords]<span class="op">,</span> {<span class="dt">r</span><span class="op">:</span> <span class="dv">8</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"red"</span><span class="op">,</span> <span class="dt">title</span><span class="op">:</span> <span class="vs">`x0: (</span><span class="sc">${</span>x0_coords[<span class="dv">0</span>]<span class="sc">}</span><span class="vs">, </span><span class="sc">${</span>x0_coords[<span class="dv">1</span>]<span class="sc">}</span><span class="vs">)`</span>})<span class="op">,</span></span>
-<span id="cb1-590"><a></a>    Plot<span class="op">.</span><span class="fu">dot</span>([x1_coords]<span class="op">,</span> {<span class="dt">r</span><span class="op">:</span> <span class="dv">8</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"blue"</span><span class="op">,</span> <span class="dt">title</span><span class="op">:</span> <span class="vs">`x1: (</span><span class="sc">${</span>x1_coords[<span class="dv">0</span>]<span class="sc">}</span><span class="vs">, </span><span class="sc">${</span>x1_coords[<span class="dv">1</span>]<span class="sc">}</span><span class="vs">)`</span>})<span class="op">,</span></span>
-<span id="cb1-591"><a></a>    Plot<span class="op">.</span><span class="fu">dot</span>([current_point]<span class="op">,</span> {<span class="dt">r</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"green"</span><span class="op">,</span> <span class="dt">title</span><span class="op">:</span> <span class="vs">`Current Point (t=</span><span class="sc">${</span>t_slider<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">): (</span><span class="sc">${</span>current_point[<span class="dv">0</span>]<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">, </span><span class="sc">${</span>current_point[<span class="dv">1</span>]<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">)`</span>})</span>
-<span id="cb1-592"><a></a>  ]</span>
-<span id="cb1-593"><a></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="581" data-source-offset="-46"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 580;"><span id="cb1-581"><a></a>x0_coords <span class="op">=</span> [<span class="dv">1</span><span class="op">,</span> <span class="op">-</span><span class="dv">3</span>]</span>
+<span id="cb1-582"><a></a>x1_coords <span class="op">=</span> [<span class="dv">5</span><span class="op">,</span> <span class="dv">6</span>]</span>
+<span id="cb1-583"><a></a></span>
+<span id="cb1-584"><a></a><span class="co">// Create a slider for parameter t</span></span>
+<span id="cb1-585"><a></a>viewof t_slider <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Parameter t"</span>})</span>
+<span id="cb1-586"><a></a></span>
+<span id="cb1-587"><a></a><span class="co">// Calculate the point on the segment</span></span>
+<span id="cb1-588"><a></a>current_point <span class="op">=</span> [</span>
+<span id="cb1-589"><a></a>  (<span class="dv">1</span> <span class="op">-</span> t_slider) <span class="op">*</span> x0_coords[<span class="dv">0</span>] <span class="op">+</span> t_slider <span class="op">*</span> x1_coords[<span class="dv">0</span>]<span class="op">,</span></span>
+<span id="cb1-590"><a></a>  (<span class="dv">1</span> <span class="op">-</span> t_slider) <span class="op">*</span> x0_coords[<span class="dv">1</span>] <span class="op">+</span> t_slider <span class="op">*</span> x1_coords[<span class="dv">1</span>]</span>
+<span id="cb1-591"><a></a>]</span>
+<span id="cb1-592"><a></a></span>
+<span id="cb1-593"><a></a><span class="co">// Create the plot using Observable Plot</span></span>
+<span id="cb1-594"><a></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb1-595"><a></a>  <span class="dt">title</span><span class="op">:</span> <span class="st">"Line Segment Visualization"</span><span class="op">,</span></span>
+<span id="cb1-596"><a></a>  <span class="dt">x</span><span class="op">:</span> {<span class="dt">domain</span><span class="op">:</span> [<span class="op">-</span><span class="dv">6</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"X-axis"</span>}<span class="op">,</span></span>
+<span id="cb1-597"><a></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">domain</span><span class="op">:</span> [<span class="op">-</span><span class="dv">6</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Y-axis"</span>}<span class="op">,</span></span>
+<span id="cb1-598"><a></a>  <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb1-599"><a></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb1-600"><a></a>    Plot<span class="op">.</span><span class="fu">line</span>([[x0_coords[<span class="dv">0</span>]<span class="op">,</span> x1_coords[<span class="dv">0</span>]]<span class="op">,</span> [x0_coords[<span class="dv">1</span>]<span class="op">,</span> x1_coords[<span class="dv">1</span>]]]<span class="op">,</span> {<span class="dt">stroke</span><span class="op">:</span> <span class="st">"lightgray"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">3</span>})<span class="op">,</span></span>
+<span id="cb1-601"><a></a>    Plot<span class="op">.</span><span class="fu">dot</span>([x0_coords]<span class="op">,</span> {<span class="dt">r</span><span class="op">:</span> <span class="dv">8</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"red"</span><span class="op">,</span> <span class="dt">title</span><span class="op">:</span> <span class="vs">`x0: (</span><span class="sc">${</span>x0_coords[<span class="dv">0</span>]<span class="sc">}</span><span class="vs">, </span><span class="sc">${</span>x0_coords[<span class="dv">1</span>]<span class="sc">}</span><span class="vs">)`</span>})<span class="op">,</span></span>
+<span id="cb1-602"><a></a>    Plot<span class="op">.</span><span class="fu">dot</span>([x1_coords]<span class="op">,</span> {<span class="dt">r</span><span class="op">:</span> <span class="dv">8</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"blue"</span><span class="op">,</span> <span class="dt">title</span><span class="op">:</span> <span class="vs">`x1: (</span><span class="sc">${</span>x1_coords[<span class="dv">0</span>]<span class="sc">}</span><span class="vs">, </span><span class="sc">${</span>x1_coords[<span class="dv">1</span>]<span class="sc">}</span><span class="vs">)`</span>})<span class="op">,</span></span>
+<span id="cb1-603"><a></a>    Plot<span class="op">.</span><span class="fu">dot</span>([current_point]<span class="op">,</span> {<span class="dt">r</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"green"</span><span class="op">,</span> <span class="dt">title</span><span class="op">:</span> <span class="vs">`Current Point (t=</span><span class="sc">${</span>t_slider<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">): (</span><span class="sc">${</span>current_point[<span class="dv">0</span>]<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">, </span><span class="sc">${</span>current_point[<span class="dv">1</span>]<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">)`</span>})</span>
+<span id="cb1-604"><a></a>  ]</span>
+<span id="cb1-605"><a></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-1-1" data-nodetype="declaration">
