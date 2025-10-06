@@ -1,170 +1,242 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Imron Rosyadi">
+
+<title>Signal and Systems</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-html/tabby.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
-<link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.24">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e31584831b205ffbb2d98406f31c2a5b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
-  <meta name="author" content="Imron Rosyadi">
-  <title>Signal and Systems</title>
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="site_libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="site_libs/revealjs/dist/reveal.css">
-  <style>
-    code{white-space: pre-wrap;}
-    span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
-    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
-    ul.task-list li input[type="checkbox"] {
-      width: 0.8em;
-      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
-      vertical-align: middle;
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
     }
-  </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-1e05dae278e9519f50eaa6d5dfd37e0b.css">
-  <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-  <link href="site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-  <link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-  <style type="text/css">
-    .reveal div.sourceCode {
-      margin: 0;
-      overflow: auto;
-    }
-    .reveal div.hanging-indent {
-      margin-left: 1em;
-      text-indent: -1em;
-    }
-    .reveal .slide:not(.center) {
-      height: 100%;
-      overflow-y: auto;
-    }
-    .reveal .slide.scrollable {
-      overflow-y: auto;
-    }
-    .reveal .footnotes {
-      height: 100%;
-      overflow-y: auto;
-    }
-    .reveal .slide .absolute {
-      position: absolute;
-      display: block;
-    }
-    .reveal .footnotes ol {
-      counter-reset: ol;
-      list-style-type: none; 
-      margin-left: 0;
-    }
-    .reveal .footnotes ol li:before {
-      counter-increment: ol;
-      content: counter(ol) ". "; 
-    }
-    .reveal .footnotes ol li > p:first-child {
-      display: inline-block;
-    }
-    .reveal .slide ul,
-    .reveal .slide ol {
-      margin-bottom: 0.5em;
-    }
-    .reveal .slide ul li,
-    .reveal .slide ol li {
-      margin-top: 0.4em;
-      margin-bottom: 0.2em;
-    }
-    .reveal .slide ul[role="tablist"] li {
-      margin-bottom: 0;
-    }
-    .reveal .slide ul li > *:first-child,
-    .reveal .slide ol li > *:first-child {
-      margin-block-start: 0;
-    }
-    .reveal .slide ul li > *:last-child,
-    .reveal .slide ol li > *:last-child {
-      margin-block-end: 0;
-    }
-    .reveal .slide .columns:nth-child(3) {
-      margin-block-start: 0.8em;
-    }
-    .reveal blockquote {
-      box-shadow: none;
-    }
-    .reveal .tippy-content>* {
-      margin-top: 0.2em;
-      margin-bottom: 0.7em;
-    }
-    .reveal .tippy-content>*:last-child {
-      margin-bottom: 0.2em;
-    }
-    .reveal .slide > img.stretch.quarto-figure-center,
-    .reveal .slide > img.r-stretch.quarto-figure-center {
-      display: block;
-      margin-left: auto;
-      margin-right: auto; 
-    }
-    .reveal .slide > img.stretch.quarto-figure-left,
-    .reveal .slide > img.r-stretch.quarto-figure-left  {
-      display: block;
-      margin-left: 0;
-      margin-right: auto; 
-    }
-    .reveal .slide > img.stretch.quarto-figure-right,
-    .reveal .slide > img.r-stretch.quarto-figure-right  {
-      display: block;
-      margin-left: auto;
-      margin-right: 0; 
-    }
-  </style>
-  <script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
-  <link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
-  <meta name="mermaid-theme" content="neutral">
-  <script src="site_libs/quarto-diagram/mermaid.min.js"></script>
-  <script src="site_libs/quarto-diagram/mermaid-init.js"></script>
-  <link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
 </head>
-<body class="quarto-light">
-  <div class="reveal">
-    <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Signal and Systems</h1>
-  <p class="subtitle">1.5 Continuous-Time and Discrete-Time Systems</p>
+<body class="nav-fixed quarto-light">
 
-<div class="quarto-title-authors">
-<div class="quarto-title-author">
-<div class="quarto-title-author-name">
-Imron Rosyadi 
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Signal and Systems</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
 </div>
-</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#continuous-time-and-discrete-time-systems" id="toc-continuous-time-and-discrete-time-systems" class="nav-link active" data-scroll-target="#continuous-time-and-discrete-time-systems">1.5 Continuous-Time and Discrete-Time Systems</a>
+  <ul class="collapse">
+  <li><a href="#what-is-a-system" id="toc-what-is-a-system" class="nav-link" data-scroll-target="#what-is-a-system">What is a System?</a></li>
+  <li><a href="#systems-examples" id="toc-systems-examples" class="nav-link" data-scroll-target="#systems-examples">Systems (Examples)</a></li>
+  <li><a href="#systems-examples-1" id="toc-systems-examples-1" class="nav-link" data-scroll-target="#systems-examples-1">Systems (Examples)</a></li>
+  <li><a href="#continuous-time-ct-vs.-discrete-time-dt-systems" id="toc-continuous-time-ct-vs.-discrete-time-dt-systems" class="nav-link" data-scroll-target="#continuous-time-ct-vs.-discrete-time-dt-systems">Continuous-Time (CT) vs.&nbsp;Discrete-Time (DT) Systems</a></li>
+  <li><a href="#simple-examples-of-systems-continuous-time-12" id="toc-simple-examples-of-systems-continuous-time-12" class="nav-link" data-scroll-target="#simple-examples-of-systems-continuous-time-12">Simple Examples of Systems: Continuous-Time (1/2)</a>
+  <ul class="collapse">
+  <li><a href="#example-1.8-rc-circuit-voltage" id="toc-example-1.8-rc-circuit-voltage" class="nav-link" data-scroll-target="#example-1.8-rc-circuit-voltage">Example 1.8: RC Circuit Voltage</a></li>
+  </ul></li>
+  <li><a href="#simple-examples-of-systems-continuous-time-22" id="toc-simple-examples-of-systems-continuous-time-22" class="nav-link" data-scroll-target="#simple-examples-of-systems-continuous-time-22">Simple Examples of Systems: Continuous-Time (2/2)</a>
+  <ul class="collapse">
+  <li><a href="#example-1.9-automobile-velocity" id="toc-example-1.9-automobile-velocity" class="nav-link" data-scroll-target="#example-1.9-automobile-velocity">Example 1.9: Automobile Velocity</a></li>
+  </ul></li>
+  <li><a href="#simple-examples-of-systems-continuous-time-22-1" id="toc-simple-examples-of-systems-continuous-time-22-1" class="nav-link" data-scroll-target="#simple-examples-of-systems-continuous-time-22-1">Simple Examples of Systems: Continuous-Time (2/2)</a></li>
+  <li><a href="#simple-examples-of-systems-discrete-time-12" id="toc-simple-examples-of-systems-discrete-time-12" class="nav-link" data-scroll-target="#simple-examples-of-systems-discrete-time-12">Simple Examples of Systems: Discrete-Time (1/2)</a>
+  <ul class="collapse">
+  <li><a href="#example-1.10-bank-account-balance" id="toc-example-1.10-bank-account-balance" class="nav-link" data-scroll-target="#example-1.10-bank-account-balance">Example 1.10: Bank Account Balance</a></li>
+  </ul></li>
+  <li><a href="#simple-examples-of-systems-discrete-time-12-1" id="toc-simple-examples-of-systems-discrete-time-12-1" class="nav-link" data-scroll-target="#simple-examples-of-systems-discrete-time-12-1">Simple Examples of Systems: Discrete-Time (1/2)</a>
+  <ul class="collapse">
+  <li><a href="#example-1.10-bank-account-balance-1" id="toc-example-1.10-bank-account-balance-1" class="nav-link" data-scroll-target="#example-1.10-bank-account-balance-1">Example 1.10: Bank Account Balance</a></li>
+  </ul></li>
+  <li><a href="#simple-examples-of-systems-discrete-time-22" id="toc-simple-examples-of-systems-discrete-time-22" class="nav-link" data-scroll-target="#simple-examples-of-systems-discrete-time-22">Simple Examples of Systems: Discrete-Time (2/2)</a>
+  <ul class="collapse">
+  <li><a href="#example-1.11-digital-simulation-of-automobile-model" id="toc-example-1.11-digital-simulation-of-automobile-model" class="nav-link" data-scroll-target="#example-1.11-digital-simulation-of-automobile-model">Example 1.11: Digital Simulation of Automobile Model</a></li>
+  </ul></li>
+  <li><a href="#simple-examples-of-systems-discrete-time-22-1" id="toc-simple-examples-of-systems-discrete-time-22-1" class="nav-link" data-scroll-target="#simple-examples-of-systems-discrete-time-22-1">Simple Examples of Systems: Discrete-Time (2/2)</a></li>
+  <li><a href="#interconnections-of-systems" id="toc-interconnections-of-systems" class="nav-link" data-scroll-target="#interconnections-of-systems">1.5.2 Interconnections of Systems</a></li>
+  <li><a href="#interconnections-of-systems-1" id="toc-interconnections-of-systems-1" class="nav-link" data-scroll-target="#interconnections-of-systems-1">1.5.2 Interconnections of Systems</a></li>
+  <li><a href="#basic-interconnections-series-cascade" id="toc-basic-interconnections-series-cascade" class="nav-link" data-scroll-target="#basic-interconnections-series-cascade">Basic Interconnections: Series (Cascade)</a></li>
+  <li><a href="#basic-interconnections-parallel" id="toc-basic-interconnections-parallel" class="nav-link" data-scroll-target="#basic-interconnections-parallel">Basic Interconnections: Parallel</a></li>
+  <li><a href="#basic-interconnections-feedback" id="toc-basic-interconnections-feedback" class="nav-link" data-scroll-target="#basic-interconnections-feedback">Basic Interconnections: Feedback</a></li>
+  <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways">Key Takeaways</a>
+  <ul class="collapse">
+  <li><a href="#system-definition" id="toc-system-definition" class="nav-link" data-scroll-target="#system-definition">System Definition</a></li>
+  <li><a href="#mathematical-models" id="toc-mathematical-models" class="nav-link" data-scroll-target="#mathematical-models">Mathematical Models</a></li>
+  </ul></li>
+  <li><a href="#key-takeaways-1" id="toc-key-takeaways-1" class="nav-link" data-scroll-target="#key-takeaways-1">Key Takeaways</a>
+  <ul class="collapse">
+  <li><a href="#system-interconnections" id="toc-system-interconnections" class="nav-link" data-scroll-target="#system-interconnections">System Interconnections</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="ss_15.html"><i class="bi bi-file-slides"></i>RevealJS (live)</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Signal and Systems</h1>
+<p class="subtitle lead">1.5 Continuous-Time and Discrete-Time Systems</p>
 </div>
 
-</section>
-<section>
-<section id="continuous-time-and-discrete-time-systems" class="title-slide slide level1 center">
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Imron Rosyadi </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="continuous-time-and-discrete-time-systems" class="level1">
 <h1>1.5 Continuous-Time and Discrete-Time Systems</h1>
-
-</section>
-<section id="what-is-a-system" class="slide level2">
-<h2>What is a System?</h2>
+<hr>
+<section id="what-is-a-system" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-a-system">What is a System?</h2>
 <p>A <strong>system</strong> is a process by which <strong>input signals</strong> are <code>transformed</code> to produce <strong>output signals</strong>.</p>
 <div class="columns">
 <div class="column" style="width:60%;">
 <p><strong>Conceptual Model:</strong></p>
-<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
-<p></p><figure class=""><p></p>
+<p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">graph LR
     A[Input Signal] --&gt; B(System);
@@ -186,40 +258,40 @@ Imron Rosyadi
 <p><strong>Key Idea:</strong></p>
 <p>Systems provide a mathematical framework to model how physical phenomena respond to external stimuli.</p>
 <p>They allow us to predict, control, and design complex engineering applications.</p>
-</div></div>
-<aside class="notes">
+</div>
+</div>
+<div class="notes">
 <p>In the broadest sense, a system is simply anything that takes an input and produces an output. Think of it as a black box where something goes in, is processed, and something else comes out. In electrical and computer engineering, these inputs and outputs are typically signals, and the “processing” is defined by mathematical relationships. We analyze these relationships to understand how a system behaves.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+</div>
+<hr>
 </section>
-<section id="systems-examples" class="slide level2">
-<h2>Systems (Examples)</h2>
-
-<img data-src="https://afdc.energy.gov/files/vehicles/electric-high-res.jpg" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section id="systems-examples-1" class="slide level2">
-<h2>Systems (Examples)</h2>
+<section id="systems-examples" class="level2">
+<h2 class="anchored" data-anchor-id="systems-examples">Systems (Examples)</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://afdc.energy.gov/files/vehicles/electric-high-res.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="systems-examples-1" class="level2">
+<h2 class="anchored" data-anchor-id="systems-examples-1">Systems (Examples)</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><img data-src="https://www.mechdaily.com/wp-content/uploads/2025/05/what-is-Electric-Motor.webp"></p>
+<p><img src="https://www.mechdaily.com/wp-content/uploads/2025/05/what-is-Electric-Motor.webp" class="img-fluid"></p>
 </div><div class="column" style="width:50%;">
-<p><img data-src="https://www.mechdaily.com/wp-content/uploads/2025/05/Parts-of-an-Electric-Motor.webp"></p>
-</div></div>
+<p><img src="https://www.mechdaily.com/wp-content/uploads/2025/05/Parts-of-an-Electric-Motor.webp" class="img-fluid"></p>
+</div>
+</div>
+<hr>
 </section>
-<section id="continuous-time-ct-vs.-discrete-time-dt-systems" class="slide level2">
-<h2>Continuous-Time (CT) vs.&nbsp;Discrete-Time (DT) Systems</h2>
+<section id="continuous-time-ct-vs.-discrete-time-dt-systems" class="level2">
+<h2 class="anchored" data-anchor-id="continuous-time-ct-vs.-discrete-time-dt-systems">Continuous-Time (CT) vs.&nbsp;Discrete-Time (DT) Systems</h2>
 <p>Systems are classified based on the nature of their input and output signals.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<h3 id="continuous-time-systems">Continuous-Time Systems</h3>
+<section id="continuous-time-systems" class="level3">
+<h3 class="anchored" data-anchor-id="continuous-time-systems">Continuous-Time Systems</h3>
 <ul>
 <li>Input <span class="math inline">\(x(t)\)</span> and output <span class="math inline">\(y(t)\)</span> are <strong>continuous functions of time</strong>.</li>
 <li>Represented by: <span class="math inline">\(x(t) \rightarrow y(t)\)</span></li>
@@ -230,8 +302,10 @@ Imron Rosyadi
 <li>Mechanical systems</li>
 <li>Electrical circuits (e.g., op-amp circuits)</li>
 </ul>
+</section>
 </div><div class="column" style="width:50%;">
-<h3 id="discrete-time-systems">Discrete-Time Systems</h3>
+<section id="discrete-time-systems" class="level3">
+<h3 class="anchored" data-anchor-id="discrete-time-systems">Discrete-Time Systems</h3>
 <ul>
 <li>Input <span class="math inline">\(x[n]\)</span> and output <span class="math inline">\(y[n]\)</span> are <strong>sequences</strong> (defined at discrete instants).</li>
 <li>Represented by: <span class="math inline">\(x[n] \rightarrow y[n]\)</span></li>
@@ -242,53 +316,42 @@ Imron Rosyadi
 <li>Computer algorithms</li>
 <li>Financial modeling (e.g., monthly balances)</li>
 </ul>
-</div></div>
-<aside class="notes">
-<p>The fundamental distinction lies in how time is handled. Continuous-time systems operate on signals that are defined for all values of time, much like a continuous waveform. Discrete-time systems, on the other hand, operate on signals that are sampled or defined only at specific, discrete points in time. We will study both types in parallel throughout this course, but in Chapter 7, we’ll see how they are connected through the concept of sampling. Many real-world systems, especially in modern engineering, involve both, for example, processing an analog signal using a digital computer.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
-<section id="simple-examples-of-systems-continuous-time-12" class="slide level2">
-<h2>Simple Examples of Systems: Continuous-Time (1/2)</h2>
+</div>
+</div>
+<div class="notes">
+<p>The fundamental distinction lies in how time is handled. Continuous-time systems operate on signals that are defined for all values of time, much like a continuous waveform. Discrete-time systems, on the other hand, operate on signals that are sampled or defined only at specific, discrete points in time. We will study both types in parallel throughout this course, but in Chapter 7, we’ll see how they are connected through the concept of sampling. Many real-world systems, especially in modern engineering, involve both, for example, processing an analog signal using a digital computer.</p>
+</div>
+<hr>
+</section>
+<section id="simple-examples-of-systems-continuous-time-12" class="level2">
+<h2 class="anchored" data-anchor-id="simple-examples-of-systems-continuous-time-12">Simple Examples of Systems: Continuous-Time (1/2)</h2>
 <p>Many diverse physical systems can share the same mathematical description.</p>
-<h3 id="example-1.8-rc-circuit-voltage">Example 1.8: RC Circuit Voltage</h3>
+<section id="example-1.8-rc-circuit-voltage" class="level3">
+<h3 class="anchored" data-anchor-id="example-1.8-rc-circuit-voltage">Example 1.8: RC Circuit Voltage</h3>
 <p><strong>System:</strong> An RC circuit where <span class="math inline">\(v_s(t)\)</span> is the input voltage and <span class="math inline">\(v_c(t)\)</span> is the output voltage across the capacitor.</p>
 <p><strong>Input-Output Relationship (Differential Equation):</strong> <span class="math display">\[
 \frac{d v_{c}(t)}{d t}+\frac{1}{R C} v_{c}(t)=\frac{1}{R C} v_{s}(t) \quad \text{(Equation 1.82)}
 \]</span></p>
-<aside class="notes">
+<div class="notes">
 <p>Let’s look at some basic examples. Consider a simple RC circuit. The input is the source voltage <code>vs(t)</code> and the output is the capacitor voltage <code>vc(t)</code>. Using Kirchhoff’s laws and the constitutive relations for resistors and capacitors, we can derive a first-order differential equation that describes how the output voltage <code>vc(t)</code> changes in response to the input voltage <code>vs(t)</code>. This equation captures the dynamics of the circuit.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+</div>
+<hr>
 </section>
-<section id="simple-examples-of-systems-continuous-time-22" class="slide level2">
-<h2>Simple Examples of Systems: Continuous-Time (2/2)</h2>
-<h3 id="example-1.9-automobile-velocity">Example 1.9: Automobile Velocity</h3>
+</section>
+<section id="simple-examples-of-systems-continuous-time-22" class="level2">
+<h2 class="anchored" data-anchor-id="simple-examples-of-systems-continuous-time-22">Simple Examples of Systems: Continuous-Time (2/2)</h2>
+<section id="example-1.9-automobile-velocity" class="level3">
+<h3 class="anchored" data-anchor-id="example-1.9-automobile-velocity">Example 1.9: Automobile Velocity</h3>
 <p><strong>System:</strong> An automobile where <span class="math inline">\(f(t)\)</span> is the input force and <span class="math inline">\(v(t)\)</span> is the output velocity. (Assumes mass <span class="math inline">\(m\)</span> and friction <span class="math inline">\(\rho v\)</span>).</p>
 <p><strong>Input-Output Relationship (Differential Equation):</strong> <span class="math display">\[
 \frac{d v(t)}{d t}+\frac{\rho}{m} v(t)=\frac{1}{m} f(t) \quad \text{(Equation 1.84)}
 \]</span></p>
+<hr>
 </section>
-<section id="simple-examples-of-systems-continuous-time-22-1" class="slide level2">
-<h2>Simple Examples of Systems: Continuous-Time (2/2)</h2>
+</section>
+<section id="simple-examples-of-systems-continuous-time-22-1" class="level2">
+<h2 class="anchored" data-anchor-id="simple-examples-of-systems-continuous-time-22-1">Simple Examples of Systems: Continuous-Time (2/2)</h2>
 <p><strong>Comparison:</strong> Both Example 1.8 (RC circuit) and 1.9 (automobile) are described by the same general first-order linear differential equation:</p>
 <p><span class="math display">\[
 \frac{d y(t)}{d t}+a y(t)=b x(t) \quad \text{(Equation 1.85)}
@@ -297,60 +360,93 @@ Imron Rosyadi
 <li><span class="math inline">\(y(t)\)</span>: output signal, <span class="math inline">\(x(t)\)</span>: input signal.</li>
 <li><span class="math inline">\(a\)</span>, <span class="math inline">\(b\)</span>: constants derived from system parameters.</li>
 </ul>
-<aside class="notes">
+<div class="notes">
 <p>Now, let’s consider a completely different physical system: an automobile. If we model the applied force <code>f(t)</code> as the input and the vehicle’s velocity <code>v(t)</code> as the output, and account for mass and a linear approximation for frictional resistance, Newton’s second law leads us to another first-order differential equation.</p>
 <p>What’s striking is that this equation has the exact same mathematical form as the RC circuit equation. This demonstrates a powerful concept in systems analysis: seemingly different physical systems can be described by the same mathematical models. Developing tools to analyze a general class of systems, like first-order linear differential equations, allows us to apply those tools across a wide variety of engineering disciplines.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+</div>
+<hr>
 </section>
-<section id="simple-examples-of-systems-discrete-time-12" class="slide level2">
-<h2>Simple Examples of Systems: Discrete-Time (1/2)</h2>
-<h3 id="example-1.10-bank-account-balance">Example 1.10: Bank Account Balance</h3>
+<section id="simple-examples-of-systems-discrete-time-12" class="level2">
+<h2 class="anchored" data-anchor-id="simple-examples-of-systems-discrete-time-12">Simple Examples of Systems: Discrete-Time (1/2)</h2>
+<section id="example-1.10-bank-account-balance" class="level3">
+<h3 class="anchored" data-anchor-id="example-1.10-bank-account-balance">Example 1.10: Bank Account Balance</h3>
 <p><strong>System:</strong> A bank account where <span class="math inline">\(x[n]\)</span> is the net deposit in month <span class="math inline">\(n\)</span>, and <span class="math inline">\(y[n]\)</span> is the balance at the end of month <span class="math inline">\(n\)</span>. (Assumes 1% interest per month).</p>
 <p><strong>Input-Output Relationship (Difference Equation):</strong> <span class="math display">\[
 y[n] = 1.01 y[n-1] + x[n] \quad \text{(Equation 1.86)}
 \]</span> <span class="math display">\[
 y[n] - 1.01 y[n-1] = x[n] \quad \text{(Equation 1.87)}
 \]</span></p>
+<hr>
 </section>
-<section id="simple-examples-of-systems-discrete-time-12-1" class="slide level2">
-<h2>Simple Examples of Systems: Discrete-Time (1/2)</h2>
-<h3 id="example-1.10-bank-account-balance-1">Example 1.10: Bank Account Balance</h3>
+</section>
+<section id="simple-examples-of-systems-discrete-time-12-1" class="level2">
+<h2 class="anchored" data-anchor-id="simple-examples-of-systems-discrete-time-12-1">Simple Examples of Systems: Discrete-Time (1/2)</h2>
+<section id="example-1.10-bank-account-balance-1" class="level3">
+<h3 class="anchored" data-anchor-id="example-1.10-bank-account-balance-1">Example 1.10: Bank Account Balance</h3>
 <p><strong>Interactive Simulation:</strong> Assume initial balance <span class="math inline">\(y[-1]=1000\)</span> and a monthly deposit <span class="math inline">\(x[n]=100\)</span> for <span class="math inline">\(n \ge 0\)</span>. The system calculates balance <span class="math inline">\(y[n]\)</span> based on previous month’s balance and current deposit.</p>
-<div>
-<div id="pyodide-1" class="exercise-cell">
+<pre class="{pyodide}"><code>#| max-lines: 10
+import numpy as np
+import matplotlib.pyplot as plt
 
-</div>
-<script type="pyodide-1-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5pbXBvcnQgbWF0cGxvdGxpYi5weXBsb3QgYXMgcGx0XG5cbiMgUGFyYW1ldGVyc1xuaW5pdGlhbF9iYWxhbmNlID0gMTAwMFxubW9udGhseV9kZXBvc2l0ID0gMTAwXG5pbnRlcmVzdF9yYXRlX2ZhY3RvciA9IDEuMDFcbm51bV9tb250aHMgPSAxMlxuXG4jIEluaXRpYWxpemUgYXJyYXlzIGZvciBiYWxhbmNlIGFuZCBkZXBvc2l0c1xubl92YWx1ZXMgPSBucC5hcmFuZ2UoMCwgbnVtX21vbnRocyArIDEpXG55X2JhbGFuY2VzID0gbnAuemVyb3MobnVtX21vbnRocyArIDEpXG54X2RlcG9zaXRzID0gbnAuemVyb3MobnVtX21vbnRocyArIDEpXG54X2RlcG9zaXRzWzE6XSA9IG1vbnRobHlfZGVwb3NpdCAjIERlcG9zaXQgc3RhcnRzIGZyb20gbW9udGggMSAobj0wIHJlcHJlc2VudHMgaW5pdGlhbF9iYWxhbmNlIHBvaW50KVxuXG4jIEluaXRpYWwgY29uZGl0aW9uXG55X2JhbGFuY2VzWzBdID0gaW5pdGlhbF9iYWxhbmNlICMgVGhpcyBpcyBjb25jZXB0dWFsIHlbLTFdIGluIHRoZSBlcXVhdGlvbiBjb250ZXh0LCBidXQgb3VyIGluZGV4IHN0YXJ0cyBhdCAwXG5cbiMgQ2FsY3VsYXRlIGJhbGFuY2VzXG4jIE5vdGU6IEZvciBzdHJpY3QgYWRoZXJlbmNlIHRvIHlbbl0gPSAxLjAxIHlbbi0xXSArIHhbbl0sIGlmIHlbMF0gaXMgaW5pdGlhbCwgdGhlbiBmb3Igbj0xOiB5WzFdID0gMS4wMSB5WzBdICsgeFsxXVxuIyBMZXQncyBhZGp1c3QgZm9yIG5fdmFsdWVzIHN0YXJ0aW5nIGF0IDAgcmVwcmVzZW50aW5nIG1vbnRocy5cbiMgeV9iYWxhbmNlc1tpZHhdIHJlcHJlc2VudHMgeVtuXVxuIyB5X2JhbGFuY2VzW2lkeC0xXSByZXByZXNlbnRzIHlbbi0xXVxuXG4jIENvcnJlY3RlZCBzaW11bGF0aW9uIGxvb3AgZm9yIHlbbl0gPSAxLjAxKnlbbi0xXSArIHhbbl1cbiMgTGV0IHlfYmFsYW5jZXNba10gYmUgYmFsYW5jZSBhdCBlbmQgb2Ygay10aCBtb250aCwgd2hlcmUgayBmcm9tIDAgdG8gMTFcbiMgeV9wcmV2ID0gaW5pdGlhbF9iYWxhbmNlIGltcGxpZXMgeVstMV0gPSBpbml0aWFsX2JhbGFuY2VcbnlfcHJldiA9IGluaXRpYWxfYmFsYW5jZVxuZm9yIG4gaW4gcmFuZ2UobnVtX21vbnRocyk6ICMgbiBnb2VzIGZyb20gMCB0byAxMSAocmVwcmVzZW50aW5nIG1vbnRoIDAgdG8gMTEpXG4gICAgY3VycmVudF9kZXBvc2l0ID0gbW9udGhseV9kZXBvc2l0IGlmIG4gPj0gMCBlbHNlIDAgIyBBcHBseSBkZXBvc2l0IGZvciBuID49IDBcbiAgICB5X2N1cnJlbnQgPSBpbnRlcmVzdF9yYXRlX2ZhY3RvciAqIHlfcHJldiArIGN1cnJlbnRfZGVwb3NpdFxuICAgIHlfYmFsYW5jZXNbbisxXSA9IHlfY3VycmVudCAjIFN0b3JlIGJhbGFuY2UgZm9yIGN1cnJlbnQgbW9udGhcbiAgICB5X3ByZXYgPSB5X2N1cnJlbnQgIyBVcGRhdGUgcHJldmlvdXMgYmFsYW5jZSBmb3IgbmV4dCBpdGVyYXRpb25cblxuIyBBZGp1c3Qgbl92YWx1ZXMgZm9yIHBsb3R0aW5nLCBvciBkZWZpbmUgdGhlbSBwcm9wZXJseS5cbiMgSWYgeV9iYWxhbmNlc1swXSBpcyBpbml0aWFsIGJhbGFuY2UgYmVmb3JlIGFueSBtb250aCwgdGhlbiBhY3R1YWwgbW9udGhzIGFyZSBpbmRpY2VzIDEgdG8gMTJcbm1vbnRoc19sYWJlbHMgPSBucC5hcmFuZ2UoMCwgbnVtX21vbnRocyArIDEpICMgRnJvbSBpbml0aWFsIHN0YXRlIChtb250aCAtMSkgdG8gZW5kIG9mIG1vbnRoIDExXG5cbnBsdC5maWd1cmUoZmlnc2l6ZT0oOSwgNCkpXG5wbHQuc3RlbShtb250aHNfbGFiZWxzLCB5X2JhbGFuY2VzLCBsYWJlbD0nQmFuayBCYWxhbmNlIHlbbl0nKVxucGx0LnBsb3QobW9udGhzX2xhYmVscywgeV9iYWxhbmNlcywgJ3ItLScsIGFscGhhPTAuNiwgbGFiZWw9J1RyZW5kJykgIyBDb25uZWN0IHBvaW50cyBmb3IgdHJlbmRcbnBsdC50aXRsZSgnQmFuayBBY2NvdW50IEJhbGFuY2UgT3ZlciBUaW1lJylcbnBsdC54bGFiZWwoJ0VuZCBvZiBNb250aCAobiknKVxucGx0LnlsYWJlbCgnQmFsYW5jZSAoJCknKVxucGx0Lnh0aWNrcyhtb250aHNfbGFiZWxzKVxucGx0LmdyaWQoVHJ1ZSlcbnBsdC5sZWdlbmQoKVxucGx0LnRpZ2h0X2xheW91dCgpXG5wbHQuc2hvdygpXG5cbnByaW50KGZcIkluaXRpYWwgQmFsYW5jZTogJHtpbml0aWFsX2JhbGFuY2U6LjJmfVwiKVxucHJpbnQoZlwiQmFsYW5jZSBhZnRlciB7bnVtX21vbnRoc30gbW9udGhzOiAke3lfYmFsYW5jZXNbLTFdOi4yZn1cIikifQ==
-</script>
-</div>
-<aside class="notes">
+# Parameters
+initial_balance = 1000
+monthly_deposit = 100
+interest_rate_factor = 1.01
+num_months = 12
+
+# Initialize arrays for balance and deposits
+n_values = np.arange(0, num_months + 1)
+y_balances = np.zeros(num_months + 1)
+x_deposits = np.zeros(num_months + 1)
+x_deposits[1:] = monthly_deposit # Deposit starts from month 1 (n=0 represents initial_balance point)
+
+# Initial condition
+y_balances[0] = initial_balance # This is conceptual y[-1] in the equation context, but our index starts at 0
+
+# Calculate balances
+# Note: For strict adherence to y[n] = 1.01 y[n-1] + x[n], if y[0] is initial, then for n=1: y[1] = 1.01 y[0] + x[1]
+# Let's adjust for n_values starting at 0 representing months.
+# y_balances[idx] represents y[n]
+# y_balances[idx-1] represents y[n-1]
+
+# Corrected simulation loop for y[n] = 1.01*y[n-1] + x[n]
+# Let y_balances[k] be balance at end of k-th month, where k from 0 to 11
+# y_prev = initial_balance implies y[-1] = initial_balance
+y_prev = initial_balance
+for n in range(num_months): # n goes from 0 to 11 (representing month 0 to 11)
+    current_deposit = monthly_deposit if n &gt;= 0 else 0 # Apply deposit for n &gt;= 0
+    y_current = interest_rate_factor * y_prev + current_deposit
+    y_balances[n+1] = y_current # Store balance for current month
+    y_prev = y_current # Update previous balance for next iteration
+
+# Adjust n_values for plotting, or define them properly.
+# If y_balances[0] is initial balance before any month, then actual months are indices 1 to 12
+months_labels = np.arange(0, num_months + 1) # From initial state (month -1) to end of month 11
+
+plt.figure(figsize=(9, 4))
+plt.stem(months_labels, y_balances, label='Bank Balance y[n]')
+plt.plot(months_labels, y_balances, 'r--', alpha=0.6, label='Trend') # Connect points for trend
+plt.title('Bank Account Balance Over Time')
+plt.xlabel('End of Month (n)')
+plt.ylabel('Balance ($)')
+plt.xticks(months_labels)
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+print(f"Initial Balance: ${initial_balance:.2f}")
+print(f"Balance after {num_months} months: ${y_balances[-1]:.2f}")</code></pre>
+<div class="notes">
 <p>Discrete-time systems are modeled using difference equations. A classic example is tracking a bank account balance. Here, the current month’s balance, <code>y[n]</code>, depends on the previous month’s balance, <code>y[n-1]</code>, augmented by interest, and the current month’s net deposit, <code>x[n]</code>. This difference equation captures the temporal evolution of the balance. The interactive plot shows how the balance grows over time with regular deposits and compounding interest.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+</div>
+<hr>
 </section>
-<section id="simple-examples-of-systems-discrete-time-22" class="slide level2">
-<h2>Simple Examples of Systems: Discrete-Time (2/2)</h2>
-<h3 id="example-1.11-digital-simulation-of-automobile-model">Example 1.11: Digital Simulation of Automobile Model</h3>
+</section>
+<section id="simple-examples-of-systems-discrete-time-22" class="level2">
+<h2 class="anchored" data-anchor-id="simple-examples-of-systems-discrete-time-22">Simple Examples of Systems: Discrete-Time (2/2)</h2>
+<section id="example-1.11-digital-simulation-of-automobile-model" class="level3">
+<h3 class="anchored" data-anchor-id="example-1.11-digital-simulation-of-automobile-model">Example 1.11: Digital Simulation of Automobile Model</h3>
 <p><strong>System:</strong> A discrete-time approximation of the continuous-time automobile model from Example 1.9. (Approximates <span class="math inline">\(\frac{dv(t)}{dt}\)</span> with backward difference <span class="math inline">\(\frac{v(n\Delta)-v((n-1)\Delta)}{\Delta}\)</span>).</p>
 <p><strong>Input-Output Relationship (Difference Equation):</strong> <span class="math display">\[
 v[n]-\frac{m}{(m+\rho \Delta)} v[n-1]=\frac{\Delta}{(m+\rho \Delta)} f[n] \quad \text{(Equation 1.88)}
@@ -359,9 +455,11 @@ v[n]-\frac{m}{(m+\rho \Delta)} v[n-1]=\frac{\Delta}{(m+\rho \Delta)} f[n] \quad 
 <li><span class="math inline">\(v[n]\)</span>: sampled velocity, <span class="math inline">\(f[n]\)</span>: sampled force.</li>
 <li><span class="math inline">\(\Delta\)</span>: time step.</li>
 </ul>
+<hr>
 </section>
-<section id="simple-examples-of-systems-discrete-time-22-1" class="slide level2">
-<h2>Simple Examples of Systems: Discrete-Time (2/2)</h2>
+</section>
+<section id="simple-examples-of-systems-discrete-time-22-1" class="level2">
+<h2 class="anchored" data-anchor-id="simple-examples-of-systems-discrete-time-22-1">Simple Examples of Systems: Discrete-Time (2/2)</h2>
 <p><strong>Comparison:</strong> Both Example 1.10 (bank account) and 1.11 (digital simulation) are described by the same general first-order linear difference equation:</p>
 <p><span class="math display">\[
 y[n]+a y[n-1]=b x[n] \quad \text{(Equation 1.89)}
@@ -370,37 +468,29 @@ y[n]+a y[n-1]=b x[n] \quad \text{(Equation 1.89)}
 <li><span class="math inline">\(y[n]\)</span>: output sequence, <span class="math inline">\(x[n]\)</span>: input sequence.</li>
 <li><span class="math inline">\(a\)</span>, <span class="math inline">\(b\)</span>: constants derived from system parameters or approximation schemes.</li>
 </ul>
-<aside class="notes">
+<div class="notes">
 <p>Just as with continuous-time systems, discrete-time systems from different applications can share the same mathematical form. Here, we see a digital simulation of the automobile model, where the continuous-time derivative is approximated by a discrete-time difference. This gives us a first-order linear difference equation. Comparing it to the bank account example, they both fit the same general form. This highlights the power of abstraction in signals and systems: by understanding general forms of equations, we can analyze countless real-world systems, whether they are inherently discrete or are continuous systems approximated for digital processing.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+</div>
+<hr>
 </section>
-<section id="interconnections-of-systems" class="slide level2">
-<h2>1.5.2 Interconnections of Systems</h2>
+<section id="interconnections-of-systems" class="level2">
+<h2 class="anchored" data-anchor-id="interconnections-of-systems">1.5.2 Interconnections of Systems</h2>
 <p>Complex systems are often built by <code>interconnecting simpler subsystems</code>.</p>
 <ul>
 <li><strong>Benefit:</strong> Analyze complex systems by understanding their components and their connections.</li>
 <li><strong>Application:</strong> Design and synthesize new systems from basic building blocks.</li>
 </ul>
+<hr>
 </section>
-<section id="interconnections-of-systems-1" class="slide level2">
-<h2>1.5.2 Interconnections of Systems</h2>
+<section id="interconnections-of-systems-1" class="level2">
+<h2 class="anchored" data-anchor-id="interconnections-of-systems-1">1.5.2 Interconnections of Systems</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><strong>Real-World Application: Audio System</strong></p>
-<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
-<p></p><figure class=""><p></p>
+<p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">graph TD
     A[Radio Receiver] --&gt; B(Amplifier);
@@ -414,10 +504,10 @@ y[n]+a y[n-1]=b x[n] \quad \text{(Equation 1.89)}
 <p>An audio system cascaded for playback.</p>
 </div><div class="column" style="width:50%;">
 <p><strong>Real-World Application: Digitally Controlled Aircraft</strong></p>
-<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
-<p></p><figure class=""><p></p>
+<p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">graph TD
     Pilot[Pilot Commands] --&gt; Autopilot(Digital Autopilot);
@@ -440,28 +530,20 @@ y[n]+a y[n-1]=b x[n] \quad \text{(Equation 1.89)}
 </div>
 </div>
 <p>A feedback system structure.</p>
-</div></div>
-<aside class="notes">
+</div>
+</div>
+<div class="notes">
 <p>Most real-world engineering systems aren’t just one simple block. They are complex structures made by connecting several simpler components. Understanding how systems are interconnected is crucial for both analysis and design. By breaking down a large system into its component parts, we can apply our knowledge of the simpler subsystems and understand the overall behavior. This modular approach is fundamental in system engineering.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+</div>
+<hr>
 </section>
-<section id="basic-interconnections-series-cascade" class="slide level2">
-<h2>Basic Interconnections: Series (Cascade)</h2>
+<section id="basic-interconnections-series-cascade" class="level2">
+<h2 class="anchored" data-anchor-id="basic-interconnections-series-cascade">Basic Interconnections: Series (Cascade)</h2>
 <p>In a <strong>series</strong> or <strong>cascade</strong> interconnection, the output of one system becomes the input to the next.</p>
-<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
-<p></p><figure class=""><p></p>
+<p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">graph LR
     input(Input) --&gt; Sys1(System 1);
@@ -483,27 +565,18 @@ y[n]+a y[n-1]=b x[n] \quad \text{(Equation 1.89)}
 <li><strong>Example:</strong> A radio receiver (System 1) connected to an amplifier (System 2).</li>
 <li><strong>Notation:</strong> If System 1 output = <span class="math inline">\(y_1\)</span> and System 2 output = <span class="math inline">\(y_2\)</span>, then <span class="math inline">\(y_1 = \text{Sys1}(\text{input})\)</span> and <span class="math inline">\(y_2 = \text{Sys2}(y_1)\)</span>.</li>
 </ul>
-<aside class="notes">
+<div class="notes">
 <p>The series or cascade interconnection is the most straightforward. Imagine a chain: the output of the first link feeds into the second, and so on. In block diagrams, this is represented by arrows connecting blocks sequentially. An example is a signal flowing from your phone to an amplifier, then to speakers. Each component performs a specific function in sequence.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+</div>
+<hr>
 </section>
-<section id="basic-interconnections-parallel" class="slide level2">
-<h2>Basic Interconnections: Parallel</h2>
+<section id="basic-interconnections-parallel" class="level2">
+<h2 class="anchored" data-anchor-id="basic-interconnections-parallel">Basic Interconnections: Parallel</h2>
 <p>In a <strong>parallel</strong> interconnection, the same input signal is applied to multiple systems, and their outputs are combined (typically summed).</p>
-<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
-<p></p><figure class=""><p></p>
+<p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">graph LR
     input(Input) --&gt; Sys1(System 1);
@@ -527,27 +600,18 @@ y[n]+a y[n-1]=b x[n] \quad \text{(Equation 1.89)}
 <li><strong>Description:</strong> Input simultaneously feeds System 1 and System 2. Their individual outputs are added together to form the overall output.</li>
 <li><strong>Example:</strong> Multiple microphones (inputs) feeding into a mixing console (summing outputs) then to a single amplifier.</li>
 </ul>
-<aside class="notes">
+<div class="notes">
 <p>In a parallel interconnection, the input signal is duplicated and sent to two or more systems simultaneously. Their individual outputs are then combined, usually by addition, to form the final output. Think of it like a sound system with multiple microphones all feeding into a single mixer. Each microphone is a “system” producing an output, and the mixer sums these outputs.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+</div>
+<hr>
 </section>
-<section id="basic-interconnections-feedback" class="slide level2">
-<h2>Basic Interconnections: Feedback</h2>
+<section id="basic-interconnections-feedback" class="level2">
+<h2 class="anchored" data-anchor-id="basic-interconnections-feedback">Basic Interconnections: Feedback</h2>
 <p>In a <strong>feedback</strong> interconnection, the output of a system (or subsystem) is <code>fed back</code> and used to influence its own input.</p>
-<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
-<p></p><figure class=""><p></p>
+<p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">graph LR
     input(External Input) --&gt; Summer;
@@ -577,37 +641,34 @@ y[n]+a y[n-1]=b x[n] \quad \text{(Equation 1.89)}
 <li><strong>Operational Amplifiers:</strong> Many op-amp circuits use feedback for stability and gain control.</li>
 </ul></li>
 </ul>
-<aside class="notes">
+<div class="notes">
 <p>Feedback is arguably the most powerful and common type of system interconnection. In a feedback system, part of the output is “fed back” to the input, influencing the system’s future behavior. This creates a closed loop. A common household example is a thermostat. It senses the room temperature (output), compares it to the desired temperature (input), and then adjusts the heating or cooling (actuator) to correct any difference. Feedback systems are essential for control, stability, and achieving precise performance in dynamic environments.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+</div>
+<hr>
 </section>
-<section id="key-takeaways" class="slide level2">
-<h2>Key Takeaways</h2>
-<h3 id="system-definition">System Definition</h3>
+<section id="key-takeaways" class="level2">
+<h2 class="anchored" data-anchor-id="key-takeaways">Key Takeaways</h2>
+<section id="system-definition" class="level3">
+<h3 class="anchored" data-anchor-id="system-definition">System Definition</h3>
 <ul>
 <li>Transforms <code>input signals</code> into <code>output signals</code>.</li>
 <li>Can be <strong>continuous-time</strong> (<span class="math inline">\(x(t) \rightarrow y(t)\)</span>) or <strong>discrete-time</strong> (<span class="math inline">\(x[n] \rightarrow y[n]\)</span>).</li>
 </ul>
-<h3 id="mathematical-models">Mathematical Models</h3>
+</section>
+<section id="mathematical-models" class="level3">
+<h3 class="anchored" data-anchor-id="mathematical-models">Mathematical Models</h3>
 <ul>
 <li><strong>Continuous-time systems</strong> often described by <strong>differential equations</strong>.</li>
 <li><strong>Discrete-time systems</strong> often described by <strong>difference equations</strong>.</li>
 <li>Many diverse physical systems share the same mathematical forms (e.g., first-order linear differential/difference equations).</li>
 </ul>
+<hr>
 </section>
-<section id="key-takeaways-1" class="slide level2">
-<h2>Key Takeaways</h2>
-<h3 id="system-interconnections">System Interconnections</h3>
+</section>
+<section id="key-takeaways-1" class="level2">
+<h2 class="anchored" data-anchor-id="key-takeaways-1">Key Takeaways</h2>
+<section id="system-interconnections" class="level3">
+<h3 class="anchored" data-anchor-id="system-interconnections">System Interconnections</h3>
 <ul>
 <li>Complex systems can be understood and built from simpler subsystems.</li>
 <li><strong>Series (Cascade):</strong> Output of one system feeds the input of another.</li>
@@ -615,436 +676,419 @@ y[n]+a y[n-1]=b x[n] \quad \text{(Equation 1.89)}
 <li><strong>Feedback:</strong> Output of a system/subsystem is routed back to influence its input, crucial for control and stability.</li>
 </ul>
 <p>Understanding these concepts is foundational for further study in Signals and Systems.</p>
-<aside class="notes">
+<div class="notes">
 <p>To wrap up our discussion on systems: Remember that a system is a fundamental concept where an input signal is transformed into an output signal. We differentiate between continuous-time systems, described by differential equations, and discrete-time systems, described by difference equations. A crucial takeaway is that the <em>mathematical description</em> of a system is often consistent across very different physical phenomena, providing a powerful framework for analysis. Finally, understanding how systems are interconnected—through series, parallel, or feedback arrangements—is key to analyzing complex real-world engineering systems and designing sophisticated solutions. These foundational concepts will be built upon throughout the course as we delve deeper into system properties and analysis techniques.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-
-
-<script type="pyodide-data">
-eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yNy4wL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIiwibnVtcHkiLCJwbG90bHkiLCJuYmZvcm1hdCJdfX0=
-</script>
-<script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8xID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0xLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzEgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzEsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLXByZWx1ZGUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJweW9kaWRlT2pzID0ge1xuICBjb25zdCB7XG4gICAgUHlvZGlkZUV2YWx1YXRvcixcbiAgICBQeW9kaWRlRW52aXJvbm1lbnRNYW5hZ2VyLFxuICAgIHNldHVwUHl0aG9uLFxuICAgIHN0YXJ0UHlvZGlkZVdvcmtlcixcbiAgICBiNjREZWNvZGUsXG4gICAgY29sbGFwc2VQYXRoLFxuICB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzdGF0dXNDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctc3RhdHVzXCIpO1xuICBjb25zdCBpbmRpY2F0b3JDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpbmRpY2F0b3JDb250YWluZXIuY2xhc3NMaXN0LnJlbW92ZShcImQtbm9uZVwiKTtcblxuICBsZXQgc3RhdHVzVGV4dCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIilcbiAgc3RhdHVzVGV4dC5jbGFzc0xpc3QgPSBcImV4ZXJjaXNlLWxvYWRpbmctZGV0YWlsc1wiO1xuICBzdGF0dXNUZXh0ID0gc3RhdHVzQ29udGFpbmVyLmFwcGVuZENoaWxkKHN0YXR1c1RleHQpO1xuICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYEluaXRpYWxpc2VgO1xuXG4gIC8vIEhvaXN0IGluZGljYXRvciBvdXQgZnJvbSBmaW5hbCBzbGlkZSB3aGVuIHJ1bm5pbmcgdW5kZXIgcmV2ZWFsXG4gIGNvbnN0IHJldmVhbFN0YXR1cyA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsIC5leGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaWYgKHJldmVhbFN0YXR1cykge1xuICAgIHJldmVhbFN0YXR1cy5yZW1vdmUoKTtcbiAgICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCA+IC5zbGlkZXNcIikuYXBwZW5kQ2hpbGQocmV2ZWFsU3RhdHVzKTtcbiAgfVxuXG4gIC8vIE1ha2UgYW55IHJldmVhbCBzbGlkZXMgd2l0aCBsaXZlIGNlbGxzIHNjcm9sbGFibGVcbiAgZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbChcIi5yZXZlYWwgLmV4ZXJjaXNlLWNlbGxcIikuZm9yRWFjaCgoZWwpID0+IHtcbiAgICBlbC5jbG9zZXN0KCdzZWN0aW9uLnNsaWRlJykuY2xhc3NMaXN0LmFkZChcInNjcm9sbGFibGVcIik7XG4gIH0pXG5cbiAgLy8gUHlvZGlkZSBzdXBwbGVtZW50YWwgZGF0YSBhbmQgb3B0aW9uc1xuICBjb25zdCBkYXRhQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLWRhdGFcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBkYXRhID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZGF0YUNvbnRlbnQpKTtcblxuICAvLyBHcmFiIGxpc3Qgb2YgcmVzb3VyY2VzIHRvIGJlIGRvd25sb2FkZWRcbiAgY29uc3QgZmlsZXNDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInZmcy1maWxlXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZmlsZXMgPSBKU09OLnBhcnNlKGI2NERlY29kZShmaWxlc0NvbnRlbnQpKTtcblxuICBsZXQgcHlvZGlkZVByb21pc2UgPSAoYXN5bmMgKCkgPT4ge1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgUHlvZGlkZWA7XG4gICAgY29uc3QgcHlvZGlkZSA9IGF3YWl0IHN0YXJ0UHlvZGlkZVdvcmtlcihkYXRhLm9wdGlvbnMpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiBtaWNyb3BpcGA7XG4gICAgYXdhaXQgcHlvZGlkZS5sb2FkUGFja2FnZShcIm1pY3JvcGlwXCIpO1xuICAgIGNvbnN0IG1pY3JvcGlwID0gYXdhaXQgcHlvZGlkZS5weWltcG9ydChcIm1pY3JvcGlwXCIpO1xuICAgIGF3YWl0IGRhdGEucGFja2FnZXMucGtncy5tYXAoKHBrZykgPT4gKCkgPT4ge1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiAke3BrZ31gO1xuICAgICAgcmV0dXJuIG1pY3JvcGlwLmluc3RhbGwocGtnKTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcbiAgICBhd2FpdCBtaWNyb3BpcC5kZXN0cm95KCk7XG5cbiAgICAvLyBEb3dubG9hZCBhbmQgaW5zdGFsbCByZXNvdXJjZXNcbiAgICBhd2FpdCBmaWxlcy5tYXAoKGZpbGUpID0+IGFzeW5jICgpID0+IHtcbiAgICAgIGNvbnN0IG5hbWUgPSBmaWxlLnN1YnN0cmluZyhmaWxlLmxhc3RJbmRleE9mKCcvJykgKyAxKTtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcmVzb3VyY2U6ICR7bmFtZX1gO1xuICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChmaWxlKTtcbiAgICAgIGlmICghcmVzcG9uc2Uub2spIHtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBDYW4ndCBkb3dubG9hZCBcXGAke2ZpbGV9XFxgLiBFcnJvciAke3Jlc3BvbnNlLnN0YXR1c306IFwiJHtyZXNwb25zZS5zdGF0dXNUZXh0fVwiLmApO1xuICAgICAgfVxuICAgICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlc3BvbnNlLmFycmF5QnVmZmVyKCk7XG5cbiAgICAgIC8vIFN0b3JlIFVSTHMgaW4gdGhlIGN3ZCB3aXRob3V0IGFueSBzdWJkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBpZiAoZmlsZS5pbmNsdWRlcyhcIjovL1wiKSkge1xuICAgICAgICBmaWxlID0gbmFtZTtcbiAgICAgIH1cblxuICAgICAgLy8gQ29sbGFwc2UgaGlnaGVyIGRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGZpbGUgPSBjb2xsYXBzZVBhdGgoZmlsZSk7XG5cbiAgICAgIC8vIENyZWF0ZSBkaXJlY3RvcnkgdHJlZSwgaWdub3JpbmcgXCJkaXJlY3RvcnkgZXhpc3RzXCIgVkZTIGVycm9yc1xuICAgICAgY29uc3QgcGFydHMgPSBmaWxlLnNwbGl0KCcvJykuc2xpY2UoMCwgLTEpO1xuICAgICAgbGV0IHBhdGggPSAnJztcbiAgICAgIHdoaWxlIChwYXJ0cy5sZW5ndGggPiAwKSB7XG4gICAgICAgIHBhdGggKz0gcGFydHMuc2hpZnQoKSArICcvJztcbiAgICAgICAgdHJ5IHtcbiAgICAgICAgICBhd2FpdCBweW9kaWRlLkZTLm1rZGlyKHBhdGgpO1xuICAgICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgICAgaWYgKGUuZXJybm8gIT09IDIwKSB7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICAgICAgY29uc3QgZXJyb3JUZXh0ID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLlVURjhUb1N0cmluZyhlcnJvclRleHRQdHIpO1xuICAgICAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICAgIH1cblxuICAgICAgLy8gV3JpdGUgdGhpcyBmaWxlIHRvIHRoZSBWRlNcbiAgICAgIHRyeSB7XG4gICAgICAgIHJldHVybiBhd2FpdCBweW9kaWRlLkZTLndyaXRlRmlsZShmaWxlLCBuZXcgVWludDhBcnJheShkYXRhKSk7XG4gICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgIGlmIChlLm5hbWUgIT09IFwiRXJybm9FcnJvclwiKSB0aHJvdyBlO1xuICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgRmlsZXN5c3RlbSBFcnJvciAke2UuZXJybm99IFwiJHtlcnJvclRleHR9XCIuYCk7XG4gICAgICB9XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYFB5b2RpZGUgZW52aXJvbm1lbnQgc2V0dXBgO1xuICAgIGF3YWl0IHNldHVwUHl0aG9uKHB5b2RpZGUpO1xuXG4gICAgc3RhdHVzVGV4dC5yZW1vdmUoKTtcbiAgICBpZiAoc3RhdHVzQ29udGFpbmVyLmNoaWxkcmVuLmxlbmd0aCA9PSAwKSB7XG4gICAgICBzdGF0dXNDb250YWluZXIucGFyZW50Tm9kZS5yZW1vdmUoKTtcbiAgICB9XG4gICAgcmV0dXJuIHB5b2RpZGU7XG4gIH0pKCkuY2F0Y2goKGVycikgPT4ge1xuICAgIHN0YXR1c1RleHQuc3R5bGUuY29sb3IgPSBcInZhcigtLWV4ZXJjaXNlLWVkaXRvci1obC1lciwgI0FEMDAwMClcIjtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gZXJyLm1lc3NhZ2U7XG4gICAgLy9pbmRpY2F0b3JDb250YWluZXIucXVlcnlTZWxlY3RvcihcIi5zcGlubmVyLWdyb3dcIikuY2xhc3NMaXN0LmFkZChcImQtbm9uZVwiKTtcbiAgICB0aHJvdyBlcnI7XG4gIH0pO1xuXG4gIC8vIEtlZXAgdHJhY2sgb2YgaW5pdGlhbCBPSlMgYmxvY2sgcmVuZGVyXG4gIGNvbnN0IHJlbmRlcmVkT2pzID0ge307XG5cbiAgY29uc3QgcHJvY2VzcyA9IGFzeW5jIChjb250ZXh0LCBpbnB1dHMpID0+IHtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgcHlvZGlkZVByb21pc2U7XG4gICAgY29uc3QgZXZhbHVhdG9yID0gbmV3IFB5b2RpZGVFdmFsdWF0b3IocHlvZGlkZSwgY29udGV4dCk7XG4gICAgYXdhaXQgZXZhbHVhdG9yLnByb2Nlc3MoaW5wdXRzKTtcbiAgICByZXR1cm4gZXZhbHVhdG9yLmNvbnRhaW5lcjtcbiAgfVxuXG4gIHJldHVybiB7XG4gICAgcHlvZGlkZVByb21pc2UsXG4gICAgcmVuZGVyZWRPanMsXG4gICAgcHJvY2VzcyxcbiAgfTtcbn1cbiJ9XX0=
-</script>
-<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
-<div id="exercise-loading-status" class="d-flex gap-2">
-
 </div>
-<div class="spinner-grow spinner-grow-sm">
 
-</div>
-</div>
-<script type="vfs-file">
-W10=
-</script>
-</section></section>
-    </div>
-  <div class="quarto-auto-generated-content" style="display: none;">
-<p><img src="qrjs_pics/unsoed_logo.png" class="slide-logo"></p>
-<div class="footer footer-default">
-<p><a href="https://imron-slide.vercel.app">irosyadi-2025</a></p>
-</div>
-</div></div>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="site_libs/revealjs/dist/reveal.js"></script>
-  <!-- reveal.js plugins -->
-  <script src="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
-  <script src="site_libs/revealjs/plugin/quarto-support/support.js"></script>
-  
+</section>
+</section>
+</section>
 
-  <script src="site_libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="site_libs/revealjs/plugin/search/search.js"></script>
-  <script src="site_libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="site_libs/revealjs/plugin/math/math.js"></script>
-  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
-
-  <script>
-
-      // Full list of configuration options available at:
-      // https://revealjs.com/config/
-      Reveal.initialize({
-'controlsAuto': false,
-'previewLinksAuto': false,
-'pdfSeparateFragments': false,
-'autoAnimateEasing': "ease",
-'autoAnimateDuration': 1,
-'autoAnimateUnmatched': true,
-'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'chalkboard': {"buttons":true},
-'smaller': false,
- 
-        // Display controls in the bottom right corner
-        controls: true,
-
-        // Help the user learn the controls by providing hints, for example by
-        // bouncing the down arrow when they first encounter a vertical slide
-        controlsTutorial: false,
-
-        // Determines where controls appear, "edges" or "bottom-right"
-        controlsLayout: 'edges',
-
-        // Visibility rule for backwards navigation arrows; "faded", "hidden"
-        // or "visible"
-        controlsBackArrows: 'faded',
-
-        // Display a presentation progress bar
-        progress: true,
-
-        // Display the page number of the current slide
-        slideNumber: 'c/t',
-
-        // 'all', 'print', or 'speaker'
-        showSlideNumber: 'all',
-
-        // Add the current slide number to the URL hash so that reloading the
-        // page/copying the URL will return you to the same slide
-        hash: true,
-
-        // Start with 1 for the hash rather than 0
-        hashOneBasedIndex: false,
-
-        // Flags if we should monitor the hash and change slides accordingly
-        respondToHashChanges: true,
-
-        // Push each slide change to the browser history
-        history: true,
-
-        // Enable keyboard shortcuts for navigation
-        keyboard: true,
-
-        // Enable the slide overview mode
-        overview: true,
-
-        // Disables the default reveal.js slide layout (scaling and centering)
-        // so that you can use custom CSS layout
-        disableLayout: false,
-
-        // Vertical centering of slides
-        center: false,
-
-        // Enables touch navigation on devices with touch input
-        touch: true,
-
-        // Loop the presentation
-        loop: false,
-
-        // Change the presentation direction to be RTL
-        rtl: false,
-
-        // see https://revealjs.com/vertical-slides/#navigation-mode
-        navigationMode: 'linear',
-
-        // Randomizes the order of slides each time the presentation loads
-        shuffle: false,
-
-        // Turns fragments on and off globally
-        fragments: true,
-
-        // Flags whether to include the current fragment in the URL,
-        // so that reloading brings you to the same fragment position
-        fragmentInURL: false,
-
-        // Flags if the presentation is running in an embedded mode,
-        // i.e. contained within a limited portion of the screen
-        embedded: false,
-
-        // Flags if we should show a help overlay when the questionmark
-        // key is pressed
-        help: true,
-
-        // Flags if it should be possible to pause the presentation (blackout)
-        pause: true,
-
-        // Flags if speaker notes should be visible to all viewers
-        showNotes: false,
-
-        // Global override for autoplaying embedded media (null/true/false)
-        autoPlayMedia: null,
-
-        // Global override for preloading lazy-loaded iframes (null/true/false)
-        preloadIframes: null,
-
-        // Number of milliseconds between automatically proceeding to the
-        // next slide, disabled when set to 0, this value can be overwritten
-        // by using a data-autoslide attribute on your slides
-        autoSlide: 0,
-
-        // Stop auto-sliding after user input
-        autoSlideStoppable: true,
-
-        // Use this method for navigation when auto-sliding
-        autoSlideMethod: null,
-
-        // Specify the average time in seconds that you think you will spend
-        // presenting each slide. This is used to show a pacing timer in the
-        // speaker view
-        defaultTiming: null,
-
-        // Enable slide navigation via mouse wheel
-        mouseWheel: false,
-
-        // The display mode that will be used to show slides
-        display: 'block',
-
-        // Hide cursor if inactive
-        hideInactiveCursor: true,
-
-        // Time before the cursor is hidden (in ms)
-        hideCursorTime: 5000,
-
-        // Opens links in an iframe preview overlay
-        previewLinks: false,
-
-        // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'fade',
-
-        // Transition speed (default/fast/slow)
-        transitionSpeed: 'default',
-
-        // Transition style for full page slide backgrounds
-        // (none/fade/slide/convex/concave/zoom)
-        backgroundTransition: 'none',
-
-        // Number of slides away from the current that are visible
-        viewDistance: 3,
-
-        // Number of slides away from the current that are visible on mobile
-        // devices. It is advisable to set this to a lower number than
-        // viewDistance in order to save resources.
-        mobileViewDistance: 2,
-
-        // The "normal" size of the presentation, aspect ratio will be preserved
-        // when the presentation is scaled to fit different resolutions. Can be
-        // specified using percentage units.
-        width: 1050,
-
-        height: 700,
-
-        // Factor of the display size that should remain empty around the content
-        margin: 0.1,
-
-        math: {
-          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
-          config: 'TeX-AMS_HTML-full',
-          tex2jax: {
-            inlineMath: [['\\(','\\)']],
-            displayMath: [['\\[','\\]']],
-            balanceBraces: true,
-            processEscapes: false,
-            processRefs: true,
-            processEnvironments: true,
-            preview: 'TeX',
-            skipTags: ['script','noscript','style','textarea','pre','code'],
-            ignoreClass: 'tex2jax_ignore',
-            processClass: 'tex2jax_process'
-          },
-        },
-
-        // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
-
-          RevealMath,
-          RevealNotes,
-          RevealSearch,
-          RevealZoom
-        ]
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
       });
-    </script>
-    <script type="ojs-module-contents">
-    eyJjb250ZW50cyI6W119
-    </script>
-    <script type="module">
-    if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
-    window._ojs.paths.runtimeToDoc = "../..";
-    window._ojs.paths.runtimeToRoot = "../..";
-    window._ojs.paths.docToRoot = "";
-    window._ojs.selfContained = false;
-    window._ojs.runtime.interpretFromScriptTags();
-    </script>
-    <script id="quarto-html-after-body" type="application/javascript">
-      window.document.addEventListener("DOMContentLoaded", function (event) {
-        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
-        tabsets.forEach(function(tabset) {
-          const tabby = new Tabby('#' + tabset.id);
-        });
-        const isCodeAnnotation = (el) => {
-          for (const clz of el.classList) {
-            if (clz.startsWith('code-annotation-')) {                     
-              return true;
-            }
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
           }
-          return false;
         }
-        const onCopySuccess = function(e) {
-          // button target
-          const button = e.trigger;
-          // don't keep focus
-          button.blur();
-          // flash "checked"
-          button.classList.add('code-copy-button-checked');
-          var currentTitle = button.getAttribute("title");
-          button.setAttribute("title", "Copied!");
-          let tooltip;
-          if (window.bootstrap) {
-            button.setAttribute("data-bs-toggle", "tooltip");
-            button.setAttribute("data-bs-placement", "left");
-            button.setAttribute("data-bs-title", "Copied!");
-            tooltip = new bootstrap.Tooltip(button, 
-              { trigger: "manual", 
-                customClass: "code-copy-button-tooltip",
-                offset: [0, -8]});
-            tooltip.show();    
-          }
-          setTimeout(function() {
-            if (tooltip) {
-              tooltip.hide();
-              button.removeAttribute("data-bs-title");
-              button.removeAttribute("data-bs-toggle");
-              button.removeAttribute("data-bs-placement");
-            }
-            button.setAttribute("title", currentTitle);
-            button.classList.remove('code-copy-button-checked');
-          }, 1000);
-          // clear code selection
-          e.clearSelection();
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
         }
-        const getTextToCopy = function(trigger) {
-          const outerScaffold = trigger.parentElement.cloneNode(true);
-          const codeEl = outerScaffold.querySelector('code');
-          for (const childEl of codeEl.children) {
-            if (isCodeAnnotation(childEl)) {
-              childEl.remove();
-            }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
           }
-          return codeEl.innerText;
         }
-        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-          text: getTextToCopy
-        });
-        clipboard.on('success', onCopySuccess);
-        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-            text: getTextToCopy,
-            container: window.document.getElementById('quarto-embedded-source-code-modal')
-          });
-          clipboardModal.on('success', onCopySuccess);
-        }
-          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-          var mailtoRegex = new RegExp(/^mailto:/);
-            var filterRegex = new RegExp('/' + window.location.host + '/');
-          var isInternal = (href) => {
-              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-          }
-          // Inspect non-navigation links and adorn them if external
-         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-          for (var i=0; i<links.length; i++) {
-            const link = links[i];
-            if (!isInternal(link.href)) {
-              // undo the damage that might have been done by quarto-nav.js in the case of
-              // links that we want to consider external
-              if (link.dataset.originalHref !== undefined) {
-                link.href = link.dataset.originalHref;
-              }
-            }
-          }
-        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-          const config = {
-            allowHTML: true,
-            maxWidth: 500,
-            delay: 100,
-            arrow: false,
-            appendTo: function(el) {
-                return el.closest('section.slide') || el.parentElement;
-            },
-            interactive: true,
-            interactiveBorder: 10,
-            theme: 'light-border',
-            placement: 'bottom-start',
-          };
-          if (contentFn) {
-            config.content = contentFn;
-          }
-          if (onTriggerFn) {
-            config.onTrigger = onTriggerFn;
-          }
-          if (onUntriggerFn) {
-            config.onUntrigger = onUntriggerFn;
-          }
-            config['offset'] = [0,0];
-            config['maxWidth'] = 700;
-          window.tippy(el, config); 
-        }
-        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-        for (var i=0; i<noterefs.length; i++) {
-          const ref = noterefs[i];
-          tippyHover(ref, function() {
-            // use id or data attribute instead here
-            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-            try { href = new URL(href).hash; } catch {}
-            const id = href.replace(/^#\/?/, "");
-            const note = window.document.getElementById(id);
-            if (note) {
-              return note.innerHTML;
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
             } else {
-              return "";
+              container.appendChild(child.cloneNode(true));
+              break;
             }
-          });
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
         }
-        const findCites = (el) => {
-          const parentEl = el.parentElement;
-          if (parentEl) {
-            const cites = parentEl.dataset.cites;
-            if (cites) {
-              return {
-                el,
-                cites: cites.split(' ')
-              };
-            } else {
-              return findCites(el.parentElement)
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
             }
           } else {
-            return undefined;
-          }
-        };
-        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-        for (var i=0; i<bibliorefs.length; i++) {
-          const ref = bibliorefs[i];
-          const citeInfo = findCites(ref);
-          if (citeInfo) {
-            tippyHover(citeInfo.el, function() {
-              var popup = window.document.createElement('div');
-              citeInfo.cites.forEach(function(cite) {
-                var citeDiv = window.document.createElement('div');
-                citeDiv.classList.add('hanging-indent');
-                citeDiv.classList.add('csl-entry');
-                var biblioDiv = window.document.getElementById('ref-' + cite);
-                if (biblioDiv) {
-                  citeDiv.innerHTML = biblioDiv.innerHTML;
-                }
-                popup.appendChild(citeDiv);
-              });
-              return popup.innerHTML;
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
             });
           }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
         }
+      }, function(instance) {
       });
-      </script>
-    
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
 
 </body></html>
