@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-html/tabby.min.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.25">
+
+  <meta name="author" content="Imron Rosyadi">
+  <title>Linear Algebra</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-b0356e9119c1bdfd0db189d130feb51c.css">
+  <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+  <link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Linear Algebra</h1>
+  <p class="subtitle">4.6 Change of Basis</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Imron Rosyadi 
+</div>
+</div>
+</div>
+
+</section>
+<section>
+<section id="change-of-basis" class="title-slide slide level1 center">
+<h1>Change of Basis</h1>
+<p><strong>Adapting Coordinate Systems for Problem Solving</strong></p>
+<aside class="notes">
+<p>Welcome to this session on Change of Basis. In linear algebra, just like in many engineering problems, the choice of coordinate system can drastically simplify or complicate our work. While we’ve learned about various bases, sometimes a basis that’s perfect for one aspect of a problem might be inconvenient for another. This section explores how to effectively switch between different bases, which is a fundamental skill in fields like signal processing, control systems, and computer graphics.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-need-for-changing-bases" class="slide level2">
+<h2>The Need for Changing Bases</h2>
+<p>A suitable basis for one problem may not be suitable for another. Changing bases is analogous to changing coordinate axes in <span class="math inline">\(R^{2}\)</span> and <span class="math inline">\(R^{3}\)</span>.</p>
+<h3 id="coordinate-maps">Coordinate Maps</h3>
+<p>If <span class="math inline">\(S = \{\mathbf{v}_{1}, \mathbf{v}_{2}, \ldots , \mathbf{v}_{n}\}\)</span> is a basis for <span class="math inline">\(V\)</span>, and <span class="math inline">\((\mathbf{v})_{S} = (c_{1}, c_{2}, \ldots , c_{n})\)</span> is the coordinate vector of <span class="math inline">\(\mathbf{v}\)</span> relative to <span class="math inline">\(S\)</span>, then the mapping: <span class="math display">\[
+\mathbf{v} \to (\mathbf{v})_{S} \tag{1}
+\]</span> creates a one-to-one correspondence between vectors in <span class="math inline">\(V\)</span> and vectors in <span class="math inline">\(R^{n}\)</span>. We call this the <strong>coordinate map</strong> relative to <span class="math inline">\(S\)</span> from <span class="math inline">\(V\)</span> to <span class="math inline">\(R^{n}\)</span>.</p>
+<p>For convenience, coordinate vectors are often expressed in matrix form: <span class="math display">\[
+[\mathbf{v}]_{S} = \left[ \begin{array}{c}c_{1} \\ c_{2} \\ \vdots \\ c_{n} \end{array} \right] \tag{2}
+\]</span> This matrix notation emphasizes its role in linear transformations.</p>
+
+<img data-src="https://cdn-mineru.openxlab.org.cn/result/2025-08-19/819ca1e1-de49-4d64-aa59-e7765c59fd4d/8d6e1410c17a5bb80a5cb4793c720ba30dca3a22731fd8c2802bdddc1828c27c.jpg" class="r-stretch"><p>Figure 4.6.1: Coordinate map from <span class="math inline">\(V\)</span> to <span class="math inline">\(R^n\)</span>.</p>
+<aside class="notes">
+<p>Think about how you might rotate your coordinate system to align with an object’s principal axes in physics or engineering mechanics. That’s a change of basis. In abstract vector spaces, we use “coordinate maps” to translate between a vector <span class="math inline">\(\mathbf{v}\)</span> in a general space <span class="math inline">\(V\)</span> and its numerical representation as a coordinate vector in <span class="math inline">\(R^n\)</span>. For calculations, we typically write these coordinate vectors as column matrices, denoted with square brackets like <span class="math inline">\([\mathbf{v}]_S\)</span>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-change-of-basis-problem" class="slide level2">
+<h2>The Change of Basis Problem</h2>
+<p>A common problem arises when we have a vector <span class="math inline">\(\mathbf{v}\)</span> and want to express its coordinates in a <em>different</em> basis.</p>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>The Change of Basis Problem</strong></p>
+</div>
+<div class="callout-content">
+<p>If <span class="math inline">\(\mathbf{v}\)</span> is a vector in a finite-dimensional vector space <span class="math inline">\(V\)</span>, and if we change the basis for <span class="math inline">\(V\)</span> from a basis <span class="math inline">\(B\)</span> to a basis <span class="math inline">\(B'\)</span>, how are the coordinate vectors <span class="math inline">\([\mathbf{v}]_{B}\)</span> and <span class="math inline">\([\mathbf{v}]_{B'}\)</span> related?</p>
+</div>
+</div>
+</div>
+<p><strong>Remark:</strong> We will refer to <span class="math inline">\(B\)</span> as the “old basis” and <span class="math inline">\(B'\)</span> as the “new basis.” Our objective is to find a relationship between the old and new coordinates of a fixed vector <span class="math inline">\(\mathbf{v}\)</span> in <span class="math inline">\(V\)</span>.</p>
+<aside class="notes">
+<p>The “Change of Basis Problem” is precisely about finding this relationship. If we have a vector <span class="math inline">\(\mathbf{v}\)</span> expressed in terms of an “old basis” <span class="math inline">\(B\)</span>, and we want to know its coordinates in a “new basis” <span class="math inline">\(B'\)</span>, how do we convert <span class="math inline">\([\mathbf{v}]_B\)</span> to <span class="math inline">\([\mathbf{v}]_{B'}\)</span> or vice-versa? This is crucial for consistency when different parts of a system or different algorithms use different reference frames.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="deriving-the-relationship-2d-case" class="slide level2 scrollable">
+<h2>Deriving the Relationship (2D Case)</h2>
+<p>Let’s derive the relationship for a 2-dimensional space first.</p>
+<p>Let <span class="math inline">\(B = \{\mathbf{u}_{1}, \mathbf{u}_{2}\}\)</span> be the old basis and <span class="math inline">\(B' = \{\mathbf{u}_{1}', \mathbf{u}_{2}'\}\)</span> be the new basis.</p>
+<ol type="1">
+<li><strong>Express new basis vectors in terms of the old basis:</strong> Suppose the coordinate vectors of the new basis vectors relative to the old basis are: <span class="math display">\[
+[\mathbf{u}_{1}']_{B} = \begin{bmatrix} a \\ b \end{bmatrix} \quad \text{and} \quad [\mathbf{u}_{2}']_{B} = \begin{bmatrix} c \\ d \end{bmatrix} \tag{3}
+\]</span> This means: <span class="math display">\[
+\begin{array}{r}\mathbf{u}_{1}' = a\mathbf{u}_{1} + b\mathbf{u}_{2} \\ \mathbf{u}_{2}' = c\mathbf{u}_{1} + d\mathbf{u}_{2} \end{array} \tag{4}
+\]</span></li>
+</ol>
+<aside class="notes">
+<p>To understand the relationship, let’s consider a 2D space. We have an old basis <span class="math inline">\(B\)</span> and a new basis <span class="math inline">\(B'\)</span>. The key step is to express each vector of the <em>new</em> basis as a linear combination of the vectors in the <em>old</em> basis. The coefficients of these linear combinations form the coordinate vectors of the new basis vectors relative to the old basis.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="deriving-the-relationship-2d-case-continued" class="slide level2 scrollable">
+<h2>Deriving the Relationship (2D Case Continued)</h2>
+<ol start="2" type="1">
+<li><p><strong>Express <span class="math inline">\(\mathbf{v}\)</span> in terms of the new basis:</strong> Let <span class="math inline">\([\mathbf{v}]_{B'} = \begin{bmatrix} k_{1} \\ k_{2} \end{bmatrix}\)</span> be the new coordinate vector, so: <span class="math display">\[
+\mathbf{v} = k_{1}\mathbf{u}_{1}^{\prime} + k_{2}\mathbf{u}_{2}^{\prime} \tag{6}
+\]</span></p></li>
+<li><p><strong>Substitute and find old coordinates:</strong> Substitute (4) into (6) to express <span class="math inline">\(\mathbf{v}\)</span> in terms of the old basis: <span class="math display">\[
+\mathbf{v} = k_{1}(a\mathbf{u}_{1} + b\mathbf{u}_{2}) + k_{2}(c\mathbf{u}_{1} + d\mathbf{u}_{2})
+\]</span> Rearranging terms: <span class="math display">\[
+\mathbf{v} = (k_{1}a + k_{2}c)\mathbf{u}_{1} + (k_{1}b + k_{2}d)\mathbf{u}_{2}
+\]</span> Thus, the old coordinate vector for <span class="math inline">\(\mathbf{v}\)</span> is: <span class="math display">\[
+[\mathbf{v}]_{B} = \begin{bmatrix} k_{1}a + k_{2}c \\ k_{1}b + k_{2}d \end{bmatrix}
+\]</span></p></li>
+</ol>
+<aside class="notes">
+<p>Next, we take an arbitrary vector <span class="math inline">\(\mathbf{v}\)</span> and express it using its coordinates in the new basis <span class="math inline">\(B'\)</span>. Then, we substitute the expressions for <span class="math inline">\(\mathbf{u}_1'\)</span> and <span class="math inline">\(\mathbf{u}_2'\)</span> (from the previous slide) into this equation. After regrouping the terms by <span class="math inline">\(\mathbf{u}_1\)</span> and <span class="math inline">\(\mathbf{u}_2\)</span>, we get the coefficients that represent <span class="math inline">\(\mathbf{v}\)</span> in the old basis <span class="math inline">\(B\)</span>. These coefficients form the old coordinate vector <span class="math inline">\([\mathbf{v}]_B\)</span>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-transition-matrix" class="slide level2">
+<h2>The Transition Matrix</h2>
+<p>The relationship found can be expressed as a matrix multiplication.</p>
+<p>Using the new coordinate vector <span class="math inline">\([\mathbf{v}]_{B'} = \begin{bmatrix} k_{1} \\ k_{2} \end{bmatrix}\)</span>, the old coordinate vector can be written as: <span class="math display">\[
+[\mathbf{v}]_{B} = \left[ \begin{array}{ll}a &amp; c \\ b &amp; d \end{array} \right]\left[ \begin{array}{l}k_{1} \\ k_{2} \end{array} \right] = \left[ \begin{array}{ll}a &amp; c \\ b &amp; d \end{array} \right][\mathbf{v}]_{B^{\prime}}
+\]</span></p>
+<p>The matrix <span class="math inline">\(P = \left[ \begin{array}{ll}a &amp; c \\ b &amp; d \end{array} \right]\)</span> is called the <strong>transition matrix</strong>. Notice that the columns of <span class="math inline">\(P\)</span> are <span class="math inline">\([\mathbf{u}_{1}']_{B}\)</span> and <span class="math inline">\([\mathbf{u}_{2}']_{B}\)</span>.</p>
+<aside class="notes">
+<p>The crucial observation is that the relationship between the old and new coordinate vectors can be written as a matrix-vector product. The matrix, which we call <span class="math inline">\(P\)</span>, has its columns composed of the coordinate vectors of the <em>new</em> basis vectors, expressed in terms of the <em>old</em> basis. This matrix <span class="math inline">\(P\)</span> is our “transition matrix,” and it’s the key to changing bases.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="solution-of-the-change-of-basis-problem-general-case" class="slide level2">
+<h2>Solution of the Change of Basis Problem (General Case)</h2>
+<p>This generalizes to <span class="math inline">\(n\)</span>-dimensional spaces.</p>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Solution of the Change of Basis Problem</strong></p>
+</div>
+<div class="callout-content">
+<p>If we change the basis for a vector space <span class="math inline">\(V\)</span> from an old basis <span class="math inline">\(B = \{\mathbf{u}_{1}, \ldots , \mathbf{u}_{n}\}\)</span> to a new basis <span class="math inline">\(B^{\prime} = \{\mathbf{u}_{1}^{\prime}, \ldots , \mathbf{u}_{n}^{\prime}\}\)</span>, then for each vector <span class="math inline">\(\mathbf{v}\)</span> in <span class="math inline">\(V\)</span>, the old coordinate vector <span class="math inline">\([\mathbf{v}]_{B}\)</span> is related to the new coordinate vector <span class="math inline">\([\mathbf{v}]_{B^{\prime}}\)</span> by the equation: <span class="math display">\[
+[\mathbf{v}]_{B} = P[\mathbf{v}]_{B^{\prime}} \tag{7}
+\]</span> where the columns of <span class="math inline">\(P\)</span> are the coordinate vectors of the new basis vectors relative to the old basis; that is, the column vectors of <span class="math inline">\(P\)</span> are: <span class="math display">\[
+[\mathbf{u}_{1}^{\prime}]_{B}, \quad [\mathbf{u}_{2}^{\prime}]_{B}, \ldots , \quad [\mathbf{u}_{n}^{\prime}]_{B} \tag{8}
+\]</span></p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>So, in general, to convert coordinate vectors from a new basis <span class="math inline">\(B'\)</span> to an old basis <span class="math inline">\(B\)</span>, we multiply by a transition matrix <span class="math inline">\(P\)</span>. The columns of this matrix <span class="math inline">\(P\)</span> are formed by taking each vector from the <em>new</em> basis <span class="math inline">\(B'\)</span> and expressing it as a coordinate vector with respect to the <em>old</em> basis <span class="math inline">\(B\)</span>. This is a fundamental formula in linear algebra.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="transition-matrices-notation" class="slide level2">
+<h2>Transition Matrices Notation</h2>
+<p>We often use specific notation to clarify the direction of the transition.</p>
+<p>The matrix <span class="math inline">\(P\)</span> in Equation (7) is called the <strong>transition matrix from <span class="math inline">\(B^{\prime}\)</span> to <span class="math inline">\(B\)</span></strong>, denoted by <span class="math inline">\(P_{B^{\prime} \rightarrow B}\)</span>. It can be expressed as: <span class="math display">\[
+P_{B^{\prime} \rightarrow B} = \left[ [\mathbf{u}_{1}^{\prime}]_{B} \mid [\mathbf{u}_{2}^{\prime}]_{B} \mid \dots \mid [\mathbf{u}_{n}^{\prime}]_{B} \right] \tag{9}
+\]</span></p>
+<p>Similarly, the transition matrix from <span class="math inline">\(B\)</span> to <span class="math inline">\(B^{\prime}\)</span> is <span class="math inline">\(P_{B \rightarrow B^{\prime}}\)</span>, and its columns are: <span class="math display">\[
+P_{B \rightarrow B^{\prime}} = \left[ [\mathbf{u}_{1}]_{B^{\prime}} \mid [\mathbf{u}_{2}]_{B^{\prime}} \mid \dots \mid [\mathbf{u}_{n}]_{B^{\prime}} \right] \tag{10}
+\]</span></p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Memory Aid:</strong> The columns of the transition matrix from an <strong>old basis</strong> to a <strong>new basis</strong> are the coordinate vectors of the <strong>old basis</strong> relative to the <strong>new basis</strong>. (This statement in the text seems to have a typo. It should be: “The columns of the transition matrix from a <strong>new basis</strong> to an <strong>old basis</strong> are the coordinate vectors of the <strong>new basis</strong> relative to the <strong>old basis</strong>.”) Let’s stick to the definition: <span class="math inline">\(P_{B' \to B}\)</span> takes coordinates in <span class="math inline">\(B'\)</span> to <span class="math inline">\(B\)</span>. Its columns are the <em>new</em> basis vectors expressed in the <em>old</em> basis.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>To avoid confusion, we use subscripts to denote the direction of the transition. <span class="math inline">\(P_{B' \to B}\)</span> takes coordinates from <span class="math inline">\(B'\)</span> and gives you coordinates in <span class="math inline">\(B\)</span>. Its columns are the vectors of <span class="math inline">\(B'\)</span> expressed in terms of <span class="math inline">\(B\)</span>. Conversely, <span class="math inline">\(P_{B \to B'}\)</span> takes coordinates from <span class="math inline">\(B\)</span> and gives you coordinates in <span class="math inline">\(B'\)</span>, and its columns are the vectors of <span class="math inline">\(B\)</span> expressed in terms of <span class="math inline">\(B'\)</span>. The memory aid in the textbook can be a bit confusing, so let’s rely on the formal definitions and the direction of the arrow.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-1-finding-transition-matrices" class="slide level2">
+<h2>EXAMPLE 1: Finding Transition Matrices</h2>
+<p>Consider bases <span class="math inline">\(B = \{\mathbf{u}_{1}, \mathbf{u}_{2}\}\)</span> and <span class="math inline">\(B^{\prime} = \{\mathbf{u}_{1}^{\prime}, \mathbf{u}_{2}^{\prime}\}\)</span> for <span class="math inline">\(R^{2}\)</span>, where:</p>
+<p><span class="math inline">\(\mathbf{u}_{1} = (1,0)\)</span>, <span class="math inline">\(\mathbf{u}_{2} = (0,1)\)</span></p>
+<p><span class="math inline">\(\mathbf{u}_{1}^{\prime} = (1,1)\)</span>, <span class="math inline">\(\mathbf{u}_{2}^{\prime} = (2,1)\)</span></p>
+<h3 id="a-find-p_bprime-rightarrow-b-from-b-to-b.">(a) Find <span class="math inline">\(P_{B^{\prime} \rightarrow B}\)</span> (from <span class="math inline">\(B'\)</span> to <span class="math inline">\(B\)</span>).</h3>
+<p><em>New basis vectors in terms of old basis <span class="math inline">\(B\)</span></em>:</p>
+<p><span class="math inline">\(\mathbf{u}_{1}^{\prime} = 1\mathbf{u}_{1} + 1\mathbf{u}_{2} \implies [\mathbf{u}_{1}^{\prime}]_{B} = \begin{bmatrix} 1 \\ 1 \end{bmatrix}\)</span></p>
+<p><span class="math inline">\(\mathbf{u}_{2}^{\prime} = 2\mathbf{u}_{1} + 1\mathbf{u}_{2} \implies [\mathbf{u}_{2}^{\prime}]_{B} = \begin{bmatrix} 2 \\ 1 \end{bmatrix}\)</span></p>
+<p>So, <span class="math inline">\(P_{B^{\prime} \rightarrow B} = \begin{bmatrix} 1 &amp; 2 \\ 1 &amp; 1 \end{bmatrix}\)</span>.</p>
+<aside class="notes">
+<p>Let’s work through an example. We have two bases for <span class="math inline">\(R^2\)</span>. For part (a), we want to go from <span class="math inline">\(B'\)</span> to <span class="math inline">\(B\)</span>. This means <span class="math inline">\(B'\)</span> is our “new” basis, and <span class="math inline">\(B\)</span> is our “old” basis. We need to express <span class="math inline">\(\mathbf{u}_1'\)</span> and <span class="math inline">\(\mathbf{u}_2'\)</span> in terms of <span class="math inline">\(\mathbf{u}_1\)</span> and <span class="math inline">\(\mathbf{u}_2\)</span>. Since <span class="math inline">\(\mathbf{u}_1\)</span> and <span class="math inline">\(\mathbf{u}_2\)</span> are the standard basis vectors, this is straightforward. The coefficients become the columns of our transition matrix.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-1-finding-transition-matrices-continued" class="slide level2">
+<h2>EXAMPLE 1: Finding Transition Matrices (Continued)</h2>
+<h3 id="b-find-p_b-rightarrow-bprime-from-b-to-b.">(b) Find <span class="math inline">\(P_{B \rightarrow B^{\prime}}\)</span> (from <span class="math inline">\(B\)</span> to <span class="math inline">\(B'\)</span>).</h3>
+<p><em>Old basis vectors in terms of new basis <span class="math inline">\(B'\)</span></em>:</p>
+<p>We need to find <span class="math inline">\(c_1, c_2\)</span> such that <span class="math inline">\(\mathbf{u}_{1} = c_{1}\mathbf{u}_{1}^{\prime} + c_{2}\mathbf{u}_{2}^{\prime}\)</span>.</p>
+<p><span class="math inline">\((1,0) = c_{1}(1,1) + c_{2}(2,1) \implies \begin{cases} c_1 + 2c_2 = 1 \\ c_1 + c_2 = 0 \end{cases}\)</span></p>
+<p>Solving gives <span class="math inline">\(c_1 = -1, c_2 = 1\)</span>. So, <span class="math inline">\([\mathbf{u}_{1}]_{B^{\prime}} = \begin{bmatrix} -1 \\ 1 \end{bmatrix}\)</span>.</p>
+<p>Similarly for <span class="math inline">\(\mathbf{u}_{2}\)</span>:</p>
+<p><span class="math inline">\((0,1) = d_{1}(1,1) + d_{2}(2,1) \implies \begin{cases} d_1 + 2d_2 = 0 \\ d_1 + d_2 = 1 \end{cases}\)</span></p>
+<p>Solving gives <span class="math inline">\(d_1 = 2, d_2 = -1\)</span>. So, <span class="math inline">\([\mathbf{u}_{2}]_{B^{\prime}} = \begin{bmatrix} 2 \\ -1 \end{bmatrix}\)</span>.</p>
+<p>Thus, <span class="math inline">\(P_{B \rightarrow B^{\prime}} = \begin{bmatrix} -1 &amp; 2 \\ 1 &amp; -1 \end{bmatrix}\)</span>.</p>
+<aside class="notes">
+<p>For part (b), we want to go from <span class="math inline">\(B\)</span> to <span class="math inline">\(B'\)</span>. Now, <span class="math inline">\(B\)</span> is the “new” basis, and <span class="math inline">\(B'\)</span> is the “old” basis. This means we need to express <span class="math inline">\(\mathbf{u}_1\)</span> and <span class="math inline">\(\mathbf{u}_2\)</span> in terms of <span class="math inline">\(\mathbf{u}_1'\)</span> and <span class="math inline">\(\mathbf{u}_2'\)</span>. This typically involves solving a system of linear equations for each basis vector. Once we find the coefficients, they form the columns of <span class="math inline">\(P_{B \to B'}\)</span>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-example-verify-transition-matrix-p_b-rightarrow-b" class="slide level2">
+<h2>Interactive Example: Verify Transition Matrix <span class="math inline">\(P_{B \rightarrow B'}\)</span></h2>
+<p>Let’s use Python to solve the systems and construct <span class="math inline">\(P_{B \rightarrow B'}\)</span>.</p>
+<div>
+<div id="pyodide-1" class="exercise-cell">
+
+</div>
+<script type="pyodide-1-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5cbiMgRGVmaW5lIGJhc2VzXG51MSA9IG5wLmFycmF5KFsxLCAwXSlcbnUyID0gbnAuYXJyYXkoWzAsIDFdKVxudTFfcHJpbWUgPSBucC5hcnJheShbMSwgMV0pXG51Ml9wcmltZSA9IG5wLmFycmF5KFsyLCAxXSlcblxuIyBNYXRyaXggZm9ybWVkIGJ5IG5ldyBiYXNpcyBCJyB2ZWN0b3JzIGFzIGNvbHVtbnNcbiMgVGhpcyBpcyB0aGUgJ29sZCcgYmFzaXMgZm9yIHRoZSBwdXJwb3NlIG9mIGZpbmRpbmcgY29vcmRpbmF0ZXMgb2YgJ25ldycgYmFzaXMgaW4gdGVybXMgb2YgJ29sZCdcbiMgRm9yIFBfQi0+QicsIEInIGlzIHRoZSAnbmV3JyBiYXNpcyBpbiB0ZXJtcyBvZiB3aGljaCBCIChvbGQpIGlzIGV4cHJlc3NlZC5cbiMgU28gd2UgbmVlZCB0byBleHByZXNzIHUxIGFuZCB1MiBpbiB0ZXJtcyBvZiB1MV9wcmltZSBhbmQgdTJfcHJpbWUuXG4jIFRoaXMgbWVhbnMgc29sdmluZzogW3UxX3ByaW1lIHwgdTJfcHJpbWVdICogW2MxOyBjMl0gPSB1MVxuIyBhbmQgW3UxX3ByaW1lIHwgdTJfcHJpbWVdICogW2QxOyBkMl0gPSB1MlxuQSA9IG5wLmNvbHVtbl9zdGFjaygodTFfcHJpbWUsIHUyX3ByaW1lKSlcbnByaW50KGZcIk1hdHJpeCBBIChuZXcgYmFzaXMgQicgdmVjdG9ycyBhcyBjb2x1bW5zKTpcXG57QX1cIilcblxuIyBTb2x2ZSBmb3IgdTEgaW4gdGVybXMgb2YgQidcbmNvZWZmc191MV9pbl9CcHJpbWUgPSBucC5saW5hbGcuc29sdmUoQSwgdTEpXG5wcmludChmXCJcXG5Db29yZGluYXRlcyBvZiB1MSByZWxhdGl2ZSB0byBCJzoge2NvZWZmc191MV9pbl9CcHJpbWV9XCIpXG5cbiMgU29sdmUgZm9yIHUyIGluIHRlcm1zIG9mIEInXG5jb2VmZnNfdTJfaW5fQnByaW1lID0gbnAubGluYWxnLnNvbHZlKEEsIHUyKVxucHJpbnQoZlwiQ29vcmRpbmF0ZXMgb2YgdTIgcmVsYXRpdmUgdG8gQic6IHtjb2VmZnNfdTJfaW5fQnByaW1lfVwiKVxuXG4jIENvbnN0cnVjdCBQX0ItPkInXG5QX0JfdG9fQnByaW1lID0gbnAuY29sdW1uX3N0YWNrKChjb2VmZnNfdTFfaW5fQnByaW1lLCBjb2VmZnNfdTJfaW5fQnByaW1lKSlcbnByaW50KGZcIlxcblRyYW5zaXRpb24gbWF0cml4IFBfQi0+Qic6XFxue1BfQl90b19CcHJpbWV9XCIpIn0=
+</script>
+</div>
+<aside class="notes">
+<p>Using <code>numpy</code>, we can automate the process of solving the linear systems. We form a matrix <code>A</code> whose columns are the vectors of <span class="math inline">\(B'\)</span>. Then, we solve <span class="math inline">\(A\mathbf{c} = \mathbf{u}_1\)</span> and <span class="math inline">\(A\mathbf{d} = \mathbf{u}_2\)</span> to find the coordinates. The output confirms our manual calculations for <span class="math inline">\(P_{B \to B'}\)</span>, demonstrating the power of computational tools for these tasks.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-2-computing-coordinate-vectors" class="slide level2">
+<h2>EXAMPLE 2: Computing Coordinate Vectors</h2>
+<p>Let <span class="math inline">\(B\)</span> and <span class="math inline">\(B^{\prime}\)</span> be the bases from Example 1. Use an appropriate formula to find <span class="math inline">\([\mathbf{v}]_{B}\)</span> given that <span class="math inline">\([\mathbf{v}]_{B^{\prime}} = \begin{bmatrix} -3 \\ 5 \end{bmatrix}\)</span>.</p>
+<p><strong>Solution:</strong> We want to find <span class="math inline">\([\mathbf{v}]_{B}\)</span> from <span class="math inline">\([\mathbf{v}]_{B'}\)</span>. This means we need the transition matrix <span class="math inline">\(P_{B^{\prime} \rightarrow B}\)</span>. From Example 1(a), <span class="math inline">\(P_{B^{\prime} \rightarrow B} = \begin{bmatrix} 1 &amp; 2 \\ 1 &amp; 1 \end{bmatrix}\)</span>.</p>
+<p>Using the formula <span class="math inline">\([\mathbf{v}]_{B} = P_{B^{\prime} \rightarrow B}[\mathbf{v}]_{B^{\prime}}\)</span>: <span class="math display">\[
+[\mathbf{v}]_{B} = \begin{bmatrix} 1 &amp; 2 \\ 1 &amp; 1 \end{bmatrix} \begin{bmatrix} -3 \\ 5 \end{bmatrix} = \begin{bmatrix} (1)(-3) + (2)(5) \\ (1)(-3) + (1)(5) \end{bmatrix} = \begin{bmatrix} 7 \\ 2 \end{bmatrix}
+\]</span></p>
+<p>So, the coordinate vector of <span class="math inline">\(\mathbf{v}\)</span> relative to basis <span class="math inline">\(B\)</span> is <span class="math inline">\(\begin{bmatrix} 7 \\ 2 \end{bmatrix}\)</span>.</p>
+<aside class="notes">
+<p>Now, let’s see how to use these transition matrices. If we’re given the coordinates of a vector <span class="math inline">\(\mathbf{v}\)</span> in the <span class="math inline">\(B'\)</span> basis, and we want its coordinates in the <span class="math inline">\(B\)</span> basis, we simply multiply <span class="math inline">\([\mathbf{v}]_{B'}\)</span> by the transition matrix <span class="math inline">\(P_{B' \to B}\)</span>. As you can see, a simple matrix multiplication gives us the required coordinate vector.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-example-compute-mathbfv_b" class="slide level2">
+<h2>Interactive Example: Compute <span class="math inline">\([\mathbf{v}]_{B}\)</span></h2>
+<p>Let’s use Python to perform the matrix multiplication.</p>
+<div>
+<div id="pyodide-2" class="exercise-cell">
+
+</div>
+<script type="pyodide-2-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5cbiMgVHJhbnNpdGlvbiBtYXRyaXggZnJvbSBCJyB0byBCXG5QX0JwcmltZV90b19CID0gbnAuYXJyYXkoW1sxLCAyXSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgWzEsIDFdXSlcblxuIyBDb29yZGluYXRlIHZlY3RvciBpbiBCJ1xudl9pbl9CcHJpbWUgPSBucC5hcnJheShbWy0zXSxcbiAgICAgICAgICAgICAgICAgICAgICAgIFs1XV0pXG5cbnByaW50KGZcIlRyYW5zaXRpb24gbWF0cml4IFBfQictPkI6XFxue1BfQnByaW1lX3RvX0J9XCIpXG5wcmludChmXCJcXG5Db29yZGluYXRlIHZlY3RvciBbdl1fQic6XFxue3ZfaW5fQnByaW1lfVwiKVxuXG4jIENhbGN1bGF0ZSBbdl1fQlxudl9pbl9CID0gUF9CcHJpbWVfdG9fQiBAIHZfaW5fQnByaW1lXG5cbnByaW50KGZcIlxcbkNvb3JkaW5hdGUgdmVjdG9yIFt2XV9COlxcbnt2X2luX0J9XCIpIn0=
+</script>
+</div>
+<aside class="notes">
+<p>This Python code snippet confirms the calculation. Defining the transition matrix and the coordinate vector, then using <code>numpy</code>’s matrix multiplication operator (<code>@</code>), we quickly get the coordinate vector in the old basis <span class="math inline">\(B\)</span>. This is a common operation in engineering to switch between different representations of the same physical quantity or state.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="invertibility-of-transition-matrices" class="slide level2">
+<h2>Invertibility of Transition Matrices</h2>
+<p>Transition matrices are always invertible, and their inverse has a special meaning.</p>
+<p>If <span class="math inline">\(B\)</span> and <span class="math inline">\(B^{\prime}\)</span> are bases for <span class="math inline">\(V\)</span>: <span class="math display">\[
+[\mathbf{v}]_{B} = P_{B^{\prime} \rightarrow B}[\mathbf{v}]_{B^{\prime}} \quad \text{and} \quad [\mathbf{v}]_{B^{\prime}} = P_{B \rightarrow B^{\prime}}[\mathbf{v}]_{B} \tag{11}
+\]</span></p>
+<p>Substituting the second into the first: <span class="math display">\[
+[\mathbf{v}]_{B} = P_{B^{\prime} \rightarrow B}(P_{B \rightarrow B^{\prime}}[\mathbf{v}]_{B}) = (P_{B^{\prime} \rightarrow B} P_{B \rightarrow B^{\prime}})[\mathbf{v}]_{B}
+\]</span> This implies that <span class="math inline">\((P_{B^{\prime} \rightarrow B} P_{B \rightarrow B^{\prime}})\)</span> must be the identity matrix <span class="math inline">\(I\)</span>. Thus, <span class="math inline">\(P_{B^{\prime} \rightarrow B}\)</span> and <span class="math inline">\(P_{B \rightarrow B^{\prime}}\)</span> are inverses of each other.</p>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>THEOREM 4.6.1</strong></p>
+</div>
+<div class="callout-content">
+<p>If <span class="math inline">\(P\)</span> is the transition matrix from a basis <span class="math inline">\(B^{\prime}\)</span> to a basis <span class="math inline">\(B\)</span> for a finite-dimensional vector space <span class="math inline">\(V\)</span>, then <span class="math inline">\(P\)</span> is invertible and <span class="math inline">\(P^{- 1}\)</span> is the transition matrix from <span class="math inline">\(B\)</span> to <span class="math inline">\(B^{\prime}\)</span>. <span class="math display">\[
+P_{B^{\prime} \rightarrow B}^{-1} = P_{B \rightarrow B^{\prime}}
+\]</span></p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>An important property of transition matrices is their invertibility. If you can go from basis <span class="math inline">\(B'\)</span> to <span class="math inline">\(B\)</span>, you should be able to go back from <span class="math inline">\(B\)</span> to <span class="math inline">\(B'\)</span>. This means the transition matrices are inverses of each other. This is formally stated in Theorem 4.6.1. We can see this intuitively because transforming coordinates from <span class="math inline">\(B\)</span> to <span class="math inline">\(B'\)</span> and then back to <span class="math inline">\(B\)</span> should result in the original coordinates, implying their product is the identity matrix.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-example-verify-inverse-relationship" class="slide level2">
+<h2>Interactive Example: Verify Inverse Relationship</h2>
+<p>Let’s verify that <span class="math inline">\(P_{B^{\prime} \rightarrow B}\)</span> and <span class="math inline">\(P_{B \rightarrow B^{\prime}}\)</span> are inverses.</p>
+<div>
+<div id="pyodide-3" class="exercise-cell">
+
+</div>
+<script type="pyodide-3-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5cbiMgVHJhbnNpdGlvbiBtYXRyaXggZnJvbSBCJyB0byBCIChmcm9tIEV4YW1wbGUgMWEpXG5QX0JwcmltZV90b19CID0gbnAuYXJyYXkoW1sxLCAyXSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgWzEsIDFdXSlcblxuIyBUcmFuc2l0aW9uIG1hdHJpeCBmcm9tIEIgdG8gQicgKGZyb20gRXhhbXBsZSAxYilcblBfQl90b19CcHJpbWUgPSBucC5hcnJheShbWy0xLCAyXSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgWzEsIC0xXV0pXG5cbnByaW50KGZcIlBfQictPkI6XFxue1BfQnByaW1lX3RvX0J9XCIpXG5wcmludChmXCJcXG5QX0ItPkInOlxcbntQX0JfdG9fQnByaW1lfVwiKVxuXG4jIENhbGN1bGF0ZSB0aGVpciBwcm9kdWN0XG5wcm9kdWN0ID0gUF9CcHJpbWVfdG9fQiBAIFBfQl90b19CcHJpbWVcbnByaW50KGZcIlxcblByb2R1Y3QgKFBfQictPkIgKiBQX0ItPkInKTpcXG57cHJvZHVjdH1cIilcblxuIyBDaGVjayBpZiB0aGUgcHJvZHVjdCBpcyBjbG9zZSB0byB0aGUgaWRlbnRpdHkgbWF0cml4XG5pc19pZGVudGl0eSA9IG5wLmFsbGNsb3NlKHByb2R1Y3QsIG5wLmV5ZSgyKSlcbnByaW50KGZcIlxcbklzIHRoZSBwcm9kdWN0IGFuIGlkZW50aXR5IG1hdHJpeD8ge2lzX2lkZW50aXR5fVwiKVxuXG4jIFZlcmlmeSBQX0ItPkInIGlzIHRoZSBpbnZlcnNlIG9mIFBfQictPkJcbmludmVyc2VfUF9CcHJpbWVfdG9fQiA9IG5wLmxpbmFsZy5pbnYoUF9CcHJpbWVfdG9fQilcbnByaW50KGZcIlxcbkludmVyc2Ugb2YgUF9CJy0+QjpcXG57aW52ZXJzZV9QX0JwcmltZV90b19CfVwiKVxuaXNfaW52ZXJzZV9jb3JyZWN0ID0gbnAuYWxsY2xvc2UoaW52ZXJzZV9QX0JwcmltZV90b19CLCBQX0JfdG9fQnByaW1lKVxucHJpbnQoZlwiSXMgUF9CLT5CJyBlcXVhbCB0byB0aGUgaW52ZXJzZSBvZiBQX0InLT5CPyB7aXNfaW52ZXJzZV9jb3JyZWN0fVwiKSJ9
+</script>
+</div>
+<aside class="notes">
+<p>Using <code>numpy</code>, we can multiply the two transition matrices we found earlier. As expected, their product is the identity matrix. Furthermore, we can compute the inverse of <span class="math inline">\(P_{B' \to B}\)</span> directly using <code>np.linalg.inv</code> and confirm that it matches <span class="math inline">\(P_{B \to B'}\)</span>. This numerical verification reinforces Theorem 4.6.1 and builds confidence in our calculations.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="efficient-method-for-computing-transition-matrices-for-rn" class="slide level2">
+<h2>Efficient Method for Computing Transition Matrices for <span class="math inline">\(R^n\)</span></h2>
+<p>For <span class="math inline">\(R^n\)</span>, there’s an efficient procedure using augmented matrices. This avoids solving multiple systems separately.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>A Procedure for Computing <span class="math inline">\(P_{B\rightarrow B^{\prime}}\)</span> (Old to New)</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Step 1.</strong> Form the augmented matrix <span class="math inline">\([B^{\prime} \mid B]\)</span>. <em>(Here <span class="math inline">\(B'\)</span> is the new basis, <span class="math inline">\(B\)</span> is the old basis. Columns of <span class="math inline">\(B'\)</span> and <span class="math inline">\(B\)</span> are the basis vectors).</em></p>
+<p><strong>Step 2.</strong> Use elementary row operations to reduce the matrix in Step 1 to reduced row echelon form.</p>
+<p><strong>Step 3.</strong> The resulting matrix will be <span class="math inline">\([I \mid P_{B \rightarrow B^{\prime}}]\)</span>.</p>
+<p><strong>Step 4.</strong> Extract the matrix <span class="math inline">\(P_{B \rightarrow B^{\prime}}\)</span> from the right side of the matrix in Step 3.</p>
+</div>
+</div>
+</div>
+<p>This procedure is summarized by the diagram: row operations <span class="math inline">\([ \text{new basis} \mid \text{old basis} ] \quad \to \quad [ I \mid \text{transition from old to new} ]\)</span></p>
+<aside class="notes">
+<p>When working with <span class="math inline">\(R^n\)</span>, solving <span class="math inline">\(n\)</span> separate linear systems to find the coordinates of each basis vector can be tedious. This efficient procedure streamlines the process by using an augmented matrix and row operations. The key is to set up the augmented matrix correctly: the “new basis” vectors on the left, and the “old basis” vectors on the right. After row reduction, the right side will directly give you the transition matrix from the old basis to the new basis. This method is incredibly useful in practical computations.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-3-example-1-revisited-efficient-method" class="slide level2">
+<h2>EXAMPLE 3: Example 1 Revisited (Efficient Method)</h2>
+<p>Using the bases from Example 1: <span class="math inline">\(B = \{\mathbf{u}_{1}=(1,0), \mathbf{u}_{2}=(0,1)\}\)</span> <span class="math inline">\(B^{\prime} = \{\mathbf{u}_{1}^{\prime}=(1,1), \mathbf{u}_{2}^{\prime}=(2,1)\}\)</span></p>
+<h3 id="a-find-p_bprime-rightarrow-b-from-b-to-b.-1">(a) Find <span class="math inline">\(P_{B^{\prime} \rightarrow B}\)</span> (from <span class="math inline">\(B'\)</span> to <span class="math inline">\(B\)</span>).</h3>
+<p>Here, <span class="math inline">\(B'\)</span> is the old basis; <span class="math inline">\(B\)</span> is the new basis. So, we want to find <span class="math inline">\(P_{B' \to B}\)</span>. According to the general formula <span class="math inline">\(P_{B' \to B} = [[\mathbf{u}_1']_B \mid [\mathbf{u}_2']_B]\)</span>. Since <span class="math inline">\(B\)</span> is the standard basis, <span class="math inline">\([\mathbf{u}_{1}^{\prime}]_{B} = \begin{bmatrix} 1 \\ 1 \end{bmatrix}\)</span> and <span class="math inline">\([\mathbf{u}_{2}^{\prime}]_{B} = \begin{bmatrix} 2 \\ 1 \end{bmatrix}\)</span>. Thus, <span class="math inline">\(P_{B^{\prime}\rightarrow B} = \begin{bmatrix} 1 &amp; 2\\ 1 &amp; 1 \end{bmatrix}\)</span>. (This was trivial as <span class="math inline">\(B\)</span> is standard basis). The procedure (new basis | old basis) would be <span class="math inline">\([B \mid B'] = \left[ \begin{array}{l l l}{1} &amp; 0 &amp; {1} &amp; {2}\\ {0} &amp; {1} &amp; {1} &amp; {1} \end{array} \right]\)</span>. Since the left side is already <span class="math inline">\(I\)</span>, <span class="math inline">\(P_{B^{\prime}\rightarrow B}\)</span> is the right side.</p>
+<aside class="notes">
+<p>Let’s apply the efficient method. For part (a), finding <span class="math inline">\(P_{B' \to B}\)</span>, we set up the augmented matrix with the <em>new</em> basis (<span class="math inline">\(B\)</span>) on the left and the <em>old</em> basis (<span class="math inline">\(B'\)</span>) on the right. Since <span class="math inline">\(B\)</span> is the standard basis, the left block is already the identity matrix, and the right block immediately gives us the transition matrix. This matches our earlier result.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-3-example-1-revisited-efficient-method-continued" class="slide level2">
+<h2>EXAMPLE 3: Example 1 Revisited (Efficient Method Continued)</h2>
+<h3 id="b-find-p_b-rightarrow-bprime-from-b-to-b.-1">(b) Find <span class="math inline">\(P_{B \rightarrow B^{\prime}}\)</span> (from <span class="math inline">\(B\)</span> to <span class="math inline">\(B'\)</span>).</h3>
+<p>Here, <span class="math inline">\(B\)</span> is the old basis; <span class="math inline">\(B'\)</span> is the new basis. We want to find <span class="math inline">\(P_{B \rightarrow B^{\prime}}\)</span>. Form the augmented matrix <span class="math inline">\([B^{\prime} \mid B]\)</span>: <span class="math display">\[
+\left[ \begin{array}{ll|ll}1 &amp; 2 &amp; 1 &amp; 0\\ 1 &amp; 1 &amp; 0 &amp; 1 \end{array} \right]
+\]</span> Reduce to reduced row echelon form: <span class="math display">\[
+\left[ \begin{array}{ll|cc}1 &amp; 0 &amp; -1 &amp; 2\\ 0 &amp; 1 &amp; 1 &amp; -1 \end{array} \right]
+\]</span> So the transition matrix is <span class="math inline">\(P_{B\rightarrow B^{\prime}} = \begin{bmatrix} - 1 &amp; 2\\ 1 &amp; -1 \end{bmatrix}\)</span>, which matches our previous result.</p>
+<aside class="notes">
+<p>For part (b), we are finding <span class="math inline">\(P_{B \to B'}\)</span>. So, <span class="math inline">\(B'\)</span> is the <em>new</em> basis, and <span class="math inline">\(B\)</span> is the <em>old</em> basis. We construct the augmented matrix <span class="math inline">\([B' \mid B]\)</span>. Then, we perform row operations to transform the left block (representing <span class="math inline">\(B'\)</span>) into the identity matrix. The right block will then automatically become our desired transition matrix <span class="math inline">\(P_{B \to B'}\)</span>. This is a much faster way than solving two separate systems of equations.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-example-efficient-method-for-p_b-rightarrow-b" class="slide level2">
+<h2>Interactive Example: Efficient Method for <span class="math inline">\(P_{B \rightarrow B'}\)</span></h2>
+<p>Let’s use Python to perform the row operations for <span class="math inline">\(P_{B \rightarrow B'}\)</span>.</p>
+<div>
+<div id="pyodide-4" class="exercise-cell">
+
+</div>
+<script type="pyodide-4-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5cbiMgRGVmaW5lIGJhc2VzXG51MSA9IG5wLmFycmF5KFsxLCAwXSlcbnUyID0gbnAuYXJyYXkoWzAsIDFdKVxudTFfcHJpbWUgPSBucC5hcnJheShbMSwgMV0pXG51Ml9wcmltZSA9IG5wLmFycmF5KFsyLCAxXSlcblxuIyBGb3JtIHRoZSBtYXRyaXggW0InIHwgQl1cbiMgQ29sdW1ucyBvZiBCJyBhcmUgdTFfcHJpbWUsIHUyX3ByaW1lXG4jIENvbHVtbnMgb2YgQiBhcmUgdTEsIHUyXG5CX3ByaW1lX21hdHJpeCA9IG5wLmNvbHVtbl9zdGFjaygodTFfcHJpbWUsIHUyX3ByaW1lKSlcbkJfbWF0cml4ID0gbnAuY29sdW1uX3N0YWNrKCh1MSwgdTIpKVxuXG5hdWdtZW50ZWRfbWF0cml4ID0gbnAuaHN0YWNrKChCX3ByaW1lX21hdHJpeCwgQl9tYXRyaXgpKVxucHJpbnQoZlwiQXVnbWVudGVkIG1hdHJpeCBbQicgfCBCXTpcXG57YXVnbWVudGVkX21hdHJpeH1cIilcblxuIyBQZXJmb3JtIHJvdyBvcGVyYXRpb25zIHRvIGdldCBbSSB8IFBfQi0+QiddXG4jIFVzaW5nIG51bXB5LmxpbmFsZy5zb2x2ZSB0byBzaW11bGF0ZSByb3cgcmVkdWN0aW9uIHRvIGZpbmQgaW52ZXJzZSwgdGhlbiBtdWx0aXBseVxuIyBPciBkaXJlY3RseSBjb21wdXRlIGludmVyc2Ugb2YgQl9wcmltZV9tYXRyaXggdGhlbiBtdWx0aXBseSBieSBCX21hdHJpeFxuIyBIZXJlLCB3ZSB3YW50IFBfQi0+Qicgc3VjaCB0aGF0IFt2XV9CJyA9IFBfQi0+QicgKiBbdl1fQlxuIyBUaGlzIG1lYW5zIEJfcHJpbWVfbWF0cml4ICogW3ZdX0InID0gQl9tYXRyaXggKiBbdl1fQlxuIyBTbyBbdl1fQicgPSBpbnYoQl9wcmltZV9tYXRyaXgpICogQl9tYXRyaXggKiBbdl1fQlxuIyBUaHVzLCBQX0ItPkInID0gaW52KEJfcHJpbWVfbWF0cml4KSBAIEJfbWF0cml4XG5cbiMgSW4gb3VyIG5vdGF0aW9uLCBQX0ItPkInIGlzIHRoZSBtYXRyaXggc3VjaCB0aGF0IFtuZXcgY29vcmRpbmF0ZXNdID0gUCAqIFtvbGQgY29vcmRpbmF0ZXNdXG4jIFNvLCBbdl1fQicgPSBQX0ItPkInICogW3ZdX0JcbiMgV2UgbmVlZCB0byBleHByZXNzIEIgYmFzaXMgdmVjdG9ycyBpbiB0ZXJtcyBvZiBCJyBiYXNpcy5cbiMgRXhhbXBsZTogdTEgPSBjMSp1MV9wcmltZSArIGMyKnUyX3ByaW1lXG4jIFt1MV9wcmltZSB8IHUyX3ByaW1lXSAqIFtjMTsgYzJdID0gdTFcbiMgW2MxOyBjMl0gPSBpbnYoW3UxX3ByaW1lIHwgdTJfcHJpbWVdKSAqIHUxXG4jIFNvIFBfQi0+QicgaXMgWyBpbnYoQl9wcmltZV9tYXRyaXgpIEAgdTEgfCBpbnYoQl9wcmltZV9tYXRyaXgpIEAgdTIgXVxuXG5pbnZfQl9wcmltZV9tYXRyaXggPSBucC5saW5hbGcuaW52KEJfcHJpbWVfbWF0cml4KVxuUF9CX3RvX0JwcmltZV9jb21wdXRlZCA9IGludl9CX3ByaW1lX21hdHJpeCBAIEJfbWF0cml4XG5cbnByaW50KGZcIlxcbkludmVyc2Ugb2YgQicgbWF0cml4OlxcbntpbnZfQl9wcmltZV9tYXRyaXh9XCIpXG5wcmludChmXCJcXG5UcmFuc2l0aW9uIG1hdHJpeCBQX0ItPkInIChjb21wdXRlZCB2aWEgaW52KEInKSBAIEIpOlxcbntQX0JfdG9fQnByaW1lX2NvbXB1dGVkfVwiKVxuXG4jIERpcmVjdCBtZXRob2QgKGZvciBkZW1vbnN0cmF0aW5nIHRoZSBhbGdvcml0aG06IFtCJyB8IEJdIC0+IFtJIHwgUF0pXG4jIFRoaXMgaXMgYSBjb25jZXB0dWFsIGRlbW9uc3RyYXRpb24uIG51bXB5LmxpbmFsZy5zb2x2ZSBvciBpbnYgaXMgdGhlIHByYWN0aWNhbCB3YXkuXG4jIFRoZSByb3cgcmVkdWN0aW9uIGlzIGltcGxpY2l0bHkgZG9uZSBieSBmaW5kaW5nIHRoZSBpbnZlcnNlLiJ9
+</script>
+</div>
+<aside class="notes">
+<p>While <code>numpy</code> doesn’t have a direct “row reduce augmented matrix” function like some symbolic tools, we can achieve the same result. The transition matrix <span class="math inline">\(P_{B \to B'}\)</span> is effectively the inverse of the matrix formed by <span class="math inline">\(B'\)</span> vectors, multiplied by the matrix formed by <span class="math inline">\(B\)</span> vectors. The code calculates this, confirming the result obtained by manual row operations. This highlights how computational tools simplify complex matrix algebra.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="transition-to-the-standard-basis-for-rn" class="slide level2">
+<h2>Transition to the Standard Basis for <span class="math inline">\(R^n\)</span></h2>
+<p>A special case arises when one of the bases is the standard basis.</p>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>THEOREM 4.6.2</strong></p>
+</div>
+<div class="callout-content">
+<p>Let <span class="math inline">\(B^{\prime} = \{\mathbf{u}_{1},\mathbf{u}_{2},\ldots ,\mathbf{u}_{n}\}\)</span> be any basis for the vector space <span class="math inline">\(R^{n}\)</span> and let <span class="math inline">\(S = \{\mathbf{e}_{1},\mathbf{e}_{2},\ldots ,\mathbf{e}_{n}\}\)</span> be the standard basis for <span class="math inline">\(R^{n}\)</span>. If the vectors in these bases are written in column form, then: <span class="math display">\[
+P_{B^{\prime}\rightarrow S} = [\mathbf{u}_{1}\mid \mathbf{u}_{2}\mid \dots \mid \mathbf{u}_{n}] \tag{15}
+\]</span> That is, the transition matrix from <span class="math inline">\(B'\)</span> to the standard basis <span class="math inline">\(S\)</span> is simply the matrix whose columns are the basis vectors of <span class="math inline">\(B'\)</span>.</p>
+</div>
+</div>
+</div>
+<p>This means if <span class="math inline">\(A = [\mathbf{u}_{1}\mid \mathbf{u}_{2}\mid \dots \mid \mathbf{u}_{n}]\)</span> is any invertible <span class="math inline">\(n\times n\)</span> matrix, then <span class="math inline">\(A\)</span> can be viewed as the transition matrix from the basis <span class="math inline">\(\{\mathbf{u}_{1},\mathbf{u}_{2},\ldots ,\mathbf{u}_{n}\}\)</span> for <span class="math inline">\(R^{n}\)</span> to the standard basis for <span class="math inline">\(R^{n}\)</span>.</p>
+<aside class="notes">
+<p>Theorem 4.6.2 is a very convenient shortcut. If you’re transitioning <em>to</em> the standard basis <span class="math inline">\(S\)</span>, the transition matrix <span class="math inline">\(P_{B' \to S}\)</span> is simply the matrix formed by placing the vectors of <span class="math inline">\(B'\)</span> as its columns. This is because expressing a vector like <span class="math inline">\(\mathbf{u}_1'\)</span> in terms of the standard basis <span class="math inline">\(\mathbf{e}_1, \mathbf{e}_2, \ldots\)</span> just means its components are the coefficients themselves. This means any invertible matrix can be seen as a transition matrix from some basis to the standard basis.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-example-transition-to-standard-basis" class="slide level2">
+<h2>Interactive Example: Transition to Standard Basis</h2>
+<p>Let’s use a non-standard basis for <span class="math inline">\(R^3\)</span> and find its transition matrix to the standard basis.</p>
+<p>Consider the basis: <span class="math inline">\(\mathbf{u}_{1} = (1,2,1)\)</span>, <span class="math inline">\(\mathbf{u}_{2} = (2,5,0)\)</span>, <span class="math inline">\(\mathbf{u}_{3} = (3,3,8)\)</span></p>
+<p>The transition matrix <span class="math inline">\(P_{B \rightarrow S}\)</span> would simply be: <span class="math display">\[
+P_{B\rightarrow S} = \left[ \begin{array}{lll}1 &amp; 2 &amp; 3\\ 2 &amp; 5 &amp; 3\\ 1 &amp; 0 &amp; 8 \end{array} \right]
+\]</span></p>
+<div>
+<div id="pyodide-5" class="exercise-cell">
+
+</div>
+<script type="pyodide-5-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5cbiMgQSBub24tc3RhbmRhcmQgYmFzaXMgZm9yIFJeM1xudTEgPSBucC5hcnJheShbMSwgMiwgMV0pXG51MiA9IG5wLmFycmF5KFsyLCA1LCAwXSlcbnUzID0gbnAuYXJyYXkoWzMsIDMsIDhdKVxuXG4jIFRyYW5zaXRpb24gbWF0cml4IGZyb20gQiB0byBTdGFuZGFyZCBCYXNpcyBTIChQX0ItPlMpXG4jIEl0J3Mgc2ltcGx5IHRoZSBtYXRyaXggd2l0aCB1MSwgdTIsIHUzIGFzIGNvbHVtbnNcblBfQl90b19TID0gbnAuY29sdW1uX3N0YWNrKCh1MSwgdTIsIHUzKSlcblxucHJpbnQoZlwiQmFzaXMgdmVjdG9ycyBmb3IgQjpcXG4gdTE9e3UxfVxcbiB1Mj17dTJ9XFxuIHUzPXt1M31cIilcbnByaW50KGZcIlxcblRyYW5zaXRpb24gbWF0cml4IFBfQi0+UzpcXG57UF9CX3RvX1N9XCIpXG5cbiMgRXhhbXBsZTogQ29udmVydCBhIHZlY3RvciBpbiBCIGNvb3JkaW5hdGVzIHRvIFN0YW5kYXJkIGNvb3JkaW5hdGVzXG52X2luX0IgPSBucC5hcnJheShbWzJdLFxuICAgICAgICAgICAgICAgICAgIFstMV0sXG4gICAgICAgICAgICAgICAgICAgWzAuNV1dKVxudl9pbl9TID0gUF9CX3RvX1MgQCB2X2luX0JcbnByaW50KGZcIlxcblZlY3RvciBpbiBCIGNvb3JkaW5hdGVzOlxcbnt2X2luX0J9XCIpXG5wcmludChmXCJcXG5WZWN0b3IgaW4gU3RhbmRhcmQgQmFzaXMgY29vcmRpbmF0ZXM6XFxue3ZfaW5fU31cIikifQ==
+</script>
+</div>
+<aside class="notes">
+<p>Here, we define a basis <span class="math inline">\(B\)</span> for <span class="math inline">\(R^3\)</span>. According to Theorem 4.6.2, the transition matrix from this basis <span class="math inline">\(B\)</span> to the standard basis <span class="math inline">\(S\)</span> is simply the matrix formed by taking <span class="math inline">\(\mathbf{u}_1, \mathbf{u}_2, \mathbf{u}_3\)</span> as its columns. The Python code demonstrates this construction and then uses this transition matrix to convert a vector from <span class="math inline">\(B\)</span> coordinates to standard coordinates. This is a very common operation in engineering, for example, transforming sensor readings from a device’s local coordinate system to a global reference frame.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="summary" class="slide level2">
+<h2>Summary</h2>
+<ul>
+<li><strong>Coordinate Maps:</strong> Connect vectors in a general space <span class="math inline">\(V\)</span> to coordinate vectors in <span class="math inline">\(R^n\)</span>.</li>
+<li><strong>Change of Basis Problem:</strong> Relates coordinate vectors of a fixed vector in different bases (<span class="math inline">\([\mathbf{v}]_{B}\)</span> vs.&nbsp;<span class="math inline">\([\mathbf{v}]_{B'}\)</span>).</li>
+<li><strong>Transition Matrix <span class="math inline">\(P_{B' \rightarrow B}\)</span>:</strong> Converts coordinates from new basis <span class="math inline">\(B'\)</span> to old basis <span class="math inline">\(B\)</span>. Its columns are the new basis vectors expressed in the old basis.</li>
+<li><strong>Invertibility:</strong> <span class="math inline">\(P_{B' \rightarrow B}^{-1} = P_{B \rightarrow B'}\)</span>.</li>
+<li><strong>Efficient Method for <span class="math inline">\(R^n\)</span>:</strong> Use augmented matrix <span class="math inline">\([B' \mid B] \to [I \mid P_{B \rightarrow B'}]\)</span>.</li>
+<li><strong>Standard Basis Shortcut:</strong> <span class="math inline">\(P_{B' \rightarrow S}\)</span> is simply the matrix whose columns are the vectors of <span class="math inline">\(B'\)</span>.</li>
+</ul>
+<aside class="notes">
+<p>In summary, we’ve learned how to navigate between different coordinate systems in vector spaces using change of basis. We defined coordinate maps, understood the change of basis problem, and derived the concept of transition matrices. These matrices allow us to convert coordinate vectors from one basis to another, and we saw that they are always invertible, with the inverse matrix performing the reverse conversion. We also covered an efficient method for <span class="math inline">\(R^n\)</span> using augmented matrices and a useful shortcut for transitions involving the standard basis. These tools are indispensable for working with complex systems in various engineering disciplines.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+
+<script type="pyodide-data">
+eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yNy4wL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIiwibnVtcHkiLCJwbG90bHkiLCJuYmZvcm1hdCJdfX0=
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl81ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS01LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzUgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzUsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTQiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl80ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS00LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNC1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzQgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzQsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTMiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8zID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0zLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzMgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzMsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8yID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzIgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzIsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8xID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0xLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzEgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzEsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLXByZWx1ZGUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJweW9kaWRlT2pzID0ge1xuICBjb25zdCB7XG4gICAgUHlvZGlkZUV2YWx1YXRvcixcbiAgICBQeW9kaWRlRW52aXJvbm1lbnRNYW5hZ2VyLFxuICAgIHNldHVwUHl0aG9uLFxuICAgIHN0YXJ0UHlvZGlkZVdvcmtlcixcbiAgICBiNjREZWNvZGUsXG4gICAgY29sbGFwc2VQYXRoLFxuICB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzdGF0dXNDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctc3RhdHVzXCIpO1xuICBjb25zdCBpbmRpY2F0b3JDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpbmRpY2F0b3JDb250YWluZXIuY2xhc3NMaXN0LnJlbW92ZShcImQtbm9uZVwiKTtcblxuICBsZXQgc3RhdHVzVGV4dCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIilcbiAgc3RhdHVzVGV4dC5jbGFzc0xpc3QgPSBcImV4ZXJjaXNlLWxvYWRpbmctZGV0YWlsc1wiO1xuICBzdGF0dXNUZXh0ID0gc3RhdHVzQ29udGFpbmVyLmFwcGVuZENoaWxkKHN0YXR1c1RleHQpO1xuICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYEluaXRpYWxpc2VgO1xuXG4gIC8vIEhvaXN0IGluZGljYXRvciBvdXQgZnJvbSBmaW5hbCBzbGlkZSB3aGVuIHJ1bm5pbmcgdW5kZXIgcmV2ZWFsXG4gIGNvbnN0IHJldmVhbFN0YXR1cyA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsIC5leGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaWYgKHJldmVhbFN0YXR1cykge1xuICAgIHJldmVhbFN0YXR1cy5yZW1vdmUoKTtcbiAgICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCA+IC5zbGlkZXNcIikuYXBwZW5kQ2hpbGQocmV2ZWFsU3RhdHVzKTtcbiAgfVxuXG4gIC8vIE1ha2UgYW55IHJldmVhbCBzbGlkZXMgd2l0aCBsaXZlIGNlbGxzIHNjcm9sbGFibGVcbiAgZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbChcIi5yZXZlYWwgLmV4ZXJjaXNlLWNlbGxcIikuZm9yRWFjaCgoZWwpID0+IHtcbiAgICBlbC5jbG9zZXN0KCdzZWN0aW9uLnNsaWRlJykuY2xhc3NMaXN0LmFkZChcInNjcm9sbGFibGVcIik7XG4gIH0pXG5cbiAgLy8gUHlvZGlkZSBzdXBwbGVtZW50YWwgZGF0YSBhbmQgb3B0aW9uc1xuICBjb25zdCBkYXRhQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLWRhdGFcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBkYXRhID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZGF0YUNvbnRlbnQpKTtcblxuICAvLyBHcmFiIGxpc3Qgb2YgcmVzb3VyY2VzIHRvIGJlIGRvd25sb2FkZWRcbiAgY29uc3QgZmlsZXNDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInZmcy1maWxlXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZmlsZXMgPSBKU09OLnBhcnNlKGI2NERlY29kZShmaWxlc0NvbnRlbnQpKTtcblxuICBsZXQgcHlvZGlkZVByb21pc2UgPSAoYXN5bmMgKCkgPT4ge1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgUHlvZGlkZWA7XG4gICAgY29uc3QgcHlvZGlkZSA9IGF3YWl0IHN0YXJ0UHlvZGlkZVdvcmtlcihkYXRhLm9wdGlvbnMpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiBtaWNyb3BpcGA7XG4gICAgYXdhaXQgcHlvZGlkZS5sb2FkUGFja2FnZShcIm1pY3JvcGlwXCIpO1xuICAgIGNvbnN0IG1pY3JvcGlwID0gYXdhaXQgcHlvZGlkZS5weWltcG9ydChcIm1pY3JvcGlwXCIpO1xuICAgIGF3YWl0IGRhdGEucGFja2FnZXMucGtncy5tYXAoKHBrZykgPT4gKCkgPT4ge1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiAke3BrZ31gO1xuICAgICAgcmV0dXJuIG1pY3JvcGlwLmluc3RhbGwocGtnKTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcbiAgICBhd2FpdCBtaWNyb3BpcC5kZXN0cm95KCk7XG5cbiAgICAvLyBEb3dubG9hZCBhbmQgaW5zdGFsbCByZXNvdXJjZXNcbiAgICBhd2FpdCBmaWxlcy5tYXAoKGZpbGUpID0+IGFzeW5jICgpID0+IHtcbiAgICAgIGNvbnN0IG5hbWUgPSBmaWxlLnN1YnN0cmluZyhmaWxlLmxhc3RJbmRleE9mKCcvJykgKyAxKTtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcmVzb3VyY2U6ICR7bmFtZX1gO1xuICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChmaWxlKTtcbiAgICAgIGlmICghcmVzcG9uc2Uub2spIHtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBDYW4ndCBkb3dubG9hZCBcXGAke2ZpbGV9XFxgLiBFcnJvciAke3Jlc3BvbnNlLnN0YXR1c306IFwiJHtyZXNwb25zZS5zdGF0dXNUZXh0fVwiLmApO1xuICAgICAgfVxuICAgICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlc3BvbnNlLmFycmF5QnVmZmVyKCk7XG5cbiAgICAgIC8vIFN0b3JlIFVSTHMgaW4gdGhlIGN3ZCB3aXRob3V0IGFueSBzdWJkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBpZiAoZmlsZS5pbmNsdWRlcyhcIjovL1wiKSkge1xuICAgICAgICBmaWxlID0gbmFtZTtcbiAgICAgIH1cblxuICAgICAgLy8gQ29sbGFwc2UgaGlnaGVyIGRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGZpbGUgPSBjb2xsYXBzZVBhdGgoZmlsZSk7XG5cbiAgICAgIC8vIENyZWF0ZSBkaXJlY3RvcnkgdHJlZSwgaWdub3JpbmcgXCJkaXJlY3RvcnkgZXhpc3RzXCIgVkZTIGVycm9yc1xuICAgICAgY29uc3QgcGFydHMgPSBmaWxlLnNwbGl0KCcvJykuc2xpY2UoMCwgLTEpO1xuICAgICAgbGV0IHBhdGggPSAnJztcbiAgICAgIHdoaWxlIChwYXJ0cy5sZW5ndGggPiAwKSB7XG4gICAgICAgIHBhdGggKz0gcGFydHMuc2hpZnQoKSArICcvJztcbiAgICAgICAgdHJ5IHtcbiAgICAgICAgICBhd2FpdCBweW9kaWRlLkZTLm1rZGlyKHBhdGgpO1xuICAgICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgICAgaWYgKGUuZXJybm8gIT09IDIwKSB7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICAgICAgY29uc3QgZXJyb3JUZXh0ID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLlVURjhUb1N0cmluZyhlcnJvclRleHRQdHIpO1xuICAgICAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICAgIH1cblxuICAgICAgLy8gV3JpdGUgdGhpcyBmaWxlIHRvIHRoZSBWRlNcbiAgICAgIHRyeSB7XG4gICAgICAgIHJldHVybiBhd2FpdCBweW9kaWRlLkZTLndyaXRlRmlsZShmaWxlLCBuZXcgVWludDhBcnJheShkYXRhKSk7XG4gICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgIGlmIChlLm5hbWUgIT09IFwiRXJybm9FcnJvclwiKSB0aHJvdyBlO1xuICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgRmlsZXN5c3RlbSBFcnJvciAke2UuZXJybm99IFwiJHtlcnJvclRleHR9XCIuYCk7XG4gICAgICB9XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYFB5b2RpZGUgZW52aXJvbm1lbnQgc2V0dXBgO1xuICAgIGF3YWl0IHNldHVwUHl0aG9uKHB5b2RpZGUpO1xuXG4gICAgc3RhdHVzVGV4dC5yZW1vdmUoKTtcbiAgICBpZiAoc3RhdHVzQ29udGFpbmVyLmNoaWxkcmVuLmxlbmd0aCA9PSAwKSB7XG4gICAgICBzdGF0dXNDb250YWluZXIucGFyZW50Tm9kZS5yZW1vdmUoKTtcbiAgICB9XG4gICAgcmV0dXJuIHB5b2RpZGU7XG4gIH0pKCkuY2F0Y2goKGVycikgPT4ge1xuICAgIHN0YXR1c1RleHQuc3R5bGUuY29sb3IgPSBcInZhcigtLWV4ZXJjaXNlLWVkaXRvci1obC1lciwgI0FEMDAwMClcIjtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gZXJyLm1lc3NhZ2U7XG4gICAgLy9pbmRpY2F0b3JDb250YWluZXIucXVlcnlTZWxlY3RvcihcIi5zcGlubmVyLWdyb3dcIikuY2xhc3NMaXN0LmFkZChcImQtbm9uZVwiKTtcbiAgICB0aHJvdyBlcnI7XG4gIH0pO1xuXG4gIC8vIEtlZXAgdHJhY2sgb2YgaW5pdGlhbCBPSlMgYmxvY2sgcmVuZGVyXG4gIGNvbnN0IHJlbmRlcmVkT2pzID0ge307XG5cbiAgY29uc3QgcHJvY2VzcyA9IGFzeW5jIChjb250ZXh0LCBpbnB1dHMpID0+IHtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgcHlvZGlkZVByb21pc2U7XG4gICAgY29uc3QgZXZhbHVhdG9yID0gbmV3IFB5b2RpZGVFdmFsdWF0b3IocHlvZGlkZSwgY29udGV4dCk7XG4gICAgYXdhaXQgZXZhbHVhdG9yLnByb2Nlc3MoaW5wdXRzKTtcbiAgICByZXR1cm4gZXZhbHVhdG9yLmNvbnRhaW5lcjtcbiAgfVxuXG4gIHJldHVybiB7XG4gICAgcHlvZGlkZVByb21pc2UsXG4gICAgcmVuZGVyZWRPanMsXG4gICAgcHJvY2VzcyxcbiAgfTtcbn1cbiJ9XX0=
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="qrjs_pics/unsoed_logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="https://imron-slide.vercel.app">irosyadi-2025</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script type="ojs-module-contents">
+    eyJjb250ZW50cyI6W119
+    </script>
+    <script type="module">
+    if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+    window._ojs.paths.runtimeToDoc = "../..";
+    window._ojs.paths.runtimeToRoot = "../..";
+    window._ojs.paths.docToRoot = "";
+    window._ojs.selfContained = false;
+    window._ojs.runtime.interpretFromScriptTags();
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
