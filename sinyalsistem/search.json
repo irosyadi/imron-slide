@@ -3582,5 +3582,593 @@
     "title": "Signal and Systems",
     "section": "6. Presentation YAML",
     "text": "6. Presentation YAML\nUse this YAML as the document header. Replace {Lecture Title} with the specific lecture subtitle.\n---\ntitle: \"Signal and Systems\"\nsubtitle: \"{Lecture Title}\"\nauthor: \"Imron Rosyadi\"\nauthor: \"Imron Rosyadi\"\nformat:\n  live-revealjs:\n    logo: \"qrjs_assets/unsoed_logo.png\"\n    footer: \"[irosyadi-2025](https://imron-slide.vercel.app)\"\n    slide-number: true\n    chalkboard: true\n    scrollable: true\n    controls: true\n    progress: true\n    preview-links: false\n    transition: fade\n    incremental: false\n    smaller: false\n    theme: [default, qrjs_assets/ir_style.scss]\nfilters:\n  - pyodide\n---\n\nGoal: Deliver an interactive, educational slide deck that combines theoretical depth with practical demonstrations, making Signals and Systems concepts clear, engaging, and relevant to undergraduate ECE students."
+  },
+  {
+    "objectID": "ss_91.html#what-is-the-laplace-transform",
+    "href": "ss_91.html#what-is-the-laplace-transform",
+    "title": "Signals and Systems",
+    "section": "What is the Laplace Transform?",
+    "text": "What is the Laplace Transform?\nThe Laplace Transform extends the Fourier Transform to analyze a broader class of signals and systems, particularly those that are unstable or non-causal.\nIt transforms a time-domain signal \\(x(t)\\) into a complex frequency-domain function \\(X(s)\\), where \\(s\\) is a complex variable.\nLTI System Response to Complex Exponentials\nFor an LTI system with impulse response \\(h(t)\\), the response to \\(e^{st}\\) is:\n\\[\ny(t) = H(s) e^{st} \\quad \\text{(9.1)}\n\\]\nwhere \\(H(s)\\) is the Laplace Transform of \\(h(t)\\):\n\\[\nH(s) = \\int_{-\\infty}^{\\infty} h(t) e^{-st} dt \\quad \\text{(9.2)}\n\\]"
+  },
+  {
+    "objectID": "ss_91.html#laplace-transform-and-the-fourier-transform",
+    "href": "ss_91.html#laplace-transform-and-the-fourier-transform",
+    "title": "Signals and Systems",
+    "section": "Laplace Transform and the Fourier Transform",
+    "text": "Laplace Transform and the Fourier Transform\nThe complex variable \\(s\\) can be written as \\(s = \\sigma + j\\omega\\), where \\(\\sigma\\) is the real part and \\(\\omega\\) is the imaginary part.\nSubstituting \\(s = \\sigma + j\\omega\\) into the Laplace Transform definition:\n\\[\nX(\\sigma+j\\omega) = \\int_{-\\infty}^{+\\infty} x(t) e^{-(\\sigma+j\\omega)t} dt \\quad \\text{(9.7)}\n\\]\nThis can be rewritten as:\n\\[\nX(\\sigma+j\\omega) = \\int_{-\\infty}^{+\\infty} [x(t) e^{-\\sigma t}] e^{-j\\omega t} dt \\quad \\text{(9.8)}\n\\]\n\n\n\n\n\n\nNote\n\n\nThe Laplace Transform \\(X(s)\\) is essentially the Fourier Transform of \\(x(t)e^{-\\sigma t}\\)! When \\(s=j\\omega\\) (i.e., \\(\\sigma=0\\)), the Laplace Transform becomes the Fourier Transform: \\(X(j\\omega) = \\int_{-\\infty}^{+\\infty} x(t) e^{-j\\omega t} dt = \\mathfrak{F}\\{x(t)\\}\\)"
+  },
+  {
+    "objectID": "ss_91.html#region-of-convergence-roc",
+    "href": "ss_91.html#region-of-convergence-roc",
+    "title": "Signals and Systems",
+    "section": "Region of Convergence (ROC)",
+    "text": "Region of Convergence (ROC)\nThe Laplace Transform integral (Eq 9.3) does not always converge for all values of \\(s\\).\nThe Region of Convergence (ROC) is the set of all \\(s\\) values for which the integral converges.\nWhy is ROC Important?\n\nThe algebraic expression for \\(X(s)\\) alone is not sufficient to uniquely define the time-domain signal \\(x(t)\\).\nDifferent time-domain signals can have the same algebraic \\(X(s)\\) but vastly different ROCs.\nThe ROC determines properties of the signal, such as causality and stability.\n\nThe s-Plane\nThe complex variable \\(s = \\sigma + j\\omega\\) is visualized on the s-plane, with \\(\\operatorname{Re}\\{s\\}\\) (the \\(\\sigma\\)-axis) as the horizontal axis and \\(\\operatorname{Im}\\{s\\}\\) (the \\(j\\omega\\)-axis) as the vertical axis.\n\n\n\n\n\n\nImportant\n\n\nThe ROC is always a strip or a half-plane in the s-plane.\n\n\n\n\nThe Region of Convergence is perhaps the most critical concept when dealing with the Laplace Transform. Without specifying the ROC, the algebraic expression of \\(X(s)\\) is ambiguous. I’ll emphasize that the ROC is not just a mathematical detail; it provides vital information about the nature of the time-domain signal. We’ll see in upcoming examples how two very different signals can share the same algebraic Laplace Transform expression, but their ROCs will be distinct, allowing us to differentiate them. The s-plane provides a visual map for understanding where the transform converges."
+  },
+  {
+    "objectID": "ss_91.html#example-9.1-causal-exponential",
+    "href": "ss_91.html#example-9.1-causal-exponential",
+    "title": "Signals and Systems",
+    "section": "Example 9.1: Causal Exponential",
+    "text": "Example 9.1: Causal Exponential\nConsider the signal \\(x(t)=e^{-at}u(t)\\).\nThe Laplace Transform is:\n\\[\nX(s) = \\int_{0}^{\\infty} e^{-at} e^{-st} dt = \\int_{0}^{\\infty} e^{-(s+a)t} dt \\quad \\text{(9.10)}\n\\]\nFor convergence, we require \\(\\operatorname{Re}\\{s+a\\} &gt; 0\\), or \\(\\operatorname{Re}\\{s\\} &gt; -a\\).\nThus,\n\\[\nX(s) = \\frac{1}{s+a}, \\quad \\operatorname{Re}\\{s\\} &gt; -a \\quad \\text{(9.13)}\n\\]\n\n\n\n\n\n\nTip\n\n\nFor a causal signal \\(x(t)u(t)\\), the ROC is always a right-half plane."
+  },
+  {
+    "objectID": "ss_91.html#example-9.2-anti-causal-exponential",
+    "href": "ss_91.html#example-9.2-anti-causal-exponential",
+    "title": "Signals and Systems",
+    "section": "Example 9.2: Anti-Causal Exponential",
+    "text": "Example 9.2: Anti-Causal Exponential\nConsider the signal \\(x(t)=-e^{-at}u(-t)\\).\nThe Laplace Transform is:\n\\[\nX(s) = -\\int_{-\\infty}^{0} e^{-at} e^{-st} dt = -\\int_{-\\infty}^{0} e^{-(s+a)t} dt \\quad \\text{(9.17)}\n\\]\nFor convergence, we require \\(\\operatorname{Re}\\{s+a\\} &lt; 0\\), or \\(\\operatorname{Re}\\{s\\} &lt; -a\\).\nThus,\n\\[\nX(s) = \\frac{1}{s+a}, \\quad \\operatorname{Re}\\{s\\} &lt; -a \\quad \\text{(9.19)}\n\\]\n\n\n\n\n\n\nTip\n\n\nFor an anti-causal signal \\(x(t)u(-t)\\), the ROC is always a left-half plane."
+  },
+  {
+    "objectID": "ss_91.html#poles-zeros-and-the-s-plane",
+    "href": "ss_91.html#poles-zeros-and-the-s-plane",
+    "title": "Signals and Systems",
+    "section": "Poles, Zeros, and the s-Plane",
+    "text": "Poles, Zeros, and the s-Plane\nFor many practical signals, especially those from LTI systems described by differential equations, the Laplace Transform \\(X(s)\\) is a rational function:\n\\[\nX(s) = \\frac{N(s)}{D(s)} \\quad \\text{(9.31)}\n\\]\nwhere \\(N(s)\\) and \\(D(s)\\) are polynomials in \\(s\\).\nZeros\nThe roots of the numerator polynomial \\(N(s)\\) are called the zeros of \\(X(s)\\). At these values of \\(s\\), \\(X(s)=0\\).\nPoles\nThe roots of the denominator polynomial \\(D(s)\\) are called the poles of \\(X(s)\\). At these values of \\(s\\), \\(X(s)\\) becomes infinite."
+  },
+  {
+    "objectID": "ss_91.html#example-9.3-sum-of-two-causal-exponentials",
+    "href": "ss_91.html#example-9.3-sum-of-two-causal-exponentials",
+    "title": "Signals and Systems",
+    "section": "Example 9.3: Sum of Two Causal Exponentials",
+    "text": "Example 9.3: Sum of Two Causal Exponentials\nConsider \\(x(t)=3e^{-2t}u(t) - 2e^{-t}u(t)\\).\nUsing linearity and results from Example 9.1:\n\\[\n\\mathcal{L}\\{3e^{-2t}u(t)\\} = \\frac{3}{s+2}, \\quad \\operatorname{Re}\\{s\\} &gt; -2\n\\]\n\\[\n\\mathcal{L}\\{-2e^{-t}u(t)\\} = \\frac{-2}{s+1}, \\quad \\operatorname{Re}\\{s\\} &gt; -1\n\\]\nFor \\(X(s)\\) to converge, both individual transforms must converge. The intersection of their ROCs is \\(\\operatorname{Re}\\{s\\} &gt; -1\\).\nCombining terms:\n\\[\nX(s) = \\frac{3}{s+2} - \\frac{2}{s+1} = \\frac{3(s+1) - 2(s+2)}{(s+2)(s+1)} = \\frac{s-1}{s^2+3s+2}\n\\]"
+  },
+  {
+    "objectID": "ss_91.html#example-9.4-complex-exponentials",
+    "href": "ss_91.html#example-9.4-complex-exponentials",
+    "title": "Signals and Systems",
+    "section": "Example 9.4: Complex Exponentials",
+    "text": "Example 9.4: Complex Exponentials\nConsider \\(x(t)=e^{-2t}u(t) + e^{-t}(\\cos 3t)u(t)\\).\nUsing Euler’s relation, \\(\\cos 3t = \\frac{1}{2}(e^{j3t} + e^{-j3t})\\), so:\n\\[\nx(t) = \\left[e^{-2t} + \\frac{1}{2}e^{-(1-j3)t} + \\frac{1}{2}e^{-(1+j3)t}\\right]u(t)\n\\]\nThe individual Laplace Transforms are:\n\n\\(\\mathcal{L}\\{e^{-2t}u(t)\\} = \\frac{1}{s+2}, \\quad \\operatorname{Re}\\{s\\} &gt; -2\\)\n\\(\\mathcal{L}\\{\\frac{1}{2}e^{-(1-j3)t}u(t)\\} = \\frac{1/2}{s+(1-j3)}, \\quad \\operatorname{Re}\\{s\\} &gt; -1\\)\n\\(\\mathcal{L}\\{\\frac{1}{2}e^{-(1+j3)t}u(t)\\} = \\frac{1/2}{s+(1+j3)}, \\quad \\operatorname{Re}\\{s\\} &gt; -1\\)\n\nThe common ROC is \\(\\operatorname{Re}\\{s\\} &gt; -1\\)."
+  },
+  {
+    "objectID": "ss_91.html#example-9.5-unit-impulse-and-exponentials",
+    "href": "ss_91.html#example-9.5-unit-impulse-and-exponentials",
+    "title": "Signals and Systems",
+    "section": "Example 9.5: Unit Impulse and Exponentials",
+    "text": "Example 9.5: Unit Impulse and Exponentials\nConsider \\(x(t)=\\delta(t) - \\frac{4}{3}e^{-t}u(t) + \\frac{1}{3}e^{2t}u(t)\\).\n\n\\(\\mathcal{L}\\{\\delta(t)\\} = 1\\). The ROC is the entire s-plane.\n\\(\\mathcal{L}\\{-\\frac{4}{3}e^{-t}u(t)\\} = \\frac{-4/3}{s+1}, \\quad \\operatorname{Re}\\{s\\} &gt; -1\\).\n\\(\\mathcal{L}\\{\\frac{1}{3}e^{2t}u(t)\\} = \\frac{1/3}{s-2}, \\quad \\operatorname{Re}\\{s\\} &gt; 2\\).\n\nThe overall ROC is the intersection of all three, which is \\(\\operatorname{Re}\\{s\\} &gt; 2\\).\nCombining terms:\n\\[\nX(s) = 1 - \\frac{4/3}{s+1} + \\frac{1/3}{s-2} = \\frac{(s+1)(s-2) - \\frac{4}{3}(s-2) + \\frac{1}{3}(s+1)}{(s+1)(s-2)}\n\\]\n\\[\nX(s) = \\frac{s^2-s-2 - \\frac{4}{3}s + \\frac{8}{3} + \\frac{1}{3}s + \\frac{1}{3}}{(s+1)(s-2)} = \\frac{s^2 - \\frac{6}{3}s + \\frac{3}{3}}{(s+1)(s-2)} = \\frac{s^2-2s+1}{(s+1)(s-2)}\n\\]\n\\[\nX(s) = \\frac{(s-1)^2}{(s+1)(s-2)}, \\quad \\operatorname{Re}\\{s\\} &gt; 2 \\quad \\text{(9.35)}\n\\]"
+  },
+  {
+    "objectID": "ss_91.html#application-system-analysis-in-ece",
+    "href": "ss_91.html#application-system-analysis-in-ece",
+    "title": "Signals and Systems",
+    "section": "Application: System Analysis in ECE",
+    "text": "Application: System Analysis in ECE\nThe Laplace Transform is a cornerstone in ECE for analyzing Linear Time-Invariant (LTI) systems.\nWhy use Laplace Transform?\n\nSimplifies Differential Equations: Transforms complex differential equations into algebraic equations, which are much easier to solve.\nFrequency Domain Analysis: Provides insights into system behavior across a range of complex frequencies, not just real frequencies.\nStability Analysis: Pole locations directly indicate system stability.\nCircuit Analysis: Ideal for analyzing RLC circuits, filters, and control systems."
+  },
+  {
+    "objectID": "ss_91.html#key-takeaways",
+    "href": "ss_91.html#key-takeaways",
+    "title": "Signals and Systems",
+    "section": "Key Takeaways",
+    "text": "Key Takeaways\n\nGeneralization: The Laplace Transform is a generalization of the Fourier Transform, allowing analysis of a wider class of signals.\nComplex Frequency \\(s\\): Uses a complex variable \\(s = \\sigma + j\\omega\\), where \\(\\sigma\\) influences convergence.\nRegion of Convergence (ROC): Crucial for uniquely identifying a signal and understanding its properties (causality, stability). The ROC is always bounded by poles.\nPoles & Zeros: These are the roots of the denominator and numerator polynomials of \\(X(s)\\), respectively, and define its algebraic form.\n\n\n\n\n\n\n\nNote\n\n\nPractical Impact: The Laplace Transform simplifies the analysis of LTI systems by converting differential equations into algebraic ones, making it indispensable for circuit analysis, control systems, and signal processing.\n\n\n\n\nTo wrap up, remember these core ideas: the Laplace Transform is a powerful extension, the complex ‘s’ variable and the ROC are fundamental to its meaning, and poles and zeros are its fingerprint. This tool is not just theoretical; it’s a practical workhorse in ECE. Continue exploring its properties and applications to truly master it."
+  },
+  {
+    "objectID": "ss_91.html#what-is-the-laplace-transform-cont.",
+    "href": "ss_91.html#what-is-the-laplace-transform-cont.",
+    "title": "Signals and Systems",
+    "section": "What is the Laplace Transform? (cont.)",
+    "text": "What is the Laplace Transform? (cont.)\nGeneral Definition\nThe Laplace Transform of a general signal \\(x(t)\\) is defined as:\n\\[\nX(s) \\triangleq \\int_{-\\infty}^{+\\infty} x(t) e^{-st} dt \\quad \\text{(9.3)}\n\\]\nWe denote this relationship as \\(x(t) \\stackrel{\\mathfrak{L}}{\\longleftrightarrow} X(s)\\).\n\nThe Laplace Transform is a cornerstone of signals and systems analysis. Unlike the Fourier Transform, which is limited to absolutely integrable signals, the Laplace Transform uses a complex exponential \\(e^{-st}\\) as its basis function, where \\(s\\) is a complex variable \\(\\sigma + j\\omega\\). This generalization allows us to analyze a much wider range of signals and systems, including unstable ones or those that grow exponentially. The transform converts differential equations into algebraic equations, simplifying analysis significantly."
+  },
+  {
+    "objectID": "ss_91.html#laplace-transform-and-the-fourier-transform-1",
+    "href": "ss_91.html#laplace-transform-and-the-fourier-transform-1",
+    "title": "Signals and Systems",
+    "section": "Laplace Transform and the Fourier Transform",
+    "text": "Laplace Transform and the Fourier Transform\nConceptual Relationship\n\n\n\n\n\nflowchart LR\n    A[\"x(t)\"] --&gt; B{\"Multiply by &lt;br&gt; Real Exponential\"}\n    B --&gt; C[\"$$x(t)e^{-\\\\sigma t}$$\"]\n    C --&gt; D[\"Apply &lt;br&gt; Fourier Transform\"]\n    D --&gt; E[\"$$X(s) = X(\\\\sigma + j\\\\omega)$$\"]\n\n\n\n\n\n\n\nThis slide highlights the crucial connection between the Laplace and Fourier Transforms. By expressing \\(s\\) as \\(\\sigma + j\\omega\\), we see that the Laplace Transform is fundamentally the Fourier Transform of the original signal \\(x(t)\\) multiplied by a real exponential \\(e^{-\\sigma t}\\). The term \\(e^{-\\sigma t}\\) acts as a weighting function, which can either dampen or amplify the signal, making it absolutely integrable and thus allowing its Fourier Transform to exist, even if \\(x(t)\\) itself does not have a Fourier Transform. When \\(\\sigma=0\\), the real exponential term becomes \\(e^0 = 1\\), and the Laplace Transform perfectly reduces to the Fourier Transform. This means the Fourier Transform is a special case of the Laplace Transform, evaluated on the imaginary axis of the s-plane."
+  },
+  {
+    "objectID": "ss_91.html#example-9.1-causal-exponential-cont.",
+    "href": "ss_91.html#example-9.1-causal-exponential-cont.",
+    "title": "Signals and Systems",
+    "section": "Example 9.1: Causal Exponential (cont.)",
+    "text": "Example 9.1: Causal Exponential (cont.)\nInteractive Demonstration: Convergence of \\(x(t)e^{-\\sigma t}\\)\nAdjust ‘a’ and ‘sigma’ (\\(\\operatorname{Re}\\{s\\}\\)) to observe how \\(x(t)e^{-\\sigma t}\\) changes and whether it converges.\n\nviewof a_val = Inputs.range([-2, 2], {value: 1, step: 0.1, label: \"Parameter 'a'\"});\nviewof sigma_val = Inputs.range([-3, 3], {value: 0.5, step: 0.1, label: \"sigma (Re{s})\"});\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHere, we take a common signal, the causal exponential \\(e^{-at}u(t)\\). We derive its Laplace Transform and identify its ROC. The interactive plot demonstrates the term \\(x(t)e^{-\\sigma t}\\). Notice that for the integral to converge, this modified signal must decay to zero as \\(t\\) approaches infinity. By adjusting ‘a’ and ‘sigma’, you can visually observe when this decay condition is met, directly correlating to the \\(\\operatorname{Re}\\{s\\} &gt; -a\\) condition for convergence. If \\(a+\\sigma\\) is positive, the exponential decays, and the integral converges. If \\(a+\\sigma\\) is negative, it grows, and the integral diverges."
+  },
+  {
+    "objectID": "ss_91.html#example-9.2-anti-causal-exponential-cont.",
+    "href": "ss_91.html#example-9.2-anti-causal-exponential-cont.",
+    "title": "Signals and Systems",
+    "section": "Example 9.2: Anti-Causal Exponential (cont.)",
+    "text": "Example 9.2: Anti-Causal Exponential (cont.)\nComparing ROCs\n\n\nExample 9.1: \\(e^{-at}u(t)\\) \\(X(s) = \\frac{1}{s+a}\\), \\(\\operatorname{Re}\\{s\\} &gt; -a\\)\nThe ROC is to the right of the pole.\n\n\n\n\n\nflowchart TD\n    A[\"s-Plane\"]\n    subgraph Example_9_1\n        Pole_a_Ex1[\"X: $$s = -a$$\"]\n        ROC_Right_Ex1[\"ROC: $$\\operatorname{Re}\\{s\\} &gt; -a$$\"]\n    end\n    A --&gt; Pole_a_Ex1\n    Pole_a_Ex1 --&gt; ROC_Right_Ex1\n\n\n\n\n\n\n\nExample 9.2: \\(-e^{-at}u(-t)\\) \\(X(s) = \\frac{1}{s+a}\\), \\(\\operatorname{Re}\\{s\\} &lt; -a\\)\nThe ROC is to the left of the pole.\n\n\n\n\n\nflowchart TD\n    B[\"s-Plane\"]\n    subgraph Example_9_2\n        Pole_a_Ex2[\"X: $$s = -a$$\"]\n        ROC_Left_Ex2[\"ROC: Re{$$s$$} &lt; -a\"]\n    end\n    B --&gt; Pole_a_Ex2\n    Pole_a_Ex2 --&gt; ROC_Left_Ex2\n\n\n\n\n\n\n\n\nThis example is crucial for understanding the importance of the ROC. Here, we encounter an anti-causal exponential, \\(-e^{-at}u(-t)\\). Notice that its algebraic Laplace Transform form, \\(1/(s+a)\\), is identical to that of the causal exponential from Example 9.1. However, the condition for convergence is entirely different: \\(\\operatorname{Re}\\{s\\} &lt; -a\\).\nThe side-by-side comparison clearly shows that the same algebraic expression can correspond to two distinct time-domain signals, differentiated solely by their ROCs. This emphasizes that to fully specify a signal’s Laplace Transform, you must provide both the algebraic form and its corresponding ROC."
+  },
+  {
+    "objectID": "ss_91.html#poles-zeros-and-the-s-plane-cont.",
+    "href": "ss_91.html#poles-zeros-and-the-s-plane-cont.",
+    "title": "Signals and Systems",
+    "section": "Poles, Zeros, and the s-Plane (cont.)",
+    "text": "Poles, Zeros, and the s-Plane (cont.)\nPole-Zero Plot\n\nA pole-zero plot graphically represents the locations of poles and zeros in the s-plane.\nPoles are typically marked with an ‘x’.\nZeros are typically marked with an ‘o’.\nThe pole-zero plot, combined with the ROC, fully characterizes a rational Laplace Transform.\n\n\n\n\n\n\n\nImportant\n\n\nThe ROC is always bounded by poles and never contains any poles.\n\n\n\n\nRational Laplace Transforms are very common in ECE, particularly when dealing with systems described by linear constant-coefficient differential equations. The concepts of poles and zeros provide a powerful way to characterize these transforms. Poles are the values of ‘s’ where the transform “blows up” or goes to infinity, while zeros are where it becomes zero. Plotting these critical points on the s-plane, along with the ROC, gives us a complete visual signature of the system or signal in the Laplace domain. This pole-zero representation is fundamental for understanding system stability, frequency response, and transient behavior."
+  },
+  {
+    "objectID": "ss_91.html#example-9.3-sum-of-two-causal-exponentials-cont.",
+    "href": "ss_91.html#example-9.3-sum-of-two-causal-exponentials-cont.",
+    "title": "Signals and Systems",
+    "section": "Example 9.3: Sum of Two Causal Exponentials (cont.)",
+    "text": "Example 9.3: Sum of Two Causal Exponentials (cont.)\nThus,\n\\[\nX(s) = \\frac{s-1}{(s+2)(s+1)}, \\quad \\operatorname{Re}\\{s\\} &gt; -1 \\quad \\text{(9.23)}\n\\]\nPole-Zero Plot\n\nPoles: \\(s = -1, s = -2\\) (roots of \\(D(s)\\))\nZeros: \\(s = 1\\) (root of \\(N(s)\\))\n\n\n\n\n\n\ngraph TD\n    S_Plane_Ex3(\"s-Plane for Example 9.3\")\n    subgraph Locations\n        Pole_1(\"X: s = -1\")\n        Pole_2(\"X: s = -2\")\n        Zero_1(\"O: s = 1\")\n    end\n    S_Plane_Ex3 --&gt; Pole_1\n    S_Plane_Ex3 --&gt; Pole_2\n    S_Plane_Ex3 --&gt; Zero_1\n    ROC_Ex3(\"ROC: Re{s} &gt; -1 (Right of the rightmost pole)\")\n    S_Plane_Ex3 -- is bounded by --&gt; ROC_Ex3\n\n\n\n\n\n\n\nIn this example, we combine two causal exponentials. Due to linearity, the Laplace Transform of the sum is the sum of the individual Laplace Transforms. The crucial point here is how the ROC is determined: it must be the intersection of the ROCs of all individual terms. Since both terms are causal exponentials, their ROCs are right-half planes. The overall ROC is the right-half plane to the right of the rightmost pole, which is at \\(s=-1\\). We identify the poles at \\(s=-1\\) and \\(s=-2\\), and a zero at \\(s=1\\)."
+  },
+  {
+    "objectID": "ss_91.html#example-9.4-complex-exponentials-cont.",
+    "href": "ss_91.html#example-9.4-complex-exponentials-cont.",
+    "title": "Signals and Systems",
+    "section": "Example 9.4: Complex Exponentials (cont.)",
+    "text": "Example 9.4: Complex Exponentials (cont.)\nCombining these over a common denominator yields:\n\\[\nX(s)=\\frac{2s^2+5s+12}{(s^2+2s+10)(s+2)}, \\quad \\operatorname{Re}\\{s\\}&gt;-1 \\quad \\text{(9.30)}\n\\]\nPole-Zero Plot\n\nPoles: \\(s = -2\\), and \\(s = -1 \\pm j3\\) (roots of \\(s^2+2s+10=0\\))\nZeros: Roots of \\(2s^2+5s+12=0\\) (complex conjugate pair)\n\n\n\n\n\n\ngraph TD\n    S_Plane_Ex4(\"s-Plane for Example 9.4\")\n    subgraph Locations\n        Pole_1(\"X: s = -2\")\n        Pole_2(\"X: s = -1 + j3\")\n        Pole_3(\"X: s = -1 - j3\")\n        Zero_1(\"O: s = complex (conjugate pair)\")\n    end\n    S_Plane_Ex4 --&gt; Pole_1\n    S_Plane_Ex4 --&gt; Pole_2\n    S_Plane_Ex4 --&gt; Pole_3\n    S_Plane_Ex4 --&gt; Zero_1\n    ROC_Ex4(\"ROC: Re{s} &gt; -1 (Right of the rightmost poles)\")\n    S_Plane_Ex4 -- is bounded by --&gt; ROC_Ex4\n\n\n\n\n\n\n\nThis example introduces complex exponentials, which are crucial for representing sinusoidal signals. By using Euler’s formula, we decompose the cosine into two complex exponentials. Each exponential has its own Laplace Transform and ROC. Again, the overall ROC is the intersection of these individual ROCs, leading to \\(\\operatorname{Re}\\{s\\} &gt; -1\\). This results in complex conjugate poles and zeros on the s-plane, which always appear in pairs for real-valued signals. The location of these complex poles and zeros provides insight into the oscillatory behavior of the signal."
+  },
+  {
+    "objectID": "ss_91.html#example-9.5-unit-impulse-and-exponentials-cont.",
+    "href": "ss_91.html#example-9.5-unit-impulse-and-exponentials-cont.",
+    "title": "Signals and Systems",
+    "section": "Example 9.5: Unit Impulse and Exponentials (cont.)",
+    "text": "Example 9.5: Unit Impulse and Exponentials (cont.)\nPole-Zero Plot and Fourier Transform\n\nPoles: \\(s = -1, s = 2\\)\nZeros: \\(s = 1\\) (a second-order zero, as it’s repeated)\n\n\n\n\n\n\ngraph TD\n    S_Plane_Ex5(\"s-Plane for Example 9.5\")\n    subgraph Locations\n        Pole_1(\"X: s = -1\")\n        Pole_2(\"X: s = 2\")\n        Zero_1(\"O: s = 1 (2nd order)\")\n    end\n    S_Plane_Ex5 --&gt; Pole_1\n    S_Plane_Ex5 --&gt; Pole_2\n    S_Plane_Ex5 --&gt; Zero_1\n    ROC_Ex5(\"ROC: Re{s} &gt; 2 (Right of the rightmost pole)\")\n    S_Plane_Ex5 -- is bounded by --&gt; ROC_Ex5\n\n\n\n\n\n\n\n\n\n\n\n\nWarning\n\n\nSince the ROC does not include the \\(j\\omega\\)-axis (\\(\\operatorname{Re}\\{s\\}=0\\)), the Fourier Transform for this signal does not converge. This is due to the growing exponential term \\(e^{2t}u(t)\\).\n\n\n\n\nThis final example demonstrates a signal that includes a unit impulse and a growing exponential. The unit impulse has an ROC that covers the entire s-plane, meaning its Laplace Transform always converges. However, the growing exponential \\(e^{2t}u(t)\\) requires \\(\\operatorname{Re}\\{s\\} &gt; 2\\) for its transform to converge. The overall ROC is thus dictated by the most restrictive condition, \\(\\operatorname{Re}\\{s\\} &gt; 2\\).\nNotice the second-order zero at \\(s=1\\), meaning \\((s-1)\\) appears twice in the numerator. Critically, because the ROC does not include the \\(j\\omega\\)-axis (the imaginary axis where \\(\\operatorname{Re}\\{s\\}=0\\)), this signal does not possess a Fourier Transform. This highlights a key advantage of the Laplace Transform: its ability to analyze signals for which the Fourier Transform does not exist, thanks to its broader convergence properties."
+  },
+  {
+    "objectID": "ss_91.html#application-system-analysis-in-ece-1",
+    "href": "ss_91.html#application-system-analysis-in-ece-1",
+    "title": "Signals and Systems",
+    "section": "Application: System Analysis in ECE",
+    "text": "Application: System Analysis in ECE\nLTI System Analysis Workflow\n\n\n\n\n\nflowchart LR\n    A[\"Input Signal x(t)\"] --&gt; B{\"LTI System &lt;br&gt; h(t)\"}\n    B --&gt; C[\"Output Signal y(t)\"]\n\n    A_LT[\"X(s)\"] --&gt; B_LT{\"System Function &lt;br&gt; H(s)\"}\n    B_LT --&gt; C_LT[\"Y(s)\"]\n\n    subgraph \"Time Domain\"\n        A\n        B\n        C\n    end\n\n    subgraph \"Laplace Domain\"\n        A_LT\n        B_LT\n        C_LT\n    end\n\n    A -- \"Laplace Transform\" --&gt; A_LT\n    C_LT -- \"Inverse Laplace Transform\" --&gt; C\n    B_LT -- \"$$H(s)=Y(s)/X(s)$$\" --&gt; B\n\n\n\n\n\n\n\n\nThis slide summarizes the practical utility of the Laplace Transform in ECE. Its ability to convert differential equations into algebraic ones is a game-changer for analyzing complex systems like filters, control systems, and communication channels. The system function \\(H(s)\\), which is the Laplace Transform of the impulse response \\(h(t)\\), becomes the algebraic representation of the system. By solving for \\(Y(s) = H(s)X(s)\\) in the Laplace domain and then performing an inverse Laplace Transform, we can find the time-domain output \\(y(t)\\). This systematic approach makes analyzing LTI systems much more tractable and intuitive than working directly with convolution in the time domain or differential equations. Poles and zeros of \\(H(s)\\) directly tell us about the system’s stability and frequency response characteristics."
+  },
+  {
+    "objectID": "ss_92.html#the-region-of-convergence-roc-for-laplace-transforms",
+    "href": "ss_92.html#the-region-of-convergence-roc-for-laplace-transforms",
+    "title": "Signals and Systems",
+    "section": "The Region of Convergence (ROC) for Laplace Transforms",
+    "text": "The Region of Convergence (ROC) for Laplace Transforms\nUnlocking Signal Properties from the s-Plane\nIn the previous section, we established that the Region of Convergence (ROC) is vital for a complete Laplace Transform specification. The ROC helps distinguish between signals that might share the same algebraic \\(X(s)\\) expression.\nThis section explores specific properties of the ROC, which allow us to:\n\nImplicitly determine the ROC from \\(X(s)\\) and signal characteristics.\nReconstruct the time-domain signal \\(x(t)\\) from \\(X(s)\\) and its ROC.\nUnderstand the time-domain features of \\(x(t)\\) (e.g., causality, stability) directly from the ROC.\n\n\nWe’ve seen that two different signals can have the same algebraic form for their Laplace Transform. The ROC is the key differentiator. Today, we’ll dive into eight fundamental properties of the ROC. These properties are not just theoretical; they are practical tools that bridge the gap between the complex s-plane and the time-domain characteristics of our signals and systems. Understanding these will allow you to infer a lot about a signal just by looking at its Laplace Transform and its ROC."
+  },
+  {
+    "objectID": "ss_92.html#property-1-roc-as-strips-parallel-to-the-jomega-axis",
+    "href": "ss_92.html#property-1-roc-as-strips-parallel-to-the-jomega-axis",
+    "title": "Signals and Systems",
+    "section": "Property 1: ROC as Strips Parallel to the \\(j\\omega\\)-axis",
+    "text": "Property 1: ROC as Strips Parallel to the \\(j\\omega\\)-axis\nProperty: The ROC of \\(X(s)\\) consists of strips parallel to the \\(j\\omega\\)-axis in the \\(s\\)-plane.\nExplanation: The ROC consists of values of \\(s = \\sigma + j\\omega\\) for which the Fourier Transform of \\(x(t)e^{-\\sigma t}\\) converges. This means \\(x(t)e^{-\\sigma t}\\) must be absolutely integrable:\n\\[\n\\int_{-\\infty}^{+\\infty}|x(t)| e^{-\\sigma t} dt &lt; \\infty \\quad \\text{(9.36)}\n\\]\nThis condition depends only on \\(\\sigma\\) (the real part of \\(s\\)), not on \\(j\\omega\\). Therefore, if a vertical line \\(\\operatorname{Re}\\{s\\} = \\sigma_0\\) is in the ROC, then the entire strip containing that line, for all imaginary values, is also in the ROC."
+  },
+  {
+    "objectID": "ss_92.html#property-2-roc-does-not-contain-any-poles",
+    "href": "ss_92.html#property-2-roc-does-not-contain-any-poles",
+    "title": "Signals and Systems",
+    "section": "Property 2: ROC Does Not Contain Any Poles",
+    "text": "Property 2: ROC Does Not Contain Any Poles\nProperty: For rational Laplace transforms, the ROC does not contain any poles.\nExplanation: At a pole, the Laplace Transform \\(X(s)\\) is infinite. By definition, for \\(s\\) to be in the ROC, the integral \\(\\int_{-\\infty}^{+\\infty} x(t) e^{-st} dt\\) must converge to a finite value. Since \\(X(s)\\) is infinite at a pole, the integral clearly does not converge at a pole. Therefore, poles always lie on the boundaries of the ROC, never within it."
+  },
+  {
+    "objectID": "ss_92.html#property-3-finite-duration-signals",
+    "href": "ss_92.html#property-3-finite-duration-signals",
+    "title": "Signals and Systems",
+    "section": "Property 3: Finite-Duration Signals",
+    "text": "Property 3: Finite-Duration Signals\nProperty: If \\(x(t)\\) is of finite duration and is absolutely integrable, then the ROC is the entire \\(s\\)-plane.\nExplanation: A finite-duration signal is zero outside a finite interval, say \\(T_1 &lt; t &lt; T_2\\). For \\(s=\\sigma+j\\omega\\), we need to check the convergence of \\(\\int_{T_1}^{T_2}|x(t)| e^{-\\sigma t} dt\\).\n\nSince \\(x(t)\\) is absolutely integrable over \\([T_1, T_2]\\), \\(\\int_{T_1}^{T_2}|x(t)| dt &lt; \\infty\\).\nFor any \\(\\sigma\\), \\(e^{-\\sigma t}\\) is bounded over the finite interval \\([T_1, T_2]\\).\n\nIf \\(\\sigma &gt; 0\\), \\(e^{-\\sigma t}\\) is bounded by \\(e^{-\\sigma T_1}\\).\nIf \\(\\sigma &lt; 0\\), \\(e^{-\\sigma t}\\) is bounded by \\(e^{-\\sigma T_2}\\).\n\nThus, \\(|x(t)|e^{-\\sigma t}\\) remains absolutely integrable for all \\(\\sigma\\).\n\n\n\n\n\n\n\nTip\n\n\nFinite-duration signals are “well-behaved” enough that the exponential weighting \\(e^{-\\sigma t}\\) never causes divergence within their non-zero interval.\n\n\n\n\nThis property is a bit of a special case but important. If a signal only exists for a finite amount of time, its Laplace Transform will always converge, no matter what value \\(s\\) takes. This is because the exponential weighting function \\(e^{-\\sigma t}\\) can’t grow unboundedly over a finite interval. Think of a short pulse or a single sine wave cycle. Its transform will converge everywhere."
+  },
+  {
+    "objectID": "ss_92.html#example-9.6-finite-duration-signal",
+    "href": "ss_92.html#example-9.6-finite-duration-signal",
+    "title": "Signals and Systems",
+    "section": "Example 9.6: Finite Duration Signal",
+    "text": "Example 9.6: Finite Duration Signal\nLet \\(x(t) = e^{-at}\\) for \\(0 &lt; t &lt; T\\), and \\(0\\) otherwise.\nThe Laplace Transform is:\n\\[\nX(s) = \\int_{0}^{T} e^{-at} e^{-st} dt = \\int_{0}^{T} e^{-(s+a)t} dt = \\frac{1}{s+a}\\left[1-e^{-(s+a)T}\\right] \\quad \\text{(9.42)}\n\\]\nApparent Pole vs. Actual Behavior\nIf we look at the expression, it seems like there is a pole at \\(s=-a\\). However, for a finite-duration signal, the ROC should be the entire \\(s\\)-plane (Property 3). This implies no poles.\nLet’s check the behavior at \\(s=-a\\) using L’Hôpital’s Rule:\n\\[\n\\lim _{s \\rightarrow-a} X(s) = \\lim _{s \\rightarrow-a}\\left[\\frac{\\frac{d}{d s}\\left(1-e^{-(s+a) T)}\\right.}{\\frac{d}{d s}(s+a)}\\right] = \\lim _{s \\rightarrow-a} T e^{-a T} e^{-s T}\n\\]\nSo, \\(X(-a) = T e^{-aT} e^{-(-a)T} = T e^{-aT} e^{aT} = T\\).\nSince \\(X(-a)\\) is a finite value (\\(T\\)), there is no pole at \\(s=-a\\). The apparent pole is canceled by a zero at the same location."
+  },
+  {
+    "objectID": "ss_92.html#property-4-right-sided-signals",
+    "href": "ss_92.html#property-4-right-sided-signals",
+    "title": "Signals and Systems",
+    "section": "Property 4: Right-Sided Signals",
+    "text": "Property 4: Right-Sided Signals\nProperty: If \\(x(t)\\) is right-sided, and if the line \\(\\operatorname{Re}\\{s\\}=\\sigma_0\\) is in the ROC, then all values of \\(s\\) for which \\(\\operatorname{Re}\\{s\\}&gt;\\sigma_0\\) will also be in the ROC.\nDefinition: A right-sided signal is zero prior to some finite time \\(T_1\\) (i.e., \\(x(t)=0\\) for \\(t &lt; T_1\\)).\nExplanation: If \\(x(t)e^{-\\sigma_0 t}\\) is absolutely integrable, then for any \\(\\sigma_1 &gt; \\sigma_0\\):\n\\[\n\\int_{T_1}^{\\infty}|x(t)| e^{-\\sigma_1 t} dt = \\int_{T_1}^{\\infty}|x(t)| e^{-\\sigma_0 t} e^{-(\\sigma_1-\\sigma_0)t} dt\n\\]\nSince \\(\\sigma_1 &gt; \\sigma_0\\), the term \\(e^{-(\\sigma_1-\\sigma_0)t}\\) is a decaying exponential for \\(t&gt;T_1\\). This means \\(e^{-(\\sigma_1-\\sigma_0)t}\\) decays faster than \\(e^{-(\\sigma_0-\\sigma_0)t} = 1\\) as \\(t \\to \\infty\\). Therefore, if the integral converges for \\(\\sigma_0\\), it will also converge for any \\(\\sigma_1 &gt; \\sigma_0\\).\n\n\n\n\n\n\nTip\n\n\nFor a right-sided signal, the ROC is always a right-half plane, extending to the right from some vertical line. If \\(X(s)\\) is rational, the ROC is to the right of the rightmost pole."
+  },
+  {
+    "objectID": "ss_92.html#property-5-left-sided-signals",
+    "href": "ss_92.html#property-5-left-sided-signals",
+    "title": "Signals and Systems",
+    "section": "Property 5: Left-Sided Signals",
+    "text": "Property 5: Left-Sided Signals\nProperty: If \\(x(t)\\) is left-sided, and if the line \\(\\operatorname{Re}\\{s\\}=\\sigma_0\\) is in the ROC, then all values of \\(s\\) for which \\(\\operatorname{Re}\\{s\\}&lt;\\sigma_0\\) will also be in the ROC.\nDefinition: A left-sided signal is zero after some finite time \\(T_2\\) (i.e., \\(x(t)=0\\) for \\(t &gt; T_2\\)).\nExplanation: The argument is analogous to Property 4. If \\(x(t)e^{-\\sigma_0 t}\\) is absolutely integrable, then for any \\(\\sigma_1 &lt; \\sigma_0\\):\n\\[\n\\int_{-\\infty}^{T_2}|x(t)| e^{-\\sigma_1 t} dt = \\int_{-\\infty}^{T_2}|x(t)| e^{-\\sigma_0 t} e^{-(\\sigma_1-\\sigma_0)t} dt\n\\]\nSince \\(\\sigma_1 &lt; \\sigma_0\\), the term \\(e^{-(\\sigma_1-\\sigma_0)t}\\) is a decaying exponential for \\(t&lt;T_2\\) (as \\(t \\to -\\infty\\)). This means \\(e^{-(\\sigma_1-\\sigma_0)t}\\) decays faster than \\(1\\) as \\(t \\to -\\infty\\). Therefore, if the integral converges for \\(\\sigma_0\\), it will also converge for any \\(\\sigma_1 &lt; \\sigma_0\\).\n\n\n\n\n\n\nTip\n\n\nFor a left-sided signal, the ROC is always a left-half plane, extending to the left from some vertical line. If \\(X(s)\\) is rational, the ROC is to the left of the leftmost pole."
+  },
+  {
+    "objectID": "ss_92.html#property-6-two-sided-signals",
+    "href": "ss_92.html#property-6-two-sided-signals",
+    "title": "Signals and Systems",
+    "section": "Property 6: Two-Sided Signals",
+    "text": "Property 6: Two-Sided Signals\nProperty: If \\(x(t)\\) is two-sided, and if the line \\(\\operatorname{Re}\\{s\\}=\\sigma_0\\) is in the ROC, then the ROC will consist of a strip in the \\(s\\)-plane that includes the line \\(\\operatorname{Re}\\{s\\}=\\sigma_0\\).\nDefinition: A two-sided signal is of infinite extent for both \\(t&gt;0\\) and \\(t&lt;0\\).\nExplanation: A two-sided signal \\(x(t)\\) can be decomposed into a right-sided part \\(x_R(t)\\) and a left-sided part \\(x_L(t)\\): \\(x(t) = x_R(t) + x_L(t)\\), where \\(x_R(t)\\) is \\(x(t)u(t-T_0)\\) and \\(x_L(t)\\) is \\(x(t)u(T_0-t)\\).\n\nThe ROC for \\(x_R(t)\\) is a right-half plane: \\(\\operatorname{Re}\\{s\\} &gt; \\sigma_R\\).\nThe ROC for \\(x_L(t)\\) is a left-half plane: \\(\\operatorname{Re}\\{s\\} &lt; \\sigma_L\\).\n\nThe ROC for \\(x(t)\\) is the intersection of these two ROCs. This intersection forms a vertical strip: \\(\\sigma_R &lt; \\operatorname{Re}\\{s\\} &lt; \\sigma_L\\).\n\n\n\n\n\n\nNote\n\n\nFor a two-sided signal, a ROC exists only if \\(\\sigma_R &lt; \\sigma_L\\). If \\(\\sigma_R \\ge \\sigma_L\\), there is no overlap, and thus no Laplace Transform for \\(x(t)\\)."
+  },
+  {
+    "objectID": "ss_92.html#example-9.7-two-sided-exponential",
+    "href": "ss_92.html#example-9.7-two-sided-exponential",
+    "title": "Signals and Systems",
+    "section": "Example 9.7: Two-Sided Exponential",
+    "text": "Example 9.7: Two-Sided Exponential\nLet \\(x(t) = e^{-b|t|}\\). We can write this as \\(x(t) = e^{-bt}u(t) + e^{bt}u(-t)\\).\n\nRight-sided part: \\(x_R(t) = e^{-bt}u(t)\\) \\(\\mathcal{L}\\{x_R(t)\\} = \\frac{1}{s+b}\\), with ROC: \\(\\operatorname{Re}\\{s\\} &gt; -b\\).\nLeft-sided part: \\(x_L(t) = e^{bt}u(-t)\\) \\(\\mathcal{L}\\{x_L(t)\\} = \\frac{-1}{s-b}\\), with ROC: \\(\\operatorname{Re}\\{s\\} &lt; b\\).\n\nFor \\(X(s)\\) to exist, the ROCs must overlap: \\(\\operatorname{Re}\\{s\\} &gt; -b\\) AND \\(\\operatorname{Re}\\{s\\} &lt; b\\). This defines a strip: \\(-b &lt; \\operatorname{Re}\\{s\\} &lt; b\\).\nThis overlap exists only if \\(b &gt; 0\\). If \\(b \\le 0\\), there is no common ROC, and \\(x(t)\\) has no Laplace Transform.\nFor \\(b &gt; 0\\), the combined Laplace Transform is:\n\\[\nX(s) = \\frac{1}{s+b} - \\frac{1}{s-b} = \\frac{(s-b) - (s+b)}{(s+b)(s-b)} = \\frac{-2b}{s^2-b^2}\n\\]\n\\[\nX(s) = \\frac{-2b}{s^2-b^2}, \\quad -b &lt; \\operatorname{Re}\\{s\\} &lt; b \\quad \\text{(9.51)}\n\\]"
+  },
+  {
+    "objectID": "ss_92.html#property-7-rational-xs-roc-bounded-by-poles",
+    "href": "ss_92.html#property-7-rational-xs-roc-bounded-by-poles",
+    "title": "Signals and Systems",
+    "section": "Property 7: Rational \\(X(s)\\) ROC Bounded by Poles",
+    "text": "Property 7: Rational \\(X(s)\\) ROC Bounded by Poles\nProperty: If the Laplace transform \\(X(s)\\) of \\(x(t)\\) is rational, then its ROC is bounded by poles or extends to infinity. In addition, no poles of \\(X(s)\\) are contained in the ROC.\nExplanation: This property combines insights from previous ones:\n\nPoles as Boundaries: As established by Property 2, poles define the edges of the ROC.\nStructure of Rational Transforms: Rational Laplace Transforms arise from signals composed of sums of exponentials. Each exponential has an ROC that is a half-plane.\nIntersection of Half-Planes: The overall ROC for a sum of exponentials is the intersection of these half-planes, resulting in a strip or a single half-plane bounded by the poles.\n\n\n\n\n\n\n\nImportant\n\n\nThis property reinforces that poles are critical in defining the exact shape and location of the ROC for rational transforms.\n\n\n\n\nProperty 7 essentially formalizes what we’ve been observing: for rational Laplace Transforms, poles are the geographic markers of the ROC. They define its boundaries. This is a direct consequence of rational transforms arising from sums of exponentials, each of which has a half-plane ROC. The combined ROC is simply the intersection of these half-planes."
+  },
+  {
+    "objectID": "ss_92.html#property-8-roc-for-rational-xs-and-sidedness",
+    "href": "ss_92.html#property-8-roc-for-rational-xs-and-sidedness",
+    "title": "Signals and Systems",
+    "section": "Property 8: ROC for Rational \\(X(s)\\) and Sidedness",
+    "text": "Property 8: ROC for Rational \\(X(s)\\) and Sidedness\nProperty: If the Laplace transform \\(X(s)\\) of \\(x(t)\\) is rational, then:\n\nIf \\(x(t)\\) is right-sided, the ROC is the region in the \\(s\\)-plane to the right of the rightmost pole.\nIf \\(x(t)\\) is left-sided, the ROC is the region in the \\(s\\)-plane to the left of the leftmost pole.\n\nExplanation: This property is a direct consequence of Properties 4, 5, and 7.\n\nRight-sided signals: Their ROCs are right-half planes (Property 4). For rational \\(X(s)\\), the right-half plane must be bounded by the pole with the largest real part (the rightmost pole) to ensure all terms converge.\nLeft-sided signals: Their ROCs are left-half planes (Property 5). For rational \\(X(s)\\), the left-half plane must be bounded by the pole with the smallest real part (the leftmost pole) to ensure all terms converge.\n\n\n\n\n\n\n\nTip\n\n\nThis property provides a quick and practical way to determine the ROC for many common signals in ECE, especially when dealing with system impulse responses.\n\n\n\n\nProperty 8 is incredibly useful for practical application. Once you have the algebraic form of a rational Laplace Transform and you know whether the corresponding time-domain signal is right-sided or left-sided, you can immediately sketch its ROC. This rule simplifies the process significantly and is a key tool in system analysis, particularly for determining causality and stability from pole locations."
+  },
+  {
+    "objectID": "ss_92.html#example-9.8-multiple-rocs-for-same-xs",
+    "href": "ss_92.html#example-9.8-multiple-rocs-for-same-xs",
+    "title": "Signals and Systems",
+    "section": "Example 9.8: Multiple ROCs for Same \\(X(s)\\)",
+    "text": "Example 9.8: Multiple ROCs for Same \\(X(s)\\)\nConsider \\(X(s) = \\frac{1}{(s+1)(s+2)}\\). This \\(X(s)\\) has poles at \\(s=-1\\) and \\(s=-2\\).\nBased on the ROC properties and the time-domain characteristics of \\(x(t)\\), there are three possible ROCs for this algebraic expression, each corresponding to a distinct \\(x(t)\\):\n1. Right-Sided Signal (Causal)\n\nROC: \\(\\operatorname{Re}\\{s\\} &gt; -1\\) (right of the rightmost pole).\nTime-domain: \\(x(t) = (e^{-t} - e^{-2t})u(t)\\).\nFourier Transform: Exists, as the ROC includes the \\(j\\omega\\)-axis.\n\n2. Left-Sided Signal (Anti-Causal)\n\nROC: \\(\\operatorname{Re}\\{s\\} &lt; -2\\) (left of the leftmost pole).\nTime-domain: \\(x(t) = (-e^{-t} + e^{-2t})u(-t)\\).\nFourier Transform: Does not exist, as the ROC does not include the \\(j\\omega\\)-axis."
+  },
+  {
+    "objectID": "ss_92.html#interactive-roc-and-time-domain-visualization",
+    "href": "ss_92.html#interactive-roc-and-time-domain-visualization",
+    "title": "Signals and Systems",
+    "section": "Interactive ROC and Time-Domain Visualization",
+    "text": "Interactive ROC and Time-Domain Visualization\nExplore the relationship between the ROC and the corresponding time-domain signal for \\(X(s) = \\frac{1}{(s+1)(s+2)}\\).\n\nviewof roc_choice = Inputs.select(\n  [\"Re{s} &gt; -1 (Right-Sided)\", \"Re{s} &lt; -2 (Left-Sided)\", \"-2 &lt; Re{s} &lt; -1 (Two-Sided)\"],\n  {label: \"Select ROC Type\"}\n);\n\n\n\n\n\n\n\n\n\n\n\n\n\nThis interactive element is the culmination of our discussion on ROC properties. By selecting different ROC types, you can directly observe how the same algebraic \\(X(s)\\) corresponds to radically different time-domain signals. Pay close attention to the causality (whether the signal starts at \\(t=0\\)) and the behavior for \\(t&lt;0\\). Also, notice whether the \\(j\\omega\\)-axis is included in the ROC, which tells you if the Fourier Transform exists. This hands-on visualization should solidify your understanding of the profound impact of the ROC."
+  },
+  {
+    "objectID": "ss_92.html#key-takeaways-roc-properties",
+    "href": "ss_92.html#key-takeaways-roc-properties",
+    "title": "Signals and Systems",
+    "section": "Key Takeaways: ROC Properties",
+    "text": "Key Takeaways: ROC Properties\n\nVertical Strips: ROCs are always vertical strips in the \\(s\\)-plane.\nNo Poles in ROC: Poles define the boundaries but are never part of the ROC itself.\nFinite Duration: ROC is the entire \\(s\\)-plane.\nRight-Sided: ROC is a right-half plane ($ {s} &gt; _{max_pole} $).\nLeft-Sided: ROC is a left-half plane ($ {s} &lt; _{min_pole} $).\nTwo-Sided: ROC is a strip between poles ($ _L &lt; {s} &lt; _R $).\nRational \\(X(s)\\): ROC is always bounded by poles or extends to infinity.\nSidedness Rule: For rational \\(X(s)\\), sidedness directly dictates the ROC relative to the poles.\n\n\n\n\n\n\n\nImportant\n\n\nThe ROC is as crucial as the algebraic expression of \\(X(s)\\) for uniquely defining a signal and understanding its time-domain characteristics, including causality and stability.\n\n\n\n\n\n\n\n\n\nTip\n\n\nAlways specify the ROC when dealing with Laplace Transforms! It’s not just a mathematical detail; it’s fundamental engineering information.\n\n\n\n\nTo summarize, these eight properties are your go-to rules for understanding and working with the ROC. Remember, poles are the critical points that define the ROC boundaries. The type of signal (finite duration, right-sided, left-sided, or two-sided) directly determines the shape of the ROC. This knowledge is not just academic; it’s essential for correctly interpreting system behavior and designing filters and controllers in ECE."
+  },
+  {
+    "objectID": "ss_92.html#property-1-roc-as-strips-parallel-to-the-jomega-axis-1",
+    "href": "ss_92.html#property-1-roc-as-strips-parallel-to-the-jomega-axis-1",
+    "title": "Signals and Systems",
+    "section": "Property 1: ROC as Strips Parallel to the \\(j\\omega\\)-axis",
+    "text": "Property 1: ROC as Strips Parallel to the \\(j\\omega\\)-axis\nVisualization\n\n\n\n\n\ngraph TD\n    subgraph s-Plane\n        direction LR\n        A[\"Re{s}\"] --- B[\"Im{s}\"]\n        B --- C(jω-axis)\n        A --- D(σ-axis)\n        style C fill:#fff,stroke:#fff\n        style D fill:#fff,stroke:#fff\n        ROC([ ])\n        subgraph ROC_Strip\n            alpha(\" \")\n            beta(\" \")\n            gamma(\" \")\n        end\n        alpha -- \" \" --&gt; beta\n        beta -- \" \" --&gt; gamma\n        style ROC_Strip fill:#ADD8E6,stroke:#ADD8E6,stroke-width:0px\n    end\n\n\n\n\n\n\n\nProperty 1 is quite intuitive once you recall the relationship between the Laplace and Fourier Transforms. Since the convergence criterion depends only on the real part of \\(s\\), \\(\\sigma\\), it means that if a particular \\(\\sigma_0\\) works, then any \\(s\\) with that same \\(\\sigma_0\\) will also work, regardless of its imaginary component \\(j\\omega\\). This leads to the characteristic vertical strip shape of the ROC in the s-plane."
+  },
+  {
+    "objectID": "ss_92.html#property-2-roc-does-not-contain-any-poles-1",
+    "href": "ss_92.html#property-2-roc-does-not-contain-any-poles-1",
+    "title": "Signals and Systems",
+    "section": "Property 2: ROC Does Not Contain Any Poles",
+    "text": "Property 2: ROC Does Not Contain Any Poles\nVisualization\n\n\n\n\n\ngraph TD\n    subgraph s-Plane\n        direction LR\n        A[\"Re{s}\"] --- B[\"Im{s}\"]\n        Pole(\"X\")\n        ROC_Boundary_Left(\" \")\n        ROC_Boundary_Right(\" \")\n        ROC_Shaded([ ])\n        subgraph ROC_Area\n            alpha(\" \")\n            beta(\" \")\n        end\n        alpha -- \" \" --&gt; beta\n        style ROC_Area fill:#ADD8E6,stroke:#ADD8E6,stroke-width:0px\n    end\n    Pole --- ROC_Boundary_Left\n    Pole --- ROC_Boundary_Right\n    ROC_Boundary_Left -- \" \" --&gt; alpha\n    beta -- \" \" --&gt; ROC_Boundary_Right\n    style Pole fill:#fff,stroke:#ff0000,stroke-width:2px,font-size:16px,font-weight:bold\n\n\n\n\n\n\n\nThis property is fundamental and makes perfect sense. If \\(X(s)\\) goes to infinity at a certain point in the s-plane, then by definition, the integral that defines \\(X(s)\\) cannot converge at that point. Hence, poles are excluded from the ROC. They act as natural boundaries, delineating where the transform converges and where it doesn’t."
+  },
+  {
+    "objectID": "ss_92.html#example-9.6-finite-duration-signal-1",
+    "href": "ss_92.html#example-9.6-finite-duration-signal-1",
+    "title": "Signals and Systems",
+    "section": "Example 9.6: Finite Duration Signal",
+    "text": "Example 9.6: Finite Duration Signal\nInteractive Visualization: Magnitude of \\(X(s)\\)\nObserve that \\(X(s)\\) remains finite even when \\(s\\) approaches \\(-a\\).\n\nviewof a_ex6 = Inputs.range([-2, 2], {value: 1, step: 0.1, label: \"Parameter 'a'\"});\nviewof T_ex6 = Inputs.range([0.1, 5], {value: 2, step: 0.1, label: \"Duration T\"});\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExample 9.6 beautifully illustrates Property 3. Although the algebraic form of \\(X(s)\\) might suggest a pole, the fact that the signal is of finite duration means this “pole” must be removable. The interactive plot shows that the magnitude of \\(X(s)\\) is perfectly finite at \\(s=-a\\), confirming that it’s not a true pole. This cancellation happens because the numerator also becomes zero at \\(s=-a\\), leading to an indeterminate form that evaluates to a finite value."
+  },
+  {
+    "objectID": "ss_92.html#property-4-right-sided-signals-1",
+    "href": "ss_92.html#property-4-right-sided-signals-1",
+    "title": "Signals and Systems",
+    "section": "Property 4: Right-Sided Signals",
+    "text": "Property 4: Right-Sided Signals\nVisualization\n\n\n\n\n\ngraph TD\n    subgraph s-Plane\n        direction LR\n        A[\"Re{s}\"] --- B[\"Im{s}\"]\n        Pole1(\"X\")\n        Pole2(\"X\")\n        ROC_Boundary_Right(\" \")\n        ROC_Shaded([ ])\n        subgraph ROC_Area\n            alpha(\" \")\n            beta(\" \")\n            gamma(\" \")\n        end\n        alpha -- \" \" --&gt; beta\n        beta -- \" \" --&gt; gamma\n        style ROC_Area fill:#ADD8E6,stroke:#ADD8E6,stroke-width:0px\n    end\n    Pole1 --- ROC_Boundary_Right\n    Pole2 --- ROC_Boundary_Right\n    ROC_Boundary_Right -- \" \" --&gt; alpha\n    style Pole1 fill:#fff,stroke:#ff0000,stroke-width:2px,font-size:16px,font-weight:bold\n    style Pole2 fill:#fff,stroke:#ff0000,stroke-width:2px,font-size:16px,font-weight:bold\n\n\n\n\n\n\n\nProperty 4 deals with right-sided signals, which are signals that start at a certain point and extend to positive infinity. Think of causal signals like \\(u(t)\\) or \\(e^{-at}u(t)\\). If the integral converges for some \\(\\sigma_0\\), it will converge for any \\(\\sigma\\) greater than \\(\\sigma_0\\). This is because increasing \\(\\sigma\\) makes the \\(e^{-\\sigma t}\\) term decay faster as \\(t \\to \\infty\\), thus helping convergence. This leads to an ROC that is a right-half plane. For rational transforms, this plane starts just to the right of the rightmost pole."
+  },
+  {
+    "objectID": "ss_92.html#property-5-left-sided-signals-1",
+    "href": "ss_92.html#property-5-left-sided-signals-1",
+    "title": "Signals and Systems",
+    "section": "Property 5: Left-Sided Signals",
+    "text": "Property 5: Left-Sided Signals\nVisualization\n\n\n\n\n\ngraph TD\n    subgraph s-Plane\n        direction LR\n        A[\"Re{s}\"] --- B[\"Im{s}\"]\n        Pole1(\"X\")\n        Pole2(\"X\")\n        ROC_Boundary_Left(\" \")\n        ROC_Shaded([ ])\n        subgraph ROC_Area\n            alpha(\" \")\n            beta(\" \")\n            gamma(\" \")\n        end\n        alpha -- \" \" --&gt; beta\n        beta -- \" \" --&gt; gamma\n        style ROC_Area fill:#ADD8E6,stroke:#ADD8E6,stroke-width:0px\n    end\n    Pole1 --- ROC_Boundary_Left\n    Pole2 --- ROC_Boundary_Left\n    ROC_Boundary_Left -- \" \" --&gt; alpha\n    style Pole1 fill:#fff,stroke:#ff0000,stroke-width:2px,font-size:16px,font-weight:bold\n    style Pole2 fill:#fff,stroke:#ff0000,stroke-width:2px,font-size:16px,font-weight:bold\n\n\n\n\n\n\n\nProperty 5 is the mirror image of Property 4, applied to left-sided signals. These signals exist from negative infinity up to a certain point, like \\(-e^{-at}u(-t)\\). For these, increasing \\(\\sigma\\) makes \\(e^{-\\sigma t}\\) grow faster as \\(t \\to -\\infty\\), which would hinder convergence. Conversely, decreasing \\(\\sigma\\) makes \\(e^{-\\sigma t}\\) decay faster as \\(t \\to -\\infty\\), aiding convergence. Hence, the ROC is a left-half plane, starting to the left of the leftmost pole for rational transforms."
+  },
+  {
+    "objectID": "ss_92.html#property-6-two-sided-signals-1",
+    "href": "ss_92.html#property-6-two-sided-signals-1",
+    "title": "Signals and Systems",
+    "section": "Property 6: Two-Sided Signals",
+    "text": "Property 6: Two-Sided Signals\nVisualization\n\n\n\n\n\ngraph TD\n    subgraph s-Plane\n        direction LR\n        A[\"Re{s}\"] --- B[\"Im{s}\"]\n        PoleL(\"X: $\\sigma_L$\")\n        PoleR(\"X: $\\sigma_R$\")\n        ROC_Strip([ ])\n        subgraph ROC_Area\n            alpha(\" \")\n            beta(\" \")\n        end\n        alpha -- \" \" --&gt; beta\n        style ROC_Area fill:#ADD8E6,stroke:#ADD8E6,stroke-width:0px\n    end\n    PoleL -- \" \" --&gt; ROC_Strip\n    PoleR -- \" \" --&gt; ROC_Strip\n    style PoleL fill:#fff,stroke:#ff0000,stroke-width:2px,font-size:16px,font-weight:bold\n    style PoleR fill:#fff,stroke:#ff0000,stroke-width:2px,font-size:16px,font-weight:bold\n\n\n\n\n\n\n\nTwo-sided signals, like \\(e^{-b|t|}\\), extend in both positive and negative time. We can think of them as a sum of a right-sided and a left-sided component. For the Laplace Transform of the sum to exist, both components must converge, meaning their individual ROCs must overlap. This overlap creates a characteristic vertical strip in the s-plane. A critical condition is that the right-half plane boundary must be to the left of the left-half plane boundary (\\(\\sigma_R &lt; \\sigma_L\\)) for any overlap to exist."
+  },
+  {
+    "objectID": "ss_92.html#example-9.7-two-sided-exponential-1",
+    "href": "ss_92.html#example-9.7-two-sided-exponential-1",
+    "title": "Signals and Systems",
+    "section": "Example 9.7: Two-Sided Exponential",
+    "text": "Example 9.7: Two-Sided Exponential\nPole-Zero Plot & ROC\n\nPoles: \\(s = b, s = -b\\) (roots of \\(s^2-b^2=0\\))\nZeros: None in the finite s-plane (numerator is a constant).\n\n\n\n\n\n\ngraph TD\n    subgraph s-Plane\n        direction LR\n        Pole_neg_b(\"X: -b\")\n        Pole_pos_b(\"X: b\")\n        ROC_Strip([ ])\n        subgraph ROC_Area\n            alpha(\" \")\n            beta(\" \")\n        end\n        alpha -- \" \" --&gt; beta\n        style ROC_Area fill:#ADD8E6,stroke:#ADD8E6,stroke-width:0px\n    end\n    Pole_neg_b -- \" \" --&gt; ROC_Strip\n    Pole_pos_b -- \" \" --&gt; ROC_Strip\n    style Pole_neg_b fill:#fff,stroke:#ff0000,stroke-width:2px,font-size:16px,font-weight:bold\n    style Pole_pos_b fill:#fff,stroke:#ff0000,stroke-width:2px,font-size:16px,font-weight:bold\n\n\n\n\n\n\n\nExample 9.7 is a classic illustration of a two-sided signal and its strip ROC. The signal \\(e^{-b|t|}\\) can be seen as a sum of a causal exponential and an anti-causal exponential. For its Laplace Transform to exist, the ROCs of these two components must overlap. This leads to the condition \\(b &gt; 0\\) and a strip ROC between \\(-b\\) and \\(b\\). If \\(b\\) were negative or zero, these two half-planes would not overlap, and the signal would not have a Laplace Transform. This example clearly shows how the ROC is bounded by the poles of \\(X(s)\\)."
+  },
+  {
+    "objectID": "ss_92.html#example-9.8-multiple-rocs-for-same-xs-cont.",
+    "href": "ss_92.html#example-9.8-multiple-rocs-for-same-xs-cont.",
+    "title": "Signals and Systems",
+    "section": "Example 9.8: Multiple ROCs for Same \\(X(s)\\) (cont.)",
+    "text": "Example 9.8: Multiple ROCs for Same \\(X(s)\\) (cont.)\n3. Two-Sided Signal\n\nROC: \\(-2 &lt; \\operatorname{Re}\\{s\\} &lt; -1\\) (strip between poles).\nTime-domain: \\(x(t) = -e^{-t}u(-t) + e^{-2t}u(t)\\).\nFourier Transform: Does not exist, as the ROC does not include the \\(j\\omega\\)-axis.\n\nThis example truly highlights why the ROC is essential for unique signal specification!\n\nExample 9.8 is a cornerstone for understanding the ROC. It shows that an identical algebraic expression for \\(X(s)\\) can represent three entirely different time-domain signals, depending solely on the specified ROC. Each ROC implies a different type of signal (causal, anti-causal, two-sided) and has different implications for the existence of the Fourier Transform. This is why you must always state the ROC along with the algebraic expression of \\(X(s)\\)."
+  },
+  {
+    "objectID": "ss_93.html#the-inverse-laplace-transform",
+    "href": "ss_93.html#the-inverse-laplace-transform",
+    "title": "Signals and Systems",
+    "section": "The Inverse Laplace Transform",
+    "text": "The Inverse Laplace Transform\nRecovering Signals from the s-Domain"
+  },
+  {
+    "objectID": "ss_93.html#recap-from-time-to-s-domain",
+    "href": "ss_93.html#recap-from-time-to-s-domain",
+    "title": "Signals and Systems",
+    "section": "Recap: From Time to s-Domain",
+    "text": "Recap: From Time to s-Domain\nThe Laplace Transform \\(X(s)\\) of a signal \\(x(t)\\) is defined as:\n\\[\nX(s) = \\int_{-\\infty}^{+\\infty} x(t) e^{-st} dt\n\\]\nWhere \\(s = \\sigma + j\\omega\\). This means \\(X(s)\\) can be interpreted as the Fourier Transform of an exponentially weighted signal:\n\\[\nX(\\sigma+j \\omega)=\\mathcal{F}\\left\\{x(t) e^{-\\sigma t}\\right\\}=\\int_{-\\infty}^{+\\infty} x(t) e^{-\\sigma t} e^{-j \\omega t} d t \\tag{9.53}\n\\]\n\n\n\n\n\n\nNote\n\n\nThe Region of Convergence (ROC) for \\(X(s)\\) is crucial. It defines the range of \\(\\sigma\\) values for which the integral converges.\n\n\n\n\nRemind students that the Laplace transform extends the Fourier transform by allowing for exponentially growing or decaying signals. The real part of ‘s’, sigma, acts as a damping factor, ensuring the integral converges. Emphasize that knowing just \\(X(s)\\) algebraically is not enough; the ROC is equally important for defining the transform."
+  },
+  {
+    "objectID": "ss_93.html#the-inverse-laplace-transform-formula",
+    "href": "ss_93.html#the-inverse-laplace-transform-formula",
+    "title": "Signals and Systems",
+    "section": "The Inverse Laplace Transform Formula",
+    "text": "The Inverse Laplace Transform Formula\nWe can recover \\(x(t)\\) from \\(X(s)\\) using the inverse Fourier transform relationship:\n\\[\nx(t) e^{-\\sigma t}=\\mathcal{F}^{-1}\\{X(\\sigma+j \\omega)\\}=\\frac{1}{2 \\pi} \\int_{-\\infty}^{+\\infty} X(\\sigma+j \\omega) e^{j \\omega t} d \\omega \\tag{9.54}\n\\]\nMultiplying by \\(e^{\\sigma t}\\), we get:\n\\[\nx(t)=\\frac{1}{2 \\pi} \\int_{-\\infty}^{+\\infty} X(\\sigma+j \\omega) e^{(\\sigma+j \\omega) t} d \\omega \\tag{9.55}\n\\]\nBy changing the variable of integration from \\(\\omega\\) to \\(s\\) (\\(ds = j d\\omega\\) since \\(\\sigma\\) is constant), we obtain the fundamental inverse Laplace transform equation:\n\\[\nx(t)=\\frac{1}{2 \\pi j} \\int_{\\sigma-j \\infty}^{\\sigma+j \\infty} X(s) e^{s t} d s \\tag{9.56}\n\\]\n\n\n\n\n\n\nWarning\n\n\nThe integral in Eq. (9.56) is a contour integral in the complex \\(s\\)-plane. For most ECE undergraduate courses, direct evaluation is often complex and solved using alternative methods.\n\n\n\n\nExplain that the integration path is a vertical line in the s-plane, where the real part \\(\\sigma\\) is constant and within the ROC. This formula is powerful but computationally intensive. We will focus on a more practical approach for rational functions."
+  },
+  {
+    "objectID": "ss_93.html#practical-inversion-partial-fraction-expansion-pfe",
+    "href": "ss_93.html#practical-inversion-partial-fraction-expansion-pfe",
+    "title": "Signals and Systems",
+    "section": "Practical Inversion: Partial Fraction Expansion (PFE)",
+    "text": "Practical Inversion: Partial Fraction Expansion (PFE)\nFor rational Laplace Transforms, \\(X(s) = P(s)/Q(s)\\), we typically use Partial Fraction Expansion (PFE). This method avoids direct evaluation of the complex integral.\nThe procedure involves:\n\nFactorizing the denominator polynomial \\(Q(s)\\).\nExpanding \\(X(s)\\) into a sum of simpler terms (e.g., first-order terms).\nIdentifying the inverse Laplace transform for each term, considering its Region of Convergence (ROC).\n\nFor distinct poles, \\(X(s)\\) can be expanded as:\n\\[\nX(s)=\\sum_{i=1}^{m} \\frac{A_{i}}{s+a_{i}} \\tag{9.57}\n\\]\n\n\n\n\n\n\nImportant\n\n\nThe ROC of the original \\(X(s)\\) is vital for correctly determining the inverse transform of each partial fraction term!"
+  },
+  {
+    "objectID": "ss_93.html#inverse-transform-of-basic-terms",
+    "href": "ss_93.html#inverse-transform-of-basic-terms",
+    "title": "Signals and Systems",
+    "section": "Inverse Transform of Basic Terms",
+    "text": "Inverse Transform of Basic Terms\nThe inverse Laplace transform of a first-order term \\(\\frac{1}{s+a}\\) depends entirely on its ROC.\n\n\nCase 1: Right-Sided Signal\nIf the ROC is to the right of the pole \\(s=-a\\) (\\(\\operatorname{Re}\\{s\\} &gt; -a\\)):\n\\[\n\\frac{1}{s+a} \\stackrel{\\mathcal{L}^{-1}}{\\longleftrightarrow} e^{-at}u(t)\n\\]\nThis corresponds to a causal or right-sided exponential.\n\nCase 2: Left-Sided Signal\nIf the ROC is to the left of the pole \\(s=-a\\) (\\(\\operatorname{Re}\\{s\\} &lt; -a\\)):\n\\[\n\\frac{1}{s+a} \\stackrel{\\mathcal{L}^{-1}}{\\longleftrightarrow} -e^{-at}u(-t)\n\\]\nThis corresponds to an anti-causal or left-sided exponential.\n\n\n\n\n\n\n\nTip\n\n\nRemember: The ROC for a right-sided signal is always to the right of its rightmost pole. The ROC for a left-sided signal is always to the left of its leftmost pole. For a two-sided signal, the ROC is a strip between poles.\n\n\n\n\nVisually differentiate between the two cases. Emphasize the sign change for the left-sided signal and the role of \\(u(t)\\) and \\(u(-t)\\). This is a fundamental concept for inverse Laplace transforms."
+  },
+  {
+    "objectID": "ss_93.html#example-9.9-right-sided-signal",
+    "href": "ss_93.html#example-9.9-right-sided-signal",
+    "title": "Signals and Systems",
+    "section": "Example 9.9: Right-Sided Signal",
+    "text": "Example 9.9: Right-Sided Signal\nLet’s find the inverse Laplace transform of:\n\\[\nX(s)=\\frac{1}{(s+1)(s+2)}, \\quad \\operatorname{Re}\\{s\\}&gt;-1 \\tag{9.58}\n\\]\n\nPartial-Fraction Expansion: \\(X(s)=\\frac{A}{s+1}+\\frac{B}{s+2}\\)\nUsing the cover-up method: \\(A = \\left.[(s+1)X(s)]\\right|_{s=-1} = \\frac{1}{-1+2} = 1\\) \\(B = \\left.[(s+2)X(s)]\\right|_{s=-2} = \\frac{1}{-2+1} = -1\\)\nSo, \\(X(s)=\\frac{1}{s+1}-\\frac{1}{s+2} \\tag{9.62}\\)\nApply ROC to terms: The overall ROC is \\(\\operatorname{Re}\\{s\\}&gt;-1\\). This is to the right of both poles (\\(s=-1\\) and \\(s=-2\\)). Therefore, both terms correspond to right-sided signals.\n\nFor \\(\\frac{1}{s+1}\\): ROC is \\(\\operatorname{Re}\\{s\\}&gt;-1 \\implies e^{-t}u(t)\\)\nFor \\(\\frac{1}{s+2}\\): ROC is \\(\\operatorname{Re}\\{s\\}&gt;-2 \\implies -e^{-2t}u(t)\\)"
+  },
+  {
+    "objectID": "ss_93.html#example-9.9-pole-zero-plot-and-roc",
+    "href": "ss_93.html#example-9.9-pole-zero-plot-and-roc",
+    "title": "Signals and Systems",
+    "section": "Example 9.9: Pole-Zero Plot and ROC",
+    "text": "Example 9.9: Pole-Zero Plot and ROC\nThe pole-zero plot for \\(X(s)=\\frac{1}{(s+1)(s+2)}\\) with ROC \\(\\operatorname{Re}\\{s\\}&gt;-1\\):\nInterpretation of ROC:\nThe overall ROC, \\(\\operatorname{Re}\\{s\\}&gt;-1\\), is to the right of both poles.\n\nFor the term \\(\\frac{1}{s+1}\\): its ROC is \\(\\operatorname{Re}\\{s\\}&gt;-1\\). This implies a right-sided signal: \\(e^{-t}u(t)\\).\nFor the term \\(\\frac{1}{s+2}\\): its ROC is \\(\\operatorname{Re}\\{s\\}&gt;-1\\). Since this is to the right of its pole at \\(-2\\), this also implies a right-sided signal: \\(-e^{-2t}u(t)\\).\n\nThus, both terms contribute right-sided signals.\n\nExplain that for the individual terms, their ROCs are determined by the overall ROC. If the overall ROC is to the right of all poles, then each term’s ROC must also be to the right of its respective pole."
+  },
+  {
+    "objectID": "ss_93.html#example-9.10-left-sided-signal",
+    "href": "ss_93.html#example-9.10-left-sided-signal",
+    "title": "Signals and Systems",
+    "section": "Example 9.10: Left-Sided Signal",
+    "text": "Example 9.10: Left-Sided Signal\nConsider the same \\(X(s)\\), but with a different ROC:\n\\[\nX(s)=\\frac{1}{(s+1)(s+2)}, \\quad \\operatorname{Re}\\{s\\}&lt;-2\n\\]\n\nPartial-Fraction Expansion: Still \\(X(s)=\\frac{1}{s+1}-\\frac{1}{s+2}\\)\nApply ROC to terms: The overall ROC is \\(\\operatorname{Re}\\{s\\}&lt;-2\\). This is to the left of both poles (\\(s=-1\\) and \\(s=-2\\)). Therefore, both terms correspond to left-sided signals.\n\nFor \\(\\frac{1}{s+1}\\): The ROC \\(\\operatorname{Re}\\{s\\}&lt;-1\\) (consistent with overall ROC) implies \\(-e^{-t}u(-t)\\).\nFor \\(\\frac{1}{s+2}\\): The ROC \\(\\operatorname{Re}\\{s\\}&lt;-2\\) implies \\(-(-e^{-2t}u(-t)) = e^{-2t}u(-t)\\) (due to the negative sign in PFE).\n\nCombine the terms:\n\\[\nx(t) = [-e^{-t} + e^{-2t}]u(-t) \\tag{9.68}\n\\]\n\n\nEmphasize how the change in ROC drastically changes the time-domain signal. Point out the sign manipulation for the second term due to the PFE and the left-sided rule."
+  },
+  {
+    "objectID": "ss_93.html#example-9.11-two-sided-signal",
+    "href": "ss_93.html#example-9.11-two-sided-signal",
+    "title": "Signals and Systems",
+    "section": "Example 9.11: Two-Sided Signal",
+    "text": "Example 9.11: Two-Sided Signal\nOnce again, the same \\(X(s)\\), but with a ROC between the poles:\n\\[\nX(s)=\\frac{1}{(s+1)(s+2)}, \\quad -2 &lt; \\operatorname{Re}\\{s\\} &lt; -1\n\\]\n\nPartial-Fraction Expansion: Still \\(X(s)=\\frac{1}{s+1}-\\frac{1}{s+2}\\)\nApply ROC to terms: The overall ROC is \\(-2 &lt; \\operatorname{Re}\\{s\\} &lt; -1\\).\n\nFor the pole at \\(s=-1\\): The ROC \\(\\operatorname{Re}\\{s\\} &lt; -1\\) (consistent with overall ROC) means it’s to the left of this pole. \\(\\implies \\frac{1}{s+1} \\longleftrightarrow -e^{-t}u(-t)\\)\nFor the pole at \\(s=-2\\): The ROC \\(\\operatorname{Re}\\{s\\} &gt; -2\\) (consistent with overall ROC) means it’s to the right of this pole. \\(\\implies \\frac{1}{s+2} \\longleftrightarrow e^{-2t}u(t)\\)\n\nCombine the terms:\n\\[\nx(t) = -e^{-t}u(-t) - e^{-2t}u(t) \\tag{9.69}\n\\]\n\n\nThis example shows a two-sided signal, which results when the ROC lies between poles. Explain how each term’s ROC is determined by its relation to the overall ROC and its own pole location."
+  },
+  {
+    "objectID": "ss_93.html#interactive-demo-partial-fraction-coefficients",
+    "href": "ss_93.html#interactive-demo-partial-fraction-coefficients",
+    "title": "Signals and Systems",
+    "section": "Interactive Demo: Partial Fraction Coefficients",
+    "text": "Interactive Demo: Partial Fraction Coefficients\nLet’s calculate the coefficients for a simple rational function: \\(X(s) = \\frac{1}{(s+a)(s+b)} = \\frac{A}{s+a} + \\frac{B}{s+b}\\)\nInput values for \\(a\\) and \\(b\\) (assume \\(a \\neq b\\)).\n\nviewof pole_a = Inputs.number({value: 1, min: -5, max: 5, step: 0.1, label: \"Pole a (for s+a)\"});\nviewof pole_b = Inputs.number({value: 2, min: -5, max: 5, step: 0.1, label: \"Pole b (for s+b)\"});\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExplain the cover-up method for finding A and B. Encourage students to try different values and observe the coefficients. This provides immediate feedback and reinforces the PFE calculation. Point out the potential for errors if poles are not distinct."
+  },
+  {
+    "objectID": "ss_93.html#interactive-demo-visualizing-inverse-laplace-transforms",
+    "href": "ss_93.html#interactive-demo-visualizing-inverse-laplace-transforms",
+    "title": "Signals and Systems",
+    "section": "Interactive Demo: Visualizing Inverse Laplace Transforms",
+    "text": "Interactive Demo: Visualizing Inverse Laplace Transforms\nExplore how ROC changes the time-domain signal. For \\(X(s) = \\frac{1}{(s+1)(s+2)}\\), the PFE is \\(\\frac{1}{s+1} - \\frac{1}{s+2}\\).\nAdjust the ROC boundaries below and observe the resulting \\(x(t)\\).\n\nviewof sigma_low = Inputs.number({value: -2.5, min: -3.5, max: 0.5, step: 0.1, label: \"ROC Lower Bound (e.g., -inf = -3.5)\"});\nviewof sigma_high = Inputs.number({value: -0.5, min: -3.5, max: 0.5, step: 0.1, label: \"ROC Upper Bound (e.g., +inf = 0.5)\"});\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTip\n\n\nPoles at: \\(s_1 = -1\\), \\(s_2 = -2\\). - Try setting ROC: (-0.5 &lt; Re{s}) for Example 9.9 (Right-sided). - Try setting ROC: (Re{s} &lt; -2.5) for Example 9.10 (Left-sided). - Try setting ROC: (-2.0 &lt; Re{s} &lt; -1.0) for Example 9.11 (Two-sided).\n\n\n\n\n\n\n\n\n\n\nExplain the logic in the Python code: how sigma_low and sigma_high determine if each pole’s contribution is right-sided or left-sided. Encourage students to set the sliders to match the ROCs from Examples 9.9, 9.10, and 9.11 to see the corresponding signals. This is a powerful visualization of the ROC’s importance. Mention that the sigma_low and sigma_high inputs simulate the boundaries of the ROC. For an “infinite” ROC, students should set it to the max/min of the slider range."
+  },
+  {
+    "objectID": "ss_93.html#practical-inversion-partial-fraction-expansion-pfe-1",
+    "href": "ss_93.html#practical-inversion-partial-fraction-expansion-pfe-1",
+    "title": "Signals and Systems",
+    "section": "Practical Inversion: Partial Fraction Expansion (PFE)",
+    "text": "Practical Inversion: Partial Fraction Expansion (PFE)\nExample Structure:\nGiven \\(X(s) = \\frac{s+3}{(s+1)(s+2)}\\)\n\nFactorized (already done)\nPFE: \\(X(s) = \\frac{A}{s+1} + \\frac{B}{s+2}\\)\nSolve for \\(A\\) and \\(B\\). \\(A = \\left.[(s+1)X(s)]\\right|_{s=-1}\\) \\(B = \\left.[(s+2)X(s)]\\right|_{s=-2}\\)\nThen, based on ROC, find \\(x(t)\\).\n\n\nHighlight that PFE simplifies the complex \\(X(s)\\) into a sum of basic forms whose inverse transforms are known. The key challenge for students is understanding how the overall ROC applies to each individual term to determine its time-domain characteristic (right-sided, left-sided)."
+  },
+  {
+    "objectID": "ss_93.html#example-9.9-right-sided-signal-cont.",
+    "href": "ss_93.html#example-9.9-right-sided-signal-cont.",
+    "title": "Signals and Systems",
+    "section": "Example 9.9: Right-Sided Signal (cont.)",
+    "text": "Example 9.9: Right-Sided Signal (cont.)\n\nCombine the terms:\n\\[\nx(t) = (e^{-t} - e^{-2t})u(t) \\tag{9.65}\n\\]\n\n\nWalk through each step clearly. Explain why both terms are right-sided based on the overall ROC extending to the right of all poles."
+  },
+  {
+    "objectID": "ss_95.html#the-inverse-laplace-transform",
+    "href": "ss_95.html#the-inverse-laplace-transform",
+    "title": "Signals and Systems",
+    "section": "The Inverse Laplace Transform",
+    "text": "The Inverse Laplace Transform\nRecovering Signals from the s-Domain"
+  },
+  {
+    "objectID": "ss_95.html#recap-from-time-to-s-domain",
+    "href": "ss_95.html#recap-from-time-to-s-domain",
+    "title": "Signals and Systems",
+    "section": "Recap: From Time to s-Domain",
+    "text": "Recap: From Time to s-Domain\nThe Laplace Transform \\(X(s)\\) of a signal \\(x(t)\\) is defined as:\n\\[\nX(s) = \\int_{-\\infty}^{+\\infty} x(t) e^{-st} dt\n\\]\nWhere \\(s = \\sigma + j\\omega\\). This means \\(X(s)\\) can be interpreted as the Fourier Transform of an exponentially weighted signal:\n\\[\nX(\\sigma+j \\omega)=\\mathcal{F}\\left\\{x(t) e^{-\\sigma t}\\right\\}=\\int_{-\\infty}^{+\\infty} x(t) e^{-\\sigma t} e^{-j \\omega t} d t \\tag{9.53}\n\\]\n\n\n\n\n\n\nNote\n\n\nThe Region of Convergence (ROC) for \\(X(s)\\) is crucial. It defines the range of \\(\\sigma\\) values for which the integral converges.\n\n\n\n\nRemind students that the Laplace transform extends the Fourier transform by allowing for exponentially growing or decaying signals. The real part of ‘s’, sigma, acts as a damping factor, ensuring the integral converges. Emphasize that knowing just \\(X(s)\\) algebraically is not enough; the ROC is equally important for defining the transform."
+  },
+  {
+    "objectID": "ss_95.html#the-inverse-laplace-transform-formula",
+    "href": "ss_95.html#the-inverse-laplace-transform-formula",
+    "title": "Signals and Systems",
+    "section": "The Inverse Laplace Transform Formula",
+    "text": "The Inverse Laplace Transform Formula\nWe can recover \\(x(t)\\) from \\(X(s)\\) using the inverse Fourier transform relationship:\n\\[\nx(t) e^{-\\sigma t}=\\mathcal{F}^{-1}\\{X(\\sigma+j \\omega)\\}=\\frac{1}{2 \\pi} \\int_{-\\infty}^{+\\infty} X(\\sigma+j \\omega) e^{j \\omega t} d \\omega \\tag{9.54}\n\\]\nMultiplying by \\(e^{\\sigma t}\\), we get:\n\\[\nx(t)=\\frac{1}{2 \\pi} \\int_{-\\infty}^{+\\infty} X(\\sigma+j \\omega) e^{(\\sigma+j \\omega) t} d \\omega \\tag{9.55}\n\\]\nBy changing the variable of integration from \\(\\omega\\) to \\(s\\) (\\(ds = j d\\omega\\) since \\(\\sigma\\) is constant), we obtain the fundamental inverse Laplace transform equation:\n\\[\nx(t)=\\frac{1}{2 \\pi j} \\int_{\\sigma-j \\infty}^{\\sigma+j \\infty} X(s) e^{s t} d s \\tag{9.56}\n\\]\n\n\n\n\n\n\nWarning\n\n\nThe integral in Eq. (9.56) is a contour integral in the complex \\(s\\)-plane. For most ECE undergraduate courses, direct evaluation is often complex and solved using alternative methods.\n\n\n\n\nExplain that the integration path is a vertical line in the s-plane, where the real part \\(\\sigma\\) is constant and within the ROC. This formula is powerful but computationally intensive. We will focus on a more practical approach for rational functions."
+  },
+  {
+    "objectID": "ss_95.html#practical-inversion-partial-fraction-expansion-pfe",
+    "href": "ss_95.html#practical-inversion-partial-fraction-expansion-pfe",
+    "title": "Signals and Systems",
+    "section": "Practical Inversion: Partial Fraction Expansion (PFE)",
+    "text": "Practical Inversion: Partial Fraction Expansion (PFE)\nFor rational Laplace Transforms, \\(X(s) = P(s)/Q(s)\\), we typically use Partial Fraction Expansion (PFE). This method avoids direct evaluation of the complex integral.\n\n\nThe procedure involves:\n\nFactorizing the denominator polynomial \\(Q(s)\\).\nExpanding \\(X(s)\\) into a sum of simpler terms (e.g., first-order terms).\nIdentifying the inverse Laplace transform for each term, considering its Region of Convergence (ROC).\n\nFor distinct poles, \\(X(s)\\) can be expanded as:\n\\[\nX(s)=\\sum_{i=1}^{m} \\frac{A_{i}}{s+a_{i}} \\tag{9.57}\n\\]\n\n\n\n\n\n\nImportant\n\n\nThe ROC of the original \\(X(s)\\) is vital for correctly determining the inverse transform of each partial fraction term!\n\n\n\n\nExample Structure:\nGiven \\(X(s) = \\frac{s+3}{(s+1)(s+2)}\\)\n\nFactorized (already done)\nPFE: \\(X(s) = \\frac{A}{s+1} + \\frac{B}{s+2}\\)\nSolve for \\(A\\) and \\(B\\). \\(A = \\left.[(s+1)X(s)]\\right|_{s=-1}\\) \\(B = \\left.[(s+2)X(s)]\\right|_{s=-2}\\)\nThen, based on ROC, find \\(x(t)\\).\n\n\n\nHighlight that PFE simplifies the complex \\(X(s)\\) into a sum of basic forms whose inverse transforms are known. The key challenge for students is understanding how the overall ROC applies to each individual term to determine its time-domain characteristic (right-sided, left-sided)."
+  },
+  {
+    "objectID": "ss_95.html#inverse-transform-of-basic-terms",
+    "href": "ss_95.html#inverse-transform-of-basic-terms",
+    "title": "Signals and Systems",
+    "section": "Inverse Transform of Basic Terms",
+    "text": "Inverse Transform of Basic Terms\nThe inverse Laplace transform of a first-order term \\(\\frac{1}{s+a}\\) depends entirely on its ROC.\n\n\nCase 1: Right-Sided Signal\nIf the ROC is to the right of the pole \\(s=-a\\) (\\(\\operatorname{Re}\\{s\\} &gt; -a\\)):\n\\[\n\\frac{1}{s+a} \\stackrel{\\mathcal{L}^{-1}}{\\longleftrightarrow} e^{-at}u(t)\n\\]\nThis corresponds to a causal or right-sided exponential.\n\nCase 2: Left-Sided Signal\nIf the ROC is to the left of the pole \\(s=-a\\) (\\(\\operatorname{Re}\\{s\\} &lt; -a\\)):\n\\[\n\\frac{1}{s+a} \\stackrel{\\mathcal{L}^{-1}}{\\longleftrightarrow} -e^{-at}u(-t)\n\\]\nThis corresponds to an anti-causal or left-sided exponential.\n\n\n\n\n\n\n\nTip\n\n\nRemember: The ROC for a right-sided signal is always to the right of its rightmost pole. The ROC for a left-sided signal is always to the left of its leftmost pole. For a two-sided signal, the ROC is a strip between poles.\n\n\n\n\nVisually differentiate between the two cases. Emphasize the sign change for the left-sided signal and the role of \\(u(t)\\) and \\(u(-t)\\). This is a fundamental concept for inverse Laplace transforms."
+  },
+  {
+    "objectID": "ss_95.html#example-9.9-right-sided-signal",
+    "href": "ss_95.html#example-9.9-right-sided-signal",
+    "title": "Signals and Systems",
+    "section": "Example 9.9: Right-Sided Signal",
+    "text": "Example 9.9: Right-Sided Signal\nLet’s find the inverse Laplace transform of:\n\\[\nX(s)=\\frac{1}{(s+1)(s+2)}, \\quad \\operatorname{Re}\\{s\\}&gt;-1 \\tag{9.58}\n\\]\n\nPartial-Fraction Expansion: \\(X(s)=\\frac{A}{s+1}+\\frac{B}{s+2}\\)\nUsing the cover-up method: \\(A = \\left.[(s+1)X(s)]\\right|_{s=-1} = \\frac{1}{-1+2} = 1\\) \\(B = \\left.[(s+2)X(s)]\\right|_{s=-2} = \\frac{1}{-2+1} = -1\\)\nSo, \\(X(s)=\\frac{1}{s+1}-\\frac{1}{s+2} \\tag{9.62}\\)\nApply ROC to terms: The overall ROC is \\(\\operatorname{Re}\\{s\\}&gt;-1\\). This is to the right of both poles (\\(s=-1\\) and \\(s=-2\\)). Therefore, both terms correspond to right-sided signals.\n\nFor \\(\\frac{1}{s+1}\\): ROC is \\(\\operatorname{Re}\\{s\\}&gt;-1 \\implies e^{-t}u(t)\\)\nFor \\(\\frac{1}{s+2}\\): ROC is \\(\\operatorname{Re}\\{s\\}&gt;-2 \\implies -e^{-2t}u(t)\\)\n\nCombine the terms:\n\\[\nx(t) = (e^{-t} - e^{-2t})u(t) \\tag{9.65}\n\\]\n\n\nWalk through each step clearly. Explain why both terms are right-sided based on the overall ROC extending to the right of all poles."
+  },
+  {
+    "objectID": "ss_95.html#example-9.9-pole-zero-plot-and-roc",
+    "href": "ss_95.html#example-9.9-pole-zero-plot-and-roc",
+    "title": "Signals and Systems",
+    "section": "Example 9.9: Pole-Zero Plot and ROC",
+    "text": "Example 9.9: Pole-Zero Plot and ROC\nThe pole-zero plot for \\(X(s)=\\frac{1}{(s+1)(s+2)}\\) with ROC \\(\\operatorname{Re}\\{s\\}&gt;-1\\):\n\n\n\n\n\n\n\ngraph TD\n    subgraph S-Plane (Poles and ROC)\n        direction LR\n        Jomega[\"$$j\\omega$$ Axis\"] --.-&gt; Sigma[\"$$\\sigma$$ Axis\"]\n      \n        Pole_at_minus_2[\"X ($$-2$$)\"]\n        Pole_at_minus_1[\"X ($$-1$$)\"]\n      \n        Sigma -- ROC_Boundary(\"$$\\sigma = -1$$\")\n      \n        Pole_at_minus_2 --.-&gt; Pole_at_minus_1\n        Pole_at_minus_1 --.-&gt; ROC_Boundary\n      \n        ROC_Boundary -- \"ROC extends to the right\" --&gt; Right_Region[$$Re\\{s\\} &gt; -1$$]\n      \n        style Pole_at_minus_2 fill:#F00,stroke:#333,stroke-width:2px;\n        style Pole_at_minus_1 fill:#F00,stroke:#333,stroke-width:2px;\n        style ROC_Boundary stroke:#00F,stroke-width:2px,stroke-dasharray: 5 5;\n        style Right_Region fill:#E0E0FF,stroke:#E0E0FF;\n    end\n\n\n\n\n\n\n\nInterpretation of ROC:\nThe overall ROC, \\(\\operatorname{Re}\\{s\\}&gt;-1\\), is to the right of both poles.\n\nFor the term \\(\\frac{1}{s+1}\\): its ROC is \\(\\operatorname{Re}\\{s\\}&gt;-1\\). This implies a right-sided signal: \\(e^{-t}u(t)\\).\nFor the term \\(\\frac{1}{s+2}\\): its ROC is \\(\\operatorname{Re}\\{s\\}&gt;-2\\). Since this is to the right of its pole at \\(-2\\), this also implies a right-sided signal: \\(-e^{-2t}u(t)\\).\n\nThus, both terms contribute right-sided signals.\n\n\nExplain that for the individual terms, their ROCs are determined by the overall ROC. If the overall ROC is to the right of all poles, then each term’s ROC must also be to the right of its respective pole."
+  },
+  {
+    "objectID": "ss_95.html#example-9.10-left-sided-signal",
+    "href": "ss_95.html#example-9.10-left-sided-signal",
+    "title": "Signals and Systems",
+    "section": "Example 9.10: Left-Sided Signal",
+    "text": "Example 9.10: Left-Sided Signal\nConsider the same \\(X(s)\\), but with a different ROC:\n\\[\nX(s)=\\frac{1}{(s+1)(s+2)}, \\quad \\operatorname{Re}\\{s\\}&lt;-2\n\\]\n\nPartial-Fraction Expansion: Still \\(X(s)=\\frac{1}{s+1}-\\frac{1}{s+2}\\)\nApply ROC to terms: The overall ROC is \\(\\operatorname{Re}\\{s\\}&lt;-2\\). This is to the left of both poles (\\(s=-1\\) and \\(s=-2\\)). Therefore, both terms correspond to left-sided signals.\n\nFor \\(\\frac{1}{s+1}\\): The ROC \\(\\operatorname{Re}\\{s\\}&lt;-1\\) (consistent with overall ROC) implies \\(-e^{-t}u(-t)\\).\nFor \\(\\frac{1}{s+2}\\): The ROC \\(\\operatorname{Re}\\{s\\}&lt;-2\\) implies \\(-(-e^{-2t}u(-t)) = e^{-2t}u(-t)\\) (due to the negative sign in PFE).\n\nCombine the terms:\n\\[\nx(t) = [-e^{-t} + e^{-2t}]u(-t) \\tag{9.68}\n\\]\n\n\nEmphasize how the change in ROC drastically changes the time-domain signal. Point out the sign manipulation for the second term due to the PFE and the left-sided rule."
+  },
+  {
+    "objectID": "ss_95.html#example-9.11-two-sided-signal",
+    "href": "ss_95.html#example-9.11-two-sided-signal",
+    "title": "Signals and Systems",
+    "section": "Example 9.11: Two-Sided Signal",
+    "text": "Example 9.11: Two-Sided Signal\nOnce again, the same \\(X(s)\\), but with a ROC between the poles:\n\\[\nX(s)=\\frac{1}{(s+1)(s+2)}, \\quad -2 &lt; \\operatorname{Re}\\{s\\} &lt; -1\n\\]\n\nPartial-Fraction Expansion: Still \\(X(s)=\\frac{1}{s+1}-\\frac{1}{s+2}\\)\nApply ROC to terms: The overall ROC is \\(-2 &lt; \\operatorname{Re}\\{s\\} &lt; -1\\).\n\nFor the pole at \\(s=-1\\): The ROC \\(\\operatorname{Re}\\{s\\} &lt; -1\\) (consistent with overall ROC) means it’s to the left of this pole. \\(\\implies \\frac{1}{s+1} \\longleftrightarrow -e^{-t}u(-t)\\)\nFor the pole at \\(s=-2\\): The ROC \\(\\operatorname{Re}\\{s\\} &gt; -2\\) (consistent with overall ROC) means it’s to the right of this pole. \\(\\implies \\frac{1}{s+2} \\longleftrightarrow e^{-2t}u(t)\\)\n\nCombine the terms:\n\\[\nx(t) = -e^{-t}u(-t) - e^{-2t}u(t) \\tag{9.69}\n\\]\n\n\nThis example shows a two-sided signal, which results when the ROC lies between poles. Explain how each term’s ROC is determined by its relation to the overall ROC and its own pole location."
+  },
+  {
+    "objectID": "ss_95.html#interactive-demo-partial-fraction-coefficients",
+    "href": "ss_95.html#interactive-demo-partial-fraction-coefficients",
+    "title": "Signals and Systems",
+    "section": "Interactive Demo: Partial Fraction Coefficients",
+    "text": "Interactive Demo: Partial Fraction Coefficients\nLet’s calculate the coefficients for a simple rational function: \\(X(s) = \\frac{1}{(s+a)(s+b)} = \\frac{A}{s+a} + \\frac{B}{s+b}\\)\nInput values for \\(a\\) and \\(b\\) (assume \\(a \\neq b\\)).\n\nviewof pfe_pole_a = Inputs.number({value: 1, min: -5, max: 5, step: 0.1, label: \"Pole a (for s+a)\"});\nviewof pfe_pole_b = Inputs.number({value: 2, min: -5, max: 5, step: 0.1, label: \"Pole b (for s+b)\"});\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExplain the cover-up method for finding A and B. Encourage students to try different values and observe the coefficients. This provides immediate feedback and reinforces the PFE calculation. Point out the potential for errors if poles are not distinct."
+  },
+  {
+    "objectID": "ss_95.html#interactive-demo-visualizing-inverse-laplace-transforms",
+    "href": "ss_95.html#interactive-demo-visualizing-inverse-laplace-transforms",
+    "title": "Signals and Systems",
+    "section": "Interactive Demo: Visualizing Inverse Laplace Transforms",
+    "text": "Interactive Demo: Visualizing Inverse Laplace Transforms\nExplore how ROC changes the time-domain signal. For \\(X(s) = \\frac{1}{(s+1)(s+2)}\\), the PFE is \\(\\frac{1}{s+1} - \\frac{1}{s+2}\\).\nAdjust the ROC boundaries below and observe the resulting \\(x(t)\\).\n\nviewof sigma_low = Inputs.number({value: -2.5, min: -3.5, max: 0.5, step: 0.1, label: \"ROC Lower Bound (e.g., -inf = -3.5)\"});\nviewof sigma_high = Inputs.number({value: -0.5, min: -3.5, max: 0.5, step: 0.1, label: \"ROC Upper Bound (e.g., +inf = 0.5)\"});\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTip\n\n\nPoles at: \\(s_1 = -1\\), \\(s_2 = -2\\). - Try setting ROC: (-0.5 &lt; Re{s}) for Example 9.9 (Right-sided). - Try setting ROC: (Re{s} &lt; -2.5) for Example 9.10 (Left-sided). - Try setting ROC: (-2.0 &lt; Re{s} &lt; -1.0) for Example 9.11 (Two-sided).\n\n\n\n\n\n\n\n\n\n\nExplain the logic in the Python code: how sigma_low and sigma_high determine if each pole’s contribution is right-sided or left-sided. Encourage students to set the sliders to match the ROCs from Examples 9.9, 9.10, and 9.11 to see the corresponding signals. This is a powerful visualization of the ROC’s importance. Mention that the sigma_low and sigma_high inputs simulate the boundaries of the ROC. For an “infinite” ROC, students should set it to the max/min of the slider range."
+  },
+  {
+    "objectID": "ss_95.html#leveraging-transform-domain-relationships",
+    "href": "ss_95.html#leveraging-transform-domain-relationships",
+    "title": "Signals and Systems",
+    "section": "Leveraging Transform Domain Relationships",
+    "text": "Leveraging Transform Domain Relationships\nJust like with the Fourier Transform, the Laplace Transform has a rich set of properties that simplify analysis and provide deeper insights. These properties are invaluable for:\n\nDeriving new transform pairs.\nAnalyzing LTI systems.\nSolving differential equations.\nChecking calculations.\n\nWe will explore key properties and their implications on both the signal and its ROC.\n\nIntroduce the section by highlighting the utility of properties in Signals and Systems, drawing a parallel to Fourier Transform properties. Emphasize that understanding these properties is crucial for practical applications."
+  },
+  {
+    "objectID": "ss_95.html#linearity-of-the-laplace-transform",
+    "href": "ss_95.html#linearity-of-the-laplace-transform",
+    "title": "Signals and Systems",
+    "section": "Linearity of the Laplace Transform",
+    "text": "Linearity of the Laplace Transform\nIf \\(x_1(t) \\stackrel{\\mathcal{L}}{\\longleftrightarrow} X_1(s)\\) with ROC \\(R_1\\), and \\(x_2(t) \\stackrel{\\mathcal{L}}{\\longleftrightarrow} X_2(s)\\) with ROC \\(R_2\\),\nThen, for constants \\(a, b\\):\n\\[\na x_{1}(t)+b x_{2}(t) \\stackrel{\\mathcal{L}}{\\longleftrightarrow} a X_{1}(s)+b X_{2}(s) \\tag{9.82}\n\\]\nROC: At least contains \\(R_1 \\cap R_2\\). The ROC can sometimes be larger than the intersection, especially due to pole-zero cancellation.\n\n\n\n\n\n\nTip\n\n\nIf \\(R_1 \\cap R_2\\) is empty, then the linear combination \\(ax_1(t) + bx_2(t)\\) generally does not have a Laplace Transform.\n\n\n\n\nExplain that linearity holds for both the transform and the inverse transform. The critical point here is the ROC; it’s at least the intersection, meaning it can expand. This expansion is usually due to cancellations."
+  },
+  {
+    "objectID": "ss_95.html#example-9.13-linearity-and-roc-extension",
+    "href": "ss_95.html#example-9.13-linearity-and-roc-extension",
+    "title": "Signals and Systems",
+    "section": "Example 9.13: Linearity and ROC Extension",
+    "text": "Example 9.13: Linearity and ROC Extension\nConsider \\(x(t) = x_1(t) - x_2(t)\\) where:\n\\(X_1(s)=\\frac{1}{s+1}\\), with \\(\\operatorname{Re}\\{s\\}&gt;-1\\) (\\(R_1\\)) \\(X_2(s)=\\frac{1}{(s+1)(s+2)}\\), with \\(\\operatorname{Re}\\{s\\}&gt;-1\\) (\\(R_2\\))\nThe intersection \\(R_1 \\cap R_2\\) is \\(\\operatorname{Re}\\{s\\}&gt;-1\\).\nNow, \\(X(s) = X_1(s) - X_2(s)\\):\n\\[\nX(s)=\\frac{1}{s+1}-\\frac{1}{(s+1)(s+2)} = \\frac{(s+2)-1}{(s+1)(s+2)} = \\frac{s+1}{(s+1)(s+2)} = \\frac{1}{s+2} \\tag{9.86}\n\\]\nThe pole at \\(s=-1\\) is canceled by a zero at \\(s=-1\\).\n\n\n\n\n\n\n\ngraph LR\n    subgraph X1(s)\n        direction LR\n        P1_X1[\"X (-1)\"]\n        ROC_X1[\"ROC: $$\\operatorname{Re}\\{s\\} &gt; -1$$\"]\n        P1_X1 --- ROC_X1\n        style P1_X1 fill:#F00,stroke:#333,stroke-width:2px;\n        style ROC_X1 fill:#E0E0FF,stroke:#00F,stroke-width:2px,stroke-dasharray: 5 5;\n    end\n  \n    subgraph X2(s)\n        direction LR\n        P1_X2[\"X (-1)\"]\n        P2_X2[\"X (-2)\"]\n        ROC_X2[\"ROC: $$\\operatorname{Re}\\{s\\} &gt; -1$$\"]\n        P2_X2 --- P1_X2 --- ROC_X2\n        style P1_X2 fill:#F00,stroke:#333,stroke-width:2px;\n        style P2_X2 fill:#F00,stroke:#333,stroke-width:2px;\n        style ROC_X2 fill:#FFE0E0,stroke:#F00,stroke-width:2px,stroke-dasharray: 5 5;\n    end\n  \n    subgraph X(s) = X1(s) - X2(s)\n        direction LR\n        P2_X[\"X (-2)\"]\n        Z1_X[\"O (-1)\"]\n        P1_X_Cancelled[\"X (-1)\"]\n      \n        P1_X_Cancelled -.- Z1_X\n      \n        ROC_X_Extended[\"ROC: $$\\operatorname{Re}\\{s\\} &gt; -2$$\"]\n        P2_X --- ROC_X_Extended\n      \n        style P1_X_Cancelled fill:#F00,stroke:#333,stroke-width:2px,opacity:0.5;\n        style Z1_X fill:#0F0,stroke:#333,stroke-width:2px,opacity:0.5;\n        style P2_X fill:#F00,stroke:#333,stroke-width:2px;\n        style ROC_X_Extended fill:#E0FFE0,stroke:#0F0,stroke-width:2px,stroke-dasharray: 5 5;\n    end\n\n    X1(s) -- \"Linear Combination\" --&gt; X(s)\n    X2(s) -- \"Linear Combination\" --&gt; X(s)\n  \n    linkStyle 0 stroke-width:0px;\n    linkStyle 1 stroke-width:0px;\n    linkStyle 2 stroke-width:0px;\n    linkStyle 3 stroke-width:0px;\n    linkStyle 4 stroke-width:0px;\n    linkStyle 5 stroke-width:0px;\n    linkStyle 6 stroke-width:0px;\n    linkStyle 7 stroke-width:0px;\n    linkStyle 8 stroke-width:0px;\n    linkStyle 9 stroke-width:0px;\n    linkStyle 10 stroke-width:0px;\n    linkStyle 11 stroke-width:0px;\n    linkStyle 12 stroke-width:0px;\n    linkStyle 13 stroke-width:0px;\n    linkStyle 14 stroke-width:0px;\n    linkStyle 15 stroke-width:0px;\n    linkStyle 16 stroke-width:0px;\n    linkStyle 17 stroke-width:0px;\n    linkStyle 18 stroke-width:0px;\n    linkStyle 19 stroke-width:0px;\n    linkStyle 20 stroke-width:0px;\n    linkStyle 21 stroke-width:0px;\n    linkStyle 22 stroke-width:0px;\n    linkStyle 23 stroke-width:0px;\n    linkStyle 24 stroke-width:0px;\n    linkStyle 25 stroke-width:0px;\n    linkStyle 26 stroke-width:0px;\n    linkStyle 27 stroke-width:0px;\n    linkStyle 28 stroke-width:0px;\n    linkStyle 29 stroke-width:0px;\n    linkStyle 30 stroke-width:0px;\n    linkStyle 31 stroke-width:0px;\n    linkStyle 32 stroke-width:0px;\n    linkStyle 33 stroke-width:0px;\n    linkStyle 34 stroke-width:0px;\n    linkStyle 35 stroke-width:0px;\n    linkStyle 36 stroke-width:0px;\n    linkStyle 37 stroke-width:0px;\n    linkStyle 38 stroke-width:0px;\n    linkStyle 39 stroke-width:0px;\n    linkStyle 40 stroke-width:0px;\n    linkStyle 41 stroke-width:0px;\n    linkStyle 42 stroke-width:0px;\n    linkStyle 43 stroke-width:0px;\n    linkStyle 44 stroke-width:0px;\n    linkStyle 45 stroke-width:0px;\n    linkStyle 46 stroke-width:0px;\n    linkStyle 47 stroke-width:0px;\n    linkStyle 48 stroke-width:0px;\n    linkStyle 49 stroke-width:0px;\n    linkStyle 50 stroke-width:0px;\n    linkStyle 51 stroke-width:0px;\n    linkStyle 52 stroke-width:0px;\n    linkStyle 53 stroke-width:0px;\n    linkStyle 54 stroke-width:0px;\n    linkStyle 55 stroke-width:0px;\n    linkStyle 56 stroke-width:0px;\n    linkStyle 57 stroke-width:0px;\n    linkStyle 58 stroke-width:0px;\n    linkStyle 59 stroke-width:0px;\n    linkStyle 60 stroke-width:0px;\n    linkStyle 61 stroke-width:0px;\n    linkStyle 62 stroke-width:0px;\n    linkStyle 63 stroke-width:0px;\n    linkStyle 64 stroke-width:0px;\n    linkStyle 65 stroke-width:0px;\n    linkStyle 66 stroke-width:0px;\n    linkStyle 67 stroke-width:0px;\n    linkStyle 68 stroke-width:0px;\n    linkStyle 69 stroke-width:0px;\n    linkStyle 70 stroke-width:0px;\n    linkStyle 71 stroke-width:0px;\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nDue to the pole-zero cancellation, the ROC for \\(X(s)\\) extends to \\(\\operatorname{Re}\\{s\\} &gt; -2\\), which is larger than the intersection of \\(R_1\\) and \\(R_2\\).\n\n\n\n\nClearly show how the pole at -1 and zero at -1 cancel in the combined \\(X(s)\\). The Mermaid diagram visually represents the poles and ROCs for \\(X_1(s)\\), \\(X_2(s)\\), and the resulting \\(X(s)\\), highlighting the expanded ROC due to cancellation."
+  },
+  {
+    "objectID": "ss_95.html#time-shifting",
+    "href": "ss_95.html#time-shifting",
+    "title": "Signals and Systems",
+    "section": "Time Shifting",
+    "text": "Time Shifting\nIf \\(x(t) \\stackrel{\\mathcal{L}}{\\longleftrightarrow} X(s)\\) with ROC \\(R\\), then:\n\\[\nx\\left(t-t_{0}\\right) \\stackrel{\\mathcal{L}}{\\longleftrightarrow} e^{-s t_{0}} X(s) \\tag{9.87}\n\\]\nROC: Remains \\(R\\).\n\nShifting a signal in the time domain corresponds to multiplying its Laplace Transform by a complex exponential \\(e^{-st_0}\\).\nThe ROC is unchanged because the convergence behavior of \\(x(t-t_0)\\) is the same as \\(x(t)\\).\n\n\nExplain that time shifting doesn’t change the exponential growth/decay rate, hence the ROC remains the same. This is a common property across Fourier and Laplace transforms."
+  },
+  {
+    "objectID": "ss_95.html#shifting-in-the-s-domain",
+    "href": "ss_95.html#shifting-in-the-s-domain",
+    "title": "Signals and Systems",
+    "section": "Shifting in the s-Domain",
+    "text": "Shifting in the s-Domain\nIf \\(x(t) \\stackrel{\\mathcal{L}}{\\longleftrightarrow} X(s)\\) with ROC \\(R\\), then:\n\\[\ne^{s_{0} t} x(t) \\stackrel{\\mathcal{L}}{\\longleftrightarrow} X\\left(s-s_{0}\\right) \\tag{9.88}\n\\]\nROC: \\(R + \\operatorname{Re}\\{s_0\\}\\). The ROC of \\(X(s-s_0)\\) is the ROC of \\(X(s)\\) shifted by \\(\\operatorname{Re}\\{s_0\\}\\).\nSpecial Case: Modulation If \\(s_0 = j\\omega_0\\) (pure imaginary), then \\(e^{j\\omega_0 t}x(t) \\stackrel{\\mathcal{L}}{\\longleftrightarrow} X(s-j\\omega_0)\\). - This corresponds to a shift in the \\(s\\)-plane parallel to the \\(j\\omega\\)-axis. - The ROC is unchanged in terms of its real axis boundaries.\n\nIllustrate how multiplying by an exponential in the time domain shifts the entire s-plane representation. Emphasize the ROC shift, which is crucial. Explain the modulation special case and its significance in communication systems."
+  },
+  {
+    "objectID": "ss_95.html#time-scaling",
+    "href": "ss_95.html#time-scaling",
+    "title": "Signals and Systems",
+    "section": "Time Scaling",
+    "text": "Time Scaling\nIf \\(x(t) \\stackrel{\\mathcal{L}}{\\longleftrightarrow} X(s)\\) with ROC \\(R\\), then:\n\\[\nx(a t) \\stackrel{\\mathcal{L}}{\\longleftrightarrow} \\frac{1}{|a|} X\\left(\\frac{s}{a}\\right) \\tag{9.90}\n\\]\nROC: \\(aR\\). The ROC is also scaled by \\(a\\).\n\nIf \\(a &gt; 0\\), the ROC is scaled. For \\(0 &lt; a &lt; 1\\), it’s compressed; for \\(a &gt; 1\\), it’s expanded.\nIf \\(a &lt; 0\\) (time reversal), the ROC undergoes a reversal about the \\(j\\omega\\)-axis as well as scaling.\n\nTime Reversal (\\(a=-1\\)):\n\\[\nx(-t) \\stackrel{\\mathcal{L}}{\\longleftrightarrow} X(-s), \\quad \\text { with } \\mathrm{ROC}=-R \\tag{9.91}\n\\]\n\nExplain that time compression/expansion affects the rate of change, thus scaling the s-domain representation and its ROC. Time reversal is a specific case that also flips the ROC."
+  },
+  {
+    "objectID": "ss_95.html#conjugation",
+    "href": "ss_95.html#conjugation",
+    "title": "Signals and Systems",
+    "section": "Conjugation",
+    "text": "Conjugation\nIf \\(x(t) \\stackrel{\\mathcal{L}}{\\longleftrightarrow} X(s)\\) with ROC \\(R\\), then:\n\\[\nx^{*}(t) \\stackrel{\\mathcal{L}}{\\longleftrightarrow} X^{*}\\left(s^{*}\\right) \\tag{9.93}\n\\]\nROC: \\(R\\).\nImportant Consequence for Real Signals: If \\(x(t)\\) is a real signal, then \\(X(s) = X^*(s^*)\\). This implies that if \\(X(s)\\) has a pole or zero at \\(s_0\\), it must also have a pole or zero at the complex conjugate point \\(s_0^*\\).\n\nExplain the property and its direct implication for real-world signals. Most physical signals are real, so their Laplace transforms always exhibit conjugate symmetry for poles and zeros."
+  },
+  {
+    "objectID": "ss_95.html#convolution-property",
+    "href": "ss_95.html#convolution-property",
+    "title": "Signals and Systems",
+    "section": "Convolution Property",
+    "text": "Convolution Property\nIf \\(x_1(t) \\stackrel{\\mathcal{L}}{\\longleftrightarrow} X_1(s)\\) with ROC \\(R_1\\), and \\(x_2(t) \\stackrel{\\mathcal{L}}{\\longleftrightarrow} X_2(s)\\) with ROC \\(R_2\\), then:\n\\[\nx_{1}(t) * x_{2}(t) \\stackrel{\\mathcal{L}}{\\longleftrightarrow} X_{1}(s) X_{2}(s) \\tag{9.95}\n\\]\nROC: Containing \\(R_1 \\cap R_2\\). Similar to linearity, the ROC can be larger if pole-zero cancellation occurs in the product \\(X_1(s)X_2(s)\\).\n\n\n\n\n\n\nImportant\n\n\nThis is a cornerstone for Linear Time-Invariant (LTI) system analysis. Convolution in the time domain becomes multiplication in the \\(s\\)-domain, greatly simplifying system response calculations.\n\n\n\n\nEmphasize the profound importance of this property for LTI systems. It transforms a complex convolution operation into a simple multiplication, which is why frequency/s-domain analysis is so powerful."
+  },
+  {
+    "objectID": "ss_95.html#differentiation-in-the-time-domain",
+    "href": "ss_95.html#differentiation-in-the-time-domain",
+    "title": "Signals and Systems",
+    "section": "Differentiation in the Time Domain",
+    "text": "Differentiation in the Time Domain\nIf \\(x(t) \\stackrel{\\mathcal{L}}{\\longleftrightarrow} X(s)\\) with ROC \\(R\\), then:\n\\[\n\\frac{d x(t)}{d t} \\stackrel{\\mathcal{L}}{\\longleftrightarrow} s X(s) \\tag{9.98}\n\\]\nROC: Containing \\(R\\). The ROC can be larger if \\(X(s)\\) has a first-order pole at \\(s=0\\) that is canceled by the multiplication by \\(s\\).\nExample: - \\(u(t) \\stackrel{\\mathcal{L}}{\\longleftrightarrow} \\frac{1}{s}\\), \\(\\operatorname{Re}\\{s\\}&gt;0\\) - \\(\\frac{d}{dt}u(t) = \\delta(t) \\stackrel{\\mathcal{L}}{\\longleftrightarrow} s \\cdot \\frac{1}{s} = 1\\), ROC is the entire \\(s\\)-plane.\n\nExplain how differentiation in time translates to multiplication by \\(s\\) in the Laplace domain. Highlight the ROC behavior, especially the potential for expansion when a pole at the origin is canceled, as seen with the unit step and impulse."
+  },
+  {
+    "objectID": "ss_95.html#differentiation-in-the-s-domain",
+    "href": "ss_95.html#differentiation-in-the-s-domain",
+    "title": "Signals and Systems",
+    "section": "Differentiation in the s-Domain",
+    "text": "Differentiation in the s-Domain\nIf \\(x(t) \\stackrel{\\mathcal{L}}{\\longleftrightarrow} X(s)\\) with ROC \\(R\\), then:\n\\[\n-t x(t) \\stackrel{\\mathcal{L}}{\\longleftrightarrow} \\frac{d X(s)}{d s} \\tag{9.100}\n\\]\nROC: \\(R\\).\nThis property is useful for finding transforms of signals multiplied by \\(t^n\\).\n\nExplain this less intuitive property: multiplication by time in the time domain corresponds to differentiation in the \\(s\\)-domain. This is particularly useful for signals like \\(t \\cdot e^{-at}u(t)\\)."
+  },
+  {
+    "objectID": "ss_95.html#example-9.14-using-s-domain-differentiation",
+    "href": "ss_95.html#example-9.14-using-s-domain-differentiation",
+    "title": "Signals and Systems",
+    "section": "Example 9.14: Using s-Domain Differentiation",
+    "text": "Example 9.14: Using s-Domain Differentiation\nLet’s find the Laplace transform of \\(x(t)=t e^{-at} u(t)\\).\nWe know that \\(e^{-at} u(t) \\stackrel{\\mathcal{L}}{\\longleftrightarrow} \\frac{1}{s+a}\\), with \\(\\operatorname{Re}\\{s\\}&gt;-a\\).\nApplying the differentiation in the s-domain property:\n\\[\nt e^{-a t} u(t) \\stackrel{\\mathcal{L}}{\\longleftrightarrow} -\\frac{d}{d s}\\left[\\frac{1}{s+a}\\right] = - \\left( -\\frac{1}{(s+a)^2} \\right) = \\frac{1}{(s+a)^{2}} \\tag{9.102}\n\\]\nROC: \\(\\operatorname{Re}\\{s\\}&gt;-a\\).\nRepeated application yields:\n\\[\n\\frac{t^{n-1}}{(n-1) !} e^{-a t} u(t) \\stackrel{\\mathcal{L}}{\\longleftrightarrow} \\frac{1}{(s+a)^{n}} \\tag{9.104}\n\\]\n\nWalk through the derivation. Emphasize how a complex time-domain signal (multiplied by t) becomes a simpler derivative in the s-domain."
+  },
+  {
+    "objectID": "ss_95.html#interactive-demo-t-e-at-ut",
+    "href": "ss_95.html#interactive-demo-t-e-at-ut",
+    "title": "Signals and Systems",
+    "section": "Interactive Demo: \\(t e^{-at} u(t)\\)",
+    "text": "Interactive Demo: \\(t e^{-at} u(t)\\)\nObserve the time-domain signal \\(x(t) = t e^{-at} u(t)\\) and its relation to \\(e^{-at} u(t)\\). Vary the parameter ‘a’ and see how the signals change.\n\nviewof param_a = Inputs.range([0.1, 5.0], {value: 1, step: 0.1, label: \"Parameter 'a'\"});\n\n\n\n\n\n\n\n\n\n\n\n\n\nEncourage students to manipulate the ‘a’ parameter and observe the behavior of both signals. They should see how \\(t e^{-at} u(t)\\) initially grows before decaying, compared to the direct exponential decay. This visually reinforces the mathematical relationship."
+  },
+  {
+    "objectID": "ss_95.html#example-9.15-inverse-transform-with-multiple-poles",
+    "href": "ss_95.html#example-9.15-inverse-transform-with-multiple-poles",
+    "title": "Signals and Systems",
+    "section": "Example 9.15: Inverse Transform with Multiple Poles",
+    "text": "Example 9.15: Inverse Transform with Multiple Poles\nConsider \\(X(s)=\\frac{2 s^{2}+5 s+5}{(s+1)^{2}(s+2)}\\), with \\(\\operatorname{Re}\\{s\\}&gt;-1\\).\nUsing partial-fraction expansion (PFE) for multiple-order poles (as discussed in the appendix or advanced PFE techniques):\n\\[\nX(s)=\\frac{2}{(s+1)^{2}}-\\frac{1}{(s+1)}+\\frac{3}{s+2} \\tag{9.105}\n\\]\nSince the ROC is \\(\\operatorname{Re}\\{s\\}&gt;-1\\) (to the right of all poles), all terms correspond to right-sided signals.\n\nFrom Eq. (9.104): \\(\\frac{2}{(s+1)^2} \\stackrel{\\mathcal{L}^{-1}}{\\longleftrightarrow} 2 t e^{-t} u(t)\\)\nFrom Example 9.1: \\(-\\frac{1}{s+1} \\stackrel{\\mathcal{L}^{-1}}{\\longleftrightarrow} -e^{-t} u(t)\\)\nFrom Example 9.1: \\(\\frac{3}{s+2} \\stackrel{\\mathcal{L}^{-1}}{\\longleftrightarrow} 3 e^{-2t} u(t)\\)\n\nCombining these, the inverse transform is:\n\\[\nx(t)=\\left[2 t e^{-t}-e^{-t}+3 e^{-2 t}\\right] u(t)\n\\]\n\nHighlight how the previously derived transform pair for \\(t e^{-at}u(t)\\) is directly applied here. This demonstrates the practical utility of understanding transform properties for solving more complex inverse Laplace transform problems."
+  },
+  {
+    "objectID": "ss_95.html#integration-in-the-time-domain",
+    "href": "ss_95.html#integration-in-the-time-domain",
+    "title": "Signals and Systems",
+    "section": "Integration in the Time Domain",
+    "text": "Integration in the Time Domain\nIf \\(x(t) \\stackrel{\\mathcal{L}}{\\longleftrightarrow} X(s)\\) with ROC \\(R\\), then:\n\\[\n\\int_{-\\infty}^{t} x(\\tau) d \\tau \\stackrel{\\mathcal{L}}{\\longleftrightarrow} \\frac{1}{s} X(s) \\tag{9.106}\n\\]\nROC: Containing \\(R \\cap \\{\\operatorname{Re}\\{s\\}&gt;0\\}\\).\n\nThis property is the inverse of time-domain differentiation.\nIt can be derived using the convolution property, as \\(\\int_{-\\infty}^{t} x(\\tau) d \\tau = x(t) * u(t)\\).\nSince \\(u(t) \\stackrel{\\mathcal{L}}{\\longleftrightarrow} \\frac{1}{s}\\) with \\(\\operatorname{Re}\\{s\\}&gt;0\\), the ROC of the integral is the intersection of \\(R\\) and \\(\\operatorname{Re}\\{s\\}&gt;0\\).\n\n\nConnect this property to both differentiation and convolution. Explain why the ROC for integration includes the \\(\\operatorname{Re}\\{s\\}&gt;0\\) constraint from the unit step function."
+  },
+  {
+    "objectID": "ss_95.html#initial-and-final-value-theorems",
+    "href": "ss_95.html#initial-and-final-value-theorems",
+    "title": "Signals and Systems",
+    "section": "Initial and Final-Value Theorems",
+    "text": "Initial and Final-Value Theorems\nThese theorems allow us to find the initial and final values of a time-domain signal directly from its Laplace Transform, under certain conditions.\nInitial-Value Theorem: (Conditions: \\(x(t)=0\\) for \\(t&lt;0\\); no impulses or higher-order singularities at \\(t=0\\))\n\\[\nx\\left(0^{+}\\right)=\\lim _{s \\rightarrow \\infty} s X(s) \\tag{9.110}\n\\]\nFinal-Value Theorem: (Conditions: \\(x(t)=0\\) for \\(t&lt;0\\); \\(x(t)\\) has a finite limit as \\(t \\rightarrow \\infty\\))\n\\[\n\\lim _{t \\rightarrow \\infty} x(t)=\\lim _{s \\rightarrow 0} s X(s) \\tag{9.111}\n\\]\n\n\n\n\n\n\nTip\n\n\nThese theorems are excellent tools for checking the correctness of Laplace transform calculations or the steady-state behavior of systems without explicitly finding \\(x(t)\\).\n\n\n\n\nClearly state the conditions for each theorem, as they are crucial for correct application. Emphasize their practical use in verifying results and understanding system behavior."
+  },
+  {
+    "objectID": "ss_95.html#summary-of-laplace-transform-properties",
+    "href": "ss_95.html#summary-of-laplace-transform-properties",
+    "title": "Signals and Systems",
+    "section": "Summary of Laplace Transform Properties",
+    "text": "Summary of Laplace Transform Properties\n\n\n\n\n\n\n\n\n\nProperty\nSignal \\(x(t)\\)\nLaplace Transform \\(X(s)\\)\nROC\n\n\n\n\nLinearity\n\\(ax_1(t) + bx_2(t)\\)\n\\(aX_1(s) + bX_2(s)\\)\nAt least \\(R_1 \\cap R_2\\)\n\n\nTime Shifting\n\\(x(t-t_0)\\)\n\\(e^{-st_0}X(s)\\)\n\\(R\\)\n\n\nShifting in \\(s\\)-Domain\n\\(e^{s_0 t}x(t)\\)\n\\(X(s-s_0)\\)\n\\(R + \\operatorname{Re}\\{s_0\\}\\)\n\n\nTime Scaling\n\\(x(at)\\)\n\\(\\frac{1}{|a|}X(\\frac{s}{a})\\)\n\\(aR\\)\n\n\nConjugation\n\\(x^*(t)\\)\n\\(X^*(s^*)\\)\n\\(R\\)\n\n\nConvolution\n\\(x_1(t) * x_2(t)\\)\n\\(X_1(s)X_2(s)\\)\nAt least \\(R_1 \\cap R_2\\)\n\n\nDifferentiation (Time)\n\\(\\frac{d}{dt}x(t)\\)\n\\(sX(s)\\)\nAt least \\(R\\)\n\n\nDifferentiation (\\(s\\)-Domain)\n\\(-tx(t)\\)\n\\(\\frac{d}{ds}X(s)\\)\n\\(R\\)\n\n\nIntegration (Time)\n\\(\\int_{-\\infty}^{t} x(\\tau) d\\tau\\)\n\\(\\frac{1}{s}X(s)\\)\nAt least \\(R \\cap \\{\\operatorname{Re}\\{s\\}&gt;0\\}\\)\n\n\nInitial-Value Theorem\n\\(x(0^+)\\) (for \\(x(t)=0, t&lt;0\\))\n\\(\\lim_{s \\to \\infty} sX(s)\\)\nN/A\n\n\nFinal-Value Theorem\n\\(\\lim_{t \\to \\infty} x(t)\\) (for \\(x(t)=0, t&lt;0\\), finite limit)\n\\(\\lim_{s \\to 0} sX(s)\\)\nN/A\n\n\n\n\nReview the table quickly, highlighting the main takeaway for each property. Emphasize that these properties form the foundation for applying the Laplace Transform to complex engineering problems."
+  },
+  {
+    "objectID": "ss_95.html#some-laplace-transform-pairs",
+    "href": "ss_95.html#some-laplace-transform-pairs",
+    "title": "Signals and Systems",
+    "section": "Some Laplace Transform Pairs",
+    "text": "Some Laplace Transform Pairs\nTABLE 9.2 LAPLACE TRANSFORMS OF ELEMENTARY FUNCTIONS\n\n\n\n\n\n\n\n\n\nTransform  pair\nSignal\nTransform\nROC\n\n\n\n\n1\n\\(\\delta(t)\\)\n1\nAll \\(s\\)\n\n\n2\n\\(u(t)\\)\n\\(\\frac{1}{s}\\)\n\\(\\operatorname{Re}\\{s\\}&gt;0\\)\n\n\n3\n\\(-u(-t)\\)\n\\(\\frac{1}{s}\\)\n\\(\\operatorname{Re}\\{s\\}&lt;0\\)\n\n\n4\n\\(\\frac{t^{n-1}}{(n-1) !} u(t)\\)\n\\(\\frac{1}{s^{n}}\\)\n\\(\\operatorname{Re}\\{s\\}&gt;0\\)\n\n\n5\n\\(-\\frac{t^{n-1}}{(n-1) !} u(-t)\\)\n\\(\\frac{1}{s^{n}}\\)\n\\(\\operatorname{Re}\\{s\\}&lt;0\\)\n\n\n6\n\\(e^{-\\alpha t} u(t)\\)\n\\(\\frac{1}{s+\\alpha}\\)\n\\(\\operatorname{Re}\\{s\\}&gt;-\\alpha\\)\n\n\n7\n\\(-e^{-\\alpha t} u(-t)\\)\n\\(\\frac{1}{s+\\alpha}\\)\n\\(\\operatorname{Re}\\{s\\}&lt;-\\alpha\\)\n\n\n8\n\\(\\frac{t^{n-1}}{(n-1) !} e^{-\\alpha t} u(t)\\)\n\\(\\frac{1}{(s+\\alpha)^{n}}\\)\n\\(\\operatorname{Re}\\{s\\}&gt;-\\alpha\\)\n\n\n9\n\\(-\\frac{t^{n-1}}{(n-1) !} e^{-\\alpha t} u(-t)\\)\n\\(\\frac{1}{(s+\\alpha)^{n}}\\)\n\\(\\operatorname{Re}\\{s\\}&lt;-\\alpha\\)\n\n\n10\n\\(\\delta(t-T)\\)\n\\(e^{-s T}\\)\nAll \\(s\\)\n\n\n11\n\\(\\left[\\cos \\omega_{0} t\\right] u(t)\\)\n\\(\\frac{s}{s^{2}+\\omega_{0}^{2}}\\)\n\\(\\operatorname{Re}\\{s\\}&gt;0\\)\n\n\n12\n\\(\\left[\\sin \\omega_{0} t\\right] u(t)\\)\n\\(\\frac{\\omega_{0}}{s^{2}+\\omega_{0}^{2}}\\)\n\\(\\operatorname{Re}\\{s\\}&gt;0\\)\n\n\n13\n\\(\\left[e^{-\\alpha t} \\cos \\omega_{0} t\\right] u(t)\\)\n\\(\\frac{s+\\alpha}{(s+\\alpha)^{2}+\\omega_{0}^{2}}\\)\n\\(\\operatorname{Re}\\{s\\}&gt;-\\alpha\\)\n\n\n14\n\\(\\left[e^{-\\alpha t} \\sin \\omega_{0} t\\right] u(t)\\)\n\\(\\frac{\\omega_{0}}{(s+\\alpha)^{2}+\\omega_{0}^{2}}\\)\n\\(\\operatorname{Re}\\{s\\}&gt;-\\alpha\\)\n\n\n15\n\\(u_{n}(t)=\\frac{d^{n} \\delta(t)}{d t^{n}}\\)\n\\(s^{n}\\)\nAll \\(s\\)\n\n\n16\n\\(u_{-n}(t)=\\underbrace{u(t) * \\cdots * u(t)}_{n \\text { times }}\\)\n\\(\\frac{1}{s^{n}}\\)\n\\(\\operatorname{Re}\\{s\\}&gt;0\\)"
+  },
+  {
+    "objectID": "index.html#week-9",
+    "href": "index.html#week-9",
+    "title": "Signals and Systems",
+    "section": "Week 9",
+    "text": "Week 9\n\nSignals and Systems 9.1: THE LAPLACE TRANSFORM\nSignals and Systems 9.2: THE REGION OF CONVERGENCE (ROC)\nSignals and Systems 9.3: THE INVERSE LAPLACE TRANSFORM\nSignals and Systems 9.5: PROPERTIES OF THE LAPLACE TRANSFORM"
   }
 ]
