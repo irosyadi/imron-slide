@@ -1,0 +1,2318 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="../site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.25">
+
+  <meta name="author" content="Imron Rosyadi">
+  <title>Machine Learning – Machine Learning with TensorFlow &amp; Neural Networks</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-b0356e9119c1bdfd0db189d130feb51c.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+  <link href="../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Machine Learning with TensorFlow &amp; Neural Networks</h1>
+  <p class="subtitle">An ECE Perspective: From Tensors to Deep Learning</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Imron Rosyadi 
+</div>
+</div>
+</div>
+
+</section>
+<section class="slide level2">
+
+<style>
+/* No custom CSS/SCSS as per guidelines, but keeping this for a potential placeholder or if a minimal class for image centering is allowed */
+img[alt~="center"] {
+  display: block;
+  margin: 0 auto;
+}
+</style>
+</section>
+<section>
+<section id="introduction-to-tensorflow" class="title-slide slide level1 center">
+<h1>Introduction to TensorFlow</h1>
+<p><em>An end-to-end open source machine learning platform</em></p>
+<aside class="notes">
+<p>It’s time in our machine learning and data science journey to introduce you to TensorFlow. TensorFlow bills itself as “an end-to-end open source machine learning platform.”</p>
+<p>What does this actually mean?</p>
+<p>“End-to-end” means that TensorFlow has tooling that allows you to start from nothing and build, train, validate, deploy, and maintain a model.</p>
+<p>“Open source” means that the code is freely available. You can look at how TensorFlow works on the inside if you desire. If you find a bug or need a feature, you can try to contribute code to change TensorFlow.</p>
+<p>“Machine learning platform” means TensorFlow was designed with machine learning in mind. TensorFlow isn’t necessarily restricted to machine learning applications, but it is designed for them.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-is-tensorflow-good-for" class="slide level2">
+<h2>What Is TensorFlow Good For?</h2>
+<ul>
+<li><strong>Neural Networks:</strong> Advanced architectures, key for modern ML breakthroughs.</li>
+<li><strong>Distributed Computing:</strong> Handles massive datasets across multiple machines.</li>
+<li><strong>GPU and TPU Support:</strong> Specialized hardware acceleration for faster training.</li>
+</ul>
+<aside class="notes">
+<p>We’ve been humming along pretty nicely performing machine learning tasks with NumPy, Pandas, and scikit-learn. Is TensorFlow really necessary?</p>
+<p>We have been able to do quite a bit with the tools that we’ve seen so far. What TensorFlow adds to the equation is better support for neural networks. Neural networks are the technology behind many of the breakthroughs in machine learning we’ve seen in recent years. We’ll learn more about neural networks soon.</p>
+<p>TensorFlow also provides support for distributed computing. Machine learning algorithms thrive with big data. TensorFlow helps you process massive amounts of data, across many machines if necessary.</p>
+<p>TensorFlow also provides support for graphical processing units (GPUs) and tensor processing units (TPUs). These are specialized microprocessors that can really accelerate machine learning.</p>
+<p>That being said, TensorFlow isn’t the only toolkit that fills this space. Other options like Torch and Microsoft Cognitive Toolkit (CNTK), as well as many others, provide powerful machine learning capabilities.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="tensor" class="slide level2">
+<h2>Tensor</h2>
+<p><em>An N-dimensional array of data</em></p>
+
+<img data-src="03_res/introtensorflow1.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">center</p><aside class="notes">
+<p>So where does the name TensorFlow come from?</p>
+<p>In math, a simple number like 3 or 5 is called a scalar.</p>
+<p>A vector is a one-dimensional array of numbers. In physics, a vector is something with magnitude and direction. In computer science, you use vector to mean 1D arrays.</p>
+<p>A two-dimensional array is a matrix.</p>
+<p>A three-dimensional array? These can be called cubes.</p>
+<p>And four-dimensional? That is typically just called a 4d or Rank-4 tensor.</p>
+<p>But it doesn’t have to stop there. You can create tensors with an arbitrarily high number of dimensions.</p>
+<p>So we now understand why the “tensor” part of the name exists, but what about “flow?”</p>
+<p>Typically a sequence of operations is performed on tensors in a model. These tensors “flow” through the graph that constitutes the model, hence “TensorFlow.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="tensorflow-graphs" class="slide level2">
+<h2>TensorFlow: Graphs</h2>
+
+<img data-src="03_res/introtensorflow2.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">center</p><aside class="notes">
+<p>TensorFlow internally constructs a graph of operations that it uses to perform machine learning tasks.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="tensorflow-graphs-1" class="slide level2">
+<h2>TensorFlow: Graphs</h2>
+
+<img data-src="03_res/introtensorflow3.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">center</p><aside class="notes">
+<p>The edges of the graph represent tensors of data flowing through the graph.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="tensorflow-graphs-2" class="slide level2">
+<h2>TensorFlow: Graphs</h2>
+
+<img data-src="03_res/introtensorflow4.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">center</p><aside class="notes">
+<p>These graphs pass through data in order to learn weights and biases.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="tensorflow-versions" class="slide level2">
+<h2>TensorFlow: Versions</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>TensorFlow 1</strong></p>
+<ul>
+<li>Lazy execution by default</li>
+<li>Awkward programming model</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>TensorFlow 2</strong></p>
+<ul>
+<li>Eager execution by default</li>
+<li>Keras programming model</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>Version 1 of TensorFlow really emphasized the concept of graphs. It used a “lazy” execution model where you build a graph completely before anything is run. This graph was then put into a session where data was passed through the model.</p>
+<p>This programming model worked, but it was a little clunky. Luckily, a library called Keras showed that machine learning models could be built and trained using a more natural eager execution model.</p>
+<p>TensorFlow 2 was officially released in late 2019. TensorFlow 2 still supports much of the older programming model through a compatibility layer, but, if possible, new programs should be written in TensorFlow 2’s Keras API style.</p>
+<p>TensorFlow 1 placed more of an emphasis on the concept of estimators (similar to scikit-learn). They are still supported in TensorFlow 2 and will continue to be for the indefinite future.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="tensorflow-is-separated-into-abstraction-layers" class="slide level2">
+<h2>TensorFlow Is Separated Into Abstraction Layers</h2>
+
+<img data-src="03_res/introtensorflow8.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">center</p><aside class="notes">
+<p>TensorFlow is actually not written in Python, but is instead a C++ library. The Python library we use is a wrapper over the C++ with even more abstraction layers added on top of it. For this class we’ll be using the “Core TensorFlow (Python)” layer and above.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="your-turn" class="slide level2">
+<h2>Your Turn!</h2>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Exercise:</strong> Explore basic tensor operations in TensorFlow.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>In this lab you’ll get a brief introduction to tensors and operators. The goal is to get you familiar working with the core objects of TensorFlow. Soon we will be using higher-level APIs. The <code>Tensor</code> objects themselves are sometimes exposed in these higher-level APIs, though, so it is a good idea to at least be familiar with them.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="linear-regression-with-tensorflow" class="title-slide slide level1 center">
+<h1>Linear Regression With TensorFlow</h1>
+<aside class="notes">
+<p>We have learned about how to perform regression with scikit-learn, and we have taken a peek at TensorFlow. Now it’s time to try to train a real model using TensorFlow.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="but-why" class="slide level2">
+<h2>But Why?</h2>
+<ul>
+<li><strong>Scalability:</strong> Handling huge datasets and distributed training.</li>
+<li><strong>Unified Ecosystem:</strong> Prepares for advanced deep learning tasks.</li>
+<li><strong>Learning Tool:</strong> Practice with familiar concepts in a new framework.</li>
+</ul>
+<aside class="notes">
+<p>Why would we want to build a linear regression using TensorFlow?</p>
+<p>It’s true that scikit-learn is perfectly good at linear regression most of the time. However, TensorFlow has some features like distributed model training that can help you build models when you have huge amounts of data. It is also useful to learn a new tool by practicing on content that you are familiar with.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="linearregressor" class="slide level2">
+<h2><a href="https://www.tensorflow.org/api_docs/python/tf/compat/v1/estimator/LinearRegressor"><code>LinearRegressor</code></a></h2>
+<h3 id="an-implementation-of-estimator">An implementation of <a href="https://www.tensorflow.org/api_docs/python/tf/compat/v1/estimator/Estimator"><code>Estimator</code></a></h3>
+<aside class="notes">
+<p>In this lab we’ll be using the <a href="https://www.tensorflow.org/api_docs/python/tf/compat/v1/estimator/LinearRegressor"><code>LinearRegressor</code></a> class. <code>LinearRegressor</code> is an <a href="https://www.tensorflow.org/api_docs/python/tf/compat/v1/estimator/Estimator"><code>Estimator</code></a>. <code>Estimator</code> is an API and programming model that was introduced in TensorFlow version 1. It is a little more difficult to use than modern Keras-style TensorFlow, but you will still see it used in practice, and support for it will continue in TensorFlow 2 because the <code>Estimator</code>-style of programming works better for some specific machine learning applications.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="linearregressor-1" class="slide level2">
+<h2><code>LinearRegressor</code></h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="co">#| max-lines: 10</span></span>
+<span id="cb1-2"><a></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
+<span id="cb1-3"><a></a></span>
+<span id="cb1-4"><a></a><span class="co"># Define feature columns (e.g., numeric_column, categorical_column_with_vocabulary_list)</span></span>
+<span id="cb1-5"><a></a>feature_columns <span class="op">=</span> [</span>
+<span id="cb1-6"><a></a>    tf.feature_column.numeric_column(<span class="st">"feature1"</span>),</span>
+<span id="cb1-7"><a></a>    tf.feature_column.numeric_column(<span class="st">"feature2"</span>)</span>
+<span id="cb1-8"><a></a>]</span>
+<span id="cb1-9"><a></a></span>
+<span id="cb1-10"><a></a>lr <span class="op">=</span> tf.estimator.LinearRegressor(</span>
+<span id="cb1-11"><a></a>    feature_columns<span class="op">=</span>feature_columns</span>
+<span id="cb1-12"><a></a>)</span>
+<span id="cb1-13"><a></a></span>
+<span id="cb1-14"><a></a><span class="co"># Dummy input functions for demonstration</span></span>
+<span id="cb1-15"><a></a><span class="kw">def</span> training_input():</span>
+<span id="cb1-16"><a></a>    features <span class="op">=</span> {<span class="st">"feature1"</span>: [<span class="fl">1.0</span>, <span class="fl">2.0</span>], <span class="st">"feature2"</span>: [<span class="fl">10.0</span>, <span class="fl">20.0</span>]}</span>
+<span id="cb1-17"><a></a>    labels <span class="op">=</span> [<span class="fl">30.0</span>, <span class="fl">40.0</span>]</span>
+<span id="cb1-18"><a></a>    <span class="cf">return</span> tf.data.Dataset.from_tensor_slices((features, labels)).batch(<span class="dv">1</span>)</span>
+<span id="cb1-19"><a></a></span>
+<span id="cb1-20"><a></a><span class="kw">def</span> testing_input():</span>
+<span id="cb1-21"><a></a>    features <span class="op">=</span> {<span class="st">"feature1"</span>: [<span class="fl">3.0</span>, <span class="fl">4.0</span>], <span class="st">"feature2"</span>: [<span class="fl">30.0</span>, <span class="fl">40.0</span>]}</span>
+<span id="cb1-22"><a></a>    <span class="cf">return</span> tf.data.Dataset.from_tensor_slices(features).batch(<span class="dv">1</span>)</span>
+<span id="cb1-23"><a></a></span>
+<span id="cb1-24"><a></a>lr.train(input_fn<span class="op">=</span>training_input, steps<span class="op">=</span><span class="dv">1</span>) <span class="co"># Train for a single step for demo</span></span>
+<span id="cb1-25"><a></a></span>
+<span id="cb1-26"><a></a>p <span class="op">=</span> lr.predict(input_fn<span class="op">=</span>testing_input)</span>
+<span id="cb1-27"><a></a><span class="co"># print(list(p)) # Uncomment to see predictions</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<aside class="notes">
+<p>Here you can see the main programming flow of the <code>LinearRegressor.</code></p>
+<p>We: 1. Import TensorFlow. 2. Create an estimator class, defining the feature columns. 3. Train the estimator by passing it a function that provides data. 4. Use the model by passing it a function that provides data for prediction.</p>
+<p>This <code>pyodide</code> block provides a runnable example of this basic flow. You can modify feature columns or input data to see how it might work practically.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="linearregressor-training-function-details" class="slide level2 scrollable">
+<h2><code>LinearRegressor</code>: Training Function Details</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="co">#| max-lines: 12</span></span>
+<span id="cb2-2"><a></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
+<span id="cb2-3"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-4"><a></a></span>
+<span id="cb2-5"><a></a><span class="co"># Dummy DataFrame for demonstration</span></span>
+<span id="cb2-6"><a></a>training_df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb2-7"><a></a>    <span class="st">"MedInc"</span>: [<span class="fl">1.0</span>, <span class="fl">2.0</span>, <span class="fl">3.0</span>, <span class="fl">4.0</span>, <span class="fl">5.0</span>],</span>
+<span id="cb2-8"><a></a>    <span class="st">"HouseAge"</span>: [<span class="fl">10.0</span>, <span class="fl">20.0</span>, <span class="fl">30.0</span>, <span class="fl">40.0</span>, <span class="fl">50.0</span>],</span>
+<span id="cb2-9"><a></a>    <span class="st">"target_charges"</span>: [<span class="fl">100.0</span>, <span class="fl">150.0</span>, <span class="fl">200.0</span>, <span class="fl">250.0</span>, <span class="fl">300.0</span>]</span>
+<span id="cb2-10"><a></a>})</span>
+<span id="cb2-11"><a></a>feature_columns <span class="op">=</span> [<span class="st">"MedInc"</span>, <span class="st">"HouseAge"</span>]</span>
+<span id="cb2-12"><a></a>target_column <span class="op">=</span> <span class="st">"target_charges"</span></span>
+<span id="cb2-13"><a></a></span>
+<span id="cb2-14"><a></a><span class="kw">def</span> training_input():</span>
+<span id="cb2-15"><a></a>  ds <span class="op">=</span> tf.data.Dataset.from_tensor_slices((</span>
+<span id="cb2-16"><a></a>    {c: training_df[c].values <span class="cf">for</span> c <span class="kw">in</span> feature_columns},  <span class="co"># feature map</span></span>
+<span id="cb2-17"><a></a>    training_df[target_column].values                     <span class="co"># labels</span></span>
+<span id="cb2-18"><a></a>  ))</span>
+<span id="cb2-19"><a></a>  ds <span class="op">=</span> ds.repeat(<span class="dv">100</span>)           <span class="co"># Repeat data 100 times</span></span>
+<span id="cb2-20"><a></a>  ds <span class="op">=</span> ds.shuffle(buffer_size<span class="op">=</span><span class="dv">10000</span>) <span class="co"># Shuffle data for better training</span></span>
+<span id="cb2-21"><a></a>  ds <span class="op">=</span> ds.batch(<span class="dv">100</span>)            <span class="co"># Process in mini-batches of 100</span></span>
+<span id="cb2-22"><a></a>  <span class="cf">return</span> ds</span>
+<span id="cb2-23"><a></a></span>
+<span id="cb2-24"><a></a><span class="co"># Example usage (not run, just definition)</span></span>
+<span id="cb2-25"><a></a><span class="co"># input_dataset = training_input()</span></span>
+<span id="cb2-26"><a></a><span class="co"># for element in input_dataset.take(1):</span></span>
+<span id="cb2-27"><a></a><span class="co">#    print(element)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<aside class="notes">
+<p>Here you can see what an input function might look like. The function:</p>
+<ol type="1">
+<li>Creates a <code>Dataset</code> object. This particular <code>Dataset</code> is just wrapping a bunch of Pandas <code>Series</code> objects, but <code>Dataset</code> can represent other data acquisition and storage strategies.</li>
+<li>Sets the number of times to pass the data to the model. Remember that our models will be using an optimizer to try to find good weights. In order to do this, it helps to pass the data to the model a few times.</li>
+<li>Shuffles the data between repeats.</li>
+<li>Defines the mini-batch size. This is the number of data points that will be passed to the model in each training step.</li>
+</ol>
+<p>Note that repetition and batch are hyperparameters that you can change in the model. You might find that you don’t need to repeat the data as much or that you need to repeat it more. You might find that smaller batches work better than big batches.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="linearregressor-optimizer" class="slide level2">
+<h2><code>LinearRegressor</code>: Optimizer</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="co">#| max-lines: 12</span></span>
+<span id="cb3-2"><a></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
+<span id="cb3-3"><a></a></span>
+<span id="cb3-4"><a></a><span class="co"># Example feature columns</span></span>
+<span id="cb3-5"><a></a>feature_columns <span class="op">=</span> [tf.feature_column.numeric_column(<span class="st">"x"</span>)]</span>
+<span id="cb3-6"><a></a></span>
+<span id="cb3-7"><a></a><span class="co"># Create an Adam optimizer with a specific learning rate</span></span>
+<span id="cb3-8"><a></a>adam_optimizer <span class="op">=</span> tf.keras.optimizers.Adam(</span>
+<span id="cb3-9"><a></a>  learning_rate<span class="op">=</span><span class="fl">0.001</span>,</span>
+<span id="cb3-10"><a></a>  epsilon<span class="op">=</span><span class="fl">1e-08</span> <span class="co"># Added for Keras compatibility</span></span>
+<span id="cb3-11"><a></a>)</span>
+<span id="cb3-12"><a></a></span>
+<span id="cb3-13"><a></a><span class="co"># Instantiate LinearRegressor with the custom optimizer</span></span>
+<span id="cb3-14"><a></a>linear_regressor <span class="op">=</span> tf.estimator.LinearRegressor(</span>
+<span id="cb3-15"><a></a>    feature_columns<span class="op">=</span>feature_columns,</span>
+<span id="cb3-16"><a></a>    optimizer<span class="op">=</span>adam_optimizer,</span>
+<span id="cb3-17"><a></a>)</span>
+<span id="cb3-18"><a></a></span>
+<span id="cb3-19"><a></a><span class="co"># You would then call .train() and .predict() on linear_regressor</span></span>
+<span id="cb3-20"><a></a><span class="co"># print(linear_regressor) # Uncomment to inspect the estimator</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<aside class="notes">
+<p>Another interesting hyperparameter is the optimizer. By default <code>LinearRegressor</code> uses the <a href="https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/Ftrl"><code>Ftrl</code></a> optimizer; however, there are many more options. In this example we use the <a href="https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/Adam"><code>Adam</code></a> optimizer. In this case, we also manually set the learning rate. Each optimizer has settings like this that you can change to help your model train faster and better.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="linearregressor-distribution" class="slide level2">
+<h2><code>LinearRegressor</code>: Distribution</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="co"># Dummy for conceptual demonstration - actual distribution</span></span>
+<span id="cb4-2"><a></a><span class="co"># requires a multi-device setup not available in pyodide.</span></span>
+<span id="cb4-3"><a></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
+<span id="cb4-4"><a></a></span>
+<span id="cb4-5"><a></a><span class="co"># Example feature columns</span></span>
+<span id="cb4-6"><a></a>feature_columns <span class="op">=</span> [tf.feature_column.numeric_column(<span class="st">"x"</span>)]</span>
+<span id="cb4-7"><a></a></span>
+<span id="cb4-8"><a></a><span class="co"># Define a distributed strategy (conceptually)</span></span>
+<span id="cb4-9"><a></a><span class="co"># This part won't execute effectively in pyodide, but shows the API.</span></span>
+<span id="cb4-10"><a></a><span class="cf">try</span>:</span>
+<span id="cb4-11"><a></a>    mirrored_strategy <span class="op">=</span> tf.distribute.MirroredStrategy()</span>
+<span id="cb4-12"><a></a>    config <span class="op">=</span> tf.estimator.RunConfig(</span>
+<span id="cb4-13"><a></a>        train_distribute<span class="op">=</span>mirrored_strategy,</span>
+<span id="cb4-14"><a></a>        eval_distribute<span class="op">=</span>mirrored_strategy,</span>
+<span id="cb4-15"><a></a>    )</span>
+<span id="cb4-16"><a></a><span class="cf">except</span> <span class="pp">RuntimeError</span> <span class="im">as</span> e:</span>
+<span id="cb4-17"><a></a>    <span class="bu">print</span>(<span class="ss">f"Distribution Strategy initialization skipped in Pyodide: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-18"><a></a>    config <span class="op">=</span> <span class="va">None</span> <span class="co"># Fallback if strategy cannot be initialized</span></span>
+<span id="cb4-19"><a></a></span>
+<span id="cb4-20"><a></a>linear_regressor <span class="op">=</span> tf.estimator.LinearRegressor(</span>
+<span id="cb4-21"><a></a>    feature_columns<span class="op">=</span>feature_columns,</span>
+<span id="cb4-22"><a></a>    config<span class="op">=</span>config,</span>
+<span id="cb4-23"><a></a>)</span>
+<span id="cb4-24"><a></a></span>
+<span id="cb4-25"><a></a><span class="co"># print(linear_regressor) # Uncomment to inspect</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<aside class="notes">
+<p>In order to distribute training and evaluation across workers, you can optionally pass the <code>LinearRegressor</code> a distribution method via config. We’ll show how to do this in the lab, though it doesn’t help much on the small virtual machines that we’ll be working with.</p>
+<p>Note: The distribution strategy code above is primarily for demonstration of the API. <code>tf.distribute.MirroredStrategy</code> typically requires a CUDA-enabled GPU and a multi-device setup, which isn’t available in the browser-based Pyodide environment. Thus, the <code>try-except</code> block is included to prevent errors when running this in the presentation.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="your-turn-predicting-housing-prices" class="slide level2">
+<h2>Your Turn! Predicting Housing Prices</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Lab:</strong> Apply <code>LinearRegressor</code> to predict housing prices using the California census data.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>In the lab we will use United States census data to try to predict housing prices in California. We’ll examine the data, manipulate the data, and then build and adjust a model.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="neural-networks" class="title-slide slide level1 center">
+<h1>Neural Networks</h1>
+<aside class="notes">
+<p>So far we have used classic machine learning models. These models are powerful and have proven useful for a wide range of applications.</p>
+<p>It’s likely you have heard about neural networks and deep learning. These concepts are in vogue right now. Depending on your perspective, deep learning and neural networks are either going to be a giant leap forward for humanity, are going to destroy us all, or are over-hyped tools with limited application.</p>
+<p>There is likely a little bit of truth to each of these opinions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="neural-networks-good" class="slide level2">
+<h2>Neural Networks: Good?</h2>
+
+<img data-src="03_res/car.jpg" style="width:70.0%" class="r-stretch quarto-figure-center"><p class="caption">center</p><aside class="notes">
+<p>Deep learning is a giant leap forward for humanity. We can now program machines to excel at tasks that we once thought only humans could master. Computers can drive cars, interpret medical imaging, create art, and play complex games at a human expert-level or better.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="neural-networks-bad" class="slide level2">
+<h2>Neural Networks: Bad?</h2>
+
+<img data-src="03_res/terminator.jpg" style="width:70.0%" class="r-stretch quarto-figure-center"><p class="caption">center</p><aside class="notes">
+<p>There is also the fear that deep learning will have huge negative impacts on society. The images of a terminator are likely overblown, but there is real concern that advanced deep learning algorithms will have negative effects on some people.</p>
+<p>Disruptive technologies like self-driving cars will displace millions of workers.</p>
+<p>Societal bias, conscious or not, can become encoded in deep learning algorithms, multiplying and normalizing the negative effects that have existed for decades.</p>
+<p>When using deep learning, great care must be taken to remove bias and to understand the implications of mass application of the algorithms.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="neural-networks-hype" class="slide level2">
+<h2>Neural Networks: Hype?</h2>
+
+<img data-src="03_res/hype.jpg" style="width:70.0%" class="r-stretch quarto-figure-center"><p class="caption">center</p><aside class="notes">
+<p>And finally, there are those who think deep learning and neural networks are just hype. For every person who thinks a technological revolution is around the corner, there is another pointing out how specialized and controlled the environment has to be for machine learning algorithms to perform well.</p>
+<p>Deep learning doesn’t progress at an even pace. We are currently in a deep learning boom, but this has happened before. There have been a few “AI winters” where researchers thought that we were on the cusp of a revolution, only to have research in neural networks go dormant for a while.</p>
+<p>We’d like to think that this time might be different. Computation is finally fast enough and has enough scale that algorithms designed decades ago can finally be implemented and trained in an effective manner.</p>
+<p>Only time will tell if deep learning can live up to expectations. What we can do now is learn about it, be thoughtful about how we train and use it, and continue to innovate cautiously.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="history-motivation" class="slide level2">
+<h2>History &amp; Motivation</h2>
+<aside class="notes">
+<p>Let’s first look at some history and motivation for neural networks.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="neural-networks-inspired-by-nature" class="slide level2">
+<h2>Neural Networks: Inspired by Nature</h2>
+
+<img data-src="03_res/nature.png" style="width:70.0%" class="r-stretch quarto-figure-center"><p class="caption">center</p><aside class="notes">
+<p>We’ve talked about what people think neural networks can and cannot do, but we really haven’t talked about what neural networks are. And why are they even called neural networks?</p>
+<p>Nature can be a source of inspiration. Birds inspired man to fly. The burdock plant was the inspiration for velcro. Even in the computer science realm we hear references to trees, forests, and other things that occur in nature.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="neural-networks-inspired-by-nature-1" class="slide level2">
+<h2>Neural Networks: Inspired by Nature</h2>
+
+<img data-src="03_res/neuron.png" style="width:70.0%" class="r-stretch quarto-figure-center"><p class="caption">center</p><aside class="notes">
+<p>Similar to the examples in the last slide, neural networks are inspired by nature. The brain contains a massive network of neurons that send electrical signals that activate other neurons. Through this network we are able to think.</p>
+<p>This is the building block of the brain: a neuron.</p>
+<p>A neuron is just a cell with a nucleus and cell body like any other cell. One of the distinguishing features of the neuron is the ‘axon,’ which is the long tail of the neuron. The tip of the axon has synaptic terminals that attach to other neuron bodies. A neuron body receives signals from the synapse of neurons before it. When those signals reach a critical point within a fixed period of time, the receiving neuron fires, sending a signal to later neurons.</p>
+<p>Neural networks were inspired by neurons and connections between neurons in the brain, hence the name.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="neural-networks-inspired-by-nature-2" class="slide level2">
+<h2>Neural Networks: Inspired by Nature</h2>
+
+<img data-src="03_res/neurons.jpg" style="width:70.0%" class="r-stretch quarto-figure-center"><p class="caption">center</p><aside class="notes">
+<p>This builds a web of neurons called a “neural network.”</p>
+<p>This simplification of the brain signaling pathway led to research into “artificial neural networks” with different types of neurons.</p>
+<p>Beyond this network effect, the concept of neural networks tends to break away from biology. Similarly, birds inspired flight, but modern airplanes don’t flap their wings.</p>
+<p>We find inspiration in nature. We don’t have to copy it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="neural-networks-cutting-edge" class="slide level2">
+<h2>Neural Networks: Cutting Edge?</h2>
+
+<img data-src="03_res/einstein.jpg" style="width:70.0%" class="r-stretch quarto-figure-center"><p class="caption">center</p><aside class="notes">
+<p>When did neural networks originate? The 1940s.</p>
+<p>1940s! I thought neural networks were cutting edge?</p>
+<p>Many of the fundamental algorithms we use today are rooted in thought experiments from the 1940s, but it has been a long journey from then to where we are today.</p>
+<p>The computing power and data storage that we have today is nearly unimaginable compared to what was available even in the recent past. Also, many of the early ideas were foundational, but they have been improved upon over time.</p>
+<p>The idea of deep learning is not new. There were even a few “AI winters” over the last 80 years that stalled development and research in deep learning. It feels like we might finally be at a point where the theoretical ideas of the past can be fulfilled with the technologies of today.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="artificial-neural-networks-ann" class="slide level2">
+<h2>Artificial Neural Networks (ANN)</h2>
+<ul>
+<li>Computational networks inspired by biological systems.</li>
+<li><strong>Feed-forward networks:</strong> Information flows in one direction.</li>
+<li><strong>Backpropagation:</strong> Algorithm for training ANNs by adjusting weights.</li>
+<li>Specific types: Convolutional Neural Networks (CNN), Recurrent Neural Networks (RNN).</li>
+</ul>
+<aside class="notes">
+<p>Today we will talk about artificial neural networks. These are computational networks inspired by biological systems.</p>
+<p>ANN is a big umbrella. There are “feed-forward” networks. There is a concept of “backpropagation.” And there are specific types of networks such as convolutional neural networks (CNN) and recurrent neural networks (RNN) that we will look at in more detail in future units.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="artificial-neural-networks-ann-1" class="slide level2">
+<h2>Artificial Neural Networks (ANN)</h2>
+
+<img data-src="03_res/ann.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">center</p><aside class="notes">
+<p>These are the typical diagrams you see to depict an artificial neural network. On the left we have our “input layer.” This is where we feed our feature data into the model. In these two diagrams, there are three features (depicted by the two blue dots on the far left of the schematic).</p>
+<p>The feature information then flows into “hidden layers.” In these hidden layers, mathematical operations are performed to extract patterns from the feature data. We’ll talk more about this math on future slides.</p>
+<p>Finally, the transformed feature data flows to the output layer, which returns our predicted target values.</p>
+<p>The main idea is that if neurons in one layer “fire.” Then, using the connections to the next layer, we can determine which neurons in the next layer will fire. For now, it is useful to think of a neuron firing as a 1 and not firing as a 0. It is true that more sophisticated neural networks take into account the intensity of a “fire” (i.e., fired at 50% vs fired at 100%), but for the sake of discussion, let’s stick with the 1 or 0 model.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="perceptron" class="slide level2">
+<h2>Perceptron</h2>
+
+<img data-src="03_res/perceptron.png" style="width:60.0%" class="r-stretch quarto-figure-center"><p class="caption">center</p><aside class="notes">
+<p>In 1958, an American psychologist named Frank Rosenblatt attempted to build a machine called a perceptron.</p>
+<p>We can think of the perceptron as the building block of neural networks. The perceptron has no hidden layers. We feed our features into the left side, do computation, and receive a predicted target.</p>
+<p>This looks strikingly similar to the models we’ve been building in this course. And that’s no accident! We can think of a linear regression model as a perceptron.</p>
+<p>But what are those mystery computations that take place on the black lines? There are weights, <span class="math inline">\(w_{1}\)</span>, …, <span class="math inline">\(w_{m}\)</span>, that are used in these computations. How does that work? Let’s look closer at what’s happening behind the scenes along those black lines.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="perceptron-the-math" class="slide level2">
+<h2>Perceptron: The Math</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="03_res/perceptron2.png" style="width:100.0%"></p>
+<figcaption>center</figcaption>
+</figure>
+</div>
+<p>The core computation: <span class="math display">\[ \text{sum} = \sum_{i=1}^{m} w_i x_i + b = W^T X + b \]</span> The result <code>sum</code> then goes through an <strong>activation function</strong> <span class="math inline">\(f(\text{sum})\)</span> to produce the output.</p>
+</div><div class="column" style="width:50%;">
+<p><strong>Interactive Perceptron Demo</strong></p>
+<p>Adjust inputs and weights to see the output.</p>
+</div></div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb5" data-startfrom="569" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 568;"><span id="cb5-569"><a></a>viewof x1 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Input x1"</span>})<span class="op">;</span></span>
+<span id="cb5-570"><a></a>viewof x2 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Input x2"</span>})<span class="op">;</span></span>
+<span id="cb5-571"><a></a>viewof w1 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">2</span><span class="op">,</span> <span class="dv">2</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Weight w1"</span>})<span class="op">;</span></span>
+<span id="cb5-572"><a></a>viewof w2 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">2</span><span class="op">,</span> <span class="dv">2</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Weight w2"</span>})<span class="op">;</span></span>
+<span id="cb5-573"><a></a>viewof bias <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">2</span><span class="op">,</span> <span class="dv">2</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="op">-</span><span class="fl">0.5</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Bias b"</span>})<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-1" class="exercise-cell">
+
+</div>
+<script type="pyodide-1-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImlucHV0IjpbIngxIiwieDIiLCJ3MSIsIncyIiwiYmlhcyJdfSwiY29kZSI6ImltcG9ydCBudW1weSBhcyBucFxuXG4jIENhbGN1bGF0ZSB3ZWlnaHRlZCBzdW1cbndlaWdodGVkX3N1bSA9IHcxICogeDEgKyB3MiAqIHgyICsgYmlhc1xuXG4jIEFwcGx5IGEgc2ltcGxlIHN0ZXAgYWN0aXZhdGlvbiBmdW5jdGlvbjogb3V0cHV0IDEgaWYgc3VtID49IDAsIGVsc2UgMFxub3V0cHV0ID0gMSBpZiB3ZWlnaHRlZF9zdW0gPj0gMCBlbHNlIDBcblxucHJpbnQoZlwiSW5wdXRzOiB4MT17eDF9LCB4Mj17eDJ9XCIpXG5wcmludChmXCJXZWlnaHRzOiB3MT17dzF9LCB3Mj17dzJ9LCBCaWFzPXtiaWFzfVwiKVxucHJpbnQoZlwiV2VpZ2h0ZWQgU3VtICgkV15UIFggKyBiJCk6IHt3ZWlnaHRlZF9zdW06LjJmfVwiKVxuXG4jIERpc3BsYXkgdGhlIG91dHB1dCBjbGVhcmx5XG5pZiBvdXRwdXQgPT0gMTpcbiAgcHJpbnQoXCJPdXRwdXQ6IPCflKUgTmV1cm9uIEZpcmVkISAoMSlcIilcbmVsc2U6XG4gIHByaW50KFwiT3V0cHV0OiDinYTvuI8gTmV1cm9uIFNpbGVudCAoMClcIikifQ==
+</script>
+</div>
+<aside class="notes">
+<p>The green and blue compartments show the computations taking place in the connections between the input layer and output layer of a perceptron.</p>
+<p>The features are denoted by <span class="math inline">\(x_{i}\)</span>. The weights <span class="math inline">\(w_{i}\)</span> are playing the same role as the weights in our linear regression model. If we build a weight vector <span class="math inline">\(W = [w_{1}, w_{2}, ..., w_{m}]\)</span> and a feature vector <span class="math inline">\(X = [x_{1}, x_{2}, ..., x_{m}]\)</span>, then the green computation is simply <span class="math inline">\(W^{T}X + b\)</span> (which is exactly the same as the target in a regression model: bias + <span class="math inline">\(w_{1}x_{1}\)</span> + <span class="math inline">\(w_{2}x_{2}\)</span> + … + <span class="math inline">\(w_{m}x_{m}\)</span>).</p>
+<p>This information is then sent to an “activation function,” which uses the information from the green computation to determine whether or not the next neuron should fire. In a linear regression example, the activation function might be <span class="math inline">\(f(x) = x\)</span>. In other words, the activation function plays no role. But let’s look at a slightly more interesting example and walk through these details in a little more depth.</p>
+<p>The interactive demo on the right allows you to play with the inputs, weights, and bias to see how the neuron’s output changes based on the calculated weighted sum and a simple step function. This demonstrates the fundamental logic of a perceptron.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="perceptron-example-predicting-ml-study" class="slide level2">
+<h2>Perceptron Example: Predicting ML Study</h2>
+
+<img data-src="03_res/perceptron_example.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">center</p><ul>
+<li><span class="math inline">\(x_1\)</span>: Will make more money? (1=Yes, 0=No)</li>
+<li><span class="math inline">\(x_2\)</span>: Loves programming/math? (1=Yes, 0=No)</li>
+<li><span class="math inline">\(x_3\)</span>: Has project benefiting from ML? (1=Yes, 0=No)</li>
+</ul>
+<p><span class="math display">\[\sum_{i=1}^{3} w_i x_i - \text{threshold} \geq 0 \implies \text{Studies ML (1)}\]</span> <span class="math display">\[\sum_{i=1}^{3} w_i x_i - \text{threshold} &lt; 0 \implies \text{Does Not Study ML (0)}\]</span></p>
+<aside class="notes">
+<p>Suppose we want to predict whether an individual will start studying machine learning. Our features are given by: <span class="math inline">\(x_{1}\)</span> = will the person make more money? <span class="math inline">\(x_{2}\)</span> = does the person love programming and mathematics? <span class="math inline">\(x_{3}\)</span> = does the person have a project that would benefit from ML?</p>
+<p>We compute <span class="math inline">\(W^{T}X = w_{1}x_{1} + w_{2}x_{2} + w_{3}x_{3} + bias\)</span>.</p>
+<p>Now assume that we will say “yes”: the person will study machine learning if the result is <span class="math inline">\(\geq 0\)</span> and “no”: the person will not study machine learning if the result is <span class="math inline">\(&lt; 0\)</span>.</p>
+<p><em>It might be helpful to flip back to the previous slide and explain that the specific activation function we’re working with in this example is <span class="math inline">\(f(x) = 1\)</span> if <span class="math inline">\(W^{T}X + b \geq 0\)</span> and <span class="math inline">\(f(x) = 0\)</span> if <span class="math inline">\(W^{T}X + b &lt; 0\)</span>. Also, for notational convenience, we flip the sign of b and write <span class="math inline">\(w_{1}x_{1} + w_{2}x_{2} + w_{3}x_{3} - b\)</span> going forward. If we use this model, then the algorithm will learn a negated form of b.</em></p>
+<p>That is, we ask is <span class="math inline">\(w_{1}x_{1} + w_{2}x_{2} + w_{3}x_{3} - bias \geq 0\)</span>? Which is the same as asking is <span class="math inline">\(w_{1}x_{1} + w_{2}x_{2} + w_{3}x_{3} \geq b\)</span>. For convenience, we have relabeled b as -b.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="machine-learning-process-review" class="slide level2 scrollable">
+<h2>Machine Learning Process (Review)</h2>
+<ol type="1">
+<li><strong>Infer/Predict/Forecast:</strong> Use the model to make predictions.</li>
+<li><strong>Calculate Error/Loss/Cost:</strong> Quantify prediction inaccuracy.</li>
+<li><strong>Train/Learn:</strong> Adjust model parameters (weights, biases) to minimize error.</li>
+<li><strong>Iterate:</strong> Repeat until a stopping condition is met.</li>
+</ol>
+<aside class="notes">
+<p>Let’s recall the general machine learning process. This is the same process that we use for all ML models.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="perceptron-example-weights-bias" class="slide level2">
+<h2>Perceptron Example: Weights &amp; Bias</h2>
+
+<img data-src="03_res/perceptron_example_01.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">center</p><ul>
+<li><span class="math inline">\(w_1 = 2\)</span>, <span class="math inline">\(w_2 = 2\)</span>, <span class="math inline">\(w_3 = 6\)</span></li>
+<li>Threshold = 5</li>
+</ul>
+<p><span class="math display">\[\text{Predict } 1 \text{ if } 2x_1 + 2x_2 + 6x_3 \geq 5\]</span> <span class="math display">\[\text{Predict } 0 \text{ if } 2x_1 + 2x_2 + 6x_3 &lt; 5\]</span></p>
+<aside class="notes">
+<p>Let’s assume we already have our weights and bias. We say that <span class="math inline">\(x_{1}\)</span> and <span class="math inline">\(x_{2}\)</span> have an equal impact on a person’s decision to study ML, and they both have weight 2. Assume that <span class="math inline">\(x_{3}\)</span> is three times as important in a person’s decision to study ML, so its weight is 6. Now let’s assume the bias is 5. In other words, we are thresholding at 5, and we say if <span class="math inline">\(W^{T}X \geq 5\)</span>, then the person will study machine learning. If <span class="math inline">\(W^{T}X &lt; 5\)</span>, then the person will not study machine learning.</p>
+<p>Let’s take a second to think about these numbers critically and see what they really mean.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="perceptron-example-kellys-input" class="slide level2">
+<h2>Perceptron Example: Kelly’s Input</h2>
+
+<img data-src="03_res/perceptron_example_02.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">center</p><ul>
+<li><span class="math inline">\(x_1 = 0\)</span> (Won’t make more money)</li>
+<li><span class="math inline">\(x_2 = 0\)</span> (Doesn’t love programming/math)</li>
+<li><span class="math inline">\(x_3 = 1\)</span> (Has a project benefiting from ML)</li>
+</ul>
+<aside class="notes">
+<p>Let’s assume a particular person, Kelly, does not stand to make more money by studying ML and she does not like programming and math (<span class="math inline">\(x_{1} = x_{2} = 0\)</span>). But assume that Kelly does have a project that would benefit from ML (<span class="math inline">\(x_{3} = 1\)</span>).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="perceptron-example-kellys-prediction" class="slide level2">
+<h2>Perceptron Example: Kelly’s Prediction</h2>
+
+<img data-src="03_res/perceptron_example_03.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">center</p><p><span class="math display">\[2(0) + 2(0) + 6(1) = 6\]</span></p>
+<p>Since <span class="math inline">\(6 \geq 5\)</span>, the model predicts: <strong>YES</strong>, Kelly will study ML!</p>
+<aside class="notes">
+<p>Computing <span class="math inline">\(W^{T}X\)</span> we get 6.</p>
+<p>We check that 6 is <span class="math inline">\(\geq 5\)</span>, so we say “yes”: Kelly will study machine learning.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="perceptron-example-rileys-input" class="slide level2">
+<h2>Perceptron Example: Riley’s Input</h2>
+
+<img data-src="03_res/perceptron_example_04.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">center</p><ul>
+<li><span class="math inline">\(x_1 = 1\)</span> (Will make more money)</li>
+<li><span class="math inline">\(x_2 = 1\)</span> (Loves programming/math)</li>
+<li><span class="math inline">\(x_3 = 0\)</span> (No project benefiting from ML)</li>
+</ul>
+<aside class="notes">
+<p>Now let’s assume we have another person, Riley, who will make more money in her job by learning ML and she does like programming and math (<span class="math inline">\(x_{1} = x_{2} = 1\)</span>), but she does not have a project that would benefit from ML (<span class="math inline">\(x_{3}=0\)</span>).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="perceptron-example-rileys-prediction" class="slide level2">
+<h2>Perceptron Example: Riley’s Prediction</h2>
+
+<img data-src="03_res/perceptron_example_05.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">center</p><p><span class="math display">\[2(1) + 2(1) + 6(0) = 4\]</span></p>
+<p>Since <span class="math inline">\(4 &lt; 5\)</span>, the model predicts: <strong>NO</strong>, Riley will not study ML.</p>
+<aside class="notes">
+<p>Computing <span class="math inline">\(W^{T}X\)</span> we get 4.</p>
+<p>We check that <span class="math inline">\(4 &lt; 5\)</span>, so the model predicts “no”: Riley will not study ML.</p>
+<p>In general, this is how we feed input data into our model. If the model had already finished learning the weights and bias, then this is how we would generate our predicted targets.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="perceptron-example-learning-process" class="slide level2">
+<h2>Perceptron Example: Learning Process</h2>
+
+<img data-src="03_res/perceptron_example_06.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">center</p><ul>
+<li>Kelly: Prediction = 1 (Correct, actual = 1)</li>
+<li>Riley: Prediction = 0 (Incorrect, actual = 1)</li>
+</ul>
+<p>The model needs to adjust weights and bias to correctly predict for Riley. This involves <strong>optimization</strong> (e.g., gradient descent) and <strong>backpropagation</strong> (applying the chain rule to update weights across layers).</p>
+<aside class="notes">
+<p>But how does the model actually update the weights and bias during the learning process?</p>
+<p>Let’s look back at our example. Note that both of these samples were technically training data. From our dataset, we know that both Kelly and Riley did study ML (y=1), but for Kelly we predicted <span class="math inline">\(\hat{y} = 1\)</span>, and for Riley we predicted <span class="math inline">\(\hat{y} = 0\)</span>. So Kelly’s prediction was correct, while Riley’s was not correct.</p>
+<p>Now the model needs to adjust the weights. It seems like if a person stands to make more money from studying ML AND they love programming and math, then the model should predict a 1 (whether or not they have a current project that would benefit from ML).</p>
+<p>So the model needs to update the weights and bias via some optimization algorithm like gradient descent. In order to compute the derivative (gradient) to discern the direction of steepest descent, we will need to unravel the many compositions of matrix multiplication. If you remember your calculus, how do we take the derivative of a composition? The chain rule! That is effectively what backpropagation does. It is a way to compute the gradient when many chain rules are involved through each layer of the network.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="machine-learning-process-neural-networks" class="slide level2 scrollable">
+<h2>Machine Learning Process (Neural Networks)</h2>
+<ol type="1">
+<li><strong>Infer/Predict/Forecast:</strong> Compute <span class="math inline">\(f(X, W, B)\)</span>, involving compositions of activation functions and many matrix multiplications across layers.</li>
+<li><strong>Calculate Error/Loss/Cost:</strong> Use metrics like MSE, MAE to quantify discrepancy between predicted and actual values.</li>
+<li><strong>Train/Learn (Optimization):</strong>
+<ul>
+<li>Adjust <span class="math inline">\(W\)</span> and <span class="math inline">\(B\)</span> in the direction that minimizes cost.</li>
+<li>This direction is typically found via <strong>gradient descent</strong>.</li>
+<li>Gradients for complex networks are computed efficiently using the <strong>chain rule</strong>, implemented through <strong>backpropagation</strong>.</li>
+</ul></li>
+<li><strong>Iterate:</strong> Repeat steps 1-3 until the model converges or a stopping condition (e.g., max epochs) is met.</li>
+</ol>
+<aside class="notes">
+<p>Let’s put everything together and summarize how a neural network will learn in general. It shouldn’t surprise you that it’s the same machine learning process that we’ve been working with for all our models. Now we’ve just filled it with some high-level details of each step for neural networks.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="issues-with-this-plan" class="slide level2">
+<h2>Issues with this plan?</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>The simple step function:</p>
+<p><span class="math display">\[
+f(x) =
+  \begin{cases}
+    1 &amp; \text{if } x \geq 0 \\
+    0 &amp; \text{if } x &lt; 0
+  \end{cases}
+\]</span></p>
+</div><div class="column" style="width:50%;">
+<p><strong>Drawbacks:</strong></p>
+<ul>
+<li><strong>Not differentiable at 0:</strong> Problematic for gradient descent.</li>
+<li><strong>Zero gradient elsewhere:</strong> <span class="math inline">\(f'(x) = 0\)</span> for <span class="math inline">\(x \neq 0\)</span>, hindering learning.</li>
+<li><strong>Binary output only:</strong> No confidence scores or continuous values.</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>There are many possible activation functions, and some work better than others in certain situations.</p>
+<p>Let’s take a closer look at the activation function we used in our simple example. This function is called a step-function.</p>
+<p>There are a few drawbacks to using the step-function. * <span class="math inline">\(f\)</span> is not differentiable at 0. This could create problems for gradient descent when we need to take a derivative. * <span class="math inline">\(f'(x)\)</span> is 0 whenever <span class="math inline">\(x\)</span> is not 0. This could also create problems for gradient descent. If we ever multiply by <span class="math inline">\(f'(x)\)</span>, the entire function will go to 0, which means no slope. So it can be hard to determine the direction of steepest descent. * <span class="math inline">\(f\)</span> only returns a no or a yes. It would be preferable for <span class="math inline">\(f\)</span> to return a continuous value between 0 and 1. For example, if <span class="math inline">\(f\)</span> returned .9, then we would say that we’re 90% confident the answer is “yes, this person will study ML.” That is far more powerful than just returning a “yes” or “no.” We will discuss this further in the section on classification.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="sigmoid-activation" class="slide level2">
+<h2>Sigmoid Activation</h2>
+
+<img data-src="03_res/sigmoid.png" style="width:60.0%" class="r-stretch quarto-figure-center"><p class="caption">center</p><ul>
+<li>A differentiable function that “squashes” values between 0 and 1.</li>
+<li>Addresses limitations of the step function.</li>
+</ul>
+<aside class="notes">
+<p>The sigmoid function is a far more popular activation function, as it addresses the issues we just discussed with the step-function. Again, we will talk more about this when we get to classification.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="activation-functions" class="slide level2">
+<h2>Activation Functions</h2>
+
+<img data-src="03_res/neurnet10.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">center</p><ul>
+<li>Crucial for introducing non-linearity to the network.</li>
+<li>Enables learning complex patterns.</li>
+<li>Many types: ReLU (Rectified Linear Unit), Tanh, Leaky ReLU, etc.</li>
+</ul>
+<aside class="notes">
+<p>The choice of activation function is important. RELU makes differentiation difficult, but it actually works really well in practice. The other functions are also very useful.</p>
+<p>It is important to note that why certain activation functions behave in certain ways is an active area of research. People are testing new ones every day. Sometimes there is good theoretical justification for using a particular activation function, and sometimes we use a particular activation function simply because it trained quickly and gave us good results in practice.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="regression-with-tensorflow-keras" class="title-slide slide level1 center">
+<h1>Regression With TensorFlow (Keras)</h1>
+<aside class="notes">
+<p>We have created numerous regression models in this course using both scikit-learn and TensorFlow. These models have all been “classic” models, but that is about to change.</p>
+<p>In this unit, we are going to build a regression model using a deep neural network. The model will take feature data, pass it through hidden neural network layers, and output a continuous value.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="keras" class="slide level2">
+<h2>Keras</h2>
+<h3 id="the-python-deep-learning-library">The Python Deep Learning Library</h3>
+<ul>
+<li>High-level API for quickly building and training ML models.</li>
+<li>Integrates seamlessly with TensorFlow 2.</li>
+<li>Simplifies complex deep learning model design.</li>
+</ul>
+<aside class="notes">
+<p>To build our deep neural network, we will be using Keras, a high-level Python API that can be used within TensorFlow.</p>
+<p>Don’t be put off by the term “deep neural network.” Though the math and the theory are complex, the actual code you need to write to create one is as easy as creating a simple linear regression.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="keras-sequential-models" class="slide level2">
+<h2>Keras: Sequential Models</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="co">#| max-lines: 5</span></span>
+<span id="cb6-2"><a></a><span class="im">from</span> tensorflow <span class="im">import</span> keras</span>
+<span id="cb6-3"><a></a></span>
+<span id="cb6-4"><a></a><span class="co"># An empty sequential model</span></span>
+<span id="cb6-5"><a></a>model <span class="op">=</span> keras.Sequential()</span>
+<span id="cb6-6"><a></a></span>
+<span id="cb6-7"><a></a><span class="co"># model.add(some_layer) # Layers can be added later</span></span>
+<span id="cb6-8"><a></a><span class="co"># print(model) # Uncomment to see model summary</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><strong>Linear stack of layers:</strong> Each layer feeds directly into the next.</li>
+<li>Ideal for simple feed-forward networks where data flows in one direction.</li>
+<li>Alternative: <strong>Functional API</strong> for more complex, graph-like architectures.</li>
+</ul>
+<aside class="notes">
+<p>We will build our model using the <code>Sequential</code> class. Sequential simply means that the model will consist of a sequence of layers, one after the other. Each layer feeds the next in the sequence.</p>
+<p>In Keras, the alternative to a sequential model is a functional model. Functional models allow layers to interconnect in more complex ways. Layers can branch and merge through different paths. The resultant model might look more like a graph with multiple inputs and outputs. This is different from the sequential model, which looks much more like a funnel.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="keras-layers" class="slide level2">
+<h2>Keras: Layers</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="co">#| max-lines: 8</span></span>
+<span id="cb7-2"><a></a><span class="im">from</span> tensorflow.keras <span class="im">import</span> layers</span>
+<span id="cb7-3"><a></a></span>
+<span id="cb7-4"><a></a><span class="co"># Input layer (implicitly created) and 1st hidden layer with 32 nodes</span></span>
+<span id="cb7-5"><a></a>layer_1 <span class="op">=</span> layers.Dense(<span class="dv">32</span>, input_shape<span class="op">=</span>[<span class="dv">8</span>]) </span>
+<span id="cb7-6"><a></a></span>
+<span id="cb7-7"><a></a><span class="co"># 2nd hidden layer with 16 nodes and ReLU activation</span></span>
+<span id="cb7-8"><a></a>layer_2 <span class="op">=</span> layers.Dense(<span class="dv">16</span>, activation<span class="op">=</span><span class="st">'relu'</span>)</span>
+<span id="cb7-9"><a></a></span>
+<span id="cb7-10"><a></a><span class="co"># Output layer with 1 node for regression</span></span>
+<span id="cb7-11"><a></a>layer_3 <span class="op">=</span> layers.Dense(<span class="dv">1</span>)</span>
+<span id="cb7-12"><a></a></span>
+<span id="cb7-13"><a></a><span class="co"># These layers would typically be combined in a Sequential model</span></span>
+<span id="cb7-14"><a></a><span class="co"># e.g., model = keras.Sequential([layer_1, layer_2, layer_3])</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><strong><code>Dense</code> layer:</strong> Every node connects to every node in the previous/next layer.</li>
+<li><code>input_shape</code>: Defines the number of features in the input.</li>
+<li>First argument: Number of nodes (<span class="math inline">\(\textit{units}\)</span>) in the layer.</li>
+<li><code>activation</code>: Specifies the activation function (e.g., <code>'relu'</code>, <code>'sigmoid'</code>).</li>
+</ul>
+<aside class="notes">
+<p>A model consists of layers of nodes. In the lab we are about to do, those layers are <code>Dense</code> layers. A dense layer in a neural network is a layer where every node is connected to every node in the next layer.</p>
+<p>In the example we have on this slide, we create three <code>Dense</code> layer classes. This actually creates a neural network that is four layers deep, though.</p>
+<p>When we make the first layer, we pass in an input shape. This is the shape of the features you’ll be feeding into the model. In this case we chose an input shape of 8. That indicates we’ll be providing 8 features to the model. The input layer is the first layer.</p>
+<p>But you should also notice that we passed the number 32 to the <code>Dense</code> constructor. This creates our first hidden layer with 32 nodes.</p>
+<p>In review, this first line of code creates two layers. One layer is an input layer that accepts 8 features. That layer is densely connected to the next layer, which has 32 nodes. This means there are 8x32 connections between the layers.</p>
+<p>The next line of code creates another dense layer. This layer is 16 nodes wide. Notice that we pass an activation function to this layer. The activation we chose is the relu activation. By default the activation for a dense layer in TensorFlow Keras is <span class="math inline">\(f(x) = x\)</span>. We can adjust the activation function layer by layer.</p>
+<p>There are many activation functions available in the <code>tensorflow.keras.activations</code> namespace. Many of these can be referenced by name, as shown in this example. There are more activation functions available in <code>tf.nn</code>. For these functions you’ll need to pass in the class - like <code>tf.nn.leaky_relu</code> - instead of just the name.</p>
+<p>The final layer that we create is our output layer. Since we have been doing single output regressions, this output layer has only one node. That node will be our predicted regression value for a given set of input features.</p>
+<p>You aren’t limited to one output though. As we move into classification, we’ll see examples with more than one output node.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="keras-dense-neural-network-architecture" class="slide level2">
+<h2>Keras: Dense Neural Network Architecture</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="co">#| max-lines: 7</span></span>
+<span id="cb8-2"><a></a><span class="im">from</span> tensorflow <span class="im">import</span> keras</span>
+<span id="cb8-3"><a></a><span class="im">from</span> tensorflow.keras <span class="im">import</span> layers</span>
+<span id="cb8-4"><a></a></span>
+<span id="cb8-5"><a></a>model <span class="op">=</span> keras.Sequential([</span>
+<span id="cb8-6"><a></a>  layers.Dense(<span class="dv">64</span>, input_shape<span class="op">=</span>[<span class="dv">8</span>], activation<span class="op">=</span><span class="st">'relu'</span>, name<span class="op">=</span><span class="st">'hidden_layer_1'</span>),</span>
+<span id="cb8-7"><a></a>  layers.Dense(<span class="dv">64</span>, activation<span class="op">=</span><span class="st">'relu'</span>, name<span class="op">=</span><span class="st">'hidden_layer_2'</span>),</span>
+<span id="cb8-8"><a></a>  layers.Dense(<span class="dv">1</span>, name<span class="op">=</span><span class="st">'output_layer'</span>)</span>
+<span id="cb8-9"><a></a>])</span>
+<span id="cb8-10"><a></a>model.summary()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:40%;">
+<p><strong>Model Visualization</strong></p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<svg width="960" height="480" viewbox="0.00 0.00 898.99 66.83" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none; display: block; margin: auto auto auto auto">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 62.83)">
+<title>G</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-62.83 894.99,-62.83 894.99,4 -4,4"></polygon>
+<!-- Input -->
+<g id="node1" class="node">
+<title>Input</title>
+<polygon fill="lightgreen" stroke="black" points="83.38,-50.02 -0.13,-50.02 -0.13,-8.81 83.38,-8.81 83.38,-50.02"></polygon>
+<text text-anchor="middle" x="41.63" y="-33.62" font-family="Times,serif" font-size="14.00">Input Layer</text>
+<text text-anchor="middle" x="41.63" y="-16.82" font-family="Times,serif" font-size="14.00">(8 Features)</text>
+</g>
+<!-- Hidden1 -->
+<g id="node2" class="node">
+<title>Hidden1</title>
+<ellipse fill="lightblue" stroke="black" cx="294.37" cy="-29.42" rx="77" ry="29.33"></ellipse>
+<text text-anchor="middle" x="294.37" y="-33.62" font-family="Times,serif" font-size="14.00">Dense (64 units)</text>
+<text text-anchor="middle" x="294.37" y="-16.82" font-family="Times,serif" font-size="14.00">(ReLU)</text>
+</g>
+<!-- Input&#45;&gt;Hidden1 -->
+<g id="edge1" class="edge">
+<title>Input-&gt;Hidden1</title>
+<path fill="none" stroke="black" d="M83.47,-29.42C116.93,-29.42 165.43,-29.42 207.38,-29.42"></path>
+<polygon fill="black" stroke="black" points="207.61,-32.92 217.61,-29.42 207.61,-25.92 207.61,-32.92"></polygon>
+<text text-anchor="middle" x="150.44" y="-33.62" font-family="Times,serif" font-size="14.00">8x64 connections</text>
+</g>
+<!-- Hidden2 -->
+<g id="node3" class="node">
+<title>Hidden2</title>
+<ellipse fill="lightblue" stroke="black" cx="589.23" cy="-29.42" rx="77" ry="29.33"></ellipse>
+<text text-anchor="middle" x="589.23" y="-33.62" font-family="Times,serif" font-size="14.00">Dense (64 units)</text>
+<text text-anchor="middle" x="589.23" y="-16.82" font-family="Times,serif" font-size="14.00">(ReLU)</text>
+</g>
+<!-- Hidden1&#45;&gt;Hidden2 -->
+<g id="edge2" class="edge">
+<title>Hidden1-&gt;Hidden2</title>
+<path fill="none" stroke="black" d="M371.17,-29.42C411.25,-29.42 460.62,-29.42 502.14,-29.42"></path>
+<polygon fill="black" stroke="black" points="502.24,-32.92 512.24,-29.42 502.24,-25.92 502.24,-32.92"></polygon>
+<text text-anchor="middle" x="441.8" y="-33.62" font-family="Times,serif" font-size="14.00">64x64 connections</text>
+</g>
+<!-- Output -->
+<g id="node4" class="node">
+<title>Output</title>
+<polygon fill="lightcoral" stroke="black" points="891.04,-50.02 794.86,-50.02 794.86,-8.81 891.04,-8.81 891.04,-50.02"></polygon>
+<text text-anchor="middle" x="842.95" y="-33.62" font-family="Times,serif" font-size="14.00">Dense (1 unit)</text>
+<text text-anchor="middle" x="842.95" y="-16.82" font-family="Times,serif" font-size="14.00">(Output)</text>
+</g>
+<!-- Hidden2&#45;&gt;Output -->
+<g id="edge3" class="edge">
+<title>Hidden2-&gt;Output</title>
+<path fill="none" stroke="black" d="M666.1,-29.42C704.17,-29.42 749.54,-29.42 784.66,-29.42"></path>
+<polygon fill="black" stroke="black" points="784.74,-32.92 794.74,-29.42 784.74,-25.92 784.74,-32.92"></polygon>
+<text text-anchor="middle" x="730.44" y="-33.62" font-family="Times,serif" font-size="14.00">64x1 connection</text>
+</g>
+</g>
+</svg>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>In our previous slide, we created layers, but we didn’t connect them. In this slide we’ll create the layers inside a sequential model. Now the layers are densely connected in sequence.</p>
+<p>Questions to ask the class: How many layers are there in this model? Answer: 4 (Input, Hidden1, Hidden2, Output)</p>
+<p>How many nodes are in the first (input) layer? Answer: 8 (implicitly from <code>input_shape</code>)</p>
+<p>How many nodes are in the second (<code>hidden_layer_1</code>) and third (<code>hidden_layer_2</code>) layers? Answer: 64</p>
+<p>How many nodes are in the final (output) layer? Answer: 1</p>
+<p>How many connections are there between layer 1 (input) and layer 2 (<code>hidden_layer_1</code>)? Answer: 8x64 = 512 connections.</p>
+<p><em>It may be helpful to draw a schematic of the model on the board while asking students the questions if the Graphviz diagram isn’t clear enough immediately.</em></p>
+<p>The <code>model.summary()</code> command (if run in a Python environment) prints a table showing the layers, their output shapes, and the number of parameters. This helps verify the architecture.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="keras-other-layer-types" class="slide level2">
+<h2>Keras: Other Layer Types</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="co">#| max-lines: 8</span></span>
+<span id="cb9-2"><a></a><span class="im">from</span> tensorflow.keras.layers <span class="im">import</span> (</span>
+<span id="cb9-3"><a></a>    AveragePooling1D,</span>
+<span id="cb9-4"><a></a>    Conv3D,</span>
+<span id="cb9-5"><a></a>    GRU,</span>
+<span id="cb9-6"><a></a>    RNN,</span>
+<span id="cb9-7"><a></a>    ZeroPadding3D,</span>
+<span id="cb9-8"><a></a>    LSTM,</span>
+<span id="cb9-9"><a></a>    BatchNormalization,</span>
+<span id="cb9-10"><a></a>    Dropout,</span>
+<span id="cb9-11"><a></a>    Reshape</span>
+<span id="cb9-12"><a></a>)</span>
+<span id="cb9-13"><a></a></span>
+<span id="cb9-14"><a></a><span class="co"># Not an exhaustive list, just examples for different ML tasks.</span></span>
+<span id="cb9-15"><a></a><span class="co"># Each serves a specific purpose in processing different data types.</span></span>
+<span id="cb9-16"><a></a></span>
+<span id="cb9-17"><a></a><span class="co"># These are imported for conceptual understanding, not direct execution.</span></span>
+<span id="cb9-18"><a></a><span class="co"># Actual usage involves constructing models from these layers.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>Dense</code> is just one type; Keras offers many specialized layers:
+<ul>
+<li><strong>Convolutional layers (<code>Conv2D</code>, <code>Conv3D</code>):</strong> For spatial data (images, videos).</li>
+<li><strong>Recurrent layers (<code>LSTM</code>, <code>GRU</code>):</strong> For sequential data (time series, text).</li>
+<li><strong>Pooling layers (<code>MaxPooling1D</code>, <code>AveragePooling2D</code>):</strong> For downsampling.</li>
+<li><strong>Normalization layers (<code>BatchNormalization</code>):</strong> For stabilizing training.</li>
+<li><strong>Regularization layers (<code>Dropout</code>):</strong> For preventing overfitting.</li>
+</ul></li>
+</ul>
+<aside class="notes">
+<p><code>Dense</code> isn’t the only type of layer. There are dozens of layers that can be found in the <code>tensorflow.keras.layers</code> namespace. Here is a sample. We will discuss some of these layers later in the course. They are all different, and some work very well for certain types of data and use cases.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="keras-model-compilation" class="slide level2">
+<h2>Keras: Model Compilation</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="co">#| max-lines: 8</span></span>
+<span id="cb10-2"><a></a><span class="im">from</span> tensorflow <span class="im">import</span> keras</span>
+<span id="cb10-3"><a></a><span class="im">from</span> tensorflow.keras <span class="im">import</span> layers</span>
+<span id="cb10-4"><a></a></span>
+<span id="cb10-5"><a></a>model <span class="op">=</span> keras.Sequential([</span>
+<span id="cb10-6"><a></a>  layers.Dense(<span class="dv">64</span>, input_shape<span class="op">=</span>[<span class="dv">8</span>], activation<span class="op">=</span><span class="st">'relu'</span>),</span>
+<span id="cb10-7"><a></a>  layers.Dense(<span class="dv">1</span>)</span>
+<span id="cb10-8"><a></a>])</span>
+<span id="cb10-9"><a></a></span>
+<span id="cb10-10"><a></a>model.<span class="bu">compile</span>(</span>
+<span id="cb10-11"><a></a>  loss<span class="op">=</span><span class="st">'mse'</span>,           <span class="co"># Mean Squared Error</span></span>
+<span id="cb10-12"><a></a>  optimizer<span class="op">=</span><span class="st">'Adam'</span>,     <span class="co"># Adaptive Moment Estimation optimizer</span></span>
+<span id="cb10-13"><a></a>  metrics<span class="op">=</span>[<span class="st">'mae'</span>, <span class="st">'mse'</span>], <span class="co"># Track Mean Absolute Error and Mean Squared Error</span></span>
+<span id="cb10-14"><a></a>)</span>
+<span id="cb10-15"><a></a></span>
+<span id="cb10-16"><a></a><span class="co"># print(model.optimizer) # Uncomment to inspect optimizer</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Configures the model for training.</li>
+<li><strong><code>loss</code> function:</strong> Measures how well the model performs.</li>
+<li><strong><code>optimizer</code>:</strong> Algorithm to adjust weights and minimize the loss.</li>
+<li><strong><code>metrics</code>:</strong> Evaluation criteria, displayed during training.</li>
+</ul>
+<aside class="notes">
+<p>After we have defined the structure of the model, we need to tell TensorFlow what to optimize for. To do that, we compile the model.</p>
+<p>In this example we use the Adam optimizer to optimize for mean squared error, while also tracking mean absolute error and mean squared error. The tracked values will be reported after training.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="keras-model-training" class="slide level2">
+<h2>Keras: Model Training</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a><span class="co">#| max-lines: 10</span></span>
+<span id="cb11-2"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb11-3"><a></a><span class="im">from</span> tensorflow <span class="im">import</span> keras</span>
+<span id="cb11-4"><a></a><span class="im">from</span> tensorflow.keras <span class="im">import</span> layers</span>
+<span id="cb11-5"><a></a></span>
+<span id="cb11-6"><a></a><span class="co"># Dummy data for demonstration</span></span>
+<span id="cb11-7"><a></a>training_df <span class="op">=</span> {</span>
+<span id="cb11-8"><a></a>    <span class="st">"feature1"</span>: np.random.rand(<span class="dv">100</span>, <span class="dv">8</span>),</span>
+<span id="cb11-9"><a></a>    <span class="st">"target_column"</span>: np.random.rand(<span class="dv">100</span>)</span>
+<span id="cb11-10"><a></a>}</span>
+<span id="cb11-11"><a></a>feature_columns <span class="op">=</span> [<span class="st">"feature1"</span>]</span>
+<span id="cb11-12"><a></a>target_column <span class="op">=</span> <span class="st">"target_column"</span></span>
+<span id="cb11-13"><a></a></span>
+<span id="cb11-14"><a></a>model <span class="op">=</span> keras.Sequential([layers.Dense(<span class="dv">1</span>, input_shape<span class="op">=</span>[<span class="dv">8</span>])])</span>
+<span id="cb11-15"><a></a>model.<span class="bu">compile</span>(loss<span class="op">=</span><span class="st">'mse'</span>, optimizer<span class="op">=</span><span class="st">'Adam'</span>, metrics<span class="op">=</span>[<span class="st">'mae'</span>])</span>
+<span id="cb11-16"><a></a></span>
+<span id="cb11-17"><a></a>EPOCHS <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb11-18"><a></a></span>
+<span id="cb11-19"><a></a>history <span class="op">=</span> model.fit(</span>
+<span id="cb11-20"><a></a>  training_df[<span class="st">"feature1"</span>],</span>
+<span id="cb11-21"><a></a>  training_df[target_column],</span>
+<span id="cb11-22"><a></a>  epochs<span class="op">=</span>EPOCHS,</span>
+<span id="cb11-23"><a></a>  validation_split<span class="op">=</span><span class="fl">0.2</span>, <span class="co"># Use 20% of training data for validation</span></span>
+<span id="cb11-24"><a></a>  verbose<span class="op">=</span><span class="dv">0</span> <span class="co"># Suppress output for concise presentation</span></span>
+<span id="cb11-25"><a></a>)</span>
+<span id="cb11-26"><a></a></span>
+<span id="cb11-27"><a></a><span class="bu">print</span>(history.history) <span class="co"># Display training history</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><strong><code>model.fit()</code>:</strong> Method to train the model.</li>
+<li><strong><code>epochs</code>:</strong> Number of times the entire dataset is passed forward and backward through the neural network.</li>
+<li><strong><code>validation_split</code>:</strong> Fraction of data to use for validation during training.</li>
+<li>Returns a <code>History</code> object containing loss and metric values per epoch.</li>
+</ul>
+<aside class="notes">
+<p>Once you have defined your model and set up optimization parameters, it is time to train your model. Training is done with the <code>fit()</code> method, which needs to know the feature and target data.</p>
+<p>Fit also needs to know how many times to repeat the data. Each repetition is called an epoch. In this case, we asked for 50 epochs. In the history that is returned, we will get measurements for the mean absolute error, mean squared error, and loss at each epoch.</p>
+<p>The final argument that we pass to <code>fit()</code> is how much of the data to hold out as a validation set during training. This allows the model to track how it progresses over epochs using data that it isn’t training on.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="keras-making-predictions" class="slide level2">
+<h2>Keras: Making Predictions</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a><span class="co">#| max-lines: 6</span></span>
+<span id="cb12-2"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb12-3"><a></a><span class="im">from</span> tensorflow <span class="im">import</span> keras</span>
+<span id="cb12-4"><a></a><span class="im">from</span> tensorflow.keras <span class="im">import</span> layers</span>
+<span id="cb12-5"><a></a></span>
+<span id="cb12-6"><a></a><span class="co"># Assume 'model' is already trained (from previous slide)</span></span>
+<span id="cb12-7"><a></a><span class="co"># Dummy testing data for demonstration</span></span>
+<span id="cb12-8"><a></a>testing_df <span class="op">=</span> {</span>
+<span id="cb12-9"><a></a>    <span class="st">"feature1"</span>: np.random.rand(<span class="dv">10</span>, <span class="dv">8</span>)</span>
+<span id="cb12-10"><a></a>}</span>
+<span id="cb12-11"><a></a>feature_columns <span class="op">=</span> [<span class="st">"feature1"</span>]</span>
+<span id="cb12-12"><a></a></span>
+<span id="cb12-13"><a></a><span class="co"># Generate predictions</span></span>
+<span id="cb12-14"><a></a>predictions <span class="op">=</span> model.predict(testing_df[<span class="st">"feature1"</span>])</span>
+<span id="cb12-15"><a></a></span>
+<span id="cb12-16"><a></a><span class="bu">print</span>(<span class="st">"First 5 predictions:"</span>)</span>
+<span id="cb12-17"><a></a><span class="bu">print</span>(predictions[:<span class="dv">5</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><strong><code>model.predict()</code>:</strong> Generates output predictions for new input data.</li>
+<li>Returns an array of predictions, matching the output layer’s shape.</li>
+</ul>
+<aside class="notes">
+<p>The whole point of building a model is to make predictions. You can use the <code>predict</code> method to do that.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="your-turn-regression-with-tensorflow" class="slide level2">
+<h2>Your Turn! Regression with TensorFlow</h2>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Lab:</strong> Build a deep neural network using Keras to predict California housing prices.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>For our hands on exercise, we will revisit the California housing prices dataset from an earlier lab. We’ll use a sequential model with dense layers to create predictions that outperform the linear regression model we created earlier.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="regression-project" class="title-slide slide level1 center">
+<h1>Regression Project</h1>
+
+</section>
+<section id="predicting-insurance-charges" class="slide level2">
+<h2>Predicting Insurance Charges</h2>
+<aside class="notes">
+<p>We have learned so much about regression over the past few labs. We have learned about linear regression and polynomial regression. We have learned how to calculate regression quality. We have built regression models using both scikit-learn and TensorFlow, where we have created traditional regression models and neural networks.</p>
+<p>However, most of the work we have done with regression has been very guided. In this project you’ll be given a dataset, and you will explore it on your own. You will then train and evaluate your own model. The model will be based on a dataset found on Kaggle that contains information about insurance charges.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="review-what-regression-models-have-we-learned-about" class="slide level2">
+<h2>Review: What regression models have we learned about?</h2>
+<aside class="notes">
+<p>Before diving in, let’s review a bit. What models have we learned so far?</p>
+<p><span class="citation" data-cites="Exercise">@Exercise</span>(5 minutes) { Have students list the models they have learned so far. Get them to explain each of the models they mention. If they need prompting, remind them about linear regression, polynomial regression, and neural networks. }</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="review-what-tools-have-we-learned-about" class="slide level2">
+<h2>Review: What tools have we learned about?</h2>
+<aside class="notes">
+<p>We have learned many different tools for performing regression. What are some of those tools?</p>
+<p><span class="citation" data-cites="Exercise">@Exercise</span>(5 minutes) { Have students talk about the tools they have learned about. Get them to explain a bit about each of the tools. If they need prompting, remind them about scikit-learn’s <code>LinearRegression</code> and <code>PolynomialFeatures</code>. Remind them about TensorFlow and the Keras API. }</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="review-what-data-analysis-and-preparation-techniques-have-we-learned-about" class="slide level2">
+<h2>Review: What data analysis and preparation techniques have we learned about?</h2>
+<aside class="notes">
+<p>We have also done quite a bit of data analysis and manipulation. What are some techniques and tools we have learned?</p>
+<p><span class="citation" data-cites="Exercise">@Exercise</span>(5 minutes) { Have students talk about the tools and techniques they have learned about. If they need prompting, remind them about standardization and normalization. Remind them about detecting missing data and how to fix the data points that are missing. Remind them about basic sanity checking. Remind them about finding bias in the data. }</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="review-how-do-we-measure-the-quality-of-a-model" class="slide level2">
+<h2>Review: How do we measure the quality of a model?</h2>
+<aside class="notes">
+<p>Once we build a model, how do we know if it is any good? What are some ways for us to test model quality?</p>
+<p><span class="citation" data-cites="Exercise">@Exercise</span>(5 minutes) { Have students talk about testing and model quality. If they need prompting, remind the students about having a final validation holdout. Remind them we can measure attributes such as root mean squared error and mean absolute error. Remind them we also validate internally in the model as we perform optimization. Be sure that ‘generalization’ is brought up. We don’t want a model that just scores well while being trained. We want a model that generalizes well to data it has never seen. Remind them we test this by utilizing training, testing, and validation sets. }</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="regression-project-the-data" class="slide level2">
+<h2>Regression Project: The Data</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Column</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>age</code></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;">age of primary beneficiary</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>sex</code></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;">gender of the primary beneficiary</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>bmi</code></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;">body mass index of the primary beneficiary</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>children</code></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;">number of children covered by the plan</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>smoker</code></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;">is the primary beneficiary a smoker</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>region</code></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;">geographic region of the beneficiaries</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>charges</code></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;">costs to the insurance company (<strong>target</strong>)</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>Here are the columns of data you’ll be working with. As you can see, we have both numbers and strings. The target column is ‘charges’, and it is a continuously varying number.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="regression-project-your-turn" class="slide level2">
+<h2>Regression Project: Your Turn</h2>
+<ul>
+<li><strong>Problem Framing:</strong> Understand the context, potential biases, and impact.</li>
+<li><strong>Exploratory Data Analysis (EDA):</strong> Acquire, clean, and visualize the data.</li>
+<li><strong>Model Building:</strong> Choose, train, and evaluate a regression model.</li>
+</ul>
+<aside class="notes">
+<p>It is now your turn to perform a regression from end-to-end.</p>
+<p>The lab you are about to be given is divided into three primary parts, shown on this slide.</p>
+<p>In the “Problem Framing” section, you’ll be given the context for your insurance charges model and asked questions about how machine learning might or might not be the best tool for the job, how the data might be biased, and how the model fits in the overall solution. This section exists to remind you that we create these models to help drive decisions, and those decisions have impact. There aren’t necessarily right or wrong answers here. We are interested in you thinking through the issues and coming up with your own opinion.</p>
+<p>In the next section, you’ll acquire and explore the data. In this section we expect you to write code and prose about the data. Does the data have obvious problems? Do any model-independent changes need to be made to the data? EDA is the place to reason about and perform these tasks.</p>
+<p>The final section is the modeling section. In this section we expect you to build and train a model to perform regression. Then measure the quality of that model using, at minimum, a final root mean squared error. It doesn’t matter if you perform a linear regression or build a neural network. We just want to see a model built and trained. It would be good if your final RMSE was near or better than the benchmark mentioned in the lab, but that isn’t a strict requirement.</p>
+<p>Feel free to use any of the tools that we have covered in this course so far.</p>
+<p>Take your time. Experiment. Don’t be afraid to throw away some work along the way.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+
+<script type="pyodide-data">
+eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yNy4wL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIiwibnVtcHkiLCJwbG90bHkiLCJuYmZvcm1hdCJdfX0=
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8xID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0xLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzEgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzEsIHt4MSwgeDIsIHcxLCB3MiwgYmlhc30pO1xuIn0seyJjZWxsTmFtZSI6InB5b2RpZGUtcHJlbHVkZSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InB5b2RpZGVPanMgPSB7XG4gIGNvbnN0IHtcbiAgICBQeW9kaWRlRXZhbHVhdG9yLFxuICAgIFB5b2RpZGVFbnZpcm9ubWVudE1hbmFnZXIsXG4gICAgc2V0dXBQeXRob24sXG4gICAgc3RhcnRQeW9kaWRlV29ya2VyLFxuICAgIGI2NERlY29kZSxcbiAgICBjb2xsYXBzZVBhdGgsXG4gIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHN0YXR1c0NvbnRhaW5lciA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKFwiZXhlcmNpc2UtbG9hZGluZy1zdGF0dXNcIik7XG4gIGNvbnN0IGluZGljYXRvckNvbnRhaW5lciA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKFwiZXhlcmNpc2UtbG9hZGluZy1pbmRpY2F0b3JcIik7XG4gIGluZGljYXRvckNvbnRhaW5lci5jbGFzc0xpc3QucmVtb3ZlKFwiZC1ub25lXCIpO1xuXG4gIGxldCBzdGF0dXNUZXh0ID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKVxuICBzdGF0dXNUZXh0LmNsYXNzTGlzdCA9IFwiZXhlcmNpc2UtbG9hZGluZy1kZXRhaWxzXCI7XG4gIHN0YXR1c1RleHQgPSBzdGF0dXNDb250YWluZXIuYXBwZW5kQ2hpbGQoc3RhdHVzVGV4dCk7XG4gIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgSW5pdGlhbGlzZWA7XG5cbiAgLy8gSG9pc3QgaW5kaWNhdG9yIG91dCBmcm9tIGZpbmFsIHNsaWRlIHdoZW4gcnVubmluZyB1bmRlciByZXZlYWxcbiAgY29uc3QgcmV2ZWFsU3RhdHVzID0gZG9jdW1lbnQucXVlcnlTZWxlY3RvcihcIi5yZXZlYWwgLmV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpZiAocmV2ZWFsU3RhdHVzKSB7XG4gICAgcmV2ZWFsU3RhdHVzLnJlbW92ZSgpO1xuICAgIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsID4gLnNsaWRlc1wiKS5hcHBlbmRDaGlsZChyZXZlYWxTdGF0dXMpO1xuICB9XG5cbiAgLy8gTWFrZSBhbnkgcmV2ZWFsIHNsaWRlcyB3aXRoIGxpdmUgY2VsbHMgc2Nyb2xsYWJsZVxuICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKFwiLnJldmVhbCAuZXhlcmNpc2UtY2VsbFwiKS5mb3JFYWNoKChlbCkgPT4ge1xuICAgIGVsLmNsb3Nlc3QoJ3NlY3Rpb24uc2xpZGUnKS5jbGFzc0xpc3QuYWRkKFwic2Nyb2xsYWJsZVwiKTtcbiAgfSlcblxuICAvLyBQeW9kaWRlIHN1cHBsZW1lbnRhbCBkYXRhIGFuZCBvcHRpb25zXG4gIGNvbnN0IGRhdGFDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInB5b2RpZGUtZGF0YVxcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGRhdGEgPSBKU09OLnBhcnNlKGI2NERlY29kZShkYXRhQ29udGVudCkpO1xuXG4gIC8vIEdyYWIgbGlzdCBvZiByZXNvdXJjZXMgdG8gYmUgZG93bmxvYWRlZFxuICBjb25zdCBmaWxlc0NvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwidmZzLWZpbGVcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBmaWxlcyA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKGZpbGVzQ29udGVudCkpO1xuXG4gIGxldCBweW9kaWRlUHJvbWlzZSA9IChhc3luYyAoKSA9PiB7XG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBQeW9kaWRlYDtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgc3RhcnRQeW9kaWRlV29ya2VyKGRhdGEub3B0aW9ucyk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHBhY2thZ2U6IG1pY3JvcGlwYDtcbiAgICBhd2FpdCBweW9kaWRlLmxvYWRQYWNrYWdlKFwibWljcm9waXBcIik7XG4gICAgY29uc3QgbWljcm9waXAgPSBhd2FpdCBweW9kaWRlLnB5aW1wb3J0KFwibWljcm9waXBcIik7XG4gICAgYXdhaXQgZGF0YS5wYWNrYWdlcy5wa2dzLm1hcCgocGtnKSA9PiAoKSA9PiB7XG4gICAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHBhY2thZ2U6ICR7cGtnfWA7XG4gICAgICByZXR1cm4gbWljcm9waXAuaW5zdGFsbChwa2cpO1xuICAgIH0pLnJlZHVjZSgoY3VyLCBuZXh0KSA9PiBjdXIudGhlbihuZXh0KSwgUHJvbWlzZS5yZXNvbHZlKCkpO1xuICAgIGF3YWl0IG1pY3JvcGlwLmRlc3Ryb3koKTtcblxuICAgIC8vIERvd25sb2FkIGFuZCBpbnN0YWxsIHJlc291cmNlc1xuICAgIGF3YWl0IGZpbGVzLm1hcCgoZmlsZSkgPT4gYXN5bmMgKCkgPT4ge1xuICAgICAgY29uc3QgbmFtZSA9IGZpbGUuc3Vic3RyaW5nKGZpbGUubGFzdEluZGV4T2YoJy8nKSArIDEpO1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyByZXNvdXJjZTogJHtuYW1lfWA7XG4gICAgICBjb25zdCByZXNwb25zZSA9IGF3YWl0IGZldGNoKGZpbGUpO1xuICAgICAgaWYgKCFyZXNwb25zZS5vaykge1xuICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYENhbid0IGRvd25sb2FkIFxcYCR7ZmlsZX1cXGAuIEVycm9yICR7cmVzcG9uc2Uuc3RhdHVzfTogXCIke3Jlc3BvbnNlLnN0YXR1c1RleHR9XCIuYCk7XG4gICAgICB9XG4gICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzcG9uc2UuYXJyYXlCdWZmZXIoKTtcblxuICAgICAgLy8gU3RvcmUgVVJMcyBpbiB0aGUgY3dkIHdpdGhvdXQgYW55IHN1YmRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGlmIChmaWxlLmluY2x1ZGVzKFwiOi8vXCIpKSB7XG4gICAgICAgIGZpbGUgPSBuYW1lO1xuICAgICAgfVxuXG4gICAgICAvLyBDb2xsYXBzZSBoaWdoZXIgZGlyZWN0b3J5IHN0cnVjdHVyZVxuICAgICAgZmlsZSA9IGNvbGxhcHNlUGF0aChmaWxlKTtcblxuICAgICAgLy8gQ3JlYXRlIGRpcmVjdG9yeSB0cmVlLCBpZ25vcmluZyBcImRpcmVjdG9yeSBleGlzdHNcIiBWRlMgZXJyb3JzXG4gICAgICBjb25zdCBwYXJ0cyA9IGZpbGUuc3BsaXQoJy8nKS5zbGljZSgwLCAtMSk7XG4gICAgICBsZXQgcGF0aCA9ICcnO1xuICAgICAgd2hpbGUgKHBhcnRzLmxlbmd0aCA+IDApIHtcbiAgICAgICAgcGF0aCArPSBwYXJ0cy5zaGlmdCgpICsgJy8nO1xuICAgICAgICB0cnkge1xuICAgICAgICAgIGF3YWl0IHB5b2RpZGUuRlMubWtkaXIocGF0aCk7XG4gICAgICAgIH0gY2F0Y2ggKGUpIHtcbiAgICAgICAgICBpZiAoZS5uYW1lICE9PSBcIkVycm5vRXJyb3JcIikgdGhyb3cgZTtcbiAgICAgICAgICBpZiAoZS5lcnJubyAhPT0gMjApIHtcbiAgICAgICAgICAgIGNvbnN0IGVycm9yVGV4dFB0ciA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5fc3RyZXJyb3IoZS5lcnJubyk7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYEZpbGVzeXN0ZW0gRXJyb3IgJHtlLmVycm5vfSBcIiR7ZXJyb3JUZXh0fVwiLmApO1xuICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgICAgfVxuXG4gICAgICAvLyBXcml0ZSB0aGlzIGZpbGUgdG8gdGhlIFZGU1xuICAgICAgdHJ5IHtcbiAgICAgICAgcmV0dXJuIGF3YWl0IHB5b2RpZGUuRlMud3JpdGVGaWxlKGZpbGUsIG5ldyBVaW50OEFycmF5KGRhdGEpKTtcbiAgICAgIH0gY2F0Y2ggKGUpIHtcbiAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgIGNvbnN0IGVycm9yVGV4dFB0ciA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5fc3RyZXJyb3IoZS5lcnJubyk7XG4gICAgICAgIGNvbnN0IGVycm9yVGV4dCA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5VVEY4VG9TdHJpbmcoZXJyb3JUZXh0UHRyKTtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgIH1cbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcblxuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgUHlvZGlkZSBlbnZpcm9ubWVudCBzZXR1cGA7XG4gICAgYXdhaXQgc2V0dXBQeXRob24ocHlvZGlkZSk7XG5cbiAgICBzdGF0dXNUZXh0LnJlbW92ZSgpO1xuICAgIGlmIChzdGF0dXNDb250YWluZXIuY2hpbGRyZW4ubGVuZ3RoID09IDApIHtcbiAgICAgIHN0YXR1c0NvbnRhaW5lci5wYXJlbnROb2RlLnJlbW92ZSgpO1xuICAgIH1cbiAgICByZXR1cm4gcHlvZGlkZTtcbiAgfSkoKS5jYXRjaCgoZXJyKSA9PiB7XG4gICAgc3RhdHVzVGV4dC5zdHlsZS5jb2xvciA9IFwidmFyKC0tZXhlcmNpc2UtZWRpdG9yLWhsLWVyLCAjQUQwMDAwKVwiO1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBlcnIubWVzc2FnZTtcbiAgICAvL2luZGljYXRvckNvbnRhaW5lci5xdWVyeVNlbGVjdG9yKFwiLnNwaW5uZXItZ3Jvd1wiKS5jbGFzc0xpc3QuYWRkKFwiZC1ub25lXCIpO1xuICAgIHRocm93IGVycjtcbiAgfSk7XG5cbiAgLy8gS2VlcCB0cmFjayBvZiBpbml0aWFsIE9KUyBibG9jayByZW5kZXJcbiAgY29uc3QgcmVuZGVyZWRPanMgPSB7fTtcblxuICBjb25zdCBwcm9jZXNzID0gYXN5bmMgKGNvbnRleHQsIGlucHV0cykgPT4ge1xuICAgIGNvbnN0IHB5b2RpZGUgPSBhd2FpdCBweW9kaWRlUHJvbWlzZTtcbiAgICBjb25zdCBldmFsdWF0b3IgPSBuZXcgUHlvZGlkZUV2YWx1YXRvcihweW9kaWRlLCBjb250ZXh0KTtcbiAgICBhd2FpdCBldmFsdWF0b3IucHJvY2VzcyhpbnB1dHMpO1xuICAgIHJldHVybiBldmFsdWF0b3IuY29udGFpbmVyO1xuICB9XG5cbiAgcmV0dXJuIHtcbiAgICBweW9kaWRlUHJvbWlzZSxcbiAgICByZW5kZXJlZE9qcyxcbiAgICBwcm9jZXNzLFxuICB9O1xufVxuIn1dfQ==
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="../qrjs_pics/unsoed_logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="https://imron-slide.vercel.app">irosyadi-2025</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script type="ojs-module-contents">
+    eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiB4MSA9IElucHV0cy5yYW5nZShbMCwgMV0sIHtzdGVwOiAxLCBsYWJlbDogXCJJbnB1dCB4MVwifSk7XG52aWV3b2YgeDIgPSBJbnB1dHMucmFuZ2UoWzAsIDFdLCB7c3RlcDogMSwgbGFiZWw6IFwiSW5wdXQgeDJcIn0pO1xudmlld29mIHcxID0gSW5wdXRzLnJhbmdlKFstMiwgMl0sIHt2YWx1ZTogMSwgc3RlcDogMC4xLCBsYWJlbDogXCJXZWlnaHQgdzFcIn0pO1xudmlld29mIHcyID0gSW5wdXRzLnJhbmdlKFstMiwgMl0sIHt2YWx1ZTogMSwgc3RlcDogMC4xLCBsYWJlbDogXCJXZWlnaHQgdzJcIn0pO1xudmlld29mIGJpYXMgPSBJbnB1dHMucmFuZ2UoWy0yLCAyXSwge3ZhbHVlOiAtMC41LCBzdGVwOiAwLjEsIGxhYmVsOiBcIkJpYXMgYlwifSk7XG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ3gxJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ3gyJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ3cxJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ3cyJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2JpYXMnKSJ9XX0=
+    </script>
+    <script type="module">
+    if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+    window._ojs.paths.runtimeToDoc = "../../amli";
+    window._ojs.paths.runtimeToRoot = "../..";
+    window._ojs.paths.docToRoot = "..";
+    window._ojs.selfContained = false;
+    window._ojs.runtime.interpretFromScriptTags();
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
