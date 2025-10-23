@@ -1,0 +1,1850 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-html/tabby.min.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.25">
+
+  <meta name="author" content="Imron Rosyadi">
+  <title>Linear Algebra</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-b0356e9119c1bdfd0db189d130feb51c.css">
+  <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+  <link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Linear Algebra</h1>
+  <p class="subtitle">4.7 Row Space, Column Space, and Null Space</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Imron Rosyadi 
+</div>
+</div>
+</div>
+
+</section>
+<section id="why-these-spaces-matter-in-ece" class="slide level2">
+<h2>Why These Spaces Matter in ECE?</h2>
+<ul>
+<li><strong>Analyze Circuit Behavior:</strong>
+<ul>
+<li>Determine if a desired voltage/current pattern (output) is achievable given component constraints (matrix columns).</li>
+</ul></li>
+<li><strong>Design Control Systems:</strong>
+<ul>
+<li>Understand the ‘reachable’ states of a system (column space) and the states that don’t affect the output (null space).</li>
+</ul></li>
+<li><strong>Process Signals &amp; Images:</strong>
+<ul>
+<li>Identify redundant information (null space) or extract essential features (basis for column/row space).</li>
+</ul></li>
+<li><strong>Solve Optimization Problems:</strong>
+<ul>
+<li>Find optimal solutions within the constraints defined by these spaces.</li>
+</ul></li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Think of a linear system as a black box:</p>
+<ul>
+<li><strong>Inputs</strong> <span class="math inline">\(\rightarrow\)</span> <strong>System Matrix</strong> <span class="math inline">\(\rightarrow\)</span> <strong>Outputs</strong></li>
+<li>The “spaces” help us peek inside this box and understand its capabilities and limitations.</li>
+</ul>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Good morning/afternoon everyone! Today we’re diving into a crucial topic in linear algebra: row space, column space, and null space. For ECE students, these aren’t just abstract mathematical concepts; they are powerful tools that help us understand and design the systems we work with.</p>
+<p>Imagine you’re designing a filter for an audio signal or a control algorithm for a robot. Linear algebra, and specifically these vector spaces, provide the framework to analyze how your system behaves.</p>
+<p>For instance, the column space can tell us if a desired output, like a specific voltage waveform, is even possible to generate with our circuit components. The null space helps us understand what inputs might produce zero output, or what internal states of a system are ‘hidden’ from our sensors. The row space relates to the input-output behavior.</p>
+<p>These concepts are fundamental to areas like signal processing, control theory, circuit analysis, and even machine learning.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="revisiting-matrices-rows-and-columns" class="slide level2">
+<h2>Revisiting Matrices: Rows and Columns</h2>
+<p>We’re all familiar with matrices. Let’s formally define their row and column vectors.</p>
+<p>For an <span class="math inline">\(m \times n\)</span> matrix <span class="math inline">\(A\)</span>:</p>
+<p><span class="math display">\[
+A = \left[ \begin{array}{cccc}a_{11} &amp; a_{12} &amp; \dots &amp; a_{1n} \\ a_{21} &amp; a_{22} &amp; \dots &amp; a_{2n} \\ \vdots &amp; \vdots &amp; &amp; \vdots \\ a_{m1} &amp; a_{m2} &amp; \dots &amp; a_{mn} \end{array} \right]
+\]</span></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Row Vectors of <span class="math inline">\(A\)</span> (in <span class="math inline">\(R^n\)</span>):</strong></p>
+<p><span class="math display">\[
+\begin{array}{l}{{\bf r}_{1}=[a_{11}\quad a_{12}\quad\cdots\quad a_{1n}]}\\ {{\bf r}_{2}=[a_{21}\quad a_{22}\quad\cdots\quad a_{2n}]}\\ {\vdots\qquad\vdots}\\ {{\bf r}_{m}=[a_{m1}\quad a_{m2}\quad\cdots\quad a_{mn}]}\end{array}
+\]</span></p>
+</div><div class="column" style="width:50%;">
+<p><strong>Column Vectors of <span class="math inline">\(A\)</span> (in <span class="math inline">\(R^m\)</span>):</strong></p>
+<p><span class="math display">\[
+\mathbf{c}_{1} = \left[ \begin{array}{c}a_{11} \\ a_{21} \\ \vdots \\ a_{m1} \end{array} \right], \quad \mathbf{c}_{2} = \left[ \begin{array}{c}a_{12} \\ a_{22} \\ \vdots \\ a_{m2} \end{array} \right], \ldots , \quad \mathbf{c}_{n} = \left[ \begin{array}{c}a_{1n} \\ a_{2n} \\ \vdots \\ a_{mn} \end{array} \right]
+\]</span></p>
+</div></div>
+</section>
+<section id="revisiting-matrices-rows-and-columns-1" class="slide level2">
+<h2>Revisiting Matrices: Rows and Columns</h2>
+<h3 id="example-1-row-and-column-vectors-of-a-2-times-3-matrix">EXAMPLE 1: Row and Column Vectors of a <span class="math inline">\(2 \times 3\)</span> Matrix</h3>
+<p>Let <span class="math inline">\(A = \left[ \begin{array}{rrr}2 &amp; 1 &amp; 0 \\ 3 &amp; -1 &amp; 4 \end{array} \right]\)</span>.</p>
+<ul>
+<li><strong>Row Vectors:</strong> <span class="math inline">\(\mathbf{r}_{1} = [2 \quad 1 \quad 0]\)</span> and <span class="math inline">\(\mathbf{r}_{2} = [3 \quad -1 \quad 4]\)</span></li>
+<li><strong>Column Vectors:</strong> <span class="math inline">\(\mathbf{c}_{1} = \left[ \begin{array}{c}2 \\ 3 \end{array} \right], \quad \mathbf{c}_{2} = \left[ \begin{array}{c}1 \\ -1 \end{array} \right], \quad \text{and} \quad \mathbf{c}_{3} = \left[ \begin{array}{c}0 \\ 4 \end{array} \right]\)</span></li>
+</ul>
+<aside class="notes">
+<p>We’ll start with the basics. A matrix is just a rectangular array of numbers. But we can view these numbers in two important ways: as rows or as columns. Each row forms a row vector, and each column forms a column vector.</p>
+<p>It’s important to note the dimensions: if <span class="math inline">\(A\)</span> is <span class="math inline">\(m \times n\)</span>, its row vectors are in <span class="math inline">\(R^n\)</span> (they have <span class="math inline">\(n\)</span> components), and its column vectors are in <span class="math inline">\(R^m\)</span> (they have <span class="math inline">\(m\)</span> components). This distinction will be crucial when we define the vector spaces.</p>
+<p>Example 1 simply illustrates this. For a 2x3 matrix, we have two row vectors, each with 3 components, and three column vectors, each with 2 components.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="defining-the-core-spaces" class="slide level2 scrollable">
+<h2>Defining the Core Spaces</h2>
+<p>These three vector spaces are fundamental to understanding matrix properties and linear systems.</p>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>DEFINITION 2: Row Space, Column Space, and Null Space</strong></p>
+<p>If <span class="math inline">\(A\)</span> is an <span class="math inline">\(m \times n\)</span> matrix:</p>
+<ol type="1">
+<li><strong>Row Space of <span class="math inline">\(A\)</span> (<span class="math inline">\(\text{row}(A)\)</span>):</strong>
+<ul>
+<li>The subspace of <span class="math inline">\(R^{n}\)</span> spanned by the row vectors of <span class="math inline">\(A\)</span>.</li>
+<li>It represents all possible linear combinations of the row vectors.</li>
+</ul></li>
+<li><strong>Column Space of <span class="math inline">\(A\)</span> (<span class="math inline">\(\text{col}(A)\)</span>):</strong>
+<ul>
+<li>The subspace of <span class="math inline">\(R^{m}\)</span> spanned by the column vectors of <span class="math inline">\(A\)</span>.</li>
+<li>It represents all possible linear combinations of the column vectors.</li>
+</ul></li>
+<li><strong>Null Space of <span class="math inline">\(A\)</span> (<span class="math inline">\(\text{null}(A)\)</span>):</strong>
+<ul>
+<li>The solution space of the homogeneous system <span class="math inline">\(A\mathbf{x} = \mathbf{0}\)</span>.</li>
+<li>It is a subspace of <span class="math inline">\(R^{n}\)</span>.</li>
+</ul></li>
+</ol>
+</div>
+</div>
+</div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>ECE Perspective:</strong></p>
+<ul>
+<li><strong>Column Space:</strong> All possible output vectors (signals, states) that the system can produce from its inputs.</li>
+<li><strong>Row Space:</strong> All possible input patterns that can be “seen” by the system’s output.</li>
+<li><strong>Null Space:</strong> The set of inputs that produce a zero output. These inputs are “invisible” or “neutralized” by the system.</li>
+</ul>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Now we get to the heart of the matter: defining these three key vector spaces.</p>
+<p>The <strong>row space</strong> is simply all the vectors you can create by taking linear combinations of the matrix’s row vectors. It lives in <span class="math inline">\(R^n\)</span>.</p>
+<p>The <strong>column space</strong> is all the vectors you can create by taking linear combinations of the matrix’s column vectors. It lives in <span class="math inline">\(R^m\)</span>. This space is particularly important for understanding what outputs a system can achieve.</p>
+<p>The <strong>null space</strong> is a bit different. It’s the set of <em>all</em> vectors <span class="math inline">\(\mathbf{x}\)</span> such that when you multiply them by matrix <span class="math inline">\(A\)</span>, you get the zero vector. In simpler terms, these are the inputs that the system “annihilates” or “doesn’t respond to” in terms of output. It lives in <span class="math inline">\(R^n\)</span>.</p>
+<p>The ECE perspective helps anchor these abstract definitions. If <span class="math inline">\(A\)</span> represents your system, then the column space tells you what outputs are physically possible. The null space tells you about inputs that don’t produce any <em>detectable</em> output, which can be critical for system design and troubleshooting.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-column-space-system-consistency-amathbfx-mathbfb" class="slide level2">
+<h2>The Column Space &amp; System Consistency (<span class="math inline">\(A\mathbf{x} = \mathbf{b}\)</span>)</h2>
+<p>The column space directly tells us about the solvability of linear systems.</p>
+<p>Recall that the matrix-vector product <span class="math inline">\(A\mathbf{x}\)</span> can be expressed as a linear combination of the column vectors of <span class="math inline">\(A\)</span>:</p>
+<p><span class="math display">\[
+A\mathbf{x} = x_{1}\mathbf{c}_{1} + x_{2}\mathbf{c}_{2} + \dots + x_{n}\mathbf{c}_{n} \tag{1}
+\]</span></p>
+<p>Thus, a linear system <span class="math inline">\(A\mathbf{x} = \mathbf{b}\)</span> can be written as:</p>
+<p><span class="math display">\[
+x_{1}\mathbf{c}_{1} + x_{2}\mathbf{c}_{2} + \dots + x_{n}\mathbf{c}_{n} = \mathbf{b} \tag{2}
+\]</span></p>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>THEOREM 4.7.1:</strong> A system of linear equations <span class="math inline">\(A\mathbf{x} = \mathbf{b}\)</span> is consistent if and only if <span class="math inline">\(\mathbf{b}\)</span> is in the <strong>column space of <span class="math inline">\(A\)</span></strong>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>ECE Application: Reachability</strong></p>
+<ul>
+<li>For a control system, if <span class="math inline">\(A\)</span> represents the system dynamics and <span class="math inline">\(\mathbf{b}\)</span> is a desired state, then <span class="math inline">\(\mathbf{b}\)</span> must be in the column space of <span class="math inline">\(A\)</span> to be <strong>reachable</strong>.</li>
+<li>If <span class="math inline">\(\mathbf{b}\)</span> is not in <span class="math inline">\(\text{col}(A)\)</span>, it’s impossible to achieve that output state with the given system inputs.</li>
+</ul>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>This slide highlights one of the most direct and practical applications of the column space: determining if a linear system <span class="math inline">\(A\mathbf{x}=\mathbf{b}\)</span> has a solution.</p>
+<p>The key insight is that <span class="math inline">\(A\mathbf{x}\)</span> is <em>always</em> a linear combination of the columns of <span class="math inline">\(A\)</span>. So, for a solution <span class="math inline">\(\mathbf{x}\)</span> to exist, the vector <span class="math inline">\(\mathbf{b}\)</span> <em>must</em> be expressible as a linear combination of <span class="math inline">\(A\)</span>’s columns. This is precisely the definition of being in the column space.</p>
+<p>In ECE, this translates to the concept of <strong>reachability</strong>. If you have a system, and you want it to produce a specific output or reach a certain state, that target output or state must be within the system’s column space. If it’s not, no matter what input you apply, you’ll never get there. This is fundamental in control system design.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-example-forming-b-from-column-space" class="slide level2">
+<h2>Interactive Example: Forming <code>b</code> from Column Space</h2>
+<p>Let’s explore if <span class="math inline">\(\mathbf{b}\)</span> can be formed by column vectors of <span class="math inline">\(A\)</span>. Adjust the coefficients <span class="math inline">\(x_1, x_2, x_3\)</span> to see if you can match the target vector <span class="math inline">\(\mathbf{b}\)</span>.</p>
+<p><span class="math display">\[
+A = {\left[\begin{array}{l l l}{-1}&amp;{3}&amp;{2}\\ {1}&amp;{2}&amp;{-3}\\ {2}&amp;{1}&amp;{-2}\end{array}\right]}, \quad \mathbf{b_{target}} = {\left[\begin{array}{l}{1}\\ {-9}\\ {-3}\end{array}\right]}
+\]</span></p>
+<p><span class="math display">\[
+\mathbf{x} = \left[ \begin{array}{l}x_{1} \\ x_{2} \\ x_{3} \end{array} \right] \implies A\mathbf{x} = x_{1}\mathbf{c}_{1} + x_{2}\mathbf{c}_{2} + x_{3}\mathbf{c}_{3} = \mathbf{b_{current}}
+\]</span></p>
+</section>
+<section id="interactive-example-forming-b-from-column-space-1" class="slide level2">
+<h2>Interactive Example: Forming <code>b</code> from Column Space</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="202" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 201;"><span id="cb1-202"><a></a>viewof x1 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"x1"</span>})<span class="op">;</span></span>
+<span id="cb1-203"><a></a>viewof x2 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"x2"</span>})<span class="op">;</span></span>
+<span id="cb1-204"><a></a>viewof x3 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"x3"</span>})<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-1" class="exercise-cell">
+
+</div>
+<script type="pyodide-1-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImlucHV0IjpbIngxIiwieDIiLCJ4MyJdLCJtYXgtbGluZXMiOjEwfSwiY29kZSI6ImltcG9ydCBudW1weSBhcyBucFxuaW1wb3J0IHBsb3RseS5ncmFwaF9vYmplY3RzIGFzIGdvXG5cbiMgRGVmaW5lIG1hdHJpeCBBIGFuZCB0YXJnZXQgdmVjdG9yIGJcbkEgPSBucC5hcnJheShbWy0xLCAzLCAyXSxcbiAgICAgICAgICAgICAgWzEsIDIsIC0zXSxcbiAgICAgICAgICAgICAgWzIsIDEsIC0yXV0pXG5iX3RhcmdldCA9IG5wLmFycmF5KFtbMV0sIFstOV0sIFstM11dKVxuXG4jIEN1cnJlbnQgeCB2ZWN0b3IgZnJvbSBzbGlkZXJzXG54X2N1cnJlbnQgPSBucC5hcnJheShbW3gxXSwgW3gyXSwgW3gzXV0pXG5cbiMgQ2FsY3VsYXRlIGN1cnJlbnQgYlxuYl9jdXJyZW50ID0gQSBAIHhfY3VycmVudFxuXG4jIENvbHVtbiB2ZWN0b3JzIG9mIEFcbmMxID0gQVs6LCAwXS5yZXNoYXBlKC0xLCAxKVxuYzIgPSBBWzosIDFdLnJlc2hhcGUoLTEsIDEpXG5jMyA9IEFbOiwgMl0ucmVzaGFwZSgtMSwgMSlcblxuIyBDcmVhdGUgUGxvdGx5IGZpZ3VyZVxuZmlnID0gZ28uRmlndXJlKClcblxuIyBBZGQgdGFyZ2V0IHZlY3RvciBiX3RhcmdldFxuZmlnLmFkZF90cmFjZShnby5TY2F0dGVyM2QoXG4gICAgeD1bMCwgYl90YXJnZXRbMCwwXV0sIHk9WzAsIGJfdGFyZ2V0WzEsMF1dLCB6PVswLCBiX3RhcmdldFsyLDBdXSxcbiAgICBtb2RlPSdsaW5lcyttYXJrZXJzJyxcbiAgICBtYXJrZXI9ZGljdChzaXplPTUpLFxuICAgIGxpbmU9ZGljdChjb2xvcj0ncmVkJywgd2lkdGg9NSksXG4gICAgbmFtZT0nVGFyZ2V0IGInXG4pKVxuXG4jIEFkZCBjdXJyZW50IGJfY3VycmVudFxuZmlnLmFkZF90cmFjZShnby5TY2F0dGVyM2QoXG4gICAgeD1bMCwgYl9jdXJyZW50WzAsMF1dLCB5PVswLCBiX2N1cnJlbnRbMSwwXV0sIHo9WzAsIGJfY3VycmVudFsyLDBdXSxcbiAgICBtb2RlPSdsaW5lcyttYXJrZXJzJyxcbiAgICBtYXJrZXI9ZGljdChzaXplPTUpLFxuICAgIGxpbmU9ZGljdChjb2xvcj0nYmx1ZScsIHdpZHRoPTUpLFxuICAgIG5hbWU9J0N1cnJlbnQgQUB4J1xuKSlcblxuIyBBZGQgY29sdW1uIHZlY3RvcnMgZm9yIGNvbnRleHQgKG9wdGlvbmFsLCBjYW4gYmUgdG9vIGNsdXR0ZXJlZClcbiMgZmlnLmFkZF90cmFjZShnby5TY2F0dGVyM2QoeD1bMCwgYzFbMCwwXV0sIHk9WzAsIGMxWzEsMF1dLCB6PVswLCBjMVsyLDBdXSwgbW9kZT0nbGluZXMnLCBsaW5lPWRpY3QoY29sb3I9J2dyYXknLCBkYXNoPSdkb3QnKSwgbmFtZT0nYzEnKSlcbiMgZmlnLmFkZF90cmFjZShnby5TY2F0dGVyM2QoeD1bMCwgYzJbMCwwXV0sIHk9WzAsIGMyWzEsMF1dLCB6PVswLCBjMlsyLDBdXSwgbW9kZT0nbGluZXMnLCBsaW5lPWRpY3QoY29sb3I9J2dyYXknLCBkYXNoPSdkb3QnKSwgbmFtZT0nYzInKSlcbiMgZmlnLmFkZF90cmFjZShnby5TY2F0dGVyM2QoeD1bMCwgYzNbMCwwXV0sIHk9WzAsIGMzWzEsMF1dLCB6PVswLCBjM1syLDBdXSwgbW9kZT0nbGluZXMnLCBsaW5lPWRpY3QoY29sb3I9J2dyYXknLCBkYXNoPSdkb3QnKSwgbmFtZT0nYzMnKSlcblxuXG4jIFVwZGF0ZSBsYXlvdXRcbmZpZy51cGRhdGVfbGF5b3V0KFxuICAgIHNjZW5lPWRpY3QoXG4gICAgICAgIHhheGlzX3RpdGxlPSdYJyxcbiAgICAgICAgeWF4aXNfdGl0bGU9J1knLFxuICAgICAgICB6YXhpc190aXRsZT0nWicsXG4gICAgICAgIGFzcGVjdG1vZGU9J2N1YmUnXG4gICAgKSxcbiAgICB0aXRsZT1mXCJDdXJyZW50IEFAeDogW3tiX2N1cnJlbnRbMCwwXTouMmZ9LCB7Yl9jdXJyZW50WzEsMF06LjJmfSwge2JfY3VycmVudFsyLDBdOi4yZn1dPGJyPlRhcmdldCBiOiBbe2JfdGFyZ2V0WzAsMF19LCB7Yl90YXJnZXRbMSwwXX0sIHtiX3RhcmdldFsyLDBdfV1cIixcbiAgICBtYXJnaW49ZGljdChsPTAsIHI9MCwgYj0wLCB0PTUwKSxcbiAgICBoZWlnaHQ9NTAwXG4pXG5cbmZpZyJ9
+</script>
+</div>
+<aside class="notes">
+<p>Here’s an interactive demonstration of Theorem 4.7.1. We have a matrix <span class="math inline">\(A\)</span> and a target vector <span class="math inline">\(\mathbf{b}\)</span>. Your task is to adjust the values of <span class="math inline">\(x_1, x_2,\)</span> and <span class="math inline">\(x_3\)</span> using the sliders. As you do, the blue vector, which represents <span class="math inline">\(A\mathbf{x}\)</span> (the linear combination of <span class="math inline">\(A\)</span>’s columns), will change.</p>
+<p>The goal is to see if you can make the blue vector perfectly overlap with the red target vector <span class="math inline">\(\mathbf{b}\)</span>. If you can, it means <span class="math inline">\(\mathbf{b}\)</span> is indeed in the column space of <span class="math inline">\(A\)</span>, and the system <span class="math inline">\(A\mathbf{x}=\mathbf{b}\)</span> is consistent.</p>
+<p>(Hint: The solution for <span class="math inline">\(x_1, x_2, x_3\)</span> for this specific example is <span class="math inline">\(2, -1, 3\)</span> respectively, as per Example 2 in the text. Try to find it!) This helps build intuition for how linear combinations work and what it means for a vector to “live” within the space spanned by other vectors.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-null-space-and-general-solutions-amathbfx-mathbf0" class="slide level2 scrollable">
+<h2>The Null Space and General Solutions (<span class="math inline">\(A\mathbf{x} = \mathbf{0}\)</span>)</h2>
+<p>The null space is crucial for understanding the structure of all solutions to <span class="math inline">\(A\mathbf{x} = \mathbf{b}\)</span>.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>THEOREM 4.7.2:</strong> If <span class="math inline">\(\mathbf{x}_{0}\)</span> is any <strong>particular solution</strong> of a consistent linear system <span class="math inline">\(A\mathbf{x} = \mathbf{b}\)</span>, and if <span class="math inline">\(S = \{\mathbf{v}_{1}, \ldots , \mathbf{v}_{k}\}\)</span> is a <strong>basis for the null space of <span class="math inline">\(A\)</span></strong>, then every solution of <span class="math inline">\(A\mathbf{x} = \mathbf{b}\)</span> can be expressed in the form:</p>
+<p><span class="math display">\[
+\mathbf{x} = \mathbf{x}_{0} + c_{1}\mathbf{v}_{1} + c_{2}\mathbf{v}_{2} + \dots + c_{k}\mathbf{v}_{k} \tag{3}
+\]</span></p>
+<p>Conversely, for all choices of scalars <span class="math inline">\(c_{1}, \ldots , c_{k}\)</span>, the vector <span class="math inline">\(\mathbf{x}\)</span> in this formula is a solution of <span class="math inline">\(A\mathbf{x} = \mathbf{b}\)</span>.</p>
+</div>
+</div>
+</div>
+<p>This means the general solution of <span class="math inline">\(A\mathbf{x} = \mathbf{b}\)</span> is the sum of:</p>
+<ol type="1">
+<li>A particular solution (<span class="math inline">\(\mathbf{x}_0\)</span>)</li>
+<li>The general solution of the corresponding homogeneous system (<span class="math inline">\(A\mathbf{x} = \mathbf{0}\)</span>), which is precisely the null space of <span class="math inline">\(A\)</span>.</li>
+</ol>
+<p>Geometrically, the solution set of <span class="math inline">\(A\mathbf{x} = \mathbf{b}\)</span> is a <strong>translation</strong> of the null space of <span class="math inline">\(A\)</span> by the vector <span class="math inline">\(\mathbf{x}_0\)</span>.</p>
+<aside class="notes">
+<p>While the column space tells us <em>if</em> a solution exists, the null space helps us understand the <em>structure</em> of all possible solutions.</p>
+<p>Theorem 4.7.2 is incredibly powerful. It states that if you find just one solution to <span class="math inline">\(A\mathbf{x}=\mathbf{b}\)</span> (that’s <span class="math inline">\(\mathbf{x}_0\)</span>), then you can find <em>all</em> other solutions by adding vectors from the null space of <span class="math inline">\(A\)</span>.</p>
+<p>Think of it this way: the null space represents all the “degrees of freedom” or “independent choices” you can make in your input <span class="math inline">\(\mathbf{x}\)</span> that don’t affect the output <span class="math inline">\(\mathbf{b}\)</span> (if you’re already at <span class="math inline">\(\mathbf{b}\)</span>).</p>
+<p>Geometrically, this is a beautiful concept. The null space is always a subspace passing through the origin. The set of all solutions to <span class="math inline">\(A\mathbf{x}=\mathbf{b}\)</span> is just that same null space, but shifted, or translated, by a particular solution <span class="math inline">\(\mathbf{x}_0\)</span>. This is often visualized as a line or a plane that doesn’t necessarily pass through the origin.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="visualizing-solution-space-null-space-translation" class="slide level2">
+<h2>Visualizing Solution Space: Null Space Translation</h2>
+<p>The solution set of <span class="math inline">\(A\mathbf{x} = \mathbf{b}\)</span> is a translated version of the null space of <span class="math inline">\(A\)</span>.</p>
+
+<img data-src="https://cdn-mineru.openxlab.org.cn/result/2025-08-19/819ca1e1-de49-4d64-aa59-e7765c59fd4d/e7de837ecb556567cddee10f8bc5b5553e3d28a46676ff6986c5f567f60c2a7b.jpg" class="r-stretch"><p><em>Figure 4.7.1: The solution set of <span class="math inline">\(A\mathbf{x} = \mathbf{b}\)</span> as a translation of the null space of <span class="math inline">\(A\)</span>.</em></p>
+</section>
+<section id="visualizing-solution-space-null-space-translation-1" class="slide level2">
+<h2>Visualizing Solution Space: Null Space Translation</h2>
+<h3 id="interactive-example-null-space-translation-in-2d">Interactive Example: Null Space Translation in 2D</h3>
+<p>Let <span class="math inline">\(A = [1 \quad -1]\)</span>. The homogeneous system <span class="math inline">\(A\mathbf{x} = \mathbf{0}\)</span> is <span class="math inline">\(x_1 - x_2 = 0\)</span>, so <span class="math inline">\(x_1 = x_2\)</span>. The null space is the line <span class="math inline">\(y=x\)</span> (i.e., <span class="math inline">\(\text{span}\{[1, 1]\}\)</span>).</p>
+<p>Consider <span class="math inline">\(A\mathbf{x} = \mathbf{b}\)</span> with <span class="math inline">\(\mathbf{b} = [2]\)</span>. A particular solution is <span class="math inline">\(\mathbf{x}_0 = [2, 0]\)</span> (since <span class="math inline">\(1(2) - 1(0) = 2\)</span>). The general solution is <span class="math inline">\(\mathbf{x} = [2, 0] + c[1, 1]\)</span>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="341" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 340;"><span id="cb2-341"><a></a>viewof c_val <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Null Space Scalar (c)"</span>})<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-2" class="exercise-cell">
+
+</div>
+<script type="pyodide-2-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImlucHV0IjpbImNfdmFsIl0sIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5pbXBvcnQgcGxvdGx5LmdyYXBoX29iamVjdHMgYXMgZ29cblxuIyBEZWZpbmUgbWF0cml4IEEgYW5kIGIgZm9yIDJEIGV4YW1wbGVcbiMgQSA9IG5wLmFycmF5KFtbMSwgLTFdXSlcbiMgYiA9IG5wLmFycmF5KFsyXSlcblxuIyBOdWxsIHNwYWNlIGJhc2lzIHZlY3RvciBmb3IgQSA9IFsxLCAtMV0gaXMgWzEsIDFdXG52MSA9IG5wLmFycmF5KFsxLCAxXSlcbiMgQSBwYXJ0aWN1bGFyIHNvbHV0aW9uIGZvciBBIHggPSBbMl0gaXMgeDAgPSBbMiwgMF1cbngwID0gbnAuYXJyYXkoWzIsIDBdKVxuXG4jIEdlbmVyYXRlIHBvaW50cyBmb3IgdGhlIG51bGwgc3BhY2UgKGxpbmUgdGhyb3VnaCBvcmlnaW4pXG5jX3JhbmdlID0gbnAubGluc3BhY2UoLTUsIDUsIDEwMClcbm51bGxfc3BhY2VfeF9jb29yZHMgPSBjX3JhbmdlICogdjFbMF1cbm51bGxfc3BhY2VfeV9jb29yZHMgPSBjX3JhbmdlICogdjFbMV1cblxuIyBHZW5lcmF0ZSBwb2ludHMgZm9yIHRoZSB0cmFuc2xhdGVkIHNvbHV0aW9uIHNldFxuc29sdXRpb25fc3BhY2VfeF9jb29yZHMgPSB4MFswXSArIGNfcmFuZ2UgKiB2MVswXVxuc29sdXRpb25fc3BhY2VfeV9jb29yZHMgPSB4MFsxXSArIGNfcmFuZ2UgKiB2MVsxXVxuXG4jIEN1cnJlbnQgcG9pbnQgb24gdGhlIHNvbHV0aW9uIHNldFxuY3VycmVudF94ID0geDBbMF0gKyBjX3ZhbCAqIHYxWzBdXG5jdXJyZW50X3kgPSB4MFsxXSArIGNfdmFsICogdjFbMV1cblxuIyBDcmVhdGUgUGxvdGx5IGZpZ3VyZVxuZmlnID0gZ28uRmlndXJlKClcblxuIyBBZGQgbnVsbCBzcGFjZSBsaW5lXG5maWcuYWRkX3RyYWNlKGdvLlNjYXR0ZXIoXG4gICAgeD1udWxsX3NwYWNlX3hfY29vcmRzLCB5PW51bGxfc3BhY2VfeV9jb29yZHMsXG4gICAgbW9kZT0nbGluZXMnLFxuICAgIGxpbmU9ZGljdChjb2xvcj0nZ3JheScsIHdpZHRoPTMsIGRhc2g9J2Rhc2gnKSxcbiAgICBuYW1lPSdOdWxsIFNwYWNlIChBIHggPSAwKSdcbikpXG5cbiMgQWRkIHBhcnRpY3VsYXIgc29sdXRpb24geDBcbmZpZy5hZGRfdHJhY2UoZ28uU2NhdHRlcihcbiAgICB4PVt4MFswXV0sIHk9W3gwWzFdXSxcbiAgICBtb2RlPSdtYXJrZXJzJyxcbiAgICBtYXJrZXI9ZGljdChzaXplPTEwLCBjb2xvcj0nb3JhbmdlJyksXG4gICAgbmFtZT0nUGFydGljdWxhciBTb2x1dGlvbiAoeDApJ1xuKSlcblxuIyBBZGQgc29sdXRpb24gc3BhY2UgbGluZVxuZmlnLmFkZF90cmFjZShnby5TY2F0dGVyKFxuICAgIHg9c29sdXRpb25fc3BhY2VfeF9jb29yZHMsIHk9c29sdXRpb25fc3BhY2VfeV9jb29yZHMsXG4gICAgbW9kZT0nbGluZXMnLFxuICAgIGxpbmU9ZGljdChjb2xvcj0nYmx1ZScsIHdpZHRoPTMpLFxuICAgIG5hbWU9J1NvbHV0aW9uIFNldCAoQSB4ID0gYiknXG4pKVxuXG4jIEFkZCBjdXJyZW50IHBvaW50IG9uIHNvbHV0aW9uIHNldFxuZmlnLmFkZF90cmFjZShnby5TY2F0dGVyKFxuICAgIHg9W2N1cnJlbnRfeF0sIHk9W2N1cnJlbnRfeV0sXG4gICAgbW9kZT0nbWFya2VycycsXG4gICAgbWFya2VyPWRpY3Qoc2l6ZT0xMiwgY29sb3I9J2dyZWVuJywgc3ltYm9sPSdzdGFyJyksXG4gICAgbmFtZT1mJ0N1cnJlbnQgeCA9IHgwICsge2NfdmFsOi4xZn12MSdcbikpXG5cbiMgVXBkYXRlIGxheW91dFxuZmlnLnVwZGF0ZV9sYXlvdXQoXG4gICAgeGF4aXNfdGl0bGU9XCJ4MVwiLFxuICAgIHlheGlzX3RpdGxlPVwieDJcIixcbiAgICB4YXhpc19yYW5nZT1bLTUsIDVdLFxuICAgIHlheGlzX3JhbmdlPVstNSwgNV0sXG4gICAgdGl0bGU9XCJOdWxsIFNwYWNlIFRyYW5zbGF0aW9uXCIsXG4gICAgc2hvd2xlZ2VuZD1UcnVlLFxuICAgIG1hcmdpbj1kaWN0KGw9MCwgcj0wLCBiPTAsIHQ9NTApLFxuICAgIGhlaWdodD01MDBcbilcblxuZmlnIn0=
+</script>
+</div>
+<aside class="notes">
+<p>This diagram visually represents the concept we just discussed. The null space of <span class="math inline">\(A\)</span> is a subspace that passes through the origin. When you add a particular solution <span class="math inline">\(\mathbf{x}_0\)</span> to every vector in the null space, you effectively shift, or translate, that entire subspace. The result is the complete set of solutions to <span class="math inline">\(A\mathbf{x}=\mathbf{b}\)</span>.</p>
+<p>In the interactive example, we have a very simple 2D case. Our matrix <span class="math inline">\(A = [1 \quad -1]\)</span> has a null space that is the line <span class="math inline">\(x_1 - x_2 = 0\)</span>, or <span class="math inline">\(x_1 = x_2\)</span>. This is the dashed gray line passing through the origin.</p>
+<p>We picked a particular solution <span class="math inline">\(\mathbf{x}_0 = [2, 0]\)</span> for the system <span class="math inline">\(A\mathbf{x} = [2]\)</span>. This is shown as the orange point.</p>
+<p>The blue line represents the entire solution set for <span class="math inline">\(A\mathbf{x} = [2]\)</span>. You can see it’s parallel to the null space, but shifted by <span class="math inline">\(\mathbf{x}_0\)</span>. As you move the slider for <code>c_val</code>, the green star moves along this blue line, demonstrating that any point on this line is a valid solution and can be reached by adding a scalar multiple of the null space basis vector to <span class="math inline">\(\mathbf{x}_0\)</span>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="impact-of-elementary-row-operations" class="slide level2">
+<h2>Impact of Elementary Row Operations</h2>
+<p>Elementary Row Operations (EROs) are powerful, but they have different effects on our key spaces.</p>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>THEOREM 4.7.3 &amp; 4.7.4:</strong></p>
+<ul>
+<li>Elementary row operations <strong>do not change the null space</strong> of a matrix.</li>
+<li>Elementary row operations <strong>do not change the row space</strong> of a matrix.</li>
+</ul>
+</div>
+</div>
+</div>
+<p><strong>Why EROs don’t change Null Space:</strong></p>
+<ul>
+<li>EROs on <span class="math inline">\(A\)</span> are equivalent to multiplying <span class="math inline">\(A\)</span> by an invertible matrix <span class="math inline">\(E\)</span> (i.e., <span class="math inline">\(EA\)</span>).</li>
+<li>If <span class="math inline">\(A\mathbf{x} = \mathbf{0}\)</span>, then <span class="math inline">\(EA\mathbf{x} = E\mathbf{0} = \mathbf{0}\)</span>.</li>
+<li>So, the solutions to <span class="math inline">\(A\mathbf{x} = \mathbf{0}\)</span> are the same as for <span class="math inline">\(EA\mathbf{x} = \mathbf{0}\)</span>.</li>
+</ul>
+</section>
+<section id="impact-of-elementary-row-operations-1" class="slide level2">
+<h2>Impact of Elementary Row Operations</h2>
+<p><strong>Why EROs don’t change Row Space:</strong></p>
+<ul>
+<li>EROs are linear combinations of rows.</li>
+<li>The new rows are still in the span of the original rows.</li>
+<li>Since EROs are reversible, the original rows are also in the span of the new rows.</li>
+<li>Thus, the span remains the same.</li>
+</ul>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Warning</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>EROs <em>DO</em> change the Column Space of a matrix!</strong></p>
+</div>
+</div>
+</div>
+<p>Consider: <span class="math display">\[
+A = {\left[ \begin{array}{l l}{1} &amp; {3}\\ {2} &amp; {6} \end{array} \right]} \quad \xrightarrow{R_2 \to R_2 - 2R_1} \quad B = {\left[ \begin{array}{l l}{1} &amp; {3}\\ {0} &amp; {0} \end{array} \right]}
+\]</span></p>
+<ul>
+<li><strong>Column Space of <span class="math inline">\(A\)</span></strong>: All multiples of <span class="math inline">\(\left[ \begin{array}{l}1 \\ 2 \end{array} \right]\)</span> (e.g., <span class="math inline">\([1,2]^T, [2,4]^T\)</span>, etc.)</li>
+<li><strong>Column Space of <span class="math inline">\(B\)</span></strong>: All multiples of <span class="math inline">\(\left[ \begin{array}{l}1 \\ 0 \end{array} \right]\)</span> (e.g., <span class="math inline">\([1,0]^T, [2,0]^T\)</span>, etc.)</li>
+</ul>
+<p>These are different spaces!</p>
+<aside class="notes">
+<p>This is a critical point that often trips up students. While EROs are fundamental for solving systems and simplifying matrices, they don’t affect all vector spaces equally.</p>
+<p>The null space is preserved because EROs fundamentally don’t change the solution set of a homogeneous system. If <span class="math inline">\(\mathbf{x}\)</span> makes <span class="math inline">\(A\mathbf{x}=\mathbf{0}\)</span>, it will also make the row-reduced version of <span class="math inline">\(A\)</span> times <span class="math inline">\(\mathbf{x}\)</span> equal to <span class="math inline">\(\mathbf{0}\)</span>.</p>
+<p>Similarly for the row space: EROs are just linear combinations of rows. If you take a linear combination of the original rows, you’re still within the span. And since EROs are reversible, you can get the original rows back from the new ones, meaning the span is identical.</p>
+<p>However, the column space <em>does</em> change! The example clearly shows this. The column space of <span class="math inline">\(A\)</span> is a line through the origin with slope 2. After one ERO, the column space of <span class="math inline">\(B\)</span> is the x-axis. These are distinct spaces. This means we cannot directly find a basis for the column space of <span class="math inline">\(A\)</span> by just taking the column vectors of its row echelon form. We’ll see how to handle this soon.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="finding-a-basis-for-the-null-space" class="slide level2">
+<h2>Finding a Basis for the Null Space</h2>
+<p>The null space of <span class="math inline">\(A\)</span> is the solution space of <span class="math inline">\(A\mathbf{x} = \mathbf{0}\)</span>.</p>
+<h3 id="example-4-finding-a-basis-for-the-null-space-of-a-matrix">EXAMPLE 4: Finding a Basis for the Null Space of a Matrix</h3>
+<p>Find a basis for the null space of the matrix:</p>
+<p><span class="math display">\[
+A = {\left[ \begin{array}{l l l l l l}{1} &amp; {3} &amp; {-2} &amp; 0 &amp; 2 &amp; 0\\ {2} &amp; {6} &amp; {-5} &amp; {-2} &amp; 4 &amp; {-3}\\ {0} &amp; 0 &amp; 5 &amp; {10} &amp; 0 &amp; {15}\\ {2} &amp; {6} &amp; 0 &amp; 8 &amp; 4 &amp; {18} \end{array} \right]}
+\]</span></p>
+<p><strong>Solution:</strong> We need to solve the homogeneous system <span class="math inline">\(A\mathbf{x} = \mathbf{0}\)</span>. (This involves reducing <span class="math inline">\(A\)</span> to its row echelon form or reduced row echelon form, and then expressing the general solution in parametric vector form.)</p>
+</section>
+<section id="finding-a-basis-for-the-null-space-1" class="slide level2">
+<h2>Finding a Basis for the Null Space</h2>
+<p>After row reduction (as shown in Section 3.4), the general solution to <span class="math inline">\(A\mathbf{x} = \mathbf{0}\)</span> is: <span class="math display">\[
+\mathbf{x} = \left[ \begin{array}{c}-3x_2 - 4x_4 - 2x_6 \\ x_2 \\ -2x_4 - 3x_6 \\ x_4 \\ x_5 \\ x_6 \end{array} \right] = x_2\left[ \begin{array}{c}-3 \\ 1 \\ 0 \\ 0 \\ 0 \\ 0 \end{array} \right] + x_4\left[ \begin{array}{c}-4 \\ 0 \\ -2 \\ 1 \\ 0 \\ 0 \end{array} \right] + x_6\left[ \begin{array}{c}-2 \\ 0 \\ -3 \\ 0 \\ 0 \\ 1 \end{array} \right]
+\]</span></p>
+<p>Thus, a basis for the null space of <span class="math inline">\(A\)</span> is:</p>
+<p><span class="math display">\[
+\mathbf{v}_{1} = \left[ \begin{array}{c} - 3 \\ 1 \\ 0 \\ 0 \\ 0 \\ 0 \end{array} \right], \quad \mathbf{v}_{2} = \left[ \begin{array}{c} - 4 \\ 0 \\ -2 \\ 1 \\ 0 \\ 0 \end{array} \right], \quad \mathbf{v}_{3} = \left[ \begin{array}{c} - 2 \\ 0 \\ -3 \\ 0 \\ 0 \\ 1 \end{array} \right]
+\]</span></p>
+<aside class="notes">
+<p>To find a basis for the null space, we always start by solving the homogeneous system <span class="math inline">\(A\mathbf{x} = \mathbf{0}\)</span>. This involves reducing the augmented matrix <span class="math inline">\([A | \mathbf{0}]\)</span> to its reduced row echelon form. Since the right-hand side is all zeros, we essentially just reduce <span class="math inline">\(A\)</span>.</p>
+<p>Once in RREF, we identify the free variables. Each free variable corresponds to a basis vector for the null space. We express the leading variables in terms of the free variables, and then write the general solution in parametric vector form.</p>
+<p>In this example, <span class="math inline">\(x_2, x_4, x_6\)</span> were the free variables. By setting one free variable to 1 and the others to 0, we can systematically extract the basis vectors. This process gives us the three basis vectors shown, which span the null space of <span class="math inline">\(A\)</span>. The dimension of the null space, which is 3 in this case, is called the <em>nullity</em> of the matrix.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="bases-for-row-and-column-spaces-from-rref" class="slide level2 scrollable">
+<h2>Bases for Row and Column Spaces (from RREF)</h2>
+<p>When a matrix is in row echelon form, finding bases becomes simpler.</p>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>THEOREM 4.7.5:</strong></p>
+<p>If a matrix <span class="math inline">\(R\)</span> is in row echelon form:</p>
+<ol type="1">
+<li>The row vectors with the leading 1’s (the nonzero row vectors) form a basis for the <strong>row space of <span class="math inline">\(R\)</span></strong>.</li>
+<li>The column vectors with the leading 1’s of the row vectors form a basis for the <strong>column space of <span class="math inline">\(R\)</span></strong>.</li>
+</ol>
+</div>
+</div>
+</div>
+</section>
+<section id="bases-for-row-and-column-spaces-from-rref-1" class="slide level2">
+<h2>Bases for Row and Column Spaces (from RREF)</h2>
+<h3 id="example-5-bases-for-row-and-column-spaces-of-a-matrix-in-row-echelon-form">EXAMPLE 5: Bases for Row and Column Spaces of a Matrix in Row Echelon Form</h3>
+<p>Find bases for the row and column spaces of the matrix:</p>
+<p><span class="math display">\[
+R = {\left[ \begin{array}{l l l l l}{1} &amp; {-2} &amp; {5} &amp; {0} &amp; {3}\\ {0} &amp; {1} &amp; {3} &amp; {0} &amp; {0}\\ {0} &amp; {0} &amp; {0} &amp; {1} &amp; {0}\\ {0} &amp; {0} &amp; {0} &amp; {0} &amp; {0} \end{array} \right]}
+\]</span></p>
+<p><strong>Solution:</strong></p>
+<ul>
+<li><p><strong>Basis for Row Space of <span class="math inline">\(R\)</span></strong>: The nonzero row vectors are:</p>
+<p><span class="math inline">\(\mathbf{r}_{1} = [1\quad -2\quad 5\quad 0\quad 3]\)</span></p>
+<p><span class="math inline">\(\mathbf{r}_{2} = [0\quad 1\quad 3\quad 0\quad 0]\)</span></p>
+<p><span class="math inline">\(\mathbf{r}_{3} = [0\quad 0\quad 0\quad 1\quad 0]\)</span></p>
+<p>These form a basis for <span class="math inline">\(\text{row}(R)\)</span>.</p></li>
+</ul>
+</section>
+<section id="bases-for-row-and-column-spaces-from-rref-2" class="slide level2">
+<h2>Bases for Row and Column Spaces (from RREF)</h2>
+<ul>
+<li><p><strong>Basis for Column Space of <span class="math inline">\(R\)</span></strong>: The leading 1’s are in columns 1, 2, and 4. The corresponding column vectors of <span class="math inline">\(R\)</span> are:</p>
+<p><span class="math inline">\(\mathbf{c}_{1} = \left[ \begin{array}{c}1 \\ 0 \\ 0 \\ 0 \end{array} \right], \quad \mathbf{c}_{2} = \left[ \begin{array}{c} - 2 \\ 1 \\ 0 \\ 0 \end{array} \right], \quad \mathbf{c}_{4} = \left[ \begin{array}{c}0 \\ 0 \\ 1 \\ 0 \end{array} \right]\)</span></p>
+<p>These form a basis for <span class="math inline">\(\text{col}(R)\)</span>.</p></li>
+</ul>
+<aside class="notes">
+<p>This theorem provides a very convenient way to find bases if your matrix is already in row echelon form.</p>
+<p>For the row space, it’s straightforward: just take all the non-zero rows. Because of the leading 1’s and the zeros below them, these rows are guaranteed to be linearly independent, and they span the row space.</p>
+<p>For the column space of <span class="math inline">\(R\)</span>, we look for the columns that contain the leading 1’s, often called pivot columns. The column vectors corresponding to these pivot positions form a basis for the column space <em>of that row echelon matrix R</em>.</p>
+<p>It’s crucial to remember the distinction here: this theorem gives us bases for <span class="math inline">\(\text{row}(R)\)</span> and <span class="math inline">\(\text{col}(R)\)</span>, not necessarily <span class="math inline">\(\text{col}(A)\)</span> if <span class="math inline">\(R\)</span> is just a row echelon form of <span class="math inline">\(A\)</span>. We’ll address how to get <span class="math inline">\(\text{col}(A)\)</span> next.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="finding-a-basis-for-the-row-space-of-original-a" class="slide level2">
+<h2>Finding a Basis for the Row Space (of original <span class="math inline">\(A\)</span>)</h2>
+<p>Since EROs do not change the row space, we can find a basis for <span class="math inline">\(\text{row}(A)\)</span> from its row echelon form.</p>
+<h3 id="example-6-basis-for-a-row-space-by-row-reduction">EXAMPLE 6: Basis for a Row Space by Row Reduction</h3>
+<p>Find a basis for the row space of the matrix:</p>
+<p><span class="math display">\[
+A = {\left[ \begin{array}{l l l l l l}{1} &amp; {-3} &amp; {4} &amp; {-2} &amp; {5} &amp; {4}\\ {2} &amp; {-6} &amp; {9} &amp; {-1} &amp; {8} &amp; {2}\\ {2} &amp; {-6} &amp; {9} &amp; {-1} &amp; {9} &amp; {7}\\ {-1} &amp; {3} &amp; {-4} &amp; {2} &amp; {-5} &amp; {-4} \end{array} \right]}
+\]</span></p>
+<p><strong>Solution:</strong> Reduce <span class="math inline">\(A\)</span> to row echelon form <span class="math inline">\(R\)</span>:</p>
+<p><span class="math display">\[
+R = {\left[ \begin{array}{l l l l l l}{1} &amp; {-3} &amp; {4} &amp; {-2} &amp; {5} &amp; {4}\\ {0} &amp; {0} &amp; {1} &amp; {3} &amp; {-2} &amp; {-6}\\ {0} &amp; {0} &amp; {0} &amp; {0} &amp; {1} &amp; {5}\\ {0} &amp; {0} &amp; {0} &amp; {0} &amp; {0} &amp; {0} \end{array} \right]}
+\]</span></p>
+</section>
+<section id="finding-a-basis-for-the-row-space-of-original-a-1" class="slide level2 scrollable">
+<h2>Finding a Basis for the Row Space (of original <span class="math inline">\(A\)</span>)</h2>
+<p>By Theorem 4.7.5, the nonzero row vectors of <span class="math inline">\(R\)</span> form a basis for the row space of <span class="math inline">\(R\)</span>. Since <span class="math inline">\(\text{row}(A) = \text{row}(R)\)</span>, these vectors also form a basis for <span class="math inline">\(\text{row}(A)\)</span>:</p>
+<p><span class="math display">\[
+\begin{array}{r l}{\mathbf{r}_{1}=[1}&amp;{{}-3\qquad4\quad-2\qquad5\quad4]}\\ {\mathbf{r}_{2}=[0\qquad0\qquad1\quad3\quad-2\quad-6]}\\ {\mathbf{r}_{3}=[0\qquad0\qquad0\qquad0\quad1\quad5]}\end{array}
+\]</span></p>
+<aside class="notes">
+<p>Because elementary row operations preserve the row space, finding a basis for the row space of <em>any</em> matrix <span class="math inline">\(A\)</span> is straightforward:</p>
+<ol type="1">
+<li>Reduce <span class="math inline">\(A\)</span> to any row echelon form <span class="math inline">\(R\)</span>.</li>
+<li>The nonzero rows of <span class="math inline">\(R\)</span> are your basis vectors for the row space of <span class="math inline">\(A\)</span>.</li>
+</ol>
+<p>This method is reliable and easy to apply. Notice that these basis vectors are generally <em>not</em> the original row vectors of <span class="math inline">\(A\)</span>. They are linear combinations of them, but they still span the exact same space.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="finding-a-basis-for-the-column-space-of-original-a" class="slide level2 scrollable">
+<h2>Finding a Basis for the Column Space (of original <span class="math inline">\(A\)</span>)</h2>
+<p>This is trickier, as EROs change the column space itself. However, they preserve <em>linear dependence relations</em> between columns.</p>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>THEOREM 4.7.6:</strong> If <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are row equivalent matrices, then:</p>
+<ol type="a">
+<li>A given set of column vectors of <span class="math inline">\(A\)</span> is linearly independent if and only if the corresponding column vectors of <span class="math inline">\(B\)</span> are linearly independent.</li>
+<li>A given set of column vectors of <span class="math inline">\(A\)</span> forms a basis for the column space of <span class="math inline">\(A\)</span> if and only if the corresponding column vectors of <span class="math inline">\(B\)</span> form a basis for the column space of <span class="math inline">\(B\)</span>.</li>
+</ol>
+</div>
+</div>
+</div>
+<p>This theorem is key! It tells us that while the column vectors themselves change, their <em>relationships</em> (linear independence/dependence) do not.</p>
+</section>
+<section id="finding-a-basis-for-the-column-space-of-original-a-1" class="slide level2 scrollable">
+<h2>Finding a Basis for the Column Space (of original <span class="math inline">\(A\)</span>)</h2>
+<h3 id="method-to-find-a-basis-for-textcola-from-original-columns">Method to find a basis for <span class="math inline">\(\text{col}(A)\)</span> from original columns:</h3>
+<ol type="1">
+<li>Reduce <span class="math inline">\(A\)</span> to a row echelon form <span class="math inline">\(R\)</span>.</li>
+<li>Identify the columns in <span class="math inline">\(R\)</span> that contain the leading 1’s (pivot columns).</li>
+<li>The <strong>corresponding columns in the <em>original matrix</em> <span class="math inline">\(A\)</span></strong> form a basis for <span class="math inline">\(\text{col}(A)\)</span>.</li>
+</ol>
+<h3 id="example-7-basis-for-a-column-space-by-row-reduction">EXAMPLE 7: Basis for a Column Space by Row Reduction</h3>
+<p>Using matrix <span class="math inline">\(A\)</span> from Example 6 and its RREF <span class="math inline">\(R\)</span>:</p>
+<p><span class="math display">\[
+A = {\left[ \begin{array}{r r r r r r}{\mathbf{c_1}} &amp; {\mathbf{c_2}} &amp; {\mathbf{c_3}} &amp; {\mathbf{c_4}} &amp; {\mathbf{c_5}} &amp; {\mathbf{c_6}}\\ {1} &amp; {-3} &amp; {4} &amp; {-2} &amp; {5} &amp; {4}\\ {2} &amp; {-6} &amp; {9} &amp; {-1} &amp; {8} &amp; {2}\\ {2} &amp; {-6} &amp; {9} &amp; {-1} &amp; {9} &amp; {7}\\ {-1} &amp; {3} &amp; {-4} &amp; {2} &amp; {-5} &amp; {-4} \end{array} \right]} \quad \xrightarrow{\text{EROs}} \quad R={\left[\begin{array}{r r r r r r}{1}&amp;{-3}&amp;{4}&amp;{-2}&amp;{5}&amp;{4}\\ {0}&amp;{0}&amp;{1}&amp;{3}&amp;{-2}&amp;{-6}\\ {0}&amp;{0}&amp;{0}&amp;{0}&amp;{1}&amp;{5}\\ {0}&amp;{0}&amp;{0}&amp;{0}&amp;{0}&amp;{0}\end{array}\right]}
+\]</span></p>
+</section>
+<section id="finding-a-basis-for-the-column-space-of-original-a-2" class="slide level2 scrollable">
+<h2>Finding a Basis for the Column Space (of original <span class="math inline">\(A\)</span>)</h2>
+<ol type="1">
+<li><strong>Pivot columns in <span class="math inline">\(R\)</span></strong>: Columns 1, 3, and 5 contain leading 1’s.</li>
+<li><strong>Corresponding columns in <span class="math inline">\(A\)</span></strong>: <span class="math inline">\(\mathbf{c}_{1}, \mathbf{c}_{3}, \mathbf{c}_{5}\)</span>.</li>
+</ol>
+<p>Thus, the basis for <span class="math inline">\(\text{col}(A)\)</span> consists of:</p>
+<p><span class="math display">\[
+\mathbf{c}_{1}={\left[\begin{array}{l}{1}\\ {2}\\ {2}\\ {-1}\end{array}\right]},\quad\mathbf{c}_{3}={\left[\begin{array}{l}{4}\\ {9}\\ {9}\\ {-4}\end{array}\right]},\quad\mathbf{c}_{5}={\left[\begin{array}{l}{5}\\ {8}\\ {9}\\ {-5}\end{array}\right]}
+\]</span></p>
+<aside class="notes">
+<p>This is where the subtlety comes in. We established that EROs change the column space. So, we can’t just take the columns of <span class="math inline">\(R\)</span> that have leading 1’s as a basis for <span class="math inline">\(\text{col}(A)\)</span>.</p>
+<p>However, Theorem 4.7.6 is our savior. It tells us that if a set of columns is linearly independent in <span class="math inline">\(A\)</span>, their corresponding columns in <span class="math inline">\(R\)</span> are also linearly independent, and vice versa. This means the <em>pattern</em> of linear dependence and independence is preserved.</p>
+<p>So, the strategy is:</p>
+<ol type="1">
+<li>Reduce <span class="math inline">\(A\)</span> to <span class="math inline">\(R\)</span>.</li>
+<li>Find the pivot columns in <span class="math inline">\(R\)</span>. These are the columns that would form a basis for <span class="math inline">\(\text{col}(R)\)</span>.</li>
+<li>Then, go back to the <em>original matrix</em> <span class="math inline">\(A\)</span> and pick out the columns that correspond to those pivot positions. These original columns will form a basis for <span class="math inline">\(\text{col}(A)\)</span>.</li>
+</ol>
+<p>Example 7 clearly demonstrates this. Columns 1, 3, and 5 are pivot columns in <span class="math inline">\(R\)</span>. Therefore, columns 1, 3, and 5 <em>from the original matrix A</em> form a basis for <span class="math inline">\(\text{col}(A)\)</span>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-column-space-basis-finder" class="slide level2 scrollable">
+<h2>Interactive Column Space Basis Finder</h2>
+<p>Provide a matrix <span class="math inline">\(A\)</span> and let Python find its RREF and identify a basis for its column space.</p>
+<p>Enter your matrix <span class="math inline">\(A\)</span> (e.g., <code>[[1, 2, 3], [4, 5, 6], [7, 8, 9]]</code>):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="700" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 699;"><span id="cb3-700"><a></a>viewof matrix_input_cs <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">textarea</span>({<span class="dt">value</span><span class="op">:</span> <span class="st">"[[1, -3, 4, -2, 5, 4], [2, -6, 9, -1, 8, 2], [2, -6, 9, -1, 9, 7], [-1, 3, -4, 2, -5, -4]]"</span><span class="op">,</span> <span class="dt">rows</span><span class="op">:</span> <span class="dv">4</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Matrix A (as nested list)"</span>})<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-3" class="exercise-cell">
+
+</div>
+<script type="pyodide-3-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImlucHV0IjpbIm1hdHJpeF9pbnB1dF9jcyJdLCJtYXgtbGluZXMiOjEwfSwiY29kZSI6ImltcG9ydCBudW1weSBhcyBucFxuZnJvbSBzeW1weSBpbXBvcnQgTWF0cml4LCBycmVmXG5cbnRyeTpcbiAgICAjIENvbnZlcnQgc3RyaW5nIGlucHV0IHRvIG51bXB5IGFycmF5XG4gICAgQV9saXN0ID0gZXZhbChtYXRyaXhfaW5wdXRfY3MpXG4gICAgQV9ucCA9IG5wLmFycmF5KEFfbGlzdCwgZHR5cGU9ZmxvYXQpXG5cbiAgICAjIFVzZSBTeW1QeSBmb3IgUlJFRiAobW9yZSByb2J1c3QgZm9yIGV4YWN0IGZyYWN0aW9ucylcbiAgICBBX3N5bXB5ID0gTWF0cml4KEFfbnApXG4gICAgUl9zeW1weSwgcGl2b3RfY29sc19pbmRpY2VzID0gQV9zeW1weS5ycmVmKClcbiAgICBSX25wID0gbnAuYXJyYXkoUl9zeW1weSkuYXN0eXBlKGZsb2F0KVxuXG4gICAgIyBJZGVudGlmeSBiYXNpcyBjb2x1bW5zIGZyb20gb3JpZ2luYWwgQVxuICAgIGJhc2lzX2NvbHVtbnNfQSA9IEFfbnBbOiwgcGl2b3RfY29sc19pbmRpY2VzXVxuXG4gICAgcHJpbnQoXCJPcmlnaW5hbCBNYXRyaXggQTpcXG5cIiwgQV9ucClcbiAgICBwcmludChcIlxcblJlZHVjZWQgUm93IEVjaGVsb24gRm9ybSAoUik6XFxuXCIsIFJfbnApXG4gICAgcHJpbnQoXCJcXG5QaXZvdCBDb2x1bW4gSW5kaWNlcyAoMC1pbmRleGVkKTpcIiwgW2lkeCBmb3IgaWR4IGluIHBpdm90X2NvbHNfaW5kaWNlc10pXG4gICAgcHJpbnQoXCJcXG5CYXNpcyBmb3IgQ29sdW1uIFNwYWNlIG9mIEEgKGZyb20gb3JpZ2luYWwgQSdzIGNvbHVtbnMpOlxcblwiLCBiYXNpc19jb2x1bW5zX0EpXG5cbmV4Y2VwdCBFeGNlcHRpb24gYXMgZTpcbiAgICBwcmludChmXCJFcnJvcjoge2V9XCIpXG4gICAgcHJpbnQoXCJQbGVhc2UgZW5zdXJlIHlvdXIgbWF0cml4IGlucHV0IGlzIGEgdmFsaWQgbmVzdGVkIGxpc3Qgb2YgbnVtYmVycywgZS5nLiwgW1sxLCAyXSwgWzMsIDRdXVwiKSJ9
+</script>
+</div>
+<aside class="notes">
+<p>This interactive tool allows you to input any matrix and immediately see the steps to find a basis for its column space.</p>
+<ol type="1">
+<li>Input your matrix <span class="math inline">\(A\)</span> as a nested list (e.g., <code>[[1, 2], [3, 4]]</code>).</li>
+<li>The Python code, using the SymPy library, calculates the Reduced Row Echelon Form (RREF) of your matrix.</li>
+<li>It then identifies the pivot columns in the RREF.</li>
+<li>Finally, it extracts the <em>corresponding columns from your original matrix A</em> to form the basis for the column space of A.</li>
+</ol>
+<p>This is a direct application of the method we just discussed and can be very helpful for quickly checking your work or experimenting with different matrices.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="basis-for-space-spanned-by-a-set-of-vectors" class="slide level2 scrollable">
+<h2>Basis for Space Spanned by a Set of Vectors</h2>
+<p>The problem of finding a basis for the subspace spanned by a set of vectors is equivalent to finding a basis for the column space of a matrix.</p>
+<p><strong>Problem:</strong> Given a set of vectors <span class="math inline">\(S = \{\mathbf{v}_{1}, \mathbf{v}_{2}, \ldots , \mathbf{v}_{k}\}\)</span> in <span class="math inline">\(R^{n}\)</span>, find a subset of these vectors that forms a basis for <span class="math inline">\(\operatorname {span}(S)\)</span>.</p>
+<p><strong>Solution:</strong></p>
+<ol type="1">
+<li>Form a matrix <span class="math inline">\(A\)</span> whose columns are the vectors <span class="math inline">\(\mathbf{v}_{1}, \ldots, \mathbf{v}_{k}\)</span>.</li>
+<li>The column space of <span class="math inline">\(A\)</span>, <span class="math inline">\(\text{col}(A)\)</span>, is precisely <span class="math inline">\(\operatorname {span}(S)\)</span>.</li>
+<li>Use the method from Example 7 (and Theorem 4.7.6) to find a basis for <span class="math inline">\(\text{col}(A)\)</span> consisting of original column vectors.</li>
+</ol>
+</section>
+<section id="basis-for-space-spanned-by-a-set-of-vectors-1" class="slide level2">
+<h2>Basis for Space Spanned by a Set of Vectors</h2>
+<h3 id="example-8-basis-for-the-space-spanned-by-a-set-of-vectors">EXAMPLE 8: Basis for the Space Spanned by a Set of Vectors</h3>
+<p>The following vectors span a subspace of <span class="math inline">\(R^{4}\)</span>. Find a subset of these vectors that forms a basis of this subspace.</p>
+<p><span class="math display">\[
+\begin{array}{r l} &amp; {\mathbf{v}_{1} = (1,2,2, - 1),\qquad \mathbf{v}_{2} = (-3, - 6, - 6,3),}\\ &amp; {\mathbf{v}_{3} = (4,9,9, - 4),\qquad \mathbf{v}_{4} = (-2, - 1, - 1,2),}\\ &amp; {\mathbf{v}_{5} = (5,8,9, - 5),\qquad \mathbf{v}_{6} = (4,2,7, - 4)} \end{array}
+\]</span></p>
+<p><strong>Solution:</strong> If we write these vectors as columns, we get the matrix <span class="math inline">\(A\)</span> from Example 7:</p>
+<p><span class="math display">\[
+A = [\mathbf{v}_{1} \quad \mathbf{v}_{2} \quad \mathbf{v}_{3} \quad \mathbf{v}_{4} \quad \mathbf{v}_{5} \quad \mathbf{v}_{6}] = {\left[ \begin{array}{r r r r r r}{1} &amp; {-3} &amp; {4} &amp; {-2} &amp; {5} &amp; {4}\\ {2} &amp; {-6} &amp; {9} &amp; {-1} &amp; {8} &amp; {2}\\ {2} &amp; {-6} &amp; {9} &amp; {-1} &amp; {9} &amp; {7}\\ {-1} &amp; {3} &amp; {-4} &amp; {2} &amp; {-5} &amp; {-4} \end{array} \right]}
+\]</span></p>
+<p>From Example 7, the pivot columns in the RREF of <span class="math inline">\(A\)</span> corresponded to columns 1, 3, and 5. Therefore, the vectors <span class="math inline">\(\mathbf{v}_{1}, \mathbf{v}_{3}\)</span>, and <span class="math inline">\(\mathbf{v}_{5}\)</span> form a basis for <span class="math inline">\(\operatorname {span}\{\mathbf{v}_{1},\ldots,\mathbf{v}_{6}\}\)</span>.</p>
+<aside class="notes">
+<p>This is a common type of problem: you’re given a set of vectors, and you need to find a smaller, linearly independent subset of them that still spans the same space. This is essentially finding a basis for the span of those vectors.</p>
+<p>The trick is to realize that “the span of a set of vectors” is exactly the same as “the column space of the matrix formed by those vectors.” So, we can simply apply the method for finding a basis for the column space of a matrix.</p>
+<p>As shown in Example 8, by constructing matrix <span class="math inline">\(A\)</span> with the given vectors as columns, and then using the results from Example 7, we can quickly identify which of the original vectors form a basis for their span. This is a very efficient way to solve this kind of problem.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="basis-for-the-row-space-from-original-rows" class="slide level2 scrollable">
+<h2>Basis for the Row Space (from original rows)</h2>
+<p>Sometimes, we need a basis for the row space that consists <em>entirely</em> of row vectors from the <em>original</em> matrix <span class="math inline">\(A\)</span>.</p>
+<p><strong>Method:</strong></p>
+<ol type="1">
+<li>Transpose <span class="math inline">\(A\)</span> to get <span class="math inline">\(A^T\)</span>. The row space of <span class="math inline">\(A\)</span> is the column space of <span class="math inline">\(A^T\)</span>.</li>
+<li>Find a basis for the column space of <span class="math inline">\(A^T\)</span> using the method from Example 7 (i.e., reduce <span class="math inline">\(A^T\)</span> to RREF, identify pivot columns, and take the corresponding columns from <span class="math inline">\(A^T\)</span>).</li>
+<li>Transpose these basis column vectors back to row vectors. These will be original row vectors of <span class="math inline">\(A\)</span> that form a basis for <span class="math inline">\(\text{row}(A)\)</span>.</li>
+</ol>
+</section>
+<section id="basis-for-the-row-space-from-original-rows-1" class="slide level2 scrollable">
+<h2>Basis for the Row Space (from original rows)</h2>
+<h3 id="example-9-basis-for-the-row-space-of-a-matrix-using-original-rows">EXAMPLE 9: Basis for the Row Space of a Matrix (using original rows)</h3>
+<p>Find a basis for the row space of <span class="math inline">\(A\)</span> consisting entirely of row vectors from <span class="math inline">\(A\)</span>:</p>
+<p><span class="math display">\[
+A = {\left[ \begin{array}{l l l l l}{1} &amp; {-2} &amp; 0 &amp; 0 &amp; 3\\ 2 &amp; {-5} &amp; {-3} &amp; {-2} &amp; 6\\ 0 &amp; 5 &amp; {15} &amp; {10} &amp; 0\\ 2 &amp; 6 &amp; {18} &amp; 8 &amp; 6 \end{array} \right]}
+\]</span></p>
+<p><strong>Solution:</strong></p>
+<ol type="1">
+<li><strong>Transpose <span class="math inline">\(A\)</span></strong>: <span class="math display">\[
+A^{T} = {\left[ \begin{array}{l l l l}{1} &amp; {2} &amp; 0 &amp; 2\\ {-2} &amp; {-5} &amp; 5 &amp; 6\\ 0 &amp; {-3} &amp; {15} &amp; {18}\\ 0 &amp; {-2} &amp; {10} &amp; 8\\ 3 &amp; 6 &amp; 0 &amp; 6 \end{array} \right]}
+\]</span></li>
+</ol>
+</section>
+<section id="basis-for-the-row-space-from-original-rows-2" class="slide level2 scrollable">
+<h2>Basis for the Row Space (from original rows)</h2>
+<ol start="2" type="1">
+<li><strong>Reduce <span class="math inline">\(A^T\)</span> to RREF</strong>: (After row operations) <span class="math display">\[
+R_{A^T} = {\left[ \begin{array}{l l l l}{1} &amp; {2} &amp; 0 &amp; 2\\ 0 &amp; 1 &amp; {-5} &amp; {-10}\\ 0 &amp; 0 &amp; 0 &amp; 1\\ 0 &amp; 0 &amp; 0 &amp; 0\\ 0 &amp; 0 &amp; 0 &amp; 0 \end{array} \right]}
+\]</span></li>
+<li><strong>Identify pivot columns in <span class="math inline">\(R_{A^T}\)</span></strong>: Columns 1, 2, and 4.</li>
+<li><strong>Corresponding columns from <span class="math inline">\(A^T\)</span></strong>: These are <span class="math inline">\(\mathbf{c}_{1}, \mathbf{c}_{2}, \mathbf{c}_{4}\)</span> of <span class="math inline">\(A^T\)</span>. <span class="math display">\[
+\mathbf{c}_{1} = {\left[ \begin{array}{l}{1}\\ {-2}\\ {0}\\ {0}\\ {3} \end{array} \right]},\quad \mathbf{c}_{2} = {\left[ \begin{array}{l}{2}\\ {-5}\\ {-3}\\ {-2}\\ {6} \end{array} \right]},\quad \mathbf{c}_{4} = {\left[ \begin{array}{l}{2}\\ {6}\\ {18}\\ {8}\\ {6} \end{array} \right]}
+\]</span></li>
+</ol>
+</section>
+<section id="basis-for-the-row-space-from-original-rows-3" class="slide level2 scrollable">
+<h2>Basis for the Row Space (from original rows)</h2>
+<ol start="5" type="1">
+<li><strong>Transpose back to row vectors</strong>: These are the original rows <span class="math inline">\(\mathbf{r}_1, \mathbf{r}_2, \mathbf{r}_4\)</span> of <span class="math inline">\(A\)</span>. <span class="math display">\[
+\mathbf{r}_{1} = [1 \quad -2\quad 0\quad 0\quad 3],\quad \mathbf{r}_{2} = [2 \quad -5 \quad -3 \quad -2\quad 6],\quad \mathbf{r}_{4} = [2\quad 6\quad 18\quad 8\quad 6]
+\]</span> These form a basis for <span class="math inline">\(\text{row}(A)\)</span>.</li>
+</ol>
+<aside class="notes">
+<p>We’ve seen how to get a basis for the row space from the nonzero rows of the RREF. But sometimes, for interpretability or other reasons, we might need a basis that consists <em>only</em> of actual rows from the original matrix <span class="math inline">\(A\)</span>.</p>
+<p>This method uses a clever trick: the row space of <span class="math inline">\(A\)</span> is the same as the column space of its transpose, <span class="math inline">\(A^T\)</span>. So, we transpose <span class="math inline">\(A\)</span>, apply the method for finding a basis for the column space (which gives us original columns of <span class="math inline">\(A^T\)</span>), and then transpose those back to get original rows of <span class="math inline">\(A\)</span>.</p>
+<p>Example 9 walks through this process. We transpose <span class="math inline">\(A\)</span>, reduce <span class="math inline">\(A^T\)</span> to RREF, identify pivot columns, pick those columns from the original <span class="math inline">\(A^T\)</span>, and then transpose them back to get the basis vectors for <span class="math inline">\(\text{row}(A)\)</span> which are indeed rows from the original matrix <span class="math inline">\(A\)</span>. This is a powerful technique for specific applications where the original row vectors are preferred for the basis.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="basis-and-linear-combinations-part-a" class="slide level2">
+<h2>Basis and Linear Combinations (Part a)</h2>
+<p>This problem combines finding a basis with expressing other vectors as linear combinations.</p>
+<p><strong>Problem:</strong> Given a set of vectors <span class="math inline">\(S = \{\mathbf{v}_{1}, \ldots , \mathbf{v}_{k}\}\)</span>, find a subset that forms a basis for <span class="math inline">\(\operatorname {span}(S)\)</span>, and express each vector not in that basis as a linear combination of the basis vectors.</p>
+</section>
+<section id="basis-and-linear-combinations-part-a-1" class="slide level2 scrollable">
+<h2>Basis and Linear Combinations (Part a)</h2>
+<h3 id="example-10-basis-and-linear-combinations">EXAMPLE 10: Basis and Linear Combinations</h3>
+<ol type="a">
+<li>Find a subset of the vectors below that forms a basis for their span:</li>
+</ol>
+<p><span class="math display">\[
+\begin{array}{c}{{\mathbf{v}_{1}=(1,-2,0,3),\quad\mathbf{v}_{2}=(2,-5,-3,6),}}\\ {{\mathbf{v}_{3}=(0,1,3,0),\quad\mathbf{v}_{4}=(2,-1,4,-7),\quad\mathbf{v}_{5}=(5,-8,1,2)}}\end{array}
+\]</span></p>
+<p><strong>Solution (a):</strong> 1. <strong>Form matrix <span class="math inline">\(A\)</span> with vectors as columns</strong>: <span class="math display">\[
+    A = \begin{array}{r}{\left[ \begin{array}{c c c c c}{1} &amp; {2} &amp; {0} &amp; {2} &amp; {5}\\ {-2} &amp; {-5} &amp; {1} &amp; {-1} &amp; {-8}\\ {0} &amp; {-3} &amp; {3} &amp; {4} &amp; {1}\\ {3} &amp; {6} &amp; {0} &amp; {-7} &amp; {2} \end{array} \right]}\\ {\uparrow \quad \uparrow \quad \uparrow \quad \uparrow \quad \uparrow}\\ {\mathbf{v}_{1}\quad \mathbf{v}_{2}\quad \mathbf{v}_{3}\quad \mathbf{v}_{4}\quad \mathbf{v}_{5}} \end{array}
+    \]</span></p>
+</section>
+<section id="basis-and-linear-combinations-part-a-2" class="slide level2 scrollable">
+<h2>Basis and Linear Combinations (Part a)</h2>
+<ol start="2" type="1">
+<li><strong>Reduce <span class="math inline">\(A\)</span> to Reduced Row Echelon Form (RREF) <span class="math inline">\(R\)</span></strong>: <span class="math display">\[
+R = \begin{array}{r}{\left[ \begin{array}{c c c c c}{1} &amp; {0} &amp; {2} &amp; {0} &amp; {1}\\ {0} &amp; {1} &amp; {-1} &amp; {0} &amp; {1}\\ {0} &amp; {0} &amp; {0} &amp; {1} &amp; {1}\\ {0} &amp; {0} &amp; {0} &amp; {0} &amp; {0} \end{array} \right]}\\ {\uparrow \quad \uparrow \quad \uparrow \quad \uparrow \quad \uparrow \quad \uparrow}\\ {\mathbf{w}_{1}\quad \mathbf{w}_{2}\quad \mathbf{w}_{3}\quad \mathbf{w}_{4}\quad \mathbf{w}_{5}} \end{array}
+\]</span></li>
+<li><strong>Identify pivot columns in <span class="math inline">\(R\)</span></strong>: Columns 1, 2, and 4.</li>
+<li><strong>Corresponding columns from original <span class="math inline">\(A\)</span></strong>: <span class="math inline">\(\mathbf{v}_{1}, \mathbf{v}_{2}, \mathbf{v}_{4}\)</span>. Thus, <span class="math inline">\(\{\mathbf{v}_{1}, \mathbf{v}_{2}, \mathbf{v}_{4}\}\)</span> is a basis for the subspace spanned by the given vectors.</li>
+</ol>
+<aside class="notes">
+<p>This example tackles a more comprehensive problem. Not only do we need to find a basis, but we also need to show how the “extra” vectors relate to that basis.</p>
+<p>Part (a) is a direct application of what we just learned:</p>
+<ol type="1">
+<li>We construct a matrix where the given vectors are its columns.</li>
+<li>We then reduce this matrix to its Reduced Row Echelon Form (RREF). The RREF is particularly useful for part (b).</li>
+<li>We identify the pivot columns in the RREF. These tell us which columns in the <em>original</em> matrix form a basis. In this case, columns 1, 2, and 4 are pivot columns in <span class="math inline">\(R\)</span>, so <span class="math inline">\(\mathbf{v}_1, \mathbf{v}_2, \mathbf{v}_4\)</span> form a basis for the span of all five vectors.</li>
+</ol>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="basis-and-linear-combinations-part-b" class="slide level2">
+<h2>Basis and Linear Combinations (Part b)</h2>
+<p>Express each vector not in the basis as a linear combination of the basis vectors.</p>
+<p><strong>Solution (b):</strong> From the RREF <span class="math inline">\(R\)</span> (columns <span class="math inline">\(\mathbf{w}_{1}, \ldots, \mathbf{w}_{5}\)</span>):</p>
+<p><span class="math display">\[
+R = \begin{array}{r}{\left[ \begin{array}{c c c c c}{1} &amp; {0} &amp; {2} &amp; {0} &amp; {1}\\ {0} &amp; {1} &amp; {-1} &amp; {0} &amp; {1}\\ {0} &amp; {0} &amp; {0} &amp; {1} &amp; {1}\\ {0} &amp; {0} &amp; {0} &amp; {0} &amp; {0} \end{array} \right]}\\ {\uparrow \quad \uparrow \quad \uparrow \quad \uparrow \quad \uparrow \quad \uparrow}\\ {\mathbf{w}_{1}\quad \mathbf{w}_{2}\quad \mathbf{w}_{3}\quad \mathbf{w}_{4}\quad \mathbf{w}_{5}} \end{array}
+\]</span></p>
+<p>The non-pivot columns are <span class="math inline">\(\mathbf{w}_3\)</span> and <span class="math inline">\(\mathbf{w}_5\)</span>. We express them as linear combinations of the pivot columns <span class="math inline">\(\mathbf{w}_1, \mathbf{w}_2, \mathbf{w}_4\)</span>.</p>
+<ul>
+<li><p><strong>For <span class="math inline">\(\mathbf{w}_3\)</span></strong>: The third column of <span class="math inline">\(R\)</span> is <span class="math inline">\([2, -1, 0, 0]^T\)</span>. This means <span class="math inline">\(\mathbf{w}_3 = 2\mathbf{w}_1 - 1\mathbf{w}_2\)</span>. (Since <span class="math inline">\(\mathbf{w}_1 = [1,0,0,0]^T\)</span> and <span class="math inline">\(\mathbf{w}_2 = [0,1,0,0]^T\)</span>).</p></li>
+<li><p><strong>For <span class="math inline">\(\mathbf{w}_5\)</span></strong>: The fifth column of <span class="math inline">\(R\)</span> is <span class="math inline">\([1, 1, 1, 0]^T\)</span>. This means <span class="math inline">\(\mathbf{w}_5 = 1\mathbf{w}_1 + 1\mathbf{w}_2 + 1\mathbf{w}_4\)</span>. (Since <span class="math inline">\(\mathbf{w}_1 = [1,0,0,0]^T\)</span>, <span class="math inline">\(\mathbf{w}_2 = [0,1,0,0]^T\)</span>, and <span class="math inline">\(\mathbf{w}_4 = [0,0,1,0]^T\)</span>).</p></li>
+</ul>
+<p>These are the “dependency equations” in terms of the RREF columns.</p>
+<p>Since the linear dependence relationships are preserved by EROs (Theorem 4.7.6), we can replace <span class="math inline">\(\mathbf{w}_i\)</span> with <span class="math inline">\(\mathbf{v}_i\)</span>:</p>
+<ul>
+<li><span class="math inline">\(\mathbf{v}_{3} = 2\mathbf{v}_{1} - \mathbf{v}_{2}\)</span></li>
+<li><span class="math inline">\(\mathbf{v}_{5} = \mathbf{v}_{1} + \mathbf{v}_{2} + \mathbf{v}_{4}\)</span></li>
+</ul>
+<aside class="notes">
+<p>Part (b) leverages the power of the Reduced Row Echelon Form. The RREF doesn’t just tell us which columns are pivots; it directly gives us the coefficients for expressing the non-pivot columns as linear combinations of the pivot columns.</p>
+<p>For example, looking at <span class="math inline">\(\mathbf{w}_3\)</span>, its entries <span class="math inline">\([2, -1, 0, 0]^T\)</span> directly tell us that <span class="math inline">\(\mathbf{w}_3 = 2\mathbf{w}_1 - 1\mathbf{w}_2\)</span>. This is because <span class="math inline">\(\mathbf{w}_1\)</span> and <span class="math inline">\(\mathbf{w}_2\)</span> are standard basis vectors within the pivot columns’ subspace. Similarly for <span class="math inline">\(\mathbf{w}_5\)</span>.</p>
+<p>Crucially, because EROs preserve these linear dependence relationships, the same coefficients apply to the original vectors. So, if <span class="math inline">\(\mathbf{w}_3 = 2\mathbf{w}_1 - \mathbf{w}_2\)</span>, then <span class="math inline">\(\mathbf{v}_3 = 2\mathbf{v}_1 - \mathbf{v}_2\)</span>. This is a very elegant and efficient way to express non-basis vectors as linear combinations of the basis vectors.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="summary-of-basis-finding-steps" class="slide level2 scrollable">
+<h2>Summary of Basis Finding Steps</h2>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>General Procedure for Basis and Linear Combinations:</strong></p>
+<ol type="1">
+<li><strong>Form Matrix:</strong> Create matrix <span class="math inline">\(A\)</span> with the given vectors <span class="math inline">\(\{\mathbf{v}_{1}, \ldots , \mathbf{v}_{k}\}\)</span> as its columns.</li>
+<li><strong>Reduce to RREF:</strong> Transform <span class="math inline">\(A\)</span> into its Reduced Row Echelon Form <span class="math inline">\(R\)</span>.</li>
+<li><strong>Identify <span class="math inline">\(R\)</span> Columns:</strong> Denote the columns of <span class="math inline">\(R\)</span> as <span class="math inline">\(\mathbf{w}_{1}, \ldots , \mathbf{w}_{k}\)</span>.</li>
+<li><strong>Basis for Span:</strong> The columns of <span class="math inline">\(A\)</span> corresponding to the pivot columns (those with leading 1’s) in <span class="math inline">\(R\)</span> form a basis for <span class="math inline">\(\operatorname {span}(\{\mathbf{v}_{i}\})\)</span>.</li>
+<li><strong>Dependency Equations (for <span class="math inline">\(R\)</span>):</strong> For each non-pivot column <span class="math inline">\(\mathbf{w}_j\)</span> in <span class="math inline">\(R\)</span>, express it as a linear combination of the pivot columns <span class="math inline">\(\mathbf{w}_p\)</span> that precede it. The coefficients are directly visible in <span class="math inline">\(\mathbf{w}_j\)</span>.</li>
+<li><strong>Dependency Equations (for <span class="math inline">\(A\)</span>):</strong> Translate these dependency equations by replacing each <span class="math inline">\(\mathbf{w}_i\)</span> with its corresponding original vector <span class="math inline">\(\mathbf{v}_i\)</span>.</li>
+</ol>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>This slide provides a concise summary of the entire process we just covered for finding a basis from a set of vectors and expressing the non-basis vectors as linear combinations. This six-step procedure is a powerful algorithm you can apply to many problems.</p>
+<p>Remember, the key is using the RREF. It simplifies the matrix enough to easily identify linear independence (pivot columns) and to read off the coefficients for linear combinations (from the entries of the non-pivot columns).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="ece-application-control-systems-and-state-space" class="slide level2">
+<h2>ECE Application: Control Systems and State Space</h2>
+<p>These vector spaces are fundamental in State-Space Control Systems.</p>
+<p><strong>System Model:</strong> <span class="math display">\[
+\dot{\mathbf{x}}(t) = A\mathbf{x}(t) + B\mathbf{u}(t) \\
+\mathbf{y}(t) = C\mathbf{x}(t) + D\mathbf{u}(t)
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\mathbf{x}(t)\)</span>: State vector</li>
+<li><span class="math inline">\(\mathbf{u}(t)\)</span>: Input vector</li>
+<li><span class="math inline">\(\mathbf{y}(t)\)</span>: Output vector</li>
+<li><span class="math inline">\(A, B, C, D\)</span>: System matrices</li>
+</ul>
+</section>
+<section id="ece-application-control-systems-and-state-space-1" class="slide level2">
+<h2>ECE Application: Control Systems and State Space</h2>
+<p><strong>How the spaces apply:</strong></p>
+<ul>
+<li><strong>Column Space of <span class="math inline">\(A\)</span> (or <span class="math inline">\(B\)</span>):</strong>
+<ul>
+<li><strong>Reachability/Controllability:</strong> Can the system reach any desired state <span class="math inline">\(\mathbf{x}\)</span> from its inputs <span class="math inline">\(\mathbf{u}\)</span>? This relates to the column space of the controllability matrix.</li>
+</ul></li>
+<li><strong>Null Space of <span class="math inline">\(C\)</span>:</strong>
+<ul>
+<li><strong>Observability:</strong> What states <span class="math inline">\(\mathbf{x}\)</span> produce zero output <span class="math inline">\(\mathbf{y}\)</span>? These are unobservable states.</li>
+</ul></li>
+<li><strong>Row Space of <span class="math inline">\(A\)</span> (or <span class="math inline">\(C\)</span>):</strong>
+<ul>
+<li><strong>Observability:</strong> What information about the state <span class="math inline">\(\mathbf{x}\)</span> is contained in the output <span class="math inline">\(\mathbf{y}\)</span>? This relates to the row space of the observability matrix.</li>
+</ul></li>
+</ul>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<svg width="960" height="480" viewbox="0.00 0.00 835.22 361.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none; display: block; margin: auto auto auto auto">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 357)">
+<title>G</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-357 831.22,-357 831.22,4 -4,4"></polygon>
+<g id="clust1" class="cluster">
+<title>cluster_system</title>
+<polygon fill="none" stroke="blue" points="8,-181 8,-345 819.22,-345 819.22,-181 8,-181"></polygon>
+<text text-anchor="middle" x="413.61" y="-328.4" font-family="Times,serif" font-size="14.00">Linear System</text>
+</g>
+<!-- U -->
+<g id="node1" class="node">
+<title>U</title>
+<polygon fill="lightgray" stroke="black" points="424.39,-173 354.85,-173 354.85,-137 424.39,-137 424.39,-173"></polygon>
+<text text-anchor="middle" x="389.62" y="-150.8" font-family="Times,serif" font-size="14.00">Input u(t)</text>
+</g>
+<!-- B_block -->
+<g id="node4" class="node">
+<title>B_block</title>
+<polygon fill="lightgray" stroke="black" points="70,-279 16,-279 16,-243 70,-243 70,-279"></polygon>
+<text text-anchor="middle" x="43" y="-256.8" font-family="Times,serif" font-size="14.00">B</text>
+</g>
+<!-- U&#45;&gt;B_block -->
+<g id="edge1" class="edge">
+<title>U-&gt;B_block</title>
+<path fill="none" stroke="black" d="M354.89,-164.66C281.87,-185.6 113.6,-234.04 88,-243 85.3,-243.95 82.52,-244.97 79.74,-246.02"></path>
+<polygon fill="black" stroke="black" points="78.39,-242.79 70.35,-249.7 80.94,-249.31 78.39,-242.79"></polygon>
+</g>
+<!-- D_block -->
+<g id="node6" class="node">
+<title>D_block</title>
+<polygon fill="lightgray" stroke="black" points="70,-225 16,-225 16,-189 70,-189 70,-225"></polygon>
+<text text-anchor="middle" x="43" y="-202.8" font-family="Times,serif" font-size="14.00">D</text>
+</g>
+<!-- U&#45;&gt;D_block -->
+<g id="edge9" class="edge">
+<title>U-&gt;D_block</title>
+<path fill="none" stroke="black" d="M354.71,-155.8C298.45,-157.81 182.65,-164.79 88,-189 85.23,-189.71 82.4,-190.56 79.58,-191.49"></path>
+<polygon fill="black" stroke="black" points="78.32,-188.23 70.12,-194.94 80.72,-194.8 78.32,-188.23"></polygon>
+</g>
+<!-- SUM -->
+<g id="node2" class="node">
+<title>SUM</title>
+<ellipse fill="lightgray" stroke="black" cx="285.09" cy="-258" rx="18" ry="18"></ellipse>
+<text text-anchor="middle" x="285.09" y="-253.8" font-family="Times,serif" font-size="14.00">+</text>
+</g>
+<!-- X_dot -->
+<g id="node8" class="node">
+<title>X_dot</title>
+<polygon fill="lightgray" stroke="black" points="416.62,-237 362.62,-237 362.62,-201 416.62,-201 416.62,-237"></polygon>
+<text text-anchor="middle" x="389.62" y="-214.8" font-family="Times,serif" font-size="14.00">ẋ(t)</text>
+</g>
+<!-- SUM&#45;&gt;X_dot -->
+<g id="edge5" class="edge">
+<title>SUM-&gt;X_dot</title>
+<path fill="none" stroke="black" d="M302.11,-251.91C315.58,-246.78 335.33,-239.27 352.56,-232.72"></path>
+<polygon fill="black" stroke="black" points="354.25,-235.82 362.35,-228.99 351.76,-229.28 354.25,-235.82"></polygon>
+</g>
+<!-- A_block -->
+<g id="node3" class="node">
+<title>A_block</title>
+<polygon fill="lightgray" stroke="black" points="811.22,-279 757.22,-279 757.22,-243 811.22,-243 811.22,-279"></polygon>
+<text text-anchor="middle" x="784.22" y="-256.8" font-family="Times,serif" font-size="14.00">A</text>
+</g>
+<!-- A_block&#45;&gt;SUM -->
+<g id="edge4" class="edge">
+<title>A_block-&gt;SUM</title>
+<path fill="none" stroke="black" d="M757.13,-259.66C739.4,-258.86 715.4,-258 694.22,-258 388.62,-258 388.62,-258 388.62,-258 363.12,-258 334.05,-258 313.4,-258"></path>
+<polygon fill="black" stroke="black" points="313.15,-254.5 303.15,-258 313.15,-261.5 313.15,-254.5"></polygon>
+</g>
+<!-- A_block&#45;&gt;SUM -->
+<g id="edge15" class="edge">
+<title>A_block-&gt;SUM</title>
+<path fill="none" stroke="purple" stroke-dasharray="5,2" d="M756.95,-276.81C739.73,-285.68 716.38,-295 694.22,-295 388.62,-295 388.62,-295 388.62,-295 360.19,-295 329.83,-282.26 309.59,-271.73"></path>
+<polygon fill="purple" stroke="purple" points="311.24,-268.65 300.78,-266.96 307.9,-274.8 311.24,-268.65"></polygon>
+<text text-anchor="middle" x="547.57" y="-299.2" font-family="Times,serif" font-size="14.00">Dynamics</text>
+</g>
+<!-- B_block&#45;&gt;SUM -->
+<g id="edge2" class="edge">
+<title>B_block-&gt;SUM</title>
+<path fill="none" stroke="black" d="M70.39,-254.7C76.16,-253.58 82.26,-252.58 88,-252 154.71,-245.25 171.96,-247.58 238.87,-252 244.7,-252.38 250.92,-253.05 256.83,-253.79"></path>
+<polygon fill="black" stroke="black" points="256.58,-257.29 266.97,-255.19 257.54,-250.36 256.58,-257.29"></polygon>
+</g>
+<!-- B_block&#45;&gt;SUM -->
+<g id="edge13" class="edge">
+<title>B_block-&gt;SUM</title>
+<path fill="none" stroke="red" stroke-dasharray="5,2" d="M70.15,-260.67C115.95,-260.1 210.21,-258.92 256.8,-258.34"></path>
+<polygon fill="red" stroke="red" points="257.08,-261.84 267.03,-258.21 256.99,-254.84 257.08,-261.84"></polygon>
+<text text-anchor="middle" x="163.43" y="-264.2" font-family="Times,serif" font-size="14.00">Col(B): Controllable states</text>
+</g>
+<!-- C_block -->
+<g id="node5" class="node">
+<title>C_block</title>
+<polygon fill="lightgray" stroke="black" points="811.22,-225 757.22,-225 757.22,-189 811.22,-189 811.22,-225"></polygon>
+<text text-anchor="middle" x="784.22" y="-202.8" font-family="Times,serif" font-size="14.00">C</text>
+</g>
+<!-- Y_sum -->
+<g id="node11" class="node">
+<title>Y_sum</title>
+<polygon fill="lightgray" stroke="black" points="313.54,-113 256.64,-113 256.64,-77 313.54,-77 313.54,-113"></polygon>
+<text text-anchor="middle" x="285.09" y="-90.8" font-family="Times,serif" font-size="14.00">Y_sum</text>
+</g>
+<!-- C_block&#45;&gt;Y_sum -->
+<g id="edge10" class="edge">
+<title>C_block-&gt;Y_sum</title>
+<path fill="none" stroke="black" d="M756.95,-198.33C745.68,-194.69 732.34,-190.51 720.22,-187 575.67,-145.18 398.99,-113.62 323.35,-101.01"></path>
+<polygon fill="black" stroke="black" points="323.79,-97.54 313.36,-99.36 322.65,-104.44 323.79,-97.54"></polygon>
+<text text-anchor="middle" x="547.57" y="-167.2" font-family="Times,serif" font-size="14.00">+</text>
+</g>
+<!-- C_block&#45;&gt;Y_sum -->
+<g id="edge14" class="edge">
+<title>C_block-&gt;Y_sum</title>
+<path fill="none" stroke="green" stroke-dasharray="5,2" d="M780.6,-188.89C773.91,-150.41 752.41,-64 694.22,-64 388.62,-64 388.62,-64 388.62,-64 366.29,-64 342.35,-70.82 323.23,-78.06"></path>
+<polygon fill="green" stroke="green" points="321.7,-74.9 313.7,-81.85 324.29,-81.41 321.7,-74.9"></polygon>
+<text text-anchor="middle" x="547.57" y="-68.2" font-family="Times,serif" font-size="14.00">Null(C): Unobservable states</text>
+</g>
+<!-- D_block&#45;&gt;Y_sum -->
+<g id="edge11" class="edge">
+<title>D_block-&gt;Y_sum</title>
+<path fill="none" stroke="black" d="M53.4,-189C61.06,-176.04 73.03,-159.13 88,-149 136.65,-116.05 204.9,-103.12 246.72,-98.11"></path>
+<polygon fill="black" stroke="black" points="247.2,-101.57 256.76,-96.99 246.43,-94.62 247.2,-101.57"></polygon>
+</g>
+<!-- Integrator -->
+<g id="node7" class="node">
+<title>Integrator</title>
+<polygon fill="lightgray" stroke="black" points="547.57,-189.4 584.19,-226.3 510.95,-226.3 547.57,-189.4"></polygon>
+<text text-anchor="middle" x="547.57" y="-209.8" font-family="Times,serif" font-size="14.00">∫</text>
+</g>
+<!-- X -->
+<g id="node9" class="node">
+<title>X</title>
+<polygon fill="lightgray" stroke="black" points="720.22,-232 666.22,-232 666.22,-196 720.22,-196 720.22,-232"></polygon>
+<text text-anchor="middle" x="693.22" y="-209.8" font-family="Times,serif" font-size="14.00">x(t)</text>
+</g>
+<!-- Integrator&#45;&gt;X -->
+<g id="edge7" class="edge">
+<title>Integrator-&gt;X</title>
+<path fill="none" stroke="black" d="M572.29,-214C594.98,-214 629.53,-214 655.73,-214"></path>
+<polygon fill="black" stroke="black" points="656.03,-217.5 666.03,-214 656.03,-210.5 656.03,-217.5"></polygon>
+</g>
+<!-- X_dot&#45;&gt;Integrator -->
+<g id="edge6" class="edge">
+<title>X_dot-&gt;Integrator</title>
+<path fill="none" stroke="black" d="M416.72,-218.16C442.9,-217.32 483.36,-216.03 512.15,-215.1"></path>
+<polygon fill="black" stroke="black" points="512.3,-218.6 522.18,-214.78 512.07,-211.6 512.3,-218.6"></polygon>
+</g>
+<!-- X&#45;&gt;A_block -->
+<g id="edge3" class="edge">
+<title>X-&gt;A_block</title>
+<path fill="none" stroke="black" d="M720.44,-227.85C729.13,-232.44 738.95,-237.62 748.19,-242.5"></path>
+<polygon fill="black" stroke="black" points="746.71,-245.68 757.18,-247.25 749.98,-239.49 746.71,-245.68"></polygon>
+</g>
+<!-- X&#45;&gt;C_block -->
+<g id="edge8" class="edge">
+<title>X-&gt;C_block</title>
+<path fill="none" stroke="black" d="M720.44,-211.94C728.77,-211.28 738.13,-210.55 747.03,-209.85"></path>
+<polygon fill="black" stroke="black" points="747.49,-213.32 757.18,-209.05 746.94,-206.34 747.49,-213.32"></polygon>
+</g>
+<!-- Y -->
+<g id="node10" class="node">
+<title>Y</title>
+<polygon fill="lightgray" stroke="black" points="428.72,-36 350.51,-36 350.51,0 428.72,0 428.72,-36"></polygon>
+<text text-anchor="middle" x="389.62" y="-13.8" font-family="Times,serif" font-size="14.00">Output y(t)</text>
+</g>
+<!-- Y_sum&#45;&gt;Y -->
+<g id="edge12" class="edge">
+<title>Y_sum-&gt;Y</title>
+<path fill="none" stroke="black" d="M302.25,-76.73C310.46,-68.04 320.88,-57.87 331.32,-50 335.36,-46.95 339.74,-43.99 344.19,-41.19"></path>
+<polygon fill="black" stroke="black" points="346.05,-44.15 352.82,-36 342.45,-38.15 346.05,-44.15"></polygon>
+</g>
+</g>
+</svg>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>For ECE students, one of the most powerful applications of these concepts is in <strong>control systems</strong>, particularly within the state-space framework.</p>
+<p>Here, a system’s behavior is described by its state, input, and output vectors, and the matrices <span class="math inline">\(A, B, C, D\)</span> define the system dynamics.</p>
+<ul>
+<li>The <strong>column space of B</strong> (or more generally, the controllability matrix) tells us if we can steer the system from any initial state to any desired final state using our inputs. If a state isn’t in this column space, it’s unreachable.</li>
+<li>The <strong>null space of C</strong> helps us understand observability. If a state <span class="math inline">\(\mathbf{x}\)</span> is in the null space of <span class="math inline">\(C\)</span>, it means that state produces zero output. We cannot “see” or deduce information about such states from the system’s outputs. These are unobservable states.</li>
+<li>The <strong>row space of C</strong> (or the observability matrix) complements this, telling us what information about the state <em>is</em> contained in the output.</li>
+</ul>
+<p>These concepts are critical for designing robust and effective control systems, ensuring that we can both control the system as intended and monitor its behavior effectively.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="conclusion-key-takeaways" class="slide level2">
+<h2>Conclusion &amp; Key Takeaways</h2>
+<p><strong>What we’ve learned:</strong></p>
+<ul>
+<li><strong>Row Space (<span class="math inline">\(\text{row}(A)\)</span>):</strong> All linear combinations of <span class="math inline">\(A\)</span>’s rows. Lives in <span class="math inline">\(R^n\)</span>.
+<ul>
+<li>Basis from nonzero rows of RREF.</li>
+</ul></li>
+<li><strong>Column Space (<span class="math inline">\(\text{col}(A)\)</span>):</strong> All linear combinations of <span class="math inline">\(A\)</span>’s columns. Lives in <span class="math inline">\(R^m\)</span>.
+<ul>
+<li>Basis from original columns of <span class="math inline">\(A\)</span> corresponding to pivot columns in RREF.</li>
+<li>Determines system consistency (<span class="math inline">\(A\mathbf{x}=\mathbf{b}\)</span> has a solution iff <span class="math inline">\(\mathbf{b} \in \text{col}(A)\)</span>).</li>
+</ul></li>
+<li><strong>Null Space (<span class="math inline">\(\text{null}(A)\)</span>):</strong> All solutions to <span class="math inline">\(A\mathbf{x}=\mathbf{0}\)</span>. Lives in <span class="math inline">\(R^n\)</span>.
+<ul>
+<li>Basis from parametric vector form of general solution to <span class="math inline">\(A\mathbf{x}=\mathbf{0}\)</span>.</li>
+<li>Translates to generate all solutions for <span class="math inline">\(A\mathbf{x}=\mathbf{b}\)</span>.</li>
+</ul></li>
+</ul>
+</section>
+<section id="conclusion-key-takeaways-1" class="slide level2">
+<h2>Conclusion &amp; Key Takeaways</h2>
+<p><strong>Key Relationships:</strong></p>
+<ul>
+<li>EROs preserve row space and null space, but <em>change</em> column space.</li>
+<li>EROs preserve linear dependency relationships among columns.</li>
+</ul>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Why this matters for ECE:</strong> - <strong>System Capabilities:</strong> <span class="math inline">\(\text{col}(A)\)</span> defines what outputs/states your system can achieve. - <strong>System Blind Spots:</strong> <span class="math inline">\(\text{null}(A)\)</span> reveals inputs that are ‘ignored’ or states that are ‘unobservable’. - <strong>Efficiency:</strong> Bases help identify the minimal set of independent components needed to describe a system’s behavior.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Think of it as diagnosing a circuit:</strong> - Can I get this specific output voltage (is it in the column space)? - What inputs cause no current flow (are they in the null space)? - What are the fundamental independent current/voltage loops (basis for row/column space)?</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>To wrap up, we’ve covered three incredibly important vector spaces associated with matrices: the row space, column space, and null space.</p>
+<p>Each space provides a unique lens through which to understand the properties and behavior of a matrix, and by extension, a linear system.</p>
+<ul>
+<li>The column space answers questions about what outputs are possible.</li>
+<li>The null space answers questions about what inputs are ‘neutralized’ or what states are unobservable.</li>
+<li>The row space provides insights into the input-output mapping.</li>
+</ul>
+<p>For ECE, these aren’t just theoretical constructs. They are practical tools for analyzing, designing, and troubleshooting systems, whether you’re working with circuits, control systems, signal processing, or data analysis. Mastering these concepts will give you a deeper and more intuitive understanding of how linear systems truly operate.</p>
+<p>Keep practicing with examples and consider how these spaces apply to the specific ECE problems you encounter. Thank you!</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+
+<script type="pyodide-data">
+eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yNy4wL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIiwibnVtcHkiLCJwbG90bHkiLCJuYmZvcm1hdCJdfX0=
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTMiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8zID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0zLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzMgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzMsIHttYXRyaXhfaW5wdXRfY3N9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8yID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzIgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzIsIHtjX3ZhbH0pO1xuIn0seyJjZWxsTmFtZSI6InB5b2RpZGUtMSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3B5b2RpZGVfZWRpdG9yXzEgPSB7XG4gIGNvbnN0IHsgUHlvZGlkZUV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLTEtY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgcHlvZGlkZS0xLWNvbnRlbnRzYCB9LCBibG9jay5hdHRyKTtcbiAgY29uc3QgZWRpdG9yID0gbmV3IFB5b2RpZGVFeGVyY2lzZUVkaXRvcihcbiAgICBweW9kaWRlT2pzLnB5b2RpZGVQcm9taXNlLFxuICAgIGJsb2NrLmNvZGUsXG4gICAgb3B0aW9uc1xuICApO1xuXG4gIHJldHVybiBlZGl0b3IuY29udGFpbmVyO1xufVxuX3B5b2RpZGVfdmFsdWVfMSA9IHB5b2RpZGVPanMucHJvY2VzcyhfcHlvZGlkZV9lZGl0b3JfMSwge3gxLCB4MiwgeDN9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLXByZWx1ZGUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJweW9kaWRlT2pzID0ge1xuICBjb25zdCB7XG4gICAgUHlvZGlkZUV2YWx1YXRvcixcbiAgICBQeW9kaWRlRW52aXJvbm1lbnRNYW5hZ2VyLFxuICAgIHNldHVwUHl0aG9uLFxuICAgIHN0YXJ0UHlvZGlkZVdvcmtlcixcbiAgICBiNjREZWNvZGUsXG4gICAgY29sbGFwc2VQYXRoLFxuICB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzdGF0dXNDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctc3RhdHVzXCIpO1xuICBjb25zdCBpbmRpY2F0b3JDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpbmRpY2F0b3JDb250YWluZXIuY2xhc3NMaXN0LnJlbW92ZShcImQtbm9uZVwiKTtcblxuICBsZXQgc3RhdHVzVGV4dCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIilcbiAgc3RhdHVzVGV4dC5jbGFzc0xpc3QgPSBcImV4ZXJjaXNlLWxvYWRpbmctZGV0YWlsc1wiO1xuICBzdGF0dXNUZXh0ID0gc3RhdHVzQ29udGFpbmVyLmFwcGVuZENoaWxkKHN0YXR1c1RleHQpO1xuICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYEluaXRpYWxpc2VgO1xuXG4gIC8vIEhvaXN0IGluZGljYXRvciBvdXQgZnJvbSBmaW5hbCBzbGlkZSB3aGVuIHJ1bm5pbmcgdW5kZXIgcmV2ZWFsXG4gIGNvbnN0IHJldmVhbFN0YXR1cyA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsIC5leGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaWYgKHJldmVhbFN0YXR1cykge1xuICAgIHJldmVhbFN0YXR1cy5yZW1vdmUoKTtcbiAgICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCA+IC5zbGlkZXNcIikuYXBwZW5kQ2hpbGQocmV2ZWFsU3RhdHVzKTtcbiAgfVxuXG4gIC8vIE1ha2UgYW55IHJldmVhbCBzbGlkZXMgd2l0aCBsaXZlIGNlbGxzIHNjcm9sbGFibGVcbiAgZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbChcIi5yZXZlYWwgLmV4ZXJjaXNlLWNlbGxcIikuZm9yRWFjaCgoZWwpID0+IHtcbiAgICBlbC5jbG9zZXN0KCdzZWN0aW9uLnNsaWRlJykuY2xhc3NMaXN0LmFkZChcInNjcm9sbGFibGVcIik7XG4gIH0pXG5cbiAgLy8gUHlvZGlkZSBzdXBwbGVtZW50YWwgZGF0YSBhbmQgb3B0aW9uc1xuICBjb25zdCBkYXRhQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLWRhdGFcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBkYXRhID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZGF0YUNvbnRlbnQpKTtcblxuICAvLyBHcmFiIGxpc3Qgb2YgcmVzb3VyY2VzIHRvIGJlIGRvd25sb2FkZWRcbiAgY29uc3QgZmlsZXNDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInZmcy1maWxlXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZmlsZXMgPSBKU09OLnBhcnNlKGI2NERlY29kZShmaWxlc0NvbnRlbnQpKTtcblxuICBsZXQgcHlvZGlkZVByb21pc2UgPSAoYXN5bmMgKCkgPT4ge1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgUHlvZGlkZWA7XG4gICAgY29uc3QgcHlvZGlkZSA9IGF3YWl0IHN0YXJ0UHlvZGlkZVdvcmtlcihkYXRhLm9wdGlvbnMpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiBtaWNyb3BpcGA7XG4gICAgYXdhaXQgcHlvZGlkZS5sb2FkUGFja2FnZShcIm1pY3JvcGlwXCIpO1xuICAgIGNvbnN0IG1pY3JvcGlwID0gYXdhaXQgcHlvZGlkZS5weWltcG9ydChcIm1pY3JvcGlwXCIpO1xuICAgIGF3YWl0IGRhdGEucGFja2FnZXMucGtncy5tYXAoKHBrZykgPT4gKCkgPT4ge1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiAke3BrZ31gO1xuICAgICAgcmV0dXJuIG1pY3JvcGlwLmluc3RhbGwocGtnKTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcbiAgICBhd2FpdCBtaWNyb3BpcC5kZXN0cm95KCk7XG5cbiAgICAvLyBEb3dubG9hZCBhbmQgaW5zdGFsbCByZXNvdXJjZXNcbiAgICBhd2FpdCBmaWxlcy5tYXAoKGZpbGUpID0+IGFzeW5jICgpID0+IHtcbiAgICAgIGNvbnN0IG5hbWUgPSBmaWxlLnN1YnN0cmluZyhmaWxlLmxhc3RJbmRleE9mKCcvJykgKyAxKTtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcmVzb3VyY2U6ICR7bmFtZX1gO1xuICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChmaWxlKTtcbiAgICAgIGlmICghcmVzcG9uc2Uub2spIHtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBDYW4ndCBkb3dubG9hZCBcXGAke2ZpbGV9XFxgLiBFcnJvciAke3Jlc3BvbnNlLnN0YXR1c306IFwiJHtyZXNwb25zZS5zdGF0dXNUZXh0fVwiLmApO1xuICAgICAgfVxuICAgICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlc3BvbnNlLmFycmF5QnVmZmVyKCk7XG5cbiAgICAgIC8vIFN0b3JlIFVSTHMgaW4gdGhlIGN3ZCB3aXRob3V0IGFueSBzdWJkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBpZiAoZmlsZS5pbmNsdWRlcyhcIjovL1wiKSkge1xuICAgICAgICBmaWxlID0gbmFtZTtcbiAgICAgIH1cblxuICAgICAgLy8gQ29sbGFwc2UgaGlnaGVyIGRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGZpbGUgPSBjb2xsYXBzZVBhdGgoZmlsZSk7XG5cbiAgICAgIC8vIENyZWF0ZSBkaXJlY3RvcnkgdHJlZSwgaWdub3JpbmcgXCJkaXJlY3RvcnkgZXhpc3RzXCIgVkZTIGVycm9yc1xuICAgICAgY29uc3QgcGFydHMgPSBmaWxlLnNwbGl0KCcvJykuc2xpY2UoMCwgLTEpO1xuICAgICAgbGV0IHBhdGggPSAnJztcbiAgICAgIHdoaWxlIChwYXJ0cy5sZW5ndGggPiAwKSB7XG4gICAgICAgIHBhdGggKz0gcGFydHMuc2hpZnQoKSArICcvJztcbiAgICAgICAgdHJ5IHtcbiAgICAgICAgICBhd2FpdCBweW9kaWRlLkZTLm1rZGlyKHBhdGgpO1xuICAgICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgICAgaWYgKGUuZXJybm8gIT09IDIwKSB7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICAgICAgY29uc3QgZXJyb3JUZXh0ID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLlVURjhUb1N0cmluZyhlcnJvclRleHRQdHIpO1xuICAgICAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICAgIH1cblxuICAgICAgLy8gV3JpdGUgdGhpcyBmaWxlIHRvIHRoZSBWRlNcbiAgICAgIHRyeSB7XG4gICAgICAgIHJldHVybiBhd2FpdCBweW9kaWRlLkZTLndyaXRlRmlsZShmaWxlLCBuZXcgVWludDhBcnJheShkYXRhKSk7XG4gICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgIGlmIChlLm5hbWUgIT09IFwiRXJybm9FcnJvclwiKSB0aHJvdyBlO1xuICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgRmlsZXN5c3RlbSBFcnJvciAke2UuZXJybm99IFwiJHtlcnJvclRleHR9XCIuYCk7XG4gICAgICB9XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYFB5b2RpZGUgZW52aXJvbm1lbnQgc2V0dXBgO1xuICAgIGF3YWl0IHNldHVwUHl0aG9uKHB5b2RpZGUpO1xuXG4gICAgc3RhdHVzVGV4dC5yZW1vdmUoKTtcbiAgICBpZiAoc3RhdHVzQ29udGFpbmVyLmNoaWxkcmVuLmxlbmd0aCA9PSAwKSB7XG4gICAgICBzdGF0dXNDb250YWluZXIucGFyZW50Tm9kZS5yZW1vdmUoKTtcbiAgICB9XG4gICAgcmV0dXJuIHB5b2RpZGU7XG4gIH0pKCkuY2F0Y2goKGVycikgPT4ge1xuICAgIHN0YXR1c1RleHQuc3R5bGUuY29sb3IgPSBcInZhcigtLWV4ZXJjaXNlLWVkaXRvci1obC1lciwgI0FEMDAwMClcIjtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gZXJyLm1lc3NhZ2U7XG4gICAgLy9pbmRpY2F0b3JDb250YWluZXIucXVlcnlTZWxlY3RvcihcIi5zcGlubmVyLWdyb3dcIikuY2xhc3NMaXN0LmFkZChcImQtbm9uZVwiKTtcbiAgICB0aHJvdyBlcnI7XG4gIH0pO1xuXG4gIC8vIEtlZXAgdHJhY2sgb2YgaW5pdGlhbCBPSlMgYmxvY2sgcmVuZGVyXG4gIGNvbnN0IHJlbmRlcmVkT2pzID0ge307XG5cbiAgY29uc3QgcHJvY2VzcyA9IGFzeW5jIChjb250ZXh0LCBpbnB1dHMpID0+IHtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgcHlvZGlkZVByb21pc2U7XG4gICAgY29uc3QgZXZhbHVhdG9yID0gbmV3IFB5b2RpZGVFdmFsdWF0b3IocHlvZGlkZSwgY29udGV4dCk7XG4gICAgYXdhaXQgZXZhbHVhdG9yLnByb2Nlc3MoaW5wdXRzKTtcbiAgICByZXR1cm4gZXZhbHVhdG9yLmNvbnRhaW5lcjtcbiAgfVxuXG4gIHJldHVybiB7XG4gICAgcHlvZGlkZVByb21pc2UsXG4gICAgcmVuZGVyZWRPanMsXG4gICAgcHJvY2VzcyxcbiAgfTtcbn1cbiJ9XX0=
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="qrjs_pics/unsoed_logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="https://imron-slide.vercel.app">irosyadi-2025</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script type="ojs-module-contents">
+    eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiB4MSA9IElucHV0cy5yYW5nZShbLTUsIDVdLCB7dmFsdWU6IDAsIHN0ZXA6IDAuMSwgbGFiZWw6IFwieDFcIn0pO1xudmlld29mIHgyID0gSW5wdXRzLnJhbmdlKFstNSwgNV0sIHt2YWx1ZTogMCwgc3RlcDogMC4xLCBsYWJlbDogXCJ4MlwifSk7XG52aWV3b2YgeDMgPSBJbnB1dHMucmFuZ2UoWy01LCA1XSwge3ZhbHVlOiAwLCBzdGVwOiAwLjEsIGxhYmVsOiBcIngzXCJ9KTtcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMiIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBjX3ZhbCA9IElucHV0cy5yYW5nZShbLTUsIDVdLCB7dmFsdWU6IDAsIHN0ZXA6IDAuMSwgbGFiZWw6IFwiTnVsbCBTcGFjZSBTY2FsYXIgKGMpXCJ9KTtcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMyIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBtYXRyaXhfaW5wdXRfY3MgPSBJbnB1dHMudGV4dGFyZWEoe3ZhbHVlOiBcIltbMSwgLTMsIDQsIC0yLCA1LCA0XSwgWzIsIC02LCA5LCAtMSwgOCwgMl0sIFsyLCAtNiwgOSwgLTEsIDksIDddLCBbLTEsIDMsIC00LCAyLCAtNSwgLTRdXVwiLCByb3dzOiA0LCBsYWJlbDogXCJNYXRyaXggQSAoYXMgbmVzdGVkIGxpc3QpXCJ9KTtcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgneDEnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgneDInKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgneDMnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnY192YWwnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnbWF0cml4X2lucHV0X2NzJykifV19
+    </script>
+    <script type="module">
+    if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+    window._ojs.paths.runtimeToDoc = "../..";
+    window._ojs.paths.runtimeToRoot = "../..";
+    window._ojs.paths.docToRoot = "";
+    window._ojs.selfContained = false;
+    window._ojs.runtime.interpretFromScriptTags();
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
