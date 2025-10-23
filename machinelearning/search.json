@@ -4177,5 +4177,348 @@
     "title": "Machine Learning",
     "section": "Classification Project: Your Turn",
     "text": "Classification Project: Your Turn\n\nExploratory Data Analysis (EDA):\n\nUnderstand the data, identify obvious problems, and perform initial cleaning.\nConsider pros/cons of using ML for this problem.\n\nModel Building & Evaluation:\n\nChoose your model (scikit-learn or TensorFlow).\nTrain and evaluate your model, discussing chosen metrics.\n\nMake Predictions & Upload to Kaggle:\n\nGenerate predictions for the test dataset.\nSubmit your predictions to the Kaggle competition.\n\nIterate on Your Model:\n\nTweak hyperparameters, try different models, explore new features.\nDiscuss your methodical approach to improvement.\nResearch and compare with other solutions for deeper insights.\n\n\n\nIt is now your turn to perform a classification from end-to-end. The lab you are about to be given is divided into four primary parts. In the first section, you’ll acquire and explore the data. Here we expect you to write code and prose about the data. Does the data have obvious problems? Do any model-independent changes need to be made to the data? EDA is the place to reason about and perform these tasks. This is also a good time to think about the pros and cons of using machine learning to solve this problem. In the next section, you will build and evaluate your model. You may choose to use scikit-learn or Tensorflow. You may even try multiple approaches and compare your results. Here you should also evaluate your model and discuss your particular evaluation metrics, including why you chose them and what they say. Finally, you will make predictions on the features found in the test.csv file and upload them to Kaggle using the Kaggle API. Your lab should discuss your predictions as well as your Kaggle results. Last but not least, iterate on your model. Tweak hyperparameters, and see if you can improve your model. Discuss your method for changing specific hyperparameters. Be thoughtful and methodical; don’t just do it at random! Since this is a popular Kaggle dataset and competition, research other users’ solutions. Try looking at solutions that both do and don’t use ML, and discuss their relative merits. Take your time. Experiment. Don’t be afraid to throw away some work along the way. This iterative process is crucial for ECE engineers developing and refining complex systems."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#introduction-to-image-classification",
+    "href": "amli/04_05-09-classification.html#introduction-to-image-classification",
+    "title": "Machine Learning",
+    "section": "Introduction to Image Classification",
+    "text": "Introduction to Image Classification\nWe’ll explore how machine learning tackles visual data, understanding its unique challenges and opportunities for ECE applications.\n\nWe have performed binary and multiclass classification on datasets containing string and numeric values. In this unit we’ll perform classification on images. This transition from abstract data to concrete visual information is crucial for many ECE applications."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#the-nature-of-image-features",
+    "href": "amli/04_05-09-classification.html#the-nature-of-image-features",
+    "title": "Machine Learning",
+    "section": "The Nature of Image Features",
+    "text": "The Nature of Image Features\nWhat makes image classification unique? Each pixel is a feature, represented by numerical values.\n\nPixel Grid Representation\nWhat makes image classification different from other forms of classification? One major difference is the features. When classifying an image, each pixel is a feature. How are these pixels represented? Understanding this representation is fundamental for ECE students to grasp data acquisition and processing."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#rgb-pixel-values",
+    "href": "amli/04_05-09-classification.html#rgb-pixel-values",
+    "title": "Machine Learning",
+    "section": "RGB Pixel Values",
+    "text": "RGB Pixel Values\nPixels are often encoded using Red, Green, and Blue (RGB) values. Each color component typically ranges from 0 to 255.\n\nRGB Color Model\nOften pixels are represented as RGB values. These are three numbers that indicate the amount of red, green, and blue in an image. These numbers often range from 0 to 255. This multi-channel representation is key for color images, but it significantly increases feature dimensionality."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#feature-dimensions-a-challenge",
+    "href": "amli/04_05-09-classification.html#feature-dimensions-a-challenge",
+    "title": "Machine Learning",
+    "section": "Feature Dimensions: A Challenge",
+    "text": "Feature Dimensions: A Challenge\nConsider a 1920 × 1920 image. How many features if represented by RGB values?\n\nLet’s take a moment to think about the number of features we are dealing with there. Say we have a 1920 by 1920 pixel image. How many features would we have? This calculation highlights the computational burden of raw pixel data."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#feature-dimensions-the-calculation",
+    "href": "amli/04_05-09-classification.html#feature-dimensions-the-calculation",
+    "title": "Machine Learning",
+    "section": "Feature Dimensions: The Calculation",
+    "text": "Feature Dimensions: The Calculation\n\\[ 1920 \\times 1920 \\times 3 = 11,059,200 \\]\nThat’s over 11 million input features! Data can be viewed as a 3D tensor: Width × Height × Channels.\n\nThat’s over 11 million input features! This is an enormous number for a standard machine learning model to handle directly. We can think of the data as a 3-d matrix (or a tensor) with dimensions 1920 x 1920 x 3."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#interactive-feature-calculator",
+    "href": "amli/04_05-09-classification.html#interactive-feature-calculator",
+    "title": "Machine Learning",
+    "section": "Interactive Feature Calculator",
+    "text": "Interactive Feature Calculator\nExplore how image dimensions and color channels impact the total number of features.\n\nviewof image_width = Inputs.range([10, 2000], {value: 1920, step: 10, label: \"Image Width (pixels):\"});\nviewof image_height = Inputs.range([10, 2000], {value: 1920, step: 10, label: \"Image Height (pixels):\"});\nviewof color_channels = Inputs.select([\"1 (Grayscale)\", \"3 (RGB/BGR)\", \"4 (RGBA/BGRA)\"], {value: \"3 (RGB/BGR)\", label: \"Color Channels:\"});\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nAdjust the sliders and dropdown to see the feature count change dynamically!\n\n\n\n\n\n\n\n\n\n:::\n\nThis interactive calculator helps visualize the scale of image data. Students can play with different resolutions and channel counts to directly observe the explosion of features. This ties into computational complexity and hardware considerations in ECE."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#even-more-features",
+    "href": "amli/04_05-09-classification.html#even-more-features",
+    "title": "Machine Learning",
+    "section": "Even More Features",
+    "text": "Even More Features\nHow many features would a 12 megapixel image (common for phone cameras) have if stored in RGB?\n\nLet’s try another one. How many features would we have for a a 12 megapixel image stored in RGB? This resolution (or greater) is common for mobile phones these days. This is a practical example of real-world image sizes."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#megapixel-feature-count",
+    "href": "amli/04_05-09-classification.html#megapixel-feature-count",
+    "title": "Machine Learning",
+    "section": "Megapixel Feature Count",
+    "text": "Megapixel Feature Count\n\\[ 12,000,000 \\times 3 = 36,000,000 \\]\nAn extremely large number of features! This makes training traditional models difficult. Lower resolution images are often used for initial training.\n\nThis is an insanely huge number of features. It is extremely difficult for a model to perform well with such a huge number of features directly. That is why you’ll notice that the images we use in this lab are very low resolution. This also motivates the need for specialized architectures like Convolutional Neural Networks (CNNs) that can handle such high dimensionality efficiently."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#grayscale-reducing-complexity",
+    "href": "amli/04_05-09-classification.html#grayscale-reducing-complexity",
+    "title": "Machine Learning",
+    "section": "Grayscale: Reducing Complexity",
+    "text": "Grayscale: Reducing Complexity\nGrayscale images use a single number (e.g., 0-255 or 0.0-1.0) to represent pixel intensity. This effectively reduces the feature count by a factor of three.\n\nGrayscale Image\nAnother way to reduce the number of features is to convert them to grayscale. Grayscale uses a single number to represent the intensity of color in a pixel, but it doesn’t specify the color. The range of values that you’ll find vary. In this lab we work with one dataset that has a grayscale range of 0 through 255 and another that goes from 0 through 16. Grayscale values might even be in the range from 0.0 through 1.0. For neural networks this smaller range is easier to train on and aids in faster convergence."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#other-image-formats",
+    "href": "amli/04_05-09-classification.html#other-image-formats",
+    "title": "Machine Learning",
+    "section": "Other Image Formats",
+    "text": "Other Image Formats\nBeyond RGB and Grayscale, various formats exist, each with specific applications:\n\nHSV: Hue, Saturation, Value (perceptually organized)\nHSL: Hue, Saturation, Light (perceptually organized)\nCMYK: Cyan, Magenta, Yellow, Black (for printing)\nBGR: Blue, Green, Red (common in some computer vision libraries)\n\n\nThere are more color models than RGB and grayscale. A few alternatives are listed in this slide. You’ll notice that some, like CMYK, have more values than RGB. BGR, on the other hand, is just RGB in a different order. Understanding these alternatives is important for ECE students who might work with cameras, displays, or different image processing pipelines."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#real-world-image-challenges",
+    "href": "amli/04_05-09-classification.html#real-world-image-challenges",
+    "title": "Machine Learning",
+    "section": "Real-World Image Challenges",
+    "text": "Real-World Image Challenges\nImages encountered in real-world scenarios are rarely simple. They often contain multiple objects and background clutter.\n\nBusy Street Scene\nAnother interesting aspect of image classification is that images rarely contain just a single item. Take this image, for instance. It contains buildings, cars, people, and more. With an image like this, it can be hard for the model to identify the important features. Sometimes this requires the researcher to pre-process and clean the images. Sometimes it requires additional model tuning. This is where ECE expertise in signal processing and intelligent systems becomes critical."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#lab-exercise-fashion-mnist",
+    "href": "amli/04_05-09-classification.html#lab-exercise-fashion-mnist",
+    "title": "Machine Learning",
+    "section": "Lab Exercise: Fashion-MNIST",
+    "text": "Lab Exercise: Fashion-MNIST\nWe’ll start with controlled datasets, like Fashion-MNIST: 70,000 grayscale, 28x28 pixel images of single clothing items.\n\nAnkle Boot Example\nIn the lab for this unit, we’ll work with some very curated datasets. The first dataset we’ll work with is the Fashion-MNIST dataset. The dataset contains 70,000 images of different clothing items. Each image is a grayscale image, only contains one item, and is only 28x28 pixels. This low-resolution and curated nature allows us to focus on the classification task without overwhelming computational resources."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#fashion-mnist-class-labels",
+    "href": "amli/04_05-09-classification.html#fashion-mnist-class-labels",
+    "title": "Machine Learning",
+    "section": "Fashion-MNIST Class Labels",
+    "text": "Fashion-MNIST Class Labels\n\n\n\nLabel\nClass\n\n\n\n\n0\nT-shirt/top\n\n\n1\nTrouser\n\n\n2\nPullover\n\n\n3\nDress\n\n\n4\nCoat\n\n\n5\nSandal\n\n\n6\nShirt\n\n\n7\nSneaker\n\n\n8\nBag\n\n\n9\nAnkle boot\n\n\n\n\nThe images in the Fashion-MNIST dataset are labeled with one of the shown classes. The numeric label is the target of the model. This is a multi-class classification problem."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#lab-exercise-mnist-digits",
+    "href": "amli/04_05-09-classification.html#lab-exercise-mnist-digits",
+    "title": "Machine Learning",
+    "section": "Lab Exercise: MNIST Digits",
+    "text": "Lab Exercise: MNIST Digits\nAnother clean dataset: handwritten digits for classification (0-9). Similar 28x28 grayscale format, one digit per image.\n\nHandwritten Digits\nWe’ll also work with the MNIST digits dataset. This dataset contains handwritten digits that we’ll classify as 0 through 9. This is also a very clean dataset with one digit per image. Both Fashion-MNIST and MNIST are benchmarks in machine learning for image classification, ideal for introductory labs."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#your-turn",
+    "href": "amli/04_05-09-classification.html#your-turn",
+    "title": "Machine Learning",
+    "section": "Your Turn!",
+    "text": "Your Turn!\nGet hands-on experience with image classification datasets."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#images-and-videos-foundations-for-ece-ml",
+    "href": "amli/04_05-09-classification.html#images-and-videos-foundations-for-ece-ml",
+    "title": "Machine Learning",
+    "section": "Images and Videos: Foundations for ECE ML",
+    "text": "Images and Videos: Foundations for ECE ML\nImages and video processing are integral to many ML applications in ECE.\n\nIn this unit we will move away from machine learning for a bit and instead talk about images and videos. Why images and videos? Image and video processing is actually very common in machine learning applications. Can you think of any examples of images or video processing in machine learning? Some ideas include: facial recognition, classification, converting video to a textual description (story), analyzing video for suspicious movements, disease detection in medical images, crop yield estimates based on aerial photos of fields. The list goes on and on. There are many applications of image and video processing in machine learnings, especially relevant for ECE fields like robotics, embedded systems, and computer vision."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#what-is-an-image-really",
+    "href": "amli/04_05-09-classification.html#what-is-an-image-really",
+    "title": "Machine Learning",
+    "section": "What is an Image, Really?",
+    "text": "What is an Image, Really?\nAt its core, an image is a grid of pixels. Each pixel is a sampled data point representing color at a specific location.\n\nLet’s think for a second. What is an image actually? You likely know that an image is a grid of pixels. And each pixel represents a single color point in the image. But how is that pixel encoded? From an ECE perspective, this means understanding analog-to-digital conversion and spatial sampling."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#image-encodings",
+    "href": "amli/04_05-09-classification.html#image-encodings",
+    "title": "Machine Learning",
+    "section": "Image Encodings",
+    "text": "Image Encodings\nNot all pixels are encoded in the same way. Various encoding schemes exist, influencing data representation and processing.\n\nNot all pixels are encoded in the same way. There are actually quite a few different encodings for images. Choosing the right encoding can significantly impact memory usage, processing speed, and model performance."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#grayscale-vs.-color-images",
+    "href": "amli/04_05-09-classification.html#grayscale-vs.-color-images",
+    "title": "Machine Learning",
+    "section": "Grayscale vs. Color Images",
+    "text": "Grayscale vs. Color Images\nA primary distinction: single-channel grayscale or multi-channel color. This choice affects feature count and information richness.\n\nColor vs Grayscale Car\nOne of the first distinctions to be made is if the image is made up pixels on a “gray scale” or if the image is made from a larger spectrum of colors. In this example you can see that the image on the left has many colors, including some reds while the image on the right is limited to black, white, and the grays in between. What does this mean for the encoding? This decision impacts the computational load and the type of features a model can extract."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#grayscale-pixel-ranges",
+    "href": "amli/04_05-09-classification.html#grayscale-pixel-ranges",
+    "title": "Machine Learning",
+    "section": "Grayscale Pixel Ranges",
+    "text": "Grayscale Pixel Ranges\nGrayscale values can range from: - Integers: [0, 255] (8-bit unsigned integer) - Floats: [0.0, 1.0] (normalized for neural networks)\n\nGrayscale Car\nWe’ll start with the simplest format, grayscale. Grayscale images have a single numeric value representing each pixel in the image. But what are those numbers? Typically they range from 0 to 255 if they are integers or 0.0 to 1.0 if they are floating point values. Even with grayscale images, it is important to know the range of values for the input pixels. If the pixels range from 0.0 to 1.0 then many models will be able to more easily train on the images due to better gradient flow properties. If the values are integers between 0 and 255, then it is typically a good idea to divide the values by 255.0 in order to bring them into the 0.0 to 1.0 range that neural networks prefer to help models learn more quickly. This normalization is a common pre-processing step in ECE ML applications."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#interactive-pixel-normalizer",
+    "href": "amli/04_05-09-classification.html#interactive-pixel-normalizer",
+    "title": "Machine Learning",
+    "section": "Interactive Pixel Normalizer",
+    "text": "Interactive Pixel Normalizer\nNormalize a pixel value from [0, 255] to [0.0, 1.0] or vice versa.\n\nviewof pixel_value_0_255 = Inputs.range([0, 255], {value: 128, step: 1, label: \"Input Pixel Value (0-255):\"});\nviewof normalization_type = Inputs.select([\"Normalize to [0.0, 1.0]\", \"Scale to [0, 255] (from [0.0, 1.0])\"], {value: \"Normalize to [0.0, 1.0]\", label: \"Operation:\"});\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n:::\n\nDemonstrating pixel normalization is vital for ECE students. It shows how raw sensor data (e.g., 0-255 from an ADC) is often transformed into a range amenable to neural network training, which is typically floating-point values between 0 and 1. This interactive element allows them to see the direct mapping."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#color-image-encodings-a-spectrum",
+    "href": "amli/04_05-09-classification.html#color-image-encodings-a-spectrum",
+    "title": "Machine Learning",
+    "section": "Color Image Encodings: A Spectrum",
+    "text": "Color Image Encodings: A Spectrum\nFrom RGB to CMYK, many color spaces exist. Each offers a different way to represent color, impacting applications from display technology to printing.\n\nColor Car\nGrayscale images typically are one of the two encodings that we mentioned. It is of course important to know which encoding your images are in since a model expects inputs to be on the same scale. However, converting between [0.0, 1.0] and [0, 255] is fairly trivial. Color images introduce an entirely new level of encoding complexity. There are scores of encodings for color images. One of the more common ones that you might have seen is RGB. RGB stands for “red”, “green”, “blue”. With these three colors you can make scores of other colors. With RGB encoding a value, typically between 0 and 255 (though sometimes between 0.0 and 1.0), you can combine the colors to create a rainbow of possibility. With RGB you have three numeric values for each pixel. This triples the size of your inputs! But that is not all. There is RGBA, which takes our red, green, and blue and adds an “alpha” channel which represents the opacity of the pixel. Opacity? Typically when we think of an image, we think about only seeing that image. But what if we put an image under the image we were looking at? If there were no opacity, then we’d only see the topmost image. If there is opacity (think transparency) then we would see a little bit of the underlying image too. The alpha channel, also typically between 0 and 255 or 0.0 and 1.0, manages how “see-through” our pixel is. But why RGB? Why not BRG or GBR or any other ordering? It turns out that there are other orderings, one of the more common being BGR. This was a common encoding in early digital cameras for hardware reasons that aren’t relevant to our topic. Just know that color order can change, and you need to make sure that your inputs for training and predicting have the same encodings. Of course, this begs the question. Are reds, greens, blues, and maybe alphas the only way to encode color? Of course not! There are other schemes such as CMYK, which stands for cyan, magenta, yellow, and black. Encodings aren’t complicated individually, but the number and variety of image encodings can be difficult to work with. Know your inputs!"
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#modifying-images-encoding-transformations",
+    "href": "amli/04_05-09-classification.html#modifying-images-encoding-transformations",
+    "title": "Machine Learning",
+    "section": "Modifying Images: Encoding Transformations",
+    "text": "Modifying Images: Encoding Transformations\nPython libraries like OpenCV (cv) and NumPy (for array operations) facilitate these transformations.\nimport cv2\n\n# Convert from BGR encoding (common in OpenCV) to RGB \nimage = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)\n\n# Normalize pixel values from [0, 255] to [0.0, 1.0]\nimage = image / 255.0\n\n# Scale pixel values from [0.0, 1.0] back to [0, 255]\nimage = (image * 255).astype(int) \n\nWe talked about image encodings and how it is important to feed your model images encoded in the same way. In order to do this you have a few options. If you are converting encodings, you can use the OpenCV cvtColor function to do the conversion for you. If you are scaling the encodings you can use simple Python expressions with NumPy arrays. These are standard operations in many ECE signal processing pipelines."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#modifying-images-resizing",
+    "href": "amli/04_05-09-classification.html#modifying-images-resizing",
+    "title": "Machine Learning",
+    "section": "Modifying Images: Resizing",
+    "text": "Modifying Images: Resizing\nResizing images is often necessary to match model input requirements. Care must be taken to avoid distortion.\n\nResized Running Shoe\nBut what about scaling/resizing an image? Some models have a scaling layer as an early step, but not all do. Also, you may want more control of your image when you scale it. In the example in this slide we simply scaled the image down to a size that presumptively the model expects. We could have also padded it into a proportional square or rectangle before resizing. Resizing algorithms can involve various interpolation methods (e.g., nearest-neighbor, bilinear, bicubic), which are key considerations in image processing."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#modifying-images-padding",
+    "href": "amli/04_05-09-classification.html#modifying-images-padding",
+    "title": "Machine Learning",
+    "section": "Modifying Images: Padding",
+    "text": "Modifying Images: Padding\nPadding helps maintain aspect ratio and prevents image distortion during resizing. Useful for ensuring all images conform to a fixed input size.\n\nPadded Running Shoe\nBut you don’t always just want to blindly resize an image. That might distort it. In some cases you’ll want to pad an image with whatever the background color is and then resize it in order to avoid distorting the image. To do this, you must find the number of pixels to add to the height of the image and divide those pixels across the top and bottom of the image. You must do the same for the left and right of the image. This is a common pre-processing technique, especially in image recognition with CNNs."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#modifying-images-centering",
+    "href": "amli/04_05-09-classification.html#modifying-images-centering",
+    "title": "Machine Learning",
+    "section": "Modifying Images: Centering",
+    "text": "Modifying Images: Centering\nAdvanced techniques can find and center the focal object. Algorithms like Canny edge detection help pinpoint important features.\n\nCar with Edge Detection Lines\nIf we have images with a predictable solid background, we can actually perform more complex processing and try to find the center of the focal object. Using algorithms like the Canny algorithm, we can find the key strokes and make our image, hone in on them, and find the center of our image. We can then pad around that. This involves control systems and image analysis, direct applications for ECE students."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#modifying-images-rotation",
+    "href": "amli/04_05-09-classification.html#modifying-images-rotation",
+    "title": "Machine Learning",
+    "section": "Modifying Images: Rotation",
+    "text": "Modifying Images: Rotation\nImage augmentation often involves various transformations, including rotation, to increase data diversity and model robustness.\n\nRotated Color Car\nOther image manipulation tricks involve rotations. You can augment an image by spinning it around. Data augmentation like rotation helps improve model generalization by exposing it to varied orientations of objects without needing more real-world data."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#other-image-augmentations",
+    "href": "amli/04_05-09-classification.html#other-image-augmentations",
+    "title": "Machine Learning",
+    "section": "Other Image Augmentations",
+    "text": "Other Image Augmentations\nWhat other image augmentations can you imagine?\n\nCutting/Mixup: Splicing parts of images to create new training examples.\nDropout: Randomly removing portions of an image during training.\nGenerative Models: Creating synthetic data to augment existing datasets.\nColor Jittering: Randomly adjusting brightness, contrast, saturation.\n\n\nWhat are some other image augmentations that you can think of? Some others include: ‘cutting’: where images of the same class are spliced together to increase the size of the training data set. ‘drop out’: where portions of training images are removed during training. Generating fake data based from a model that is then used to train another model. There are many more strategies and none are right for every model. You have to experiment. Data augmentation is a powerful technique to prevent overfitting and improve model performance in data-scarce scenarios, a critical aspect of practical ML deployment in ECE systems."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#understanding-video-data",
+    "href": "amli/04_05-09-classification.html#understanding-video-data",
+    "title": "Machine Learning",
+    "section": "Understanding Video Data",
+    "text": "Understanding Video Data\nFor our purposes, video is simply a sequence of images (frames).\nConsider:\n\nFrame Rate (FPS): Number of images per second (e.g., 30 fps, 60 fps).\nChange between frames: Varies greatly based on content.\n\n\nThis section also talks about video. We are going to greatly simplify video. If you think about a video feed, it has images, it has sound, it might have captions and other optional features. For our case in this course, video will simply be a series of images and we will treat it as such. Much of the video we watch is 30 “frames per second” (fps) or 60 fps. Think of each of these frames as a still image. Now think about how much changes between frames in 1/30th of a second? Well, it depends on what type of video you are processing. Are you watching the spray from a sneeze? Are you watching ice melt? Video might simply be a “series of images” for our purposes, but you still need to consider what you are modelling. This understanding is key for ECE applications in real-time video processing, such as autonomous vehicles or surveillance."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#your-turn-1",
+    "href": "amli/04_05-09-classification.html#your-turn-1",
+    "title": "Machine Learning",
+    "section": "Your Turn",
+    "text": "Your Turn\nIt’s time to practice working with images and video.\nThis involves multiple labs:\n\nImage processing with PIL (Pillow).\nImage processing with OpenCV.\nVideo processing (extracting frames from video).\n\nThese labs build towards a project on classifying items in a video. Have fun!"
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#saving-and-loading-models",
+    "href": "amli/04_05-09-classification.html#saving-and-loading-models",
+    "title": "Machine Learning",
+    "section": "Saving and Loading Models",
+    "text": "Saving and Loading Models\nIn real-world applications, models are typically saved after training and loaded for deployment. This enables reusability, fine-tuning, and sharing.\n\nSo far in this course, we have built models and used them immediately. In practice, you’ll find that you need to save your models and load them for use later. You’ll also find models published online that you can load and start using immediately or use as a warm start for training your own model. This concept of model lifecycle management is crucial for ECE engineers deploying ML solutions on embedded systems or cloud platforms."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#pickling-scikit-learn-models",
+    "href": "amli/04_05-09-classification.html#pickling-scikit-learn-models",
+    "title": "Machine Learning",
+    "section": "Pickling scikit-learn Models",
+    "text": "Pickling scikit-learn Models\nStandard Python’s pickle module can serialize (save) and deserialize (load) scikit-learn models.\n\n\nSaving a model\nimport pickle\nfrom sklearn.linear_model import LogisticRegression\n# Assume 'model' is a trained scikit-learn model\nmodel = LogisticRegression() # Placeholder for a real trained model\n# ... train model ...\n\nmodel_file = 'my_model.pkl'\n\nwith open(model_file, 'wb') as output:\n    pickle.dump(model, output, pickle.HIGHEST_PROTOCOL)\n\nLoading and using a model\nimport pickle\nmodel_file = 'my_model.pkl'\n\nwith open(model_file, 'rb') as input:\n    model_restored = pickle.load(input)\n\n# Example: make a prediction (dummy input)\nprint(model_restored.predict([[45, 34, 2]])) # Placeholder\n\n\nFor models created using scikit-learn, we can use standard Python pickling to persist and reload the model. pickle.HIGHEST_PROTOCOL ensures compatibility and efficiency. This method is straightforward for simpler models, but attention to library versions is important for compatibility."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#saving-and-loading-keras-models",
+    "href": "amli/04_05-09-classification.html#saving-and-loading-keras-models",
+    "title": "Machine Learning",
+    "section": "Saving and Loading Keras Models",
+    "text": "Saving and Loading Keras Models\nKeras (built on TensorFlow) provides native functions for saving and loading models in its own format or H5.\n\n\nSaving a Keras model\nimport tensorflow as tf\nfrom tensorflow import keras\n# Assume 'model' is a trained Keras model\nmodel = keras.Sequential([keras.layers.Dense(1, input_shape=(3,))]) # Placeholder\n\ntf.keras.models.save_model(\n    model, 'my_model.tf'\n)\n\nLoading a Keras model\nimport tensorflow as tf\n\nloaded_model = tf.keras.models.load_model(\n    'my_model.tf'\n)\n# Example: Summarize the loaded model\nloaded_model.summary()\n\n\nKeras-based models can be saved and loaded using the save_model and load_model functions. By default the models are in a TensorFlow-specific format, which is optimized for TensorFlow’s execution graphs. However, the models can also be saved as H5, which is another popular file format for storing models, often more portable. This is particularly relevant for ECE engineers deploying Keras models on various hardware accelerators."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#loading-frozen-graphs-historical-context",
+    "href": "amli/04_05-09-classification.html#loading-frozen-graphs-historical-context",
+    "title": "Machine Learning",
+    "section": "Loading Frozen Graphs: Historical Context",
+    "text": "Loading Frozen Graphs: Historical Context\n“Frozen graphs” refer to TensorFlow 1.x models saved as a single .pb file. They represent a static computation graph with embedded weights.\n\n\nLoading the Graph Definition\nimport tensorflow as tf\nimport os\n\nfrozen_graph_path = os.path.join(\"path\", 'frozen_inference_graph.pb')\n\nwith tf.io.gfile.GFile(frozen_graph_path, \"rb\") as f:\n    graph_def = tf.compat.v1.GraphDef()\n    loaded = graph_def.ParseFromString(f.read())\n\n\n\n\n\n\n\nNote\n\n\nThis process uses tf.compat.v1, indicating compatibility for older TensorFlow 1.x models within a TensorFlow 2.x environment.\n\n\n\n\n\nThere is also the concept of freezing graphs. Some models, such as the one we’re going to use in this lab and in our next project, are distributed in this manner. In order to “unfreeze” a graph, you must first load the graph into a GraphDef object. Notice that this is using a TensorFlow version 1 compatibility layer object. This process is useful for loading models built in TensorFlow version 1, which many legacy systems in ECE might still use."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#loading-frozen-graphs-wrapping-for-tf2",
+    "href": "amli/04_05-09-classification.html#loading-frozen-graphs-wrapping-for-tf2",
+    "title": "Machine Learning",
+    "section": "Loading Frozen Graphs: Wrapping for TF2",
+    "text": "Loading Frozen Graphs: Wrapping for TF2\nTensorFlow 1.x used lazy execution; TensorFlow 2.x uses eager execution. tf.compat.v1.wrap_function bridges this gap for seamless integration.\ndef wrap_graph(graph_def, inputs, outputs, print_graph=False):\n    wrapped = tf.compat.v1.wrap_function(\n        lambda: tf.compat.v1.import_graph_def(graph_def, name=\"\"), [])\n\n    # Prune the graph to only include specified inputs and outputs\n    return wrapped.prune(\n        tf.nest.map_structure(wrapped.graph.as_graph_element, inputs),\n        tf.nest.map_structure(wrapped.graph.as_graph_element, outputs))\n  \n# Example usage:\nmodel = wrap_graph(graph_def=graph_def,\n                   inputs=[\"image_tensor:0\"], # Name of the input tensor\n                   outputs=[\"detection_boxes:0\", \"detection_scores:0\"]) # Example output tensors\n\nThe programming models of TensorFlow 1 and 2 are quite a bit different. TensorFlow 1 used lazy execution (defining the graph first, executing later) while TensorFlow 2 uses eager execution (operations execute immediately). In order to bridge the gap in these execution models, we need to wrap our TensorFlow version 1 graph. This wrapping makes the TF1 graph behave like a TF2 callable function, simplifying its use in modern workflows. This is a common challenge for ECE engineers maintaining or upgrading ML infrastructure."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#loading-frozen-graphs-using-the-wrapped-model",
+    "href": "amli/04_05-09-classification.html#loading-frozen-graphs-using-the-wrapped-model",
+    "title": "Machine Learning",
+    "section": "Loading Frozen Graphs: Using the Wrapped Model",
+    "text": "Loading Frozen Graphs: Using the Wrapped Model\nOnce wrapped, the frozen graph can be used like any other TensorFlow 2.x callable.\n# Assuming 'tensor' is a pre-processed image tensor\npredictions = model(tensor) \n\n# 'predictions' would contain the outputs defined earlier, e.g.,\n# predictions[\"detection_boxes:0\"], predictions[\"detection_scores:0\"]\n\nAnd now we can use the model as a function. We pass it in tensor objects and get predictions back. This demonstrates how backward compatibility is handled, enabling ECE professionals to leverage older, pre-trained models."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#your-turn-2",
+    "href": "amli/04_05-09-classification.html#your-turn-2",
+    "title": "Machine Learning",
+    "section": "Your Turn",
+    "text": "Your Turn\nPractice saving and loading models using different frameworks to understand their practical deployment."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#video-processing-project-identifying-cars-in-a-video",
+    "href": "amli/04_05-09-classification.html#video-processing-project-identifying-cars-in-a-video",
+    "title": "Machine Learning",
+    "section": "Video Processing Project: Identifying Cars in a Video",
+    "text": "Video Processing Project: Identifying Cars in a Video\nCombine image processing, pre-trained models, and video manipulation to perform object detection in real-time video.\n\nCars with Bounding Boxes\nWe are about to combine many of the skills we’ve learned over the past few units. We will take a video file and a pre-trained model and build bounding boxes around items in each frame of the video. This is a complex project directly applicable to ECE fields like autonomous vehicles, traffic monitoring, and surveillance systems."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#review-image-data-representation",
+    "href": "amli/04_05-09-classification.html#review-image-data-representation",
+    "title": "Machine Learning",
+    "section": "Review: Image Data Representation",
+    "text": "Review: Image Data Representation\nHow is image data typically represented and stored? What are the features?\n\nExercise (5 minutes) Have students discuss the fact that images are simply pixels. There are different ways to represent pixels, but it’s common to use RGB values that each range from 0 to 255. Each pixel is a feature. Remind them that image data can be challenging to work with because it is often very large. For example, a 12 megapixel image has 36,000,000 features. You may mention that grayscale is one way to cut down on the number of features. This review reinforces the foundational concepts before tackling the project."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#review-python-libraries-for-imagevideo",
+    "href": "amli/04_05-09-classification.html#review-python-libraries-for-imagevideo",
+    "title": "Machine Learning",
+    "section": "Review: Python Libraries for Image/Video",
+    "text": "Review: Python Libraries for Image/Video\nWhat Python libraries have we used for image and video manipulation?\n\nExercise (5 minutes) Have students discuss the labs they completed using PIL (Pillow) and OpenCV. These are industry-standard libraries, and knowing their application is crucial for ECE students in computer vision."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#review-classification-with-image-data",
+    "href": "amli/04_05-09-classification.html#review-classification-with-image-data",
+    "title": "Machine Learning",
+    "section": "Review: Classification with Image Data",
+    "text": "Review: Classification with Image Data\nHow have you performed classification tasks with image data?\n\nExercise (5 minutes) Have students discuss the fact that they used TensorFlow to train a simple classification model for the Fashion MNIST dataset. This was a prefabricated dataset that was relatively small, so it was possible to train a simple model locally and in a reasonable amount of time. For larger classification tasks, we discussed using pre-built models (specifically those stored in the TensorFlow detection model zoo). This connects past labs to the current project and future complex applications."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#video-processing-project-overview",
+    "href": "amli/04_05-09-classification.html#video-processing-project-overview",
+    "title": "Machine Learning",
+    "section": "Video Processing Project Overview",
+    "text": "Video Processing Project Overview\nProcess video frame-by-frame, applying a pre-trained object detection model. Visualize detections by drawing bounding boxes around identified objects.\n\nVideo Frame with Bounding Boxes\nNow let’s talk about the project for today! Here you can see a single frame of a video showing a road with a bunch of cars. A machine learning model, like the one you will use, has identified many of the cars in the image and labeled them as “car.” One was strangely labeled as a cell phone. Clearly models are not perfect. In this project we will process a video frame-by-frame and create bounding boxes around items found in those images by the third-party model. This real-world scenario demonstrates the power and limitations of current ML models."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#your-turn-3",
+    "href": "amli/04_05-09-classification.html#your-turn-3",
+    "title": "Machine Learning",
+    "section": "Your Turn",
+    "text": "Your Turn\nThis lab will exercise many of your Python and modeling skills. Let’s get started!"
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#classification-gone-wrong",
+    "href": "amli/04_05-09-classification.html#classification-gone-wrong",
+    "title": "Machine Learning",
+    "section": "Classification Gone Wrong",
+    "text": "Classification Gone Wrong\nEven the most sophisticated models can make mistakes or exhibit biases. Understanding these failures is as important as understanding successes.\n\nNote to facilitator: This is an activity best used during the Classification lessons in Track 4. It focuses on small group discussions and involves limited setup and facilitation by the instructor. It would best be taught in about 35 minutes, but it could be stretched to 45 minutes depending on the number of groups and how long you want to allow for discussion. This section emphasizes ethical considerations in ML, crucial for ECE students developing responsible AI systems."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#what-do-you-see-first",
+    "href": "amli/04_05-09-classification.html#what-do-you-see-first",
+    "title": "Machine Learning",
+    "section": "What Do You See First?",
+    "text": "What Do You See First?\nPerception can be ambiguous. Similarly, ML models can misinterpret data, leading to serious issues.\n\nDuck-Rabbit Ambiguous Illusion\nWhen you look at this, what do you see first? Raise your hand if it’s a duck you see first. Raise your hand if it’s a rabbit you see first. You’ve likely seen similar ambiguous images, images where one thing jumps out at you at first, and it takes a little longer to see something else. This phenomenon is likely based on humans and their individual schemas. But models can make the same kinds of errors, which can lead to some serious issues. Today we’ll discuss three separate scenarios of classifications that did not go as planned and the impact they caused."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#framing-harmful-classifications",
+    "href": "amli/04_05-09-classification.html#framing-harmful-classifications",
+    "title": "Machine Learning",
+    "section": "Framing Harmful Classifications",
+    "text": "Framing Harmful Classifications\n\nOften, bias is unintentional, not malicious.\nHowever, errors can be difficult to fix once deployed.\nMistakes can have long-lasting, negative repercussions on individuals or groups.\n\n\nMost people don’t set out to make a harmful or biased system; they set out to create a model that does one thing, but it ends up having other effects that could be unintended. This happens frequently. You can search for many, many examples of machine learning projects gone awry, some more serious than others. When these mistakes occur, they’re often very difficult to remedy because they require collecting new data, retraining a model, etc. If your dataset was biased to begin with, then focusing your data collection on only one type of data to remedy your initial issue may lead to another type of bias. These mistakes can have a negative and far-reaching impact on people or entire groups. Understanding the societal impact of ML is an ethical imperative for ECE professionals."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#group-activity",
+    "href": "amli/04_05-09-classification.html#group-activity",
+    "title": "Machine Learning",
+    "section": "Group Activity",
+    "text": "Group Activity\nDivide into groups (1, 2, 3) and each read a corresponding article. Be prepared to discuss the implications of “classification gone wrong.”\n\nGroup Collaboration Image\nLet’s break into groups by counting off 1, 2, and 3. Group 1, you will read the corresponding article. The same goes for groups 2 and 3."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#group-discussion-prompts",
+    "href": "amli/04_05-09-classification.html#group-discussion-prompts",
+    "title": "Machine Learning",
+    "section": "Group Discussion Prompts",
+    "text": "Group Discussion Prompts\n\nRead the article as a group (10 minutes).\nDiscuss the following questions (15 minutes):\n\nWhat was the original intent of this model/system?\nDescribe the bias with the model that led to this problem.\nWhat was the cause of this problem?\nAre there other mistakes that this model/system could make with this same root problem?\nWhat are the short-term and long-term impacts of this?\n\nEach group will present to the class (5 minutes/group).\n\n\nEach group will read their article and discuss these questions. After reading and your group discussion, each group will present to the class. You may have one member of your group present or several. When planning this 5-minute presentation, please allow one minute for questions. Give students a 5-minute warning to begin building a short presentation for the rest of the class. You can give students easel boards or posters to use as an aid to present or have them just use notes to verbally present. This encourages critical thinking and ethical analysis, vital skills for ECE graduates."
+  },
+  {
+    "objectID": "amli/04_05-09-classification.html#class-discussion",
+    "href": "amli/04_05-09-classification.html#class-discussion",
+    "title": "Machine Learning",
+    "section": "Class Discussion",
+    "text": "Class Discussion\n\nWhat was most surprising or alarming about these examples of bias?\nHow can situations like this be prevented in future ML system designs?\nWhat is the real-world impact of these mistakes?\nWhat does this mean regarding your responsibility as professionals in ECE ML?\n\n\nNote: If time permits, open up the discussion to the entire class after each group has presented. Encourage more follow-up questions and/or reflections of the questions listed on the slide. This final discussion brings together the ethical and technical aspects of ML, preparing ECE students for real-world challenges."
   }
 ]
