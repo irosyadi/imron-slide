@@ -4177,5 +4177,341 @@
     "title": "Signals and Systems",
     "section": "9.5 Properties of the Laplace Transform",
     "text": "9.5 Properties of the Laplace Transform\nLeveraging Transform Domain Relationships\nJust like with the Fourier Transform, the Laplace Transform has a rich set of properties that simplify analysis and provide deeper insights. These properties are invaluable for:\n\nDeriving new transform pairs.\nAnalyzing LTI systems.\nSolving differential equations.\nChecking calculations.\n\nWe will explore key properties and their implications on both the signal and its ROC.\n\nIntroduce the section by highlighting the utility of properties in Signals and Systems, drawing a parallel to Fourier Transform properties. Emphasize that understanding these properties is crucial for practical applications."
+  },
+  {
+    "objectID": "ss_97.html#the-system-function-hs",
+    "href": "ss_97.html#the-system-function-hs",
+    "title": "Signals and Systems",
+    "section": "The System Function: \\(H(s)\\)",
+    "text": "The System Function: \\(H(s)\\)\nThe Laplace Transform is a powerful tool for analyzing LTI systems because it converts convolution in the time domain into multiplication in the s-domain.\n\\[\n\\begin{equation*}\nY(s)=H(s) X(s) \\tag{9.112}\n\\end{equation*}\n\\]\n\n\\(X(s)\\): Laplace Transform of the input \\(x(t)\\)\n\\(Y(s)\\): Laplace Transform of the output \\(y(t)\\)\n\\(H(s)\\): Laplace Transform of the impulse response \\(h(t)\\)\n\n\n\n\n\n\n\nNote\n\n\n\\(H(s)\\) is commonly referred to as the system function or transfer function. If the ROC of \\(H(s)\\) includes the imaginary axis, then \\(H(j\\omega)\\) is the frequency response.\n\n\n\n\nThe equation \\(Y(s) = H(s)X(s)\\) is fundamental. It’s the Laplace transform counterpart to the convolution integral \\(y(t) = h(t) * x(t)\\). This transformation from convolution to multiplication dramatically simplifies system analysis. \\(H(s)\\) essentially describes how the system transforms an input. When we evaluate \\(H(s)\\) along the imaginary axis, i.e., \\(s=j\\omega\\), we get the system’s frequency response, telling us how different frequency components are affected."
+  },
+  {
+    "objectID": "ss_97.html#causality-of-lti-systems",
+    "href": "ss_97.html#causality-of-lti-systems",
+    "title": "Signals and Systems",
+    "section": "Causality of LTI Systems",
+    "text": "Causality of LTI Systems\nA system is causal if its output at any time depends only on present and past inputs. For an LTI system, this means the impulse response \\(h(t)=0\\) for \\(t&lt;0\\).\n\nGeneral Rule: The ROC associated with the system function \\(H(s)\\) for a causal system is a right-half plane.\n\n\n\n\n\n\n\nImportant\n\n\nFor systems with a rational system function \\(H(s)\\): Causality \\(\\iff\\) the ROC is the right-half plane to the right of the rightmost pole.\n\n\n\n\nCausality is a critical property for real-time systems; you can’t predict the future. For LTI systems, this translates directly to the impulse response being zero before \\(t=0\\). The first rule is always true: a causal system’s ROC is a right-half plane. However, the second rule, which establishes a strong “if and only if” condition, is specifically for systems where \\(H(s)\\) is a rational function, meaning it can be expressed as a ratio of polynomials. This distinction is important, as we’ll see in an example."
+  },
+  {
+    "objectID": "ss_97.html#example-causal-system",
+    "href": "ss_97.html#example-causal-system",
+    "title": "Signals and Systems",
+    "section": "Example: Causal System",
+    "text": "Example: Causal System\nConsider a system with impulse response:\n\\(h(t) = e^(-t)u(t)\\)\nThe system is causal since \\(h(t)=0\\) for \\(t&lt;0\\).\nIts system function is:\n\\[\n\\begin{equation*}\nH(s)=\\frac{1}{s+1}, \\quad \\operatorname{Re}\\{s\\}&gt;-1 \\tag{9.114}\n\\end{equation*}\n\\]\n\nPole: at \\(s=-1\\)\nROC: \\(\\operatorname{Re}\\{s\\}&gt;-1\\)\n\nThis ROC is to the right of the rightmost (and only) pole, confirming causality for this rational \\(H(s)\\).\n\nHere we have a simple first-order system. The impulse response \\(e^{-t}u(t)\\) is zero for \\(t&lt;0\\), so it’s causal. Its Laplace transform \\(H(s)\\) has a single pole at \\(s=-1\\). The Region of Convergence is \\(\\operatorname{Re}\\{s\\} &gt; -1\\), which is indeed a right-half plane extending to the right of the pole. This perfectly aligns with our rule for rational causal systems. The diagram visually represents the s-plane, showing the pole and the shaded ROC."
+  },
+  {
+    "objectID": "ss_97.html#example-non-causal-system",
+    "href": "ss_97.html#example-non-causal-system",
+    "title": "Signals and Systems",
+    "section": "Example: Non-Causal System",
+    "text": "Example: Non-Causal System\nConsider a system with impulse response:\n\\(h(t) = e^(-|t|)\\)\nThis system is not causal since \\(h(t) \\neq 0\\) for \\(t&lt;0\\).\nIts system function is:\n\\[\nH(s)=\\frac{-2}{s^{2}-1}, \\quad-1&lt;\\operatorname{Re}\\{s\\}&lt;+1\n\\]\n\nPoles: at \\(s=-1\\) and \\(s=1\\)\nROC: \\(-1 &lt; \\operatorname{Re}\\{s\\} &lt; 1\\)\n\nThe ROC is a strip, not a right-half plane to the right of the rightmost pole (\\(s=1\\)), which is consistent with the system being non-causal.\n\nIn this example, the impulse response \\(e^{-|t|}\\) is non-zero for \\(t&lt;0\\), making the system non-causal. When we look at its system function, \\(H(s)\\), we find two poles, at \\(s=-1\\) and \\(s=1\\). The ROC is a vertical strip between these two poles. According to our rule, for a causal system with a rational \\(H(s)\\), the ROC must be to the right of the rightmost pole (which is \\(s=1\\) here). Since our ROC is not \\(\\operatorname{Re}\\{s\\}&gt;1\\), it correctly indicates that this system is not causal."
+  },
+  {
+    "objectID": "ss_97.html#causality-caveat-non-rational-hs",
+    "href": "ss_97.html#causality-caveat-non-rational-hs",
+    "title": "Signals and Systems",
+    "section": "Causality Caveat: Non-Rational \\(H(s)\\)",
+    "text": "Causality Caveat: Non-Rational \\(H(s)\\)\nThe “rational \\(H(s)\\)” condition for causality is crucial.\nConsider a system function:\n\\[\n\\begin{equation*}\nH(s)=\\frac{e^{s}}{s+1}, \\quad \\operatorname{Re}\\{s\\}&gt;-1 \\tag{9.115}\n\\end{equation*}\n\\]\n\nPole: at \\(s=-1\\)\nROC: \\(\\operatorname{Re}\\{s\\}&gt;-1\\)\n\nHere, the ROC is to the right of the pole.\nHowever, \\(H(s)\\) is not rational due to the \\(e^s\\) term.\nThe impulse response is \\(h(t) = e^(-(t+1))u(t+1)\\).\nSince \\(u(t+1)\\) is non-zero for \\(t &lt; 0\\) (specifically for \\(-1 &lt; t &lt; 0\\)), the system is not causal.\n\n\n\n\n\n\nCaution\n\n\nCausality implies the ROC is a right-half plane. The converse is not generally true unless the system function \\(H(s)\\) is rational.\n\n\n\n\nThis example highlights a common misconception. While a right-half plane ROC is a necessary condition for causality, it’s not always sufficient if \\(H(s)\\) is not a rational function. The \\(e^s\\) term in \\(H(s)\\) corresponds to a time shift in the time domain, specifically \\(h(t) = e^{-(t+1)}u(t+1)\\). Because this impulse response starts before \\(t=0\\), the system is non-causal, even though its ROC is a right-half plane. This emphasizes the importance of the “rational system function” condition in our second rule for causality."
+  },
+  {
+    "objectID": "ss_97.html#stability-of-lti-systems",
+    "href": "ss_97.html#stability-of-lti-systems",
+    "title": "Signals and Systems",
+    "section": "Stability of LTI Systems",
+    "text": "Stability of LTI Systems\nAn LTI system is stable if every bounded input produces a bounded output (BIBO stability). This is equivalent to its impulse response being absolutely integrable: \\(\\int_{-\\infty}^{\\infty} |h(t)| dt &lt; \\infty\\).\n\nGeneral Rule: An LTI system is stable \\(\\iff\\) the ROC of its system function \\(H(s)\\) includes the entire \\(j\\omega\\)-axis (\\(\\operatorname{Re}\\{s\\}=0\\)).\n\n\n\n\n\n\n\nImportant\n\n\nFor a causal system with a rational system function \\(H(s)\\): Stability \\(\\iff\\) all poles of \\(H(s)\\) lie in the left-half of the s-plane (i.e., all poles have negative real parts).\n\n\n\n\nStability is another fundamental system property. A stable system won’t “blow up” or produce an unbounded output from a bounded input. The first rule for stability is very general: the ROC must encompass the entire imaginary axis. This directly links to the convergence of the Fourier Transform of \\(h(t)\\). The second rule is a powerful shortcut for a very common class of systems: causal systems with rational transfer functions. In this case, simply checking the pole locations in the s-plane tells you everything you need to know about stability."
+  },
+  {
+    "objectID": "ss_97.html#example-stability-multiple-rocs",
+    "href": "ss_97.html#example-stability-multiple-rocs",
+    "title": "Signals and Systems",
+    "section": "Example: Stability & Multiple ROCs",
+    "text": "Example: Stability & Multiple ROCs\nConsider a system with \\(H(s)=\\frac{s-1}{(s+1)(s-2)}\\). Poles at \\(s=-1, s=2\\). Zero at \\(s=1\\).\nDifferent ROCs lead to different system properties:\n\n\n(a) Causal, Unstable\nROC: \\(\\operatorname{Re}\\{s\\} &gt; 2\\)\n\nRight of rightmost pole.\nDoes NOT include \\(j\\omega\\)-axis. mermaid\n\n\n(b) Non-Causal, Stable\nROC: \\(-1 &lt; \\operatorname{Re}\\{s\\} &lt; 2\\)\n\nIncludes \\(j\\omega\\)-axis.\nNot to the right of rightmost pole. mermaid\n\n\n(c) Anticausal, Unstable\nROC: \\(\\operatorname{Re}\\{s\\} &lt; -1\\)\n\nLeft of leftmost pole.\nDoes NOT include \\(j\\omega\\)-axis. mermaid\n\n\n\nThis example beautifully illustrates how the same algebraic expression for \\(H(s)\\) can represent different systems depending on its ROC. We have poles at -1 and 2. For case (a), if the system is causal, its ROC must be \\(\\operatorname{Re}\\{s\\}&gt;2\\). This doesn’t include the \\(j\\omega\\)-axis, so it’s unstable. For case (b), if the system is stable, its ROC must include the \\(j\\omega\\)-axis, meaning it’s the strip \\(-1 &lt; \\operatorname{Re}\\{s\\} &lt; 2\\). This system is stable, but because the ROC is not to the right of the rightmost pole, it’s non-causal. Finally, for case (c), if it’s anticausal, its ROC is \\(\\operatorname{Re}\\{s\\}&lt;-1\\). This is unstable as it doesn’t contain the \\(j\\omega\\)-axis. The key takeaway: ROC is crucial for defining system properties."
+  },
+  {
+    "objectID": "ss_97.html#example-causal-system-stability",
+    "href": "ss_97.html#example-causal-system-stability",
+    "title": "Signals and Systems",
+    "section": "Example: Causal System Stability",
+    "text": "Example: Causal System Stability\nConsider causal LTI systems with rational system functions:\n\n\nStable System\n\nh(t) = e^(-t)u(t)\nH(s) = 1/(s+1)\nPole: at \\(s=-1\\) (in the left-half s-plane)\n\nThis system is stable because its pole has a negative real part.\n\nUnstable System\n\nh(t) = e^(2t)u(t)\nH(s) = 1/(s-2)\nPole: at \\(s=2\\) (in the right-half s-plane)\n\nThis system is unstable because its pole has a positive real part.\n\n\n\n\n\n\n\nTip\n\n\nFor causal systems with rational \\(H(s)\\), simply check if all poles are in the LHP for stability.\n\n\n\n\nThese are straightforward examples applying the second rule for stability. For causal systems with rational transfer functions, stability is directly determined by the location of the poles. A pole in the left-half plane, like \\(s=-1\\), leads to a decaying exponential in the impulse response, which is absolutely integrable and thus stable. A pole in the right-half plane, like \\(s=2\\), leads to a growing exponential, which is not absolutely integrable, making the system unstable. This visual check in the s-plane is incredibly useful for engineers."
+  },
+  {
+    "objectID": "ss_97.html#lti-systems-characterized-by-linear-constant-coefficient-differential-equations",
+    "href": "ss_97.html#lti-systems-characterized-by-linear-constant-coefficient-differential-equations",
+    "title": "Signals and Systems",
+    "section": "LTI Systems Characterized by Linear Constant-Coefficient Differential Equations",
+    "text": "LTI Systems Characterized by Linear Constant-Coefficient Differential Equations\nThe Laplace Transform simplifies the analysis of LTI systems described by LCCDEs.\nA general LCCDE:\n\\[\n\\begin{equation*}\n\\sum_{k=0}^{N} a_{k} \\frac{d^{k} y(t)}{d t^{k}}=\\sum_{k=0}^{M} b_{k} \\frac{d^{k} x(t)}{d t^{k}} \\tag{9.131}\n\\end{equation*}\n\\]\nApplying the Laplace Transform (using linearity and differentiation properties):\n\\[\n\\begin{equation*}\n\\left(\\sum_{k=0}^{N} a_{k} s^{k}\\right) Y(s)=\\left(\\sum_{k=0}^{M} b_{k} s^{k}\\right) X(s) \\tag{9.132}\n\\end{equation*}\n\\]\nThe system function \\(H(s) = Y(s)/X(s)\\) is always rational:\n\\[\n\\begin{equation*}\nH(s)=\\frac{\\left\\{\\sum_{k=0}^{M} b_{k} s^{k}\\right\\}}{\\left\\{\\sum_{k=0}^{N} a_{k} s^{k}\\right\\}} \\tag{9.133}\n\\end{equation*}\n\\]\n\nZeros: solutions to \\(\\sum_{k=0}^{M} b_{k} s^{k}=0\\)\nPoles: solutions to \\(\\sum_{k=0}^{N} a_{k} s^{k}=0\\)\n\n\nDifferential equations are a natural way to model many physical systems. The beauty of the Laplace transform is how it transforms these complex differential equations into simple algebraic equations in the s-domain. This allows us to easily find the system function \\(H(s)\\) as a ratio of polynomials, which makes it a rational function. The roots of the numerator polynomial are the zeros of the system, and the roots of the denominator polynomial are the poles. Remember, the differential equation itself doesn’t specify the ROC; additional information like causality or stability is needed."
+  },
+  {
+    "objectID": "ss_97.html#example-first-order-lccde",
+    "href": "ss_97.html#example-first-order-lccde",
+    "title": "Signals and Systems",
+    "section": "Example: First-Order LCCDE",
+    "text": "Example: First-Order LCCDE\nConsider an LTI system where input \\(x(t)\\) and output \\(y(t)\\) satisfy:\n\\[\n\\begin{equation*}\n\\frac{d y(t)}{d t}+3 y(t)=x(t) \\tag{9.126}\n\\end{equation*}\n\\]\n\nApply Laplace Transform: \\(sY(s) + 3Y(s) = X(s)\\) \\((s+3)Y(s) = X(s)\\)\nDetermine System Function: \\[\n\\begin{equation*}\nH(s)=\\frac{Y(s)}{X(s)}=\\frac{1}{s+3} \\tag{9.128}\n\\end{equation*}\n\\]\nInfer ROC (with additional info):\n\nIf causal: ROC is \\(\\operatorname{Re}\\{s\\}&gt;-3\\). (System is stable).\nIf anticausal: ROC is \\(\\operatorname{Re}\\{s\\}&lt;-3\\). (System is unstable).\n\n\n\nThis example demonstrates the process of finding the system function from a differential equation. We take the Laplace transform of both sides, use the differentiation property, and then simply rearrange the terms to solve for \\(Y(s)/X(s)\\). The result, \\(H(s) = 1/(s+3)\\), has a pole at \\(s=-3\\). As discussed, the differential equation alone doesn’t give the ROC. If we add the condition of causality, we know the ROC must be \\(\\operatorname{Re}\\{s\\}&gt;-3\\), which also makes the system stable since the pole is in the LHP. If it were anticausal, the ROC would be \\(\\operatorname{Re}\\{s\\}&lt;-3\\), making it unstable."
+  },
+  {
+    "objectID": "ss_97.html#application-rlc-circuit-analysis",
+    "href": "ss_97.html#application-rlc-circuit-analysis",
+    "title": "Signals and Systems",
+    "section": "Application: RLC Circuit Analysis",
+    "text": "Application: RLC Circuit Analysis\nAn RLC circuit is a classic example of an LTI system described by an LCCDE.\nConsider the series RLC circuit where \\(x(t)\\) is the source voltage and \\(y(t)\\) is the capacitor voltage.\nThe differential equation is: \\[\n\\begin{equation*}\nL C \\frac{d^{2} y(t)}{d t^{2}}+R C \\frac{d y(t)}{d t}+y(t)=x(t) \\tag{9.136}\n\\end{equation*}\n\\]\nApplying Laplace Transform: \\[\n\\begin{equation*}\nH(s)=\\frac{1 / L C}{s^{2}+(R / L) s+(1 / L C)} \\tag{9.137}\n\\end{equation*}\n\\]\n\n\n\n\n\n\nNote\n\n\nFor positive values of \\(R, L, C\\), the poles of this system function will always have negative real parts, ensuring the system is stable.\n\n\n\n\nHere’s a practical application. A series RLC circuit is a fundamental circuit in ECE. If we take the input as the source voltage and the output as the voltage across the capacitor, we can derive a second-order differential equation describing its behavior. Using the Laplace transform, we can easily find its system function \\(H(s)\\). For physically realizable components (positive R, L, C), the poles of this system will always reside in the left-half of the s-plane, meaning the RLC circuit is inherently stable. This is a powerful conclusion derived quickly using Laplace transforms."
+  },
+  {
+    "objectID": "ss_97.html#example-deduce-system-from-io-pair",
+    "href": "ss_97.html#example-deduce-system-from-io-pair",
+    "title": "Signals and Systems",
+    "section": "Example: Deduce System from I/O Pair",
+    "text": "Example: Deduce System from I/O Pair\nSuppose we know that for an LTI system:\n\nInput: \\(x(t)=e^{-3 t} u(t)\\)\nOutput: \\(y(t)=\\left[e^{-t}-e^{-2 t}\\right] u(t)\\)\n\nLet’s find \\(H(s)\\) and system properties:\n\nLaplace Transforms of I/O: \\(X(s)=\\frac{1}{s+3}, \\quad \\operatorname{Re}\\{s\\}&gt;-3\\) \\(Y(s)=\\frac{1}{(s+1)(s+2)}, \\quad \\operatorname{Re}\\{s\\}&gt;-1\\)\nSystem Function: \\(H(s)=\\frac{Y(s)}{X(s)}=\\frac{s+3}{(s+1)(s+2)}\\)\nROC of \\(H(s)\\): The ROC of \\(Y(s)\\) must include the intersection of ROCs of \\(X(s)\\) and \\(H(s)\\). Given \\(X(s)\\) has \\(\\operatorname{Re}\\{s\\}&gt;-3\\) and \\(Y(s)\\) has \\(\\operatorname{Re}\\{s\\}&gt;-1\\), the only consistent ROC for \\(H(s)\\) is \\(\\operatorname{Re}\\{s\\}&gt;-1\\).\nDeduced System Properties:\n\nCausal: Yes (ROC is RHP to the right of rightmost pole at \\(s=-1\\)).\nStable: Yes (All poles at \\(s=-1, -2\\) are in LHP, ROC includes \\(j\\omega\\)-axis).\nDifferential Equation: \\(\\frac{d^{2} y(t)}{d t^{2}}+3 \\frac{d y(t)}{d t}+2 y(t)=\\frac{d x(t)}{d t}+3 x(t)\\)\n\n\n\nThis example showcases the power of the Laplace transform to reverse-engineer system properties from a single input-output pair. By transforming \\(x(t)\\) and \\(y(t)\\) to the s-domain, we can easily calculate \\(H(s)\\). Crucially, the ROC of \\(H(s)\\) must be compatible with both \\(X(s)\\) and \\(Y(s)\\). From this, we can deduce causality, stability, and even the underlying differential equation. This is a common problem-solving technique in system identification."
+  },
+  {
+    "objectID": "ss_97.html#example-analyze-system-statements-part-1",
+    "href": "ss_97.html#example-analyze-system-statements-part-1",
+    "title": "Signals and Systems",
+    "section": "Example: Analyze System Statements (Part 1)",
+    "text": "Example: Analyze System Statements (Part 1)\nGiven: Causal, stable, rational \\(H(s)\\), pole at \\(s=-2\\), no zero at origin.\nLet’s evaluate these statements:\n(a) \\(\\mathcal{F}\\{h(t)e^{3t}\\}\\) converges.\n\nFalse. This corresponds to \\(H(s)\\) evaluated at \\(s=-3\\).\nSince the system is causal and stable, its ROC is \\(\\operatorname{Re}\\{s\\} &gt; -2\\).\n\\(s=-3\\) is not in this ROC, so the Fourier transform does not converge.\n\n(b) \\(\\int_{-\\infty}^{+\\infty} h(t) d t=0\\).\n\nFalse. This integral is equivalent to \\(H(0)\\).\nThe problem states there is no zero at the origin, so \\(H(0) \\neq 0\\).\n\n\nThis is a good exercise to test your understanding of the interplay between Laplace transform properties and system characteristics. For statement (a), recall that multiplication by \\(e^{at}\\) in the time domain corresponds to a shift in the s-domain by \\(s-a\\). So, \\(h(t)e^{3t}\\) has a Laplace transform \\(H(s-3)\\). If we then take the Fourier transform, it’s \\(H(j\\omega-3)\\), which means we’re evaluating \\(H(s)\\) at \\(s=j\\omega-3\\). For convergence, this \\(s\\) must be in the ROC of \\(H(s)\\). The ROC for a causal, stable system with a pole at -2 is \\(\\operatorname{Re}\\{s\\}&gt;-2\\). Since \\(s=-3\\) is not in this region, the Fourier transform does not converge. For statement (b), the integral of \\(h(t)\\) is simply \\(H(0)\\). The problem explicitly states there’s no zero at the origin, meaning \\(H(0)\\) is not zero."
+  },
+  {
+    "objectID": "ss_97.html#example-analyze-system-statements-part-2",
+    "href": "ss_97.html#example-analyze-system-statements-part-2",
+    "title": "Signals and Systems",
+    "section": "Example: Analyze System Statements (Part 2)",
+    "text": "Example: Analyze System Statements (Part 2)\nGiven: Causal, stable, rational \\(H(s)\\), pole at \\(s=-2\\), no zero at origin.\nLet’s evaluate these statements:\n\n\n(c) \\(t h(t)\\) is the impulse response of a causal and stable system.\n\nTrue. The Laplace transform of \\(t h(t)\\) is \\(-\\frac{d}{ds}H(s)\\), which has the same ROC as \\(H(s)\\).\nSince \\(H(s)\\) is causal and stable, its ROC includes the \\(j\\omega\\)-axis.\nAlso, if \\(h(t)=0\\) for \\(t&lt;0\\), then \\(t h(t)=0\\) for \\(t&lt;0\\), so it’s causal.\n\n\n(d) \\(d h(t) / d t\\) contains at least one pole in its Laplace transform.\n\nTrue. The Laplace transform of \\(d h(t) / d t\\) is \\(s H(s)\\).\nMultiplying by \\(s\\) does not remove the pole at \\(s=-2\\).\n(It could remove a pole at \\(s=0\\), but \\(s=-2\\) remains)."
+  },
+  {
+    "objectID": "ss_97.html#example-analyze-system-statements-part-3",
+    "href": "ss_97.html#example-analyze-system-statements-part-3",
+    "title": "Signals and Systems",
+    "section": "Example: Analyze System Statements (Part 3)",
+    "text": "Example: Analyze System Statements (Part 3)\nGiven: Causal, stable, rational \\(H(s)\\), pole at \\(s=-2\\), no zero at origin.\nLet’s evaluate these statements:\n\n\n(e) \\(h(t)\\) has finite duration.\n\nFalse.\nIf \\(h(t)\\) has finite duration, its ROC must be the entire \\(s\\)-plane.\nThis is inconsistent with \\(H(s)\\) having a pole at \\(s=-2\\).\n(Poles imply the ROC cannot be the entire s-plane).\n\n\n(f) \\(H(s)=H(-s)\\).\n\nFalse.\nIf \\(H(s)\\) has a pole at \\(s=-2\\), then \\(H(-s)\\) would have a pole at \\(s=2\\).\nFor \\(H(s)=H(-s)\\) to hold, \\(H(s)\\) would need a pole at \\(s=2\\).\nThis contradicts the condition that the system is causal and stable (all poles in LHP)."
+  },
+  {
+    "objectID": "ss_97.html#example-analyze-system-statements-part-4",
+    "href": "ss_97.html#example-analyze-system-statements-part-4",
+    "title": "Signals and Systems",
+    "section": "Example: Analyze System Statements (Part 4)",
+    "text": "Example: Analyze System Statements (Part 4)\nGiven: Causal, stable, rational \\(H(s)\\), pole at \\(s=-2\\), no zero at origin.\nLet’s evaluate this statement:\n(g) \\(\\lim _{s \\rightarrow \\infty} H(s)=2\\).\n\n\n\n\n\n\nNote\n\n\nInsufficient Information.\nFor this limit to be a finite non-zero value, the degree of the numerator polynomial must equal the degree of the denominator polynomial in \\(H(s)\\). We do not have enough information about the other poles and zeros of \\(H(s)\\) to determine this.\n\n\n\n\nFor (c), the differentiation in the s-domain (multiplication by \\(s\\)) doesn’t remove poles unless they are at \\(s=0\\). So the pole at \\(s=-2\\) remains. For (d), the property of \\(t h(t)\\) having the same ROC as \\(H(s)\\) is a direct Laplace transform property. Since \\(h(t)\\) is causal, \\(th(t)\\) is also causal. Since \\(H(s)\\) is stable, its ROC includes the \\(j\\omega\\)-axis, so the ROC of \\(-\\frac{d}{ds}H(s)\\) also includes the \\(j\\omega\\)-axis, making \\(th(t)\\) stable. For (e), finite duration signals have ROCs that are the entire s-plane. If there’s a pole at \\(s=-2\\), the ROC cannot be the entire s-plane, so \\(h(t)\\) cannot be finite duration. For (f), if \\(H(s)=H(-s)\\), it means the pole-zero plot must be symmetric with respect to the \\(j\\omega\\)-axis. If there’s a pole at \\(s=-2\\), there must also be one at \\(s=2\\). A pole at \\(s=2\\) would make a causal system unstable, contradicting the given condition. For (g), the limit of \\(H(s)\\) as \\(s \\to \\infty\\) depends on the relative degrees of the numerator and denominator polynomials. If they are equal, the limit is the ratio of their leading coefficients. We don’t have this information, so we can’t determine the truth of the statement."
+  },
+  {
+    "objectID": "ss_97.html#application-butterworth-filters",
+    "href": "ss_97.html#application-butterworth-filters",
+    "title": "Signals and Systems",
+    "section": "Application: Butterworth Filters",
+    "text": "Application: Butterworth Filters\nButterworth filters are a widely used class of LTI systems known for their maximally flat passband frequency response.\nAn \\(N\\)-th order lowpass Butterworth filter has a frequency response magnitude squared given by:\n\\[\n\\begin{equation*}\n|B(j \\omega)|^{2}=\\frac{1}{1+\\left(j \\omega / j \\omega_{c}\\right)^{2 N}} \\tag{9.140}\n\\end{equation*}\n\\]\nTo find the system function \\(B(s)\\):\n\nUse the property \\(|B(j \\omega)|^{2}=B(j \\omega) B^{*}(j \\omega)\\).\nFor real impulse response, \\(B^{*}(j \\omega)=B(-j \\omega)\\). So, \\(|B(j \\omega)|^{2}=B(j \\omega) B(-j \\omega)\\).\nSubstitute \\(s=j\\omega\\):\n\\[\n\\begin{equation*}\nB(s) B(-s)=\\frac{1}{1+\\left(s / j \\omega_{c}\\right)^{2 N}} \\tag{9.144}\n\\end{equation*}\n\\]\n\n\n\n\n\n\n\nTip\n\n\nFrom \\(B(s)B(-s)\\), we find the poles of the filter. To ensure a causal and stable filter, we select the poles that lie in the left-half of the s-plane.\n\n\n\n\nButterworth filters are a cornerstone of analog and digital filter design due to their flat passband and monotonic rolloff. We begin with the definition of its squared magnitude response. The key step here is to relate \\(|B(j\\omega)|^2\\) to \\(B(s)B(-s)\\) by replacing \\(j\\omega\\) with \\(s\\). This gives us an expression for \\(B(s)B(-s)\\), from which we can find all \\(2N\\) poles. To construct the stable and causal filter \\(B(s)\\), we must select only those poles that lie in the left-half of the s-plane. This process directly links the frequency domain specification to the s-domain system function."
+  },
+  {
+    "objectID": "ss_97.html#butterworth-filter-pole-locations-interactive",
+    "href": "ss_97.html#butterworth-filter-pole-locations-interactive",
+    "title": "Signals and Systems",
+    "section": "Butterworth Filter Pole Locations (Interactive)",
+    "text": "Butterworth Filter Pole Locations (Interactive)\nThe poles of \\(B(s)B(-s)\\) are located on a circle of radius \\(\\omega_c\\) in the s-plane.\nSpecifically, \\(s_p = \\omega_c \\exp\\left(j\\left[\\frac{\\pi(2k+1)}{2N}+\\frac{\\pi}{2}\\right]\\right)\\) for \\(k=0, \\dots, 2N-1\\).\nUse the sliders to explore how the pole locations change with filter order \\(N\\) and cutoff frequency \\(\\omega_c\\).\n\nviewof N_butter = Inputs.range([1, 6], {value: 2, step: 1, label: \"Filter Order (N)\"});\nviewof wc_butter = Inputs.range([0.5, 2.0], {value: 1.0, step: 0.1, label: \"Cutoff Frequency (ωc)\"});\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThis interactive plot allows you to visualize the pole locations for Butterworth filters. The red ‘x’ marks show all \\(2N\\) poles of \\(B(s)B(-s)\\), which are symmetrically distributed on a circle of radius \\(\\omega_c\\). The blue circles represent the \\(N\\) poles selected for \\(B(s)\\) to ensure causality and stability – these are the poles exclusively in the left-half of the s-plane. Notice how increasing \\(N\\) adds more poles, making the filter sharper, and changing \\(\\omega_c\\) scales the entire pole constellation."
+  },
+  {
+    "objectID": "ss_97.html#butterworth-transfer-functions-differential-equations",
+    "href": "ss_97.html#butterworth-transfer-functions-differential-equations",
+    "title": "Signals and Systems",
+    "section": "Butterworth Transfer Functions & Differential Equations",
+    "text": "Butterworth Transfer Functions & Differential Equations\nOnce the poles for \\(B(s)\\) are identified, the transfer function can be constructed.\n\nN=1: \\(B(s)=\\frac{\\omega_{c}}{s+\\omega_{c}}\\) Differential Equation: \\(\\frac{d y(t)}{d t}+\\omega_{c} y(t)=\\omega_{c} x(t)\\)\nN=2: \\(B(s)=\\frac{\\omega_{c}^{2}}{s^{2}+\\sqrt{2} \\omega_{c} s+\\omega_{c}^{2}}\\) Differential Equation: \\(\\frac{d^{2} y(t)}{d t^{2}}+\\sqrt{2} \\omega_{c} \\frac{d y(t)}{d t}+\\omega_{c}^{2} y(t)=\\omega_{c}^{2} x(t)\\)\nN=3: \\(B(s)=\\frac{\\omega_{c}^{3}}{s^{3}+2 \\omega_{c} s^{2}+2 \\omega_{c}^{2} s+\\omega_{c}^{3}}\\) Differential Equation: \\(\\frac{d^{3} y(t)}{d t^{3}}+2 \\omega_{c} \\frac{d^{2} y(t)}{d t^{2}}+2 \\omega_{c}^{2} \\frac{d y(t)}{d t}+\\omega_{c}^{3} y(t)=\\omega_{c}^{3} x(t)\\)\n\n\n\n\n\n\n\nNote\n\n\nHigher-order filters (larger \\(N\\)) result in more complex differential equations but offer sharper cutoff characteristics in the frequency domain.\n\n\n\n\nHere we see the actual transfer functions and their corresponding differential equations for the first few orders of Butterworth filters. As the order \\(N\\) increases, the denominator polynomial gets more complex, leading to higher-order differential equations. This directly translates to more components in an analog circuit implementation or more complex algorithms in a digital filter. The trade-off is improved filter performance, such as a steeper roll-off in the stopband, at the cost of increased system complexity."
+  },
+  {
+    "objectID": "ss_98.html#introduction-system-function-algebra",
+    "href": "ss_98.html#introduction-system-function-algebra",
+    "title": "Signals and Systems",
+    "section": "Introduction: System Function Algebra",
+    "text": "Introduction: System Function Algebra\nThe Laplace Transform simplifies LTI system analysis by converting time-domain operations into algebraic ones. This is particularly useful for:\n\nAnalyzing interconnections of LTI systems.\nSynthesizing systems from elementary building blocks.\n\n\n\n\n\n\n\nTip\n\n\nKey Idea:\nConvolution in the time domain becomes multiplication in the s-domain. Differentiation becomes multiplication by \\(s\\). Integration becomes multiplication by \\(1/s\\)."
+  },
+  {
+    "objectID": "ss_98.html#parallel-interconnection",
+    "href": "ss_98.html#parallel-interconnection",
+    "title": "Signals and Systems",
+    "section": "Parallel Interconnection",
+    "text": "Parallel Interconnection\nConsider two LTI systems, \\(H_1(s)\\) and \\(H_2(s)\\), connected in parallel.\nTime Domain:\nThe impulse response of the overall system is the sum of individual impulse responses:\n\\[h(t) = h_1(t) + h_2(t)\\]\nS-Domain:\nDue to the linearity of the Laplace transform, the overall system function is the sum of individual system functions:\n\\[H(s) = H_1(s) + H_2(s)\\]\n\nParallel InterconnectionFigure 9.30(a): Parallel interconnection of two LTI systems.\n\nIn a parallel interconnection, the input signal \\(x(t)\\) is applied to both systems simultaneously. The outputs of the individual systems, \\(y_1(t)\\) and \\(y_2(t)\\), are then summed to produce the overall output \\(y(t)\\). This is analogous to connecting two resistors in parallel, where the total conductance is the sum of individual conductances. This setup is common in audio mixing or parallel processing."
+  },
+  {
+    "objectID": "ss_98.html#interactive-example-parallel-systems",
+    "href": "ss_98.html#interactive-example-parallel-systems",
+    "title": "Signals and Systems",
+    "section": "Interactive Example: Parallel Systems",
+    "text": "Interactive Example: Parallel Systems\nLet’s explore the effect of parallel interconnection on system response. Consider two first-order systems: \\(H_1(s) = \\frac{1}{s+a}\\) and \\(H_2(s) = \\frac{1}{s+b}\\).\n\nviewof pole_a = Inputs.range([0.1, 5.0], {value: 1.0, step: 0.1, label: \"Pole 1 (a)\"});\nviewof pole_b = Inputs.range([0.1, 5.0], {value: 2.0, step: 0.1, label: \"Pole 2 (b)\"});\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAdjust the pole values ‘a’ and ‘b’ using the sliders. Observe how the individual step responses of \\(H_1(s)\\) and \\(H_2(s)\\) combine to form the step response of the overall parallel system. Notice that the parallel system’s response is simply the sum of the individual responses, demonstrating the linearity of the system function algebra. This interactive plot helps visualize the direct relationship between individual system characteristics and the combined system’s behavior."
+  },
+  {
+    "objectID": "ss_98.html#series-interconnection",
+    "href": "ss_98.html#series-interconnection",
+    "title": "Signals and Systems",
+    "section": "Series Interconnection",
+    "text": "Series Interconnection\nConsider two LTI systems, \\(H_1(s)\\) and \\(H_2(s)\\), connected in series (cascade).\nTime Domain:\nThe impulse response of the overall system is the convolution of individual impulse responses:\n\\[h(t) = h_1(t) * h_2(t)\\]\nS-Domain:\nThe overall system function is the product of individual system functions:\n\\[H(s) = H_1(s) H_2(s)\\]\n\nSeries InterconnectionFigure 9.30(b): Series combination of two LTI systems.\n\nIn a series interconnection, the output of the first system, \\(y_1(t)\\), becomes the input to the second system, \\(x_2(t)\\). The final output \\(y(t)\\) is then the output of the second system. This setup is fundamental in signal processing chains, where multiple filters or processing stages are applied sequentially. For example, an audio signal might pass through an equalizer (filter 1) and then a compressor (filter 2)."
+  },
+  {
+    "objectID": "ss_98.html#interactive-example-series-systems",
+    "href": "ss_98.html#interactive-example-series-systems",
+    "title": "Signals and Systems",
+    "section": "Interactive Example: Series Systems",
+    "text": "Interactive Example: Series Systems\nLet’s see how cascading two first-order systems affects the overall step response.\nSystems: \\(H_1(s) = \\frac{1}{s+a}\\) and \\(H_2(s) = \\frac{1}{s+b}\\).\n\nviewof pole_c = Inputs.range([0.1, 5.0], {value: 1.0, step: 0.1, label: \"Pole 1 (c)\"});\nviewof pole_d = Inputs.range([0.1, 5.0], {value: 2.0, step: 0.1, label: \"Pole 2 (d)\"});\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSimilar to the parallel case, adjust the pole values ‘c’ and ‘d’. Notice how the series connection results in a system that is often “slower” or more filtered than the individual components, especially if the poles are close to the origin. The overall pole locations are determined by the product of the individual system functions. This is crucial for designing multi-stage filters or control systems where each stage contributes to the overall dynamics."
+  },
+  {
+    "objectID": "ss_98.html#feedback-interconnection",
+    "href": "ss_98.html#feedback-interconnection",
+    "title": "Signals and Systems",
+    "section": "Feedback Interconnection",
+    "text": "Feedback Interconnection\nFeedback is a powerful concept in engineering, fundamental to control systems, amplifiers, and oscillators.\nSystem Equations:\nFrom the diagram:\n\\(Y(s) = H_1(s) E(s)\\)\n\\(E(s) = X(s) - Z(s)\\)\n\\(Z(s) = H_2(s) Y(s)\\)\nSubstituting and solving for \\(Y(s)/X(s)\\):\n\\(Y(s) = H_1(s) [X(s) - H_2(s) Y(s)]\\)\n\\(Y(s) = H_1(s) X(s) - H_1(s) H_2(s) Y(s)\\)\n\\(Y(s) [1 + H_1(s) H_2(s)] = H_1(s) X(s)\\)\nOverall System Function: \\[H(s) = \\frac{Y(s)}{X(s)} = \\frac{H_1(s)}{1 + H_1(s) H_2(s)}\\]\n\nFeedback InterconnectionFigure 9.31: Feedback interconnection of two LTI systems.\n\nFeedback systems are ubiquitous in engineering. A simple example is a thermostat controlling room temperature. The sensor (\\(H_2(s)\\)) measures the actual temperature (\\(Y(s)\\)), compares it to the desired temperature (\\(X(s)\\)), and sends an error signal (\\(E(s)\\)) to the heating/cooling system (\\(H_1(s)\\)). The primary goal of feedback is to regulate or stabilize a system, improve its performance, or make it less sensitive to disturbances. The algebraic derivation shows how feedback fundamentally alters the system’s poles, which directly impacts stability and response characteristics."
+  },
+  {
+    "objectID": "ss_98.html#block-diagram-representations",
+    "href": "ss_98.html#block-diagram-representations",
+    "title": "Signals and Systems",
+    "section": "Block Diagram Representations",
+    "text": "Block Diagram Representations\nBlock diagrams are visual tools to represent LTI systems, especially those described by differential equations. They use three basic operations:\n\nAddition: Summing junction.\nMultiplication by a coefficient: Gain block.\nIntegration: Integrator block (\\(1/s\\)).\n\n\n\n\n\n\n\nImportant\n\n\nThese building blocks allow us to visualize the internal structure and signal flow within a system."
+  },
+  {
+    "objectID": "ss_98.html#example-9.28-first-order-system",
+    "href": "ss_98.html#example-9.28-first-order-system",
+    "title": "Signals and Systems",
+    "section": "Example 9.28: First-Order System",
+    "text": "Example 9.28: First-Order System\nConsider a causal LTI system with system function \\(H(s)=\\frac{1}{s+3}\\).\nThis corresponds to the differential equation: \\(\\frac{d y(t)}{d t}+3 y(t)=x(t)\\).\nWe can rearrange the differential equation as:\n\\(\\frac{d y(t)}{d t} = x(t) - 3 y(t)\\)\nIntegrating both sides:\n\\(y(t) = \\int [x(t) - 3 y(t)] dt\\)\nThis suggests a feedback structure where the input to the integrator is \\(x(t) - 3y(t)\\).\nLet’s visualize this using a block diagram.\n\nFigure 9.32(a)Figure 9.32(a): Block diagram representation.\n\nThis example demonstrates how a simple first-order differential equation can be translated into a block diagram using an integrator, a gain block, and a summing junction. The term \\(1/s\\) represents the integrator, which performs the operation of integration in the s-domain. The feedback path with gain -3 represents the term \\(3y(t)\\) being subtracted from the input. This direct translation from a differential equation to a block diagram is a fundamental skill in system analysis and design."
+  },
+  {
+    "objectID": "ss_98.html#example-9.28-block-diagram-mermaid",
+    "href": "ss_98.html#example-9.28-block-diagram-mermaid",
+    "title": "Signals and Systems",
+    "section": "Example 9.28: Block Diagram (Mermaid)",
+    "text": "Example 9.28: Block Diagram (Mermaid)\nHere’s the block diagram for \\(H(s)=\\frac{1}{s+3}\\) using Mermaid.\n\n\n\n\n\ngraph LR\n    X(\"x(t)\") --&gt; Sum(Sum)\n    Sum --&gt; Integrator(\"1/s\")\n    Integrator --&gt; Y(\"y(t)\")\n    Y --&gt; Gain(\"-3\")\n    Gain --&gt; Sum\n    style Sum fill:#fff,stroke:#333,stroke-width:2px,rx:5px,ry:5px\n    style Integrator fill:#fff,stroke:#333,stroke-width:2px,rx:5px,ry:5px\n    style Gain fill:#fff,stroke:#333,stroke-width:2px,rx:5px,ry:5px\n\n\n\n\n\n\n\nThe diagram visually confirms the feedback structure. The input \\(x(t)\\) is added to the feedback signal. The result is integrated (represented by \\(1/s\\)), producing \\(y(t)\\). A portion of \\(y(t)\\) is fed back through a gain of -3 and subtracted from the input. This is a direct implementation of the differential equation \\(\\frac{d y(t)}{d t} = x(t) - 3 y(t)\\)."
+  },
+  {
+    "objectID": "ss_98.html#example-9.29-first-order-system-with-zero",
+    "href": "ss_98.html#example-9.29-first-order-system-with-zero",
+    "title": "Signals and Systems",
+    "section": "Example 9.29: First-Order System with Zero",
+    "text": "Example 9.29: First-Order System with Zero\nConsider \\(H(s)=\\frac{s+2}{s+3}\\).\nThis can be written as \\(H(s)=\\left(\\frac{1}{s+3}\\right)(s+2)\\), suggesting a cascade of two systems.\nThe first system is \\(H_A(s) = \\frac{1}{s+3}\\), which we just saw. The second system is \\(H_B(s) = s+2\\).\nIf \\(Z(s)\\) is the output of \\(H_A(s)\\), then \\(Y(s) = (s+2)Z(s)\\).\nIn time domain: \\(y(t) = \\frac{d z(t)}{d t} + 2 z(t)\\).\nThe input to the integrator in the \\(H_A(s)\\) block is \\(e(t) = \\frac{d z(t)}{d t}\\).\nSo, \\(y(t) = e(t) + 2 z(t)\\).\nThis avoids explicit differentiation, leading to a “direct form” representation.\n\nFigure 9.33(b)Figure 9.33(b): Equivalent block diagram representation.\n\nThis example shows how a system with both poles and zeros can be represented. The “tapping” of signals from within the first stage (specifically the input to the integrator, \\(e(t)\\), which is \\(dz(t)/dt\\)) is a common technique to avoid explicit differentiators, which are often problematic in practical implementations due to noise amplification. This direct-form structure is efficient and widely used in digital filter implementations."
+  },
+  {
+    "objectID": "ss_98.html#example-9.30-second-order-system",
+    "href": "ss_98.html#example-9.30-second-order-system",
+    "title": "Signals and Systems",
+    "section": "Example 9.30: Second-Order System",
+    "text": "Example 9.30: Second-Order System\nConsider \\(H(s)=\\frac{1}{(s+1)(s+2)}=\\frac{1}{s^{2}+3 s+2}\\).\nThis corresponds to the differential equation: \\(\\frac{d^{2} y(t)}{d t^{2}}+3 \\frac{d y(t)}{d t}+2 y(t)=x(t)\\).\nDirect Form:\nRearranging the differential equation:\n\\(\\frac{d^{2} y(t)}{d t^{2}} = x(t) - 3 \\frac{d y(t)}{d t} - 2 y(t)\\) We can use two integrators in cascade to obtain \\(y(t)\\) from \\(\\frac{d^{2} y(t)}{d t^{2}}\\).\nThe outputs of these integrators provide \\(\\frac{d y(t)}{d t}\\) and \\(y(t)\\).\n\nFigure 9.34(a)Figure 9.34(a): Direct form representation.\n\nThe direct form for a second-order system extends the ideas from the first-order case. Two cascaded integrators are used, where the output of the first integrator is the first derivative of the output, and the output of the second is the output itself. Feedback paths from these outputs, scaled by the coefficients of the differential equation, are summed with the input to provide the second derivative, closing the loop. This structure is very straightforward to derive from the differential equation or system function."
+  },
+  {
+    "objectID": "ss_98.html#example-9.30-cascade-and-parallel-forms",
+    "href": "ss_98.html#example-9.30-cascade-and-parallel-forms",
+    "title": "Signals and Systems",
+    "section": "Example 9.30: Cascade and Parallel Forms",
+    "text": "Example 9.30: Cascade and Parallel Forms\nFor \\(H(s)=\\frac{1}{(s+1)(s+2)}\\), other representations exist:\nCascade Form:\n\\(H(s)=\\left(\\frac{1}{s+1}\\right)\\left(\\frac{1}{s+2}\\right)\\) This is a series connection of two first-order systems.\n\n\n\nFigure 9.34(b)\n\n\nFigure 9.34(b): Cascade form.\nParallel Form:\nUsing partial-fraction expansion:\n\\(H(s)=\\frac{1}{s+1}-\\frac{1}{s+2}\\)\nThis is a parallel connection of two first-order systems.\n\n\n\nFigure 9.34(c)\n\n\nFigure 9.34(c): Parallel form.\n\nThe cascade and parallel forms offer alternative ways to implement the same system. The cascade form breaks down the system into a sequence of simpler, often first-order, systems. This can be advantageous for modular design and analysis. The parallel form decomposes the system into a sum of simpler systems, typically through partial fraction expansion. This form can be useful when different modes of the system (corresponding to the poles) need to be processed independently, or for stability analysis. All three forms (direct, cascade, parallel) are equivalent in terms of their input-output behavior for LTI systems, but they differ in internal structure, which can impact sensitivity to component variations, numerical stability in digital implementations, and computational complexity."
+  },
+  {
+    "objectID": "ss_98.html#interactive-example-second-order-system-response",
+    "href": "ss_98.html#interactive-example-second-order-system-response",
+    "title": "Signals and Systems",
+    "section": "Interactive Example: Second-Order System Response",
+    "text": "Interactive Example: Second-Order System Response\nLet’s observe the step response of a second-order system and how its poles affect it.\nConsider \\(H(s) = \\frac{1}{s^2 + (p_1+p_2)s + p_1 p_2}\\).\n\nviewof pole_p1 = Inputs.range([0.1, 5.0], {value: 1.0, step: 0.1, label: \"Pole 1 (p1)\"});\nviewof pole_p2 = Inputs.range([0.1, 5.0], {value: 2.0, step: 0.1, label: \"Pole 2 (p2)\"});\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAdjust the pole locations \\(p_1\\) and \\(p_2\\) using the sliders. Observe how changing these values affects the transient response characteristics such as rise time, settling time, and overshoot (though this system is overdamped, so no overshoot here). For instance, moving poles closer to the origin (smaller positive values) generally makes the system slower, while moving them further away makes it faster. This interactive tool helps build an intuitive understanding of the relationship between pole locations and time-domain behavior, which is critical in control system design."
+  },
+  {
+    "objectID": "ss_98.html#example-9.31-more-complex-second-order-system",
+    "href": "ss_98.html#example-9.31-more-complex-second-order-system",
+    "title": "Signals and Systems",
+    "section": "Example 9.31: More Complex Second-Order System",
+    "text": "Example 9.31: More Complex Second-Order System\nConsider \\(H(s)=\\frac{2 s^{2}+4 s-6}{s^{2}+3 s+2}\\).\nThis system includes zeros in addition to poles.\nDirect Form:\nSimilar to Example 9.29, we can tap signals from the integrators to realize the numerator polynomial.\nThis method allows the coefficients of the system function to directly appear in the block diagram.\n\nFigure 9.35Figure 9.35: Direct-form representation.\n\nThis direct-form representation is very general and can be applied to any rational system function. The denominator coefficients determine the feedback path (poles), and the numerator coefficients determine the feed-forward path (zeros). This structure is widely used in digital signal processing for implementing IIR (Infinite Impulse Response) filters due to its computational efficiency. Understanding how to derive and interpret these block diagrams is crucial for both analyzing existing systems and synthesizing new ones."
+  },
+  {
+    "objectID": "ss_98.html#conclusion-power-of-system-function-algebra",
+    "href": "ss_98.html#conclusion-power-of-system-function-algebra",
+    "title": "Signals and Systems",
+    "section": "Conclusion: Power of System Function Algebra",
+    "text": "Conclusion: Power of System Function Algebra\n\nAlgebraic Simplification: Laplace transform converts complex time-domain operations (convolution, differentiation) into simpler algebraic manipulations.\nSystem Interconnections: Provides straightforward methods to find the overall system function for parallel, series, and feedback configurations.\nBlock Diagram Synthesis: Enables visual representation of LTI systems using basic building blocks (integrators, gains, summers).\nMultiple Implementations: A single system function can have various block diagram forms (direct, cascade, parallel), each with practical implications for design and implementation.\n\n\n\n\n\n\n\nNote\n\n\nMastering system function algebra and block diagrams is fundamental for analyzing, designing, and implementing LTI systems in various ECE applications, from control systems to signal processing and communications."
+  },
+  {
+    "objectID": "ss_71.html#introduction-to-sampling-the-digital-frontier",
+    "href": "ss_71.html#introduction-to-sampling-the-digital-frontier",
+    "title": "Signals and Systems",
+    "section": "Introduction to Sampling: The Digital Frontier",
+    "text": "Introduction to Sampling: The Digital Frontier\n\n\nSignals in the real world are often continuous-time (analog). However, modern systems (computers, digital communication) operate on discrete-time (digital) signals.\nSampling is the process of converting a continuous-time signal into a discrete-time sequence.\n\nWhy Sample?\n\nDigital processing advantages (noise immunity, flexibility).\nStorage and transmission efficiency.\nEnables powerful digital signal processing (DSP) algorithms.\n\n\n\n\n\n\n\n\nNote\n\n\nKey Question: How do we convert an analog signal to digital without losing information?\n\n\n\n\n\nFigure 7.1: Three continuous-time signals with identical values at integer multiples of \\(T\\).\n\n\nGood morning, everyone! Today we’re diving into a fundamental concept in Signals and Systems: the Sampling Theorem. This theorem is the bridge between the analog world we live in and the digital world our computers and smartphones operate in. We’ll explore why sampling is necessary, how it works, and what conditions are required to ensure we don’t lose crucial information during this conversion. As you can see in Figure 7.1, simply taking samples isn’t enough; many different continuous signals can produce the same set of discrete samples. Our goal is to understand how to make this conversion unique and reversible."
+  },
+  {
+    "objectID": "ss_71.html#the-challenge-ambiguity-in-sampling",
+    "href": "ss_71.html#the-challenge-ambiguity-in-sampling",
+    "title": "Signals and Systems",
+    "section": "The Challenge: Ambiguity in Sampling",
+    "text": "The Challenge: Ambiguity in Sampling\nFrom Figure 7.1, it’s clear:\n\nAn infinite number of continuous-time signals can pass through the same discrete samples.\nWithout additional information, samples alone don’t uniquely define the original signal.\n\nOur Goal: Find conditions under which a signal can be uniquely specified by its samples, allowing perfect reconstruction.\n\n\n\n\n\n\nImportant\n\n\nThis unique specification is possible if the signal is band-limited and sampled at a sufficiently high rate."
+  },
+  {
+    "objectID": "ss_71.html#impulse-train-sampling-the-model",
+    "href": "ss_71.html#impulse-train-sampling-the-model",
+    "title": "Signals and Systems",
+    "section": "Impulse-Train Sampling: The Model",
+    "text": "Impulse-Train Sampling: The Model\nTo analyze sampling mathematically, we use impulse-train sampling.\n\n\n\nContinuous Signal: \\(x(t)\\)\nSampling Function: A periodic impulse train \\(p(t)\\). \\[\np(t)=\\sum_{n=-\\infty}^{+\\infty} \\delta(t-n T)\n\\]\n\n\\(T\\): Sampling Period\n\\(\\omega_s = 2\\pi/T\\): Sampling Frequency\n\nSampled Signal: \\(x_p(t) = x(t)p(t)\\)\n\nUsing the sampling property of the impulse: \\[\nx_p(t)=\\sum_{n=-\\infty}^{+\\infty} x(n T) \\delta(t-n T)\n\\] This produces an impulse train where each impulse’s amplitude is the value of \\(x(t)\\) at the sampling instant \\(nT\\).\n\n\nFigure 7.2: Impulse-train sampling.\n\n\nImpulse-train sampling is a theoretical model that simplifies the analysis of sampling. We multiply our continuous signal \\(x(t)\\) by a train of impulses. Each impulse is like a tiny “snapshot” of the signal’s value at that specific time instant. The resulting signal, \\(x_p(t)\\), is a series of weighted impulses, where the weights are precisely the samples of the original signal. This representation is crucial because it allows us to analyze the sampling process in the frequency domain using the Fourier Transform."
+  },
+  {
+    "objectID": "ss_71.html#sampling-in-the-frequency-domain-replicas",
+    "href": "ss_71.html#sampling-in-the-frequency-domain-replicas",
+    "title": "Signals and Systems",
+    "section": "Sampling in the Frequency Domain: Replicas",
+    "text": "Sampling in the Frequency Domain: Replicas\nThe magic happens in the frequency domain.\n\nMultiplication in the time domain corresponds to convolution in the frequency domain. \\[\nX_p(j\\omega) = \\frac{1}{2\\pi} [X(j\\omega) * P(j\\omega)]\n\\]\nThe Fourier Transform of the impulse train \\(p(t)\\) is also an impulse train in frequency: \\[\nP(j\\omega) = \\frac{2\\pi}{T} \\sum_{k=-\\infty}^{+\\infty} \\delta(\\omega - k\\omega_s)\n\\]\nConvolving \\(X(j\\omega)\\) with \\(P(j\\omega)\\) gives: \\[\nX_p(j\\omega) = \\frac{1}{T} \\sum_{k=-\\infty}^{+\\infty} X(j(\\omega - k\\omega_s))\n\\]\n\n\n\n\n\n\n\nTip\n\n\nInterpretation: The spectrum of the sampled signal, \\(X_p(j\\omega)\\), is an infinite sum of shifted and scaled replicas of the original signal’s spectrum, \\(X(j\\omega)\\). Each replica is centered at multiples of the sampling frequency \\(\\omega_s\\).\n\n\n\n\nWhen we move to the frequency domain, the multiplication of \\(x(t)\\) and \\(p(t)\\) becomes a convolution of their Fourier Transforms. Since \\(p(t)\\) is an impulse train, its Fourier Transform \\(P(j\\omega)\\) is also an impulse train, but in the frequency domain. The convolution operation then effectively creates multiple copies of the original signal’s spectrum, \\(X(j\\omega)\\), shifted by integer multiples of the sampling frequency, \\(\\omega_s\\). These are called spectral replicas. The key insight here is how these replicas interact."
+  },
+  {
+    "objectID": "ss_71.html#aliasing-when-replicas-overlap",
+    "href": "ss_71.html#aliasing-when-replicas-overlap",
+    "title": "Signals and Systems",
+    "section": "Aliasing: When Replicas Overlap",
+    "text": "Aliasing: When Replicas Overlap\nThe relationship between the sampling frequency (\\(\\omega_s\\)) and the signal’s bandwidth (\\(\\omega_M\\)) is critical.\n\n\nCase 1: No Overlap (\\(\\omega_s &gt; 2\\omega_M\\))\n\nThe replicas of \\(X(j\\omega)\\) are perfectly separated.\nThe original spectrum \\(X(j\\omega)\\) can be recovered by an ideal lowpass filter.\n\nCase 2: Overlap (\\(\\omega_s &lt; 2\\omega_M\\))\n\nThe replicas overlap, causing aliasing.\nInformation is lost; the original signal cannot be perfectly reconstructed.\n\n\n\n\n\nFigure 7.3 (c) and (d): Spectrum of sampled signal with \\(\\omega_{s}&gt;2 \\omega_{M}\\) (no aliasing) and \\(\\omega_{s}&lt;2 \\omega_{M}\\) (aliasing).\n\n\n\n\nThis is where the concept of aliasing comes into play. If our sampling frequency \\(\\omega_s\\) is high enough, specifically greater than twice the highest frequency component in our original signal, \\(\\omega_M\\), then the spectral replicas are well-separated. We can then use a simple lowpass filter to isolate the original spectrum and perfectly reconstruct the signal. However, if \\(\\omega_s\\) is too low, the replicas overlap. This overlap is called aliasing, and it causes higher frequencies in the original signal to appear as lower frequencies in the sampled signal, leading to irreversible distortion."
+  },
+  {
+    "objectID": "ss_71.html#interactive-exploring-aliasing",
+    "href": "ss_71.html#interactive-exploring-aliasing",
+    "title": "Signals and Systems",
+    "section": "Interactive: Exploring Aliasing",
+    "text": "Interactive: Exploring Aliasing\nAdjust the signal bandwidth (\\(\\omega_M\\)) and sampling frequency (\\(\\omega_s\\)) to observe aliasing.\n\nviewof signal_bandwidth = Inputs.range([0.1, 5.0], {value: 1.0, step: 0.1, label: \"Signal Bandwidth (ω_M)\"});\nviewof sampling_frequency = Inputs.range([0.1, 10.0], {value: 3.0, step: 0.1, label: \"Sampling Frequency (ω_s)\"});\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThis interactive plot helps visualize the core concept of aliasing. The blue line represents the Fourier Transform of our original band-limited signal. The red dashed line shows the spectrum after impulse-train sampling. As you adjust the “Signal Bandwidth” (\\(\\omega_M\\)) and “Sampling Frequency” (\\(\\omega_s\\)), you can see how the replicas of the original spectrum shift and potentially overlap. Pay close attention to when the “Aliasing Occurring!” message appears – this is when \\(\\omega_s\\) drops below the Nyquist rate, \\(2\\omega_M\\), and reconstruction becomes impossible."
+  },
+  {
+    "objectID": "ss_71.html#the-sampling-theorem",
+    "href": "ss_71.html#the-sampling-theorem",
+    "title": "Signals and Systems",
+    "section": "The Sampling Theorem",
+    "text": "The Sampling Theorem\nFormal Statement:\nLet \\(x(t)\\) be a band-limited signal with \\(X(j\\omega)=0\\) for \\(|\\omega| &gt; \\omega_M\\). Then \\(x(t)\\) is uniquely determined by its samples \\(x(nT), n=0, \\pm 1, \\pm 2, \\ldots\\), if\n\\[\n\\omega_s &gt; 2\\omega_M\n\\]\nwhere \\(\\omega_s = 2\\pi/T\\) is the sampling frequency.\n\n\n\n\n\n\nNote\n\n\nThe frequency \\(2\\omega_M\\) is known as the Nyquist rate. \\(\\omega_M\\) is often called the Nyquist frequency.\n\n\n\nReconstruction Process\n\nGenerate an impulse train \\(x_p(t)\\) from the samples.\nPass \\(x_p(t)\\) through an ideal lowpass filter with:\n\nGain \\(T\\)\nCutoff frequency \\(\\omega_c\\) such that \\(\\omega_M &lt; \\omega_c &lt; \\omega_s - \\omega_M\\).\n\n\nThe output signal will exactly equal \\(x(t)\\).\n\nThis is the formal statement of the Sampling Theorem. It provides the crucial condition for perfect reconstruction: the sampling frequency must be strictly greater than twice the highest frequency component in the signal. The term \\(2\\omega_M\\) is so important that it has its own name: the Nyquist rate. To reconstruct the signal, we essentially reverse the sampling process in the frequency domain. We take our sampled impulse train, whose spectrum contains the original spectrum and its replicas, and pass it through an ideal lowpass filter. This filter acts like a “sieve,” isolating just the original baseband spectrum and filtering out all the higher-frequency replicas. The gain \\(T\\) is necessary to restore the original amplitude scaling."
+  },
+  {
+    "objectID": "ss_71.html#ideal-reconstruction-the-lowpass-filter",
+    "href": "ss_71.html#ideal-reconstruction-the-lowpass-filter",
+    "title": "Signals and Systems",
+    "section": "Ideal Reconstruction: The Lowpass Filter",
+    "text": "Ideal Reconstruction: The Lowpass Filter\n\n\nThe ideal reconstruction system:\n\n\n\n\n\ngraph LR\n    A[\"x(t)\"] --&gt; B{Sampler};\n    B --&gt; C[\"x_p(t)\"];\n    C --&gt; D{Ideal Lowpass Filter};\n    D --&gt; E[\"x_r(t) = x(t)\"];\n\n\n\n\n\n\nThe ideal lowpass filter \\(H(j\\omega)\\) has: \\[\nH(j\\omega) = \\begin{cases} T & |\\omega| &lt; \\omega_c \\\\ 0 & |\\omega| \\ge \\omega_c \\end{cases}\n\\] where \\(\\omega_M &lt; \\omega_c &lt; \\omega_s - \\omega_M\\).\nThis filter effectively isolates the baseband spectrum \\(X(j\\omega)\\) from its replicas, scaled by \\(T\\) to restore the original amplitude.\n\n\n\n\nFigure 7.4 (a) and (d): System for sampling and reconstruction, and the ideal lowpass filter.\n\n\n\n\nFigure 7.4 illustrates the complete system for sampling and reconstruction. The sampled signal \\(x_p(t)\\) goes through an ideal lowpass filter. This filter’s job is to perfectly cut off all the spectral replicas, leaving only the original signal’s spectrum in its passband. The gain of \\(T\\) is applied to counteract the \\(1/T\\) scaling introduced during sampling, ensuring the reconstructed signal has the correct amplitude. While ideal filters are not physically realizable, they provide a theoretical benchmark and are approximated by practical filters in real-world applications."
+  },
+  {
+    "objectID": "ss_71.html#practical-sampling-zero-order-hold",
+    "href": "ss_71.html#practical-sampling-zero-order-hold",
+    "title": "Signals and Systems",
+    "section": "Practical Sampling: Zero-Order Hold",
+    "text": "Practical Sampling: Zero-Order Hold\nImpulse-train sampling is theoretical. In practice, a zero-order hold is often used.\n\n\n\nSamples \\(x(t)\\) at an instant and holds that value until the next sample.\nOutput \\(x_0(t)\\) is a staircase-like approximation of \\(x(t)\\).\n\n\n\n\nFigure 7.5: Sampling utilizing a zero-order hold.\n\n\nRepresentation: A zero-order hold can be modeled as impulse-train sampling followed by an LTI system with a rectangular impulse response \\(h_0(t)\\): \\[\nh_0(t) = \\begin{cases} 1 & 0 \\le t &lt; T \\\\ 0 & \\text{otherwise} \\end{cases}\n\\]\n\n\n\n\nFigure 7.6: Zero-order hold as impulse-train sampling followed by an LTI system with a rectangular impulse response.\n\n\n\n\nWhile impulse-train sampling is great for theoretical analysis, it’s not what physically happens in most Analog-to-Digital Converters (ADCs). A more practical approach is the zero-order hold. Imagine a sample-and-hold circuit: it takes a sample and then holds that voltage level constant until the next sample arrives. This creates a staircase-like approximation of the original signal. We can model this by first performing impulse-train sampling and then passing the resulting impulses through a system with a rectangular impulse response, essentially “stretching” each impulse into a pulse of duration \\(T\\)."
+  },
+  {
+    "objectID": "ss_71.html#zero-order-hold-reconstruction",
+    "href": "ss_71.html#zero-order-hold-reconstruction",
+    "title": "Signals and Systems",
+    "section": "Zero-Order Hold: Reconstruction",
+    "text": "Zero-Order Hold: Reconstruction\nTo reconstruct \\(x(t)\\) from \\(x_0(t)\\), we need a specific filter.\n\n\nThe Fourier Transform of \\(h_0(t)\\) is: \\[\nH_0(j\\omega) = e^{-j\\omega T/2} \\left[ \\frac{2\\sin(\\omega T/2)}{\\omega} \\right]\n\\] This is a sinc function in frequency.\nTo reconstruct \\(x(t)\\), we need to compensate for \\(H_0(j\\omega)\\). The reconstruction filter \\(H_r(j\\omega)\\) must satisfy: \\[\nH_r(j\\omega) H_0(j\\omega) = H_{ideal}(j\\omega)\n\\] Where \\(H_{ideal}(j\\omega)\\) is the ideal lowpass filter with gain \\(T\\).\nThus, the required reconstruction filter is: \\[\nH_r(j\\omega) = \\frac{e^{j\\omega T/2} H_{ideal}(j\\omega)}{\\frac{2\\sin(\\omega T/2)}{\\omega}}\n\\]\n\n\n\n\nFigure 7.8: Magnitude and phase for the reconstruction filter for a zero-order hold.\n\n\n\n\n\n\n\n\nCaution\n\n\nThis reconstruction filter is complex to implement due to the sinc inverse in the denominator and the non-constant gain in the passband.\n\n\n\n\n\nSince the zero-order hold introduces its own frequency response, \\(H_0(j\\omega)\\), during the sampling process, our reconstruction filter needs to undo that effect in addition to performing the lowpass filtering. This means the reconstruction filter \\(H_r(j\\omega)\\) will have a more complex characteristic than a simple ideal lowpass filter. As shown in Figure 7.8, its magnitude is not flat, and its phase is not linear, making it more challenging to implement in practice compared to the ideal lowpass filter for impulse-train sampling. Often, in many applications, the output of the zero-order hold itself is considered a sufficient approximation, or more sophisticated interpolation methods are used."
+  },
+  {
+    "objectID": "ss_71.html#interactive-zero-order-hold-in-time-domain",
+    "href": "ss_71.html#interactive-zero-order-hold-in-time-domain",
+    "title": "Signals and Systems",
+    "section": "Interactive: Zero-Order Hold in Time Domain",
+    "text": "Interactive: Zero-Order Hold in Time Domain\nObserve how a continuous signal is approximated by a zero-order hold for different sampling periods.\n\nviewof signal_freq = Inputs.range([0.1, 2.0], {value: 0.5, step: 0.1, label: \"Signal Frequency (Hz)\"});\nviewof sampling_period = Inputs.range([0.05, 1.0], {value: 0.2, step: 0.01, label: \"Sampling Period (T)\"});\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThis interactive plot demonstrates the zero-order hold in the time domain. The blue curve is our original continuous-time signal, a simple sine wave. The red markers are the discrete samples taken at intervals of \\(T\\). The green dotted line shows the output of the zero-order hold. As you decrease the “Sampling Period (T)”, which means increasing the sampling frequency, you’ll notice that the staircase-like approximation of the zero-order hold becomes much smoother and more closely resembles the original signal. This visually reinforces the idea that a higher sampling rate generally leads to a better approximation and easier reconstruction."
+  },
+  {
+    "objectID": "ss_71.html#conclusion-applications",
+    "href": "ss_71.html#conclusion-applications",
+    "title": "Signals and Systems",
+    "section": "Conclusion & Applications",
+    "text": "Conclusion & Applications\nKey Takeaways:\n\nSampling Theory provides the mathematical foundation for converting analog to digital signals.\nThe Sampling Theorem states that a band-limited signal can be perfectly reconstructed from its samples if the sampling frequency \\(\\omega_s\\) is greater than the Nyquist rate (\\(2\\omega_M\\)).\nAliasing occurs when the sampling rate is too low, leading to irreversible loss of information.\nZero-Order Hold is a practical method for sampling, requiring a more complex reconstruction filter.\n\nReal-World ECE Applications:\n\nAnalog-to-Digital Converters (ADCs): Crucial components in almost all digital systems (audio, video, sensors).\nDigital Audio: CDs (44.1 kHz sampling rate) and high-resolution audio.\nDigital Image Processing: Pixels are samples of continuous light intensity.\nTelecommunications: Digital modulation and demodulation.\nControl Systems: Sampling sensor data for feedback.\n\n\n\n\n\n\n\nTip\n\n\nUnderstanding the Sampling Theorem is fundamental for designing robust and accurate digital signal processing systems.\n\n\n\n\nIn summary, the Sampling Theorem is a cornerstone of modern ECE. It tells us not just that we can convert analog signals to digital, but how to do it correctly to avoid losing information. From the music you listen to, to the images on your screen, to the complex control systems in modern machinery, the principles of sampling are at play everywhere. Ignoring the Nyquist rate can lead to significant problems, such as distorted audio or inaccurate sensor readings. So, while the math can seem abstract, its practical implications are vast and critical to virtually every aspect of electrical and computer engineering."
+  },
+  {
+    "objectID": "index.html#week-10",
+    "href": "index.html#week-10",
+    "title": "Signals and Systems",
+    "section": "Week 10",
+    "text": "Week 10\n\nSignals and Systems 9.7: ANALYSIS AND CHARACTERIZATION OF LTI SYSTEMS USING THE LAPLACE TRANSFORM\nSignals and Systems 9.8: SYSTEM FUNCTION ALGEBRA AND BLOCK DIAGRAM REPRESENTATIONS\nSignals and Systems 7.1: REPRESENTATION OF A CONTINUOUS-TIME SIGNAL BY ITS SAMPLES: THE SAMPLING THEOREM"
+  },
+  {
+    "objectID": "index.html#week-11",
+    "href": "index.html#week-11",
+    "title": "Signals and Systems",
+    "section": "Week 11",
+    "text": "Week 11\n\nUTS - Asesmen CPMK 2"
   }
 ]
