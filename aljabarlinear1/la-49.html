@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-html/tabby.min.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.25">
+
+  <meta name="author" content="Imron Rosyadi">
+  <title>Linear Algebra</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-b0356e9119c1bdfd0db189d130feb51c.css">
+  <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+  <link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+  <meta name="mermaid-theme" content="neutral">
+  <script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+  <script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+  <link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Linear Algebra</h1>
+  <p class="subtitle">4.9 Basic Matrix Transformations in <span class="math inline">\(R^{2}\)</span> and <span class="math inline">\(R^{3}\)</span></p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Imron Rosyadi 
+</div>
+</div>
+</div>
+
+</section>
+<section>
+<section id="basic-matrix-transformations-in-r2-and-r3" class="title-slide slide level1 center">
+<h1>Basic Matrix Transformations in <span class="math inline">\(R^{2}\)</span> and <span class="math inline">\(R^{3}\)</span></h1>
+
+</section>
+<section id="overview-of-transformations" class="slide level2">
+<h2>Overview of Transformations</h2>
+<p>This lecture explores fundamental matrix transformations in <span class="math inline">\(R^{2}\)</span> and <span class="math inline">\(R^{3}\)</span>.<br>
+These transformations have simple geometric interpretations.<br>
+They are crucial in fields like computer graphics, engineering, and physics.<br>
+We will cover reflections, projections, rotations, dilations, contractions, expansions, compressions, and shears.</p>
+<aside class="notes">
+<p>Welcome to this session on basic matrix transformations. We’ll be looking at how matrices can geometrically transform vectors and shapes in 2D and 3D space. These concepts are foundational for many ECE applications. We’ll start with reflections and move through various types of transformations. Pay attention to the interactive examples, as they will help you visualize these abstract concepts.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reflection-operators" class="slide level2">
+<h2>Reflection Operators</h2>
+<p>Reflection operators map each point to its symmetric image about a fixed line or plane through the origin.<br>
+These are fundamental in geometry and computer graphics.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Remember that these reflections are about lines or planes that <em>contain the origin</em>.<br>
+This ensures they are linear transformations.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Reflection operators are like looking into a mirror. Every point is mapped to its mirror image. For linear algebra, we specifically focus on reflections across lines or planes that pass through the origin. This ensures the transformation is linear and can be represented by a matrix.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reflection-operators-in-r2" class="slide level2">
+<h2>Reflection Operators in <span class="math inline">\(R^{2}\)</span></h2>
+<p>Here are the standard matrices for reflections about coordinate axes and the line <span class="math inline">\(y=x\)</span> in <span class="math inline">\(R^{2}\)</span>.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Reflection about the x-axis</strong><br>
+<span class="math inline">\(T(x,y) = (x,-y)\)</span><br>
+Standard Matrix:<br>
+<span class="math display">\[
+\left[ \begin{array}{cc}1 &amp; 0 \\ 0 &amp; -1 \end{array} \right]
+\]</span></p>
+<p><strong>Reflection about the y-axis</strong><br>
+<span class="math inline">\(T(x,y) = (-x,y)\)</span><br>
+Standard Matrix:<br>
+<span class="math display">\[
+\left[ \begin{array}{cc}-1 &amp; 0 \\ 0 &amp; 1 \end{array} \right]
+\]</span></p>
+</div><div class="column" style="width:50%;">
+<p><strong>Reflection about the line <span class="math inline">\(y=x\)</span></strong><br>
+<span class="math inline">\(T(x,y) = (y,x)\)</span><br>
+Standard Matrix:<br>
+<span class="math display">\[
+\left[ \begin{array}{cc}0 &amp; 1 \\ 1 &amp; 0 \end{array} \right]
+\]</span></p>
+</div></div>
+<aside class="notes">
+<p>These matrices are derived by observing where the standard basis vectors, <span class="math inline">\((1,0)\)</span> and <span class="math inline">\((0,1)\)</span>, are mapped. For example, reflecting <span class="math inline">\((1,0)\)</span> about the x-axis gives <span class="math inline">\((1,0)\)</span>, and reflecting <span class="math inline">\((0,1)\)</span> gives <span class="math inline">\((0,-1)\)</span>. These become the columns of the standard matrix. The same logic applies to the other reflections.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-r2-reflection" class="slide level2">
+<h2>Interactive <span class="math inline">\(R^{2}\)</span> Reflection</h2>
+<p>Visualize how a point is reflected across different lines in <span class="math inline">\(R^{2}\)</span>.<br>
+Adjust the coordinates of the point and observe its reflection.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="99" data-source-offset="-49"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 98;"><span id="cb1-99"><a></a>viewof px_ref <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"P_x"</span>})</span>
+<span id="cb1-100"><a></a>viewof py_ref <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">3</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"P_y"</span>})</span>
+<span id="cb1-101"><a></a>viewof reflectionType_ref <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">select</span>([<span class="st">"x_axis"</span><span class="op">,</span> <span class="st">"y_axis"</span><span class="op">,</span> <span class="st">"y_equals_x"</span>]<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Reflection Type"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="st">"x_axis"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-1" class="exercise-cell">
+
+</div>
+<script type="pyodide-1-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImlucHV0IjpbInB4X3JlZiIsInB5X3JlZiIsInJlZmxlY3Rpb25UeXBlX3JlZiJdLCJtYXgtbGluZXMiOjEwfSwiY29kZSI6ImltcG9ydCBudW1weSBhcyBucFxuaW1wb3J0IHBsb3RseS5ncmFwaF9vYmplY3RzIGFzIGdvXG5cbnB4X3ZhbCA9IHB4X3JlZlxucHlfdmFsID0gcHlfcmVmXG5yZWZfdHlwZSA9IHJlZmxlY3Rpb25UeXBlX3JlZlxuXG4jIE9yaWdpbmFsIHBvaW50XG5wX29yaWcgPSBucC5hcnJheShbcHhfdmFsLCBweV92YWxdKVxuXG4jIERlZmluZSByZWZsZWN0aW9uIG1hdHJpY2VzXG5yZWZsZWN0aW9uX21hdHJpY2VzID0ge1xuICAgICd4X2F4aXMnOiBucC5hcnJheShbWzEsIDBdLCBbMCwgLTFdXSksXG4gICAgJ3lfYXhpcyc6IG5wLmFycmF5KFtbLTEsIDBdLCBbMCwgMV1dKSxcbiAgICAneV9lcXVhbHNfeCc6IG5wLmFycmF5KFtbMCwgMV0sIFsxLCAwXV0pLFxufVxuIyBHZXQgdGhlIGFwcHJvcHJpYXRlIG1hdHJpeCBhbmQgcGVyZm9ybSB0cmFuc2Zvcm1hdGlvblxucmVmbGVjdGlvbl9tYXRyaXggPSByZWZsZWN0aW9uX21hdHJpY2VzW3JlZl90eXBlXVxucF9yZWZsID0gcmVmbGVjdGlvbl9tYXRyaXggQCBwX29yaWdcblxuIyBDcmVhdGUgUGxvdGx5IGZpZ3VyZVxuZmlnID0gZ28uRmlndXJlKClcblxuIyBBZGQgb3JpZ2luYWwgYW5kIHJlZmxlY3RlZCBwb2ludHMgYXMgdmVjdG9ycyBmcm9tIG9yaWdpblxuZmlnLmFkZF90cmFjZShnby5TY2F0dGVyKHg9WzAsIHBfb3JpZ1swXV0sIHk9WzAsIHBfb3JpZ1sxXV0sIG1vZGU9J2xpbmVzK21hcmtlcnMnLCBuYW1lPWYnT3JpZ2luYWwgKHtwX29yaWdbMF19LHtwX29yaWdbMV19KScsIGxpbmU9ZGljdChjb2xvcj0nYmx1ZScsIHdpZHRoPTMpLCBtYXJrZXI9ZGljdChzaXplPTgpKSlcbmZpZy5hZGRfdHJhY2UoZ28uU2NhdHRlcih4PVswLCBwX3JlZmxbMF1dLCB5PVswLCBwX3JlZmxbMV1dLCBtb2RlPSdsaW5lcyttYXJrZXJzJywgbmFtZT1mJ1JlZmxlY3RlZCAoe3BfcmVmbFswXTouMmZ9LHtwX3JlZmxbMV06LjJmfSknLCBsaW5lPWRpY3QoY29sb3I9J3JlZCcsIHdpZHRoPTMpLCBtYXJrZXI9ZGljdChzaXplPTgpKSlcblxuIyBBZGQgdGhlIGxpbmUgb2YgcmVmbGVjdGlvblxuaWYgcmVmX3R5cGUgPT0gJ3hfYXhpcyc6XG4gICAgZmlnLmFkZF90cmFjZShnby5TY2F0dGVyKHg9Wy02LCA2XSwgeT1bMCwgMF0sIG1vZGU9J2xpbmVzJywgbmFtZT0nUmVmbGVjdGlvbiBMaW5lICh4LWF4aXMpJywgbGluZT1kaWN0KGNvbG9yPSdncmF5JywgZGFzaD0nZGFzaCcpKSlcbmVsaWYgcmVmX3R5cGUgPT0gJ3lfYXhpcyc6XG4gICAgZmlnLmFkZF90cmFjZShnby5TY2F0dGVyKHg9WzAsIDBdLCB5PVstNiwgNl0sIG1vZGU9J2xpbmVzJywgbmFtZT0nUmVmbGVjdGlvbiBMaW5lICh5LWF4aXMpJywgbGluZT1kaWN0KGNvbG9yPSdncmF5JywgZGFzaD0nZGFzaCcpKSlcbmVsc2U6ICMgeV9lcXVhbHNfeFxuICAgIGZpZy5hZGRfdHJhY2UoZ28uU2NhdHRlcih4PVstNiwgNl0sIHk9Wy02LCA2XSwgbW9kZT0nbGluZXMnLCBuYW1lPSdSZWZsZWN0aW9uIExpbmUgKHk9eCknLCBsaW5lPWRpY3QoY29sb3I9J2dyYXknLCBkYXNoPSdkYXNoJykpKVxuXG4jIFVwZGF0ZSBsYXlvdXRcbmZpZy51cGRhdGVfbGF5b3V0KFxuICAgIHRpdGxlPWYnUmVmbGVjdGlvbiBhYm91dCB0aGUge3JlZl90eXBlLnJlcGxhY2UoXCJfXCIsIFwiIFwiKX0nLFxuICAgIHhheGlzPWRpY3QodGl0bGU9XCJYXCIsIHJhbmdlPVstNiwgNl0pLFxuICAgIHlheGlzPWRpY3QodGl0bGU9XCJZXCIsIHJhbmdlPVstNiwgNl0sIHNjYWxlYW5jaG9yPVwieFwiLCBzY2FsZXJhdGlvPTEpLFxuICAgIHNob3dsZWdlbmQ9VHJ1ZSxcbiAgICBoZWlnaHQ9NDUwXG4pXG5cbmZpZy5zaG93KCkifQ==
+</script>
+</div>
+<aside class="notes">
+<p>This interactive plot allows you to experiment with reflections. Change the original point’s coordinates using the sliders and select different reflection axes. Observe how the reflected point’s coordinates change according to the transformation matrices we just discussed. This hands-on experience should solidify your understanding of these basic transformations.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reflection-operators-in-r3" class="slide level2">
+<h2>Reflection Operators in <span class="math inline">\(R^{3}\)</span></h2>
+<p>Reflections in <span class="math inline">\(R^{3}\)</span> occur about coordinate planes.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Reflection about the <span class="math inline">\(xy\)</span>-plane</strong><br>
+<span class="math inline">\(T(x,y,z) = (x,y,-z)\)</span><br>
+Standard Matrix:<br>
+<span class="math display">\[
+\left[ \begin{array}{ccc}1 &amp; 0 &amp; 0 \\ 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; -1 \end{array} \right]
+\]</span></p>
+<p><strong>Reflection about the <span class="math inline">\(xz\)</span>-plane</strong><br>
+<span class="math inline">\(T(x,y,z) = (x,-y,z)\)</span><br>
+Standard Matrix:<br>
+<span class="math display">\[
+\left[ \begin{array}{ccc}1 &amp; 0 &amp; 0 \\ 0 &amp; -1 &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{array} \right]
+\]</span></p>
+</div><div class="column" style="width:50%;">
+<p><strong>Reflection about the <span class="math inline">\(yz\)</span>-plane</strong><br>
+<span class="math inline">\(T(x,y,z) = (-x,y,z)\)</span><br>
+Standard Matrix:<br>
+<span class="math display">\[
+\left[ \begin{array}{ccc}-1 &amp; 0 &amp; 0 \\ 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{array} \right]
+\]</span></p>
+</div></div>
+<aside class="notes">
+<p>Similar to <span class="math inline">\(R^{2}\)</span>, these matrices are formed by transforming the standard basis vectors <span class="math inline">\(\mathbf{e}_1=(1,0,0)\)</span>, <span class="math inline">\(\mathbf{e}_2=(0,1,0)\)</span>, and <span class="math inline">\(\mathbf{e}_3=(0,0,1)\)</span>. For instance, reflecting about the <span class="math inline">\(xy\)</span>-plane means the <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> coordinates remain the same, while the <span class="math inline">\(z\)</span> coordinate changes sign. So, <span class="math inline">\(\mathbf{e}_1 \to (1,0,0)\)</span>, <span class="math inline">\(\mathbf{e}_2 \to (0,1,0)\)</span>, and <span class="math inline">\(\mathbf{e}_3 \to (0,0,-1)\)</span>, forming the columns of the matrix.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="projection-operators" class="slide level2">
+<h2>Projection Operators</h2>
+<p>Projection operators map each point to its orthogonal projection onto a fixed line or plane through the origin. These are also called orthogonal projection operators.</p>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>Orthogonal projection means the projected point is the closest point on the line/plane to the original point. The line segment connecting the original point and its projection is perpendicular to the line/plane.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Projection operators are like casting a shadow. If you shine a light perpendicular to a surface, the shadow cast is the orthogonal projection. In linear algebra, we project points onto lines or planes that pass through the origin. This is a crucial concept in signal processing and data analysis, for example, when reducing dimensionality.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="projection-operators-in-r2" class="slide level2">
+<h2>Projection Operators in <span class="math inline">\(R^{2}\)</span></h2>
+<p>Standard matrices for orthogonal projections onto coordinate axes in <span class="math inline">\(R^{2}\)</span>.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Orthogonal projection onto the x-axis</strong><br>
+<span class="math inline">\(T(x,y)=(x,0)\)</span><br>
+Standard Matrix:<br>
+<span class="math display">\[
+\left[ \begin{array}{cc}1 &amp; 0 \\ 0 &amp; 0 \end{array} \right]
+\]</span></p>
+</div><div class="column" style="width:50%;">
+<p><strong>Orthogonal projection onto the y-axis</strong><br>
+<span class="math inline">\(T(x,y)=(0,y)\)</span><br>
+Standard Matrix:<br>
+<span class="math display">\[
+\left[ \begin{array}{cc}0 &amp; 0 \\ 0 &amp; 1 \end{array} \right]
+\]</span></p>
+</div></div>
+<aside class="notes">
+<p>For projection onto the x-axis, the y-component of any vector becomes zero, while the x-component remains unchanged. Thus, <span class="math inline">\((1,0) \to (1,0)\)</span> and <span class="math inline">\((0,1) \to (0,0)\)</span>. This forms the columns of the projection matrix. Similarly for the y-axis.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-r2-projection" class="slide level2">
+<h2>Interactive <span class="math inline">\(R^{2}\)</span> Projection</h2>
+<p>Visualize how a point is projected onto different lines in <span class="math inline">\(R^{2}\)</span>.<br>
+Adjust the point and observe its projection.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="251" data-source-offset="-49"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 250;"><span id="cb2-251"><a></a>viewof px_proj <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"P_x"</span>})</span>
+<span id="cb2-252"><a></a>viewof py_proj <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">3</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"P_y"</span>})</span>
+<span id="cb2-253"><a></a>viewof projectionType_proj <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">select</span>([<span class="st">"x_axis"</span><span class="op">,</span> <span class="st">"y_axis"</span><span class="op">,</span> <span class="st">"y_equals_x"</span>]<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Projection Type"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="st">"x_axis"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-2" class="exercise-cell">
+
+</div>
+<script type="pyodide-2-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImlucHV0IjpbInB4X3Byb2oiLCJweV9wcm9qIiwicHJvamVjdGlvblR5cGVfcHJvaiJdLCJtYXgtbGluZXMiOjEwfSwiY29kZSI6ImltcG9ydCBudW1weSBhcyBucFxuXG5weF92YWwgPSBweF9wcm9qXG5weV92YWwgPSBweV9wcm9qXG5wcm9qX3R5cGUgPSBwcm9qZWN0aW9uVHlwZV9wcm9qXG5cbiMgT3JpZ2luYWwgcG9pbnRcbm9yaWdpbmFsX3ZlY3RvciA9IG5wLmFycmF5KFtbcHhfdmFsXSwgW3B5X3ZhbF1dKVxuXG4jIERlZmluZSBwcm9qZWN0aW9uIG1hdHJpY2VzXG5wcm9qZWN0aW9uX21hdHJpY2VzID0ge1xuICAgICd4X2F4aXMnOiBucC5hcnJheShbWzEsIDBdLCBbMCwgMF1dKSxcbiAgICAneV9heGlzJzogbnAuYXJyYXkoW1swLCAwXSwgWzAsIDFdXSksXG4gICAgIyBGb3IgeT14LCB0aGUgcHJvamVjdGlvbiBtYXRyaXggUF90aGV0YSB3aXRoIHRoZXRhID0gcGkvNFxuICAgICMgY29zKHBpLzQpXjIgPSAoMS9zcXJ0KDIpKV4yID0gMS8yXG4gICAgIyBzaW4ocGkvNCljb3MocGkvNCkgPSAoMS9zcXJ0KDIpKSooMS9zcXJ0KDIpKSA9IDEvMlxuICAgICd5X2VxdWFsc194JzogbnAuYXJyYXkoW1swLjUsIDAuNV0sIFswLjUsIDAuNV1dKSxcbn1cblxuIyBHZXQgdGhlIGFwcHJvcHJpYXRlIG1hdHJpeCBhbmQgcGVyZm9ybSB0cmFuc2Zvcm1hdGlvblxucHJvamVjdGlvbl9tYXRyaXggPSBwcm9qZWN0aW9uX21hdHJpY2VzW3Byb2pfdHlwZV1cbnByb2plY3RlZF92ZWN0b3IgPSBwcm9qZWN0aW9uX21hdHJpeCBAIG9yaWdpbmFsX3ZlY3RvclxuXG4jIFByZXBhcmUgZGF0YSBmb3IgT0pTIChlbnN1cmUgZmxvYXQgdHlwZXMgZm9yIGNvbXBhdGliaWxpdHkpXG5vdXRwdXQgPSB7XG4gICAgXCJvcmlnaW5hbFwiOiB7XCJ4XCI6IHB4X3ZhbCwgXCJ5XCI6IHB5X3ZhbH0sXG4gICAgXCJwcm9qZWN0ZWRcIjoge1wieFwiOiBmbG9hdChwcm9qZWN0ZWRfdmVjdG9yWzAsMF0pLCBcInlcIjogZmxvYXQocHJvamVjdGVkX3ZlY3RvclsxLDBdKX0sXG4gICAgXCJwcm9qZWN0aW9uX3R5cGVcIjogcHJval90eXBlICMgUGFzcyB0eXBlIHRvIE9KUyBmb3IgbGluZSBkcmF3aW5nXG59XG5vdXRwdXQifQ==
+</script>
+</div>
+<aside class="notes">
+<p>Similar to reflections, this interactive tool helps visualize projections. You can adjust the original point and select different lines to project onto. Notice the dashed line connecting the original and projected points; this line is always perpendicular to the projection line, demonstrating the “orthogonal” aspect. The projection onto <span class="math inline">\(y=x\)</span> is calculated as <span class="math inline">\(((x+y)/2, (x+y)/2)\)</span>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="projection-operators-in-r3" class="slide level2">
+<h2>Projection Operators in <span class="math inline">\(R^{3}\)</span></h2>
+<p>Standard matrices for orthogonal projections onto coordinate planes in <span class="math inline">\(R^{3}\)</span>.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Orthogonal projection onto the <span class="math inline">\(xy\)</span>-plane</strong><br>
+<span class="math inline">\(T(x,y,z) = (x,y,0)\)</span><br>
+Standard Matrix:<br>
+<span class="math display">\[
+\left[ \begin{array}{ccc}1 &amp; 0 &amp; 0 \\ 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 0 \end{array} \right]
+\]</span></p>
+<p><strong>Orthogonal projection onto the <span class="math inline">\(xz\)</span>-plane</strong><br>
+<span class="math inline">\(T(x,y,z) = (x,0,z)\)</span><br>
+Standard Matrix:<br>
+<span class="math display">\[
+\left[ \begin{array}{ccc}1 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{array} \right]
+\]</span></p>
+</div><div class="column" style="width:50%;">
+<p><strong>Orthogonal projection onto the <span class="math inline">\(yz\)</span>-plane</strong><br>
+<span class="math inline">\(T(x,y,z) = (0,y,z)\)</span><br>
+Standard Matrix:<br>
+<span class="math display">\[
+\left[ \begin{array}{ccc}0 &amp; 0 &amp; 0 \\ 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{array} \right]
+\]</span></p>
+</div></div>
+<aside class="notes">
+<p>For projections in <span class="math inline">\(R^{3}\)</span>, one of the coordinates becomes zero, effectively collapsing the point onto the chosen plane. For example, projecting onto the <span class="math inline">\(xy\)</span>-plane means the <span class="math inline">\(z\)</span>-coordinate becomes zero. So, <span class="math inline">\(\mathbf{e}_1 \to (1,0,0)\)</span>, <span class="math inline">\(\mathbf{e}_2 \to (0,1,0)\)</span>, and <span class="math inline">\(\mathbf{e}_3 \to (0,0,0)\)</span>, forming the columns of the matrix.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="rotation-operators" class="slide level2">
+<h2>Rotation Operators</h2>
+<p>Rotation operators move points along arcs of circles centered at the origin.<br>
+We focus on counterclockwise rotations for positive angles <span class="math inline">\(\theta\)</span>.</p>
+<h3 id="rotation-in-r2">Rotation in <span class="math inline">\(R^{2}\)</span></h3>
+<p>The images of the standard basis vectors <span class="math inline">\(\mathbf{e}_{1}=(1,0)\)</span> and <span class="math inline">\(\mathbf{e}_{2}=(0,1)\)</span> are:<br>
+<span class="math inline">\(T(\mathbf{e}_{1}) = (\cos \theta ,\sin \theta)\)</span><br>
+<span class="math inline">\(T(\mathbf{e}_{2}) = (-\sin \theta ,\cos \theta)\)</span></p>
+<p>This gives the standard rotation matrix <span class="math inline">\(R_{\theta}\)</span>: <span class="math display">\[
+R_{\theta} = \left[ \begin{array}{cc}\cos \theta &amp; -\sin \theta \\ \sin \theta &amp; \cos \theta \end{array} \right] \tag{1}
+\]</span></p>
+<aside class="notes">
+<p>Rotation is a very common transformation, especially in robotics and computer graphics. The key idea here is that a rotation around the origin can be completely described by the angle of rotation. The standard basis vectors provide the columns for the rotation matrix. We define positive angles as counterclockwise rotations.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="visualizing-r2-rotation" class="slide level2">
+<h2>Visualizing <span class="math inline">\(R^{2}\)</span> Rotation</h2>
+<p>Let’s visualize the transformation of basis vectors.</p>
+<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+    subgraph "Original Basis"
+        e1_orig["e1 $$(1,0)$$"]
+        e2_orig["e2 $$(0,1)$$"]
+    end
+
+    subgraph "Rotation Matrix"
+        R_theta["$$R_{\theta}$$"]
+    end
+
+    subgraph "Rotated Basis"
+        e1_rot["T(e1) $$(\cos\theta, \sin\theta)$$"]
+        e2_rot["T(e2) $$(-\sin\theta, \cos\theta)$$"]
+    end
+
+    e1_orig --&gt; R_theta
+    e2_orig --&gt; R_theta
+    R_theta --&gt; e1_rot
+    R_theta --&gt; e2_rot
+
+    style e1_orig fill:#fff,stroke:#333,stroke-width:2px,color:#333
+    style e2_orig fill:#fff,stroke:#333,stroke-width:2px,color:#333
+    style e1_rot fill:#f9f,stroke:#333,stroke-width:2px,color:#333
+    style e2_rot fill:#f9f,stroke:#333,stroke-width:2px,color:#333
+    style R_theta fill:#ccf,stroke:#333,stroke-width:2px,color:#333
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>This Mermaid diagram illustrates how the standard basis vectors are transformed by the rotation matrix. The first column of <span class="math inline">\(R_{\theta}\)</span> is <span class="math inline">\(T(\mathbf{e}_1)\)</span>, and the second column is <span class="math inline">\(T(\mathbf{e}_2)\)</span>. This visual representation helps connect the geometric interpretation with the algebraic matrix form.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="rotation-equations-for-r2" class="slide level2">
+<h2>Rotation Equations for <span class="math inline">\(R^{2}\)</span></h2>
+<p>If <span class="math inline">\(\mathbf{x} = (x,y)\)</span> is a vector in <span class="math inline">\(R^{2}\)</span>, and <span class="math inline">\(\mathbf{w} = (w_{1},w_{2})\)</span> is its image, then <span class="math inline">\(\mathbf{w} = R_{\theta}\mathbf{x}\)</span> gives: <span class="math display">\[
+\begin{array}{l}w_{1} = x\cos \theta -y\sin \theta \\ w_{2} = x\sin \theta +y\cos \theta \end{array} \tag{2}
+\]</span></p>
+<p>These are the rotation equations for <span class="math inline">\(R^{2}\)</span>.</p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>For clockwise rotations, replace <span class="math inline">\(\theta\)</span> with <span class="math inline">\(-\theta\)</span> in the matrix. Since <span class="math inline">\(\cos(-\theta) = \cos\theta\)</span> and <span class="math inline">\(\sin(-\theta) = -\sin\theta\)</span>, the matrix becomes: <span class="math display">\[
+R_{-\theta} = \left[ \begin{array}{cc}\cos \theta &amp; \sin \theta \\ -\sin \theta &amp; \cos \theta \end{array} \right]
+\]</span></p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>These equations are simply the result of multiplying the rotation matrix by the column vector <span class="math inline">\([x, y]^T\)</span>. They show explicitly how the new coordinates <span class="math inline">\(w_1\)</span> and <span class="math inline">\(w_2\)</span> depend on the original coordinates <span class="math inline">\(x, y\)</span> and the rotation angle <span class="math inline">\(\theta\)</span>. The tip about clockwise rotation is useful for practical applications.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-1-a-rotation-operator" class="slide level2">
+<h2>Example 1: A Rotation Operator</h2>
+<p>Find the image of <span class="math inline">\(\mathbf{x} = (1,1)\)</span> under a rotation of <span class="math inline">\(\pi /6\)</span> radians (<span class="math inline">\(30^{\circ}\)</span>) about the origin.</p>
+<div>
+<div id="pyodide-3" class="exercise-cell">
+
+</div>
+<script type="pyodide-3-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5cbnRoZXRhID0gbnAucGkgLyA2ICAjIM+ALzYgcmFkaWFucyA9IDMwIGRlZ3JlZXNcblJfdGhldGEgPSBucC5hcnJheShbXG4gICAgW25wLmNvcyh0aGV0YSksIC1ucC5zaW4odGhldGEpXSxcbiAgICBbbnAuc2luKHRoZXRhKSwgIG5wLmNvcyh0aGV0YSldXG5dKVxuXG54X3ZlY3RvciA9IG5wLmFycmF5KFtbMV0sIFsxXV0pXG5cbnJvdGF0ZWRfeCA9IFJfdGhldGEgQCB4X3ZlY3RvclxuXG5wcmludChmXCJSb3RhdGlvbiBtYXRyaXggZm9yIHtucC5kZWdyZWVzKHRoZXRhKTouMGZ9IGRlZ3JlZXM6XFxue1JfdGhldGF9XCIpXG5wcmludChmXCJcXG5PcmlnaW5hbCB2ZWN0b3IgeDoge3hfdmVjdG9yLmZsYXR0ZW4oKX1cIilcbnByaW50KGZcIlxcblJvdGF0ZWQgdmVjdG9yIFJfdGhldGEgKiB4Olxcbntyb3RhdGVkX3h9XCIpXG5wcmludChmXCJcXG5BcHByb3hpbWF0ZWQgcmVzdWx0OiAoe3JvdGF0ZWRfeFswLDBdOi4yZn0sIHtyb3RhdGVkX3hbMSwwXTouMmZ9KVwiKSJ9
+</script>
+</div>
+<aside class="notes">
+<p>Here we apply the rotation matrix directly. The <code>pyodide</code> block allows you to execute this Python code right in the browser. You can modify the <code>theta</code> or <code>x_vector</code> values to see how the output changes. This demonstrates the practical application of the rotation matrix. The result matches the example in the provided text.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-r2-rotation" class="slide level2">
+<h2>Interactive <span class="math inline">\(R^{2}\)</span> Rotation</h2>
+<p>Rotate a shape (unit square) in <span class="math inline">\(R^{2}\)</span> by varying the angle.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="453" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 452;"><span id="cb3-453"><a></a><span class="co">// Define input control for rotation angle</span></span>
+<span id="cb3-454"><a></a>viewof angle_rot <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">360</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Rotation Angle (degrees)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-4" class="exercise-cell">
+
+</div>
+<script type="pyodide-4-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImlucHV0IjpbImFuZ2xlX3JvdCJdLCJtYXgtbGluZXMiOjEwfSwiY29kZSI6ImltcG9ydCBudW1weSBhcyBucFxuXG5hbmdsZV9kZWcgPSBhbmdsZV9yb3RcbmFuZ2xlX3JhZCA9IG5wLnJhZGlhbnMoYW5nbGVfZGVnKVxuXG4jIFJvdGF0aW9uIG1hdHJpeFxuUl90aGV0YSA9IG5wLmFycmF5KFtcbiAgICBbbnAuY29zKGFuZ2xlX3JhZCksIC1ucC5zaW4oYW5nbGVfcmFkKV0sXG4gICAgW25wLnNpbihhbmdsZV9yYWQpLCAgbnAuY29zKGFuZ2xlX3JhZCldXG5dKVxuXG4jIFVuaXQgc3F1YXJlIHZlcnRpY2VzXG5vcmlnaW5hbF9zcXVhcmUgPSBbXG4gICAgbnAuYXJyYXkoW1swXSwgWzBdXSksXG4gICAgbnAuYXJyYXkoW1sxXSwgWzBdXSksXG4gICAgbnAuYXJyYXkoW1sxXSwgWzFdXSksXG4gICAgbnAuYXJyYXkoW1swXSwgWzFdXSksXG4gICAgbnAuYXJyYXkoW1swXSwgWzBdXSkgIyBDbG9zZSB0aGUgcG9seWdvblxuXVxuXG4jIEFwcGx5IHJvdGF0aW9uIHRvIGVhY2ggdmVydGV4XG5yb3RhdGVkX3NxdWFyZSA9IFtdXG5mb3IgdmVydGV4IGluIG9yaWdpbmFsX3NxdWFyZTpcbiAgICByb3RhdGVkX3ZlcnRleCA9IFJfdGhldGEgQCB2ZXJ0ZXhcbiAgICByb3RhdGVkX3NxdWFyZS5hcHBlbmQoe1wieFwiOiBmbG9hdChyb3RhdGVkX3ZlcnRleFswLDBdKSwgXCJ5XCI6IGZsb2F0KHJvdGF0ZWRfdmVydGV4WzEsMF0pfSlcblxuIyBQcmVwYXJlIGRhdGEgZm9yIE9KUyAoZW5zdXJlIGZsb2F0IHR5cGVzIGZvciBjb21wYXRpYmlsaXR5KVxub3V0cHV0ID0ge1xuICAgIFwib3JpZ2luYWxfc3F1YXJlXCI6IFt7XCJ4XCI6IGZsb2F0KHZbMCwwXSksIFwieVwiOiBmbG9hdCh2WzEsMF0pfSBmb3IgdiBpbiBvcmlnaW5hbF9zcXVhcmVdLFxuICAgIFwicm90YXRlZF9zcXVhcmVcIjogcm90YXRlZF9zcXVhcmVcbn1cbm91dHB1dCJ9
+</script>
+</div>
+<aside class="notes">
+<p>This interactive visualization shows a unit square rotating around the origin. Use the slider to change the rotation angle. The original square is blue, and the rotated square is red. This helps to intuitively grasp how the rotation matrix transforms entire objects, not just individual points.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="rotations-in-r3" class="slide level2">
+<h2>Rotations in <span class="math inline">\(R^{3}\)</span></h2>
+<p>Rotations in <span class="math inline">\(R^{3}\)</span> are described relative to an axis of rotation and a unit vector <span class="math inline">\(\mathbf{u}\)</span> along that line. The right-hand rule determines the sign of the angle.</p>
+
+<img data-src="https://cdn-mineru.openxlab.org.cn/result/2025-08-19/819ca1e1-de49-4d64-aa59-e7765c59fd4d/426d91c4a43e29a474a7120f057fb3ea1ee29da91717f98598d4d7b87dfd24a0.jpg" class="r-stretch"><p>For coordinate axes, positive angles are counterclockwise when looking towards the origin along the positive axis.</p>
+<aside class="notes">
+<p>In 3D, rotation is more complex than in 2D because you need to specify an axis of rotation in addition to the angle. The right-hand rule is a standard convention to define the positive direction of rotation. If you curl your fingers in the direction of rotation, your thumb points in the direction of the positive axis of rotation.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="standard-matrices-for-r3-rotations" class="slide level2">
+<h2>Standard Matrices for <span class="math inline">\(R^{3}\)</span> Rotations</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>About the positive x-axis</strong> <span class="math display">\[
+\left[ \begin{array}{ccc}1 &amp; 0 &amp; 0 \\ 0 &amp; \cos\theta &amp; -\sin\theta \\ 0 &amp; \sin\theta &amp; \cos\theta \end{array} \right]
+\]</span></p>
+<p><strong>About the positive y-axis</strong> <span class="math display">\[
+\left[ \begin{array}{ccc}\cos\theta &amp; 0 &amp; \sin\theta \\ 0 &amp; 1 &amp; 0 \\ -\sin\theta &amp; 0 &amp; \cos\theta \end{array} \right]
+\]</span></p>
+</div><div class="column" style="width:50%;">
+<p><strong>About the positive z-axis</strong> <span class="math display">\[
+\left[ \begin{array}{ccc}\cos\theta &amp; -\sin\theta &amp; 0 \\ \sin\theta &amp; \cos\theta &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{array} \right]
+\]</span></p>
+</div></div>
+<aside class="notes">
+<p>Notice the patterns in these matrices. For rotation about the x-axis, the x-coordinate remains unchanged, and the 2x2 rotation matrix is applied to the y and z coordinates. Similarly for y and z axes. The y-axis rotation matrix is slightly different in the placement of the sine terms due to the standard basis vector ordering and right-hand rule convention.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="yaw-pitch-and-roll" class="slide level2">
+<h2>Yaw, Pitch, and Roll</h2>
+<p>These angles describe the orientation of an aircraft or space shuttle relative to an <span class="math inline">\(xyz\)</span>-coordinate system.</p>
+<ul>
+<li><strong>Yaw:</strong> Rotation about the <span class="math inline">\(z\)</span>-axis (side-to-side).</li>
+<li><strong>Pitch:</strong> Rotation about the <span class="math inline">\(x\)</span>-axis (nose up/down).</li>
+<li><strong>Roll:</strong> Rotation about the <span class="math inline">\(y\)</span>-axis (wing up/down).</li>
+</ul>
+
+<img data-src="https://cdn-mineru.openxlab.org.cn/result/2025-08-19/819ca1e1-de49-4d64-aa59-e7765c59fd4d/deef9274a0bffa455cd28189437d2029fe5369fb9b25c4f2e67aa15ed911010f.jpg" class="r-stretch"><p>A combination of these can be achieved by a single rotation about some axis through the origin.</p>
+<aside class="notes">
+<p>This is a fantastic real-world application for ECE students. Understanding how these rotations are defined is critical in aerospace engineering, control systems, and even robotics. Space shuttles perform attitude adjustments by calculating a single rotation axis and angle to achieve the desired orientation, rather than performing three separate rotations. This highlights the importance of composite transformations.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="general-r3-rotation" class="slide level2">
+<h2>General <span class="math inline">\(R^{3}\)</span> Rotation</h2>
+<p>For completeness, the standard matrix for a counterclockwise rotation through an angle <span class="math inline">\(\theta\)</span> about an axis determined by an arbitrary unit vector <span class="math inline">\(\mathbf{u} = (a, b, c)\)</span> is:</p>
+<p><span class="math display">\[
+\left[ \begin{array}{llll}a^2 (1 - \cos \theta) + \cos \theta &amp; ab(1 - \cos \theta) - c\sin \theta &amp; ac(1 - \cos \theta) + b\sin \theta \\ ab(1 - \cos \theta) + c\sin \theta &amp; b^2 (1 - \cos \theta) + \cos \theta &amp; bc(1 - \cos \theta) - a\sin \theta \\ ac(1 - \cos \theta) - b\sin \theta &amp; bc(1 - \cos \theta) + a\sin \theta &amp; c^2 (1 - \cos \theta) + \cos \theta \end{array} \right] \tag{3}
+\]</span></p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>You can derive the axis-specific rotation matrices (Table 6) as special cases of this general formula by setting <span class="math inline">\(a,b,c\)</span> to <span class="math inline">\((1,0,0)\)</span>, <span class="math inline">\((0,1,0)\)</span>, or <span class="math inline">\((0,0,1)\)</span> respectively.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>This general formula, while complex, is extremely powerful. It allows for rotation about <em>any</em> axis through the origin in 3D space. While we won’t derive it here, it’s good to be aware of its existence. The ability to derive the simpler coordinate-axis rotations from this general form provides a good check of understanding.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="dilations-and-contractions" class="slide level2">
+<h2>Dilations and Contractions</h2>
+<p>These operators scale the length of vectors. <span class="math inline">\(T(\mathbf{x}) = k\mathbf{x}\)</span> for a nonnegative scalar <span class="math inline">\(k\)</span>.</p>
+<ul>
+<li><strong>Contraction:</strong> If <span class="math inline">\(0 \leq k &lt; 1\)</span>, the operator shrinks vectors.</li>
+<li><strong>Dilation:</strong> If <span class="math inline">\(k &gt; 1\)</span>, the operator stretches vectors.</li>
+</ul>
+<p><img data-src="https://cdn-mineru.openxlab.org.cn/result/2025-08-19/819ca1e1-de49-4d64-aa59-e7765c59fd4d/9331e4af8cdd039d525fe7c8b2d8548f13627ff2d7cb62940585d249a438c5d3.jpg"> Figure 4.9.3 (a) <span class="math inline">\(0 \leq k &lt; 1\)</span> (b) <span class="math inline">\(k &gt; 1\)</span></p>
+<p>If <span class="math inline">\(k=1\)</span>, it’s the identity operator.</p>
+<aside class="notes">
+<p>Dilations and contractions are essentially scaling operations. They change the magnitude of vectors but not their direction. This is a very intuitive transformation. Think of zooming in or out on an image. The factor ‘k’ determines the amount of scaling.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="dilations-and-contractions-in-r2" class="slide level2">
+<h2>Dilations and Contractions in <span class="math inline">\(R^{2}\)</span></h2>
+<p>Standard matrix for dilations/contractions in <span class="math inline">\(R^{2}\)</span>: <span class="math display">\[
+\left[ \begin{array}{cc}k &amp; 0 \\ 0 &amp; k \end{array} \right]
+\]</span></p>
+</section>
+<section id="dilations-and-contractions-in-r2-1" class="slide level2">
+<h2>Dilations and Contractions in <span class="math inline">\(R^{2}\)</span></h2>
+<h3 id="interactive-r2-scaling">Interactive <span class="math inline">\(R^{2}\)</span> Scaling</h3>
+<p>Scale a shape (unit square) in <span class="math inline">\(R^{2}\)</span> by varying the factor <span class="math inline">\(k\)</span>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="616" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 615;"><span id="cb4-616"><a></a><span class="co">// Define input control for scaling factor</span></span>
+<span id="cb4-617"><a></a>viewof scaleFactor_scale <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.1</span><span class="op">,</span> <span class="dv">3</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Scaling Factor (k)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-5" class="exercise-cell">
+
+</div>
+<script type="pyodide-5-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImlucHV0IjpbInNjYWxlRmFjdG9yX3NjYWxlIl0sIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5cbmsgPSBzY2FsZUZhY3Rvcl9zY2FsZVxuXG4jIFNjYWxpbmcgbWF0cml4XG5TX2sgPSBucC5hcnJheShbXG4gICAgW2ssIDBdLFxuICAgIFswLCBrXVxuXSlcblxuIyBVbml0IHNxdWFyZSB2ZXJ0aWNlc1xub3JpZ2luYWxfc3F1YXJlID0gW1xuICAgIG5wLmFycmF5KFtbMF0sIFswXV0pLFxuICAgIG5wLmFycmF5KFtbMV0sIFswXV0pLFxuICAgIG5wLmFycmF5KFtbMV0sIFsxXV0pLFxuICAgIG5wLmFycmF5KFtbMF0sIFsxXV0pLFxuICAgIG5wLmFycmF5KFtbMF0sIFswXV0pICMgQ2xvc2UgdGhlIHBvbHlnb25cbl1cblxuIyBBcHBseSBzY2FsaW5nIHRvIGVhY2ggdmVydGV4XG5zY2FsZWRfc3F1YXJlID0gW11cbmZvciB2ZXJ0ZXggaW4gb3JpZ2luYWxfc3F1YXJlOlxuICAgIHNjYWxlZF92ZXJ0ZXggPSBTX2sgQCB2ZXJ0ZXhcbiAgICBzY2FsZWRfc3F1YXJlLmFwcGVuZCh7XCJ4XCI6IGZsb2F0KHNjYWxlZF92ZXJ0ZXhbMCwwXSksIFwieVwiOiBmbG9hdChzY2FsZWRfdmVydGV4WzEsMF0pfSlcblxuIyBQcmVwYXJlIGRhdGEgZm9yIE9KUyAoZW5zdXJlIGZsb2F0IHR5cGVzIGZvciBjb21wYXRpYmlsaXR5KVxub3V0cHV0ID0ge1xuICAgIFwib3JpZ2luYWxfc3F1YXJlXCI6IFt7XCJ4XCI6IGZsb2F0KHZbMCwwXSksIFwieVwiOiBmbG9hdCh2WzEsMF0pfSBmb3IgdiBpbiBvcmlnaW5hbF9zcXVhcmVdLFxuICAgIFwic2NhbGVkX3NxdWFyZVwiOiBzY2FsZWRfc3F1YXJlXG59XG5vdXRwdXQifQ==
+</script>
+</div>
+<aside class="notes">
+<p>The standard matrix for dilation/contraction is simple: a scalar multiple of the identity matrix. The interactive plot allows you to see this in action. When ‘k’ is less than 1, the square contracts; when ‘k’ is greater than 1, it dilates. This uniform scaling is what differentiates it from expansions and compressions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="dilations-and-contractions-in-r3" class="slide level2">
+<h2>Dilations and Contractions in <span class="math inline">\(R^{3}\)</span></h2>
+<p>Standard matrix for dilations/contractions in <span class="math inline">\(R^{3}\)</span>: <span class="math display">\[
+\left[ \begin{array}{ccc}k &amp; 0 &amp; 0 \\ 0 &amp; k &amp; 0 \\ 0 &amp; 0 &amp; k \end{array} \right]
+\]</span></p>
+<aside class="notes">
+<p>The principle is the same as in <span class="math inline">\(R^{2}\)</span>, just extended to three dimensions. Each coordinate is scaled by the factor <span class="math inline">\(k\)</span>. This type of transformation is used in 3D graphics for resizing objects uniformly.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="expansions-and-compressions" class="slide level2">
+<h2>Expansions and Compressions</h2>
+<p>These operators scale only one coordinate by a factor <span class="math inline">\(k\)</span>. - <strong>Compression:</strong> <span class="math inline">\(0 \leq k &lt; 1\)</span>. - <strong>Expansion:</strong> <span class="math inline">\(k &gt; 1\)</span>.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Compression/Expansion in x-direction</strong> <span class="math inline">\(T(x,y) = (kx,y)\)</span> Standard Matrix: <span class="math display">\[
+\left[ \begin{array}{cc}k &amp; 0 \\ 0 &amp; 1 \end{array} \right]
+\]</span></p>
+</div><div class="column" style="width:50%;">
+<p><strong>Compression/Expansion in y-direction</strong> <span class="math inline">\(T(x,y) = (x,ky)\)</span> Standard Matrix: <span class="math display">\[
+\left[ \begin{array}{cc}1 &amp; 0 \\ 0 &amp; k \end{array} \right]
+\]</span></p>
+</div></div>
+<aside class="notes">
+<p>Unlike dilations/contractions, expansions/compressions are non-uniform scaling operations. They only affect one dimension, either stretching or squishing the object along that specific axis. This is useful for reshaping objects in a non-proportional way.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-r2-expansioncompression" class="slide level2">
+<h2>Interactive <span class="math inline">\(R^{2}\)</span> Expansion/Compression</h2>
+<p>Scale a shape (unit square) along a specific axis in <span class="math inline">\(R^{2}\)</span>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb5" data-startfrom="714" data-source-offset="-58"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 713;"><span id="cb5-714"><a></a>viewof compExpFactor_ce <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.1</span><span class="op">,</span> <span class="dv">3</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Scaling Factor (k)"</span>})</span>
+<span id="cb5-715"><a></a>viewof compExpDirection_ce <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">select</span>([<span class="st">"x"</span><span class="op">,</span> <span class="st">"y"</span>]<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Direction"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="st">"x"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-5-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-5-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-6" class="exercise-cell">
+
+</div>
+<script type="pyodide-6-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImlucHV0IjpbImNvbXBFeHBGYWN0b3JfY2UiLCJjb21wRXhwRGlyZWN0aW9uX2NlIl0sIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5cbmsgPSBjb21wRXhwRmFjdG9yX2NlXG5kaXJlY3Rpb24gPSBjb21wRXhwRGlyZWN0aW9uX2NlXG5cbiMgU2NhbGluZyBtYXRyaXggYmFzZWQgb24gZGlyZWN0aW9uXG5pZiBkaXJlY3Rpb24gPT0gJ3gnOlxuICAgIENFX2sgPSBucC5hcnJheShbW2ssIDBdLCBbMCwgMV1dKVxuZWxzZTogIyBkaXJlY3Rpb24gPT0gJ3knXG4gICAgQ0VfayA9IG5wLmFycmF5KFtbMSwgMF0sIFswLCBrXV0pXG5cbiMgVW5pdCBzcXVhcmUgdmVydGljZXNcbm9yaWdpbmFsX3NxdWFyZSA9IFtcbiAgICBucC5hcnJheShbWzBdLCBbMF1dKSxcbiAgICBucC5hcnJheShbWzFdLCBbMF1dKSxcbiAgICBucC5hcnJheShbWzFdLCBbMV1dKSxcbiAgICBucC5hcnJheShbWzBdLCBbMV1dKSxcbiAgICBucC5hcnJheShbWzBdLCBbMF1dKSAjIENsb3NlIHRoZSBwb2x5Z29uXG5dXG5cbiMgQXBwbHkgdHJhbnNmb3JtYXRpb24gdG8gZWFjaCB2ZXJ0ZXhcbnRyYW5zZm9ybWVkX3NxdWFyZSA9IFtdXG5mb3IgdmVydGV4IGluIG9yaWdpbmFsX3NxdWFyZTpcbiAgICB0cmFuc2Zvcm1lZF92ZXJ0ZXggPSBDRV9rIEAgdmVydGV4XG4gICAgdHJhbnNmb3JtZWRfc3F1YXJlLmFwcGVuZCh7XCJ4XCI6IGZsb2F0KHRyYW5zZm9ybWVkX3ZlcnRleFswLDBdKSwgXCJ5XCI6IGZsb2F0KHRyYW5zZm9ybWVkX3ZlcnRleFsxLDBdKX0pXG5cbiMgUHJlcGFyZSBkYXRhIGZvciBPSlMgKGVuc3VyZSBmbG9hdCB0eXBlcyBmb3IgY29tcGF0aWJpbGl0eSlcbm91dHB1dCA9IHtcbiAgICBcIm9yaWdpbmFsX3NxdWFyZVwiOiBbe1wieFwiOiBmbG9hdCh2WzAsMF0pLCBcInlcIjogZmxvYXQodlsxLDBdKX0gZm9yIHYgaW4gb3JpZ2luYWxfc3F1YXJlXSxcbiAgICBcInRyYW5zZm9ybWVkX3NxdWFyZVwiOiB0cmFuc2Zvcm1lZF9zcXVhcmVcbn1cbm91dHB1dCJ9
+</script>
+</div>
+<aside class="notes">
+<p>Use this interactive tool to see how a square is compressed or expanded along either the x or y-axis. Notice that only one dimension changes, which results in a rectangle instead of a square (unless k=1). This is distinct from dilation, where both dimensions are scaled equally.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="shears" class="slide level2">
+<h2>Shears</h2>
+<p>A shear transformation shifts points parallel to one axis, proportional to their distance from that axis.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Shear in the x-direction by factor <span class="math inline">\(k\)</span></strong><br>
+<span class="math inline">\(T(x,y) = (x+ky,y)\)</span><br>
+Standard Matrix:<br>
+<span class="math display">\[
+\left[ \begin{array}{cc}1 &amp; k \\ 0 &amp; 1 \end{array} \right]
+\]</span></p>
+</div><div class="column" style="width:50%;">
+<p><strong>Shear in the y-direction by factor <span class="math inline">\(k\)</span></strong><br>
+<span class="math inline">\(T(x,y) = (x,y+kx)\)</span><br>
+Standard Matrix:<br>
+<span class="math display">\[
+\left[ \begin{array}{cc}1 &amp; 0 \\ k &amp; 1 \end{array} \right]
+\]</span></p>
+</div></div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>A shear leaves points on the axis of the shear fixed. For an x-shear, points on the x-axis (<span class="math inline">\(y=0\)</span>) remain unchanged. For a y-shear, points on the y-axis (<span class="math inline">\(x=0\)</span>) remain unchanged.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Shears are often visualized as “tilting” or “slanted” transformations. Imagine pushing the top of a deck of cards sideways while keeping the bottom fixed. That’s an x-shear. The amount of shift <code>ky</code> is proportional to the <code>y</code> coordinate. This is commonly used in typography and graphical design.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-2-effect-of-matrix-operators-on-the-unit-square" class="slide level2">
+<h2>Example 2: Effect of Matrix Operators on the Unit Square</h2>
+<p>Describe the matrix operator and show its effect on the unit square.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Matrix <span class="math inline">\(A_{1}\)</span></strong> <span class="math display">\[
+A_{1}={\left[\begin{array}{l l}{1}&amp;{2}\\ {0}&amp;{1}\end{array}\right]}
+\]</span> This is a <strong>shear in the x-direction by a factor 2</strong>.</p>
+</div><div class="column" style="width:50%;">
+<p><strong>Matrix <span class="math inline">\(A_{2}\)</span></strong> <span class="math display">\[
+A_{2}={\left[\begin{array}{l l}{1}&amp;{-2}\\ {0}&amp;{1}\end{array}\right]}
+\]</span> This is a <strong>shear in the x-direction by a factor -2</strong>.</p>
+</div></div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Matrix <span class="math inline">\(A_{3}\)</span></strong> <span class="math display">\[
+A_{3}={\left[\begin{array}{l l}{2}&amp;{0}\\ {0}&amp;{2}\end{array}\right]}
+\]</span> This is a <strong>dilation with factor 2</strong>.</p>
+</div><div class="column" style="width:50%;">
+<p><strong>Matrix <span class="math inline">\(A_{4}\)</span></strong> <span class="math display">\[
+A_{4}={\left[\begin{array}{l l}{2}&amp;{0}\\ {0}&amp;{1}\end{array}\right]}
+\]</span> This is an <strong>expansion in the x-direction with factor 2</strong>.</p>
+</div></div>
+<aside class="notes">
+<p>This example directly applies the knowledge of standard matrices to identify the type of transformation. It’s a good exercise to mentally, or visually, confirm how each matrix would transform the unit square. For instance, for <span class="math inline">\(A_1\)</span>, the point <span class="math inline">\((1,1)\)</span> becomes <span class="math inline">\((1+2\cdot1, 1) = (3,1)\)</span>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-r2-shear" class="slide level2">
+<h2>Interactive <span class="math inline">\(R^{2}\)</span> Shear</h2>
+<p>Apply a shear transformation to a unit square.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="848" data-source-offset="-56"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 847;"><span id="cb6-848"><a></a>viewof shearFactor_shear <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">2</span><span class="op">,</span> <span class="dv">2</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Shear Factor (k)"</span>})</span>
+<span id="cb6-849"><a></a>viewof shearDirection_shear <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">select</span>([<span class="st">"x"</span><span class="op">,</span> <span class="st">"y"</span>]<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Direction"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="st">"x"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-6-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-6-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-7" class="exercise-cell">
+
+</div>
+<script type="pyodide-7-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImlucHV0IjpbInNoZWFyRmFjdG9yX3NoZWFyIiwic2hlYXJEaXJlY3Rpb25fc2hlYXIiXSwibWF4LWxpbmVzIjoxMH0sImNvZGUiOiJpbXBvcnQgbnVtcHkgYXMgbnBcblxuayA9IHNoZWFyRmFjdG9yX3NoZWFyXG5kaXJlY3Rpb24gPSBzaGVhckRpcmVjdGlvbl9zaGVhclxuXG4jIFNoZWFyIG1hdHJpeCBiYXNlZCBvbiBkaXJlY3Rpb25cbmlmIGRpcmVjdGlvbiA9PSAneCc6XG4gICAgU2hlYXJfayA9IG5wLmFycmF5KFtbMSwga10sIFswLCAxXV0pXG5lbHNlOiAjIGRpcmVjdGlvbiA9PSAneSdcbiAgICBTaGVhcl9rID0gbnAuYXJyYXkoW1sxLCAwXSwgW2ssIDFdXSlcblxuIyBVbml0IHNxdWFyZSB2ZXJ0aWNlc1xub3JpZ2luYWxfc3F1YXJlID0gW1xuICAgIG5wLmFycmF5KFtbMF0sIFswXV0pLFxuICAgIG5wLmFycmF5KFtbMV0sIFswXV0pLFxuICAgIG5wLmFycmF5KFtbMV0sIFsxXV0pLFxuICAgIG5wLmFycmF5KFtbMF0sIFsxXV0pLFxuICAgIG5wLmFycmF5KFtbMF0sIFswXV0pICMgQ2xvc2UgdGhlIHBvbHlnb25cbl1cblxuIyBBcHBseSB0cmFuc2Zvcm1hdGlvbiB0byBlYWNoIHZlcnRleFxudHJhbnNmb3JtZWRfc3F1YXJlID0gW11cbmZvciB2ZXJ0ZXggaW4gb3JpZ2luYWxfc3F1YXJlOlxuICAgIHRyYW5zZm9ybWVkX3ZlcnRleCA9IFNoZWFyX2sgQCB2ZXJ0ZXhcbiAgICB0cmFuc2Zvcm1lZF9zcXVhcmUuYXBwZW5kKHtcInhcIjogZmxvYXQodHJhbnNmb3JtZWRfdmVydGV4WzAsMF0pLCBcInlcIjogZmxvYXQodHJhbnNmb3JtZWRfdmVydGV4WzEsMF0pfSlcblxuIyBQcmVwYXJlIGRhdGEgZm9yIE9KUyAoZW5zdXJlIGZsb2F0IHR5cGVzIGZvciBjb21wYXRpYmlsaXR5KVxub3V0cHV0ID0ge1xuICAgIFwib3JpZ2luYWxfc3F1YXJlXCI6IFt7XCJ4XCI6IGZsb2F0KHZbMCwwXSksIFwieVwiOiBmbG9hdCh2WzEsMF0pfSBmb3IgdiBpbiBvcmlnaW5hbF9zcXVhcmVdLFxuICAgIFwidHJhbnNmb3JtZWRfc3F1YXJlXCI6IHRyYW5zZm9ybWVkX3NxdWFyZVxufVxub3V0cHV0In0=
+</script>
+</div>
+<aside class="notes">
+<p>This interactive plot demonstrates x-direction and y-direction shears. Adjust the shear factor <code>k</code> and the direction. Observe how the square “tilts”. Note that the side of the square along the shear axis remains fixed, while the opposite side shifts. A positive <code>k</code> creates a shear in the positive direction, and a negative <code>k</code> creates a shear in the negative direction.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="orthogonal-projection-onto-a-line-through-the-origin" class="slide level2">
+<h2>Orthogonal Projection onto a Line Through the Origin</h2>
+<p>The standard matrix <span class="math inline">\(P_{\theta}\)</span> for orthogonal projection onto a line <span class="math inline">\(L\)</span> through the origin, making an angle <span class="math inline">\(\theta\)</span> with the positive <span class="math inline">\(x\)</span>-axis, is:</p>
+<p><span class="math display">\[
+P_{\theta} = \left[ \begin{array}{cc}\cos^{2}\theta &amp; \sin \theta \cos \theta \\ \sin \theta \cos \theta &amp; \sin^{2}\theta \end{array} \right] = \left[ \begin{array}{cc}\cos^{2}\theta &amp; \frac{1}{2}\sin 2\theta \\ \frac{1}{2}\sin 2\theta &amp; \sin^{2}\theta \end{array} \right] \tag{4}
+\]</span></p>
+<p><img data-src="https://cdn-mineru.openxlab.org.cn/result/2025-08-19/819ca1e1-de49-4d64-aa59-e7765c59fd4d/69eea501d165a739dd3c8558fca10ab5b39dc34d030ee5d3df3a4d31dd13b4d3.jpg"> Figure 4.9.5</p>
+<aside class="notes">
+<p>This is a more general projection than just onto the x or y axes. The angle <span class="math inline">\(\theta\)</span> defines the line. This formula is derived by projecting the standard basis vectors onto the line <span class="math inline">\(y = (\tan \theta) x\)</span>. The trigonometric identities are often useful for simplifying the expressions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-3-orthogonal-projection-onto-a-line" class="slide level2">
+<h2>Example 3: Orthogonal Projection onto a Line</h2>
+<p>Find the orthogonal projection of <span class="math inline">\(\mathbf{x} = (1,5)\)</span> onto the line through the origin that makes an angle of <span class="math inline">\(\pi /6\)</span> (<span class="math inline">\(30^{\circ}\)</span>) with the positive <span class="math inline">\(x\)</span>-axis.</p>
+<div>
+<div id="pyodide-8" class="exercise-cell">
+
+</div>
+<script type="pyodide-8-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTJ9LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5cbnRoZXRhID0gbnAucGkgLyA2ICAjIM+ALzYgcmFkaWFucyA9IDMwIGRlZ3JlZXNcblxuIyBTdGFuZGFyZCBtYXRyaXggZm9yIHByb2plY3Rpb24gUF90aGV0YVxuUF90aGV0YSA9IG5wLmFycmF5KFtcbiAgICBbbnAuY29zKHRoZXRhKSoqMiwgbnAuc2luKHRoZXRhKSAqIG5wLmNvcyh0aGV0YSldLFxuICAgIFtucC5zaW4odGhldGEpICogbnAuY29zKHRoZXRhKSwgbnAuc2luKHRoZXRhKSoqMl1cbl0pXG5cbnhfdmVjdG9yID0gbnAuYXJyYXkoW1sxXSwgWzVdXSlcblxucHJvamVjdGVkX3ggPSBQX3RoZXRhIEAgeF92ZWN0b3JcblxucHJpbnQoZlwiUHJvamVjdGlvbiBtYXRyaXggZm9yIHtucC5kZWdyZWVzKHRoZXRhKTouMGZ9IGRlZ3JlZXM6XFxue1BfdGhldGF9XCIpXG5wcmludChmXCJcXG5PcmlnaW5hbCB2ZWN0b3IgeDoge3hfdmVjdG9yLmZsYXR0ZW4oKX1cIilcbnByaW50KGZcIlxcblByb2plY3RlZCB2ZWN0b3IgUF90aGV0YSAqIHg6XFxue3Byb2plY3RlZF94fVwiKVxucHJpbnQoZlwiXFxuQXBwcm94aW1hdGVkIHJlc3VsdDogKHtwcm9qZWN0ZWRfeFswLDBdOi4yZn0sIHtwcm9qZWN0ZWRfeFsxLDBdOi4yZn0pXCIpIn0=
+</script>
+</div>
+<aside class="notes">
+<p>This example demonstrates the application of the general projection formula. We calculate the projection matrix for <span class="math inline">\(\theta = \pi/6\)</span> and then multiply it by the given vector <span class="math inline">\(\mathbf{x}\)</span>. The result shows the coordinates of the point <span class="math inline">\((1,5)\)</span> projected onto the line at <span class="math inline">\(30^\circ\)</span>. This can be used in various signal processing contexts, such as projecting a signal onto a basis vector.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reflections-about-lines-through-the-origin" class="slide level2">
+<h2>Reflections About Lines Through the Origin</h2>
+<p>The operator <span class="math inline">\(H_{\theta}:R^{2} \to R^{2}\)</span> maps each point into its reflection about a line <span class="math inline">\(L\)</span> through the origin that makes an angle <span class="math inline">\(\theta\)</span> with the positive <span class="math inline">\(x\)</span>-axis.</p>
+<p><img data-src="https://cdn-mineru.openxlab.org.cn/result/2025-08-19/819ca1e1-de49-4d64-aa59-e7765c59fd4d/2f08392e1e038cb68381cf0133b344b93e4fabd41b8ff4ba85621d2d766321f1.jpg"> Figure 4.9.6</p>
+<p>The standard matrix for <span class="math inline">\(H_{\theta}\)</span> can be derived from the projection matrix <span class="math inline">\(P_{\theta}\)</span>: <span class="math inline">\(H_{\theta} = 2P_{\theta} - I\)</span></p>
+<p>This leads to: <span class="math display">\[
+H_{\theta} = \left[ \begin{array}{cc}\cos 2\theta &amp; \sin 2\theta \\ \sin 2\theta &amp; -\cos 2\theta \end{array} \right] \tag{6}
+\]</span></p>
+<aside class="notes">
+<p>This is an interesting connection between projection and reflection. Geometrically, if you project a vector onto a line, and then extend the vector by the same amount on the other side of the line, you get the reflection. The formula <span class="math inline">\(H_{\theta} = 2P_{\theta} - I\)</span> captures this relationship algebraically. The matrix for reflection about an arbitrary line is also expressed using <span class="math inline">\(2\theta\)</span>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-4-reflection-about-a-line" class="slide level2">
+<h2>Example 4: Reflection About a Line</h2>
+<p>Find the reflection of the vector <span class="math inline">\(\mathbf{x} = (1,5)\)</span> about the line through the origin that makes an angle of <span class="math inline">\(\pi /6\)</span> (<span class="math inline">\(30^{\circ}\)</span>) with the <span class="math inline">\(x\)</span>-axis.</p>
+<div>
+<div id="pyodide-9" class="exercise-cell">
+
+</div>
+<script type="pyodide-9-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTJ9LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5cbnRoZXRhID0gbnAucGkgLyA2ICAjIEFuZ2xlIG9mIHRoZSBsaW5lXG50d29fdGhldGEgPSAyICogdGhldGEgIyBBbmdsZSBmb3IgdGhlIHJlZmxlY3Rpb24gbWF0cml4XG5cbiMgU3RhbmRhcmQgbWF0cml4IGZvciByZWZsZWN0aW9uIEhfdGhldGFcbkhfdGhldGEgPSBucC5hcnJheShbXG4gICAgW25wLmNvcyh0d29fdGhldGEpLCBucC5zaW4odHdvX3RoZXRhKV0sXG4gICAgW25wLnNpbih0d29fdGhldGEpLCAtbnAuY29zKHR3b190aGV0YSldXG5dKVxuXG54X3ZlY3RvciA9IG5wLmFycmF5KFtbMV0sIFs1XV0pXG5cbnJlZmxlY3RlZF94ID0gSF90aGV0YSBAIHhfdmVjdG9yXG5cbnByaW50KGZcIlJlZmxlY3Rpb24gbWF0cml4IGZvciBsaW5lIGF0IHtucC5kZWdyZWVzKHRoZXRhKTouMGZ9IGRlZ3JlZXM6XFxue0hfdGhldGF9XCIpXG5wcmludChmXCJcXG5PcmlnaW5hbCB2ZWN0b3IgeDoge3hfdmVjdG9yLmZsYXR0ZW4oKX1cIilcbnByaW50KGZcIlxcblJlZmxlY3RlZCB2ZWN0b3IgSF90aGV0YSAqIHg6XFxue3JlZmxlY3RlZF94fVwiKVxucHJpbnQoZlwiXFxuQXBwcm94aW1hdGVkIHJlc3VsdDogKHtyZWZsZWN0ZWRfeFswLDBdOi4yZn0sIHtyZWZsZWN0ZWRfeFsxLDBdOi4yZn0pXCIpIn0=
+</script>
+</div>
+<aside class="notes">
+<p>Here, we use the reflection matrix formula directly. Notice that the angle used in the matrix is <span class="math inline">\(2\theta\)</span>, not <span class="math inline">\(\theta\)</span>. This is a common point of confusion, so be careful. The calculation shows the coordinates of the point <span class="math inline">\((1,5)\)</span> reflected across the line at <span class="math inline">\(30^\circ\)</span>. This is another fundamental transformation with applications in computer vision and graphics.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="key-takeaways" class="slide level2">
+<h2>Key Takeaways</h2>
+<ul>
+<li><strong>Reflections:</strong> Mirror images across lines/planes.</li>
+<li><strong>Projections:</strong> “Shadows” onto lines/planes.</li>
+<li><strong>Rotations:</strong> Circular movement around an origin/axis.
+<ul>
+<li>Crucial for ECE applications like Yaw, Pitch, Roll.</li>
+</ul></li>
+<li><strong>Dilations/Contractions:</strong> Uniform scaling of objects.</li>
+<li><strong>Expansions/Compressions:</strong> Non-uniform scaling along specific axes.</li>
+<li><strong>Shears:</strong> Tilting or slanting objects.</li>
+</ul>
+<p>Each transformation has a unique standard matrix. Understanding these matrices is fundamental to linear algebra and its applications.</p>
+<aside class="notes">
+<p>We’ve covered a lot of ground today, from simple reflections to more complex shears. The key message is that each of these geometric transformations can be represented by a matrix, and applying the transformation simply involves multiplying a vector by that matrix. This matrix representation is what makes linear algebra so powerful for engineers. Review the interactive examples and try to connect the visual changes with the mathematical operations.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+
+<script type="pyodide-data">
+eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yNy4wL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIiwibnVtcHkiLCJwbG90bHkiLCJuYmZvcm1hdCJdfX0=
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTkiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl85ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS05LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtOS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzkgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzksIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTgiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl84ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS04LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtOC1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzggPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzgsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTciLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl83ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS03LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzcgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzcsIHtzaGVhckZhY3Rvcl9zaGVhciwgc2hlYXJEaXJlY3Rpb25fc2hlYXJ9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTYiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl82ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS02LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzYgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzYsIHtjb21wRXhwRmFjdG9yX2NlLCBjb21wRXhwRGlyZWN0aW9uX2NlfSk7XG4ifSx7ImNlbGxOYW1lIjoicHlvZGlkZS01IiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6InZpZXdvZiBfcHlvZGlkZV9lZGl0b3JfNSA9IHtcbiAgY29uc3QgeyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IsIGI2NERlY29kZSB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInB5b2RpZGUtNS1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHsgaWQ6IGBweW9kaWRlLTUtY29udGVudHNgIH0sIGJsb2NrLmF0dHIpO1xuICBjb25zdCBlZGl0b3IgPSBuZXcgUHlvZGlkZUV4ZXJjaXNlRWRpdG9yKFxuICAgIHB5b2RpZGVPanMucHlvZGlkZVByb21pc2UsXG4gICAgYmxvY2suY29kZSxcbiAgICBvcHRpb25zXG4gICk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fcHlvZGlkZV92YWx1ZV81ID0gcHlvZGlkZU9qcy5wcm9jZXNzKF9weW9kaWRlX2VkaXRvcl81LCB7c2NhbGVGYWN0b3Jfc2NhbGV9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTQiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl80ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS00LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNC1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzQgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzQsIHthbmdsZV9yb3R9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTMiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8zID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0zLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzMgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzMsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8yID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzIgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzIsIHtweF9wcm9qLCBweV9wcm9qLCBwcm9qZWN0aW9uVHlwZV9wcm9qfSk7XG4ifSx7ImNlbGxOYW1lIjoicHlvZGlkZS0xIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6InZpZXdvZiBfcHlvZGlkZV9lZGl0b3JfMSA9IHtcbiAgY29uc3QgeyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IsIGI2NERlY29kZSB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInB5b2RpZGUtMS1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHsgaWQ6IGBweW9kaWRlLTEtY29udGVudHNgIH0sIGJsb2NrLmF0dHIpO1xuICBjb25zdCBlZGl0b3IgPSBuZXcgUHlvZGlkZUV4ZXJjaXNlRWRpdG9yKFxuICAgIHB5b2RpZGVPanMucHlvZGlkZVByb21pc2UsXG4gICAgYmxvY2suY29kZSxcbiAgICBvcHRpb25zXG4gICk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fcHlvZGlkZV92YWx1ZV8xID0gcHlvZGlkZU9qcy5wcm9jZXNzKF9weW9kaWRlX2VkaXRvcl8xLCB7cHhfcmVmLCBweV9yZWYsIHJlZmxlY3Rpb25UeXBlX3JlZn0pO1xuIn0seyJjZWxsTmFtZSI6InB5b2RpZGUtcHJlbHVkZSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InB5b2RpZGVPanMgPSB7XG4gIGNvbnN0IHtcbiAgICBQeW9kaWRlRXZhbHVhdG9yLFxuICAgIFB5b2RpZGVFbnZpcm9ubWVudE1hbmFnZXIsXG4gICAgc2V0dXBQeXRob24sXG4gICAgc3RhcnRQeW9kaWRlV29ya2VyLFxuICAgIGI2NERlY29kZSxcbiAgICBjb2xsYXBzZVBhdGgsXG4gIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHN0YXR1c0NvbnRhaW5lciA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKFwiZXhlcmNpc2UtbG9hZGluZy1zdGF0dXNcIik7XG4gIGNvbnN0IGluZGljYXRvckNvbnRhaW5lciA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKFwiZXhlcmNpc2UtbG9hZGluZy1pbmRpY2F0b3JcIik7XG4gIGluZGljYXRvckNvbnRhaW5lci5jbGFzc0xpc3QucmVtb3ZlKFwiZC1ub25lXCIpO1xuXG4gIGxldCBzdGF0dXNUZXh0ID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKVxuICBzdGF0dXNUZXh0LmNsYXNzTGlzdCA9IFwiZXhlcmNpc2UtbG9hZGluZy1kZXRhaWxzXCI7XG4gIHN0YXR1c1RleHQgPSBzdGF0dXNDb250YWluZXIuYXBwZW5kQ2hpbGQoc3RhdHVzVGV4dCk7XG4gIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgSW5pdGlhbGlzZWA7XG5cbiAgLy8gSG9pc3QgaW5kaWNhdG9yIG91dCBmcm9tIGZpbmFsIHNsaWRlIHdoZW4gcnVubmluZyB1bmRlciByZXZlYWxcbiAgY29uc3QgcmV2ZWFsU3RhdHVzID0gZG9jdW1lbnQucXVlcnlTZWxlY3RvcihcIi5yZXZlYWwgLmV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpZiAocmV2ZWFsU3RhdHVzKSB7XG4gICAgcmV2ZWFsU3RhdHVzLnJlbW92ZSgpO1xuICAgIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsID4gLnNsaWRlc1wiKS5hcHBlbmRDaGlsZChyZXZlYWxTdGF0dXMpO1xuICB9XG5cbiAgLy8gTWFrZSBhbnkgcmV2ZWFsIHNsaWRlcyB3aXRoIGxpdmUgY2VsbHMgc2Nyb2xsYWJsZVxuICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKFwiLnJldmVhbCAuZXhlcmNpc2UtY2VsbFwiKS5mb3JFYWNoKChlbCkgPT4ge1xuICAgIGVsLmNsb3Nlc3QoJ3NlY3Rpb24uc2xpZGUnKS5jbGFzc0xpc3QuYWRkKFwic2Nyb2xsYWJsZVwiKTtcbiAgfSlcblxuICAvLyBQeW9kaWRlIHN1cHBsZW1lbnRhbCBkYXRhIGFuZCBvcHRpb25zXG4gIGNvbnN0IGRhdGFDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInB5b2RpZGUtZGF0YVxcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGRhdGEgPSBKU09OLnBhcnNlKGI2NERlY29kZShkYXRhQ29udGVudCkpO1xuXG4gIC8vIEdyYWIgbGlzdCBvZiByZXNvdXJjZXMgdG8gYmUgZG93bmxvYWRlZFxuICBjb25zdCBmaWxlc0NvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwidmZzLWZpbGVcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBmaWxlcyA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKGZpbGVzQ29udGVudCkpO1xuXG4gIGxldCBweW9kaWRlUHJvbWlzZSA9IChhc3luYyAoKSA9PiB7XG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBQeW9kaWRlYDtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgc3RhcnRQeW9kaWRlV29ya2VyKGRhdGEub3B0aW9ucyk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHBhY2thZ2U6IG1pY3JvcGlwYDtcbiAgICBhd2FpdCBweW9kaWRlLmxvYWRQYWNrYWdlKFwibWljcm9waXBcIik7XG4gICAgY29uc3QgbWljcm9waXAgPSBhd2FpdCBweW9kaWRlLnB5aW1wb3J0KFwibWljcm9waXBcIik7XG4gICAgYXdhaXQgZGF0YS5wYWNrYWdlcy5wa2dzLm1hcCgocGtnKSA9PiAoKSA9PiB7XG4gICAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHBhY2thZ2U6ICR7cGtnfWA7XG4gICAgICByZXR1cm4gbWljcm9waXAuaW5zdGFsbChwa2cpO1xuICAgIH0pLnJlZHVjZSgoY3VyLCBuZXh0KSA9PiBjdXIudGhlbihuZXh0KSwgUHJvbWlzZS5yZXNvbHZlKCkpO1xuICAgIGF3YWl0IG1pY3JvcGlwLmRlc3Ryb3koKTtcblxuICAgIC8vIERvd25sb2FkIGFuZCBpbnN0YWxsIHJlc291cmNlc1xuICAgIGF3YWl0IGZpbGVzLm1hcCgoZmlsZSkgPT4gYXN5bmMgKCkgPT4ge1xuICAgICAgY29uc3QgbmFtZSA9IGZpbGUuc3Vic3RyaW5nKGZpbGUubGFzdEluZGV4T2YoJy8nKSArIDEpO1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyByZXNvdXJjZTogJHtuYW1lfWA7XG4gICAgICBjb25zdCByZXNwb25zZSA9IGF3YWl0IGZldGNoKGZpbGUpO1xuICAgICAgaWYgKCFyZXNwb25zZS5vaykge1xuICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYENhbid0IGRvd25sb2FkIFxcYCR7ZmlsZX1cXGAuIEVycm9yICR7cmVzcG9uc2Uuc3RhdHVzfTogXCIke3Jlc3BvbnNlLnN0YXR1c1RleHR9XCIuYCk7XG4gICAgICB9XG4gICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzcG9uc2UuYXJyYXlCdWZmZXIoKTtcblxuICAgICAgLy8gU3RvcmUgVVJMcyBpbiB0aGUgY3dkIHdpdGhvdXQgYW55IHN1YmRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGlmIChmaWxlLmluY2x1ZGVzKFwiOi8vXCIpKSB7XG4gICAgICAgIGZpbGUgPSBuYW1lO1xuICAgICAgfVxuXG4gICAgICAvLyBDb2xsYXBzZSBoaWdoZXIgZGlyZWN0b3J5IHN0cnVjdHVyZVxuICAgICAgZmlsZSA9IGNvbGxhcHNlUGF0aChmaWxlKTtcblxuICAgICAgLy8gQ3JlYXRlIGRpcmVjdG9yeSB0cmVlLCBpZ25vcmluZyBcImRpcmVjdG9yeSBleGlzdHNcIiBWRlMgZXJyb3JzXG4gICAgICBjb25zdCBwYXJ0cyA9IGZpbGUuc3BsaXQoJy8nKS5zbGljZSgwLCAtMSk7XG4gICAgICBsZXQgcGF0aCA9ICcnO1xuICAgICAgd2hpbGUgKHBhcnRzLmxlbmd0aCA+IDApIHtcbiAgICAgICAgcGF0aCArPSBwYXJ0cy5zaGlmdCgpICsgJy8nO1xuICAgICAgICB0cnkge1xuICAgICAgICAgIGF3YWl0IHB5b2RpZGUuRlMubWtkaXIocGF0aCk7XG4gICAgICAgIH0gY2F0Y2ggKGUpIHtcbiAgICAgICAgICBpZiAoZS5uYW1lICE9PSBcIkVycm5vRXJyb3JcIikgdGhyb3cgZTtcbiAgICAgICAgICBpZiAoZS5lcnJubyAhPT0gMjApIHtcbiAgICAgICAgICAgIGNvbnN0IGVycm9yVGV4dFB0ciA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5fc3RyZXJyb3IoZS5lcnJubyk7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYEZpbGVzeXN0ZW0gRXJyb3IgJHtlLmVycm5vfSBcIiR7ZXJyb3JUZXh0fVwiLmApO1xuICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgICAgfVxuXG4gICAgICAvLyBXcml0ZSB0aGlzIGZpbGUgdG8gdGhlIFZGU1xuICAgICAgdHJ5IHtcbiAgICAgICAgcmV0dXJuIGF3YWl0IHB5b2RpZGUuRlMud3JpdGVGaWxlKGZpbGUsIG5ldyBVaW50OEFycmF5KGRhdGEpKTtcbiAgICAgIH0gY2F0Y2ggKGUpIHtcbiAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgIGNvbnN0IGVycm9yVGV4dFB0ciA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5fc3RyZXJyb3IoZS5lcnJubyk7XG4gICAgICAgIGNvbnN0IGVycm9yVGV4dCA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5VVEY4VG9TdHJpbmcoZXJyb3JUZXh0UHRyKTtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgIH1cbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcblxuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgUHlvZGlkZSBlbnZpcm9ubWVudCBzZXR1cGA7XG4gICAgYXdhaXQgc2V0dXBQeXRob24ocHlvZGlkZSk7XG5cbiAgICBzdGF0dXNUZXh0LnJlbW92ZSgpO1xuICAgIGlmIChzdGF0dXNDb250YWluZXIuY2hpbGRyZW4ubGVuZ3RoID09IDApIHtcbiAgICAgIHN0YXR1c0NvbnRhaW5lci5wYXJlbnROb2RlLnJlbW92ZSgpO1xuICAgIH1cbiAgICByZXR1cm4gcHlvZGlkZTtcbiAgfSkoKS5jYXRjaCgoZXJyKSA9PiB7XG4gICAgc3RhdHVzVGV4dC5zdHlsZS5jb2xvciA9IFwidmFyKC0tZXhlcmNpc2UtZWRpdG9yLWhsLWVyLCAjQUQwMDAwKVwiO1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBlcnIubWVzc2FnZTtcbiAgICAvL2luZGljYXRvckNvbnRhaW5lci5xdWVyeVNlbGVjdG9yKFwiLnNwaW5uZXItZ3Jvd1wiKS5jbGFzc0xpc3QuYWRkKFwiZC1ub25lXCIpO1xuICAgIHRocm93IGVycjtcbiAgfSk7XG5cbiAgLy8gS2VlcCB0cmFjayBvZiBpbml0aWFsIE9KUyBibG9jayByZW5kZXJcbiAgY29uc3QgcmVuZGVyZWRPanMgPSB7fTtcblxuICBjb25zdCBwcm9jZXNzID0gYXN5bmMgKGNvbnRleHQsIGlucHV0cykgPT4ge1xuICAgIGNvbnN0IHB5b2RpZGUgPSBhd2FpdCBweW9kaWRlUHJvbWlzZTtcbiAgICBjb25zdCBldmFsdWF0b3IgPSBuZXcgUHlvZGlkZUV2YWx1YXRvcihweW9kaWRlLCBjb250ZXh0KTtcbiAgICBhd2FpdCBldmFsdWF0b3IucHJvY2VzcyhpbnB1dHMpO1xuICAgIHJldHVybiBldmFsdWF0b3IuY29udGFpbmVyO1xuICB9XG5cbiAgcmV0dXJuIHtcbiAgICBweW9kaWRlUHJvbWlzZSxcbiAgICByZW5kZXJlZE9qcyxcbiAgICBwcm9jZXNzLFxuICB9O1xufVxuIn1dfQ==
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="qrjs_pics/unsoed_logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="https://imron-slide.vercel.app">irosyadi-2025</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script type="ojs-module-contents">
+    eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Ii8vIERlZmluZSBpbnB1dCBjb250cm9scyB1c2luZyBPYnNlcnZhYmxlIElucHV0c1xudmlld29mIHB4X3JlZiA9IElucHV0cy5yYW5nZShbLTUsIDVdLCB7c3RlcDogMC4xLCB2YWx1ZTogMiwgbGFiZWw6IFwiUF94XCJ9KVxudmlld29mIHB5X3JlZiA9IElucHV0cy5yYW5nZShbLTUsIDVdLCB7c3RlcDogMC4xLCB2YWx1ZTogMywgbGFiZWw6IFwiUF95XCJ9KVxudmlld29mIHJlZmxlY3Rpb25UeXBlX3JlZiA9IElucHV0cy5zZWxlY3QoW1wieF9heGlzXCIsIFwieV9heGlzXCIsIFwieV9lcXVhbHNfeFwiXSwge2xhYmVsOiBcIlJlZmxlY3Rpb24gVHlwZVwiLCB2YWx1ZTogXCJ4X2F4aXNcIn0pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTIiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiIvLyBEZWZpbmUgaW5wdXQgY29udHJvbHMgdXNpbmcgT2JzZXJ2YWJsZSBJbnB1dHNcbnZpZXdvZiBweF9wcm9qID0gSW5wdXRzLnJhbmdlKFstNSwgNV0sIHtzdGVwOiAwLjEsIHZhbHVlOiAyLCBsYWJlbDogXCJQX3hcIn0pXG52aWV3b2YgcHlfcHJvaiA9IElucHV0cy5yYW5nZShbLTUsIDVdLCB7c3RlcDogMC4xLCB2YWx1ZTogMywgbGFiZWw6IFwiUF95XCJ9KVxudmlld29mIHByb2plY3Rpb25UeXBlX3Byb2ogPSBJbnB1dHMuc2VsZWN0KFtcInhfYXhpc1wiLCBcInlfYXhpc1wiLCBcInlfZXF1YWxzX3hcIl0sIHtsYWJlbDogXCJQcm9qZWN0aW9uIFR5cGVcIiwgdmFsdWU6IFwieF9heGlzXCJ9KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0zIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiLy8gRGVmaW5lIGlucHV0IGNvbnRyb2wgZm9yIHJvdGF0aW9uIGFuZ2xlXG52aWV3b2YgYW5nbGVfcm90ID0gSW5wdXRzLnJhbmdlKFswLCAzNjBdLCB7c3RlcDogMSwgdmFsdWU6IDAsIGxhYmVsOiBcIlJvdGF0aW9uIEFuZ2xlIChkZWdyZWVzKVwifSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNCIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Ii8vIERlZmluZSBpbnB1dCBjb250cm9sIGZvciBzY2FsaW5nIGZhY3Rvclxudmlld29mIHNjYWxlRmFjdG9yX3NjYWxlID0gSW5wdXRzLnJhbmdlKFswLjEsIDNdLCB7c3RlcDogMC4xLCB2YWx1ZTogMSwgbGFiZWw6IFwiU2NhbGluZyBGYWN0b3IgKGspXCJ9KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC01IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiLy8gRGVmaW5lIGlucHV0IGNvbnRyb2xzIGZvciBzY2FsaW5nIGZhY3RvciBhbmQgZGlyZWN0aW9uXG52aWV3b2YgY29tcEV4cEZhY3Rvcl9jZSA9IElucHV0cy5yYW5nZShbMC4xLCAzXSwge3N0ZXA6IDAuMSwgdmFsdWU6IDEsIGxhYmVsOiBcIlNjYWxpbmcgRmFjdG9yIChrKVwifSlcbnZpZXdvZiBjb21wRXhwRGlyZWN0aW9uX2NlID0gSW5wdXRzLnNlbGVjdChbXCJ4XCIsIFwieVwiXSwge2xhYmVsOiBcIkRpcmVjdGlvblwiLCB2YWx1ZTogXCJ4XCJ9KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC02IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiLy8gRGVmaW5lIGlucHV0IGNvbnRyb2xzIGZvciBzaGVhciBmYWN0b3IgYW5kIGRpcmVjdGlvblxudmlld29mIHNoZWFyRmFjdG9yX3NoZWFyID0gSW5wdXRzLnJhbmdlKFstMiwgMl0sIHtzdGVwOiAwLjEsIHZhbHVlOiAwLCBsYWJlbDogXCJTaGVhciBGYWN0b3IgKGspXCJ9KVxudmlld29mIHNoZWFyRGlyZWN0aW9uX3NoZWFyID0gSW5wdXRzLnNlbGVjdChbXCJ4XCIsIFwieVwiXSwge2xhYmVsOiBcIkRpcmVjdGlvblwiLCB2YWx1ZTogXCJ4XCJ9KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdweF9yZWYnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgncHlfcmVmJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ3JlZmxlY3Rpb25UeXBlX3JlZicpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdweF9wcm9qJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ3B5X3Byb2onKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgncHJvamVjdGlvblR5cGVfcHJvaicpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdhbmdsZV9yb3QnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnc2NhbGVGYWN0b3Jfc2NhbGUnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnY29tcEV4cEZhY3Rvcl9jZScpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdjb21wRXhwRGlyZWN0aW9uX2NlJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ3NoZWFyRmFjdG9yX3NoZWFyJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ3NoZWFyRGlyZWN0aW9uX3NoZWFyJykifV19
+    </script>
+    <script type="module">
+    if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+    window._ojs.paths.runtimeToDoc = "../..";
+    window._ojs.paths.runtimeToRoot = "../..";
+    window._ojs.paths.docToRoot = "";
+    window._ojs.selfContained = false;
+    window._ojs.runtime.interpretFromScriptTags();
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

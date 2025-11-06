@@ -1,0 +1,1808 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-html/tabby.min.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.25">
+
+  <meta name="author" content="Imron Rosyadi">
+  <title>Linear Algebra</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-b0356e9119c1bdfd0db189d130feb51c.css">
+  <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+  <link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+  <meta name="mermaid-theme" content="neutral">
+  <script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+  <script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+  <link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Linear Algebra</h1>
+  <p class="subtitle">5.1 Eigenvalues &amp; Eigenvectors</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Imron Rosyadi 
+</div>
+</div>
+</div>
+
+</section>
+<section id="introduction-what-are-eigenvalues-eigenvectors" class="slide level2">
+<h2>Introduction: What are Eigenvalues &amp; Eigenvectors?</h2>
+<p><strong>Definition 1: Eigenvector and Eigenvalue</strong></p>
+<p>If <span class="math inline">\(A\)</span> is an <span class="math inline">\(n \times n\)</span> matrix, a <strong>nonzero vector</strong> <span class="math inline">\(\mathbf{x}\)</span> in <span class="math inline">\(R^{n}\)</span> is an <strong>eigenvector</strong> of <span class="math inline">\(A\)</span> if:</p>
+<p><span class="math display">\[
+A\mathbf{x} = \lambda \mathbf{x}
+\]</span></p>
+<p>for some scalar <span class="math inline">\(\lambda\)</span>.</p>
+<p>The scalar <span class="math inline">\(\lambda\)</span> is called an <strong>eigenvalue</strong> of <span class="math inline">\(A\)</span>.</p>
+<p><span class="math inline">\(\mathbf{x}\)</span> is said to be an eigenvector <strong>corresponding to</strong> <span class="math inline">\(\lambda\)</span>.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Eigenvectors are special vectors whose direction remains unchanged (or reversed) after a linear transformation by matrix <span class="math inline">\(A\)</span>.</p>
+<p>Eigenvalues are the scaling factors by which these eigenvectors are stretched or compressed.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="introduction-what-are-eigenvalues-eigenvectors-1" class="slide level2">
+<h2>Introduction: What are Eigenvalues &amp; Eigenvectors?</h2>
+<p><strong>Key Idea:</strong></p>
+<p>Most vectors change both direction and magnitude when multiplied by a matrix <span class="math inline">\(A\)</span>.</p>
+<p><strong>Eigenvectors</strong> are unique: they only change magnitude (and possibly orientation by 180 degrees)</p>
+<ul>
+<li><code>A</code> acts on <code>x</code></li>
+<li><code>x</code> is scaled by <code>λ</code></li>
+</ul>
+<p>Why <code>x</code> must be nonzero?</p>
+<p><span class="math inline">\(A\mathbf{0} = \lambda \mathbf{0}\)</span> holds for any matrix <span class="math inline">\(A\)</span> and any scalar <span class="math inline">\(\lambda\)</span>, which isn’t useful.</p>
+<aside class="notes">
+<p>Welcome everyone to this session on Eigenvalues and Eigenvectors. These concepts are fundamental in Linear Algebra and have profound implications across various fields, especially in Electrical and Computer Engineering.</p>
+<p>At its core, an eigenvector is a special vector that, when a linear transformation is applied to it (represented by a matrix A), only gets scaled, not rotated or flipped in a complex way. The scaling factor is what we call the eigenvalue.</p>
+<p>Think of it like this: if you push a button on a system, most things might move in complicated ways. But an eigenvector represents a specific mode or direction of response where the system simply scales its output along that same direction. This simplicity is incredibly powerful for analysis.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="geometric-intuition" class="slide level2">
+<h2>Geometric Intuition</h2>
+<p>When a matrix <span class="math inline">\(A\)</span> multiplies a vector <span class="math inline">\(\mathbf{x}\)</span>:</p>
+<ul>
+<li>Typically, <span class="math inline">\(A\mathbf{x}\)</span> has a different direction and magnitude than <span class="math inline">\(\mathbf{x}\)</span>.</li>
+<li>For an eigenvector <span class="math inline">\(\mathbf{x}\)</span>, the direction of <span class="math inline">\(A\mathbf{x}\)</span> is the same as <span class="math inline">\(\mathbf{x}\)</span> (or exactly opposite if <span class="math inline">\(\lambda\)</span> is negative).</li>
+</ul>
+<p>The operation <span class="math inline">\(A\mathbf{x} = \lambda \mathbf{x}\)</span> means <span class="math inline">\(\mathbf{x}\)</span> is:</p>
+<ul>
+<li><strong>Stretched</strong> by factor <span class="math inline">\(\lambda\)</span> if <span class="math inline">\(\lambda &gt; 1\)</span>.</li>
+<li><strong>Compressed</strong> by factor <span class="math inline">\(\lambda\)</span> if <span class="math inline">\(0 &lt; \lambda &lt; 1\)</span>.</li>
+<li><strong>Reversed and stretched/compressed</strong> if <span class="math inline">\(\lambda &lt; 0\)</span>.</li>
+</ul>
+<p>This helps us understand the fundamental ‘modes’ or ‘directions’ of a linear transformation.</p>
+</section>
+<section id="geometric-intuition-1" class="slide level2">
+<h2>Geometric Intuition</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://cdn-mineru.openxlab.org.cn/result/2025-08-19/203477b1-939d-4d94-b333-0c3ffc5790ce/f291e95c61db425d240a1acb6f87dec5489260f7c44b968b7422df010c17b8d8.jpg"></p>
+<figcaption>Figure 5.1.1: <span class="math inline">\(A\mathbf{x}\)</span> is a scalar multiple of <span class="math inline">\(\mathbf{x}\)</span>.</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://cdn-mineru.openxlab.org.cn/result/2025-08-19/203477b1-939d-4d94-b333-0c3ffc5790ce/e571ac1ca4577c49f73119e4f8701aa574a7c40d98fd0654ae9f03fd3b1e5aff.jpg"></p>
+<figcaption>Figure 5.1.2: Example of stretching.</figcaption>
+</figure>
+</div>
+<aside class="notes">
+<p>Let’s visualize this. Imagine a transformation in 2D space. If you take a random vector and apply the transformation, its new position will likely be in a completely different direction.</p>
+<p>But for an eigenvector, it stays on the same line through the origin. It just moves further along that line, or closer to the origin, or even flips to the opposite side while still staying on that line.</p>
+<p>The images here illustrate this: Figure 5.1.1 shows the general concept of <span class="math inline">\(A\mathbf{x}\)</span> being parallel to <span class="math inline">\(\mathbf{x}\)</span>. Figure 5.1.2 gives a concrete example where the vector <span class="math inline">\(\mathbf{x}\)</span> is stretched by a factor of 3, meaning <span class="math inline">\(\lambda=3\)</span>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-eigenvector-of-a-2-times-2-matrix" class="slide level2">
+<h2>Example: Eigenvector of a <span class="math inline">\(2 \times 2\)</span> Matrix</h2>
+<p><strong>Problem:</strong> Verify if <span class="math inline">\(\mathbf{x} = \begin{bmatrix} 1 \\ 2 \end{bmatrix}\)</span> is an eigenvector of <span class="math inline">\(A = \begin{bmatrix} 3 &amp; 0 \\ 8 &amp; -1 \end{bmatrix}\)</span> and find its corresponding eigenvalue.</p>
+<p><strong>Solution:</strong></p>
+<p>We compute <span class="math inline">\(A\mathbf{x}\)</span>:</p>
+<p><span class="math display">\[
+A\mathbf{x} = \begin{bmatrix} 3 &amp; 0 \\ 8 &amp; -1 \end{bmatrix} \begin{bmatrix} 1 \\ 2 \end{bmatrix} = \begin{bmatrix} (3)(1) + (0)(2) \\ (8)(1) + (-1)(2) \end{bmatrix} = \begin{bmatrix} 3 \\ 6 \end{bmatrix}
+\]</span></p>
+<p>Now, we check if <span class="math inline">\(\begin{bmatrix} 3 \\ 6 \end{bmatrix}\)</span> is a scalar multiple of <span class="math inline">\(\mathbf{x} = \begin{bmatrix} 1 \\ 2 \end{bmatrix}\)</span>:</p>
+<p><span class="math display">\[
+\begin{bmatrix} 3 \\ 6 \end{bmatrix} = 3 \begin{bmatrix} 1 \\ 2 \end{bmatrix} = 3\mathbf{x}
+\]</span></p>
+<p>Yes, it is!</p>
+<p>So, <span class="math inline">\(\mathbf{x} = \begin{bmatrix} 1 \\ 2 \end{bmatrix}\)</span> is an eigenvector of <span class="math inline">\(A\)</span>, and its corresponding eigenvalue is <span class="math inline">\(\lambda = 3\)</span>.</p>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>This geometric transformation (stretching by a factor of 3) is exactly what we saw in Figure 5.1.2.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="example-eigenvector-of-a-2-times-2-matrix-1" class="slide level2">
+<h2>Example: Eigenvector of a <span class="math inline">\(2 \times 2\)</span> Matrix</h2>
+<p><strong>Quick Check:</strong></p>
+<p>Does <span class="math inline">\(A\mathbf{x} = \lambda \mathbf{x}\)</span> hold?</p>
+<p><span class="math inline">\(\begin{bmatrix} 3 \\ 6 \end{bmatrix} = 3 \begin{bmatrix} 1 \\ 2 \end{bmatrix}\)</span></p>
+<p>This confirms our result.</p>
+<aside class="notes">
+<p>This example demonstrates the definition in practice. We take a given matrix and a vector, perform the matrix-vector multiplication, and then observe the result. If the result is simply a scaled version of the original vector, then we’ve found an eigenvector and its eigenvalue. Here, the vector (1,2) is stretched to (3,6), which is 3 times the original vector. This means lambda is 3.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-vector-transformation" class="slide level2">
+<h2>Interactive Vector Transformation</h2>
+<p>Explore how a 2x2 matrix transforms a vector.</p>
+<p>Adjust the matrix entries and vector components to observe the output.</p>
+<p>Can you find an eigenvector?</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="162" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 161;"><span id="cb1-162"><a></a>viewof a_val <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">3</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[0,0]"</span>})<span class="op">;</span></span>
+<span id="cb1-163"><a></a>viewof b_val <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[0,1]"</span>})<span class="op">;</span></span>
+<span id="cb1-164"><a></a>viewof c_val <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">8</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[1,0]"</span>})<span class="op">;</span></span>
+<span id="cb1-165"><a></a>viewof d_val <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[1,1]"</span>})<span class="op">;</span></span>
+<span id="cb1-166"><a></a></span>
+<span id="cb1-167"><a></a>viewof x1_val <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"x[0]"</span>})<span class="op">;</span></span>
+<span id="cb1-168"><a></a>viewof x2_val <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"x[1]"</span>})<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-6" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div>
+<div id="pyodide-1" class="exercise-cell">
+
+</div>
+<script type="pyodide-1-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiYV92YWwiLCJiX3ZhbCIsImNfdmFsIiwiZF92YWwiLCJ4MV92YWwiLCJ4Ml92YWwiXSwibWF4LWxpbmVzIjoyNX0sImNvZGUiOiJcbmltcG9ydCBwbG90bHkuZ3JhcGhfb2JqZWN0cyBhcyBnb1xuaW1wb3J0IG51bXB5IGFzIG5wXG5cbiMgRGVmaW5lIG1hdHJpeCBBIGFuZCB2ZWN0b3IgeFxuQSA9IG5wLmFycmF5KFtbYV92YWwsIGJfdmFsXSxcbiAgICAgICAgICAgICAgW2NfdmFsLCBkX3ZhbF1dKVxueCA9IG5wLmFycmF5KFt4MV92YWwsIHgyX3ZhbF0pXG5cbiMgQ2FsY3VsYXRlIEF4XG5BeCA9IG5wLmRvdChBLCB4KVxuXG4jIENoZWNrIGlmIEF4IGlzIGEgc2NhbGFyIG11bHRpcGxlIG9mIHggKGkuZS4sIHggaXMgYW4gZWlnZW52ZWN0b3IpXG5pc19laWdlbnZlY3RvciA9IEZhbHNlXG5laWdlbnZhbHVlID0gTm9uZVxuXG4jIEF2b2lkIGRpdmlzaW9uIGJ5IHplcm8gaWYgeCBvciBBeCBpcyB6ZXJvIHZlY3RvclxuaWYgbnAubGluYWxnLm5vcm0oeCkgPiAxZS05IGFuZCBucC5saW5hbGcubm9ybShBeCkgPiAxZS05OlxuICAgICMgQ2hlY2sgaWYgQXggaXMgcGFyYWxsZWwgdG8geFxuICAgIGRvdF9wcm9kdWN0ID0gbnAuZG90KHgsIEF4KVxuICAgIG5vcm1fcHJvZHVjdCA9IG5wLmxpbmFsZy5ub3JtKHgpICogbnAubGluYWxnLm5vcm0oQXgpXG4gIFxuICAgICMgQ2hlY2sgZm9yIGNvbGxpbmVhcml0eVxuICAgIGlmIG5wLmlzY2xvc2UoZG90X3Byb2R1Y3QsIG5vcm1fcHJvZHVjdCkgb3IgbnAuaXNjbG9zZShkb3RfcHJvZHVjdCwgLW5vcm1fcHJvZHVjdCk6XG4gICAgICAgICMgQ2FsY3VsYXRlIGxhbWJkYVxuICAgICAgICBlaWdlbnZhbHVlID0gQXhbMF0gLyB4WzBdIGlmIHhbMF0gIT0gMCBlbHNlIEF4WzFdIC8geFsxXVxuICAgICAgXG4gICAgICAgICMgVmVyaWZ5IEEqeCA9IGxhbWJkYSp4XG4gICAgICAgIGlmIG5wLmFsbGNsb3NlKG5wLmRvdChBLCB4KSwgZWlnZW52YWx1ZSAqIHgpOlxuICAgICAgICAgICAgaXNfZWlnZW52ZWN0b3IgPSBUcnVlXG4gICAgICAgIGVsc2U6XG4gICAgICAgICAgICBlaWdlbnZhbHVlID0gTm9uZSAjIE5vdCBhbiBlaWdlbnZlY3RvciBpZiBzY2FsaW5nIGRvZXNuJ3QgbWF0Y2hcbmVsaWYgbnAubGluYWxnLm5vcm0oeCkgPiAxZS05IGFuZCBucC5saW5hbGcubm9ybShBeCkgPCAxZS05OiAjIEEqeCA9IDAqeCBpbXBsaWVzIGxhbWJkYSA9IDBcbiAgICBpc19laWdlbnZlY3RvciA9IFRydWVcbiAgICBlaWdlbnZhbHVlID0gMFxuXG4jIENyZWF0ZSBQbG90bHkgZmlndXJlXG5maWcgPSBnby5GaWd1cmUoKVxuXG4jIFBsb3Qgb3JpZ2luYWwgdmVjdG9yIHhcbmZpZy5hZGRfdHJhY2UoZ28uU2NhdHRlcih4PVswLCB4WzBdXSwgeT1bMCwgeFsxXV0sIG1vZGU9J2xpbmVzK21hcmtlcnMnLCBuYW1lPSdPcmlnaW5hbCBWZWN0b3IgeCcsXG4gICAgICAgICAgICAgICAgICAgICAgICAgbGluZT1kaWN0KGNvbG9yPSdibHVlJywgd2lkdGg9MyksIG1hcmtlcj1kaWN0KHNpemU9OCkpKVxuXG4jIFBsb3QgdHJhbnNmb3JtZWQgdmVjdG9yIEF4XG5maWcuYWRkX3RyYWNlKGdvLlNjYXR0ZXIoeD1bMCwgQXhbMF1dLCB5PVswLCBBeFsxXV0sIG1vZGU9J2xpbmVzK21hcmtlcnMnLCBuYW1lPSdUcmFuc2Zvcm1lZCBWZWN0b3IgQXgnLFxuICAgICAgICAgICAgICAgICAgICAgICAgIGxpbmU9ZGljdChjb2xvcj0ncmVkJywgd2lkdGg9MywgZGFzaD0nZG90JyksIG1hcmtlcj1kaWN0KHNpemU9OCkpKVxuXG4jIElmIGl0J3MgYW4gZWlnZW52ZWN0b3IsIHBsb3QgbGFtYmRhKnggYW5kIGRpc3BsYXkgZWlnZW52YWx1ZVxuaWYgaXNfZWlnZW52ZWN0b3I6XG4gICAgZmlnLmFkZF90cmFjZShnby5TY2F0dGVyKHg9WzAsIGVpZ2VudmFsdWUgKiB4WzBdXSwgeT1bMCwgZWlnZW52YWx1ZSAqIHhbMV1dLCBtb2RlPSdsaW5lcycsIG5hbWU9J867eCcsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxpbmU9ZGljdChjb2xvcj0nZ3JlZW4nLCB3aWR0aD0yLCBkYXNoPSdzb2xpZCcpLCBtYXJrZXI9ZGljdChzaXplPTApKSlcbiAgICBlaWdlbl90ZXh0ID0gZlwiRWlnZW52ZWN0b3IgZm91bmQhIM67ID0ge2VpZ2VudmFsdWU6LjJmfVwiXG5lbHNlOlxuICAgIGVpZ2VuX3RleHQgPSBcIk5vdCBhbiBlaWdlbnZlY3Rvci5cIlxuXG4jIFVwZGF0ZSBsYXlvdXRcbmZpZy51cGRhdGVfbGF5b3V0KFxuICAgIHhheGlzX3RpdGxlPVwiWC1heGlzXCIsXG4gICAgeWF4aXNfdGl0bGU9XCJZLWF4aXNcIixcbiAgICB4YXhpc19yYW5nZT1bLTEwLCAxMF0sXG4gICAgeWF4aXNfcmFuZ2U9Wy0xMCwgMTBdLFxuICAgIHdpZHRoPTYwMCxcbiAgICBoZWlnaHQ9NDAwLFxuICAgIG1hcmdpbj1kaWN0KGw9MCwgcj0wLCBiPTAsIHQ9MCksXG4gICAgdGl0bGU9ZWlnZW5fdGV4dFxuKVxuXG5maWcifQ==
+</script>
+</div>
+</div></div>
+<aside class="notes">
+<p>This interactive plot allows you to dynamically change the matrix elements and the components of vector X.</p>
+<p>Observe how the blue vector (X) is transformed into the red dashed vector (AX). Most of the time, AX will point in a completely different direction.</p>
+<p>Your challenge is to find combinations of A and X where AX lies exactly along the same line as X. When you find such a case, the plot will indicate “Eigenvector found!” and display the corresponding eigenvalue (lambda).</p>
+<p>Try to recreate the previous example: A = [[3,0],[8,-1]] and X = [1,2]. You should see lambda = 3. Also, try A = [[3,0],[8,-1]] and X = [-3/2, 1] (you might need to adjust the range for X if it’s outside the slider). What lambda do you get?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="finding-eigenvalues-the-characteristic-equation" class="slide level2 scrollable">
+<h2>Finding Eigenvalues: The Characteristic Equation</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>To find eigenvalues <span class="math inline">\(\lambda\)</span> for a matrix <span class="math inline">\(A\)</span>:</p>
+<ol type="1">
+<li>Start with the definition: <span class="math inline">\(A\mathbf{x} = \lambda \mathbf{x}\)</span></li>
+<li>Rewrite: <span class="math inline">\(A\mathbf{x} = \lambda I\mathbf{x}\)</span> (where <span class="math inline">\(I\)</span> is the identity matrix)</li>
+<li>Rearrange: <span class="math inline">\((\lambda I - A)\mathbf{x} = \mathbf{0}\)</span></li>
+</ol>
+<p>For this equation to have a <strong>nonzero solution</strong> <span class="math inline">\(\mathbf{x}\)</span> (an eigenvector), the matrix <span class="math inline">\((\lambda I - A)\)</span> must be singular.</p>
+<p>This means its determinant must be zero.</p>
+<p><strong>Theorem 5.1.1: Characteristic Equation</strong></p>
+<p>If <span class="math inline">\(A\)</span> is an <span class="math inline">\(n \times n\)</span> matrix, then <span class="math inline">\(\lambda\)</span> is an eigenvalue of <span class="math inline">\(A\)</span> if and only if it satisfies the equation:</p>
+<p><span class="math display">\[
+\operatorname{det}(\lambda I - A) = 0 \tag{1}
+\]</span></p>
+<p>This is called the <strong>characteristic equation</strong> of <span class="math inline">\(A\)</span>.</p>
+</div><div class="column" style="width:50%;">
+<p><strong>Process Overview:</strong></p>
+<p>The expression <span class="math inline">\(\operatorname{det}(\lambda I - A)\)</span> will be a polynomial in <span class="math inline">\(\lambda\)</span>, called the <strong>characteristic polynomial</strong> of <span class="math inline">\(A\)</span>.</p>
+<p>For an <span class="math inline">\(n \times n\)</span> matrix, the characteristic polynomial will be of degree <span class="math inline">\(n\)</span>, meaning it can have at most <span class="math inline">\(n\)</span> distinct eigenvalues.</p>
+</div></div>
+<aside class="notes">
+<p>Now that we understand what eigenvectors and eigenvalues are, the next logical step is to learn how to find them for any given matrix.</p>
+<p>The key insight comes from rewriting the eigenvalue definition. By introducing the identity matrix I, we can factor out the vector x, leading to the homogeneous system (lambda I - A)x = 0.</p>
+<p>For this system to have non-trivial solutions (which eigenvectors must be), the matrix (lambda I - A) cannot be invertible. A non-invertible matrix has a determinant of zero. This leads us directly to the characteristic equation: det(lambda I - A) = 0.</p>
+<p>Solving this polynomial equation for lambda gives us all the eigenvalues of the matrix A. The diagram illustrates this step-by-step process.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-finding-eigenvalues-for-a-2-times-2-matrix" class="slide level2 scrollable">
+<h2>Example: Finding Eigenvalues for a <span class="math inline">\(2 \times 2\)</span> Matrix</h2>
+<p><strong>Problem:</strong> Use the characteristic equation to find all eigenvalues of <span class="math inline">\(A = \begin{bmatrix} 3 &amp; 0 \\ 8 &amp; -1 \end{bmatrix}\)</span>.</p>
+<p><strong>Solution:</strong></p>
+<ol type="1">
+<li><p><strong>Form <span class="math inline">\(\lambda I - A\)</span>:</strong> <span class="math display">\[
+\lambda I - A = \lambda \begin{bmatrix} 1 &amp; 0 \\ 0 &amp; 1 \end{bmatrix} - \begin{bmatrix} 3 &amp; 0 \\ 8 &amp; -1 \end{bmatrix} = \begin{bmatrix} \lambda &amp; 0 \\ 0 &amp; \lambda \end{bmatrix} - \begin{bmatrix} 3 &amp; 0 \\ 8 &amp; -1 \end{bmatrix} = \begin{bmatrix} \lambda - 3 &amp; 0 \\ -8 &amp; \lambda + 1 \end{bmatrix}
+\]</span></p></li>
+<li><p><strong>Calculate <span class="math inline">\(\operatorname{det}(\lambda I - A)\)</span>:</strong> <span class="math display">\[
+\operatorname{det}(\lambda I - A) = \left| \begin{array}{cc}\lambda -3 &amp; 0 \\ -8 &amp; \lambda +1 \end{array} \right| = (\lambda - 3)(\lambda + 1) - (0)(-8) = (\lambda - 3)(\lambda + 1)
+\]</span></p></li>
+<li><p><strong>Set <span class="math inline">\(\operatorname{det}(\lambda I - A) = 0\)</span>:</strong> <span class="math display">\[
+(\lambda - 3)(\lambda + 1) = 0
+\]</span></p></li>
+<li><p><strong>Solve for <span class="math inline">\(\lambda\)</span>:</strong> This equation gives us two solutions:</p>
+<p><span class="math inline">\(\lambda - 3 = 0 \implies \lambda = 3\)</span></p>
+<p><span class="math inline">\(\lambda + 1 = 0 \implies \lambda = -1\)</span></p></li>
+</ol>
+<p>Thus, the eigenvalues of <span class="math inline">\(A\)</span> are <span class="math inline">\(\lambda = 3\)</span> and <span class="math inline">\(\lambda = -1\)</span>.</p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>The characteristic polynomial for this matrix is <span class="math inline">\(p(\lambda) = (\lambda - 3)(\lambda + 1) = \lambda^2 - 2\lambda - 3\)</span>.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Let’s apply the characteristic equation method to the matrix from our earlier example.</p>
+<p>First, we construct the matrix (lambda I - A). Remember, this involves subtracting A from a diagonal matrix with lambda on its main diagonal.</p>
+<p>Next, we compute the determinant of this new matrix. For a 2x2 matrix, this is straightforward: (ad - bc). This calculation yields a polynomial in lambda.</p>
+<p>Finally, we set this characteristic polynomial equal to zero and solve for lambda. For a quadratic equation like this, factoring or the quadratic formula works. We find the eigenvalues are 3 and -1. This confirms the eigenvalue of 3 we observed earlier, and also reveals a second eigenvalue.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-characteristic-polynomial-eigenvalue-finder" class="slide level2">
+<h2>Interactive Characteristic Polynomial &amp; Eigenvalue Finder</h2>
+<p>Input the elements of a <span class="math inline">\(2 \times 2\)</span> or <span class="math inline">\(3 \times 3\)</span> matrix.</p>
+<p>The tool will compute its characteristic polynomial and find its eigenvalues.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="367" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 366;"><span id="cb2-367"><a></a>viewof matrix_dim <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">radio</span>([<span class="st">"2x2"</span><span class="op">,</span> <span class="st">"3x3"</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="st">"2x2"</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Matrix Dimension"</span>})<span class="op">;</span></span>
+<span id="cb2-368"><a></a></span>
+<span id="cb2-369"><a></a><span class="co">// 2x2 inputs</span></span>
+<span id="cb2-370"><a></a>viewof a22_00 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">3</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[0,0]"</span>})<span class="op">;</span></span>
+<span id="cb2-371"><a></a>viewof a22_01 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[0,1]"</span>})<span class="op">;</span></span>
+<span id="cb2-372"><a></a>viewof a22_10 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">8</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[1,0]"</span>})<span class="op">;</span></span>
+<span id="cb2-373"><a></a>viewof a22_11 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[1,1]"</span>})<span class="op">;</span></span>
+<span id="cb2-374"><a></a></span>
+<span id="cb2-375"><a></a><span class="co">// 3x3 inputs</span></span>
+<span id="cb2-376"><a></a>viewof a33_00 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[0,0]"</span>})<span class="op">;</span></span>
+<span id="cb2-377"><a></a>viewof a33_01 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[0,1]"</span>})<span class="op">;</span></span>
+<span id="cb2-378"><a></a>viewof a33_02 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[0,2]"</span>})<span class="op">;</span></span>
+<span id="cb2-379"><a></a>viewof a33_10 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[1,0]"</span>})<span class="op">;</span></span>
+<span id="cb2-380"><a></a>viewof a33_11 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[1,1]"</span>})<span class="op">;</span></span>
+<span id="cb2-381"><a></a>viewof a33_12 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[1,2]"</span>})<span class="op">;</span></span>
+<span id="cb2-382"><a></a>viewof a33_20 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">4</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[2,0]"</span>})<span class="op">;</span></span>
+<span id="cb2-383"><a></a>viewof a33_21 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="op">-</span><span class="dv">17</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[2,1]"</span>})<span class="op">;</span></span>
+<span id="cb2-384"><a></a>viewof a33_22 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">8</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[2,2]"</span>})<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-6" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-7" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-8" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-9" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-10" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-11" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-12" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-13" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-14" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div>
+<div id="pyodide-2" class="exercise-cell">
+
+</div>
+<script type="pyodide-2-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsibWF0cml4X2RpbSIsImEyMl8wMCIsImEyMl8wMSIsImEyMl8xMCIsImEyMl8xMSIsImEzM18wMCIsImEzM18wMSIsImEzM18wMiIsImEzM18xMCIsImEzM18xMSIsImEzM18xMiIsImEzM18yMCIsImEzM18yMSIsImEzM18yMiJdLCJtYXgtbGluZXMiOjMwfSwiY29kZSI6IlxuaW1wb3J0IG51bXB5IGFzIG5wXG5pbXBvcnQgc3ltcHlcblxuZGVmIGdldF9jaGFyYWN0ZXJpc3RpY19wb2x5bm9taWFsX2FuZF9laWdlbnZhbHVlcyhBX25wKTpcbiAgICBuID0gQV9ucC5zaGFwZVswXVxuICBcbiAgICAjIFVzZSBzeW1weSBmb3Igc3ltYm9saWMgZGV0ZXJtaW5hbnQgdG8gZ2V0IGNoYXJhY3RlcmlzdGljIHBvbHlub21pYWxcbiAgICBsYW0gPSBzeW1weS5zeW1ib2xzKCdsYW1iZGEnKVxuICAgIEFfc3ltID0gc3ltcHkuTWF0cml4KEFfbnApXG4gIFxuICAgICMgQ29uc3RydWN0IChsYW1iZGEqSSAtIEEpIHN5bWJvbGljYWxseVxuICAgIGxhbWJkYV9JX21pbnVzX0Ffc3ltID0gc3ltcHkuZXllKG4pICogbGFtIC0gQV9zeW1cbiAgXG4gICAgIyBDYWxjdWxhdGUgdGhlIHN5bWJvbGljIGRldGVybWluYW50XG4gICAgY2hhcl9wb2x5X3N5bSA9IGxhbWJkYV9JX21pbnVzX0Ffc3ltLmRldCgpXG4gIFxuICAgICMgQ29udmVydCB0byBhIGh1bWFuLXJlYWRhYmxlIHBvbHlub21pYWwgc3RyaW5nXG4gICAgY2hhcl9wb2x5X3N0ciA9IHN0cihjaGFyX3BvbHlfc3ltLmV4cGFuZCgpKVxuICBcbiAgICAjIENhbGN1bGF0ZSBudW1lcmljYWwgZWlnZW52YWx1ZXMgdXNpbmcgbnVtcHlcbiAgICBlaWdlbnZhbHVlc19udW0gPSBucC5saW5hbGcuZWlndmFscyhBX25wKVxuICBcbiAgICByZXR1cm4gY2hhcl9wb2x5X3N0ciwgZWlnZW52YWx1ZXNfbnVtXG5cbiMgRGV0ZXJtaW5lIHdoaWNoIG1hdHJpeCB0byB1c2UgYmFzZWQgb24gbWF0cml4X2RpbVxuaWYgbWF0cml4X2RpbSA9PSBcIjJ4MlwiOlxuICAgIEFfbnAgPSBucC5hcnJheShbW2EyMl8wMCwgYTIyXzAxXSxcbiAgICAgICAgICAgICAgICAgICAgIFthMjJfMTAsIGEyMl8xMV1dKVxuZWxzZTogIyAzeDNcbiAgICBBX25wID0gbnAuYXJyYXkoW1thMzNfMDAsIGEzM18wMSwgYTMzXzAyXSxcbiAgICAgICAgICAgICAgICAgICAgIFthMzNfMTAsIGEzM18xMSwgYTMzXzEyXSxcbiAgICAgICAgICAgICAgICAgICAgIFthMzNfMjAsIGEzM18yMSwgYTMzXzIyXV0pXG5cbmNoYXJfcG9seV9zdHIsIGVpZ2VudmFsdWVzX251bSA9IGdldF9jaGFyYWN0ZXJpc3RpY19wb2x5bm9taWFsX2FuZF9laWdlbnZhbHVlcyhBX25wKVxuXG5wcmludChmXCIqKk1hdHJpeCBBOioqXFxue0FfbnB9XFxuXCIpXG5wcmludChmXCIqKkNoYXJhY3RlcmlzdGljIFBvbHlub21pYWwgcCjOuyk6KipcXG57Y2hhcl9wb2x5X3N0cn0gPSAwXFxuXCIpXG5wcmludChcIioqRWlnZW52YWx1ZXMgzrs6KipcIilcbmZvciBpLCB2YWwgaW4gZW51bWVyYXRlKGVpZ2VudmFsdWVzX251bSk6XG4gICAgaWYgbnAuaXNjb21wbGV4KHZhbCk6XG4gICAgICAgIHByaW50KGZcIs67X3tpKzF9ID0ge3ZhbDouNGZ9XCIpXG4gICAgZWxzZTpcbiAgICAgICAgcHJpbnQoZlwizrtfe2krMX0gPSB7dmFsOi40Zn1cIikifQ==
+</script>
+</div>
+</div></div>
+<aside class="notes">
+<p>This interactive tool is a powerful way to practice finding eigenvalues.</p>
+<p>First, select whether you want a 2x2 or 3x3 matrix using the radio button. Then, adjust the sliders to define your matrix A.</p>
+<p>The Python code will then calculate and display the characteristic polynomial, p(lambda), and its roots, which are the eigenvalues.</p>
+<p>Try the previous 2x2 example: A = [[3,0],[8,-1]]. You should get lambda = 3 and -1. Now, try the 3x3 matrix from Example 3 (A = [[0,1,0],[0,0,1],[4,-17,8]]) to see its characteristic polynomial and eigenvalues. Note that the eigenvalues might appear as complex numbers even if their imaginary part is very close to zero due to floating-point arithmetic.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-finding-eigenvalues-for-a-3-times-3-matrix" class="slide level2 scrollable">
+<h2>Example: Finding Eigenvalues for a <span class="math inline">\(3 \times 3\)</span> Matrix</h2>
+<p><strong>Problem:</strong> Find the eigenvalues of <span class="math inline">\(A = \left[ \begin{array}{ccc}0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 1 \\ 4 &amp; -17 &amp; 8 \end{array} \right]\)</span>.</p>
+<p><strong>Solution:</strong></p>
+<ol type="1">
+<li><strong>Form <span class="math inline">\(\lambda I - A\)</span> and calculate its determinant:</strong> <span class="math display">\[
+\operatorname{det}(\lambda I - A) = \operatorname{det}\left[ \begin{array}{ccc}\lambda &amp; -1 &amp; 0 \\ 0 &amp; \lambda &amp; -1 \\ -4 &amp; 17 &amp; \lambda -8 \end{array} \right]
+\]</span> Expanding the determinant (e.g., along the first row) yields the characteristic polynomial: <span class="math display">\[
+p(\lambda) = \lambda^{3} - 8\lambda^{2} + 17\lambda -4
+\]</span></li>
+</ol>
+</section>
+<section id="example-finding-eigenvalues-for-a-3-times-3-matrix-1" class="slide level2 scrollable">
+<h2>Example: Finding Eigenvalues for a <span class="math inline">\(3 \times 3\)</span> Matrix</h2>
+<ol start="2" type="1">
+<li><p><strong>Set <span class="math inline">\(p(\lambda) = 0\)</span> and solve:</strong></p>
+<p>We need to solve <span class="math inline">\(\lambda^{3} - 8\lambda^{2} + 17\lambda -4 = 0\)</span>.</p>
+<ul>
+<li><strong>Hint:</strong> Integer solutions must be divisors of the constant term (-4), i.e., <span class="math inline">\(\pm 1, \pm 2, \pm 4\)</span>.</li>
+<li>Testing <span class="math inline">\(\lambda = 4\)</span>: <span class="math inline">\((4)^3 - 8(4)^2 + 17(4) - 4 = 64 - 128 + 68 - 4 = 0\)</span>.</li>
+<li>So, <span class="math inline">\(\lambda = 4\)</span> is an eigenvalue, and <span class="math inline">\((\lambda - 4)\)</span> is a factor.</li>
+<li>Dividing <span class="math inline">\((\lambda^3 - 8\lambda^2 + 17\lambda - 4)\)</span> by <span class="math inline">\((\lambda - 4)\)</span> gives <span class="math inline">\((\lambda^2 - 4\lambda + 1)\)</span>.</li>
+<li>The equation becomes: <span class="math inline">\((\lambda - 4)(\lambda^{2} - 4\lambda + 1) = 0\)</span>.</li>
+</ul></li>
+<li><p><strong>Solve the quadratic factor:</strong></p>
+<p>Using the quadratic formula for <span class="math inline">\(\lambda^{2} - 4\lambda + 1 = 0\)</span>:</p>
+<p><span class="math display">\[
+\lambda = \frac{-(-4) \pm \sqrt{(-4)^2 - 4(1)(1)}}{2(1)} = \frac{4 \pm \sqrt{16 - 4}}{2} = \frac{4 \pm \sqrt{12}}{2} = \frac{4 \pm 2\sqrt{3}}{2} = 2 \pm \sqrt{3}
+\]</span></p></li>
+</ol>
+<p>Thus, the eigenvalues of <span class="math inline">\(A\)</span> are:</p>
+<p><span class="math display">\[
+\lambda = 4,\quad \lambda = 2 + \sqrt{3},\quad \mathrm{and}\quad \lambda = 2 - \sqrt{3}
+\]</span></p>
+<aside class="notes">
+<p>Finding eigenvalues for 3x3 matrices involves solving a cubic characteristic equation. While the interactive tool can do this numerically, it’s important to understand the manual process.</p>
+<p>For integer coefficients, we can often find integer roots by testing divisors of the constant term. Here, testing lambda = 4 reveals it’s a root. This allows us to factor the cubic polynomial into a linear term and a quadratic term. The quadratic term can then be solved using the quadratic formula, yielding the remaining two eigenvalues, which in this case are irrational.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="eigenvalues-of-triangular-matrices" class="slide level2">
+<h2>Eigenvalues of Triangular Matrices</h2>
+<p><strong>Theorem 5.1.2:</strong></p>
+<p>If <span class="math inline">\(A\)</span> is an <span class="math inline">\(n \times n\)</span> <strong>triangular matrix</strong> (upper, lower, or diagonal), then the eigenvalues of <span class="math inline">\(A\)</span> are simply the entries on the <strong>main diagonal of <span class="math inline">\(A\)</span></strong>.</p>
+<p><strong>Why?</strong></p>
+<p>Recall that the determinant of a triangular matrix is the product of its diagonal entries.</p>
+<p>For a triangular matrix <span class="math inline">\(A\)</span>, the matrix <span class="math inline">\((\lambda I - A)\)</span> will also be triangular.</p>
+<p>Example for a <span class="math inline">\(4 \times 4\)</span> upper triangular matrix: <span class="math display">\[
+\operatorname{det}(\lambda I - A) = \operatorname{det}\left[ \begin{array}{cccc}{\lambda -a_{11}} &amp; {-a_{12}} &amp; {-a_{13}} &amp; {-a_{14}}\\ 0 &amp; {\lambda -a_{22}} &amp; {-a_{23}} &amp; {-a_{24}}\\ 0 &amp; 0 &amp; {\lambda -a_{33}} &amp; {-a_{34}}\\ 0 &amp; 0 &amp; 0 &amp; {\lambda -a_{44}} \end{array} \right]
+\]</span> <span class="math display">\[
+= (\lambda -a_{11})(\lambda -a_{22})(\lambda -a_{33})(\lambda -a_{44})
+\]</span> Setting this to zero immediately gives <span class="math inline">\(\lambda = a_{11}, a_{22}, a_{33}, a_{44}\)</span>.</p>
+</section>
+<section id="eigenvalues-of-triangular-matrices-1" class="slide level2">
+<h2>Eigenvalues of Triangular Matrices</h2>
+<p><strong>Example 4: Upper Triangular Matrix</strong></p>
+<p>For <span class="math inline">\(A = {\left[ \begin{array}{l l l l}{a_{11}} &amp; {a_{12}} &amp; {a_{13}} &amp; {a_{14}}\\ 0 &amp; {a_{22}} &amp; {a_{23}} &amp; {a_{24}}\\ 0 &amp; 0 &amp; {a_{33}} &amp; {a_{34}}\\ 0 &amp; 0 &amp; 0 &amp; {a_{44}} \end{array} \right]}\)</span>, the eigenvalues are <span class="math inline">\(\lambda = a_{11}, \lambda = a_{22}, \lambda = a_{33}, \lambda = a_{44}\)</span>.</p>
+<p><strong>Example 5: Lower Triangular Matrix</strong></p>
+<p>For <span class="math inline">\(A = \left[ \begin{array}{ccc}\frac{1}{2} &amp; 0 &amp; 0 \\ -1 &amp; \frac{2}{3} &amp; 0 \\ 5 &amp; -8 &amp; -\frac{1}{4} \end{array} \right]\)</span>, the eigenvalues are <span class="math inline">\(\lambda = \frac{1}{2}, \lambda = \frac{2}{3}, \lambda = - \frac{1}{4}\)</span>.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>This theorem provides a very quick way to find eigenvalues for certain types of matrices, common in system analysis (e.g., state-space representations that are upper/lower triangular).</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>This theorem is a fantastic shortcut. For any triangular matrix—whether upper, lower, or even diagonal—you don’t need to compute the determinant and solve a polynomial. The eigenvalues are simply the entries on the main diagonal.</p>
+<p>This is because when you form (lambda I - A), the resulting matrix is also triangular. And the determinant of a triangular matrix is just the product of its diagonal elements. Setting that product to zero immediately shows that each diagonal element (a_ii) must be an eigenvalue. This is a very useful property in ECE, especially when dealing with system matrices that can be put into triangular forms.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="finding-eigenvectors-eigenspaces" class="slide level2">
+<h2>Finding Eigenvectors: Eigenspaces</h2>
+<p>Once you have found an eigenvalue <span class="math inline">\(\lambda\)</span>, you can find its corresponding eigenvectors <span class="math inline">\(\mathbf{x}\)</span> by solving the homogeneous system:</p>
+<p><span class="math display">\[
+(\lambda I - A)\mathbf{x} = \mathbf{0}
+\]</span></p>
+<p><strong>Eigenspace:</strong></p>
+<p>The set of all solutions to this system is called the <strong>eigenspace of <span class="math inline">\(A\)</span> corresponding to <span class="math inline">\(\lambda\)</span></strong>.</p>
+<ul>
+<li>It’s a subspace of <span class="math inline">\(R^n\)</span>.</li>
+<li>It includes the zero vector (which is not an eigenvector by definition).</li>
+<li>We look for a <strong>basis</strong> for this eigenspace, which will consist of actual eigenvectors.</li>
+</ul>
+<p><strong>Interpretation:</strong> The eigenspace represents all vectors that are “transformed” along the same direction by <span class="math inline">\(A\)</span>, scaled by <span class="math inline">\(\lambda\)</span>.</p>
+</section>
+<section id="finding-eigenvectors-eigenspaces-1" class="slide level2 scrollable">
+<h2>Finding Eigenvectors: Eigenspaces</h2>
+<p><strong>Process to Find Eigenspace Basis:</strong></p>
+<ol type="1">
+<li><strong>Find the eigenvalues <span class="math inline">\(\lambda\)</span></strong> (using the characteristic equation).</li>
+<li><strong>For each eigenvalue <span class="math inline">\(\lambda_k\)</span>:</strong>
+<ol type="a">
+<li>Form the matrix <span class="math inline">\((\lambda_k I - A)\)</span>.</li>
+<li>Solve the homogeneous system <span class="math inline">\((\lambda_k I - A)\mathbf{x} = \mathbf{0}\)</span>.</li>
+<li>Express the general solution in parametric vector form.</li>
+<li>The vectors that form the basis for this general solution are the basis vectors for the eigenspace corresponding to <span class="math inline">\(\lambda_k\)</span>.</li>
+</ol></li>
+</ol>
+<div class="callout callout-caution callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Caution</strong></p>
+</div>
+<div class="callout-content">
+<p>Remember to exclude the zero vector when referring to actual eigenvectors, even though it’s part of the eigenspace.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>After finding the eigenvalues, the next step is to find the corresponding eigenvectors. This involves going back to the equation (lambda I - A)x = 0.</p>
+<p>For each eigenvalue we found, we substitute it back into this equation and solve for x. This is essentially finding the null space of the matrix (lambda I - A).</p>
+<p>The set of all solutions, including the zero vector, forms what’s called the eigenspace. We’re usually interested in finding a basis for this eigenspace, as these basis vectors themselves are eigenvectors and can generate all other eigenvectors for that particular lambda.</p>
+<p>The process is standard: set up the augmented matrix for the homogeneous system, perform Gaussian elimination to get to reduced row echelon form, and then write out the general solution in terms of free variables. Each free variable will correspond to a basis vector for the eigenspace.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-eigenspaces-for-a-2-times-2-matrix" class="slide level2">
+<h2>Example: Eigenspaces for a <span class="math inline">\(2 \times 2\)</span> Matrix</h2>
+<p><strong>Problem:</strong> Find bases for the eigenspaces of <span class="math inline">\(A = \left[ \begin{array}{cc} - 1 &amp; 3 \\ 2 &amp; 0 \end{array} \right]\)</span>.</p>
+<p><strong>Solution:</strong></p>
+<p>From an earlier example (or using the characteristic equation), the eigenvalues are <span class="math inline">\(\lambda = 2\)</span> and <span class="math inline">\(\lambda = -3\)</span>.</p>
+<p><strong>Case 1: Eigenspace for <span class="math inline">\(\lambda = 2\)</span></strong></p>
+<p>We solve <span class="math inline">\((\lambda I - A)\mathbf{x} = \mathbf{0}\)</span> for <span class="math inline">\(\lambda = 2\)</span>: <span class="math display">\[
+\left[ \begin{array}{cc}2+1 &amp; -3 \\ -2 &amp; 2 \end{array} \right]\left[ \begin{array}{c}x_{1} \\ x_{2} \end{array} \right] = \left[ \begin{array}{cc}3 &amp; -3 \\ -2 &amp; 2 \end{array} \right]\left[ \begin{array}{c}x_{1} \\ x_{2} \end{array} \right] = \left[ \begin{array}{c}0 \\ 0 \end{array} \right]
+\]</span> This system reduces to <span class="math inline">\(3x_1 - 3x_2 = 0 \implies x_1 = x_2\)</span>.</p>
+<p>Let <span class="math inline">\(x_2 = t\)</span>, then <span class="math inline">\(x_1 = t\)</span>.</p>
+<p>The general solution is <span class="math inline">\(\mathbf{x} = \begin{bmatrix} t \\ t \end{bmatrix} = t \begin{bmatrix} 1 \\ 1 \end{bmatrix}\)</span>.</p>
+<p>A basis for the eigenspace corresponding to <span class="math inline">\(\lambda = 2\)</span> is <span class="math inline">\(\left\{ \begin{bmatrix} 1 \\ 1 \end{bmatrix} \right\}\)</span>.</p>
+</section>
+<section id="example-eigenspaces-for-a-2-times-2-matrix-1" class="slide level2">
+<h2>Example: Eigenspaces for a <span class="math inline">\(2 \times 2\)</span> Matrix</h2>
+<p><strong>Case 2: Eigenspace for <span class="math inline">\(\lambda = -3\)</span></strong></p>
+<p>We solve <span class="math inline">\((\lambda I - A)\mathbf{x} = \mathbf{0}\)</span> for <span class="math inline">\(\lambda = -3\)</span>: <span class="math display">\[
+\left[ \begin{array}{cc}-3+1 &amp; -3 \\ -2 &amp; -3 \end{array} \right]\left[ \begin{array}{c}x_{1} \\ x_{2} \end{array} \right] = \left[ \begin{array}{cc}-2 &amp; -3 \\ -2 &amp; -3 \end{array} \right]\left[ \begin{array}{c}x_{1} \\ x_{2} \end{array} \right] = \left[ \begin{array}{c}0 \\ 0 \end{array} \right]
+\]</span> This system reduces to <span class="math inline">\(-2x_1 - 3x_2 = 0 \implies x_1 = -\frac{3}{2}x_2\)</span>.</p>
+<p>Let <span class="math inline">\(x_2 = t\)</span>, then <span class="math inline">\(x_1 = -\frac{3}{2}t\)</span>.</p>
+<p>The general solution is <span class="math inline">\(\mathbf{x} = \begin{bmatrix} -\frac{3}{2}t \\ t \end{bmatrix} = t \begin{bmatrix} -\frac{3}{2} \\ 1 \end{bmatrix}\)</span>.</p>
+<p>A basis for the eigenspace corresponding to <span class="math inline">\(\lambda = -3\)</span> is <span class="math inline">\(\left\{ \begin{bmatrix} -\frac{3}{2} \\ 1 \end{bmatrix} \right\}\)</span>.</p>
+</section>
+<section id="example-eigenspaces-for-a-2-times-2-matrix-2" class="slide level2">
+<h2>Example: Eigenspaces for a <span class="math inline">\(2 \times 2\)</span> Matrix</h2>
+
+<img data-src="https://cdn-mineru.openxlab.org.cn/result/2025-08-19/203477b1-939d-4d94-b333-0c3ffc5790ce/6fb1ff9a1d7a9ad38b55b9097b314fb361cb56859df7a19473201053809b68cc.jpg" class="r-stretch quarto-figure-center"><p class="caption">Figure 5.1.3: Geometric effect of multiplication by A. <span class="math inline">\(L_1\)</span> (for <span class="math inline">\(\lambda=2\)</span>) and <span class="math inline">\(L_2\)</span> (for <span class="math inline">\(\lambda=-3\)</span>) are the eigenspaces.</p><aside class="notes">
+<p>Here, we take the eigenvalues we found earlier (2 and -3) and use them to find the corresponding eigenvectors.</p>
+<p>For lambda = 2, we set up the system (2I - A)x = 0. Solving this system (which is equivalent to finding the null space of (2I-A)) gives us all vectors where x1 = x2. This forms a line in R2, and a basis vector for this line is (1,1).</p>
+<p>Similarly, for lambda = -3, we find the null space of (-3I - A). This gives us another line in R2, with a basis vector (-3/2, 1).</p>
+<p>The image vividly shows these two lines, L1 and L2. Any vector on L1, when multiplied by A, stays on L1 and is scaled by 2. Any vector on L2, when multiplied by A, stays on L2 and is scaled by -3 (meaning it flips direction and is stretched). This geometric interpretation is crucial for understanding.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-eigenspaces-for-a-3-times-3-matrix" class="slide level2">
+<h2>Example: Eigenspaces for a <span class="math inline">\(3 \times 3\)</span> Matrix</h2>
+<p><strong>Problem:</strong> Find bases for the eigenspaces of <span class="math inline">\(A = \left[ \begin{array}{ccc}0 &amp; 0 &amp; -2 \\ 1 &amp; 2 &amp; 1 \\ 1 &amp; 0 &amp; 3 \end{array} \right]\)</span>.</p>
+<p><strong>Solution:</strong></p>
+<p>From an earlier example, the eigenvalues are <span class="math inline">\(\lambda = 1\)</span> and <span class="math inline">\(\lambda = 2\)</span> (with algebraic multiplicity 2).</p>
+<p><strong>Case 1: Eigenspace for <span class="math inline">\(\lambda = 2\)</span></strong></p>
+<p>Solve <span class="math inline">\((\lambda I - A)\mathbf{x} = \mathbf{0}\)</span> for <span class="math inline">\(\lambda = 2\)</span>: <span class="math display">\[
+\left[ \begin{array}{ccc}2 &amp; 0 &amp; 2 \\ -1 &amp; 0 &amp; -1 \\ -1 &amp; 0 &amp; -1 \end{array} \right]\left[ \begin{array}{c}x_{1} \\ x_{2} \\ x_{3} \end{array} \right] = \left[ \begin{array}{c}0 \\ 0 \\ 0 \end{array} \right]
+\]</span> This system reduces to <span class="math inline">\(x_1 + x_3 = 0 \implies x_1 = -x_3\)</span>.</p>
+<p><span class="math inline">\(x_2\)</span> is a free variable.</p>
+<p>Let <span class="math inline">\(x_3 = s\)</span> and <span class="math inline">\(x_2 = t\)</span>. Then <span class="math inline">\(x_1 = -s\)</span>.</p>
+<p>The general solution is <span class="math inline">\(\mathbf{x} = \begin{bmatrix} -s \\ t \\ s \end{bmatrix} = s \begin{bmatrix} -1 \\ 0 \\ 1 \end{bmatrix} + t \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix}\)</span>.</p>
+<p>A basis for the eigenspace corresponding to <span class="math inline">\(\lambda = 2\)</span> is <span class="math inline">\(\left\{ \begin{bmatrix} -1 \\ 0 \\ 1 \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix} \right\}\)</span>.</p>
+</section>
+<section id="example-eigenspaces-for-a-3-times-3-matrix-1" class="slide level2">
+<h2>Example: Eigenspaces for a <span class="math inline">\(3 \times 3\)</span> Matrix</h2>
+<p><strong>Case 2: Eigenspace for <span class="math inline">\(\lambda = 1\)</span></strong></p>
+<p>Solve <span class="math inline">\((\lambda I - A)\mathbf{x} = \mathbf{0}\)</span> for <span class="math inline">\(\lambda = 1\)</span>: <span class="math display">\[
+\left[ \begin{array}{ccc}1 &amp; 0 &amp; 2 \\ -1 &amp; -1 &amp; -1 \\ -1 &amp; 0 &amp; -2 \end{array} \right]\left[ \begin{array}{c}x_{1} \\ x_{2} \\ x_{3} \end{array} \right] = \left[ \begin{array}{c}0 \\ 0 \\ 0 \end{array} \right]
+\]</span> Gaussian elimination on the augmented matrix:</p>
+<p><span class="math inline">\(\begin{bmatrix} 1 &amp; 0 &amp; 2 &amp; | &amp; 0 \\ -1 &amp; -1 &amp; -1 &amp; | &amp; 0 \\ -1 &amp; 0 &amp; -2 &amp; | &amp; 0 \end{bmatrix} \xrightarrow{R_2+R_1, R_3+R_1} \begin{bmatrix} 1 &amp; 0 &amp; 2 &amp; | &amp; 0 \\ 0 &amp; -1 &amp; 1 &amp; | &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; | &amp; 0 \end{bmatrix} \xrightarrow{-R_2} \begin{bmatrix} 1 &amp; 0 &amp; 2 &amp; | &amp; 0 \\ 0 &amp; 1 &amp; -1 &amp; | &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; | &amp; 0 \end{bmatrix}\)</span></p>
+<p>This gives <span class="math inline">\(x_1 + 2x_3 = 0 \implies x_1 = -2x_3\)</span> and <span class="math inline">\(x_2 - x_3 = 0 \implies x_2 = x_3\)</span>.</p>
+<p>Let <span class="math inline">\(x_3 = s\)</span>. Then <span class="math inline">\(x_1 = -2s\)</span> and <span class="math inline">\(x_2 = s\)</span>.</p>
+<p>The general solution is <span class="math inline">\(\mathbf{x} = \begin{bmatrix} -2s \\ s \\ s \end{bmatrix} = s \begin{bmatrix} -2 \\ 1 \\ 1 \end{bmatrix}\)</span>.</p>
+<p>A basis for the eigenspace corresponding to <span class="math inline">\(\lambda = 1\)</span> is <span class="math inline">\(\left\{ \begin{bmatrix} -2 \\ 1 \\ 1 \end{bmatrix} \right\}\)</span>.</p>
+<aside class="notes">
+<p>This 3x3 example shows that an eigenspace can have more than one basis vector. Here, for lambda = 2, we find two linearly independent basis vectors. This means the eigenspace for lambda = 2 is a 2-dimensional plane. For lambda = 1, we find a single basis vector, indicating a 1-dimensional line.</p>
+<p>The number of basis vectors for an eigenspace is called its geometric multiplicity. It can be less than or equal to the algebraic multiplicity (the power of (lambda - eigenvalue) in the characteristic polynomial).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-eigenspace-basis-finder" class="slide level2">
+<h2>Interactive Eigenspace Basis Finder</h2>
+<p>Input a matrix and one of its eigenvalues.</p>
+<p>The tool will find a basis for the corresponding eigenspace.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="737" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 736;"><span id="cb3-737"><a></a>viewof es_matrix_dim <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">radio</span>([<span class="st">"2x2"</span><span class="op">,</span> <span class="st">"3x3"</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="st">"2x2"</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Matrix Dimension"</span>})<span class="op">;</span></span>
+<span id="cb3-738"><a></a></span>
+<span id="cb3-739"><a></a><span class="co">// 2x2 inputs</span></span>
+<span id="cb3-740"><a></a>viewof es_a22_00 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[0,0]"</span>})<span class="op">;</span></span>
+<span id="cb3-741"><a></a>viewof es_a22_01 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">3</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[0,1]"</span>})<span class="op">;</span></span>
+<span id="cb3-742"><a></a>viewof es_a22_10 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[1,0]"</span>})<span class="op">;</span></span>
+<span id="cb3-743"><a></a>viewof es_a22_11 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[1,1]"</span>})<span class="op">;</span></span>
+<span id="cb3-744"><a></a>viewof es_lambda22 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Eigenvalue λ"</span>})<span class="op">;</span></span>
+<span id="cb3-745"><a></a></span>
+<span id="cb3-746"><a></a><span class="co">// 3x3 inputs</span></span>
+<span id="cb3-747"><a></a>viewof es_a33_00 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[0,0]"</span>})<span class="op">;</span></span>
+<span id="cb3-748"><a></a>viewof es_a33_01 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[0,1]"</span>})<span class="op">;</span></span>
+<span id="cb3-749"><a></a>viewof es_a33_02 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="op">-</span><span class="dv">2</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[0,2]"</span>})<span class="op">;</span></span>
+<span id="cb3-750"><a></a>viewof es_a33_10 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[1,0]"</span>})<span class="op">;</span></span>
+<span id="cb3-751"><a></a>viewof es_a33_11 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[1,1]"</span>})<span class="op">;</span></span>
+<span id="cb3-752"><a></a>viewof es_a33_12 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[1,2]"</span>})<span class="op">;</span></span>
+<span id="cb3-753"><a></a>viewof es_a33_20 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[2,0]"</span>})<span class="op">;</span></span>
+<span id="cb3-754"><a></a>viewof es_a33_21 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[2,1]"</span>})<span class="op">;</span></span>
+<span id="cb3-755"><a></a>viewof es_a33_22 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">3</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"A[2,2]"</span>})<span class="op">;</span></span>
+<span id="cb3-756"><a></a>viewof es_lambda33 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Eigenvalue λ"</span>})<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-6" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-7" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-8" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-9" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-10" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-11" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-12" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-13" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-14" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-15" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-16" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div>
+<div id="pyodide-3" class="exercise-cell">
+
+</div>
+<script type="pyodide-3-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiZXNfbWF0cml4X2RpbSIsImVzX2EyMl8wMCIsImVzX2EyMl8wMSIsImVzX2EyMl8xMCIsImVzX2EyMl8xMSIsImVzX2xhbWJkYTIyIiwiZXNfYTMzXzAwIiwiZXNfYTMzXzAxIiwiZXNfYTMzXzAyIiwiZXNfYTMzXzEwIiwiZXNfYTMzXzExIiwiZXNfYTMzXzEyIiwiZXNfYTMzXzIwIiwiZXNfYTMzXzIxIiwiZXNfYTMzXzIyIiwiZXNfbGFtYmRhMzMiXSwibWF4LWxpbmVzIjozMH0sImNvZGUiOiJcbmltcG9ydCBudW1weSBhcyBucFxuaW1wb3J0IHN5bXB5XG5cbmRlZiBmaW5kX2VpZ2Vuc3BhY2VfYmFzaXMoQV9ucCwgbGFtYmRhX3ZhbCk6XG4gICAgbiA9IEFfbnAuc2hhcGVbMF1cbiAgXG4gICAgIyBGb3JtIChsYW1iZGEqSSAtIEEpXG4gICAgbGFtYmRhX0lfbWludXNfQSA9IGxhbWJkYV92YWwgKiBucC5leWUobikgLSBBX25wXG4gIFxuICAgICMgVXNlIHN5bXB5IHRvIGZpbmQgdGhlIG51bGwgc3BhY2UgKGtlcm5lbClcbiAgICBNID0gc3ltcHkuTWF0cml4KGxhbWJkYV9JX21pbnVzX0EpXG4gICAgbnVsbF9zcGFjZV9iYXNpcyA9IE0ubnVsbHNwYWNlKClcbiAgXG4gICAgcmV0dXJuIG51bGxfc3BhY2VfYmFzaXNcblxuIyBEZXRlcm1pbmUgd2hpY2ggbWF0cml4IGFuZCBsYW1iZGEgdG8gdXNlIGJhc2VkIG9uIGVzX21hdHJpeF9kaW1cbmlmIGVzX21hdHJpeF9kaW0gPT0gXCIyeDJcIjpcbiAgICBBX25wID0gbnAuYXJyYXkoW1tlc19hMjJfMDAsIGVzX2EyMl8wMV0sXG4gICAgICAgICAgICAgICAgICAgICBbZXNfYTIyXzEwLCBlc19hMjJfMTFdXSlcbiAgICBsYW1iZGFfdmFsID0gZXNfbGFtYmRhMjJcbmVsc2U6ICMgM3gzXG4gICAgQV9ucCA9IG5wLmFycmF5KFtbZXNfYTMzXzAwLCBlc19hMzNfMDEsIGVzX2EzM18wMl0sXG4gICAgICAgICAgICAgICAgICAgICBbZXNfYTMzXzEwLCBlc19hMzNfMTEsIGVzX2EzM18xMl0sXG4gICAgICAgICAgICAgICAgICAgICBbZXNfYTMzXzIwLCBlc19hMzNfMjEsIGVzX2EzM18yMl1dKVxuICAgIGxhbWJkYV92YWwgPSBlc19sYW1iZGEzM1xuXG5iYXNpcyA9IGZpbmRfZWlnZW5zcGFjZV9iYXNpcyhBX25wLCBsYW1iZGFfdmFsKVxuXG5wcmludChmXCIqKk1hdHJpeCBBOioqXFxue0FfbnB9XFxuXCIpXG5wcmludChmXCIqKkVpZ2VudmFsdWUgzrs6Kioge2xhbWJkYV92YWx9XFxuXCIpXG5cbmlmIGJhc2lzOlxuICAgIHByaW50KGZcIioqQmFzaXMgZm9yIEVpZ2Vuc3BhY2UgY29ycmVzcG9uZGluZyB0byDOuyA9IHtsYW1iZGFfdmFsfToqKlwiKVxuICAgIGZvciBpLCB2ZWMgaW4gZW51bWVyYXRlKGJhc2lzKTpcbiAgICAgICAgcHJpbnQoZlwiICB2X3tpKzF9ID0ge25wLmFycmF5KHZlYykuZmxhdHRlbigpfVwiKVxuZWxzZTpcbiAgICBwcmludChmXCJObyBub24tdHJpdmlhbCBlaWdlbnZlY3RvcnMgZm91bmQgZm9yIM67ID0ge2xhbWJkYV92YWx9LiAoVGhpcyBlaWdlbnZhbHVlIG1pZ2h0IGJlIGluY29ycmVjdCBvciBoYXZlIG5vIGdlb21ldHJpYyBtdWx0aXBsaWNpdHkpXCIpIn0=
+</script>
+</div>
+</div></div>
+<aside class="notes">
+<p>This interactive tool helps you compute the basis for an eigenspace.</p>
+<p>First, select the matrix dimension and input the matrix A. Then, input a known eigenvalue lambda for that matrix.</p>
+<p>The Python code will then form (lambda I - A) and compute its null space, which is the eigenspace. The output will be the basis vectors that span this eigenspace.</p>
+<p>Try the 2x2 example: A = [[-1,3],[2,0]] with lambda = 2. You should get a basis vector like [1,1]. Then try lambda = -3, you should get a basis vector like [-1.5,1].</p>
+<p>For the 3x3 example: A = [[0,0,-2],[1,2,1],[1,0,3]] with lambda = 2. You should get two basis vectors. Try lambda = 1, and you should get one basis vector.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="eigenvalues-and-matrix-invertibility" class="slide level2">
+<h2>Eigenvalues and Matrix Invertibility</h2>
+<p><strong>Theorem 5.1.4:</strong></p>
+<p>A square matrix <span class="math inline">\(A\)</span> is invertible if and only if <span class="math inline">\(\lambda = 0\)</span> is not an eigenvalue of <span class="math inline">\(A\)</span>.</p>
+<p><strong>Proof Idea:</strong></p>
+<ul>
+<li>If <span class="math inline">\(\lambda = 0\)</span> is an eigenvalue, then <span class="math inline">\(A\mathbf{x} = 0\mathbf{x} = \mathbf{0}\)</span> for some nonzero <span class="math inline">\(\mathbf{x}\)</span>.</li>
+<li>This means the homogeneous system <span class="math inline">\(A\mathbf{x} = \mathbf{0}\)</span> has a non-trivial solution.</li>
+<li>If <span class="math inline">\(A\mathbf{x} = \mathbf{0}\)</span> has a non-trivial solution, then <span class="math inline">\(A\)</span> is not invertible.</li>
+<li>Conversely, if <span class="math inline">\(A\)</span> is not invertible, then <span class="math inline">\(A\mathbf{x} = \mathbf{0}\)</span> has a non-trivial solution <span class="math inline">\(\mathbf{x}\)</span>, implying <span class="math inline">\(A\mathbf{x} = 0\mathbf{x}\)</span>, so <span class="math inline">\(\lambda=0\)</span> is an eigenvalue.</li>
+</ul>
+</section>
+<section id="eigenvalues-and-matrix-invertibility-1" class="slide level2 scrollable">
+<h2>Eigenvalues and Matrix Invertibility</h2>
+<p><strong>Example 8:</strong></p>
+<p>The matrix <span class="math inline">\(A = \left[ \begin{array}{ccc}0 &amp; 0 &amp; -2 \\ 1 &amp; 2 &amp; 1 \\ 1 &amp; 0 &amp; 3 \end{array} \right]\)</span> has eigenvalues <span class="math inline">\(\lambda = 1\)</span> and <span class="math inline">\(\lambda = 2\)</span>.</p>
+<p>Since neither of these is zero, <span class="math inline">\(A\)</span> is invertible.</p>
+<p>(You can verify this by checking <span class="math inline">\(\operatorname{det}(A) \neq 0\)</span>).</p>
+<p><strong>Theorem 5.1.5: Equivalent Statements</strong></p>
+<p>If <span class="math inline">\(A\)</span> is an <span class="math inline">\(n \times n\)</span> matrix, the following statements are equivalent:</p>
+<ol type="a">
+<li><span class="math inline">\(A\)</span> is invertible.<br>
+…<br>
+</li>
+<li><span class="math inline">\(\operatorname{det}(A) \neq 0\)</span>.<br>
+…<br>
+</li>
+<li><span class="math inline">\(\lambda = 0\)</span> is not an eigenvalue of <span class="math inline">\(A\)</span>.</li>
+</ol>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>This theorem adds a crucial link between eigenvalues and many other fundamental properties of a matrix, including its rank, nullity, and the nature of solutions to linear systems.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>This theorem provides another powerful connection between eigenvalues and other core concepts in linear algebra. It states that a matrix is invertible if and only if zero is not one of its eigenvalues.</p>
+<p>The proof is quite intuitive: if lambda equals zero is an eigenvalue, it means there’s a non-zero vector x such that Ax = 0x, which simplifies to Ax = 0. This is exactly the condition for a matrix to be non-invertible, as it implies the null space contains non-trivial vectors.</p>
+<p>This adds a new item (u) to the long list of equivalent statements for an invertible matrix, which you’ve likely seen before. It’s a quick way to check if a matrix is singular or non-singular just by looking at its eigenvalues.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="ece-application-linear-time-invariant-lti-systems" class="slide level2">
+<h2>ECE Application: Linear Time-Invariant (LTI) Systems</h2>
+<p><strong>Concept:</strong></p>
+<p>In ECE, Linear Time-Invariant (LTI) systems are fundamental (e.g., filters, amplifiers, control systems).</p>
+<p>When a complex exponential signal, <span class="math inline">\(e^{j\omega t}\)</span>, is passed through an LTI system, the output is simply a scaled version of the input signal.</p>
+<p><strong>Mathematical Form:</strong></p>
+<p>If <span class="math inline">\(T\)</span> is an LTI operator and the input is <span class="math inline">\(\mathbf{x}(t) = e^{j\omega t}\)</span>: <span class="math display">\[
+T(e^{j\omega t}) = H(j\omega) e^{j\omega t}
+\]</span></p>
+<p>Here:</p>
+<ul>
+<li><span class="math inline">\(e^{j\omega t}\)</span> is an <strong>eigenfunction</strong> (continuous analog of eigenvector).</li>
+<li><span class="math inline">\(H(j\omega)\)</span> is the <strong>eigenvalue</strong> (the system’s frequency response).</li>
+</ul>
+<p>This is exactly the definition <span class="math inline">\(T(\mathbf{x}) = \lambda \mathbf{x}\)</span>!</p>
+</section>
+<section id="ece-application-linear-time-invariant-lti-systems-1" class="slide level2">
+<h2>ECE Application: Linear Time-Invariant (LTI) Systems</h2>
+<p><strong>Diagram: LTI System as an Eigen-Operator</strong></p>
+<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+    Input["Input Signal: $$e^{j\omega t}$$"] --&gt; LTI_System("LTI System (T)");
+    LTI_System --&gt; Output["Output Signal: $$H(j\omega)e^{j\omega t}$$"];
+    subgraph Properties
+        H("Frequency Response $$H(j\omega)$$");
+    end
+    H -- "is the eigenvalue" --&gt; LTI_System;
+    Input -- "is the eigenfunction" --&gt; LTI_System;
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p><strong>Significance:</strong></p>
+<ul>
+<li><strong>Fourier Analysis:</strong> Decomposes complex signals into sums of these eigenfunctions.</li>
+<li><strong>Frequency Response:</strong> <span class="math inline">\(H(j\omega)\)</span> tells us how the system amplifies/attenuates and shifts the phase of different frequency components.</li>
+<li><strong>System Stability:</strong> Related to the location of eigenvalues in the complex plane.</li>
+</ul>
+<aside class="notes">
+<p>This is where eigenvalues and eigenvectors truly shine in ECE. LTI systems are ubiquitous, from simple RC circuits to complex communication systems.</p>
+<p>The remarkable property of LTI systems is that if you feed them a complex exponential signal (which forms the basis of Fourier analysis), the output is <em>the exact same signal</em>, just scaled by a complex number. This complex scaling factor is the eigenvalue, and the complex exponential itself is the eigenfunction.</p>
+<p>This is a direct application of the eigenvalue-eigenvector concept, extended to functions. It’s why we use Fourier transforms to analyze systems in the frequency domain – because the complex exponentials are the “natural modes” or “eigenfunctions” of LTI systems. The eigenvalue H(j omega) tells us everything about how the system responds to that specific frequency.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-lti-system-response-frequency-domain" class="slide level2">
+<h2>Interactive LTI System Response (Frequency Domain)</h2>
+<p>Observe how an LTI system (simple filter) scales and shifts a sinusoidal input.</p>
+<p>The output is a sinusoid of the same frequency, but with different amplitude and phase.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="947" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 946;"><span id="cb4-947"><a></a>viewof input_amplitude <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.1</span><span class="op">,</span> <span class="fl">2.0</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Input Amplitude"</span>})<span class="op">;</span></span>
+<span id="cb4-948"><a></a>viewof input_frequency <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.1</span><span class="op">,</span> <span class="fl">5.0</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Input Frequency (Hz)"</span>})<span class="op">;</span></span>
+<span id="cb4-949"><a></a>viewof filter_gain <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.1</span><span class="op">,</span> <span class="fl">2.0</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="fl">1.2</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Filter Gain (Amplitude Scale)"</span>})<span class="op">;</span></span>
+<span id="cb4-950"><a></a>viewof filter_phase <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span>np<span class="op">.</span><span class="at">pi</span><span class="op">,</span> np<span class="op">.</span><span class="at">pi</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Filter Phase Shift (rad)"</span>})<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-4" class="exercise-cell">
+
+</div>
+<script type="pyodide-4-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiaW5wdXRfYW1wbGl0dWRlIiwiaW5wdXRfZnJlcXVlbmN5IiwiZmlsdGVyX2dhaW4iLCJmaWx0ZXJfcGhhc2UiXSwibWF4LWxpbmVzIjozMH0sImNvZGUiOiJcbmltcG9ydCBwbG90bHkuZ3JhcGhfb2JqZWN0cyBhcyBnb1xuaW1wb3J0IG51bXB5IGFzIG5wXG5cbiMgR2VuZXJhdGUgdGltZSB2ZWN0b3JcbnQgPSBucC5saW5zcGFjZSgwLCA1LCA1MDApICMgNSBzZWNvbmRzIG9mIGRhdGFcblxuIyBJbnB1dCBzaWduYWwgKHNpbnVzb2lkKVxuaW5wdXRfc2lnbmFsID0gaW5wdXRfYW1wbGl0dWRlICogbnAuc2luKDIgKiBucC5waSAqIGlucHV0X2ZyZXF1ZW5jeSAqIHQpXG5cbiMgT3V0cHV0IHNpZ25hbCAoc2NhbGVkIGFuZCBwaGFzZS1zaGlmdGVkIHNpbnVzb2lkIGJ5IHRoZSBMVEkgc3lzdGVtKVxuIyBUaGUgTFRJIHN5c3RlbSdzIFwiZWlnZW52YWx1ZVwiIEgoas+JKSBpcyByZXByZXNlbnRlZCBieSBmaWx0ZXJfZ2FpbiBhbmQgZmlsdGVyX3BoYXNlXG5vdXRwdXRfYW1wbGl0dWRlID0gaW5wdXRfYW1wbGl0dWRlICogZmlsdGVyX2dhaW5cbm91dHB1dF9zaWduYWwgPSBvdXRwdXRfYW1wbGl0dWRlICogbnAuc2luKDIgKiBucC5waSAqIGlucHV0X2ZyZXF1ZW5jeSAqIHQgKyBmaWx0ZXJfcGhhc2UpXG5cbiMgQ3JlYXRlIFBsb3RseSBmaWd1cmVcbmZpZyA9IGdvLkZpZ3VyZSgpXG5cbiMgQWRkIHRyYWNlIGZvciB0aGUgaW5wdXQgc2lnbmFsXG5maWcuYWRkX3RyYWNlKFxuICAgIGdvLlNjYXR0ZXIoXG4gICAgICAgIHg9dCxcbiAgICAgICAgeT1pbnB1dF9zaWduYWwsXG4gICAgICAgIG1vZGU9J2xpbmVzJyxcbiAgICAgICAgbmFtZT0nSW5wdXQgU2lnbmFsJyxcbiAgICAgICAgbGluZT1kaWN0KGNvbG9yPSdibHVlJywgd2lkdGg9MylcbiAgICApXG4pXG5cbiMgQWRkIHRyYWNlIGZvciB0aGUgb3V0cHV0IHNpZ25hbFxuZmlnLmFkZF90cmFjZShcbiAgICBnby5TY2F0dGVyKFxuICAgICAgICB4PXQsXG4gICAgICAgIHk9b3V0cHV0X3NpZ25hbCxcbiAgICAgICAgbW9kZT0nbGluZXMnLFxuICAgICAgICBuYW1lPSdPdXRwdXQgU2lnbmFsJyxcbiAgICAgICAgbGluZT1kaWN0KGNvbG9yPSdyZWQnLCB3aWR0aD0zLCBkYXNoPSdkb3QnKVxuICAgIClcbilcblxuIyBVcGRhdGUgbGF5b3V0XG5tYXhfYW1wID0gbWF4KGlucHV0X2FtcGxpdHVkZSwgb3V0cHV0X2FtcGxpdHVkZSkgKiAxLjJcbmZpZy51cGRhdGVfbGF5b3V0KFxuICAgIHhheGlzX3RpdGxlPVwiVGltZSAocylcIixcbiAgICB5YXhpc190aXRsZT1cIkFtcGxpdHVkZVwiLFxuICAgIHlheGlzPWRpY3QocmFuZ2U9Wy1tYXhfYW1wLCBtYXhfYW1wXSksXG4gICAgd2lkdGg9ODAwLFxuICAgIGhlaWdodD00NTAsXG4gICAgbWFyZ2luPWRpY3QobD0wLCByPTAsIGI9MCwgdD0wKSxcbiAgICB0aXRsZT1mXCJJbnB1dCBGcmVxdWVuY3k6IHtpbnB1dF9mcmVxdWVuY3k6LjJmfSBIeiwgT3V0cHV0IEFtcGxpdHVkZSBGYWN0b3I6IHtmaWx0ZXJfZ2FpbjouMmZ9LCBQaGFzZSBTaGlmdDoge2ZpbHRlcl9waGFzZTouMmZ9IHJhZFwiXG4pXG5cbmZpZyJ9
+</script>
+</div>
+<aside class="notes">
+<p>This interactive plot helps visualize the LTI system concept.</p>
+<p>You can adjust the amplitude and frequency of the input sine wave. Then, you can change the “filter gain” (which represents the magnitude of the eigenvalue H(j omega)) and the “filter phase shift” (which represents the argument of H(j omega)).</p>
+<p>Notice that the output signal (red dashed line) always remains a sine wave of the <em>same frequency</em> as the input. Only its amplitude and phase are altered. This illustrates how sinusoidal (or complex exponential) signals are eigenfunctions of LTI systems. The system simply scales and shifts them.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="other-ece-applications" class="slide level2 scrollable">
+<h2>Other ECE Applications</h2>
+<ol type="1">
+<li><strong>Control Systems:</strong>
+<ul>
+<li><strong>Stability Analysis:</strong> Eigenvalues of the system matrix (A in <span class="math inline">\(\dot{\mathbf{x}} = A\mathbf{x}\)</span>) determine system stability. If all eigenvalues have negative real parts, the system is stable.</li>
+<li><strong>Modal Analysis:</strong> Eigenvectors represent the “natural modes” of oscillation or decay of a system.</li>
+</ul></li>
+<li><strong>Image Processing &amp; Computer Vision:</strong>
+<ul>
+<li><strong>Principal Component Analysis (PCA):</strong> Used for dimensionality reduction and feature extraction. Eigenvectors of the covariance matrix represent the principal components (directions of maximum variance) in image data.</li>
+<li><strong>Image Compression:</strong> Retaining only eigenvectors corresponding to large eigenvalues for reconstruction.</li>
+</ul></li>
+<li><strong>Circuit Analysis:</strong>
+<ul>
+<li><strong>Natural Frequencies:</strong> In RLC circuits, eigenvalues help determine the natural frequencies and damping factors of the circuit’s transient response.</li>
+<li><strong>Network Stability:</strong> Analyzing the stability of complex electrical networks.</li>
+</ul></li>
+</ol>
+</section>
+<section id="other-ece-applications-1" class="slide level2 scrollable">
+<h2>Other ECE Applications</h2>
+<ol start="4" type="1">
+<li><strong>Quantum Computing &amp; Physics:</strong>
+<ul>
+<li><strong>Quantum States:</strong> Eigenvectors represent quantum states (e.g., energy levels).</li>
+<li><strong>Observables:</strong> Eigenvalues correspond to the possible measurable values of physical quantities (observables).</li>
+</ul></li>
+<li><strong>Vibration Analysis:</strong>
+<ul>
+<li><strong>Mechanical Structures:</strong> Finding natural frequencies and modes of vibration in mechanical systems, crucial for design in aerospace and civil engineering. (Often involves ECE sensors and control).</li>
+</ul></li>
+<li><strong>Communication Systems:</strong>
+<ul>
+<li><strong>MIMO Systems:</strong> Eigenvalue decomposition is used in Multiple-Input Multiple-Output (MIMO) wireless communication to optimize channel capacity and reduce interference.</li>
+<li><strong>Signal Detection:</strong> Designing optimal detectors based on signal and noise covariance matrices.</li>
+</ul></li>
+</ol>
+<aside class="notes">
+<p>Beyond LTI systems, eigenvalues and eigenvectors permeate many other areas of ECE.</p>
+<p>In control systems, eigenvalues are the go-to tool for stability analysis. Their real parts tell us if a system will grow, decay, or oscillate.</p>
+<p>In image processing, PCA, a very common technique, relies entirely on eigenvectors to find the most significant directions of variation in data, enabling efficient compression and pattern recognition.</p>
+<p>Even in basic circuit analysis, eigenvalues emerge when solving differential equations for RLC circuits, revealing their natural resonant behaviors.</p>
+<p>And for those interested in quantum computing, eigenvalues and eigenvectors are the very language of quantum mechanics, describing states and measurable quantities. This list just scratches the surface of their utility in our field.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="summary-key-takeaways" class="slide level2">
+<h2>Summary &amp; Key Takeaways</h2>
+<p><strong>1. Core Definition:</strong></p>
+<ul>
+<li><span class="math inline">\(A\mathbf{x} = \lambda \mathbf{x}\)</span></li>
+<li><strong>Eigenvectors (<span class="math inline">\(\mathbf{x}\)</span>):</strong> Special directions unchanged by matrix transformation.</li>
+<li><strong>Eigenvalues (<span class="math inline">\(\lambda\)</span>):</strong> Scaling factors for eigenvectors.</li>
+</ul>
+<p><strong>2. Finding Eigenvalues:</strong></p>
+<ul>
+<li>Solve the <strong>characteristic equation</strong>: <span class="math inline">\(\operatorname{det}(\lambda I - A) = 0\)</span>.</li>
+<li>Results in a polynomial whose roots are the eigenvalues.</li>
+<li>Triangular matrices: Eigenvalues are diagonal entries.</li>
+</ul>
+<p><strong>3. Finding Eigenvectors:</strong></p>
+<ul>
+<li>For each <span class="math inline">\(\lambda\)</span>, solve the homogeneous system <span class="math inline">\((\lambda I - A)\mathbf{x} = \mathbf{0}\)</span>.</li>
+<li>The solution space is the <strong>eigenspace</strong> for <span class="math inline">\(\lambda\)</span>. Find a basis for this space.</li>
+</ul>
+</section>
+<section id="summary-key-takeaways-1" class="slide level2">
+<h2>Summary &amp; Key Takeaways</h2>
+<p><strong>4. Significance &amp; ECE Applications:</strong></p>
+<ul>
+<li><strong>Geometric Interpretation:</strong> Understanding fundamental modes of transformation.</li>
+<li><strong>Invertibility:</strong> <span class="math inline">\(A\)</span> is invertible if and only if <span class="math inline">\(\lambda=0\)</span> is not an eigenvalue.</li>
+<li><strong>LTI Systems:</strong> Complex exponentials are eigenfunctions, frequency response <span class="math inline">\(H(j\omega)\)</span> are eigenvalues.</li>
+<li><strong>Control Systems:</strong> Stability analysis, modal decomposition.</li>
+<li><strong>Image Processing:</strong> PCA, dimensionality reduction.</li>
+<li><strong>Circuit Analysis:</strong> Natural frequencies.</li>
+</ul>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Eigenvalues and eigenvectors help us understand the intrinsic behavior of systems, providing a simplified view of complex linear transformations.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>To recap, eigenvalues and eigenvectors are fundamental concepts that reveal the inherent properties of linear transformations.</p>
+<p>Eigenvectors are those special directions that remain invariant, only scaled by the eigenvalue. We find eigenvalues by solving the characteristic equation, which is the determinant of (lambda I - A) set to zero. Once we have the eigenvalues, we find the corresponding eigenvectors by solving the homogeneous system (lambda I - A)x = 0, which gives us the eigenspace.</p>
+<p>These concepts are not just theoretical curiosities. In ECE, they are practical tools for analyzing system stability, understanding frequency responses in signal processing, performing data compression in image processing, and much more. They allow us to break down complex system behaviors into simpler, fundamental modes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+
+<script type="pyodide-data">
+eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yNy4wL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIiwibnVtcHkiLCJwbG90bHkiLCJuYmZvcm1hdCJdfX0=
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTQiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoiX3B5b2RpZGVfdmFsdWVfNCA9IHtcbiAgY29uc3QgeyBoaWdobGlnaHRQeXRob24sIGI2NERlY29kZX0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS00LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgLy8gRGVmYXVsdCBldmFsdWF0aW9uIGNvbmZpZ3VyYXRpb25cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oe1xuICAgIGlkOiBcInB5b2RpZGUtNC1jb250ZW50c1wiLFxuICAgIGVjaG86IHRydWUsXG4gICAgb3V0cHV0OiB0cnVlXG4gIH0sIGJsb2NrLmF0dHIpO1xuXG4gIC8vIEV2YWx1YXRlIHRoZSBwcm92aWRlZCBQeXRob24gY29kZVxuICBjb25zdCByZXN1bHQgPSBweW9kaWRlT2pzLnByb2Nlc3Moe2NvZGU6IGJsb2NrLmNvZGUsIG9wdGlvbnN9LCB7aW5wdXRfYW1wbGl0dWRlLCBpbnB1dF9mcmVxdWVuY3ksIGZpbHRlcl9nYWluLCBmaWx0ZXJfcGhhc2V9KTtcblxuICAvLyBFYXJseSB5aWVsZCB3aGlsZSB3ZSB3YWl0IGZvciB0aGUgZmlyc3QgZXZhbHVhdGlvbiBhbmQgcmVuZGVyXG4gIGlmIChvcHRpb25zLm91dHB1dCAmJiAhKFwiNFwiIGluIHB5b2RpZGVPanMucmVuZGVyZWRPanMpKSB7XG4gICAgY29uc3QgY29udGFpbmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcbiAgICBjb25zdCBzcGlubmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcblxuICAgIGlmIChvcHRpb25zLmVjaG8pIHtcbiAgICAgIC8vIFNob3cgb3V0cHV0IGFzIGhpZ2hsaWdodGVkIHNvdXJjZVxuICAgICAgY29uc3QgcHJlRWxlbSA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJwcmVcIik7XG4gICAgICBjb250YWluZXIuY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlXCI7XG4gICAgICBwcmVFbGVtLmNsYXNzTmFtZSA9IFwic291cmNlQ29kZSBweXRob25cIjtcbiAgICAgIHByZUVsZW0uYXBwZW5kQ2hpbGQoaGlnaGxpZ2h0UHl0aG9uKGJsb2NrLmNvZGUpKTtcbiAgICAgIHNwaW5uZXIuY2xhc3NOYW1lID0gXCJzcGlubmVyLWdyb3cgc3Bpbm5lci1ncm93LXNtIG0tMiBwb3NpdGlvbi1hYnNvbHV0ZSB0b3AtMCBlbmQtMFwiO1xuICAgICAgcHJlRWxlbS5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChwcmVFbGVtKTtcbiAgICB9IGVsc2Uge1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItYm9yZGVyIHNwaW5uZXItYm9yZGVyLXNtXCI7XG4gICAgICBjb250YWluZXIuYXBwZW5kQ2hpbGQoc3Bpbm5lcik7XG4gICAgfVxuXG4gICAgeWllbGQgY29udGFpbmVyO1xuICB9XG5cbiAgcHlvZGlkZU9qcy5yZW5kZXJlZE9qc1tcIjRcIl0gPSB0cnVlO1xuICB5aWVsZCBhd2FpdCByZXN1bHQ7XG59XG4ifSx7ImNlbGxOYW1lIjoicHlvZGlkZS0zIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6Il9weW9kaWRlX3ZhbHVlXzMgPSB7XG4gIGNvbnN0IHsgaGlnaGxpZ2h0UHl0aG9uLCBiNjREZWNvZGV9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInB5b2RpZGUtMy1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIC8vIERlZmF1bHQgZXZhbHVhdGlvbiBjb25maWd1cmF0aW9uXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHtcbiAgICBpZDogXCJweW9kaWRlLTMtY29udGVudHNcIixcbiAgICBlY2hvOiB0cnVlLFxuICAgIG91dHB1dDogdHJ1ZVxuICB9LCBibG9jay5hdHRyKTtcblxuICAvLyBFdmFsdWF0ZSB0aGUgcHJvdmlkZWQgUHl0aG9uIGNvZGVcbiAgY29uc3QgcmVzdWx0ID0gcHlvZGlkZU9qcy5wcm9jZXNzKHtjb2RlOiBibG9jay5jb2RlLCBvcHRpb25zfSwge2VzX21hdHJpeF9kaW0sIGVzX2EyMl8wMCwgZXNfYTIyXzAxLCBlc19hMjJfMTAsIGVzX2EyMl8xMSwgZXNfbGFtYmRhMjIsIGVzX2EzM18wMCwgZXNfYTMzXzAxLCBlc19hMzNfMDIsIGVzX2EzM18xMCwgZXNfYTMzXzExLCBlc19hMzNfMTIsIGVzX2EzM18yMCwgZXNfYTMzXzIxLCBlc19hMzNfMjIsIGVzX2xhbWJkYTMzfSk7XG5cbiAgLy8gRWFybHkgeWllbGQgd2hpbGUgd2Ugd2FpdCBmb3IgdGhlIGZpcnN0IGV2YWx1YXRpb24gYW5kIHJlbmRlclxuICBpZiAob3B0aW9ucy5vdXRwdXQgJiYgIShcIjNcIiBpbiBweW9kaWRlT2pzLnJlbmRlcmVkT2pzKSkge1xuICAgIGNvbnN0IGNvbnRhaW5lciA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIik7XG4gICAgY29uc3Qgc3Bpbm5lciA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIik7XG5cbiAgICBpZiAob3B0aW9ucy5lY2hvKSB7XG4gICAgICAvLyBTaG93IG91dHB1dCBhcyBoaWdobGlnaHRlZCBzb3VyY2VcbiAgICAgIGNvbnN0IHByZUVsZW0gPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwicHJlXCIpO1xuICAgICAgY29udGFpbmVyLmNsYXNzTmFtZSA9IFwic291cmNlQ29kZVwiO1xuICAgICAgcHJlRWxlbS5jbGFzc05hbWUgPSBcInNvdXJjZUNvZGUgcHl0aG9uXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKGhpZ2hsaWdodFB5dGhvbihibG9jay5jb2RlKSk7XG4gICAgICBzcGlubmVyLmNsYXNzTmFtZSA9IFwic3Bpbm5lci1ncm93IHNwaW5uZXItZ3Jvdy1zbSBtLTIgcG9zaXRpb24tYWJzb2x1dGUgdG9wLTAgZW5kLTBcIjtcbiAgICAgIHByZUVsZW0uYXBwZW5kQ2hpbGQoc3Bpbm5lcik7XG4gICAgICBjb250YWluZXIuYXBwZW5kQ2hpbGQocHJlRWxlbSk7XG4gICAgfSBlbHNlIHtcbiAgICAgIHNwaW5uZXIuY2xhc3NOYW1lID0gXCJzcGlubmVyLWJvcmRlciBzcGlubmVyLWJvcmRlci1zbVwiO1xuICAgICAgY29udGFpbmVyLmFwcGVuZENoaWxkKHNwaW5uZXIpO1xuICAgIH1cblxuICAgIHlpZWxkIGNvbnRhaW5lcjtcbiAgfVxuXG4gIHB5b2RpZGVPanMucmVuZGVyZWRPanNbXCIzXCJdID0gdHJ1ZTtcbiAgeWllbGQgYXdhaXQgcmVzdWx0O1xufVxuIn0seyJjZWxsTmFtZSI6InB5b2RpZGUtMiIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJfcHlvZGlkZV92YWx1ZV8yID0ge1xuICBjb25zdCB7IGhpZ2hsaWdodFB5dGhvbiwgYjY0RGVjb2RlfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLTItY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICAvLyBEZWZhdWx0IGV2YWx1YXRpb24gY29uZmlndXJhdGlvblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7XG4gICAgaWQ6IFwicHlvZGlkZS0yLWNvbnRlbnRzXCIsXG4gICAgZWNobzogdHJ1ZSxcbiAgICBvdXRwdXQ6IHRydWVcbiAgfSwgYmxvY2suYXR0cik7XG5cbiAgLy8gRXZhbHVhdGUgdGhlIHByb3ZpZGVkIFB5dGhvbiBjb2RlXG4gIGNvbnN0IHJlc3VsdCA9IHB5b2RpZGVPanMucHJvY2Vzcyh7Y29kZTogYmxvY2suY29kZSwgb3B0aW9uc30sIHttYXRyaXhfZGltLCBhMjJfMDAsIGEyMl8wMSwgYTIyXzEwLCBhMjJfMTEsIGEzM18wMCwgYTMzXzAxLCBhMzNfMDIsIGEzM18xMCwgYTMzXzExLCBhMzNfMTIsIGEzM18yMCwgYTMzXzIxLCBhMzNfMjJ9KTtcblxuICAvLyBFYXJseSB5aWVsZCB3aGlsZSB3ZSB3YWl0IGZvciB0aGUgZmlyc3QgZXZhbHVhdGlvbiBhbmQgcmVuZGVyXG4gIGlmIChvcHRpb25zLm91dHB1dCAmJiAhKFwiMlwiIGluIHB5b2RpZGVPanMucmVuZGVyZWRPanMpKSB7XG4gICAgY29uc3QgY29udGFpbmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcbiAgICBjb25zdCBzcGlubmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcblxuICAgIGlmIChvcHRpb25zLmVjaG8pIHtcbiAgICAgIC8vIFNob3cgb3V0cHV0IGFzIGhpZ2hsaWdodGVkIHNvdXJjZVxuICAgICAgY29uc3QgcHJlRWxlbSA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJwcmVcIik7XG4gICAgICBjb250YWluZXIuY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlXCI7XG4gICAgICBwcmVFbGVtLmNsYXNzTmFtZSA9IFwic291cmNlQ29kZSBweXRob25cIjtcbiAgICAgIHByZUVsZW0uYXBwZW5kQ2hpbGQoaGlnaGxpZ2h0UHl0aG9uKGJsb2NrLmNvZGUpKTtcbiAgICAgIHNwaW5uZXIuY2xhc3NOYW1lID0gXCJzcGlubmVyLWdyb3cgc3Bpbm5lci1ncm93LXNtIG0tMiBwb3NpdGlvbi1hYnNvbHV0ZSB0b3AtMCBlbmQtMFwiO1xuICAgICAgcHJlRWxlbS5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChwcmVFbGVtKTtcbiAgICB9IGVsc2Uge1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItYm9yZGVyIHNwaW5uZXItYm9yZGVyLXNtXCI7XG4gICAgICBjb250YWluZXIuYXBwZW5kQ2hpbGQoc3Bpbm5lcik7XG4gICAgfVxuXG4gICAgeWllbGQgY29udGFpbmVyO1xuICB9XG5cbiAgcHlvZGlkZU9qcy5yZW5kZXJlZE9qc1tcIjJcIl0gPSB0cnVlO1xuICB5aWVsZCBhd2FpdCByZXN1bHQ7XG59XG4ifSx7ImNlbGxOYW1lIjoicHlvZGlkZS0xIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6Il9weW9kaWRlX3ZhbHVlXzEgPSB7XG4gIGNvbnN0IHsgaGlnaGxpZ2h0UHl0aG9uLCBiNjREZWNvZGV9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInB5b2RpZGUtMS1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIC8vIERlZmF1bHQgZXZhbHVhdGlvbiBjb25maWd1cmF0aW9uXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHtcbiAgICBpZDogXCJweW9kaWRlLTEtY29udGVudHNcIixcbiAgICBlY2hvOiB0cnVlLFxuICAgIG91dHB1dDogdHJ1ZVxuICB9LCBibG9jay5hdHRyKTtcblxuICAvLyBFdmFsdWF0ZSB0aGUgcHJvdmlkZWQgUHl0aG9uIGNvZGVcbiAgY29uc3QgcmVzdWx0ID0gcHlvZGlkZU9qcy5wcm9jZXNzKHtjb2RlOiBibG9jay5jb2RlLCBvcHRpb25zfSwge2FfdmFsLCBiX3ZhbCwgY192YWwsIGRfdmFsLCB4MV92YWwsIHgyX3ZhbH0pO1xuXG4gIC8vIEVhcmx5IHlpZWxkIHdoaWxlIHdlIHdhaXQgZm9yIHRoZSBmaXJzdCBldmFsdWF0aW9uIGFuZCByZW5kZXJcbiAgaWYgKG9wdGlvbnMub3V0cHV0ICYmICEoXCIxXCIgaW4gcHlvZGlkZU9qcy5yZW5kZXJlZE9qcykpIHtcbiAgICBjb25zdCBjb250YWluZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpO1xuICAgIGNvbnN0IHNwaW5uZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpO1xuXG4gICAgaWYgKG9wdGlvbnMuZWNobykge1xuICAgICAgLy8gU2hvdyBvdXRwdXQgYXMgaGlnaGxpZ2h0ZWQgc291cmNlXG4gICAgICBjb25zdCBwcmVFbGVtID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcInByZVwiKTtcbiAgICAgIGNvbnRhaW5lci5jbGFzc05hbWUgPSBcInNvdXJjZUNvZGVcIjtcbiAgICAgIHByZUVsZW0uY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlIHB5dGhvblwiO1xuICAgICAgcHJlRWxlbS5hcHBlbmRDaGlsZChoaWdobGlnaHRQeXRob24oYmxvY2suY29kZSkpO1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItZ3JvdyBzcGlubmVyLWdyb3ctc20gbS0yIHBvc2l0aW9uLWFic29sdXRlIHRvcC0wIGVuZC0wXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKHNwaW5uZXIpO1xuICAgICAgY29udGFpbmVyLmFwcGVuZENoaWxkKHByZUVsZW0pO1xuICAgIH0gZWxzZSB7XG4gICAgICBzcGlubmVyLmNsYXNzTmFtZSA9IFwic3Bpbm5lci1ib3JkZXIgc3Bpbm5lci1ib3JkZXItc21cIjtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICB9XG5cbiAgICB5aWVsZCBjb250YWluZXI7XG4gIH1cblxuICBweW9kaWRlT2pzLnJlbmRlcmVkT2pzW1wiMVwiXSA9IHRydWU7XG4gIHlpZWxkIGF3YWl0IHJlc3VsdDtcbn1cbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLXByZWx1ZGUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJweW9kaWRlT2pzID0ge1xuICBjb25zdCB7XG4gICAgUHlvZGlkZUV2YWx1YXRvcixcbiAgICBQeW9kaWRlRW52aXJvbm1lbnRNYW5hZ2VyLFxuICAgIHNldHVwUHl0aG9uLFxuICAgIHN0YXJ0UHlvZGlkZVdvcmtlcixcbiAgICBiNjREZWNvZGUsXG4gICAgY29sbGFwc2VQYXRoLFxuICB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzdGF0dXNDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctc3RhdHVzXCIpO1xuICBjb25zdCBpbmRpY2F0b3JDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpbmRpY2F0b3JDb250YWluZXIuY2xhc3NMaXN0LnJlbW92ZShcImQtbm9uZVwiKTtcblxuICBsZXQgc3RhdHVzVGV4dCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIilcbiAgc3RhdHVzVGV4dC5jbGFzc0xpc3QgPSBcImV4ZXJjaXNlLWxvYWRpbmctZGV0YWlsc1wiO1xuICBzdGF0dXNUZXh0ID0gc3RhdHVzQ29udGFpbmVyLmFwcGVuZENoaWxkKHN0YXR1c1RleHQpO1xuICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYEluaXRpYWxpc2VgO1xuXG4gIC8vIEhvaXN0IGluZGljYXRvciBvdXQgZnJvbSBmaW5hbCBzbGlkZSB3aGVuIHJ1bm5pbmcgdW5kZXIgcmV2ZWFsXG4gIGNvbnN0IHJldmVhbFN0YXR1cyA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsIC5leGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaWYgKHJldmVhbFN0YXR1cykge1xuICAgIHJldmVhbFN0YXR1cy5yZW1vdmUoKTtcbiAgICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCA+IC5zbGlkZXNcIikuYXBwZW5kQ2hpbGQocmV2ZWFsU3RhdHVzKTtcbiAgfVxuXG4gIC8vIE1ha2UgYW55IHJldmVhbCBzbGlkZXMgd2l0aCBsaXZlIGNlbGxzIHNjcm9sbGFibGVcbiAgZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbChcIi5yZXZlYWwgLmV4ZXJjaXNlLWNlbGxcIikuZm9yRWFjaCgoZWwpID0+IHtcbiAgICBlbC5jbG9zZXN0KCdzZWN0aW9uLnNsaWRlJykuY2xhc3NMaXN0LmFkZChcInNjcm9sbGFibGVcIik7XG4gIH0pXG5cbiAgLy8gUHlvZGlkZSBzdXBwbGVtZW50YWwgZGF0YSBhbmQgb3B0aW9uc1xuICBjb25zdCBkYXRhQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLWRhdGFcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBkYXRhID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZGF0YUNvbnRlbnQpKTtcblxuICAvLyBHcmFiIGxpc3Qgb2YgcmVzb3VyY2VzIHRvIGJlIGRvd25sb2FkZWRcbiAgY29uc3QgZmlsZXNDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInZmcy1maWxlXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZmlsZXMgPSBKU09OLnBhcnNlKGI2NERlY29kZShmaWxlc0NvbnRlbnQpKTtcblxuICBsZXQgcHlvZGlkZVByb21pc2UgPSAoYXN5bmMgKCkgPT4ge1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgUHlvZGlkZWA7XG4gICAgY29uc3QgcHlvZGlkZSA9IGF3YWl0IHN0YXJ0UHlvZGlkZVdvcmtlcihkYXRhLm9wdGlvbnMpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiBtaWNyb3BpcGA7XG4gICAgYXdhaXQgcHlvZGlkZS5sb2FkUGFja2FnZShcIm1pY3JvcGlwXCIpO1xuICAgIGNvbnN0IG1pY3JvcGlwID0gYXdhaXQgcHlvZGlkZS5weWltcG9ydChcIm1pY3JvcGlwXCIpO1xuICAgIGF3YWl0IGRhdGEucGFja2FnZXMucGtncy5tYXAoKHBrZykgPT4gKCkgPT4ge1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiAke3BrZ31gO1xuICAgICAgcmV0dXJuIG1pY3JvcGlwLmluc3RhbGwocGtnKTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcbiAgICBhd2FpdCBtaWNyb3BpcC5kZXN0cm95KCk7XG5cbiAgICAvLyBEb3dubG9hZCBhbmQgaW5zdGFsbCByZXNvdXJjZXNcbiAgICBhd2FpdCBmaWxlcy5tYXAoKGZpbGUpID0+IGFzeW5jICgpID0+IHtcbiAgICAgIGNvbnN0IG5hbWUgPSBmaWxlLnN1YnN0cmluZyhmaWxlLmxhc3RJbmRleE9mKCcvJykgKyAxKTtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcmVzb3VyY2U6ICR7bmFtZX1gO1xuICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChmaWxlKTtcbiAgICAgIGlmICghcmVzcG9uc2Uub2spIHtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBDYW4ndCBkb3dubG9hZCBcXGAke2ZpbGV9XFxgLiBFcnJvciAke3Jlc3BvbnNlLnN0YXR1c306IFwiJHtyZXNwb25zZS5zdGF0dXNUZXh0fVwiLmApO1xuICAgICAgfVxuICAgICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlc3BvbnNlLmFycmF5QnVmZmVyKCk7XG5cbiAgICAgIC8vIFN0b3JlIFVSTHMgaW4gdGhlIGN3ZCB3aXRob3V0IGFueSBzdWJkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBpZiAoZmlsZS5pbmNsdWRlcyhcIjovL1wiKSkge1xuICAgICAgICBmaWxlID0gbmFtZTtcbiAgICAgIH1cblxuICAgICAgLy8gQ29sbGFwc2UgaGlnaGVyIGRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGZpbGUgPSBjb2xsYXBzZVBhdGgoZmlsZSk7XG5cbiAgICAgIC8vIENyZWF0ZSBkaXJlY3RvcnkgdHJlZSwgaWdub3JpbmcgXCJkaXJlY3RvcnkgZXhpc3RzXCIgVkZTIGVycm9yc1xuICAgICAgY29uc3QgcGFydHMgPSBmaWxlLnNwbGl0KCcvJykuc2xpY2UoMCwgLTEpO1xuICAgICAgbGV0IHBhdGggPSAnJztcbiAgICAgIHdoaWxlIChwYXJ0cy5sZW5ndGggPiAwKSB7XG4gICAgICAgIHBhdGggKz0gcGFydHMuc2hpZnQoKSArICcvJztcbiAgICAgICAgdHJ5IHtcbiAgICAgICAgICBhd2FpdCBweW9kaWRlLkZTLm1rZGlyKHBhdGgpO1xuICAgICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgICAgaWYgKGUuZXJybm8gIT09IDIwKSB7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICAgICAgY29uc3QgZXJyb3JUZXh0ID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLlVURjhUb1N0cmluZyhlcnJvclRleHRQdHIpO1xuICAgICAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICAgIH1cblxuICAgICAgLy8gV3JpdGUgdGhpcyBmaWxlIHRvIHRoZSBWRlNcbiAgICAgIHRyeSB7XG4gICAgICAgIHJldHVybiBhd2FpdCBweW9kaWRlLkZTLndyaXRlRmlsZShmaWxlLCBuZXcgVWludDhBcnJheShkYXRhKSk7XG4gICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgIGlmIChlLm5hbWUgIT09IFwiRXJybm9FcnJvclwiKSB0aHJvdyBlO1xuICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgRmlsZXN5c3RlbSBFcnJvciAke2UuZXJybm99IFwiJHtlcnJvclRleHR9XCIuYCk7XG4gICAgICB9XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYFB5b2RpZGUgZW52aXJvbm1lbnQgc2V0dXBgO1xuICAgIGF3YWl0IHNldHVwUHl0aG9uKHB5b2RpZGUpO1xuXG4gICAgc3RhdHVzVGV4dC5yZW1vdmUoKTtcbiAgICBpZiAoc3RhdHVzQ29udGFpbmVyLmNoaWxkcmVuLmxlbmd0aCA9PSAwKSB7XG4gICAgICBzdGF0dXNDb250YWluZXIucGFyZW50Tm9kZS5yZW1vdmUoKTtcbiAgICB9XG4gICAgcmV0dXJuIHB5b2RpZGU7XG4gIH0pKCkuY2F0Y2goKGVycikgPT4ge1xuICAgIHN0YXR1c1RleHQuc3R5bGUuY29sb3IgPSBcInZhcigtLWV4ZXJjaXNlLWVkaXRvci1obC1lciwgI0FEMDAwMClcIjtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gZXJyLm1lc3NhZ2U7XG4gICAgLy9pbmRpY2F0b3JDb250YWluZXIucXVlcnlTZWxlY3RvcihcIi5zcGlubmVyLWdyb3dcIikuY2xhc3NMaXN0LmFkZChcImQtbm9uZVwiKTtcbiAgICB0aHJvdyBlcnI7XG4gIH0pO1xuXG4gIC8vIEtlZXAgdHJhY2sgb2YgaW5pdGlhbCBPSlMgYmxvY2sgcmVuZGVyXG4gIGNvbnN0IHJlbmRlcmVkT2pzID0ge307XG5cbiAgY29uc3QgcHJvY2VzcyA9IGFzeW5jIChjb250ZXh0LCBpbnB1dHMpID0+IHtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgcHlvZGlkZVByb21pc2U7XG4gICAgY29uc3QgZXZhbHVhdG9yID0gbmV3IFB5b2RpZGVFdmFsdWF0b3IocHlvZGlkZSwgY29udGV4dCk7XG4gICAgYXdhaXQgZXZhbHVhdG9yLnByb2Nlc3MoaW5wdXRzKTtcbiAgICByZXR1cm4gZXZhbHVhdG9yLmNvbnRhaW5lcjtcbiAgfVxuXG4gIHJldHVybiB7XG4gICAgcHlvZGlkZVByb21pc2UsXG4gICAgcmVuZGVyZWRPanMsXG4gICAgcHJvY2VzcyxcbiAgfTtcbn1cbiJ9XX0=
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="qrjs_pics/unsoed_logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="https://imron-slide.vercel.app">irosyadi-2025</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script type="ojs-module-contents">
+    eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBhX3ZhbCA9IElucHV0cy5yYW5nZShbLTUsIDVdLCB7dmFsdWU6IDMsIHN0ZXA6IDEsIGxhYmVsOiBcIkFbMCwwXVwifSk7XG52aWV3b2YgYl92YWwgPSBJbnB1dHMucmFuZ2UoWy01LCA1XSwge3ZhbHVlOiAwLCBzdGVwOiAxLCBsYWJlbDogXCJBWzAsMV1cIn0pO1xudmlld29mIGNfdmFsID0gSW5wdXRzLnJhbmdlKFstNSwgNV0sIHt2YWx1ZTogOCwgc3RlcDogMSwgbGFiZWw6IFwiQVsxLDBdXCJ9KTtcbnZpZXdvZiBkX3ZhbCA9IElucHV0cy5yYW5nZShbLTUsIDVdLCB7dmFsdWU6IC0xLCBzdGVwOiAxLCBsYWJlbDogXCJBWzEsMV1cIn0pO1xuXG52aWV3b2YgeDFfdmFsID0gSW5wdXRzLnJhbmdlKFstNSwgNV0sIHt2YWx1ZTogMSwgc3RlcDogMC4xLCBsYWJlbDogXCJ4WzBdXCJ9KTtcbnZpZXdvZiB4Ml92YWwgPSBJbnB1dHMucmFuZ2UoWy01LCA1XSwge3ZhbHVlOiAyLCBzdGVwOiAwLjEsIGxhYmVsOiBcInhbMV1cIn0pO1xuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0yIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoidmlld29mIG1hdHJpeF9kaW0gPSBJbnB1dHMucmFkaW8oW1wiMngyXCIsIFwiM3gzXCJdLCB7dmFsdWU6IFwiMngyXCIsIGxhYmVsOiBcIk1hdHJpeCBEaW1lbnNpb25cIn0pO1xuXG4vLyAyeDIgaW5wdXRzXG52aWV3b2YgYTIyXzAwID0gSW5wdXRzLnJhbmdlKFstNSwgNV0sIHt2YWx1ZTogMywgc3RlcDogMSwgbGFiZWw6IFwiQVswLDBdXCJ9KTtcbnZpZXdvZiBhMjJfMDEgPSBJbnB1dHMucmFuZ2UoWy01LCA1XSwge3ZhbHVlOiAwLCBzdGVwOiAxLCBsYWJlbDogXCJBWzAsMV1cIn0pO1xudmlld29mIGEyMl8xMCA9IElucHV0cy5yYW5nZShbLTUsIDVdLCB7dmFsdWU6IDgsIHN0ZXA6IDEsIGxhYmVsOiBcIkFbMSwwXVwifSk7XG52aWV3b2YgYTIyXzExID0gSW5wdXRzLnJhbmdlKFstNSwgNV0sIHt2YWx1ZTogLTEsIHN0ZXA6IDEsIGxhYmVsOiBcIkFbMSwxXVwifSk7XG5cbi8vIDN4MyBpbnB1dHNcbnZpZXdvZiBhMzNfMDAgPSBJbnB1dHMucmFuZ2UoWy01LCA1XSwge3ZhbHVlOiAwLCBzdGVwOiAxLCBsYWJlbDogXCJBWzAsMF1cIn0pO1xudmlld29mIGEzM18wMSA9IElucHV0cy5yYW5nZShbLTUsIDVdLCB7dmFsdWU6IDEsIHN0ZXA6IDEsIGxhYmVsOiBcIkFbMCwxXVwifSk7XG52aWV3b2YgYTMzXzAyID0gSW5wdXRzLnJhbmdlKFstNSwgNV0sIHt2YWx1ZTogMCwgc3RlcDogMSwgbGFiZWw6IFwiQVswLDJdXCJ9KTtcbnZpZXdvZiBhMzNfMTAgPSBJbnB1dHMucmFuZ2UoWy01LCA1XSwge3ZhbHVlOiAwLCBzdGVwOiAxLCBsYWJlbDogXCJBWzEsMF1cIn0pO1xudmlld29mIGEzM18xMSA9IElucHV0cy5yYW5nZShbLTUsIDVdLCB7dmFsdWU6IDAsIHN0ZXA6IDEsIGxhYmVsOiBcIkFbMSwxXVwifSk7XG52aWV3b2YgYTMzXzEyID0gSW5wdXRzLnJhbmdlKFstNSwgNV0sIHt2YWx1ZTogMSwgc3RlcDogMSwgbGFiZWw6IFwiQVsxLDJdXCJ9KTtcbnZpZXdvZiBhMzNfMjAgPSBJbnB1dHMucmFuZ2UoWy01LCA1XSwge3ZhbHVlOiA0LCBzdGVwOiAxLCBsYWJlbDogXCJBWzIsMF1cIn0pO1xudmlld29mIGEzM18yMSA9IElucHV0cy5yYW5nZShbLTUsIDVdLCB7dmFsdWU6IC0xNywgc3RlcDogMSwgbGFiZWw6IFwiQVsyLDFdXCJ9KTtcbnZpZXdvZiBhMzNfMjIgPSBJbnB1dHMucmFuZ2UoWy01LCA1XSwge3ZhbHVlOiA4LCBzdGVwOiAxLCBsYWJlbDogXCJBWzIsMl1cIn0pO1xuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0zIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoidmlld29mIGVzX21hdHJpeF9kaW0gPSBJbnB1dHMucmFkaW8oW1wiMngyXCIsIFwiM3gzXCJdLCB7dmFsdWU6IFwiMngyXCIsIGxhYmVsOiBcIk1hdHJpeCBEaW1lbnNpb25cIn0pO1xuXG4vLyAyeDIgaW5wdXRzXG52aWV3b2YgZXNfYTIyXzAwID0gSW5wdXRzLnJhbmdlKFstNSwgNV0sIHt2YWx1ZTogLTEsIHN0ZXA6IDEsIGxhYmVsOiBcIkFbMCwwXVwifSk7XG52aWV3b2YgZXNfYTIyXzAxID0gSW5wdXRzLnJhbmdlKFstNSwgNV0sIHt2YWx1ZTogMywgc3RlcDogMSwgbGFiZWw6IFwiQVswLDFdXCJ9KTtcbnZpZXdvZiBlc19hMjJfMTAgPSBJbnB1dHMucmFuZ2UoWy01LCA1XSwge3ZhbHVlOiAyLCBzdGVwOiAxLCBsYWJlbDogXCJBWzEsMF1cIn0pO1xudmlld29mIGVzX2EyMl8xMSA9IElucHV0cy5yYW5nZShbLTUsIDVdLCB7dmFsdWU6IDAsIHN0ZXA6IDEsIGxhYmVsOiBcIkFbMSwxXVwifSk7XG52aWV3b2YgZXNfbGFtYmRhMjIgPSBJbnB1dHMucmFuZ2UoWy01LCA1XSwge3ZhbHVlOiAyLCBzdGVwOiAxLCBsYWJlbDogXCJFaWdlbnZhbHVlIM67XCJ9KTtcblxuLy8gM3gzIGlucHV0c1xudmlld29mIGVzX2EzM18wMCA9IElucHV0cy5yYW5nZShbLTUsIDVdLCB7dmFsdWU6IDAsIHN0ZXA6IDEsIGxhYmVsOiBcIkFbMCwwXVwifSk7XG52aWV3b2YgZXNfYTMzXzAxID0gSW5wdXRzLnJhbmdlKFstNSwgNV0sIHt2YWx1ZTogMCwgc3RlcDogMSwgbGFiZWw6IFwiQVswLDFdXCJ9KTtcbnZpZXdvZiBlc19hMzNfMDIgPSBJbnB1dHMucmFuZ2UoWy01LCA1XSwge3ZhbHVlOiAtMiwgc3RlcDogMSwgbGFiZWw6IFwiQVswLDJdXCJ9KTtcbnZpZXdvZiBlc19hMzNfMTAgPSBJbnB1dHMucmFuZ2UoWy01LCA1XSwge3ZhbHVlOiAxLCBzdGVwOiAxLCBsYWJlbDogXCJBWzEsMF1cIn0pO1xudmlld29mIGVzX2EzM18xMSA9IElucHV0cy5yYW5nZShbLTUsIDVdLCB7dmFsdWU6IDIsIHN0ZXA6IDEsIGxhYmVsOiBcIkFbMSwxXVwifSk7XG52aWV3b2YgZXNfYTMzXzEyID0gSW5wdXRzLnJhbmdlKFstNSwgNV0sIHt2YWx1ZTogMSwgc3RlcDogMSwgbGFiZWw6IFwiQVsxLDJdXCJ9KTtcbnZpZXdvZiBlc19hMzNfMjAgPSBJbnB1dHMucmFuZ2UoWy01LCA1XSwge3ZhbHVlOiAxLCBzdGVwOiAxLCBsYWJlbDogXCJBWzIsMF1cIn0pO1xudmlld29mIGVzX2EzM18yMSA9IElucHV0cy5yYW5nZShbLTUsIDVdLCB7dmFsdWU6IDAsIHN0ZXA6IDEsIGxhYmVsOiBcIkFbMiwxXVwifSk7XG52aWV3b2YgZXNfYTMzXzIyID0gSW5wdXRzLnJhbmdlKFstNSwgNV0sIHt2YWx1ZTogMywgc3RlcDogMSwgbGFiZWw6IFwiQVsyLDJdXCJ9KTtcbnZpZXdvZiBlc19sYW1iZGEzMyA9IElucHV0cy5yYW5nZShbLTUsIDVdLCB7dmFsdWU6IDIsIHN0ZXA6IDEsIGxhYmVsOiBcIkVpZ2VudmFsdWUgzrtcIn0pO1xuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC00IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoidmlld29mIGlucHV0X2FtcGxpdHVkZSA9IElucHV0cy5yYW5nZShbMC4xLCAyLjBdLCB7dmFsdWU6IDEsIHN0ZXA6IDAuMSwgbGFiZWw6IFwiSW5wdXQgQW1wbGl0dWRlXCJ9KTtcbnZpZXdvZiBpbnB1dF9mcmVxdWVuY3kgPSBJbnB1dHMucmFuZ2UoWzAuMSwgNS4wXSwge3ZhbHVlOiAxLCBzdGVwOiAwLjEsIGxhYmVsOiBcIklucHV0IEZyZXF1ZW5jeSAoSHopXCJ9KTtcbnZpZXdvZiBmaWx0ZXJfZ2FpbiA9IElucHV0cy5yYW5nZShbMC4xLCAyLjBdLCB7dmFsdWU6IDEuMiwgc3RlcDogMC4xLCBsYWJlbDogXCJGaWx0ZXIgR2FpbiAoQW1wbGl0dWRlIFNjYWxlKVwifSk7XG52aWV3b2YgZmlsdGVyX3BoYXNlID0gSW5wdXRzLnJhbmdlKFstbnAucGksIG5wLnBpXSwge3ZhbHVlOiAwLjUsIHN0ZXA6IDAuMSwgbGFiZWw6IFwiRmlsdGVyIFBoYXNlIFNoaWZ0IChyYWQpXCJ9KTtcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnYV92YWwnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnYl92YWwnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnY192YWwnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnZF92YWwnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgneDFfdmFsJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ3gyX3ZhbCcpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdtYXRyaXhfZGltJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2EyMl8wMCcpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdhMjJfMDEnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnYTIyXzEwJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2EyMl8xMScpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdhMzNfMDAnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnYTMzXzAxJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2EzM18wMicpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdhMzNfMTAnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnYTMzXzExJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2EzM18xMicpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdhMzNfMjAnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnYTMzXzIxJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2EzM18yMicpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdlc19tYXRyaXhfZGltJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2VzX2EyMl8wMCcpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdlc19hMjJfMDEnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnZXNfYTIyXzEwJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2VzX2EyMl8xMScpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdlc19sYW1iZGEyMicpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdlc19hMzNfMDAnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnZXNfYTMzXzAxJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2VzX2EzM18wMicpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdlc19hMzNfMTAnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnZXNfYTMzXzExJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2VzX2EzM18xMicpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdlc19hMzNfMjAnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnZXNfYTMzXzIxJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2VzX2EzM18yMicpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdlc19sYW1iZGEzMycpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdpbnB1dF9hbXBsaXR1ZGUnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnaW5wdXRfZnJlcXVlbmN5JykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2ZpbHRlcl9nYWluJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2ZpbHRlcl9waGFzZScpIn1dfQ==
+    </script>
+    <script type="module">
+    if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+    window._ojs.paths.runtimeToDoc = "../..";
+    window._ojs.paths.runtimeToRoot = "../..";
+    window._ojs.paths.docToRoot = "";
+    window._ojs.selfContained = false;
+    window._ojs.runtime.interpretFromScriptTags();
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
