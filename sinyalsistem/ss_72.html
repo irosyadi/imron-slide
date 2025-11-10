@@ -194,10 +194,6 @@
   </style>
   <script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
   <link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
-  <meta name="mermaid-theme" content="neutral">
-  <script src="site_libs/quarto-diagram/mermaid.min.js"></script>
-  <script src="site_libs/quarto-diagram/mermaid-init.js"></script>
-  <link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -283,8 +279,6 @@ Imron Rosyadi
 <li><strong>Recall:</strong> For a band-limited signal <span class="math inline">\(x(t)\)</span> with maximum frequency <span class="math inline">\(\omega_M\)</span>, if sampled at a rate <span class="math inline">\(\omega_s \ge 2\omega_M\)</span> (Nyquist rate), exact reconstruction is theoretically possible.</li>
 <li><strong>The Tool:</strong> An ideal lowpass filter.</li>
 </ul>
-<div class="columns">
-<div class="column" style="width:50%;">
 <p><strong>System Model:</strong></p>
 <ul>
 <li>Samples <span class="math inline">\(x(nT)\)</span> are converted to an impulse train <span class="math inline">\(x_p(t)\)</span>.</li>
@@ -294,24 +288,6 @@ Imron Rosyadi
 <p><span class="math display">\[
 x_{r}(t)=x_{p}(t) * h(t)
 \]</span> Where <span class="math inline">\(h(t)\)</span> is the impulse response of the ideal lowpass filter.</p>
-</div><div class="column" style="width:50%;">
-<div class="cell" data-reveal="true" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<pre class="mermaid mermaid-js">graph TD
-    x_t["x(t) (Analog Signal)"] --&gt; S{Sampler}
-    S --&gt; xp_t["x_p(t) (Impulse Train)"]
-    xp_t --&gt; H_jw["H(jω) (Ideal LPF)"]
-    H_jw --&gt; xr_t["x_r(t) (Reconstructed Signal)"]
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-</div></div>
 <aside class="notes">
 <p>Before we dive into practical interpolation methods, it’s crucial to remember the theoretical foundation: the Sampling Theorem. It tells us <em>when</em> exact reconstruction is possible. If we sample fast enough, we haven’t lost any information. The key to this ideal reconstruction is using an ideal lowpass filter. This filter essentially “smooths out” the impulse train, recovering the original continuous signal. The diagram illustrates this conceptual process, showing the signal flow from analog to sampled impulses, then through the filter to the reconstructed signal.</p>
 <style type="text/css">
@@ -435,8 +411,8 @@ x_{r}(t)=\sum_{n=-\infty}^{+\infty} x(n T) \frac{\omega_{c} T}{\pi} \frac{\sin \
 <h2>The Sinc Function: The Ideal Interpolator</h2>
 <h3 id="interactive-sinc-function">Interactive Sinc Function</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="160" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 159;"><span id="cb1-160"><a></a>viewof sinc_amp <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.5</span><span class="op">,</span> <span class="fl">2.0</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Amplitude"</span>})<span class="op">;</span></span>
-<span id="cb1-161"><a></a>viewof sinc_freq <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.1</span><span class="op">,</span> <span class="fl">5.0</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Frequency Scale"</span>})<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="147" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 146;"><span id="cb1-147"><a></a>viewof sinc_amp <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.5</span><span class="op">,</span> <span class="fl">2.0</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Amplitude"</span>})<span class="op">;</span></span>
+<span id="cb1-148"><a></a>viewof sinc_freq <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.1</span><span class="op">,</span> <span class="fl">5.0</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Frequency Scale"</span>})<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-1-1" data-nodetype="declaration">
@@ -485,7 +461,14 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsic2lu
 <li>Produces a “stair-step” or “mosaic” effect.</li>
 </ul></li>
 </ul>
-<p><strong>Impulse Response (<span class="math inline">\(h_0(t)\)</span>):</strong> - A rectangular pulse of duration <span class="math inline">\(T\)</span> (sampling period). - <span class="math inline">\(h_0(t) = 1\)</span> for <span class="math inline">\(0 \le t &lt; T\)</span> - <span class="math inline">\(h_0(t) = 0\)</span> otherwise</p>
+<p><strong>Impulse Response (<span class="math inline">\(h_0(t)\)</span>):</strong></p>
+<ul>
+<li>A rectangular pulse of duration <span class="math inline">\(T\)</span> (sampling period).
+<ul>
+<li><span class="math inline">\(h_0(t) = 1\)</span> for <span class="math inline">\(0 \le t &lt; T\)</span></li>
+<li><span class="math inline">\(h_0(t) = 0\)</span> otherwise</li>
+</ul></li>
+</ul>
 <p><strong>Output:</strong> - <span class="math inline">\(x_0(t) = \sum_{n=-\infty}^{+\infty} x(nT) h_0(t-nT)\)</span></p>
 <div class="callout callout-warning callout-titled callout-style-default">
 <div class="callout-body">
@@ -520,8 +503,6 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsic2lu
 <li>The ZOH can be viewed as an approximation to the ideal lowpass filter.</li>
 <li>Its transfer function is not ideal.</li>
 </ul>
-<div class="columns">
-<div class="column" style="width:50%;">
 <p><span class="math display">\[
 H_0(j\omega) = T \frac{\sin(\omega T/2)}{\omega T/2} e^{-j\omega T/2}
 \]</span> The magnitude, <span class="math inline">\(|H_0(j\omega)|\)</span>, has a <code>sinc</code> function (unnormalized) shape.</p>
@@ -534,14 +515,6 @@ H_0(j\omega) = T \frac{\sin(\omega T/2)}{\omega T/2} e^{-j\omega T/2}
 <li>Output is discontinuous.</li>
 </ul></li>
 </ul>
-</div><div class="column" style="width:50%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="https://cdn.mathpix.com/cropped/2024_02_14_ad5c48a840b9702e9410g-557.jpg?height=230&amp;width=538&amp;top_left_y=1882&amp;top_left_x=362"></p>
-<figcaption>Figure 7.11: Transfer function for the zero-order hold (dashed) and for the ideal interpolating filter (solid).</figcaption>
-</figure>
-</div>
-</div></div>
 <aside class="notes">
 <p>Here we compare the ZOH’s frequency response to the ideal one. Notice how the ZOH’s magnitude response is not a perfect rectangle; it rolls off gradually and has side lobes. This means it doesn’t perfectly block high frequencies and can introduce some spectral distortion. This non-ideal behavior is why the ZOH produces a “rough” reconstruction. However, as the text notes, sometimes it’s “sufficient,” especially if further lowpass filtering is applied by the system or even by the human visual system, as seen in the image example from the previous slide.</p>
 <style type="text/css">
@@ -565,7 +538,15 @@ H_0(j\omega) = T \frac{\sin(\omega T/2)}{\omega T/2} e^{-j\omega T/2}
 </ul>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><strong>Impulse Response (<span class="math inline">\(h_1(t)\)</span>):</strong> - A triangular pulse of duration <span class="math inline">\(2T\)</span>, centered at <span class="math inline">\(T\)</span>. - <span class="math inline">\(h_1(t)\)</span> increases linearly from 0 to 1 for <span class="math inline">\(0 \le t \le T\)</span>. - <span class="math inline">\(h_1(t)\)</span> decreases linearly from 1 to 0 for <span class="math inline">\(T &lt; t \le 2T\)</span>. - <span class="math inline">\(h_1(t) = 0\)</span> otherwise.</p>
+<p><strong>Impulse Response (<span class="math inline">\(h_1(t)\)</span>):</strong></p>
+<ul>
+<li>A triangular pulse of duration <span class="math inline">\(2T\)</span>, centered at <span class="math inline">\(T\)</span>.
+<ul>
+<li><span class="math inline">\(h_1(t)\)</span> increases linearly from 0 to 1 for <span class="math inline">\(0 \le t \le T\)</span>.</li>
+<li><span class="math inline">\(h_1(t)\)</span> decreases linearly from 1 to 0 for <span class="math inline">\(T &lt; t \le 2T\)</span>.</li>
+<li><span class="math inline">\(h_1(t) = 0\)</span> otherwise.</li>
+</ul></li>
+</ul>
 <p><strong>Output:</strong> - Continuous, but with discontinuous derivatives (sharp corners at sample points).</p>
 <div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
@@ -658,9 +639,9 @@ H(j \omega)=\frac{1}{T}\left[\frac{\sin (\omega T / 2)}{\omega / 2}\right]^{2} \
 <li>Adjust the sampling rate to see how it impacts reconstruction quality.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="334" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 333;"><span id="cb2-334"><a></a>viewof sampling_rate <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">5</span><span class="op">,</span> <span class="dv">50</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Sampling Rate (samples/period)"</span>})<span class="op">;</span></span>
-<span id="cb2-335"><a></a>viewof signal_freq <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.5</span><span class="op">,</span> <span class="fl">5.0</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Signal Frequency (Hz)"</span>})<span class="op">;</span></span>
-<span id="cb2-336"><a></a>viewof amplitude <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.5</span><span class="op">,</span> <span class="fl">2.0</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Amplitude"</span>})<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="316" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 315;"><span id="cb2-316"><a></a>viewof sampling_rate <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">5</span><span class="op">,</span> <span class="dv">50</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Sampling Rate (samples/period)"</span>})<span class="op">;</span></span>
+<span id="cb2-317"><a></a>viewof signal_freq <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.5</span><span class="op">,</span> <span class="fl">5.0</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Signal Frequency (Hz)"</span>})<span class="op">;</span></span>
+<span id="cb2-318"><a></a>viewof amplitude <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.5</span><span class="op">,</span> <span class="fl">2.0</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Amplitude"</span>})<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-2-1" data-nodetype="declaration">
