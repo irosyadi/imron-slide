@@ -223,28 +223,13 @@ Imron Rosyadi
 <li>Primarily used for <strong>image recognition</strong>, computer vision, and signal processing.</li>
 <li>Inspired by the <strong>human visual cortex</strong>.</li>
 </ul>
-<p><strong>Why CNNs for ECE?</strong></p>
-<ul>
-<li><strong>Image/Video Processing:</strong> Autonomous vehicles, surveillance, medical imaging.</li>
-<li><strong>Signal Processing:</strong> Audio analysis, sensor data interpretation.</li>
-<li><strong>Embedded Systems:</strong> Efficient deployment on edge devices.</li>
-</ul>
-<div class="callout callout-tip callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Tip</strong></p>
-</div>
-<div class="callout-content">
-<p>In ECE, understanding CNNs is crucial for designing intelligent systems that interact with multimodal data.</p>
-</div>
-</div>
-</div>
 </div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
 <p><img data-src="https://codelabs.developers.google.com/static/codelabs/cloud-tensorflow-mnist/img/ca8f34f3d28ea528.gif"></p>
-<p><em>Illustration: Filtering an image with two successive filters, each made of 4x4x3=48 learnable weights.</em></p>
+<figcaption>Filtering an image with two successive filters, each made of 4x4x3=48 learnable weights.</figcaption>
+</figure>
+</div>
 <aside class="notes">
 <p>CNNs are a cornerstone of modern AI, especially for tasks involving spatial data. For ECE students, it’s not just about theoretical understanding but also about their practical implementation in hardware and software for real-world applications. This introductory slide sets the stage for diving into the core mechanisms.</p>
 <style type="text/css">
@@ -262,9 +247,7 @@ Imron Rosyadi
 </section>
 <section id="core-concept-the-convolution-operation" class="slide level2">
 <h2>Core Concept: The Convolution Operation</h2>
-<p>A Localized Filtering Approach</p>
-<div class="columns">
-<div class="column" style="width:50%;">
+<p><strong>A Localized Filtering Approach</strong></p>
 <p><strong>Localized Receptive Fields</strong></p>
 <ul>
 <li>Unlike dense layers where each neuron sees the entire input, a CNN neuron processes only a <strong>small, local region</strong> of the input (its <strong>receptive field</strong>).</li>
@@ -291,31 +274,38 @@ Imron Rosyadi
 </div>
 </div>
 </div>
-</div><div class="column" style="width:50%;">
-<p><img data-src="https://codelabs.developers.google.com/static/codelabs/cloud-tensorflow-mnist/img/bd9f83d6cb62b5fb.png"></p>
-<p><em>Analogy: Each filter creates a “feature map” or “channel” highlighting specific patterns.</em></p>
-<p><strong>Why Multiple Filters/Channels?</strong></p>
+</section>
+<section id="core-concept-the-convolution-operation-1" class="slide level2">
+<h2>Core Concept: The Convolution Operation</h2>
+<p><strong>A Localized Filtering Approach</strong></p>
+
+<img data-src="https://codelabs.developers.google.com/static/codelabs/cloud-tensorflow-mnist/img/bd9f83d6cb62b5fb.png" class="r-stretch quarto-figure-center"><p class="caption">Analogy: Each filter creates a “feature map” or “channel” highlighting specific patterns.</p><p><strong>Why Multiple Filters/Channels?</strong></p>
 <ul>
 <li>A single filter might detect one type of feature (e.g., horizontal edges).</li>
 <li>To detect a variety of features, we use <strong>multiple filters</strong>.</li>
 <li>Each filter produces a separate <strong>output channel</strong> or <strong>feature map</strong>.</li>
 <li>These multiple channels are stacked to form a new “data cube”.</li>
 </ul>
-</div></div>
 </section>
 <section id="visualizing-the-convolution-operation" class="slide level2">
 <h2>Visualizing the Convolution Operation</h2>
-<p>An Interactive Example</p>
-<div class="columns">
-<div class="column" style="width:50%;">
+<p><strong>An Interactive Example</strong></p>
 <p><strong>Input:</strong> A simple 2D grid representing an image or signal.</p>
 <p><strong>Kernel:</strong> A smaller 2D filter that slides over the input.</p>
 <p><strong>Operation:</strong> At each position, the kernel’s values are multiplied element-wise by the corresponding input values within its receptive field, and the products are summed to form a single output pixel.</p>
-<p><strong>Key Parameters:</strong> - <strong>Kernel Size:</strong> Dimensions of the filter (e.g., 3x3, 5x5). - <strong>Stride:</strong> Number of pixels the filter shifts at each step. - <strong>Padding:</strong> Adding zeros to the input edges to preserve spatial dimensions.</p>
-</div><div class="column" style="width:50%;">
+<p><strong>Key Parameters:</strong></p>
+<ul>
+<li><strong>Kernel Size:</strong> Dimensions of the filter (e.g., 3x3, 5x5).</li>
+<li><strong>Stride:</strong> Number of pixels the filter shifts at each step.</li>
+<li><strong>Padding:</strong> Adding zeros to the input edges to preserve spatial dimensions.</li>
+</ul>
+</section>
+<section id="visualizing-the-convolution-operation-1" class="slide level2">
+<h2>Visualizing the Convolution Operation</h2>
+<p><strong>An Interactive Example</strong></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="114" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 113;"><span id="cb1-114"><a></a>viewof input_size <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">3</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">5</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Input Size (N x N)"</span>})<span class="op">;</span></span>
-<span id="cb1-115"><a></a>viewof kernel_size <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">3</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">3</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Kernel Size (K x K)"</span>})<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="104" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 103;"><span id="cb1-104"><a></a>viewof input_size <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">3</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">5</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Input Size (N x N)"</span>})<span class="op">;</span></span>
+<span id="cb1-105"><a></a>viewof kernel_size <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">3</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">3</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Kernel Size (K x K)"</span>})<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-1-1" data-nodetype="declaration">
@@ -352,13 +342,10 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiaW5w
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</div></div>
 </section>
 <section id="building-blocks-of-a-cnn" class="slide level2">
 <h2>Building Blocks of a CNN</h2>
-<p>Layer by Layer</p>
-<div class="columns">
-<div class="column" style="width:50%;">
+<p><strong>Layer by Layer</strong></p>
 <p><strong>Convolutional Layer (<code>Conv2D</code>)</strong></p>
 <ul>
 <li>Applies a set of learnable filters to the input image / feature maps.</li>
@@ -380,7 +367,10 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiaW5w
 <li><code>Max Pooling</code>: Takes the maximum value from each patch.</li>
 <li><code>GlobalAveragePooling2D</code>: Averages entire feature maps, often used before the final classification.</li>
 </ul>
-</div><div class="column" style="width:50%;">
+</section>
+<section id="building-blocks-of-a-cnn-1" class="slide level2">
+<h2>Building Blocks of a CNN</h2>
+<p><strong>Layer by Layer</strong></p>
 <p><strong>Example Keras Model Snippet:</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>model <span class="op">=</span> tf.keras.Sequential([</span>
 <span id="cb2-2"><a></a>    tf.keras.layers.Reshape(input_shape<span class="op">=</span>(<span class="dv">28</span><span class="op">*</span><span class="dv">28</span>,), target_shape<span class="op">=</span>(<span class="dv">28</span>, <span class="dv">28</span>, <span class="dv">1</span>)),</span>
@@ -400,19 +390,29 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiaW5w
 <li>Converts the multi-dimensional output of convolutional/pooling layers into a 1D vector.</li>
 <li>Prepares the data for input to a dense layer.</li>
 </ul>
-</div></div>
 </section>
 <section id="architectural-view-of-a-cnn" class="slide level2">
 <h2>Architectural View of a CNN</h2>
-<p>Data Cubes in Motion</p>
+<p><strong>Data Cubes in Motion</strong></p>
 <p><strong>Data Transformation:</strong></p>
 <ul>
 <li>A CNN can be visualized as transforming “cubes” of data.</li>
 <li>Each operation (convolution, pooling) manipulates the dimensions of these cubes.</li>
 </ul>
-<p><strong>Input Layer:</strong> - Starts with an input image (e.g., 28x28x1 for grayscale MNIST, 224x224x3 for RGB images).</p>
-<p><strong>Intermediate Layers:</strong> - Convolutional layers increase the number of channels (filters) while possibly reducing spatial dimensions (if <code>strides &gt; 1</code>). - Pooling layers reduce spatial dimensions, preserving the number of channels.</p>
-<p><strong>Output Layer:</strong> - Typically, a <code>Flatten</code> or <code>GlobalAveragePooling2D</code> layer converts the cube into a vector. - Followed by a <code>Dense</code> layer with a <code>softmax</code> activation for classification probabilities.</p>
+<p><strong>Input Layer:</strong></p>
+<ul>
+<li>Starts with an input image (e.g., 28x28x1 for grayscale MNIST, 224x224x3 for RGB images).</li>
+</ul>
+<p><strong>Intermediate Layers:</strong></p>
+<ul>
+<li>Convolutional layers increase the number of channels (filters) while possibly reducing spatial dimensions (if <code>strides &gt; 1</code>).</li>
+<li>Pooling layers reduce spatial dimensions, preserving the number of channels.</li>
+</ul>
+<p><strong>Output Layer:</strong></p>
+<ul>
+<li>Typically, a <code>Flatten</code> or <code>GlobalAveragePooling2D</code> layer converts the cube into a vector.</li>
+<li>Followed by a <code>Dense</code> layer with a <code>softmax</code> activation for classification probabilities.</li>
+</ul>
 <div class="callout callout-important callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -442,9 +442,7 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiaW5w
 </section>
 <section id="strided-convolutions-max-pooling" class="slide level2">
 <h2>Strided Convolutions &amp; Max Pooling</h2>
-<p>Downsampling Strategies</p>
-<div class="columns">
-<div class="column" style="width:50%;">
+<p><strong>Downsampling Strategies</strong></p>
 <p><strong>Purpose of Downsampling:</strong></p>
 <ul>
 <li><strong>Reduce computational load:</strong> Fewer pixels to process in subsequent layers.</li>
@@ -465,10 +463,12 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiaW5w
 <li>Commonly used with <code>pool_size</code> = <code>strides</code> (e.g., 2x2 window with stride 2).</li>
 <li>Example: <code>tf.keras.layers.MaxPooling2D(pool_size=(2, 2), strides=(2, 2))</code></li>
 </ul>
-</div><div class="column" style="width:50%;">
-<p><img data-src="https://codelabs.developers.google.com/static/codelabs/cloud-tensorflow-mnist/img/2b2d4263bb8470b.gif"></p>
-<p><em>Illustration: Strided convolutions or max pooling reduce spatial dimensions.</em></p>
-<div class="callout callout-note callout-titled callout-style-default">
+</section>
+<section id="strided-convolutions-max-pooling-1" class="slide level2">
+<h2>Strided Convolutions &amp; Max Pooling</h2>
+<p><strong>Downsampling Strategies</strong></p>
+
+<img data-src="https://codelabs.developers.google.com/static/codelabs/cloud-tensorflow-mnist/img/2b2d4263bb8470b.gif" class="r-stretch quarto-figure-center"><p class="caption">Strided convolutions or max pooling reduce spatial dimensions.</p><div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
@@ -486,14 +486,13 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiaW5w
 <li><strong>Strided Conv:</strong> Learns how to downsample, can adapt filters for optimal feature reduction.</li>
 <li><strong>Max Pooling:</strong> Simpler, fixed operation; preserves only the most salient features. Reduces overfitting by taking only the maximum.</li>
 </ul>
-</div></div>
 </section>
 <section id="the-final-layer-classification-head" class="slide level2 scrollable">
 <h2>The Final Layer: Classification Head</h2>
-<p>Connecting Features to Decisions</p>
+<p><strong>Connecting Features to Decisions</strong></p>
+<p><strong>Goal:</strong> Transform the extracted features into class probabilities.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><strong>Goal:</strong> Transform the extracted features into class probabilities.</p>
 <p><strong>Option 1: Flatten and Dense Layers</strong></p>
 <ol type="1">
 <li><strong>Flatten:</strong> Converts the 3D feature cube into a 1D vector.
@@ -521,8 +520,6 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiaW5w
 </div>
 </div>
 </div><div class="column" style="width:50%;">
-<p><img data-src="https://codelabs.developers.google.com/static/codelabs/cloud-tensorflow-mnist/img/a44aa392c7b0e32a.png"></p>
-<p><em>Illustration showing two options for the final layer.</em></p>
 <p><strong>Option 2: Global Average Pooling (GAP) and Dense/Softmax</strong></p>
 <ol type="1">
 <li><strong>GlobalAveragePooling2D:</strong>
@@ -553,9 +550,14 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiaW5w
 </div>
 </div></div>
 </section>
+<section id="the-final-layer-classification-head-1" class="slide level2">
+<h2>The Final Layer: Classification Head</h2>
+<p><strong>Connecting Features to Decisions</strong></p>
+
+<img data-src="https://codelabs.developers.google.com/static/codelabs/cloud-tensorflow-mnist/img/a44aa392c7b0e32a.png" class="r-stretch quarto-figure-center"><p class="caption">Two options for the final layer.</p></section>
 <section id="conclusion" class="slide level2">
 <h2>Conclusion</h2>
-<p>Key Takeaways for ECE</p>
+<p><strong>Key Takeaways for ECE</strong></p>
 <p><strong>Recap of CNN Fundamentals:</strong></p>
 <ul>
 <li><strong>Localized Receptive Fields:</strong> Neurons respond to small regions.</li>
@@ -564,6 +566,10 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiaW5w
 <li><strong>Downsampling:</strong> Strided convolutions and pooling reduce data dimensions, manage computation.</li>
 <li><strong>Classification Head:</strong> <code>Flatten</code> + <code>Dense</code> or <code>GlobalAveragePooling2D</code> for final prediction.</li>
 </ul>
+</section>
+<section id="conclusion-1" class="slide level2">
+<h2>Conclusion</h2>
+<p><strong>Key Takeaways for ECE</strong></p>
 <p><strong>Relevance for Electrical and Computer Engineers:</strong></p>
 <ul>
 <li><strong>Hardware Acceleration:</strong> Designing custom chips (ASICs, FPGAs) for efficient CNN inference.</li>
@@ -588,13 +594,11 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiaW5w
 </section>
 <section id="regularization-dropout" class="slide level2">
 <h2>Regularization: Dropout</h2>
-<p>Mitigating Overfitting in Machine Learning Models</p>
+<p><strong>Mitigating Overfitting in Machine Learning Models</strong></p>
 </section>
 <section id="understanding-overfitting" class="slide level2 scrollable">
 <h2>Understanding Overfitting</h2>
-<p>A Critical Challenge in ML</p>
-<div class="columns">
-<div class="column" style="width:50%;">
+<p><strong>A Critical Challenge in ML</strong></p>
 <p><strong>What is Overfitting?</strong></p>
 <ul>
 <li>A model that performs exceptionally well on the <strong>training data</strong> but poorly on <strong>unseen data</strong> (validation/test data).</li>
@@ -606,9 +610,6 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiaW5w
 <li><strong>Validation Loss Increases:</strong> Starts to rise after an initial decrease, indicating the model is losing generalization ability.</li>
 <li><strong>High Training Accuracy, Low Validation Accuracy:</strong> A significant gap between performance on seen and unseen data.</li>
 </ol>
-</div><div class="column" style="width:50%;">
-<p><img data-src="https://codelabs.developers.google.com/static/codelabs/cloud-tensorflow-mnist/img/63e0cc982cee2030.png"></p>
-<p><em>Graph: Illustrates validation loss flattening and training loss decreasing, a positive sign with dropout.</em></p>
 <p><strong>Causes of Overfitting:</strong></p>
 <ul>
 <li><strong>Model Complexity:</strong> Too many parameters or layers relative to data.</li>
@@ -628,11 +629,15 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiaW5w
 </div>
 </div>
 </div>
-</div></div>
 </section>
+<section id="understanding-overfitting-1" class="slide level2">
+<h2>Understanding Overfitting</h2>
+<p><strong>A Critical Challenge in ML</strong></p>
+
+<img data-src="https://codelabs.developers.google.com/static/codelabs/cloud-tensorflow-mnist/img/63e0cc982cee2030.png" class="r-stretch quarto-figure-center"><p class="caption">Validation loss flattening and training loss decreasing, a positive sign with dropout.</p></section>
 <section id="introduction-to-dropout" class="slide level2">
 <h2>Introduction to Dropout</h2>
-<p>A Simple Yet Powerful Regularization Technique</p>
+<p><strong>A Simple Yet Powerful Regularization Technique</strong></p>
 <p><strong>What is Dropout?</strong></p>
 <ul>
 <li>A regularization technique introduced by Hinton et al.&nbsp;in 2012.</li>
@@ -643,6 +648,10 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiaW5w
 <ul>
 <li>Imagine a team where, for each task, a random subset of members is absent. The remaining members must learn to perform their roles more robustly without relying on any single individual.</li>
 </ul>
+</section>
+<section id="introduction-to-dropout-1" class="slide level2">
+<h2>Introduction to Dropout</h2>
+<p><strong>A Simple Yet Powerful Regularization Technique</strong></p>
 <p><strong>How it Works (Training Phase):</strong></p>
 <ul>
 <li>A <code>dropout rate</code> (e.g., 0.2 to 0.5) specifies the probability of a neuron being dropped.</li>
@@ -670,9 +679,7 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiaW5w
 </section>
 <section id="dropout-in-keras" class="slide level2">
 <h2>Dropout in Keras</h2>
-<p>Implementation and Placement</p>
-<div class="columns">
-<div class="column" style="width:50%;">
+<p><strong>Implementation and Placement</strong></p>
 <p><strong>Adding Dropout Layers:</strong></p>
 <ul>
 <li>In Keras, dropout is implemented as a layer: <code>tf.keras.layers.Dropout(rate)</code>.</li>
@@ -697,7 +704,10 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiaW5w
 <span id="cb3-11"><a></a>    tf.keras.layers.Dropout(<span class="fl">0.5</span>), <span class="co"># High dropout for dense layers</span></span>
 <span id="cb3-12"><a></a>    tf.keras.layers.Dense(<span class="dv">10</span>, activation<span class="op">=</span><span class="st">'softmax'</span>)</span>
 <span id="cb3-13"><a></a>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:50%;">
+</section>
+<section id="dropout-in-keras-1" class="slide level2">
+<h2>Dropout in Keras</h2>
+<p><strong>Implementation and Placement</strong></p>
 <p><strong>Practical Considerations:</strong></p>
 <ul>
 <li><strong>Dropout Rate:</strong>
@@ -725,11 +735,11 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiaW5w
 </div>
 </div>
 </div>
-</div></div>
 </section>
-<section id="dropout-in-keras-1" class="slide level2">
+<section id="dropout-in-keras-2" class="slide level2">
 <h2>Dropout in Keras</h2>
-<p><strong>Dropout Effect on Training</strong> This Python code block does not execute a full training loop to demonstrate dropout, but illustrates how the dropout layer works by modifying input tensors.</p>
+<p><strong>Dropout Effect on Training</strong></p>
+<p>This Python code block does not execute a full training loop to demonstrate dropout, but illustrates how the dropout layer works by modifying input tensors.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="co">#| max-lines: 10</span></span>
 <span id="cb4-2"><a></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
 <span id="cb4-3"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -768,9 +778,7 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiaW5w
 </section>
 <section id="when-dropout-helps-and-when-it-doesnt" class="slide level2">
 <h2>When Dropout Helps (and When It Doesn’t)</h2>
-<p>Diagnosing Overfitting</p>
-<div class="columns">
-<div class="column" style="width:50%;">
+<p><strong>Diagnosing Overfitting</strong></p>
 <p><strong>When Dropout is Effective:</strong></p>
 <ul>
 <li><strong>Overfitting is the primary problem:</strong> When validation loss starts increasing while training loss continues to decrease.</li>
@@ -786,7 +794,10 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiaW5w
 </ul></li>
 <li><strong>Too High Dropout Rate:</strong> Can lead to underfitting if too many neurons are dropped, effectively simplifying the network too much.</li>
 </ul>
-</div><div class="column" style="width:50%;">
+</section>
+<section id="when-dropout-helps-and-when-it-doesnt-1" class="slide level2">
+<h2>When Dropout Helps (and When It Doesn’t)</h2>
+<p><strong>Diagnosing Overfitting</strong></p>
 <p><strong>Analyzing Loss Curves:</strong></p>
 <ul>
 <li><strong>Training loss decreasing, Validation loss increasing:</strong> <em>Classic sign of overfitting</em> <span class="math inline">\(\rightarrow\)</span> <strong>Use Dropout</strong>.</li>
@@ -807,11 +818,10 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiaW5w
 </div>
 </div>
 <p><strong>Beyond Dropout:</strong> Other regularization techniques include L1/L2 regularization, data augmentation, batch normalization, and early stopping.</p>
-</div></div>
 </section>
-<section id="conclusion-1" class="slide level2">
+<section id="conclusion-2" class="slide level2">
 <h2>Conclusion</h2>
-<p>Dropout Summary &amp; ECE Relevance</p>
+<p><strong>Dropout Summary &amp; ECE Relevance</strong></p>
 <p><strong>Key Learnings about Dropout:</strong></p>
 <ul>
 <li><strong>Mechanism:</strong> Randomly deactivates neurons during training to prevent co-adaptation.</li>
@@ -819,6 +829,10 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiaW5w
 <li><strong>Implementation:</strong> Simple Keras <code>Dropout</code> layer.</li>
 <li><strong>Diagnosis:</strong> Effective when validation loss deviates upwards from training loss.</li>
 </ul>
+</section>
+<section id="conclusion-3" class="slide level2">
+<h2>Conclusion</h2>
+<p><strong>Dropout Summary &amp; ECE Relevance</strong></p>
 <p><strong>ECE Relevance:</strong></p>
 <ul>
 <li><strong>Robustness:</strong> Dropout improves model robustness, crucial for deployment in noisy or varying real-world environments (e.g., sensor data processing).</li>
@@ -842,13 +856,11 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiaW5w
 </section>
 <section id="batch-normalization" class="slide level2">
 <h2>Batch Normalization</h2>
-<p>Stabilizing and Accelerating Neural Network Training</p>
+<p><strong>Stabilizing and Accelerating Neural Network Training</strong></p>
 </section>
 <section id="the-challenge-of-internal-covariate-shift" class="slide level2">
 <h2>The Challenge of Internal Covariate Shift</h2>
-<p>Why Normalization is Needed in Deep Networks</p>
-<div class="columns">
-<div class="column" style="width:50%;">
+<p><strong>Why Normalization is Needed in Deep Networks</strong></p>
 <p><strong>Internal Covariate Shift (ICS):</strong></p>
 <ul>
 <li>During neural network training, the distribution of inputs to hidden layers changes as the parameters of the preceding layers change.</li>
@@ -875,22 +887,21 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiaW5w
 </div>
 </div>
 </div>
-</div><div class="column" style="width:50%;">
-<p><img data-src="https://lh6.googleusercontent.com/oggEbikl2I6_sOo7FlaX2KLdNeaYhJnVSS8GyG8FHXid75PVJX73CRiOynwpMZpLZq6_xAy69wgyez5T-ZlpuC2XSlcmjk7oVcOzefKKTFhTEoLO3kljz2RDyKcaFtHvtTey-I4VpQ.png"></p>
-<p><em>Illustration: Conceptual representation of the impact of Batch Normalization, allowing for smoother training curves.</em></p>
-<p><strong>How Batch Normalization Addresses ICS:</strong></p>
+</section>
+<section id="the-challenge-of-internal-covariate-shift-1" class="slide level2">
+<h2>The Challenge of Internal Covariate Shift</h2>
+<p><strong>Why Normalization is Needed in Deep Networks</strong></p>
+
+<img data-src="https://lh6.googleusercontent.com/oggEbikl2I6_sOo7FlaX2KLdNeaYhJnVSS8GyG8FHXid75PVJX73CRiOynwpMZpLZq6_xAy69wgyez5T-ZlpuC2XSlcmjk7oVcOzefKKTFhTEoLO3kljz2RDyKcaFtHvtTey-I4VpQ.png" class="r-stretch quarto-figure-center"><p class="caption">Conceptual representation of the impact of Batch Normalization, allowing for smoother training curves.</p><p><strong>How Batch Normalization Addresses ICS:</strong></p>
 <ul>
 <li>Standardizes the inputs to hidden layers.</li>
 <li>It normalizes the activations of each previous layer at each mini-batch, making the distribution more stable.</li>
 <li>For each feature/channel across the mini-batch, it computes the mean and variance, then normalizes the data to have zero mean and unit variance.</li>
 </ul>
-</div></div>
 </section>
 <section id="what-is-batch-normalization" class="slide level2 scrollable">
 <h2>What is Batch Normalization?</h2>
-<p>The Mechanism</p>
-<div class="columns">
-<div class="column" style="width:50%;">
+<p><strong>The Mechanism</strong></p>
 <p><strong>Per-Batch, Per-Feature Normalization:</strong></p>
 <p>For each mini-batch during training, and for each feature (or channel in CNNs) independently:</p>
 <ol type="1">
@@ -903,7 +914,10 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiaW5w
 <li>These are trained parameters, just like weights and biases.</li>
 </ul></li>
 </ol>
-</div><div class="column" style="width:50%;">
+</section>
+<section id="what-is-batch-normalization-1" class="slide level2">
+<h2>What is Batch Normalization?</h2>
+<p><strong>The Mechanism</strong></p>
 <p><strong>Training vs.&nbsp;Inference:</strong></p>
 <ul>
 <li><strong>Training:</strong> Mean and variance are calculated per mini-batch.</li>
@@ -925,13 +939,10 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiaW5w
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</div></div>
 </section>
 <section id="benefits-of-batch-normalization" class="slide level2 scrollable">
 <h2>Benefits of Batch Normalization</h2>
-<p>Why it’s a Game Changer</p>
-<div class="columns">
-<div class="column" style="width:50%;">
+<p><strong>Why it’s a Game Changer</strong></p>
 <ol type="1">
 <li><strong>Faster Training (Higher Learning Rates):</strong>
 <ul>
@@ -966,22 +977,21 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiaW5w
 </div>
 </div>
 </div>
-</div><div class="column" style="width:50%;">
+</section>
+<section id="benefits-of-batch-normalization-1" class="slide level2">
+<h2>Benefits of Batch Normalization</h2>
+<p><strong>Why it’s a Game Changer</strong></p>
 <p><strong>Impact on Training Curves:</strong></p>
-<p><img data-src="https://codelabs.developers.google.com/static/codelabs/cloud-tensorflow-mnist/img/ea48193334c565a1.png"></p>
-<p><em>Graph: Batch Norm often leads to smoother, faster convergence to higher accuracy.</em></p>
-<p><strong>Practical Rules of Thumb from the Reference:</strong></p>
+
+<img data-src="https://codelabs.developers.google.com/static/codelabs/cloud-tensorflow-mnist/img/ea48193334c565a1.png" class="r-stretch quarto-figure-center"><p class="caption">Batch Norm often leads to smoother, faster convergence to higher accuracy.</p><p><strong>Practical Rules of Thumb from the Reference:</strong></p>
 <ul>
 <li>Batch Norm helps neural networks converge and usually allows you to train faster.</li>
 <li>Batch Norm is a regularizer. You can usually decrease the amount of dropout you use, or even not use dropout at all.</li>
 </ul>
-</div></div>
 </section>
 <section id="implementing-batch-normalization-in-keras" class="slide level2">
 <h2>Implementing Batch Normalization in Keras</h2>
-<p>Practical Integration</p>
-<div class="columns">
-<div class="column" style="width:50%;">
+<p><strong>Practical Integration</strong></p>
 <p><strong>Keras Layer:</strong></p>
 <ul>
 <li>Implemented as <code>tf.keras.layers.BatchNormalization()</code>.</li>
@@ -1012,11 +1022,14 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiaW5w
 <span id="cb5-17"><a></a>    tf.keras.layers.Activation(<span class="st">'relu'</span>),</span>
 <span id="cb5-18"><a></a>    tf.keras.layers.Dense(<span class="dv">10</span>, activation<span class="op">=</span><span class="st">'softmax'</span>) <span class="co"># No Batch Norm here</span></span>
 <span id="cb5-19"><a></a>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:50%;">
+</section>
+<section id="implementing-batch-normalization-in-keras-1" class="slide level2">
+<h2>Implementing Batch Normalization in Keras</h2>
+<p><strong>Practical Integration</strong></p>
 <p><strong>Interactive Example: Batch Norm Effect on Activation Distribution</strong></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="793" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 792;"><span id="cb6-793"><a></a>viewof mean_val <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">2</span><span class="op">,</span> <span class="dv">2</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Input Mean"</span>})<span class="op">;</span></span>
-<span id="cb6-794"><a></a>viewof std_val <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.1</span><span class="op">,</span> <span class="dv">3</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="fl">1.5</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Input Std Dev"</span>})<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="795" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 794;"><span id="cb6-795"><a></a>viewof mean_val <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">2</span><span class="op">,</span> <span class="dv">2</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Input Mean"</span>})<span class="op">;</span></span>
+<span id="cb6-796"><a></a>viewof std_val <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.1</span><span class="op">,</span> <span class="dv">3</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="fl">1.5</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Input Std Dev"</span>})<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-2-1" data-nodetype="declaration">
@@ -1053,11 +1066,10 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsibWVh
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</div></div>
 </section>
-<section id="conclusion-2" class="slide level2">
+<section id="conclusion-4" class="slide level2">
 <h2>Conclusion</h2>
-<p>Batch Normalization’s Impact on Modern ML</p>
+<p><strong>Batch Normalization’s Impact on Modern ML</strong></p>
 <p><strong>Key Takeaways on Batch Normalization:</strong></p>
 <ul>
 <li><strong>Addresses Internal Covariate Shift:</strong> Stabilizes the input distribution to layers.</li>
@@ -1066,6 +1078,10 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsibWVh
 <li><strong>Improves Gradient Flow:</strong> Aids optimization in deep networks.</li>
 <li><strong>Implementation:</strong> <code>tf.keras.layers.BatchNormalization()</code> typically placed between a layer and its activation, with <code>use_bias=False</code> in the preceding layer.</li>
 </ul>
+</section>
+<section id="conclusion-5" class="slide level2">
+<h2>Conclusion</h2>
+<p><strong>Batch Normalization’s Impact on Modern ML</strong></p>
 <p><strong>Significance for ECE Professionals:</strong></p>
 <ul>
 <li><strong>Hardware Efficiency:</strong> Designing efficient hardware accelerators for Batch Normalization (e.g., dedicated arithmetic units for mean/variance, fixed-point implementations).</li>

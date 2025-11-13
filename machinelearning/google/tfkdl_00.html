@@ -1705,8 +1705,26 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsibG9n
 <section id="weight-initialization-numerical-stability" class="slide level2 scrollable">
 <h2><strong>Weight Initialization &amp; Numerical Stability</strong></h2>
 <p>Two critical, often hidden, factors for stable deep network training.</p>
-<p><strong>1. Random Initializations:</strong> - How the network’s weights and biases are set before training begins. - Poor initialization can lead to slow convergence or vanishing/exploding gradients. - <strong>Keras Default:</strong> Uses <code>'glorot_uniform'</code> (also known as Xavier uniform). - Designed to keep activation values and gradients roughly in the same scale across layers. - <strong>No action needed:</strong> Keras handles this optimally by default.</p>
-<p><strong>2. Numerical Stability (NaNs):</strong> - <code>Categorical crossentropy</code> involves <code>log()</code>. If input to log is <code>0</code>, it’s <code>NaN</code> (Not a Number). - <code>softmax</code> output (probabilities) can be numerically <code>0</code> in <code>float32</code> despite being mathematically non-zero. - <strong>Keras Solution:</strong> <code>tf.keras.losses.CategoricalCrossentropy(from_logits=True)</code> - Computes <code>softmax</code> and <code>crossentropy</code> together in a numerically stable way. - <strong>No action needed:</strong> Keras handles this automatically when <code>softmax</code> is the last activation and <code>categorical_crossentropy</code> is the loss.</p>
+<p><strong>1. Random Initializations:</strong></p>
+<ul>
+<li>How the network’s weights and biases are set before training begins.</li>
+<li>Poor initialization can lead to slow convergence or vanishing/exploding gradients.</li>
+<li><strong>Keras Default:</strong> Uses <code>'glorot_uniform'</code> (also known as Xavier uniform).
+<ul>
+<li>Designed to keep activation values and gradients roughly in the same scale across layers.</li>
+<li><strong>No action needed:</strong> Keras handles this optimally by default.</li>
+</ul></li>
+</ul>
+<p><strong>2. Numerical Stability (NaNs):</strong></p>
+<ul>
+<li><code>Categorical crossentropy</code> involves <code>log()</code>. If input to log is <code>0</code>, it’s <code>NaN</code> (Not a Number).</li>
+<li><code>softmax</code> output (probabilities) can be numerically <code>0</code> in <code>float32</code> despite being mathematically non-zero.</li>
+<li><strong>Keras Solution:</strong> <code>tf.keras.losses.CategoricalCrossentropy(from_logits=True)</code>
+<ul>
+<li>Computes <code>softmax</code> and <code>crossentropy</code> together in a numerically stable way.</li>
+<li><strong>No action needed:</strong> Keras handles this automatically when <code>softmax</code> is the last activation and <code>categorical_crossentropy</code> is the loss.</li>
+</ul></li>
+</ul>
 <aside class="notes">
 <p>Beyond activations and optimizers, two more subtle but profoundly important aspects of deep learning convergence are <strong>weight initialization</strong> and <strong>numerical stability</strong>.</p>
 <ol type="1">
@@ -1730,7 +1748,11 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsibG9n
 <p>With ReLU activation and the Adam optimizer, our deeper model should now converge effectively.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p>You should observe: - Training and validation loss decreasing steadily. - Training and validation accuracy climbing to around <strong>97%</strong>.</p>
+<p>You should observe:</p>
+<ul>
+<li>Training and validation loss decreasing steadily.</li>
+<li>Training and validation accuracy climbing to around <strong>97%</strong>.</li>
+</ul>
 <p>This marks a significant improvement over the initial 90% and the failed deep <code>sigmoid</code> model.</p>
 <p>We’re approaching our goal of “significantly above 99% accuracy!”</p>
 </div><div class="column" style="width:50%;">
@@ -1766,8 +1788,18 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsibG9n
 <section id="learning-rate-decay-fine-tuning-convergence" class="slide level2">
 <h2><strong>Learning Rate Decay: Fine-Tuning Convergence</strong></h2>
 <p>Training too fast can lead to noisy convergence or even divergence. A <strong>learning rate decay schedule</strong> starts fast and slows down over time.</p>
-<p><strong>The Problem with High Learning Rates:</strong> - Training curves become noisy. - Validation metrics jump erratically (<code>d4fd66346d7c480e.png</code>). - Model might jump over optimal solutions or oscillate.</p>
-<p><strong>The Solution:</strong> - Start with a higher learning rate to explore the loss landscape quickly. - Gradually decrease the learning rate as training progresses, allowing for finer adjustments and more stable convergence. - Often exponential decay: <span class="math inline">\(LR = LR_0 \times \text{decay_rate}^{\text{epoch}}\)</span></p>
+<p><strong>The Problem with High Learning Rates:</strong></p>
+<ul>
+<li>Training curves become noisy.</li>
+<li>Validation metrics jump erratically (<code>d4fd66346d7c480e.png</code>).</li>
+<li>Model might jump over optimal solutions or oscillate.</li>
+</ul>
+<p><strong>The Solution:</strong></p>
+<ul>
+<li>Start with a higher learning rate to explore the loss landscape quickly.</li>
+<li>Gradually decrease the learning rate as training progresses, allowing for finer adjustments and more stable convergence.</li>
+<li>Often exponential decay: <span class="math inline">\(LR = LR_0 \times \text{decay_rate}^{\text{epoch}}\)</span></li>
+</ul>
 <aside class="notes">
 <p>Even with a powerful optimizer like Adam, simply using a fixed learning rate throughout training isn’t always optimal. Imagine searching for the lowest point in a valley. You might want to take large strides initially to cover ground quickly, but as you approach the bottom, you’d need smaller, more precise steps to find the exact lowest point without overshooting it.</p>
 <p>In deep learning, the <code>learning rate</code> controls the step size of our optimizer. A very high learning rate can cause the model to bounce around the loss landscape without converging or even diverge. A very low learning rate can make training painfully slow.</p>
@@ -1784,11 +1816,9 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsibG9n
           display:block!important;
       }</style></aside>
 </section>
-<section id="implementing-learning-rate-decay-with-keras" class="slide level2 scrollable">
+<section id="implementing-learning-rate-decay-with-keras" class="slide level2">
 <h2><strong>Implementing Learning Rate Decay with Keras</strong></h2>
 <p>Keras makes it easy to add a learning rate scheduler using a <strong>callback</strong>.</p>
-<div class="columns">
-<div class="column" style="width:50%;">
 <p><strong>1. Define the Decay Function:</strong> A Python function that calculates the learning rate for a given epoch.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a><span class="im">import</span> math</span>
 <span id="cb14-2"><a></a><span class="kw">def</span> lr_decay(epoch):</span>
@@ -1800,16 +1830,17 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsibG9n
 <p><strong>3. Add to <code>model.fit()</code>:</strong></p>
 <p>Include the <code>lr_decay_callback</code> in the list of <code>callbacks</code>.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a>model.fit(..., callbacks<span class="op">=</span>[plot_training, lr_decay_callback])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:50%;">
+</section>
+<section id="implementing-learning-rate-decay-with-keras-1" class="slide level2 scrollable">
+<h2><strong>Implementing Learning Rate Decay with Keras</strong></h2>
 <div>
 <div id="pyodide-3" class="exercise-cell">
 
 </div>
 <script type="pyodide-3-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiIyBDYWxsYmFjayB0byB2aXN1YWxpemUgbGVhcm5pbmcgcmF0ZSBzY2hlZHVsZVxuaW1wb3J0IHBsb3RseS5ncmFwaF9vYmplY3RzIGFzIGdvXG5pbXBvcnQgbWF0aFxuXG5kZWYgcGxvdF9sZWFybmluZ19yYXRlKGxyX3NjaGVkdWxlX2Z1bmMsIGVwb2Nocyk6XG4gICAgbHJzID0gW2xyX3NjaGVkdWxlX2Z1bmMoZSkgZm9yIGUgaW4gcmFuZ2UoZXBvY2hzKV1cbiAgICBmaWcgPSBnby5GaWd1cmUoKVxuICAgIGZpZy5hZGRfdHJhY2UoZ28uU2NhdHRlcih4PWxpc3QocmFuZ2UoZXBvY2hzKSksIHk9bHJzLCBtb2RlPSdsaW5lcycsIG5hbWU9J0xlYXJuaW5nIFJhdGUnKSlcbiAgICBmaWcudXBkYXRlX2xheW91dCh0aXRsZT0nTGVhcm5pbmcgUmF0ZSBTY2hlZHVsZSBPdmVyIEVwb2NocycsXG4gICAgICAgICAgICAgICAgICAgICAgeGF4aXNfdGl0bGU9J0Vwb2NoJyxcbiAgICAgICAgICAgICAgICAgICAgICB5YXhpc190aXRsZT0nTGVhcm5pbmcgUmF0ZScsXG4gICAgICAgICAgICAgICAgICAgICAgd2lkdGg9NDAwLFxuICAgICAgICAgICAgICAgICAgICAgIGhlaWdodD0zMDAsXG4gICAgICAgICAgICAgICAgICAgICAgbWFyZ2luPWRpY3QobD0wLCByPTAsIGI9MCwgdD01MCkpXG4gICAgcmV0dXJuIGZpZ1xuXG4jIERlZmluZSBhIHNhbXBsZSBscl9kZWNheSBmdW5jdGlvblxuZGVmIGxyX2RlY2F5X2V4YW1wbGUoZXBvY2gpOlxuICAgIHJldHVybiAwLjAxICogbWF0aC5wb3coMC42LCBlcG9jaClcblxuIyBQbG90IHRoZSBleGFtcGxlXG5wbG90X2xlYXJuaW5nX3JhdGUobHJfZGVjYXlfZXhhbXBsZSwgMTApIn0=
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiIyBDYWxsYmFjayB0byB2aXN1YWxpemUgbGVhcm5pbmcgcmF0ZSBzY2hlZHVsZVxuaW1wb3J0IHBsb3RseS5ncmFwaF9vYmplY3RzIGFzIGdvXG5pbXBvcnQgbWF0aFxuXG5kZWYgcGxvdF9sZWFybmluZ19yYXRlKGxyX3NjaGVkdWxlX2Z1bmMsIGVwb2Nocyk6XG4gICAgbHJzID0gW2xyX3NjaGVkdWxlX2Z1bmMoZSkgZm9yIGUgaW4gcmFuZ2UoZXBvY2hzKV1cbiAgICBmaWcgPSBnby5GaWd1cmUoKVxuICAgIGZpZy5hZGRfdHJhY2UoZ28uU2NhdHRlcih4PWxpc3QocmFuZ2UoZXBvY2hzKSksIHk9bHJzLCBtb2RlPSdsaW5lcycsIG5hbWU9J0xlYXJuaW5nIFJhdGUnKSlcbiAgICBmaWcudXBkYXRlX2xheW91dCh0aXRsZT0nTGVhcm5pbmcgUmF0ZSBTY2hlZHVsZSBPdmVyIEVwb2NocycsXG4gICAgICAgICAgICAgICAgICAgICAgeGF4aXNfdGl0bGU9J0Vwb2NoJyxcbiAgICAgICAgICAgICAgICAgICAgICB5YXhpc190aXRsZT0nTGVhcm5pbmcgUmF0ZScsXG4gICAgICAgICAgICAgICAgICAgICAgd2lkdGg9NDAwLFxuICAgICAgICAgICAgICAgICAgICAgIGhlaWdodD0zMDAsXG4gICAgICAgICAgICAgICAgICAgICAgbWFyZ2luPWRpY3QobD0wLCByPTAsIGI9MCwgdD01MCkpXG4gICAgcmV0dXJuIGZpZ1xuXG4jIERlZmluZSBhIHNhbXBsZSBscl9kZWNheSBmdW5jdGlvblxuZGVmIGxyX2RlY2F5X2V4YW1wbGUoZXBvY2gpOlxuICAgIHJldHVybiAwLjAxICogbWF0aC5wb3coMC42LCBlcG9jaClcblxuIyBQbG90IHRoZSBleGFtcGxlXG5wbG90X2xlYXJuaW5nX3JhdGUobHJfZGVjYXlfZXhhbXBsZSwgMTApIn0=
 </script>
 </div>
-</div></div>
 <div class="callout callout-important callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -1943,8 +1974,8 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiIyBDYWxsYmFjayB0byB2aXN1
 <section id="dropouts-initial-impact-a-complex-picture" class="slide level2">
 <h2><strong>Dropout’s Initial Impact: A Complex Picture</strong></h2>
 <p>Applying dropout can lead to a mixed initial response.</p>
-
-<img data-src="https://codelabs.developers.google.com/static/codelabs/cloud-tensorflow-mnist/img/43fd33801264743f.png" class="r-stretch"><p><em>(Training curves with Dropout)</em></p>
+<p><img data-src="https://codelabs.developers.google.com/static/codelabs/cloud-tensorflow-mnist/img/43fd33801264743f.png" height="300"></p>
+<p><em>(Training curves with Dropout)</em></p>
 <ul>
 <li><strong>Increased Noise:</strong> The training curves show more fluctuation due to the random dropping of neurons.</li>
 <li><strong>Higher Overall Loss:</strong> Both training and validation loss might be higher than without dropout.</li>
