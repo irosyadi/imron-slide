@@ -146,38 +146,26 @@ Imron Rosyadi
 </div>
 
 </section>
-<section>
-<section id="the-inverse-z-transform" class="title-slide slide level1 center">
-<h1>10.3 The Inverse Z-Transform</h1>
-<aside class="notes">
-<p>So far, we’ve focused on how to find the Z-transform of a given discrete-time signal. Now, we’re going to reverse that process: given a Z-transform, how do we find the original discrete-time signal? This is the inverse Z-transform, and it’s essential for moving from the frequency domain back to the time domain, which is often where we want to interpret system behavior.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="formal-inverse-z-transform" class="slide level2 scrollable">
+<section id="formal-inverse-z-transform" class="slide level2">
 <h2>Formal Inverse Z-Transform</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
 <p><strong>Derivation from Inverse Fourier Transform:</strong></p>
 <p>Recall from Section 10.1 that <span class="math inline">\(X(r e^{j\omega}) = \mathfrak{F}\{x[n]r^{-n}\}\)</span>.</p>
 <p>Applying the inverse Fourier transform: <span class="math display">\[
 x[n]r^{-n} = \frac{1}{2\pi} \int_{2\pi} X(r e^{j\omega}) e^{j\omega n} d\omega
 \]</span> Multiplying by <span class="math inline">\(r^n\)</span>: <span class="math display">\[
 x[n] = \frac{1}{2\pi} \int_{2\pi} X(r e^{j\omega}) (r e^{j\omega})^n d\omega
-\]</span> Let <span class="math inline">\(z = r e^{j\omega}\)</span>. Then <span class="math inline">\(dz = j r e^{j\omega} d\omega = jz d\omega\)</span>, so <span class="math inline">\(d\omega = \frac{1}{jz} dz\)</span>. The integration over <span class="math inline">\(2\pi\)</span> for <span class="math inline">\(\omega\)</span> corresponds to a counterclockwise closed circular contour integration for <span class="math inline">\(z\)</span> around the origin.</p>
+\]</span> Let <span class="math inline">\(z = r e^{j\omega}\)</span>. Then <span class="math inline">\(dz = j r e^{j\omega} d\omega = jz d\omega\)</span>, so <span class="math inline">\(d\omega = \frac{1}{jz} dz\)</span>.</p>
+<p>The integration over <span class="math inline">\(2\pi\)</span> for <span class="math inline">\(\omega\)</span> corresponds to a counterclockwise closed circular contour integration for <span class="math inline">\(z\)</span> around the origin.</p>
 <p><strong>The Inverse Z-Transform Integral:</strong> <span class="math display">\[
 x[n]=\frac{1}{2 \pi j} \oint X(z) z^{n-1} d z
-\]</span> - The contour integral is taken around a counterclockwise closed circular path <span class="math inline">\(|z|=r\)</span> within the ROC. - This is the formal definition, often evaluated using the <strong>Cauchy’s Residue Theorem</strong> from complex analysis.</p>
-</div><div class="column" style="width:50%;">
+\]</span></p>
+<ul>
+<li>The contour integral is taken around a counterclockwise closed circular path <span class="math inline">\(|z|=r\)</span> within the ROC.</li>
+<li>This is the formal definition, often evaluated using the <strong>Cauchy’s Residue Theorem</strong> from complex analysis.</li>
+</ul>
+</section>
+<section id="formal-inverse-z-transform-1" class="slide level2 scrollable">
+<h2>Formal Inverse Z-Transform</h2>
 <p><strong>Practical Approaches for Inverse Z-Transform:</strong></p>
 <p>While the contour integral is the formal definition, it’s rarely used in practice for typical engineering problems. We primarily use two main methods:</p>
 <ol type="1">
@@ -206,7 +194,6 @@ x[n]=\frac{1}{2 \pi j} \oint X(z) z^{n-1} d z
 </div>
 </div>
 </div>
-</div></div>
 <aside class="notes">
 <p>The formal inverse Z-transform involves a complex contour integral. While mathematically rigorous, it’s not the most intuitive or direct method for finding <span class="math inline">\(x[n]\)</span> in engineering contexts. Instead, we rely on more practical methods.</p>
 <p>The two main methods we’ll explore are partial-fraction expansion, which you might recall from Laplace transforms, and power series expansion, which directly leverages the definition of the Z-transform. Remember, the ROC is paramount in both these methods because it disambiguates the time-domain signal.</p>
@@ -224,8 +211,6 @@ x[n]=\frac{1}{2 \pi j} \oint X(z) z^{n-1} d z
 </section>
 <section id="method-1-partial-fraction-expansion" class="slide level2 scrollable">
 <h2>Method 1: Partial-Fraction Expansion</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
 <p><strong>Procedure:</strong></p>
 <ol type="1">
 <li><strong>Express <span class="math inline">\(X(z)\)</span> as a rational function:</strong> <span class="math inline">\(X(z) = \frac{Numerator(z)}{Denominator(z)}\)</span></li>
@@ -238,7 +223,6 @@ x[n]=\frac{1}{2 \pi j} \oint X(z) z^{n-1} d z
 </ul></li>
 <li><strong>Sum the Inverse Transforms:</strong> The original signal <span class="math inline">\(x[n]\)</span> is the sum of the inverse transforms of the individual terms.</li>
 </ol>
-</div><div class="column" style="width:50%;">
 <p><strong>Common Z-Transform Pairs for PFE:</strong></p>
 <ul>
 <li><strong>Right-sided:</strong> <span class="math inline">\(a^n u[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} \frac{1}{1-a z^{-1}}, \quad |z|&gt;|a|\)</span></li>
@@ -257,7 +241,6 @@ x[n]=\frac{1}{2 \pi j} \oint X(z) z^{n-1} d z
 </div>
 </div>
 </div>
-</div></div>
 <aside class="notes">
 <p>Partial-fraction expansion is a workhorse for finding inverse Z-transforms of rational functions. The general idea is to break down a complex fraction into a sum of simpler fractions, each of which has a known inverse Z-transform.</p>
 <p>The critical step is to correctly assign the ROC for each individual term based on the overall ROC of <span class="math inline">\(X(z)\)</span>. This determines whether you’re dealing with a right-sided or a left-sided exponential. Without considering the ROC, the inverse transform is ambiguous.</p>
@@ -275,8 +258,6 @@ x[n]=\frac{1}{2 \pi j} \oint X(z) z^{n-1} d z
 </section>
 <section id="example-10.9-partial-fraction-expansion-right-sided" class="slide level2">
 <h2>Example 10.9: Partial-Fraction Expansion (Right-Sided)</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
 <p><strong>Given <span class="math inline">\(X(z)\)</span> and ROC:</strong> <span class="math display">\[
 X(z)=\frac{3-\frac{5}{6} z^{-1}}{\left(1-\frac{1}{4} z^{-1}\right)\left(1-\frac{1}{3} z^{-1}\right)}, \quad|z|&gt;\frac{1}{3}
 \]</span> <strong>Poles:</strong> <span class="math inline">\(z=1/4\)</span> and <span class="math inline">\(z=1/3\)</span>. <strong>ROC:</strong> <span class="math inline">\(|z|&gt;1/3\)</span>. This implies <span class="math inline">\(x[n]\)</span> is a <strong>right-sided sequence</strong>.</p>
@@ -284,7 +265,9 @@ X(z)=\frac{3-\frac{5}{6} z^{-1}}{\left(1-\frac{1}{4} z^{-1}\right)\left(1-\frac{
 X(z)=\frac{A}{1-\frac{1}{4} z^{-1}}+\frac{B}{1-\frac{1}{3} z^{-1}}
 \]</span> Solving for <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>: <span class="math inline">\(A = \left. \frac{3-\frac{5}{6} z^{-1}}{1-\frac{1}{3} z^{-1}} \right|_{1-\frac{1}{4} z^{-1}=0 \implies z^{-1}=4} = \frac{3-\frac{5}{6}(4)}{1-\frac{1}{3}(4)} = \frac{3-\frac{10}{3}}{1-\frac{4}{3}} = \frac{-\frac{1}{3}}{-\frac{1}{3}} = 1\)</span> <span class="math inline">\(B = \left. \frac{3-\frac{5}{6} z^{-1}}{1-\frac{1}{4} z^{-1}} \right|_{1-\frac{1}{3} z^{-1}=0 \implies z^{-1}=3} = \frac{3-\frac{5}{6}(3)}{1-\frac{1}{4}(3)} = \frac{3-\frac{5}{2}}{1-\frac{3}{4}} = \frac{\frac{1}{2}}{\frac{1}{4}} = 2\)</span></p>
 <p>So, <span class="math inline">\(X(z)=\frac{1}{1-\frac{1}{4} z^{-1}}+\frac{2}{1-\frac{1}{3} z^{-1}}\)</span></p>
-</div><div class="column" style="width:50%;">
+</section>
+<section id="example-10.9-partial-fraction-expansion-right-sided-1" class="slide level2">
+<h2>Example 10.9: Partial-Fraction Expansion (Right-Sided)</h2>
 <p><strong>Inverse Transform with ROC:</strong></p>
 <ul>
 <li>For the first term: <span class="math inline">\(\frac{1}{1-\frac{1}{4} z^{-1}}\)</span>. Since the overall ROC is <span class="math inline">\(|z|&gt;1/3\)</span>, which is also <span class="math inline">\(|z|&gt;1/4\)</span>, this term has an ROC of <span class="math inline">\(|z|&gt;1/4\)</span>. <span class="math inline">\(\Rightarrow x_1[n] = \left(\frac{1}{4}\right)^n u[n]\)</span></li>
@@ -306,7 +289,6 @@ x[n]=\left(\frac{1}{4}\right)^{n} u[n]+2\left(\frac{1}{3}\right)^{n} u[n]
 </div>
 </div>
 </div>
-</div></div>
 <aside class="notes">
 <p>This example shows a straightforward application of partial-fraction expansion. Because the overall ROC is an exterior region (<span class="math inline">\(|z| &gt; 1/3\)</span>), it tells us that the resulting time-domain signal must be right-sided. Consequently, both terms in the partial-fraction expansion also correspond to right-sided exponentials. This is a consistent application of the ROC properties.</p>
 <style type="text/css">
@@ -323,15 +305,12 @@ x[n]=\left(\frac{1}{4}\right)^{n} u[n]+2\left(\frac{1}{3}\right)^{n} u[n]
 </section>
 <section id="example-10.10-partial-fraction-expansion-two-sided" class="slide level2">
 <h2>Example 10.10: Partial-Fraction Expansion (Two-Sided)</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
 <p><strong>Given <span class="math inline">\(X(z)\)</span> and ROC:</strong> <span class="math display">\[
 X(z)=\frac{3-\frac{5}{6} z^{-1}}{\left(1-\frac{1}{4} z^{-1}\right)\left(1-\frac{1}{3} z^{-1}\right)}, \quad\frac{1}{4}&lt;|z|&lt;\frac{1}{3}
 \]</span> <strong>Poles:</strong> <span class="math inline">\(z=1/4\)</span> and <span class="math inline">\(z=1/3\)</span>. <strong>ROC:</strong> <span class="math inline">\(1/4&lt;|z|&lt;1/3\)</span>. This implies <span class="math inline">\(x[n]\)</span> is a <strong>two-sided sequence</strong>.</p>
 <p><strong>Partial-Fraction Expansion (same as before):</strong> <span class="math display">\[
 X(z)=\frac{1}{1-\frac{1}{4} z^{-1}}+\frac{2}{1-\frac{1}{3} z^{-1}}
 \]</span></p>
-</div><div class="column" style="width:50%;">
 <p><strong>Inverse Transform with ROC:</strong></p>
 <ul>
 <li>For the first term: <span class="math inline">\(\frac{1}{1-\frac{1}{4} z^{-1}}\)</span>. The overall ROC (<span class="math inline">\(1/4&lt;|z|&lt;1/3\)</span>) implies that for this term, the ROC is <span class="math inline">\(|z|&gt;1/4\)</span>. <span class="math inline">\(\Rightarrow x_1[n] = \left(\frac{1}{4}\right)^n u[n]\)</span></li>
@@ -353,7 +332,6 @@ x[n]=\left(\frac{1}{4}\right)^{n} u[n]-2\left(\frac{1}{3}\right)^{n} u[-n-1]
 </div>
 </div>
 </div>
-</div></div>
 <aside class="notes">
 <p>Here, we use the exact same algebraic expression for <span class="math inline">\(X(z)\)</span>, but with a different ROC. This time, the ROC is an annular region (<span class="math inline">\(1/4 &lt; |z| &lt; 1/3\)</span>), indicating a two-sided signal.</p>
 <p>This means that for the pole at <span class="math inline">\(z=1/4\)</span>, the ROC is outside, so it corresponds to a right-sided exponential. But for the pole at <span class="math inline">\(z=1/3\)</span>, the ROC is inside, so it corresponds to a left-sided exponential. This clearly demonstrates how the ROC dictates the form of the inverse Z-transform.</p>
@@ -371,15 +349,12 @@ x[n]=\left(\frac{1}{4}\right)^{n} u[n]-2\left(\frac{1}{3}\right)^{n} u[-n-1]
 </section>
 <section id="example-10.11-partial-fraction-expansion-left-sided" class="slide level2">
 <h2>Example 10.11: Partial-Fraction Expansion (Left-Sided)</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
 <p><strong>Given <span class="math inline">\(X(z)\)</span> and ROC:</strong> <span class="math display">\[
 X(z)=\frac{3-\frac{5}{6} z^{-1}}{\left(1-\frac{1}{4} z^{-1}\right)\left(1-\frac{1}{3} z^{-1}\right)}, \quad|z|&lt;\frac{1}{4}
 \]</span> <strong>Poles:</strong> <span class="math inline">\(z=1/4\)</span> and <span class="math inline">\(z=1/3\)</span>. <strong>ROC:</strong> <span class="math inline">\(|z|&lt;1/4\)</span>. This implies <span class="math inline">\(x[n]\)</span> is a <strong>left-sided sequence</strong>.</p>
 <p><strong>Partial-Fraction Expansion (same as before):</strong> <span class="math display">\[
 X(z)=\frac{1}{1-\frac{1}{4} z^{-1}}+\frac{2}{1-\frac{1}{3} z^{-1}}
 \]</span></p>
-</div><div class="column" style="width:50%;">
 <p><strong>Inverse Transform with ROC:</strong></p>
 <ul>
 <li>For the first term: <span class="math inline">\(\frac{1}{1-\frac{1}{4} z^{-1}}\)</span>. The overall ROC (<span class="math inline">\(|z|&lt;1/4\)</span>) implies that for this term, the ROC is <span class="math inline">\(|z|&lt;1/4\)</span>. <span class="math inline">\(\Rightarrow x_1[n] = -\left(\frac{1}{4}\right)^n u[-n-1]\)</span></li>
@@ -401,7 +376,7 @@ x[n]=-\left(\frac{1}{4}\right)^{n} u[-n-1]-2\left(\frac{1}{3}\right)^{n} u[-n-1]
 </div>
 </div>
 </div>
-</div><aside class="notes">
+<aside class="notes">
 <p>In this final scenario with the same <span class="math inline">\(X(z)\)</span> algebraic form, the ROC is an interior region (<span class="math inline">\(|z| &lt; 1/4\)</span>), meaning the signal must be left-sided. Consequently, both terms in the partial-fraction expansion now correspond to left-sided exponentials. This further reinforces the idea that the ROC is not just a mathematical detail but fundamentally changes the time-domain signal.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -413,10 +388,10 @@ x[n]=-\left(\frac{1}{4}\right)^{n} u[-n-1]-2\left(\frac{1}{3}\right)^{n} u[-n-1]
           width: 1px!important;
           overflow: hidden!important;
           display:block!important;
-      }</style></aside><hr><section id="method-2-power-series-expansion-long-division" class="slide level2 scrollable">
+      }</style></aside>
+</section>
+<section id="method-2-power-series-expansion-long-division" class="slide level2 scrollable">
 <h2>Method 2: Power Series Expansion (Long Division)</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
 <p><strong>Procedure:</strong></p>
 <ol type="1">
 <li><strong>Express <span class="math inline">\(X(z)\)</span> as a rational function.</strong></li>
@@ -431,7 +406,9 @@ x[n]=-\left(\frac{1}{4}\right)^{n} u[-n-1]-2\left(\frac{1}{3}\right)^{n} u[-n-1]
 </ul></li>
 <li><strong>Identify Coefficients:</strong> The coefficients of the power series directly give the values of <span class="math inline">\(x[n]\)</span> for corresponding powers of <span class="math inline">\(z\)</span>. <span class="math inline">\(X(z) = \dots + x[-2]z^2 + x[-1]z^1 + x[0]z^0 + x[1]z^{-1} + x[2]z^{-2} + \dots\)</span></li>
 </ol>
-</div><div class="column" style="width:50%;">
+</section>
+<section id="method-2-power-series-expansion-long-division-1" class="slide level2">
+<h2>Method 2: Power Series Expansion (Long Division)</h2>
 <p><strong>Example 10.12: Finite Sequence (Trivial Case)</strong></p>
 <p><span class="math inline">\(X(z)=4 z^{2}+2+3 z^{-1}, 0&lt;|z|&lt;\infty\)</span>.</p>
 <p>By inspection, the coefficients are:</p>
@@ -453,7 +430,6 @@ x[n]=-\left(\frac{1}{4}\right)^{n} u[-n-1]-2\left(\frac{1}{3}\right)^{n} u[-n-1]
 </div>
 </div>
 </div>
-</div></div>
 <aside class="notes">
 <p>The power series expansion method is more direct than partial fractions if you’re comfortable with polynomial long division. The key insight is that the Z-transform definition itself is a power series.</p>
 <p>The direction of your long division is crucial and is determined by the ROC. For right-sided signals (ROC is exterior), you want terms with negative powers of <span class="math inline">\(z\)</span>. For left-sided signals (ROC is interior), you want terms with positive powers of <span class="math inline">\(z\)</span>.</p>
@@ -468,11 +444,9 @@ x[n]=-\left(\frac{1}{4}\right)^{n} u[-n-1]-2\left(\frac{1}{3}\right)^{n} u[-n-1]
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<hr>
-</section><section id="example-10.13-power-series-for-xz-frac11-az-1" class="slide level2">
+</section>
+<section id="example-10.13-power-series-for-xz-frac11-az-1" class="slide level2">
 <h2>Example 10.13: Power Series for <span class="math inline">\(X(z) = \frac{1}{1-az^{-1}}\)</span></h2>
-<div class="columns">
-<div class="column" style="width:50%;">
 <p><strong>Case 1: ROC <span class="math inline">\(|z|&gt;|a|\)</span> (Right-Sided)</strong></p>
 <p>We need a series in negative powers of <span class="math inline">\(z\)</span>.</p>
 <p>Perform long division of <span class="math inline">\(1\)</span> by <span class="math inline">\((1-az^{-1})\)</span>:</p>
@@ -487,7 +461,6 @@ x[n]=-\left(\frac{1}{4}\right)^{n} u[-n-1]-2\left(\frac{1}{3}\right)^{n} u[-n-1]
                     a²z⁻²</code></pre>
 <p>Result: <span class="math inline">\(X(z) = 1 + az^{-1} + a^2z^{-2} + \dots = \sum_{n=0}^{\infty} a^n z^{-n}\)</span></p>
 <p>By inspection: <span class="math inline">\(x[n] = a^n u[n]\)</span>. (Consistent with Example 10.1)</p>
-</div><div class="column" style="width:50%;">
 <p><strong>Case 2: ROC <span class="math inline">\(|z|&lt;|a|\)</span> (Left-Sided)</strong></p>
 <p>We need a series in positive powers of <span class="math inline">\(z\)</span>.</p>
 <p>Rearrange <span class="math inline">\(X(z)\)</span> to <span class="math inline">\((az^{-1})^{-1} \frac{1}{ (az^{-1})^{-1} - 1} = a^{-1}z \frac{1}{a^{-1}z - 1}\)</span>.</p>
@@ -503,7 +476,6 @@ az⁻¹-1 | 1
                 a⁻²z²</code></pre>
 <p>Result: <span class="math inline">\(X(z) = -a^{-1}z - a^{-2}z^2 - \dots = -\sum_{k=1}^{\infty} a^{-k} z^k = -\sum_{n=-\infty}^{-1} a^n z^{-n}\)</span></p>
 <p>By inspection: <span class="math inline">\(x[n] = -a^n u[-n-1]\)</span>. (Consistent with Example 10.2)</p>
-</div></div>
 <aside class="notes">
 <p>This example clearly illustrates how the ROC dictates the direction of the power series expansion. For a right-sided sequence (ROC <span class="math inline">\(|z|&gt;|a|\)</span>), we divide to get negative powers of <span class="math inline">\(z\)</span>. For a left-sided sequence (ROC <span class="math inline">\(|z|&lt;|a|\)</span>), we divide to get positive powers of <span class="math inline">\(z\)</span>. The coefficients of these series directly give the time-domain samples <span class="math inline">\(x[n]\)</span>.</p>
 <style type="text/css">
@@ -517,11 +489,9 @@ az⁻¹-1 | 1
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<hr>
-</section><section id="example-10.14-power-series-for-non-rational-xz" class="slide level2">
+</section>
+<section id="example-10.14-power-series-for-non-rational-xz" class="slide level2">
 <h2>Example 10.14: Power Series for Non-Rational <span class="math inline">\(X(z)\)</span></h2>
-<div class="columns">
-<div class="column" style="width:50%;">
 <p><strong>Given <span class="math inline">\(X(z)\)</span> and ROC:</strong> <span class="math display">\[
 X(z)=\log \left(1+a z^{-1}\right), \quad|z|&gt;|a|
 \]</span> <strong>Condition for Taylor Series:</strong></p>
@@ -531,7 +501,6 @@ X(z)=\log \left(1+a z^{-1}\right), \quad|z|&gt;|a|
 <p>Substitute <span class="math inline">\(v = az^{-1}\)</span>: <span class="math display">\[
 X(z)=\sum_{n=1}^{\infty} \frac{(-1)^{n+1} (az^{-1})^n}{n} = \sum_{n=1}^{\infty} \frac{(-1)^{n+1} a^n z^{-n}}{n}
 \]</span></p>
-</div><div class="column" style="width:50%;">
 <p><strong>Identifying <span class="math inline">\(x[n]\)</span>:</strong></p>
 <p>Comparing with <span class="math inline">\(X(z) = \sum_{n=-\infty}^{+\infty} x[n] z^{-n}\)</span>, we match coefficients:</p>
 <ul>
@@ -557,7 +526,6 @@ x[n]=\left\{\begin{array}{ll}
 </div>
 </div>
 </div>
-</div></div>
 <aside class="notes">
 <p>This example highlights the versatility of the power series expansion method. It’s not limited to rational Z-transforms. Here, we use a known Taylor series expansion for the logarithm function. The condition for the Taylor series to converge perfectly aligns with the given ROC. By matching the powers of <span class="math inline">\(z^{-n}\)</span> to the definition of the Z-transform, we directly extract the time-domain sequence <span class="math inline">\(x[n]\)</span>.</p>
 <style type="text/css">
@@ -571,11 +539,9 @@ x[n]=\left\{\begin{array}{ll}
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<hr>
-</section><section id="conclusion-inverse-z-transform" class="slide level2 scrollable">
+</section>
+<section id="conclusion-inverse-z-transform" class="slide level2 scrollable">
 <h2>Conclusion: Inverse Z-Transform</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
 <p><strong>Key Methods for Inverse Z-Transform:</strong></p>
 <ol type="1">
 <li><strong>Partial-Fraction Expansion:</strong>
@@ -592,7 +558,9 @@ x[n]=\left\{\begin{array}{ll}
 <li>Useful for finding first few terms or for non-rational transforms.</li>
 </ul></li>
 </ol>
-</div><div class="column" style="width:50%;">
+</section>
+<section id="conclusion-inverse-z-transform-1" class="slide level2">
+<h2>Conclusion: Inverse Z-Transform</h2>
 <p><strong>Importance in ECE:</strong></p>
 <ul>
 <li><strong>System Response:</strong> If you have the Z-transform of the output of an LTI system, the inverse Z-transform allows you to find the actual time-domain output signal.</li>
@@ -612,7 +580,6 @@ x[n]=\left\{\begin{array}{ll}
 </div>
 </div>
 </div>
-</div></div>
 <aside class="notes">
 <p>In summary, the inverse Z-transform is the bridge back to the time domain. You have two main tools: partial-fraction expansion for rational functions, and power series expansion, which is more general. In both cases, the ROC is your guide, telling you about the causality and behavior of the resulting time-domain signal. Mastering these techniques is essential for any ECE student working with discrete-time signals and systems.</p>
 <style type="text/css">
@@ -628,8 +595,6 @@ x[n]=\left\{\begin{array}{ll}
       }</style></aside>
 
 
-</section>
-</div>
 <script type="ojs-module-contents">
 eyJjb250ZW50cyI6W119
 </script>
@@ -644,7 +609,7 @@ eyJjb250ZW50cyI6W119
 <script type="vfs-file">
 W10=
 </script>
-</section></section>
+</section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <p><img src="qrjs_pics/unsoed_logo.png" class="slide-logo"></p>
