@@ -6382,5 +6382,614 @@
     "title": "Linear Algebra",
     "section": "Week 12",
     "text": "Week 12\n\nLinear Algebra 5.1: Eigenvalues and Eigenvectors\nLinear Algebra 5.2: Diagonalization"
+  },
+  {
+    "objectID": "la-app-robotics.html#vectors-transformations-and-robotics-applications",
+    "href": "la-app-robotics.html#vectors-transformations-and-robotics-applications",
+    "title": "Linear Algebra",
+    "section": "Vectors, Transformations, and Robotics Applications",
+    "text": "Vectors, Transformations, and Robotics Applications"
+  },
+  {
+    "objectID": "la-app-robotics.html#why-linear-algebra-in-ece",
+    "href": "la-app-robotics.html#why-linear-algebra-in-ece",
+    "title": "Linear Algebra",
+    "section": "Why Linear Algebra in ECE?",
+    "text": "Why Linear Algebra in ECE?\nLinear Algebra is a foundational tool in almost every ECE domain.\n\n\n\nRobotics:\n\nRobot arm control\nAutonomous navigation\nSensor fusion\n\nSignal Processing:\n\nImage and video processing\nFilter design\nData compression\n\nControl Systems:\n\nState-space representation\nSystem stability analysis\nOptimal control\n\n\n\n\nMachine Learning & AI:\n\nNeural networks\nData analysis (PCA)\nComputer Vision\n\nComputer Graphics:\n\n3D transformations\nRendering\n\nCircuit Analysis:\n\nSolving systems of equations (e.g., Kirchhoff’s laws)\n\n\n\n\nLinear Algebra isn’t just abstract math; it’s the language of modern engineering. In ECE, you’ll encounter it everywhere. For instance, in robotics, it’s crucial for understanding how a robot moves in space. In signal processing, it helps us manipulate and understand vast amounts of data. Control systems rely on it to model and stabilize complex systems. Even in emerging fields like AI and computer graphics, linear algebra provides the backbone for algorithms and visualizations. Today, we’ll focus on its role in understanding spatial transformations, particularly relevant for robotics."
+  },
+  {
+    "objectID": "la-app-robotics.html#representing-position-vectors-and-coordinate-frames",
+    "href": "la-app-robotics.html#representing-position-vectors-and-coordinate-frames",
+    "title": "Linear Algebra",
+    "section": "Representing Position: Vectors and Coordinate Frames",
+    "text": "Representing Position: Vectors and Coordinate Frames\nHow do we describe “where” something is in space?\n\n\n\nA vector represents a point’s location relative to an origin.\n\ne.g., \\(p = \\begin{bmatrix} x \\\\ y \\\\ z \\end{bmatrix}\\)\n\nA coordinate frame provides a reference system.\n\nDefined by an origin and a set of orthogonal basis vectors (e.g., \\(x_0, y_0, z_0\\)).\n\nPoints can be represented in different frames.\n\n\\(p^0\\) (point \\(p\\) in frame {0}) vs. \\(p^1\\) (point \\(p\\) in frame {1}).\n\n\n\n\n\n\nFigure 2.4: Two coordinate frames with a point, p.\n\n\n\n\n\n\n\n\nNote\n\n\nIn robotics, accurately defining positions and orientations in various frames (robot base, end-effector, world) is fundamental for motion planning.\n\n\n\n\n\nAt its core, linear algebra helps us describe positions and how they change. A vector, like a column matrix, gives us the coordinates of a point. But these coordinates are always relative to a chosen reference point and orientation – a coordinate frame. As you can see in the figure, the same physical point in space, ‘p’, has different coordinate representations depending on whether we use frame {0} or frame {1}. Understanding this “change of basis” is critical in ECE, especially when dealing with sensors that provide data in their own local frames, or controlling robot end-effectors in a global workspace."
+  },
+  {
+    "objectID": "la-app-robotics.html#representing-rotation-rotation-matrices",
+    "href": "la-app-robotics.html#representing-rotation-rotation-matrices",
+    "title": "Linear Algebra",
+    "section": "Representing Rotation: Rotation Matrices",
+    "text": "Representing Rotation: Rotation Matrices\nChanging orientation is a key linear algebra operation.\n\n\n\nA rotation matrix \\(R\\) transforms coordinates from one frame to another’s orientation.\n\ne.g., \\(p^0 = R_1^0 p^1\\)\n\nIt’s formed by projecting the axes of the new frame onto the old frame’s axes. \\[R_1^0=\\begin{bmatrix} x_1 \\cdot x_0 & y_1 \\cdot x_0 & z_1 \\cdot x_0\\\\ x_1 \\cdot y_0 & y_1 \\cdot y_0 & z_1 \\cdot y_0 \\\\ x_1 \\cdot z_0 & y_1 \\cdot z_0 & z_1 \\cdot z_0 \\end{bmatrix}\\]\n\nFor 2D, this simplifies to: \\[R_\\theta = \\begin{bmatrix} \\cos \\theta & -\\sin\\theta\\\\ \\sin\\theta & \\cos\\theta \\end{bmatrix}\\]\n\n\n\n\n\n\nFigure 2.5: Planar rotation of \\(\\theta\\) degrees.\n\n\n\n\n\n\n\n\nTip\n\n\nRotation matrices are fundamental for reorienting sensors, aligning coordinate systems, and controlling robot joint angles.\n\n\n\n\n\nBeyond just position, orientation is equally important. How do we describe a rotated object or a rotated sensor? This is where rotation matrices come in. A rotation matrix is a special type of matrix that, when multiplied by a vector, rotates that vector. It essentially tells us how the basis vectors of one coordinate frame look from the perspective of another. The 2D rotation matrix is a classic example. Let’s see it in action interactively."
+  },
+  {
+    "objectID": "la-app-robotics.html#interactive-2d-rotation",
+    "href": "la-app-robotics.html#interactive-2d-rotation",
+    "title": "Linear Algebra",
+    "section": "Interactive 2D Rotation",
+    "text": "Interactive 2D Rotation\nVisualize how a point rotates in a 2D plane.\n\n\nAdjust the angle \\(\\theta\\) to see the point \\((x_0, y_0)\\) rotate to \\((x_1, y_1)\\).\nThe transformation is \\(p_1 = R_\\theta p_0\\).\n\nviewof angle_deg = Inputs.range([0, 360], {value: 45, step: 1, label: \"Rotation Angle (degrees)\"});\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHere, you can dynamically change the rotation angle and observe how the vector transforms. Notice how the length of the vector remains constant, only its direction changes. This is a key property of rotation matrices: they preserve vector lengths and angles between vectors, which is essential for rigid body transformations in physics and engineering. This interactive plot directly applies the 2D rotation matrix we just discussed."
+  },
+  {
+    "objectID": "la-app-robotics.html#properties-of-rotation-matrices",
+    "href": "la-app-robotics.html#properties-of-rotation-matrices",
+    "title": "Linear Algebra",
+    "section": "Properties of Rotation Matrices",
+    "text": "Properties of Rotation Matrices\nRotation matrices are not just any matrix!\n\nOrthogonal: \\(R^T = R^{-1}\\)\n\nThis means \\(R R^T = R^T R = I\\) (Identity Matrix).\nColumns (and rows) are mutually orthogonal unit vectors.\n\nDeterminant: \\(\\det(R) = +1\\)\n\nEnsures it’s a pure rotation (no scaling or reflection).\nMatrices with \\(\\det(R) = -1\\) would involve a reflection.\n\nComposition of Rotations:\n\nTo apply multiple rotations, simply multiply their matrices.\nImportant: Order matters! \\(R_1 R_2 \\neq R_2 R_1\\) in general.\n\nPre-multiply for rotation about a fixed frame.\nPost-multiply for rotation about a current frame.\n\n\n\n\n\n\n\n\n\nImportant\n\n\nThese properties make rotation matrices ideal for representing rigid body motion in robotics and computer graphics.\n\n\n\n\nThese properties are critical. Orthogonality means that the inverse of a rotation is simply its transpose, which is computationally efficient. The determinant being +1 is a mathematical guarantee that we are dealing with a true rotation, not a mirror image or a scaled version. And crucially, when you have multiple rotations, the order in which you multiply the matrices matters. This is a common source of error for beginners. Remember: fixed frame rotations are pre-multiplied, while current frame rotations are post-multiplied. This rule is vital for correctly chaining transformations in robotic systems."
+  },
+  {
+    "objectID": "la-app-robotics.html#rigid-motion---rotation-and-translation",
+    "href": "la-app-robotics.html#rigid-motion---rotation-and-translation",
+    "title": "Linear Algebra",
+    "section": "Rigid Motion - Rotation and Translation",
+    "text": "Rigid Motion - Rotation and Translation\nCombining orientation and position changes.\n\n\n\nA rigid motion is a transformation that preserves distances and angles.\n\nIt’s a combination of a pure rotation and a pure translation.\n\nTo express a point \\(p^1\\) (in frame {1}) with respect to frame {0}: \\[p^0 = R_1^0 p^1 + d^0\\]\n\n\\(R_1^0\\): Rotation matrix from frame {1} to {0}.\n\\(d^0\\): Translation vector from origin of {0} to origin of {1}, expressed in frame {0}.\n\n\n\n\n\n\nFigure 2.8: A point \\(p^1\\) transformed to \\(p^0\\) via rotation and translation.\n\n\n\n\n\n\n\n\nNote\n\n\nThis is the core transformation for understanding how parts of a robot move relative to each other.\n\n\n\n\n\nWhile rotation matrices handle orientation, most real-world movements also involve a change in position, or translation. A rigid motion combines both. Imagine you’re moving a box: you might rotate it and also shift its location. The equation shown combines the rotation of the point’s coordinates, \\(R_1^0 p^1\\), with the translation of the origin of the new frame, \\(d^0\\). This two-step process is accurate but can become cumbersome when dealing with many sequential transformations, which is common in robotics. This leads us to a more elegant solution."
+  },
+  {
+    "objectID": "la-app-robotics.html#homogeneous-transformation-matrices",
+    "href": "la-app-robotics.html#homogeneous-transformation-matrices",
+    "title": "Linear Algebra",
+    "section": "Homogeneous Transformation Matrices",
+    "text": "Homogeneous Transformation Matrices\nA unified representation for rigid motion.\n\nCombines rotation and translation into a single matrix multiplication. \\[H=\\begin{bmatrix} R & d\\\\ 0 & 1\\end{bmatrix}\\]\n\n\\(R \\in SO(3)\\) is the \\(3 \\times 3\\) rotation matrix.\n\\(d \\in \\mathbb{R}^3\\) is the \\(3 \\times 1\\) translation vector.\nThe 0 is a \\(1 \\times 3\\) zero vector, 1 is a scalar.\n\nTo transform a point \\(p^1\\) (augmented to \\(p_{aug}^1 = \\begin{bmatrix} p^1 \\\\ 1 \\end{bmatrix}\\)) to \\(p_{aug}^0\\): \\[p_{aug}^0 = H_1^0 p_{aug}^1\\]\nInverse Transformation: \\[H^{-1}=\\begin{bmatrix} R^T & -R^Td \\\\ 0 & 1\\end{bmatrix}\\]\n\n\n\n\n\n\n\nTip\n\n\nHomogeneous transformations simplify complex chains of motion in robotics and computer graphics.\n\n\n\n\nTo streamline rigid motion, we use homogeneous transformation matrices. By augmenting our rotation matrix and translation vector into a 4x4 matrix, and our point vector into a 4x1 vector with a ‘1’ at the end, we can perform both rotation and translation with a single matrix multiplication. This elegance significantly simplifies calculations, especially when chaining multiple transformations, as we will see with kinematic chains. The inverse transformation is also neatly defined, allowing us to easily convert coordinates back from one frame to another."
+  },
+  {
+    "objectID": "la-app-robotics.html#kinematic-chains-and-forward-kinematics",
+    "href": "la-app-robotics.html#kinematic-chains-and-forward-kinematics",
+    "title": "Linear Algebra",
+    "section": "Kinematic Chains and Forward Kinematics",
+    "text": "Kinematic Chains and Forward Kinematics\nModeling robot arm movement.\n\n\n\nA kinematic chain is a series of rigid links connected by joints.\n\nExample: A robot arm (base, shoulder, elbow, wrist, gripper).\n\nEach joint (revolute or prismatic) introduces a transformation.\nForward Kinematics (FK):\n\nGiven all joint angles (or displacements), calculate the position and orientation of the end-effector.\nThis involves multiplying sequential homogeneous transformation matrices. \\[T_n^0 = A_1 A_2 \\dots A_n\\]\n\n\\(T_n^0\\): End-effector frame {n} relative to base frame {0}.\n\\(A_i\\): Transformation from link \\(i-1\\) to link \\(i\\).\n\n\n\n\n\n\n\nFigure 2.1: Illustration of a robot arm.\n\n\n\n\n\n\n\ngraph TD\n    Base --&gt; Joint1[\"Joint 1 (Revolute)\"]\n    Joint1 --&gt; Link1(Link 1)\n    Link1 --&gt; Joint2[\"Joint 2 (Revolute)\"]\n    Joint2 --&gt; Link2(Link 2)\n    Link2 --&gt; EndEffector(End-Effector)\n\n    style Base fill:#f9f,stroke:#333,stroke-width:2px\n    style Joint1 fill:#add8e6,stroke:#333,stroke-width:2px\n    style Joint2 fill:#add8e6,stroke:#333,stroke-width:2px\n    style Link1 fill:#90ee90,stroke:#333,stroke-width:2px\n    style Link2 fill:#90ee90,stroke:#333,stroke-width:2px\n    style EndEffector fill:#bbf,stroke:#333,stroke-width:2px\n    linkStyle 0 stroke-width:2px,stroke:blue;\n    linkStyle 1 stroke-width:2px,stroke:green;\n    linkStyle 2 stroke-width:2px,stroke:blue;\n    linkStyle 3 stroke-width:2px,stroke:green;\n    linkStyle 4 stroke-width:2px,stroke:purple;\n\n\n\n\n\n\n\n\nNow we bring it all together for a core robotics application: kinematic chains. A robot arm is a classic example – a series of rigid links connected by joints. Each joint, whether it rotates or translates, represents a local coordinate frame and a transformation relative to the previous link. Forward kinematics is the process of calculating where the robot’s “hand” or end-effector is in space, given all the joint movements. This is achieved by multiplying all the individual homogeneous transformation matrices along the chain. The Mermaid diagram visually represents this chain for a simple two-link robot."
+  },
+  {
+    "objectID": "la-app-robotics.html#example-two-link-planar-manipulator-fk",
+    "href": "la-app-robotics.html#example-two-link-planar-manipulator-fk",
+    "title": "Linear Algebra",
+    "section": "Example: Two-Link Planar Manipulator (FK)",
+    "text": "Example: Two-Link Planar Manipulator (FK)\nCalculating end-effector position using sequential transformations.\n\n\nScenario:\n\nTwo links, lengths \\(l_1, l_2\\).\nTwo revolute joints, angles \\(\\theta_1, \\theta_2\\).\nGoal: Find \\((x, y)\\) coordinates of the end-effector.\n\nConceptual Steps:\n\nDefine a coordinate frame at each joint and the end-effector.\nDetermine the homogeneous transformation matrix \\(A_i\\) for each link relative to the previous.\n\nFor a revolute joint, this involves rotation and translation.\n\nMultiply these matrices to get the final transformation from base to end-effector: \\(T_2^0 = A_1 A_2\\).\n\nThe last column of \\(T_2^0\\) will contain the \\((x, y)\\) position.\n\n\n\n\n\n\nTwo-link planar manipulator.\n\n\n\n\n\n\n\n\nNote\n\n\nThis is a simplified version of Denavit-Hartenberg (DH) convention, a standard method for defining these transformations.\n\n\n\n\n\nLet’s consider a practical example: a two-link planar manipulator. This is a common starting point in robotics. We have two links, each with a specific length, and two revolute joints, each with an angle. Our goal is to find the exact x,y coordinates of the end-effector. The process involves defining coordinate frames, creating transformation matrices for each link, and then multiplying them sequentially. This method, often formalized using the Denavit-Hartenberg convention, is a direct application of homogeneous transformations."
+  },
+  {
+    "objectID": "la-app-robotics.html#interactive-forward-kinematics-2-link",
+    "href": "la-app-robotics.html#interactive-forward-kinematics-2-link",
+    "title": "Linear Algebra",
+    "section": "Interactive Forward Kinematics (2-Link)",
+    "text": "Interactive Forward Kinematics (2-Link)\nExplore the end-effector position as joint angles change.\n\n\n\nLink Lengths: \\(l_1 = 1\\), \\(l_2 = 1\\)\nAdjust joint angles \\(\\theta_1\\) and \\(\\theta_2\\).\nObserve the end-effector’s \\((x, y)\\) coordinates.\n\n\\[\n\\begin{aligned}\nx &= l_1 \\cos(\\theta_1) + l_2 \\cos(\\theta_1 + \\theta_2) \\\\\ny &= l_1 \\sin(\\theta_1) + l_2 \\sin(\\theta_1 + \\theta_2)\n\\end{aligned}\n\\]\n\nviewof theta1_deg = Inputs.range([0, 180], {value: 60, step: 1, label: \"Joint 1 Angle (θ1)\"});\nviewof theta2_deg = Inputs.range([0, 180], {value: 30, step: 1, label: \"Joint 2 Angle (θ2)\"});\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHere’s the interactive demonstration of the two-link manipulator. You can use the sliders to adjust the angles of Joint 1 and Joint 2. As you do, you’ll see the robot arm move and the end-effector’s coordinates update in real-time. This visualization directly implements the trigonometric equations derived from multiplying the homogeneous transformation matrices. This is how engineers can predict and control the exact position of a robot’s tool-tip in a workspace."
+  },
+  {
+    "objectID": "la-app-robotics.html#advanced-concept-screw-theory",
+    "href": "la-app-robotics.html#advanced-concept-screw-theory",
+    "title": "Linear Algebra",
+    "section": "Advanced Concept: Screw Theory",
+    "text": "Advanced Concept: Screw Theory\nA powerful way to represent rigid body motion.\n\n\n\nRepresents both linear and angular velocity as a single entity: a twist. \\[V=\\begin{bmatrix} \\omega \\\\ v \\end{bmatrix}\\]\n\n\\(\\omega\\): Angular velocity vector.\n\\(v\\): Linear velocity vector.\n\nA twist can be related to a screw axis, which describes the instantaneous axis of rotation and translation.\n\nUseful for analyzing complex robot movements and inverse kinematics.\n\nProduct of Exponentials (PoE) Formula:\n\nAn alternative to DH for forward kinematics, using matrix exponentials of twists. \\[T(\\theta)=e^{\\hat{S}_1\\theta_1}e^{\\hat{S}_2\\theta_2}\\dots e^{\\hat{S}_n\\theta_n}M\\]\n\\(\\hat{S}_i\\): Skew-symmetric matrix representation of the \\(i\\)-th screw axis.\n\n\n\n\n\n\nFigure 2.12: Screw axis representation.\n\n\n\n\n\n\n\n\nCaution\n\n\nRequires understanding of Lie Groups and Lie Algebras, often covered in graduate-level robotics.\n\n\n\n\n\nFor those interested in more advanced robotics, screw theory offers an elegant and powerful framework. Instead of separating rotation and translation, it unifies them into a single concept called a “twist.” This twist vector represents the instantaneous angular and linear velocity of a rigid body. It’s intimately connected to a “screw axis,” which can be thought of as the axis around which a body is simultaneously rotating and translating. While the mathematical details involve Lie groups and Lie algebras, which are beyond an introductory linear algebra course, understanding that such a unified representation exists is valuable for your future studies in robotics and advanced control."
+  },
+  {
+    "objectID": "la-app-robotics.html#conclusion-and-key-takeaways",
+    "href": "la-app-robotics.html#conclusion-and-key-takeaways",
+    "title": "Linear Algebra",
+    "section": "Conclusion and Key Takeaways",
+    "text": "Conclusion and Key Takeaways\nLinear Algebra: The backbone of ECE.\n\nVectors & Coordinate Frames: Essential for representing spatial information.\nRotation Matrices: Describe orientation changes, preserving distances and angles.\n\nProperties: Orthogonal, \\(\\det(R)=+1\\), non-commutative multiplication.\n\nHomogeneous Transformation Matrices: Unify rotation and translation into a single matrix.\n\nSimplify complex rigid body motions.\n\nKinematic Chains & Forward Kinematics: Direct application in robotics to map joint space to task space.\nPractical Importance: Enables design, analysis, and control of ECE systems like robots, sensors, and control loops.\n\n\n\n\n\n\n\nImportant\n\n\nMastering these linear algebra concepts is crucial for your success in advanced ECE courses and professional careers.\n\n\n\n\nTo wrap up, we’ve seen how fundamental linear algebra concepts like vectors, coordinate frames, and especially matrices, are not just abstract mathematical tools. They are the practical building blocks for understanding and manipulating objects in 3D space, which is critical across ECE. From representing sensor data to controlling robot movements, these concepts are indispensable. I encourage you to continue exploring these topics and applying them in your projects. Thank you!"
+  },
+  {
+    "objectID": "la-app-robotics.html#robot-kinematics-modeling-motion-planning-and-control",
+    "href": "la-app-robotics.html#robot-kinematics-modeling-motion-planning-and-control",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Robot Kinematics: Modeling, Motion Planning, and Control",
+    "text": "Robot Kinematics: Modeling, Motion Planning, and Control\nForward Kinematics: ECE Applications in Robotics"
+  },
+  {
+    "objectID": "la-app-robotics.html#what-is-forward-kinematics",
+    "href": "la-app-robotics.html#what-is-forward-kinematics",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "What is Forward Kinematics?",
+    "text": "What is Forward Kinematics?\nKinematics describes the motion of a manipulator. It analyzes position, velocity, and acceleration without considering the forces causing the motion.\nForward Kinematics is used to calculate the position and orientation of the end-effector given:\n\nA kinematic chain with multiple degrees of freedom.\nThe joint variables (angles for revolute joints, displacements for prismatic joints).\n\n\n\n\n\n\n\nImportant\n\n\nGoal of Forward Kinematics: To determine where the robot’s “hand” (end-effector) is, and how it’s oriented in space.\n\n\n\n\nEmphasize that forward kinematics is about predicting the outcome of joint movements. This is crucial for tasks like path planning or avoiding collisions. For ECE, this translates to understanding how motor commands (joint variables) lead to physical end-effector states."
+  },
+  {
+    "objectID": "la-app-robotics.html#robot-anatomy-key-components",
+    "href": "la-app-robotics.html#robot-anatomy-key-components",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Robot Anatomy: Key Components",
+    "text": "Robot Anatomy: Key Components\nAn articulated robot is typically composed of:\n\nBase: Anchor point, supports the unit.\nShoulder, Elbow: Jointed sections allowing movement.\nSpherical Wrist: Connects arm to gripper.\nGripper: The end-effector, interacts with the environment.\n\n\n\n\n\n\nFigure 2.1 Illustration of a robot.\n\n\n\n\n\n\n\n\n\nNote\n\n\nEnd-effector: The part of the robot that interacts with its environment. Examples:\n\nGripper\nWelding gun\nMagnet\nForce-torque sensors\nTool changers\n\n\n\n\n\n\nThis slide introduces the physical parts of a robot, essential for understanding the subsequent kinematic models. Emphasize how each part contributes to the robot’s function. For ECE students, this helps visualize the mechanical system that their control systems will operate."
+  },
+  {
+    "objectID": "la-app-robotics.html#robot-joints-types-and-degrees-of-freedom",
+    "href": "la-app-robotics.html#robot-joints-types-and-degrees-of-freedom",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Robot Joints: Types and Degrees of Freedom",
+    "text": "Robot Joints: Types and Degrees of Freedom\nEach joint, like the elbow, is an actuator that causes relative motion between two links.\nRevolute (R) Joint\n\nHas 1 Degree of Freedom (DoF).\nAxis of rotation becomes the \\(z_i\\) axis.\nJoint variable: \\(\\theta_i\\) (in degrees), representing relative angular displacement.\n\n\n\n\n\n\nFigure 2.2 Revolute (R) joint.\n\n\n\nPrismatic (P) Joint\n\nAlso has 1 DoF.\nAxis of translation becomes the \\(z_i\\) axis.\nJoint variable: \\(d_i\\) (in meters), representing relative linear displacement.\n\n\n\n\nFigure 2.3 Prismatic (P) joint.\n\n\n\n\\[\nq_i=\\begin{Bmatrix} \\theta_i & \\textrm{if joint $i$ is revolute}\\\\ d_i & \\textrm{if joint $i$ is prismatic}\\end{Bmatrix} \\quad \\text{(2.22)}\n\\]\n\nHighlight the 1 DoF nature of these basic joints and how they relate to the \\(z_i\\) axis. This sets up the coordinate system definitions needed for DH convention later. Mention briefly that other joints exist (e.g., ball and socket, spherical wrist) but for simplicity, we focus on R and P joints which are fundamental building blocks."
+  },
+  {
+    "objectID": "la-app-robotics.html#links-rigid-bodies-and-kinematic-chains",
+    "href": "la-app-robotics.html#links-rigid-bodies-and-kinematic-chains",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Links, Rigid Bodies, and Kinematic Chains",
+    "text": "Links, Rigid Bodies, and Kinematic Chains\n\nRigid Body (Link): A component that connects joints, like the segment between a shoulder and an elbow joint. Assumed to not deform.\nKinematic Chain: A grouping of links and joints that produces the desired motion.\n\nExamples: A human arm or leg.\nIn robotics, this chain connects the base to the end-effector.\n\n\n\n\n\n\n\n\nTip\n\n\nThink of a robot arm as a series of rigid bodies connected by joints. The collective movement of these joints dictates the end-effector’s pose.\n\n\n\n\nClarify the terms “rigid body” and “kinematic chain” as they are central to robot modeling. This provides context for how robots are structured from a mechanical perspective."
+  },
+  {
+    "objectID": "la-app-robotics.html#rigid-motion-homogeneous-matrices-overview",
+    "href": "la-app-robotics.html#rigid-motion-homogeneous-matrices-overview",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Rigid Motion & Homogeneous Matrices: Overview",
+    "text": "Rigid Motion & Homogeneous Matrices: Overview\nThis section covers the analytical approach to representing:\n\nPosition of a point in space.\nRotation in 2D and 3D.\nRigid Motions, combining rotation and translation.\nHomogeneous Transformations, a powerful tool for unified representation.\n\nUnderstanding these concepts is foundational for calculating forward kinematics.\n\nThis slide acts as a mini-introduction to a dense topic. Break it down to make it digestible. Emphasize that these are the mathematical tools we’ll use."
+  },
+  {
+    "objectID": "la-app-robotics.html#representing-position-coordinate-frames",
+    "href": "la-app-robotics.html#representing-position-coordinate-frames",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Representing Position: Coordinate Frames",
+    "text": "Representing Position: Coordinate Frames\nRobotics often uses Cartesian coordinates for task definition. We represent the position of a point, \\(p\\), relative to a chosen coordinate frame.\n\n\n\n\n\nFigure 2.4 Two coordinate frames with a point, \\(p\\), and two vectors, \\(p^0\\) and \\(p^1\\).\n\n\n\nA point \\(p\\) can be defined with respect to:\n\nFrame {0}: \\(p^0=\\begin{bmatrix} 5\\\\ 6 \\end{bmatrix}\\)\nFrame {1}: \\(p^1=\\begin{bmatrix} -2.8\\\\ 4.2 \\end{bmatrix}\\)\n\nThe origin of frame {1} with respect to {0}: \\(o_1^0=\\begin{bmatrix} 10\\\\ 5 \\end{bmatrix}\\)\nThe origin of frame {0} with respect to {1}: \\(o_0^1=\\begin{bmatrix} -10.6\\\\ 3.5 \\end{bmatrix}\\)\n\n\n\n\n\n\n\nNote\n\n\nAlways specify the reference frame when representing a point or vector (e.g., \\(p^0\\) vs. \\(p^1\\)). This prevents ambiguity.\n\n\n\n\nExplain that \\(p\\) is the physical point, while \\(p^0\\) and \\(p^1\\) are its coordinates in different frames. This is a common source of confusion. The coordinate frames are simply different perspectives."
+  },
+  {
+    "objectID": "la-app-robotics.html#representing-rotation-2d-3d",
+    "href": "la-app-robotics.html#representing-rotation-2d-3d",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Representing Rotation: 2D & 3D",
+    "text": "Representing Rotation: 2D & 3D\nRotations are fundamental to robot movement. We will explore:\n\nTwo-Dimensional (Planar) Rotations: Simpler case, good for intuition.\nThree-Dimensional Rotations: Essential for real-world robotics.\nRules of Rotation Matrices: Important properties and operations.\n\nThese concepts form the basis for describing the orientation of robot links.\n\nPrepare students for the mathematical representation of rotation, which is often more abstract than position."
+  },
+  {
+    "objectID": "la-app-robotics.html#d-rotations-the-rotation-matrix",
+    "href": "la-app-robotics.html#d-rotations-the-rotation-matrix",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "2D Rotations: The Rotation Matrix",
+    "text": "2D Rotations: The Rotation Matrix\nA rotation matrix \\(R_1^0\\) describes the orientation of frame {1} relative to frame {0}.\nIt is formed by projecting the axes of frame {1} onto the coordinate axes of frame {0}.\n\\[\nR_1^0=\\begin{bmatrix} x_1 \\cdot x_0 & y_1 \\cdot x_0\\\\ x_1 \\cdot y_0 & y_1 \\cdot y_0 \\end{bmatrix} \\quad \\text{(2.1)}\n\\]\nThe columns of \\(R_1^0\\) are the unit vectors of frame {1}’s axes, expressed in frame {0}’s coordinates.\n\nExplain that the dot products measure the alignment of the axes. For example, \\(x_1 \\cdot x_0\\) is the cosine of the angle between \\(x_1\\) and \\(x_0\\). This geometric interpretation helps understand the matrix elements."
+  },
+  {
+    "objectID": "la-app-robotics.html#example-planar-rotation",
+    "href": "la-app-robotics.html#example-planar-rotation",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Example: Planar Rotation",
+    "text": "Example: Planar Rotation\nConsider a planar rotation of frame {1} by an angle \\(\\theta\\) relative to frame {0}.\n\n\n\n\n\nFigure 2.5 Planar rotation of \\(\\theta\\) degrees.\n\n\n\nThe rotation matrix \\(R_1^0\\) is:\n\\[\nR_1^0 = \\begin{bmatrix} x_1^0 & y_1^0 \\end{bmatrix} \\quad \\text{(2.2)}\n\\]\nBy projecting the axes:\n\\[\nR_1^0 = \\begin{bmatrix} \\cos \\theta & -\\sin\\theta\\\\ \\sin\\theta & \\cos\\theta \\end{bmatrix} \\quad \\text{(2.3)}\n\\]\nThis matrix represents the orientation of frame {1} with respect to frame {0}.\n\n\nWalk through how the \\(\\cos \\theta\\) and \\(\\sin \\theta\\) terms arise from the projections. For example, \\(x_1\\) projected onto \\(x_0\\) is \\(\\cos \\theta\\), and \\(y_1\\) projected onto \\(x_0\\) is \\(\\cos(\\theta + 90^\\circ) = -\\sin \\theta\\)."
+  },
+  {
+    "objectID": "la-app-robotics.html#rules-of-rotation-matrices",
+    "href": "la-app-robotics.html#rules-of-rotation-matrices",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Rules of Rotation Matrices",
+    "text": "Rules of Rotation Matrices\nRotation matrices (\\(R\\)) have specific properties:\n\nOrthogonal: \\(R^T = R^{-1}\\).\nSpecial Orthogonal Group SO(n): Determinant \\(\\det(R) = +1\\) (due to right-hand rule).\nColumns (and rows) are mutually orthogonal unit vectors.\n\nInverse Rotation\nTo find \\(R_0^1\\) (frame {0} w.r.t. {1}): \\[\nR_0^1 = (R_1^0)^T \\quad \\text{(2.4)}\n\\]\nChained Rotations\nIf \\(R_1^0\\) and \\(R_n^1\\) are known, then: \\[\nR_n^0 = R_1^0 R_n^1 \\quad \\text{(2.5)}\n\\]\n\n\n\n\n\n\nWarning\n\n\nImportant Rule for Matrix Multiplication:\n\nPre-multiply when rotation is about a fixed/world frame.\nPost-multiply when rotation is about the current frame.\n\n\n\n\n\nEmphasize the significance of these properties. Orthogonality means rotations preserve vector lengths and angles. The pre/post-multiplication rule is critical for correctly composing multiple rotations. Provide a brief intuitive explanation for why this rule holds."
+  },
+  {
+    "objectID": "la-app-robotics.html#d-rotations-extending-the-matrix",
+    "href": "la-app-robotics.html#d-rotations-extending-the-matrix",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "3D Rotations: Extending the Matrix",
+    "text": "3D Rotations: Extending the Matrix\nThe principle for 3D rotations is the same as 2D: project axes of frame {1} onto frame {0}.\n\\[\nR_1^0 = \\begin{bmatrix} x_1 \\cdot x_0 & y_1 \\cdot x_0 & z_1 \\cdot x_0\\\\ x_1 \\cdot y_0 & y_1 \\cdot y_0 & z_1 \\cdot y_0 \\\\ x_1 \\cdot z_0 & y_1 \\cdot z_0 & z_1 \\cdot z_0 \\end{bmatrix} \\quad \\text{(2.6)}\n\\]\nThis \\(3 \\times 3\\) matrix belongs to \\(SO(3)\\) (Special Orthogonal Group of order 3).\n\nPoint out the expansion from \\(2 \\times 2\\) to \\(3 \\times 3\\). The core concept of projecting axes remains."
+  },
+  {
+    "objectID": "la-app-robotics.html#example-rotation-about-z_0-axis",
+    "href": "la-app-robotics.html#example-rotation-about-z_0-axis",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Example: Rotation about \\(z_0\\)-axis",
+    "text": "Example: Rotation about \\(z_0\\)-axis\nFind the rotation matrix \\(R_1^0\\) when frame {1} is rotated by angle \\(\\theta\\) about the \\(z_0\\)-axis.\n\n\n\n\n\nFigure 2.6 Rotation through an angle \\(\\theta\\) about the \\(z_0\\)-axis.\n\n\n\nFrom the figure: \\(x_1 \\cdot x_0 = \\cos \\theta\\), \\(y_1 \\cdot x_0 = -\\sin \\theta\\) \\(x_1 \\cdot y_0 = \\sin \\theta\\), \\(y_1 \\cdot y_0 = \\cos \\theta\\) \\(z_0 \\cdot z_1 = 1\\) All other dot products are zero.\nResulting Rotation Matrix: \\[\nR_1^0 = R_{z,\\theta} = \\begin{bmatrix} \\cos \\theta & -\\sin \\theta & 0\\\\ \\sin \\theta & \\cos \\theta & 0 \\\\ 0 & 0 & 1\\end{bmatrix} \\quad \\text{(2.7)}\n\\]\n\nRotations about x- and y-axes\n\\[\nR_{x,\\theta} = \\begin{bmatrix} 1 & 0 & 0\\\\ 0 & \\cos \\theta & -\\sin \\theta \\\\ 0 & \\sin \\theta & \\cos \\theta\\end{bmatrix} \\quad \\text{(2.8)}\n\\]\n\\[\nR_{y,\\theta} = \\begin{bmatrix} \\cos \\theta & 0 & \\sin \\theta\\\\ 0 & 1 & 0 \\\\ -\\sin \\theta & 0 & \\cos \\theta\\end{bmatrix} \\quad \\text{(2.9)}\n\\]\n\nThis slide gives concrete examples of fundamental rotation matrices, which are building blocks for more complex rotations. Highlight the pattern: the row/column corresponding to the axis of rotation has a ‘1’ in its diagonal and ’0’s elsewhere, while the other \\(2 \\times 2\\) block forms a planar rotation."
+  },
+  {
+    "objectID": "la-app-robotics.html#example-chaining-rotations",
+    "href": "la-app-robotics.html#example-chaining-rotations",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Example: Chaining Rotations",
+    "text": "Example: Chaining Rotations\nFind the rotation matrix after the following rotations occur:\n\nRotate by \\(\\theta\\) about the current x-axis\nRotate by \\(\\phi\\) about the current z-axis\nRotate by \\(\\alpha\\) about the fixed z-axis\nRotate by \\(\\beta\\) about the current y-axis\nRotate by \\(\\gamma\\) about the fixed x-axis\n\nStart with the initial rotation and apply the pre/post-multiplication rule:\n\\[\nR=R_{x,\\gamma}R_{z,\\alpha}R_{x,\\theta}R_{z,\\phi}R_{y,\\beta}\n\\]\n\n\n\n\n\n\nTip\n\n\nReminder:\n\nFixed frame rotation: Pre-multiply (\\(R_{fixed} R_{current\\_total}\\))\nCurrent frame rotation: Post-multiply (\\(R_{current\\_total} R_{new\\_current}\\))\n\n\n\n\n\nThis example is important for applying the pre/post-multiplication rule in a complex sequence. Walk through each step, explaining why a specific matrix is pre- or post-multiplied. Remind students that c for cosine and s for sine will be used in subsequent complex matrix examples."
+  },
+  {
+    "objectID": "la-app-robotics.html#rigid-motion-translation-and-rotation-combined",
+    "href": "la-app-robotics.html#rigid-motion-translation-and-rotation-combined",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Rigid Motion: Translation and Rotation Combined",
+    "text": "Rigid Motion: Translation and Rotation Combined\nA rigid motion is a combination of a pure translation and a pure rotation.\nTo express a point \\(p^1\\) (in frame {1}) with respect to frame {0}:\n\\[\np^0=R_1^0p^1+d^0 \\quad \\text{(2.10)}\n\\]\nWhere: - \\(R_1^0\\) is the rotation matrix of frame {1} w.r.t. frame {0}. - \\(d^0\\) is the vector from frame {0} origin to frame {1} origin, expressed in frame {0}.\n\n\n\n\n\nFigure 2.7 The location of the blue dot in frame {0}.\n\n\n\n\n\n\nFigure 2.8 The location of the blue dot in frame {1}.\n\n\n\n\nExplain Figure 2.7 and 2.8. The goal is to find the blue dot’s position in the global frame {0}, given its position in its local frame {1}, and the relative pose of {1} to {0}. This is a direct application of Equation (2.10)."
+  },
+  {
+    "objectID": "la-app-robotics.html#chained-rigid-motions",
+    "href": "la-app-robotics.html#chained-rigid-motions",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Chained Rigid Motions",
+    "text": "Chained Rigid Motions\nConsider three frames: {0}, {1}, and {2}.\n\n\\(d_1^0\\): vector from origin of {0} to origin of {1}.\n\\(d_2^1\\): vector from origin of {1} to origin of {2}.\n\\(p^2\\): point \\(p\\) represented in frame {2}.\n\nTo compute \\(p^0\\) (point \\(p\\) relative to frame {0}):\n\nTransform \\(p^2\\) to frame {1}: \\(p^1=R_2^1p^2+d_2^1 \\quad \\text{(2.11)}\\)\nTransform \\(p^1\\) to frame {0}: \\(p^0=R_1^0p^1+d_1^0 \\quad \\text{(2.12)}\\)\nSubstitute (2.11) into (2.12): \\(p^0=R_1^0(R_2^1p^2+d_2^1)+d_1^0 = R_1^0R_2^1p^2+R_1^0d_2^1+d_1^0 \\quad \\text{(2.13)}\\)\n\nWe define:\n\n\\(R_2^0=R_1^0R_2^1 \\quad \\text{(2.14)}\\)\n\\(d_2^0=d_1^0+R_1^0d_2^1 \\quad \\text{(2.15)}\\)\n\nThus, the final transformation is: \\[\np^0=R_2^0p^2+d_2^0 \\quad \\text{(2.16)}\n\\]\n\nThis derivation shows how transformations compose. Emphasize that \\(R_2^0\\) is the total rotation from frame 2 to frame 0, and \\(d_2^0\\) is the total translation from origin 0 to origin 2, both expressed in frame 0. A simple Mermaid diagram could illustrate the flow of transformations."
+  },
+  {
+    "objectID": "la-app-robotics.html#homogeneous-transformation-unified-representation",
+    "href": "la-app-robotics.html#homogeneous-transformation-unified-representation",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Homogeneous Transformation: Unified Representation",
+    "text": "Homogeneous Transformation: Unified Representation\nA Homogeneous Transformation combines rotation and translation into a single matrix multiplication. This simplifies coordinate transformations.\nThe homogeneous matrix \\(H\\) is a \\(4 \\times 4\\) matrix:\n\\[\nH=\\begin{bmatrix} R & d\\\\ 0 & 1\\end{bmatrix}, R\\in SO(3), d \\in \\mathbb{R}^3 \\quad \\text{(2.17)}\n\\]\nWhere \\(R\\) is the \\(3 \\times 3\\) rotation matrix and \\(d\\) is the \\(3 \\times 1\\) translation vector.\nInverse Homogeneous Transformation\n\\[\nH^{-1}=\\begin{bmatrix} R^T & -R^Td \\\\ 0 & 1\\end{bmatrix} \\quad \\text{(2.18)}\n\\]\n\nHighlight the power of homogeneous transformations: they allow point transformations (\\(p^0 = Hp^1\\)) to be single matrix-vector products, rather than separate rotation and addition. This is very efficient for computations. Explain why the last row is \\([0 \\ 0 \\ 0 \\ 1]\\)."
+  },
+  {
+    "objectID": "la-app-robotics.html#basic-homogeneous-transformations",
+    "href": "la-app-robotics.html#basic-homogeneous-transformations",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Basic Homogeneous Transformations",
+    "text": "Basic Homogeneous Transformations\nThese are fundamental transformations for translation and rotation about principal axes. (Note: \\(c_\\alpha = \\cos \\alpha\\), \\(s_\\alpha = \\sin \\alpha\\))\nX-axis Translation & Rotation\n\\[\nTrans_{x,a} = \\begin{bmatrix} 1 & 0 & 0 & a\\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 1 \\end{bmatrix}, Rot_{x,\\alpha} = \\begin{bmatrix} 1 & 0 & 0 & 0\\\\ 0 & c_\\alpha & -s_\\alpha & 0 \\\\ 0 & s_\\alpha & c_\\alpha & 0 \\\\ 0 & 0 & 0 &1\\end{bmatrix} \\quad \\text{(2.19)}\n\\]\nY-axis Translation & Rotation\n\\[\nTrans_{y,b} = \\begin{bmatrix} 1 & 0 & 0 & 0\\\\ 0 & 1 & 0 & b \\\\ 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 1 \\end{bmatrix}, Rot_{y,\\beta} = \\begin{bmatrix}c_\\beta & 0 & s_\\beta & 0\\\\ 0 & 1 & 0 & 0 \\\\ -s_\\beta & 0 & c_\\beta & 0 \\\\ 0 & 0 & 0 &1\\end{bmatrix} \\quad \\text{(2.20)}\n\\]\nZ-axis Translation & Rotation\n\\[\nTrans_{z,c} = \\begin{bmatrix} 1 & 0 & 0 & 0\\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 1 & c \\\\ 0 & 0 & 0 & 1 \\end{bmatrix}, Rot_{z,\\gamma} = \\begin{bmatrix} c_\\gamma & -s_\\gamma & 0 & 0\\\\ s_\\gamma & c_\\gamma & 0 & 0 \\\\ 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 &1\\end{bmatrix} \\quad \\text{(2.21)}\n\\]\n\nShow how these matrices are formed by inserting the rotation matrix and translation vector into the \\(H\\) structure. Point out the similarities to the pure rotation matrices."
+  },
+  {
+    "objectID": "la-app-robotics.html#example-complex-homogeneous-transformation",
+    "href": "la-app-robotics.html#example-complex-homogeneous-transformation",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Example: Complex Homogeneous Transformation",
+    "text": "Example: Complex Homogeneous Transformation\nFind a homogeneous transformation matrix \\(H\\) that represents a sequence of operations:\n\nRotation of angle \\(\\alpha\\) about the current x-axis\nTranslation of \\(b\\) along the current x-axis\nTranslation of \\(d\\) along the current z-axis\nRotation of angle \\(\\theta\\) about the current z-axis\n\nSince all transformations are about current axes, we post-multiply in the order given:\n\\[\nH = Rot_{x,\\alpha} Trans_{x,b} Trans_{z,d} Rot_{z,\\theta}\n\\]\nThe resulting matrix:\n\\[\nH=\\begin{bmatrix} c_\\theta & -s_\\theta & 0 & b\\\\ c_\\alpha s_\\theta & c_\\alpha c_\\theta & -s_\\alpha & -ds_\\alpha \\\\ s_\\alpha s_\\theta & s_\\alpha c_\\theta & c_\\alpha & dc_\\alpha \\\\ 0 & 0 & 0 & 1\\end{bmatrix}\n\\]\n\nThis example reinforces the post-multiplication rule for current-axis transformations. Emphasize the importance of the order of operations. The derivation involves multiplying these 4x4 matrices."
+  },
+  {
+    "objectID": "la-app-robotics.html#kinematic-chains-robot-structure",
+    "href": "la-app-robotics.html#kinematic-chains-robot-structure",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Kinematic Chains: Robot Structure",
+    "text": "Kinematic Chains: Robot Structure\nA robot is comprised of links connected by joints (R or P), forming a kinematic chain.\nLabeling Convention\n\nJoints are labeled from 1 to \\(n\\).\nLinks are labeled from 0 to \\(n\\), with Link 0 being the fixed base.\n\nThe joint variable, \\(q_i\\), depends on the joint type:\n\\[\nq_i=\\begin{Bmatrix} \\theta_i & \\textrm{if joint $i$ is revolute}\\\\ d_i & \\textrm{if joint $i$ is prismatic}\\end{Bmatrix} \\quad \\text{(2.22)}\n\\]\nTransformation Matrix (\\(T_j^i\\))\nRepresents the position and orientation of frame {j} with respect to {i}.\n\\[\nT_j^i=\\begin{Bmatrix} A_{i+1}A_{i+2}\\cdots A_{j} & \\textrm{if $i &lt; j$}\\\\ (A_{j+1}A_{j+2}\\cdots A_{i})^{-1} & \\textrm{if $i &gt; j$}\\end{Bmatrix} \\quad \\text{(2.23)}\n\\]\nWhere \\(A_i\\) is the homogeneous transformation from frame \\(i-1\\) to \\(i\\): \\[\nA_i=\\begin{bmatrix} R_i^{i-1} & o_i^{i-1}\\\\ 0 & 1 \\end{bmatrix} \\quad \\text{(2.24)}\n\\]\n\nExplain how the chain builds up. The \\(A_i\\) matrices are essentially the “local” transformations between adjacent links, and \\(T_j^i\\) is the “global” transformation obtained by chaining these local ones. \\(o_i^{i-1}\\) is the translation vector from origin \\((i-1)\\) to origin \\(i\\)."
+  },
+  {
+    "objectID": "la-app-robotics.html#forward-kinematics-trigonometry-method",
+    "href": "la-app-robotics.html#forward-kinematics-trigonometry-method",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Forward Kinematics: Trigonometry Method",
+    "text": "Forward Kinematics: Trigonometry Method\nThe trigonometry method is suitable for simple, planar robots.\nApproach:\n\nPlace the robot in a 2-D planar coordinate system.\nFind the angles between each joint movement.\nUse trigonometric functions (\\(\\sin\\), \\(\\cos\\)) to find the end-effector’s coordinates relative to the base.\n\nThis method provides intuitive geometric insights but can become complex for 3D or multi-link manipulators.\n\nEmphasize the simplicity and geometric intuition this method offers, but also its limitations for more complex robot structures."
+  },
+  {
+    "objectID": "la-app-robotics.html#example-two-link-planar-manipulator-trigonometry-method",
+    "href": "la-app-robotics.html#example-two-link-planar-manipulator-trigonometry-method",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Example: Two-Link Planar Manipulator (Trigonometry Method)",
+    "text": "Example: Two-Link Planar Manipulator (Trigonometry Method)\nProblem: Find the end-effector coordinates (\\(x_2, y_2\\)) for a two-link planar manipulator.\n\nJoint 1: Rotated by \\(\\alpha = 60^\\circ\\).\nLink 1: Length \\(l_1 = 1\\).\nJoint 2: Rotated by \\(\\beta = 30^\\circ\\) relative to Link 1.\nLink 2: Length \\(l_2 = 1\\).\n\n\nThe coordinates of the end-effector are:\n\\(x = l_1 \\cos \\alpha + l_2 \\cos(\\alpha+\\beta)\\)\n\\(y = l_1 \\sin \\alpha + l_2 \\sin(\\alpha+\\beta)\\)\nWith \\(l_1=l_2=1\\), \\(\\alpha=60^\\circ\\), \\(\\beta=30^\\circ\\):\n\\(x = 1 \\cos 60^\\circ + 1 \\cos(60^\\circ+30^\\circ) = 0.5 + 0 = 0.5\\)\n\\(y = 1 \\sin 60^\\circ + 1 \\sin(60^\\circ+30^\\circ) = \\frac{\\sqrt{3}}{2} + 1 = 0.866 + 1 = 1.866\\)"
+  },
+  {
+    "objectID": "la-app-robotics.html#interactive-two-link-planar-manipulator",
+    "href": "la-app-robotics.html#interactive-two-link-planar-manipulator",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Interactive: Two-Link Planar Manipulator",
+    "text": "Interactive: Two-Link Planar Manipulator\nAdjust the link lengths and joint angles to see the end-effector position in real-time.\n\nviewof l1 = Inputs.range([0.1, 5.0], {value: 1, step: 0.1, label: \"Link 1 Length (l1)\"});\nviewof l2 = Inputs.range([0.1, 5.0], {value: 1, step: 0.1, label: \"Link 2 Length (l2)\"});\nviewof alpha_deg = Inputs.range([-180, 180], {value: 60, step: 1, label: \"Joint 1 Angle (alpha_deg, degrees)\"});\nviewof beta_deg = Inputs.range([-180, 180], {value: 30, step: 1, label: \"Joint 2 Angle (beta_deg, degrees)\"});\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThis interactive plot allows students to visually connect the joint parameters (\\(l_1, l_2, \\alpha, \\beta\\)) with the resulting end-effector position. Encourage them to play with the sliders. This is a powerful demonstration of forward kinematics."
+  },
+  {
+    "objectID": "la-app-robotics.html#denavit-hartenberg-dh-convention",
+    "href": "la-app-robotics.html#denavit-hartenberg-dh-convention",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Denavit-Hartenberg (DH) Convention",
+    "text": "Denavit-Hartenberg (DH) Convention\nThe Denavit-Hartenberg (DH) convention is a standardized method for assigning coordinate frames to robot links and deriving the kinematic equations.\nIt simplifies the calculation of the homogeneous transformation matrix (\\(A_i\\)) between adjacent links:\n\\[\nA_i=Rot_{z,\\theta}Trans_{z,d}Trans_{x,a}Rot_{x,\\alpha}=\\begin{bmatrix} c_\\theta & -s_\\theta c_\\alpha & s_\\theta s_\\alpha & a c_\\theta\\\\ s_\\theta & c_\\theta c_\\alpha & -c\\theta s_\\alpha & as_\\theta \\\\ 0 & s_\\alpha & c_\\alpha & d \\\\ 0 & 0 & 0 & 1\\end{bmatrix} \\quad \\text{(2.25)}\n\\]\nThis matrix encapsulates all four DH parameters: \\(a\\), \\(\\alpha\\), \\(d\\), \\(\\theta\\).\n\nExplain that DH is a systematic approach to set up coordinate systems, which is essential for complex manipulators where the trigonometry method fails. The matrix \\(A_i\\) represents the transformation from frame \\(i-1\\) to frame \\(i\\)."
+  },
+  {
+    "objectID": "la-app-robotics.html#dh-convention-steps-drawing-axes",
+    "href": "la-app-robotics.html#dh-convention-steps-drawing-axes",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "DH Convention Steps: Drawing & Axes",
+    "text": "DH Convention Steps: Drawing & Axes\nStep 1: Draw out the robot\n\nIllustrate the revolute and prismatic joints.\nSet the \\(z_i\\) axis as the axis of rotation for revolute joints or the axis of translation for prismatic joints.\nDefine the joint variable (\\(\\theta_i\\) or \\(d_i\\)).\n\nStep 2: Assign the remaining axes\n\nThe \\(x_i\\) axis must be perpendicular to both \\(z_i\\) and \\(z_{i-1}\\).\nIt must also intersect with \\(z_{i-1}\\).\nThe \\(y_i\\) axis is determined by the right-hand rule (thumb \\(z_i\\), index finger \\(x_i\\), middle finger \\(y_i\\)).\n\n\n\n\n\n\n\nNote\n\n\nRight-Hand Rule: Align your thumb with the positive \\(z\\)-axis, your index finger with the positive \\(x\\)-axis, and your middle finger will point to the positive \\(y\\)-axis.\n\n\n\n\nThese first two steps are crucial for correctly defining the coordinate frames on each link. Emphasize the strict rules for \\(x_i\\) to ensure unique frame assignment."
+  },
+  {
+    "objectID": "la-app-robotics.html#dh-convention-steps-assigning-parameters",
+    "href": "la-app-robotics.html#dh-convention-steps-assigning-parameters",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "DH Convention Steps: Assigning Parameters",
+    "text": "DH Convention Steps: Assigning Parameters\nStep 3: Assign the DH parameters\n\nLink Length (\\(a_i\\)): Measured along \\(x_i\\), distance between \\(z_{i-1}\\) and \\(z_i\\).\nLink Twist (\\(\\alpha_i\\)): Angle between \\(z_{i-1}\\) and \\(z_i\\), measured in a plane normal to \\(x_i\\).\nJoint Offset (\\(d_i\\)): Measured along \\(z_{i-1}\\), distance from origin \\(O_{i-1}\\) to the intersection of \\(x_i\\) and \\(z_{i-1}\\).\n\nIf joint \\(i\\) is revolute, \\(d_i\\) is constant.\n\nJoint Angle (\\(\\theta_i\\)): Angle between \\(x_{i-1}\\) and \\(x_i\\), measured in a plane normal to \\(z_{i-1}\\).\n\nIf joint \\(i\\) is prismatic, \\(\\theta_i\\) is constant.\n\n\n\n\n\n\n\n\nTip\n\n\nFor a visual guide, watch this YouTube video by TekkotsuRbotics.\n\n\n\n\nThis is the most critical step for DH convention. Each parameter defines a geometric relationship between successive frames. It’s often helpful to visualize these in 3D."
+  },
+  {
+    "objectID": "la-app-robotics.html#dh-convention-steps-table-matrices",
+    "href": "la-app-robotics.html#dh-convention-steps-table-matrices",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "DH Convention Steps: Table & Matrices",
+    "text": "DH Convention Steps: Table & Matrices\nStep 4: Create a DH table\nList all known values. Use * for variable joint parameters.\n\n\n\nLinks\n\\(a_i\\)\n\\(\\alpha_i\\)\n\\(d_i\\)\n\\(\\theta_i\\)\n\n\n\n\n1\n\\(a_1\\)\n\\(\\alpha_1\\)\n\\(d_1\\)\n\\(\\theta_1\\)\n\n\n…\n…\n…\n…\n…\n\n\n\\(i\\)\n\\(a_i\\)\n\\(\\alpha_i\\)\n\\(d_i\\)\n\\(\\theta_i\\)\n\n\n\nStep 5: Calculate each \\(A_i\\) matrix\nUse Equation (2.25) with the parameters from the DH table. (Note: Link 0 doesn’t have an A matrix).\nStep 6: Calculate the \\(T\\) matrix\nThe overall transformation \\(T_n^0\\) (end-effector w.r.t. base) is the product of all \\(A_i\\) matrices:\n\\[\nT_n^0 = A_1 A_2 \\cdots A_n\n\\]\n\nThe DH table organizes the parameters, making it easier to construct the individual \\(A_i\\) matrices. The final \\(T_n^0\\) matrix contains the complete forward kinematics solution: end-effector position and orientation."
+  },
+  {
+    "objectID": "la-app-robotics.html#example-two-link-planar-manipulator-dh-convention",
+    "href": "la-app-robotics.html#example-two-link-planar-manipulator-dh-convention",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Example: Two-Link Planar Manipulator (DH Convention)",
+    "text": "Example: Two-Link Planar Manipulator (DH Convention)\nDerive forward kinematics for this two-link manipulator using DH.\n\n\n\nFigure 2.9 Two-link planar manipulator.\n\n\nStep 1 & 2: Axes Assignment\nAll z-axes are normal to the page (blue dots).\n\n\n\nFigure 2.10 The two-link manipulator with assigned axes.\n\n\nStep 3: DH Parameters\n\n\n\nFigure 2.11 The two-link manipulator with assigned DH parameters.\n\n\n\nWalk through the axis assignments and parameter definitions visually from the figures. Emphasize how \\(x_i\\) must intersect \\(z_{i-1}\\) and be normal to both \\(z_i\\) and \\(z_{i-1}\\)."
+  },
+  {
+    "objectID": "la-app-robotics.html#example-two-link-planar-manipulator-dh-convention-cont.",
+    "href": "la-app-robotics.html#example-two-link-planar-manipulator-dh-convention-cont.",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Example: Two-Link Planar Manipulator (DH Convention) cont.",
+    "text": "Example: Two-Link Planar Manipulator (DH Convention) cont.\nStep 4: DH Table\n\n\n\nLink\n\\(a_i\\)\n\\(\\alpha_i\\)\n\\(d_i\\)\n\\(\\theta_i\\)\n\n\n\n\n1\n\\(a_1\\)\n0\n0\n\\(\\theta_1^*\\)\n\n\n2\n\\(a_2\\)\n0\n0\n\\(\\theta_2^*\\)\n\n\n\nStep 5: Calculate \\(A_i\\) matrices\nUsing Equation (2.25): \\[\nA_1=\\begin{bmatrix} c_1 & -s_1 & 0 & a_1c_1\\\\ s_1 & c_1 & 0 & a_1s_1 \\\\ 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 1 \\end{bmatrix}, A_2=\\begin{bmatrix} c_2 & -s_2 & 0 & a_2c_2\\\\ s_2 & c_2 & 0 & a_2s_2 \\\\ 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 1 \\end{bmatrix}\n\\]\nStep 6: Calculate \\(T_2^0\\) matrix\n\\[\nT_2^0=A_1A_2=\\begin{bmatrix} c_{12} & -s_{12} & 0 & a_1c_1+a_2c_{12}\\\\ s_{12} & c_{12} & 0 & a_1s_1+a_2s_{12} \\\\ 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 1 \\end{bmatrix}\n\\] Here, \\(c_{12} = \\cos(\\theta_1+\\theta_2)\\) and \\(s_{12} = \\sin(\\theta_1+\\theta_2)\\).\nThe end-effector coordinates (\\(x,y\\)) are the last column’s first two entries: \\(x=a_1c_1+a_2c_{12}\\), \\(y=a_1s_1+a_2s_{12}\\).\n\nCompare these results with the trigonometry method for the same manipulator. They should be identical, illustrating that DH is a formalized way to achieve the same kinematic solution."
+  },
+  {
+    "objectID": "la-app-robotics.html#forward-kinematics-screw-theory",
+    "href": "la-app-robotics.html#forward-kinematics-screw-theory",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Forward Kinematics: Screw Theory",
+    "text": "Forward Kinematics: Screw Theory\nScrew Theory is an alternative to the Denavit-Hartenberg convention. It describes rigid motion as a twist about a screw axis.\nKey Ideas:\n\nOnly two coordinate systems are needed:\n\nSpace {s} frame: Fixed in space.\nBody {b} frame: End-effector frame, moves with the robot.\n\nUses the Product of Exponentials (PoE) formula for transformation matrix \\(T(\\theta)\\).\n\nMultiplication Rules\n\nIf using {s} frame: Pre-multiplication (\\(e^{\\hat{S}_1\\theta_1} \\dots M\\))\nIf using {b} frame: Post-multiplication (\\(M \\dots e^{\\hat{B}_n\\theta_n}\\))\n\n\nIntroduce screw theory as a more modern and often more elegant approach for certain types of analysis, particularly in advanced robotics and motion planning. Emphasize the concepts of space and body frames."
+  },
+  {
+    "objectID": "la-app-robotics.html#screw-theory-twists-screw-axis",
+    "href": "la-app-robotics.html#screw-theory-twists-screw-axis",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Screw Theory: Twists & Screw Axis",
+    "text": "Screw Theory: Twists & Screw Axis\nA twist defines a body’s instantaneous linear and angular velocity. It is described by a screw axis, which has:\n\nA point \\(q\\) on the axis.\nA unit vector \\(s\\) in the direction of the axis.\nA pitch \\(h\\).\n\n\n\n\nFigure 2.12 Screw axis representation.\n\n\nThe pitch (\\(h\\)) is the ratio of linear to angular speed: \\[\nh=pitch=\\frac{\\textrm{linear speed}}{\\textrm{angular speed}} \\quad \\text{(2.26)}\n\\]\nThe screw axis \\(S\\) represents angular velocity (\\(\\omega\\)) and linear velocity (\\(v\\)) components: \\[\nS=\\begin{bmatrix} S_\\omega\\\\ S_v \\end{bmatrix}=\\begin{bmatrix} \\textrm{angular velocity when } \\dot{\\theta}=1\\\\ \\textrm{linear velocity of the origin when } \\dot{\\theta}=1 \\end{bmatrix} \\quad \\text{(2.27)}\n\\]\n\n\n\nFigure 2.13 Screw axis representation with the linear velocity of the origin defined.\n\n\nThe full twist \\(V\\) is: \\[\nV=\\begin{bmatrix} \\omega\\\\ v \\end{bmatrix}=S\\dot{\\theta} \\quad \\text{(2.28)}\n\\]\n\nThis slide defines the core concepts of screw theory: the screw axis and the twist. Explain how the pitch relates to rotation and translation along the axis. \\(S_\\omega\\) is the unit direction vector for angular velocity, and \\(S_v\\) is the linear velocity of the origin when \\(\\dot{\\theta}=1\\)."
+  },
+  {
+    "objectID": "la-app-robotics.html#twists-finite-and-infinite-pitch",
+    "href": "la-app-robotics.html#twists-finite-and-infinite-pitch",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Twists: Finite and Infinite Pitch",
+    "text": "Twists: Finite and Infinite Pitch\nFinite Pitch:\n\nBoth rotation and translation occur.\n\\(\\|S_\\omega\\|=1\\)\n\\(\\dot{\\theta}\\) represents rotation speed.\n\nInfinite Pitch (Prismatic Joint):\n\nPurely linear motion, no rotation.\n\\(S_\\omega=0\\)\n\\(\\|S_v\\|=1\\)\n\\(\\dot{\\theta}\\) represents linear speed.\n\nBody Twist (\\(V_b\\))\nDefined in the {b} frame (end-effector): \\[\nV_b=(\\omega_b,v_b)=S\\dot{\\theta} \\quad \\text{(2.29)}\n\\]\nSpatial Twist (\\(V_s\\))\nDefined in the {s} frame (space/fixed): \\[\nV_s=(\\omega_s,v_s)=S\\dot{\\theta} \\quad \\text{(2.30)}\n\\]\n\nDistinguish between finite and infinite pitch, connecting the latter to prismatic joints. Emphasize the concepts of body twist (local to end-effector) and spatial twist (global)."
+  },
+  {
+    "objectID": "la-app-robotics.html#example-simple-twist",
+    "href": "la-app-robotics.html#example-simple-twist",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Example: Simple Twist",
+    "text": "Example: Simple Twist\nConsider a zero-pitch screw, with a pure rotation. The screw is pointing out of the screen (black dot). Imagine the dotted line rotates counterclockwise. Find the angular and linear velocity.\n\nThis corresponds to: \\[\nS_\\omega=\\begin{bmatrix} 0\\\\ 0 \\\\ 1 \\end{bmatrix}, S_v=\\begin{bmatrix} 0\\\\ -2 \\\\ 0 \\end{bmatrix}\n\\]\n\nExplain how \\(S_\\omega\\) points out of the page (\\(z\\)-direction) and \\(S_v\\) is the velocity of the origin if it were rotating around this axis. The “-2” in \\(S_v\\) suggests the origin is at \\((0,2)\\) and rotating around \\(z\\)-axis."
+  },
+  {
+    "objectID": "la-app-robotics.html#screw-theory-practical-procedure",
+    "href": "la-app-robotics.html#screw-theory-practical-procedure",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Screw Theory: Practical Procedure",
+    "text": "Screw Theory: Practical Procedure\nTo find forward kinematics using screw theory:\nStep 1: Establish {s} and {b} frames\n\n{s} frame: Basic coordinate system fixed in space.\n{b} frame: End-effector coordinate system, moves with the robot.\n\nStep 2: Determine \\(M\\)\nThe transformation matrix \\(M\\) of the end-effector frame when all joint variables \\(\\theta = 0^\\circ\\).\nStep 3: Find Screw Axes\nDetermine the {s} frame screw axes \\(S_1, \\dots, S_n\\) or {b} frame screw axes \\(B_1, \\dots, B_n\\) for each of the \\(n\\) joint axes when \\(\\theta = 0^\\circ\\).\nStep 4: Evaluate the Product of Exponentials (PoE)\nFor {s} frame (space frame): \\[\nT(\\theta)=e^{\\hat{S}_1\\theta_1}e^{\\hat{S}_2\\theta_2}\\cdots e^{\\hat{S}_n\\theta_n}M \\quad \\text{(2.31)}\n\\]\nFor {b} frame (body frame): \\[\nT(\\theta)=Me^{\\hat{B}_1\\theta_1}e^{\\hat{B}_2\\theta_2}\\cdots e^{\\hat{B}_n\\theta_n} \\quad \\text{(2.32)}\n\\]\n\nThis procedure systematizes the application of screw theory. \\(\\hat{S}_i\\) and \\(\\hat{B}_i\\) are the \\(4 \\times 4\\) matrix representations of the screw axes. The exponential map \\(e^{\\hat{S}\\theta}\\) transforms a twist into a homogeneous transformation."
+  },
+  {
+    "objectID": "la-app-robotics.html#example-screw-theory-in-s-frame",
+    "href": "la-app-robotics.html#example-screw-theory-in-s-frame",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Example: Screw Theory in {s} frame",
+    "text": "Example: Screw Theory in {s} frame\nConsider an RPR (Revolute-Prismatic-Revolute) robot in its’ zero-frame orientation and then in a rotated orientation. Derive the forward kinematics using Screw Theory.\n\n\n\nZero-frame orientation: \\(\\theta=\\begin{bmatrix} 0 \\\\ 0 \\\\ 0\\end{bmatrix}\\)\n\n\n\n\n\nRotated orientation: \\(\\theta=\\begin{bmatrix} 0 \\\\ 0.5 \\\\ 45^\\circ\\end{bmatrix}\\)\n\n\nStep 1 & 2: {s} and {b} frames, and \\(M\\)\nAnalyzing the zero-frame, the matrix \\(M\\) (initial end-effector pose in space frame) is: \\[\nM=\\begin{bmatrix} 1 & 0 & 0 & 3\\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 1 \\end{bmatrix}\n\\]\nStep 3: {s} frame Screw Axes (\\(S_i\\))\n\\[\nS_1=\\begin{bmatrix} 0 \\\\ 0 \\\\ 1 \\\\ 0 \\\\ 0 \\\\ 0\\end{bmatrix}, S_2=\\begin{bmatrix} 0 \\\\ 0 \\\\ 0 \\\\ 1 \\\\ 0 \\\\ 0\\end{bmatrix}, S_3=\\begin{bmatrix} 0 \\\\ 0 \\\\ 1 \\\\ 0 \\\\ -2 \\\\ 0\\end{bmatrix}\n\\]\n\nExplain how \\(M\\) is derived: The rotation part is identity as {b} is aligned with {s} at zero configuration. The translation part (\\(d\\)) comes from the end-effector’s position relative to the space frame at \\(\\theta=0\\).\nFor the screw axes:\n\\(S_1\\): Revolute about Z-axis at origin (no linear velocity).\n\\(S_2\\): Prismatic along X-axis (no angular velocity, unit linear velocity in X).\n\\(S_3\\): Revolute about Z-axis, but not at the origin (so has an \\(v = -\\omega \\times q\\) linear component)."
+  },
+  {
+    "objectID": "la-app-robotics.html#chapter-summary",
+    "href": "la-app-robotics.html#chapter-summary",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Chapter Summary",
+    "text": "Chapter Summary\nWe’ve explored three methods for solving Forward Kinematics:\n\nTrigonometry Method:\n\nBest for simple, 2D planar robots.\nIntuitive geometric understanding.\n\nDenavit-Hartenberg (DH) Convention:\n\nMost commonly used, systematic approach.\nRequires defining four parameters (\\(a, \\alpha, d, \\theta\\)) for each link-joint pair.\nResults in a chain of homogeneous transformations.\n\nScrew Theory:\n\nAlternative, more modern approach.\nFocuses on twists about screw axes.\nUses Product of Exponentials (PoE) formula.\nRequires defining fixed space frame {s} and end-effector frame {b}.\n\n\nEach method has its strengths and is chosen based on robot complexity and analysis requirements.\n\nRecap the key takeaways for each method, highlighting their appropriate use cases. Emphasize that all methods aim to achieve the same goal: determining the end-effector’s pose."
+  },
+  {
+    "objectID": "la-app-robotics.html#useful-properties-for-practice",
+    "href": "la-app-robotics.html#useful-properties-for-practice",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Useful Properties for Practice",
+    "text": "Useful Properties for Practice\nThese trigonometric identities are often useful in kinematic derivations:\n\nPythagorean identity: \\(\\cos^2\\theta+\\sin^2\\theta=1 \\quad \\text{(2.33)}\\)\nAngle addition/subtraction (example given is incorrect, correct version is below): \\(\\cos(\\theta_1+\\theta_2)\\cos\\theta_1+\\sin(\\theta_1+\\theta_2)\\sin\\theta_1 = \\cos(\\theta_2) \\quad \\text{(2.34)}\\) (Original was \\(\\cos(\\theta_1 + \\theta_2 - \\theta_1) = \\cos\\theta_1\\), which simplifies to \\(\\cos(\\theta_2)\\))\nSine addition/subtraction: \\(\\sin(\\alpha\\pm\\beta)=\\sin\\alpha \\cos\\beta \\pm \\cos\\alpha \\sin\\beta \\quad \\text{(2.35)}\\)\nCosine addition/subtraction: \\(\\cos(\\alpha\\pm\\beta)=\\cos\\alpha \\cos\\beta \\mp \\sin\\alpha \\sin\\beta \\quad \\text{(2.36)}\\)\n\n\nBriefly mention the common identities. Correct the potentially confusing equation (2.34) in the original text for clarity."
+  },
+  {
+    "objectID": "la-app-robotics.html#practice-question-1-rotation-matrix",
+    "href": "la-app-robotics.html#practice-question-1-rotation-matrix",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Practice Question 1: Rotation Matrix",
+    "text": "Practice Question 1: Rotation Matrix\nFrame {0} and frame {1} are shown below. Find the resulting rotation matrix \\(R_1^0\\).\n\nAnswer:\nFirst, identify the unit vectors of frame {1} in terms of frame {0}: \\(x_1 = \\begin{bmatrix} \\frac{1}{\\sqrt{2}}\\\\ 0 \\\\ \\frac{1}{\\sqrt{2}} \\end{bmatrix}, y_1 = \\begin{bmatrix} \\frac{1}{\\sqrt{2}}\\\\ 0 \\\\ -\\frac{1}{\\sqrt{2}} \\end{bmatrix}, z_1 = \\begin{bmatrix} 0 \\\\ 1 \\\\ 0 \\end{bmatrix}\\)\nThen, form \\(R_1^0\\) by these column vectors: \\[\nR_1^0 = \\begin{bmatrix} \\frac{1}{\\sqrt{2}} & \\frac{1}{\\sqrt{2}} & 0\\\\ 0 & 0 & 1\\\\ \\frac{1}{\\sqrt{2}} & -\\frac{1}{\\sqrt{2}} & 0\\end{bmatrix}\n\\]\n\nWalk through how to extract the coordinates of \\(x_1, y_1, z_1\\) from the image relative to frame {0}. For example, \\(x_1\\) has equal components in \\(x_0\\) and \\(z_0\\), and no component in \\(y_0\\)."
+  },
+  {
+    "objectID": "la-app-robotics.html#practice-question-2-chained-rotations-current-axes",
+    "href": "la-app-robotics.html#practice-question-2-chained-rotations-current-axes",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Practice Question 2: Chained Rotations (Current Axes)",
+    "text": "Practice Question 2: Chained Rotations (Current Axes)\nAn x-y-z axis coordinate system experiences:\n\nA rotation of angle \\(\\phi\\) about the current y-axis.\nA rotation of angle \\(\\theta\\) about the current z-axis.\n\nFind the resulting rotation matrix.\nAnswer:\nSince both rotations are about current axes, we post-multiply: \\(R = R_{y,\\phi} R_{z,\\theta}\\)\n\\[\nR=\\begin{bmatrix} \\cos\\phi & 0 & \\sin\\phi \\\\ 0 & 1 & 0 \\\\ -\\sin\\phi & 0 & \\cos\\phi\\end{bmatrix}\\begin{bmatrix} \\cos\\theta & -\\sin\\theta & 0\\\\ \\sin\\theta & \\cos\\theta & 0 \\\\ 0 & 0 & 1\\end{bmatrix}\n\\]\n\\[\nR=\\begin{bmatrix} c_\\phi c_\\theta & -c_\\phi s_\\theta & s_\\phi \\\\ s_\\theta & c_\\theta & 0 \\\\ -s_\\phi c_\\theta & s_\\phi s_\\theta & c_\\phi \\end{bmatrix}\n\\]\n\nThis question tests the understanding of post-multiplication. Briefly explain the matrix multiplication steps if time permits."
+  },
+  {
+    "objectID": "la-app-robotics.html#practice-question-3-chained-rotations-fixed-current",
+    "href": "la-app-robotics.html#practice-question-3-chained-rotations-fixed-current",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Practice Question 3: Chained Rotations (Fixed & Current)",
+    "text": "Practice Question 3: Chained Rotations (Fixed & Current)\nFind the rotation matrix for the following sequence:\n\nRotate by \\(\\alpha\\) about the current x-axis.\nRotate by \\(\\theta\\) about the fixed z-axis.\nRotate by \\(\\phi\\) about the fixed y-axis.\n\nAnswer: We build the total rotation matrix \\(R\\) by applying the fixed/current rule: \\(R = Rot_{y,\\phi} Rot_{z,\\theta} Rot_{x,\\alpha}\\)\n\\[\nR = \\begin{bmatrix} c_\\phi & 0 & s_\\phi \\\\ 0 & 1 & 0 \\\\ -s_\\phi & 0 & c_\\phi\\end{bmatrix}\\begin{bmatrix}c_\\theta & -s_\\theta & 0 \\\\ s_\\theta & c_\\theta & 0 \\\\ 0 & 0 & 1\\end{bmatrix}\\begin{bmatrix}1 & 0 & 0 \\\\ 0 & c_\\alpha & -s_\\alpha \\\\ 0 & s_\\alpha & c_\\alpha \\end{bmatrix}\n\\]\n\\[\nR = \\begin{bmatrix} c_\\phi c_\\theta & s_\\phi s_\\alpha - c_\\phi s_\\theta c_\\alpha & c_\\phi s_\\theta s_\\alpha + s_\\phi c_\\alpha \\\\ s_\\theta & c_\\theta c_\\alpha & -c_\\theta s_\\alpha \\\\ -s_\\phi c_\\theta & s_\\phi s_\\theta c_\\alpha + c_\\phi s_\\alpha & c_\\phi c_\\alpha - s_\\phi s_\\theta s_\\alpha \\end{bmatrix}\n\\]\n\nThis is a more complex example combining both rules. It’s a good test of understanding the order of matrix multiplication based on the frame of rotation."
+  },
+  {
+    "objectID": "la-app-robotics.html#practice-question-4-homogeneous-transformation",
+    "href": "la-app-robotics.html#practice-question-4-homogeneous-transformation",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Practice Question 4: Homogeneous Transformation",
+    "text": "Practice Question 4: Homogeneous Transformation\nFrame {0} and frame {1} are shown below with their respective vectors. All axes are parallel (\\(z_0 || y_1, x_0 || x_1, y_0 || z_1\\)). Find the position vector \\(p^0\\) and the homogeneous transformation matrix \\(H_1^0\\).\n\nAnswer: From the image, \\(x_0 || x_1\\), \\(y_0 || z_1\\), \\(z_0 || y_1\\). This means frame {1} is rotated 90 degrees about \\(x_0\\) relative to frame {0}.\nSo, \\(R_1^0 = R_{x,90^\\circ} = \\begin{bmatrix} 1 & 0 & 0 \\\\ 0 & 0 & -1 \\\\ 0 & 1 & 0 \\end{bmatrix}\\).\nThe translation vector \\(d_1^0 = \\begin{bmatrix} 0 \\\\ 3 \\\\ 1 \\end{bmatrix}\\).\nThe point \\(p^1 = \\begin{bmatrix} 2 \\\\ 1 \\\\ 0 \\end{bmatrix}\\).\nPosition vector \\(p^0 = R_1^0 p^1 + d_1^0\\):\n\\(p^0 = \\begin{bmatrix} 1 & 0 & 0 \\\\ 0 & 0 & -1 \\\\ 0 & 1 & 0 \\end{bmatrix} \\begin{bmatrix} 2 \\\\ 1 \\\\ 0 \\end{bmatrix} + \\begin{bmatrix} 0 \\\\ 3 \\\\ 1 \\end{bmatrix} = \\begin{bmatrix} 2 \\\\ 0 \\\\ 1 \\end{bmatrix} + \\begin{bmatrix} 0 \\\\ 3 \\\\ 1 \\end{bmatrix} = \\begin{bmatrix} 2 \\\\ 3 \\\\ 2 \\end{bmatrix}\\)\nHomogeneous transformation matrix \\(H_1^0\\): \\[\nH_1^0=\\begin{bmatrix} R_1^0 & d_1^0 \\\\ 0 & 1 \\end{bmatrix} = \\begin{bmatrix} 1 & 0 & 0 & 0 \\\\ 0 & 0 & -1 & 3 \\\\ 0 & 1 & 0 & 1 \\\\ 0 & 0 & 0 & 1 \\end{bmatrix}\n\\]\n\nThis combines rotation matrices with translation vectors using the rigid motion equation and homogeneous transformation. Emphasize visual interpretation of axis alignment to find \\(R_1^0\\) and \\(d_1^0\\). (Note: \\(p^0\\) calculation in provided text p0 = [0,2,2] seems incorrect based on the image and \\(p^1\\) given.) My calculation uses the \\(R_{x,90}\\) and \\(d_1^0\\) from the image which yields [2,3,2]."
+  },
+  {
+    "objectID": "la-app-robotics.html#practice-question-5-dh-convention---cylindrical-robot",
+    "href": "la-app-robotics.html#practice-question-5-dh-convention---cylindrical-robot",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Practice Question 5: DH Convention - Cylindrical Robot",
+    "text": "Practice Question 5: DH Convention - Cylindrical Robot\nDerive the forward kinematics equations using the DH Convention for the cylindrical robot shown.\n\nAnswer:\nDH Table:\n\n\n\nLink\n\\(a_i\\)\n\\(\\alpha_i\\)\n\\(d_i\\)\n\\(\\theta_i\\)\n\n\n\n\n1\n0\n0°\n\\(d_1\\)\n\\(\\theta_1^*\\)\n\n\n2\n0\n-90°\n\\(d_2\\)\n0\n\n\n3\n0\n0°\n\\(d_3\\)\n0\n\n\n\n\\(A_i\\) Matrices:\n\\[\nA_1=\\begin{bmatrix} c_1 & -s_1 & 0 & 0 \\\\ s_1 & c_1 & 0 & 0 \\\\ 0 & 0 & 1 & d_1 \\\\ 0 & 0 & 0 & 1 \\end{bmatrix}\n\\] \\[\nA_2=\\begin{bmatrix} 1 & 0 & 0 & 0 \\\\ 0 & 0 & 1 & 0 \\\\ 0 & -1 & 0 & d_2 \\\\ 0 & 0 & 0 & 1 \\end{bmatrix}\n\\] \\[\nA_3=\\begin{bmatrix} 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 1 & d_3 \\\\ 0 & 0 & 0 & 1 \\end{bmatrix}\n\\]\n\\(T_3^0\\) Matrix:\n\\(T_3^0=A_1A_2A_3=\\begin{bmatrix} c_1 & 0 & -s_1 & -d_3 s_1 \\\\ s_1 & 0 & c_1 & d_3 c_1 \\\\ 0 & -1 & 0 & d_1 + d_2 \\\\ 0 & 0 & 0 & 1 \\end{bmatrix}\\)\n\nThis is a standard application of DH for a cylindrical robot (R-P-P). Go through the DH parameters for each link and how they contribute to the \\(A_i\\) matrices."
+  },
+  {
+    "objectID": "la-app-robotics.html#practice-question-6-dh-convention---robot-arm",
+    "href": "la-app-robotics.html#practice-question-6-dh-convention---robot-arm",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Practice Question 6: DH Convention - Robot Arm",
+    "text": "Practice Question 6: DH Convention - Robot Arm\nDerive the forward kinematics equation using the DH Convention for the following robot.\n\nAnswer:\nDH Table:\n\n\n\nLink\n\\(a_i\\)\n\\(\\alpha_i\\)\n\\(d_i\\)\n\\(\\theta_i\\)\n\n\n\n\n1\n0\n90°\n\\(a_1\\)\n\\(\\theta_1^*+90^\\circ\\)\n\n\n2\n0\n0°\n\\(a_2+a_3+d_2\\)\n0\n\n\n\n\\(A_i\\) Matrices:\n\\[\nA_1=\\begin{bmatrix} -s_1 & 0 & c_1 & 0 \\\\ c_1 & 0 & s_1 & 0 \\\\ 0 & 1 & 0 & a_1 \\\\ 0 & 0 & 0 & 1 \\end{bmatrix}\n\\] \\[\nA_2=\\begin{bmatrix} 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 1 & a_2 + a_3 + d_2 \\\\ 0 & 0 & 0 & 1 \\end{bmatrix}\n\\]\n\\(T_2^0\\) Matrix:\n\\(T_2^0 = A_1 A_2 = \\begin{bmatrix} -s_1 & 0 & c_1 & (a_2 + a_3 + d_2) c_1 \\\\ c_1 & 0 & s_1 & (a_2 + a_3 + d_2)s_1 \\\\ 0 & 1 & 0 & a_1 \\\\ 0 & 0 & 0 & 1 \\end{bmatrix}\\)\n\nThis example includes a constant offset in the joint angle (e.g., \\(\\theta_1^*+90^\\circ\\)), which is a common occurrence in DH setup. Explain how this is incorporated into the DH table and \\(A_i\\) matrix."
+  },
+  {
+    "objectID": "la-app-robotics.html#practice-question-7-twist---angular-and-linear-velocity",
+    "href": "la-app-robotics.html#practice-question-7-twist---angular-and-linear-velocity",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Practice Question 7: Twist - Angular and Linear Velocity",
+    "text": "Practice Question 7: Twist - Angular and Linear Velocity\nFind the angular and linear velocity for the following illustration.\n\nAnswer: \\[\nS_\\omega=\\begin{bmatrix} 0 \\\\ 0 \\\\ 1 \\end{bmatrix}, S_v=\\begin{bmatrix} \\frac{-2}{\\sqrt{2}} \\\\ \\frac{-2}{\\sqrt{2}} \\\\ 0 \\end{bmatrix}\n\\]\n\nInterpret the image: \\(S_\\omega\\) is along the z-axis (out of page). \\(S_v\\) is the linear velocity of the origin if it were rotating around the screw axis. The screw axis is at \\((2,2,0)\\). The velocity of the origin \\((0,0,0)\\) due to rotation \\(\\omega=[0,0,1]^T\\) around point \\(q=[2,2,0]^T\\) is \\(v = -\\omega \\times q = -[0,0,1]^T \\times [2,2,0]^T = -[-2,2,0]^T = [2,-2,0]^T\\). The provided answer \\(S_v\\) is \\([-2/\\sqrt{2}, -2/\\sqrt{2}, 0]^T\\). This suggests a rotation axis passing through origin, and some linear velocity. The question is ambiguous about the origin’s velocity relative to the screw axis. Given the diagram, it seems the point \\((0,0)\\) is rotating around the screw axis located at some point not through origin. The provided answer for \\(S_v\\) implies a rotation where the origin moves along the direction \\((-1,-1,0)\\) for unit speed. Let’s assume the provided answer is correct, and interpret what it means. \\(S_\\omega = [0,0,1]^T\\) means rotation about z-axis. \\(S_v = [-2/\\sqrt{2}, -2/\\sqrt{2}, 0]^T\\) means linear velocity is in (-1,-1) direction. This could be a screw axis parallel to Z, passing through a point. For the purpose of this presentation, we’ll present the answer as given in the source."
+  },
+  {
+    "objectID": "la-app-robotics.html#practice-question-8-twist---angular-and-linear-velocity",
+    "href": "la-app-robotics.html#practice-question-8-twist---angular-and-linear-velocity",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Practice Question 8: Twist - Angular and Linear Velocity",
+    "text": "Practice Question 8: Twist - Angular and Linear Velocity\nFind the angular and linear velocity for the following illustration.\n\nAnswer: \\[\nS_\\omega=\\begin{bmatrix} 0 \\\\ -1 \\\\ 0 \\end{bmatrix}, S_v = \\begin{bmatrix} 0 \\\\ 0 \\\\ 0 \\end{bmatrix}\n\\]\n\nIn this case, the rotation is about the y-axis, and the axis passes through the origin, hence no linear velocity of the origin (\\(S_v = 0\\))."
+  },
+  {
+    "objectID": "la-app-robotics.html#practice-question-9-screw-theory---rpr-arm",
+    "href": "la-app-robotics.html#practice-question-9-screw-theory---rpr-arm",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Practice Question 9: Screw Theory - RPR Arm",
+    "text": "Practice Question 9: Screw Theory - RPR Arm\nConsider the following robot in its’ zero-frame orientation. Derive the forward kinematics using Screw Theory using either the space or end-effector frame.\n\nAnswer:\nInitial Configuration Matrix \\(M\\):\n\\[\nM=\\begin{bmatrix}0 & -1 & 0 & 19 \\\\ -1 & 0 & 0 & 0 \\\\ 0 & 0 & -1 & -3 \\\\ 0 & 0 & 0 & 1 \\end{bmatrix}\n\\]\nSpace Frame Screw Axes (\\(S_i\\)):\n\\[\nS_1=\\begin{bmatrix} 0 \\\\ 0 \\\\ 1 \\\\ 0 \\\\ 0 \\\\ 0 \\end{bmatrix}, S_2=\\begin{bmatrix} 0 \\\\ 0 \\\\ 1 \\\\ 0 \\\\ -10 \\\\ 0 \\end{bmatrix}, S_3=\\begin{bmatrix} 0 \\\\ 0 \\\\ 1 \\\\ 0 \\\\ -19 \\\\ 0 \\end{bmatrix}, S_4=\\begin{bmatrix} 0 \\\\ 0 \\\\ 0 \\\\ 0 \\\\ 0 \\\\ 1 \\end{bmatrix}\n\\]\nEnd Effector Frame Screw Axes (\\(B_i\\)):\n\\[\nB_1=\\begin{bmatrix} 0 \\\\ 0 \\\\ -1 \\\\ -19 \\\\ 0 \\\\ 0 \\end{bmatrix}, B_2=\\begin{bmatrix} 0 \\\\ 0 \\\\ -1 \\\\ -9 \\\\ 0 \\\\ 0 \\end{bmatrix}, B_3=\\begin{bmatrix} 0 \\\\ 0 \\\\ -1 \\\\ 0 \\\\ 0 \\\\ 0 \\end{bmatrix}, B_4=\\begin{bmatrix} 0 \\\\ 0 \\\\ 0 \\\\ 0 \\\\ 0 \\\\ -1 \\end{bmatrix}\n\\]\n\nThis is a comprehensive screw theory problem. \\(M\\) defines the initial pose of the end-effector. \\(S_i\\) are calculated with respect to the fixed space frame. \\(B_i\\) are calculated with respect to the body frame, transformed by \\(M^{-1}\\) from \\(S_i\\). Briefly discuss the difference between \\(S_i\\) and \\(B_i\\)."
+  },
+  {
+    "objectID": "la-app-robotics.html#simulation-and-animation",
+    "href": "la-app-robotics.html#simulation-and-animation",
+    "title": "Linear Algebra Application: Robot Kinematics",
+    "section": "Simulation and Animation",
+    "text": "Simulation and Animation\nRevisit the two-link planar manipulator example:\n\nThe interactive demonstration we just saw (which was also given earlier) shows the direct application of forward kinematics.\nThis type of visualization is crucial for debugging kinematic models, path planning, and robot control.\nFind the simulation code at: https://github.com/ClemsonFall2021ME8930IntroRobotics-HRI/Ch2_ForwardKinematics\n\nReiterate the value of simulation for ECE students: it brings theoretical models to life and validates their understanding. Link back to the interactive example."
+  },
+  {
+    "objectID": "la-app-pca.html#introduction-the-challenge-of-high-dimensional-data",
+    "href": "la-app-pca.html#introduction-the-challenge-of-high-dimensional-data",
+    "title": "Linear Algebra Application: Principal Component Analysis (PCA)",
+    "section": "Introduction: The Challenge of High-Dimensional Data",
+    "text": "Introduction: The Challenge of High-Dimensional Data\nModern Electrical and Computer Engineering (ECE) systems generate vast amounts of data:\n\nSensor Arrays: IoT devices, autonomous vehicles, smart grids produce continuous streams of diverse sensor readings.\nSignal Processing: High-resolution audio, video, radar, and biomedical signals create large datasets.\nEmbedded Systems: Real-time diagnostics and performance monitoring often involve numerous parameters."
+  },
+  {
+    "objectID": "la-app-pca.html#what-is-principal-component-analysis-pca",
+    "href": "la-app-pca.html#what-is-principal-component-analysis-pca",
+    "title": "Linear Algebra Application: Principal Component Analysis (PCA)",
+    "section": "What is Principal Component Analysis (PCA)?",
+    "text": "What is Principal Component Analysis (PCA)?\nPrincipal Component Analysis (PCA) is a powerful dimensionality reduction technique.\n\nObjective: To reduce the number of features (dimensions) in a dataset while retaining most of the important information.\nHow it works: Transforms complex datasets by changing highly correlated features into a smaller set of uncorrelated components, known as Principal Components (PCs).\n\n\n\n\n\n\n\nTip\n\n\nThink of it like finding the “most informative angles” to view a messy cloud of data points, ensuring you capture the big patterns without getting lost in the details."
+  },
+  {
+    "objectID": "la-app-pca.html#why-pca-in-ece-practical-applications",
+    "href": "la-app-pca.html#why-pca-in-ece-practical-applications",
+    "title": "Linear Algebra Application: Principal Component Analysis (PCA)",
+    "section": "Why PCA in ECE? Practical Applications",
+    "text": "Why PCA in ECE? Practical Applications\nECE Domains Benefiting from PCA\n\nSensor Data Fusion & Reduction:\n\nCombine and condense readings from multiple, potentially noisy or redundant, sensors (e.g., combining accelerometer, gyroscope, and magnetometer data in an Inertial Measurement Unit (IMU) for robust orientation estimation).\nReduce the data stream size for efficient transmission in IoT devices or processing in resource-constrained embedded systems.\n\nImage and Signal Processing:\n\nFeature Extraction: Extract essential features from images (e.g., facial recognition, object detection) or complex signals (e.g., radar signatures, audio waveforms, medical ECG/EEG data).\nNoise Reduction: Separate underlying signals from unwanted noise components, critical for clean sensor inputs or communication channels.\n\nPattern Recognition & Machine Learning:\n\nFault Detection: Identify anomalies or early warning signs of failure in industrial equipment by analyzing sensor trends.\nClassification: Pre-process high-dimensional datasets for more efficient and robust training of ECE-related machine learning models (e.g., classifying radio signals, detecting power grid anomalies).\n\nSystem Identification:\n\nSimplify complex system models by identifying the dominant modes or states of a dynamic system, aiding in control system design.\n\nEmbedded Systems:\n\nSignificantly reduce the computational load for real-time processing tasks where resources (CPU, memory, power) are limited. Enables more complex algorithms to run on simpler hardware.\n\nData Visualization:\n\nProjecting high-dimensional data onto 2 or 3 principal components allows engineers to visually explore complex relationships, cluster formation, and outliers that would otherwise be impossible to discern.\n\n\n\nSpeaker notes:\n\nFor sensor data fusion, explain how combining accelerometer, gyroscope, and magnetometer data often leads to highly correlated features which PCA can efficiently combine into fewer, more meaningful components for vehicle navigation or robotics.\nFor image processing, mention how PCA can compress image features for faster recognition by embedded vision systems.\nEmphasize how PCA improves “performance” by making systems faster, more reliable, and ultimately “smarter.”"
+  },
+  {
+    "objectID": "la-app-pca.html#how-principal-component-analysis-works-an-overview",
+    "href": "la-app-pca.html#how-principal-component-analysis-works-an-overview",
+    "title": "Linear Algebra Application: Principal Component Analysis (PCA)",
+    "section": "How Principal Component Analysis Works: An Overview",
+    "text": "How Principal Component Analysis Works: An Overview\nPCA uses linear algebra to transform data into new features (Principal Components). This structured process ensures optimal information retention.\n\n\n\n\n\n\n\nPCA_Flow\n\n\n\nstep1\n\nStep 1: Standardize the Data\n\n\n\nstep2\n\nStep 2: Calculate Covariance Matrix\n\n\n\nstep1-&gt;step2\n\n\nInput: Scaled Data\n\n\n\nstep3\n\nStep 3: Find Principal Components\n(Eigenvectors & Eigenvalues)\n\n\n\nstep2-&gt;step3\n\n\nInput: Covariance Matrix\n\n\n\nstep4\n\nStep 4: Select Top Components & Transform Data\n\n\n\nstep3-&gt;step4\n\n\nInput: Eigen-pairs,\nRanked by Eigenvalue\n\n\n\nresult\n\n\nReduced-Dimensional Data\n\n\n\nstep4-&gt;result\n\n\nOutput: Transformed Data\n\n\n\n\n\n\n\n\n\nSpeaker notes: - This diagram serves as a high-level roadmap for the upcoming detailed steps. - Briefly mention that each step is a sequential part of the mathematical process, building upon the output of the previous one. - Highlight that the magic happens in Step 3, where linear algebra reveals the underlying structure."
+  },
+  {
+    "objectID": "la-app-pca.html#step-1-standardize-the-data",
+    "href": "la-app-pca.html#step-1-standardize-the-data",
+    "title": "Linear Algebra Application: Principal Component Analysis (PCA)",
+    "section": "Step 1: Standardize the Data",
+    "text": "Step 1: Standardize the Data\nWhy Standardize?\nECE datasets often contain features with vastly different units and scales.\n\nExample: A sensor suite might include voltage (measured in millivolts, e.g., 0-5000 mV) and current (measured in microamps, e.g., 0-500 µA).\nProblem: Without standardization, features with larger numerical ranges (like millivolts) would disproportionately influence PCA’s variance calculations, biasing the results. PCA would incorrectly perceive them as “more important.”\nSolution: Standardization transforms the data so that each feature contributes equally to the analysis, preventing this bias."
+  },
+  {
+    "objectID": "la-app-pca.html#step-2-calculate-covariance-matrix",
+    "href": "la-app-pca.html#step-2-calculate-covariance-matrix",
+    "title": "Linear Algebra Application: Principal Component Analysis (PCA)",
+    "section": "Step 2: Calculate Covariance Matrix",
+    "text": "Step 2: Calculate Covariance Matrix\nWhat is Covariance?\nCovariance measures the extent to which two variables change together.\n\nPositive Covariance: Indicates that both features tend to increase or decrease simultaneously (e.g., CPU temperature and power consumption in an embedded processor).\nNegative Covariance: Means that one feature tends to increase as the other decreases (e.g., battery voltage and remaining run-time in a mobile device).\nNear Zero Covariance: Suggests no strong linear relationship between the features."
+  },
+  {
+    "objectID": "la-app-pca.html#step-3-find-principal-components---eigenvalues-eigenvectors",
+    "href": "la-app-pca.html#step-3-find-principal-components---eigenvalues-eigenvectors",
+    "title": "Linear Algebra Application: Principal Component Analysis (PCA)",
+    "section": "Step 3: Find Principal Components - Eigenvalues & Eigenvectors",
+    "text": "Step 3: Find Principal Components - Eigenvalues & Eigenvectors\nThe Mathematical Foundation\nPCA identifies new, orthogonal axes where the data spreads out the most. These axes are precisely the Principal Components.\n\nThey are derived from the eigenvectors of the covariance matrix.\nTheir “importance” (the amount of variance captured along that direction) is quantified by their corresponding eigenvalues.\n\nFor a square matrix \\(A\\) (which is our covariance matrix), a non-zero vector \\(V\\) (an eigenvector) and its corresponding scalar \\(\\lambda\\) (eigenvalue) satisfy the following equation:\n\\[AV = \\lambda V\\]\nThis equation reveals the core properties:\n\nWhen matrix \\(A\\) (the covariance transformation) acts on vector \\(V\\), the result is simply a scaled version of \\(V\\).\nThe direction of \\(V\\) remains unchanged after the transformation.\nEigenvectors define the “stable directions” or invariant lines of the transformation represented by \\(A\\)."
+  },
+  {
+    "objectID": "la-app-pca.html#visualizing-principal-components",
+    "href": "la-app-pca.html#visualizing-principal-components",
+    "title": "Linear Algebra Application: Principal Component Analysis (PCA)",
+    "section": "Visualizing Principal Components",
+    "text": "Visualizing Principal Components\nLet’s see how principal components (eigenvectors) naturally align with the underlying spread and structure of the data.\nThe plot on the right, adapted from a common PCA illustration, shows:\n\nBlue Dots: Represent our standardized 2D data points. This could be, for instance, two correlated sensor readings.\nRed Arrow (PC1): This is the first principal component. It points along the direction where the data exhibits the maximum variance. This component corresponds to the largest eigenvalue, indicating it captures the most significant information.\nGreen Arrow (PC2): This is the second principal component. It is always perpendicular (orthogonal) to PC1 and captures the next largest amount of variance. It corresponds to the second largest eigenvalue.\n\nNotice how the red arrow effectively captures the elongated shape of the data, showing its main direction of spread. If we were to project all blue dots onto just the red line, we would retain the most crucial information about the data’s variability in a single dimension.\nEigenvectors on Data\n\nEigenvectors of Covariance Matrix: Illustrates PC1 (red) and PC2 (green) on a 2D dataset.\nSpeaker notes:\n\nUse the image to visually reinforce the concepts of PC1 and PC2. Ask students to imagine “squashing” the data onto the red line; this is the 1D projection retaining maximum information.\nExplain that the length of the arrows could conceptually be related to the magnitude of their eigenvalues, though in this diagram they are normalized for direction.\nThis image effectively shows how PCA reorients the coordinate system to better capture data structure, moving from arbitrary axes to “natural” axes of variation."
+  },
+  {
+    "objectID": "la-app-pca.html#step-4-pick-top-directions-transform-data",
+    "href": "la-app-pca.html#step-4-pick-top-directions-transform-data",
+    "title": "Linear Algebra Application: Principal Component Analysis (PCA)",
+    "section": "Step 4: Pick Top Directions & Transform Data",
+    "text": "Step 4: Pick Top Directions & Transform Data\nRanking & Selection\nAfter computing the eigenvalues and eigenvectors from the covariance matrix:\n\nRank Eigen-pairs: Sort all eigenvectors by their corresponding eigenvalues in descending order. The eigenvector with the largest eigenvalue becomes PC1, the next largest becomes PC2, and so on.\nSelect \\(k\\) Components: Choose a subset of the top \\(k\\) principal components. The value of \\(k\\) is typically determined by:\n\nA desired percentage of total variance to retain (e.g., 90% or 95%).\nPractical considerations (e.g., maximum allowed dimensionality for an embedded system).\nThis \\(k\\) defines the new, reduced dimensionality of your dataset."
+  },
+  {
+    "objectID": "la-app-pca.html#advantages-of-pca-in-ece",
+    "href": "la-app-pca.html#advantages-of-pca-in-ece",
+    "title": "Linear Algebra Application: Principal Component Analysis (PCA)",
+    "section": "Advantages of PCA in ECE",
+    "text": "Advantages of PCA in ECE\nEnhanced Data Handling & Performance\n\nMulticollinearity Handling:\n\nPCA transforms original, potentially correlated variables into a new set of linearly uncorrelated principal components.\nECE Relevance: Crucial in systems where multiple sensors measure related physical quantities (e.g., several temperature sensors in a tight array, or current/voltage in a circuit), leading to highly correlated features. This simplifies model building and improves stability.\n\nNoise Reduction:\n\nComponents with very low eigenvalues often capture random variations or noise in the data.\nECE Relevance: By discarding these low-variance components, PCA effectively denoises signals or sensor readings, leading to cleaner inputs for control algorithms, signal processing, or machine learning models in noisy ECE environments.\n\nData Compression:\n\nPCA allows representing the original high-dimensional data using a significantly smaller number of principal components.\nECE Relevance: Reduces storage needs on memory-constrained embedded systems and speeds up data transmission over bandwidth-limited communication channels (e.g., IoT edge devices sending data to a cloud server).\n\nOutlier Detection:\n\nOutliers (anomalous data points) often stand out more clearly in the reduced principal component space, as they deviate significantly from the main data clusters.\nECE Relevance: Useful for fault detection in industrial control systems (e.g., identifying a malfunctioning sensor or an unusual operational state) or anomaly detection in network traffic for cybersecurity.\n\nComputational Efficiency:\n\nOnce the data is projected onto a lower-dimensional space, subsequent machine learning algorithms, signal processing tasks, and control system calculations run significantly faster.\nECE Relevance: Directly benefits real-time applications where quick decision-making is paramount, such as autonomous vehicles, robotics, and high-frequency trading systems.\n\nImproved Visualization:\n\nHigh-dimensional data (e.g., 10+ sensor features) is impossible to plot directly. PCA can project this data onto 2 or 3 principal components, allowing human engineers to visualize complex relationships, cluster formations, and data trends.\nECE Relevance: Aids in exploratory data analysis, debugging, and understanding the behavior of complex electronic systems.\n\n\n\n\n\n\n\n\nTip\n\n\nPCA transforms what could be a data processing bottleneck into a significant advantage for ECE systems, enabling them to be more intelligent, efficient, and robust!\n\n\n\n\nSpeaker notes: - For multicollinearity: give an example of trying to predict motor speed using 5 highly correlated current sensors; PCA can reduce this to 1-2 meaningful “current health” components. - For noise reduction: illustrate how a noisy sensor reading (like an ECG signal) can be cleaned up before being analyzed for cardiac abnormalities. - For data compression: explain sending compressed sensor data over a low-power wireless link saves battery life. - For outlier detection: imagine a system monitoring vibrations in a machine; an outlier in PCA space could indicate an impending mechanical failure."
+  },
+  {
+    "objectID": "la-app-pca.html#disadvantages-considerations-in-ece",
+    "href": "la-app-pca.html#disadvantages-considerations-in-ece",
+    "title": "Linear Algebra Application: Principal Component Analysis (PCA)",
+    "section": "Disadvantages & Considerations in ECE",
+    "text": "Disadvantages & Considerations in ECE\nTrade-offs and Limitations\n\nInterpretation Challenges:\n\nThe principal components are abstract linear combinations of the original variables. They don’t have direct physical meaning (e.g., PC1 is not “voltage” or “current,” but a mix of both).\nECE Relevance: This can make it difficult for engineers to explain system behavior or debug issues in terms of the transformed components, requiring extra effort to relate them back to physical quantities.\n\nData Scaling Sensitivity:\n\nPCA is highly sensitive to the scaling of the input data. Incorrect standardization can lead to misleading results where features with larger numerical ranges (even if less important) dominate the principal components.\nECE Relevance: Requires careful preprocessing; engineers must understand their sensor units and data distributions.\n\nInformation Loss:\n\nReducing dimensionality inherently involves discarding some information (the variance captured by the unselected principal components). If too few components are kept, critical details or subtle patterns might be irrevocably lost.\nECE Relevance: Engineers must make a careful trade-off between data compression/efficiency and the potential loss of information crucial for system accuracy or reliability.\n\nAssumption of Linearity:\n\nPCA is a linear transformation technique. It works best when the relationships between variables are linear or approximately linear. It may struggle to capture complex, non-linear structures in data.\nECE Relevance: Many physical phenomena in ECE are non-linear. In such cases, non-linear dimensionality reduction techniques (e.g., Kernel PCA, t-SNE) might be more appropriate.\n\nComputational Complexity:\n\nWhile PCA enables efficiency downstream, the computation of the covariance matrix and its eigen-decomposition can be computationally intensive and slow for extremely large datasets (\\(N\\) samples \\(\\times\\) \\(M\\) features, where \\(M\\) is very large).\nECE Relevance: For real-time applications with massive data streams, specialized hardware or incremental PCA approaches might be necessary.\n\nRisk of Overfitting:\n\nIf the number of principal components selected (\\(k\\)) is too close to the original number of features, or if the dataset is small, PCA might inadvertently capture noise specific to the training data, leading to models that don’t generalize well to new data.\nECE Relevance: Engineers need to validate their PCA models rigorously to ensure they don’t overfit to training data from sensors or simulations.\n\n\n\n\n\n\n\n\nWarning\n\n\nUnderstanding these limitations and potential pitfalls is crucial for the effective, robust, and responsible application of PCA in complex ECE systems.\n\n\n\n\nSpeaker notes: - For “Interpretation Challenges,” ask students to imagine explaining “what PC1 means” to a technician trying to troubleshoot a PCB. It’s not intuitive like “voltage” or “current.” This can lead to resistance to using the technique if not carefully managed. - For “Information Loss,” highlight that this is a critical design choice: how much compression vs. how much detail is truly needed for the application. Emphasize explained variance plots. - Briefly mention Kernel PCA as a more advanced alternative for non-linear data without delving into its mechanics. - For computational complexity, discuss that while it usually helps efficiency, the initial setup can be costly."
+  },
+  {
+    "objectID": "la-app-pca.html#ece-case-study-sensor-data-denoising-interactive",
+    "href": "la-app-pca.html#ece-case-study-sensor-data-denoising-interactive",
+    "title": "Linear Algebra Application: Principal Component Analysis (PCA)",
+    "section": "ECE Case Study: Sensor Data Denoising (Interactive)",
+    "text": "ECE Case Study: Sensor Data Denoising (Interactive)\nScenario: Noisy Temperature Sensors\nImagine an array of 5 low-cost temperature sensors distributed across an industrial furnace. All sensors are theoretically measuring the same underlying furnace temperature, but each is affected by independent electrical noise, calibration offsets, and slight measurement variations.\n\nGoal: Extract the true, stable underlying temperature signal from these five noisy and somewhat redundant readings to provide a reliable input for a furnace control system."
+  },
+  {
+    "objectID": "la-app-pca.html#conclusion-pca-in-your-ece-toolkit",
+    "href": "la-app-pca.html#conclusion-pca-in-your-ece-toolkit",
+    "title": "Linear Algebra Application: Principal Component Analysis (PCA)",
+    "section": "Conclusion: PCA in Your ECE Toolkit",
+    "text": "Conclusion: PCA in Your ECE Toolkit\nPrincipal Component Analysis is not just a statistical technique; it’s a fundamental tool for managing the complexity of data in modern Electrical and Computer Engineering.\n\nEmpowers Engineers: PCA empowers ECE professionals to efficiently process vast streams of sensor data, extract critical features from complex signals, and build more efficient, robust, and intelligent systems.\nBalances Trade-offs: It offers a systematic and mathematically grounded way to achieve dimensionality reduction, effectively balancing the need for information preservation with the critical demands for computational efficiency and simplified analysis.\n\n\n\n\n\n\n\nKey Takeaways\n\n\n\nDimensionality Reduction: PCA simplifies data by transforming it into a lower-dimensional space while retaining maximum variance.\nLinear Algebra Core: Its power comes from the rigorous application of linear algebra, specifically covariance matrices, eigenvalues, and eigenvectors.\nVersatile: PCA is highly applicable across a wide array of ECE domains, from embedded systems and IoT to signal processing, machine learning, and control systems.\n\n\n\n\nThe Power of Data Transformation\n\n\n\n\n\nflowchart LR\n    A[\"Raw, High-Dimensional Data &lt;br&gt; (Complex, Redundant, Noisy)\"] --&gt; B{\"Standardize Data\"}\n    B --&gt; C{\"Calculate Covariance\"}\n    C --&gt; D{\"Eigen-decomposition &lt;br&gt; (Find PCs)\"}\n    D --&gt; E[\"Principal Components &lt;br&gt; (Ranked by Variance)\"]\n    E -- \"Select k PCs &lt;br&gt; (Retain desired variance)\" --&gt; F[\"Reduced, Denoised, &lt;br&gt; Uncorrelated Data\"]\n    F --&gt; G[\"Better ECE System Performance &lt;br&gt; (Faster, More Reliable, Smarter Decisions)\"]\n\n    style A fill:#f9f,stroke:#333,stroke-width:2px\n    style F fill:#ccf,stroke:#333,stroke-width:2px\n    style G fill:#afa,stroke:#333,stroke-width:2px"
+  },
+  {
+    "objectID": "la-app-pca.html#introduction-the-challenge-of-high-dimensional-data-1",
+    "href": "la-app-pca.html#introduction-the-challenge-of-high-dimensional-data-1",
+    "title": "Linear Algebra Application: Principal Component Analysis (PCA)",
+    "section": "Introduction: The Challenge of High-Dimensional Data",
+    "text": "Introduction: The Challenge of High-Dimensional Data\nThis “data deluge” presents significant challenges for ECE professionals:\n\nComputational Cost: Processing large volumes of data requires substantial computational power, often limited in embedded systems.\nStorage: Storing extensive datasets consumes valuable memory resources.\nVisualization: Understanding patterns and relationships becomes difficult in datasets with many dimensions.\nRedundancy: Features are often highly correlated, meaning they carry similar information, leading to inefficiency.\n\n\n\n\n\n\n\nWhy does this matter for ECE?\n\n\nHigh-dimensional data can overwhelm embedded processors, delay real-time decision-making, and obscure critical insights, directly impacting system reliability, efficiency, and intelligence.\n\n\n\n\nData Deluge: Illustrates complex interconnections common in ECE systems."
+  },
+  {
+    "objectID": "la-app-pca.html#what-is-principal-component-analysis-pca-1",
+    "href": "la-app-pca.html#what-is-principal-component-analysis-pca-1",
+    "title": "Linear Algebra Application: Principal Component Analysis (PCA)",
+    "section": "What is Principal Component Analysis (PCA)?",
+    "text": "What is Principal Component Analysis (PCA)?\nKey Idea: PCA prioritizes directions where the data varies the most, because greater variation generally signifies more useful information or signal.\n\nEffectively eliminates data redundancy.\nSignificantly improves computational efficiency for subsequent processing.\nMakes complex data easier to visualize and analyze for human interpretation.\n\n\nSpeaker notes:\n\nEmphasize that “dimensionality reduction” is not just about making things smaller, but making them smarter and more manageable.\nThe analogy of “finding key angles” should help students build an intuitive understanding.\nConnect to ECE: Imagine an embedded system receiving data from 10 different temperature sensors in slightly different locations. PCA can distill these 10 readings into 1 or 2 core “temperature components” that capture the essential thermal state, reducing the burden on the processor."
+  },
+  {
+    "objectID": "la-app-pca.html#step-1-standardize-the-data-1",
+    "href": "la-app-pca.html#step-1-standardize-the-data-1",
+    "title": "Linear Algebra Application: Principal Component Analysis (PCA)",
+    "section": "Step 1: Standardize the Data",
+    "text": "Step 1: Standardize the Data\nHow to Standardize\nEach feature (column) in the dataset is transformed to have:\n\nA mean of 0 (\\(\\mu = 0\\)).\nA standard deviation of 1 (\\(\\sigma = 1\\)).\n\nThis is achieved using the Z-score normalization formula:\n\\[Z = \\frac{X-\\mu}{\\sigma}\\]\nWhere:\n\n\\(X\\): The original value of a specific data point for a feature.\n\\(\\mu\\): The mean of all values for that feature.\n\\(\\sigma\\): The standard deviation of all values for that feature."
+  },
+  {
+    "objectID": "la-app-pca.html#step-1-standardize-the-data-2",
+    "href": "la-app-pca.html#step-1-standardize-the-data-2",
+    "title": "Linear Algebra Application: Principal Component Analysis (PCA)",
+    "section": "Step 1: Standardize the Data",
+    "text": "Step 1: Standardize the Data\nInteractive Standardization\nObserve how a simple dataset, representing sensor readings, is scaled to have a mean of 0 and a standard deviation of 1.\n\n\n\n\n\n\n\nSpeaker notes: - Explain the real-world impact: “If a control system uses both temperature (say, 20-100 degrees C) and current (0-1 Amps), PCA without standardization would heavily favor temperature due to its larger numerical range, even if current fluctuations are more critical for fault detection.” - Encourage students to modify the data array in the interactive example (e.g., add larger numbers) and rerun it to see how the standardized data always centers around 0 with a standard deviation of 1."
+  },
+  {
+    "objectID": "la-app-pca.html#step-2-calculate-covariance-matrix-1",
+    "href": "la-app-pca.html#step-2-calculate-covariance-matrix-1",
+    "title": "Linear Algebra Application: Principal Component Analysis (PCA)",
+    "section": "Step 2: Calculate Covariance Matrix",
+    "text": "Step 2: Calculate Covariance Matrix\nThe Covariance Matrix\n\nA square matrix where each element \\(\\text{Cov}(i,j)\\) represents the covariance between feature \\(i\\) and feature \\(j\\).\nDiagonal elements: Represent the variance of each individual feature (i.e., \\(\\text{Cov}(i,i)\\) is the variance of feature \\(i\\)).\nOff-diagonal elements: Represent the covariance between pairs of distinct features (i.e., \\(\\text{Cov}(i,j)\\) for \\(i \\ne j\\)).\nSymmetric: The matrix is always symmetric, meaning \\(\\text{Cov}(i,j) = \\text{Cov}(j,i)\\)."
+  },
+  {
+    "objectID": "la-app-pca.html#step-2-calculate-covariance-matrix-2",
+    "href": "la-app-pca.html#step-2-calculate-covariance-matrix-2",
+    "title": "Linear Algebra Application: Principal Component Analysis (PCA)",
+    "section": "Step 2: Calculate Covariance Matrix",
+    "text": "Step 2: Calculate Covariance Matrix\nFormula for Covariance between \\(x_1\\) and \\(x_2\\):\n\\[cov(x_1, x_2) = \\frac{\\sum_{i=1}^{n}(x_{1_i}-\\bar{x_1})(x_{2_i}-\\bar{x_2})}{n-1}\\]\nWhere:\n\n\\(\\bar{x_1}, \\bar{x_2}\\): Mean values of features \\(x_1\\) and \\(x_2\\).\n\\(n\\): Number of data points.\n\n\n\n\n\n\n\nNote\n\n\nThe covariance matrix is fundamental to PCA; it summarizes all pairwise linear relationships, which PCA then exploits to find new, uncorrelated components."
+  },
+  {
+    "objectID": "la-app-pca.html#step-2-calculate-covariance-matrix-3",
+    "href": "la-app-pca.html#step-2-calculate-covariance-matrix-3",
+    "title": "Linear Algebra Application: Principal Component Analysis (PCA)",
+    "section": "Step 2: Calculate Covariance Matrix",
+    "text": "Step 2: Calculate Covariance Matrix\nVisualizing Covariance\nAdjust the slider to observe how the data distribution changes, illustrating different levels of correlation (and thus covariance) between two standardized features.\n\nviewof correlation = Inputs.range([-1, 1], {value: 0.7, step: 0.1, label: \"Correlation Coefficient (between Feature 1 and Feature 2)\"});\n\n\n\n\n\n\n\n\n\n\n\n\n\nSpeaker notes:\n\nGuide students to move the “Correlation Coefficient” slider:\n\nWhen correlation is high positive (e.g., 0.9-1.0), the points cluster tightly along an upward slope, indicating features increase together. Example: Current and magnetic field strength in a coil.\nWhen correlation is high negative (e.g., -0.9 to -1.0), points cluster tightly along a downward slope. Example: Light intensity and phototransistor resistance.\nWhen correlation is near zero (e.g., 0.0), points form a circular cloud, showing no linear relationship. Example: Ambient temperature and network packet loss.\n\nThis interactive element provides a strong visual intuition for the mathematical concept of covariance."
+  },
+  {
+    "objectID": "la-app-pca.html#step-3-find-principal-components---eigenvalues-eigenvectors-1",
+    "href": "la-app-pca.html#step-3-find-principal-components---eigenvalues-eigenvectors-1",
+    "title": "Linear Algebra Application: Principal Component Analysis (PCA)",
+    "section": "Step 3: Find Principal Components - Eigenvalues & Eigenvectors",
+    "text": "Step 3: Find Principal Components - Eigenvalues & Eigenvectors\nWhat they represent in PCA:\n\n1st Principal Component (PC1): The eigenvector corresponding to the largest eigenvalue. It points in the direction of maximum variance in the data.\n2nd Principal Component (PC2): The eigenvector corresponding to the second largest eigenvalue, which is always perpendicular (orthogonal) to PC1, capturing the next most variance. This continues for subsequent PCs.\n\n\n\n\n\n\n\nImportant\n\n\nEigenvalues provide a quantitative measure to rank these directions by their information content, allowing us to prioritize."
+  },
+  {
+    "objectID": "la-app-pca.html#step-3-find-principal-components---eigenvalues-eigenvectors-2",
+    "href": "la-app-pca.html#step-3-find-principal-components---eigenvalues-eigenvectors-2",
+    "title": "Linear Algebra Application: Principal Component Analysis (PCA)",
+    "section": "Step 3: Find Principal Components - Eigenvalues & Eigenvectors",
+    "text": "Step 3: Find Principal Components - Eigenvalues & Eigenvectors\nEigen-decomposition Visualized\nThis process breaks down the covariance matrix into its fundamental scaling factors (eigenvalues) and corresponding directions (eigenvectors).\n\n\n\n\n\nflowchart LR\n    subgraph A[\"Covariance Matrix (A)\"]\n        A_val[\"Describes data spread&lt;br&gt;and feature relationships\"]\n    end\n    subgraph V[\"Eigenvector (V)\"]\n        V_val[\"Direction of a Principal Component\"]\n    end\n    subgraph L[\"Eigenvalue (λ)\"]\n        L_val[\"Magnitude of variance&lt;br&gt;along that direction\"]\n    end\n\n    A_val -- \"Undergo Eigen-decomposition\" --&gt; MathEq[\"$$AV = \\\\lambda V$$\"]\n    MathEq -- \"Yields Scaling Factor\" --&gt; L_val\n    MathEq -- \"Yields Invariant Direction\" --&gt; V_val\n\n    style A fill:#f0f0f0,stroke:#333,stroke-width:2px\n    style V fill:#e0e0e0,stroke:#333,stroke-width:2px\n    style L fill:#d0d0d0,stroke:#333,stroke-width:2px\n\n\n\n\n\n\n\nSpeaker notes:\n\nReiterate that the goal is to find a new coordinate system that aligns perfectly with the data’s inherent variance, making it easier to represent and analyze.\nEmphasize “perpendicular” or “orthogonal” for successive PCs – this ensures that each principal component captures unique, non-overlapping variance.\nHighlight that eigenvectors provide the directions (the new axes) and eigenvalues provide the importance or strength of these directions."
+  },
+  {
+    "objectID": "la-app-pca.html#step-4-pick-top-directions-transform-data-1",
+    "href": "la-app-pca.html#step-4-pick-top-directions-transform-data-1",
+    "title": "Linear Algebra Application: Principal Component Analysis (PCA)",
+    "section": "Step 4: Pick Top Directions & Transform Data",
+    "text": "Step 4: Pick Top Directions & Transform Data\nData Transformation\n\nProjection: The original standardized dataset is projected onto the subspace spanned by the selected top \\(k\\) principal components.\nThis linear transformation converts the data from its original feature space to a new, lower-dimensional space defined by the principal components.\n\nThe Result\nYou now have a dataset with a reduced number of features (\\(k\\) dimensions), yet it effectively retains most of the essential patterns and information from the original high-dimensional data. This is the core outcome of dimensionality reduction."
+  },
+  {
+    "objectID": "la-app-pca.html#step-4-pick-top-directions-transform-data-2",
+    "href": "la-app-pca.html#step-4-pick-top-directions-transform-data-2",
+    "title": "Linear Algebra Application: Principal Component Analysis (PCA)",
+    "section": "Step 4: Pick Top Directions & Transform Data",
+    "text": "Step 4: Pick Top Directions & Transform Data\n2D to 1D Transformation Example\n\nTransforming 2D data (Radius, Area) into a 1D representation along PC₁ while preserving maximum variance.\nBlack Axes: Represent the original features (e.g., “Radius” and “Area”).\nPC₁ & PC₂: The new principal components, which are rotated axes aligned with the data’s variance.\nBlue Crosses: Original data points in the 2D feature space.\nProjection onto PC₁: The new 1D representation, where each data point is mapped onto the PC₁ axis.\n\n\n\n\n\n\n\nNote\n\n\nPC₁ captures the maximum variance; by projecting data onto it, we effectively reduce the data from 2D to 1D, preserving the most critical information while simplifying its representation.\n\n\n\n\nSpeaker notes: - Use the image to explain the concept of projection. Imagine shining a light directly perpendicular to the PC1 axis; the shadows cast on the PC1 line would be the projected 1D data points. - Emphasize the trade-off: some information (the variance along PC2) is discarded, but the gain is simplicity and efficiency. The goal is to lose minimal important information while achieving significant reduction. - Discuss how deciding the value of ‘k’ (number of components) is a critical engineering decision based on application requirements."
+  },
+  {
+    "objectID": "la-app-pca.html#ece-case-study-sensor-data-denoising-interactive-1",
+    "href": "la-app-pca.html#ece-case-study-sensor-data-denoising-interactive-1",
+    "title": "Linear Algebra Application: Principal Component Analysis (PCA)",
+    "section": "ECE Case Study: Sensor Data Denoising (Interactive)",
+    "text": "ECE Case Study: Sensor Data Denoising (Interactive)\nPCA for Denoising\n\nCollect Noisy Data: The time-series readings from the five sensors form our high-dimensional dataset (time points \\(\\times\\) 5 features).\nApply PCA: PCA identifies principal components. The true, common temperature signal typically aligns with the highest variance principal components, as it’s the dominant pattern across all sensors. The independent noise from each sensor will contribute to lower-variance components.\nReconstruct with Fewer Components: By keeping only the top \\(k\\) principal components (those primarily representing the true signal) and discarding the lower variance ones (those primarily representing noise), we can reconstruct a significantly cleaner and more reliable version of the temperature signal.\n\nThis is a direct and practical application of PCA’s noise reduction advantage, crucial for robust and intelligent ECE control systems and monitoring applications."
+  },
+  {
+    "objectID": "la-app-pca.html#ece-case-study-sensor-data-denoising-interactive-2",
+    "href": "la-app-pca.html#ece-case-study-sensor-data-denoising-interactive-2",
+    "title": "Linear Algebra Application: Principal Component Analysis (PCA)",
+    "section": "ECE Case Study: Sensor Data Denoising (Interactive)",
+    "text": "ECE Case Study: Sensor Data Denoising (Interactive)\nInteractive Denoising\nAdjust the slider to change the number of principal components used to reconstruct the signal. Observe how increasing components affects the smoothness and detail of the denoised signal.\n\nviewof n_components_slider = Inputs.range([1, 5], {value: 1, step: 1, label: \"Number of Principal Components for Reconstruction\"});\n\n\n\n\n\n\n\n\n\n\n\n\n\nSpeaker notes:\n\nExplain what the faded noisy signals represent: individual sensor measurements with their unique noise characteristics.\nGuide students to manipulate the slider:\n\nStart with n_components = 1: The red line should be a very smooth approximation, capturing the main underlying trend. It might appear “too smooth” if the true signal had more subtle variations. This represents aggressive denoising.\nIncrease n_components: Observe how the red line starts to capture more detail from the original signal. However, if you increase it too much (e.g., to 4 or 5), you’ll notice it begins to re-introduce some of the noise, as those higher components start to represent noise rather than signal.\nDiscuss the optimal k: This optimal number is where you get the best trade-off between smoothness (denoising) and preserving signal details. It’s often determined by looking at the “explained variance ratio” of each component.\n\nConnect this directly to ECE: Such denoised data provides much more reliable input for PID controllers, state estimation algorithms, or anomaly detection systems in real-time embedded applications."
+  },
+  {
+    "objectID": "index.html#week-13",
+    "href": "index.html#week-13",
+    "title": "Linear Algebra",
+    "section": "Week 13",
+    "text": "Week 13\n\nLinear Algebra App: Robotic\nLinear Algebra App: PCA"
   }
 ]
