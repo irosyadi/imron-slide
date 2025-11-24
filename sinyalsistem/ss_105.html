@@ -128,10 +128,6 @@
   </style>
   <script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
   <link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
-  <meta name="mermaid-theme" content="neutral">
-  <script src="site_libs/quarto-diagram/mermaid.min.js"></script>
-  <script src="site_libs/quarto-diagram/mermaid-init.js"></script>
-  <link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -169,8 +165,6 @@ Imron Rosyadi
 </section>
 <section id="linearity" class="slide level2">
 <h2>10.5.1 Linearity</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
 <p><strong>Property:</strong></p>
 <p>If <span class="math inline">\(x_1[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X_1(z)\)</span> with ROC <span class="math inline">\(R_1\)</span>, and <span class="math inline">\(x_2[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X_2(z)\)</span> with ROC <span class="math inline">\(R_2\)</span>, then <span class="math display">\[
 a x_1[n] + b x_2[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} a X_1(z) + b X_2(z)
@@ -185,41 +179,10 @@ a x_1[n] + b x_2[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} a X_1(z) + b X_2
 <li>But their sum, <span class="math inline">\(\delta[n]\)</span>, has ROC as the entire <span class="math inline">\(z\)</span>-plane.</li>
 </ul></li>
 </ul>
-</div><div class="column" style="width:50%;">
 <p><strong>Application Example:</strong></p>
 <p>Suppose you have a system that processes two signals independently and then sums their outputs.</p>
 <p>If <span class="math inline">\(y_1[n] = H_1(z)X_1(z)\)</span> and <span class="math inline">\(y_2[n] = H_2(z)X_2(z)\)</span>,</p>
 <p>then <span class="math inline">\(y[n] = y_1[n] + y_2[n]\)</span> has <span class="math inline">\(Y(z) = Y_1(z) + Y_2(z)\)</span>.</p>
-<div class="cell" data-reveal="true" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<pre class="mermaid mermaid-js">graph TD
-    A[x1[n]] --&gt; B{LTI System 1}
-    B --&gt; C["y1[n]"]
-    D[x2[n]] --&gt; E{LTI System 2}
-    E --&gt; F["y2[n]"]
-    C --&gt; G{+}
-    F --&gt; G
-    G --&gt; H["y[n]"]
-
-    subgraph Z-Domain
-        A_Z["X1(z)"] --&gt; B_Z{"H1(z)"}
-        B_Z --&gt; C_Z["Y1(z)"]
-        D_Z["X2(z)"] --&gt; E_Z{"H2(z)"}
-        E_Z --&gt; F_Z["Y2(z)"]
-        C_Z --&gt; G_Z{+}
-        F_Z --&gt; G_Z
-        G_Z --&gt; H_Z["Y(z) = Y1(z) + Y2(z)"]
-    end
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-</div></div>
 <aside class="notes">
 <p>Linearity is perhaps the most fundamental property. It means that the Z-transform of a sum of scaled signals is the sum of their scaled Z-transforms. This is incredibly useful because it allows us to break down complex signals into simpler components, transform each component, and then recombine them in the Z-domain.</p>
 <p>The ROC aspect is important: the ROC of the sum is at least the intersection of the individual ROCs. However, it can be larger if pole-zero cancellations occur, as seen in the example of summing two infinite-duration sequences to get a finite-duration one (like <span class="math inline">\(\delta[n]\)</span>).</p>
@@ -237,8 +200,6 @@ a x_1[n] + b x_2[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} a X_1(z) + b X_2
 </section>
 <section id="time-shifting" class="slide level2">
 <h2>10.5.2 Time Shifting</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
 <p><strong>Property:</strong></p>
 <p>If <span class="math inline">\(x[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X(z)\)</span> with ROC <span class="math inline">\(R\)</span>, then <span class="math display">\[
 x[n-n_0] \stackrel{\mathcal{Z}}{\longleftrightarrow} z^{-n_0} X(z)
@@ -248,7 +209,6 @@ x[n-n_0] \stackrel{\mathcal{Z}}{\longleftrightarrow} z^{-n_0} X(z)
 <li>If <span class="math inline">\(n_0 &gt; 0\)</span> (delay): <span class="math inline">\(z^{-n_0}\)</span> introduces poles at <span class="math inline">\(z=0\)</span>. If <span class="math inline">\(X(z)\)</span> had a zero at <span class="math inline">\(z=0\)</span> that cancels these poles, the ROC might gain <span class="math inline">\(z=0\)</span>. If <span class="math inline">\(X(z)\)</span> did not have a zero, <span class="math inline">\(z=0\)</span> might be excluded from the ROC of <span class="math inline">\(z^{-n_0}X(z)\)</span>.</li>
 <li>If <span class="math inline">\(n_0 &lt; 0\)</span> (advance): <span class="math inline">\(z^{-n_0}\)</span> introduces zeros at <span class="math inline">\(z=0\)</span>. This is equivalent to multiplying by <span class="math inline">\(z^{|n_0|}\)</span>, which introduces poles at <span class="math inline">\(z=\infty\)</span>. Similarly, <span class="math inline">\(z=\infty\)</span> might be excluded from the ROC.</li>
 </ul>
-</div><div class="column" style="width:50%;">
 <p><strong>Application Example:</strong></p>
 <p>Consider a simple discrete-time filter defined by the difference equation:</p>
 <p><span class="math inline">\(y[n] = x[n] - x[n-1]\)</span></p>
@@ -262,10 +222,9 @@ x[n-n_0] \stackrel{\mathcal{Z}}{\longleftrightarrow} z^{-n_0} X(z)
 
 </div>
 <script type="pyodide-1-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6OH0sImNvZGUiOiJpbXBvcnQgbnVtcHkgYXMgbnBcbmltcG9ydCBwbG90bHkuZ3JhcGhfb2JqZWN0cyBhcyBnb1xuXG4jIERlZmluZSBhIHNpbXBsZSBpbnB1dCBzaWduYWxcbnhfbiA9IG5wLmFycmF5KFsxLCAyLCAzLCA0LCA1XSkgIyB4WzBdPTEsIHhbMV09MiwgLi4uXG5uX29yaWdpbmFsID0gbnAuYXJhbmdlKGxlbih4X24pKVxuXG4jIERlbGF5ZWQgc2lnbmFsIHhbbi0yXVxubjAgPSAyXG54X2RlbGF5ZWQgPSBucC56ZXJvcyhsZW4oeF9uKSArIG4wKVxueF9kZWxheWVkW24wOm4wK2xlbih4X24pXSA9IHhfblxubl9kZWxheWVkID0gbnAuYXJhbmdlKGxlbih4X2RlbGF5ZWQpKSAtIG4wXG5cbmZpZyA9IGdvLkZpZ3VyZSgpXG5maWcuYWRkX3RyYWNlKGdvLlNjYXR0ZXIoeD1uX29yaWdpbmFsLCB5PXhfbiwgbW9kZT0nbWFya2VycytsaW5lcycsIG5hbWU9J3hbbl0nKSlcbmZpZy5hZGRfdHJhY2UoZ28uU2NhdHRlcih4PW5fZGVsYXllZCwgeT14X2RlbGF5ZWQsIG1vZGU9J21hcmtlcnMrbGluZXMnLCBuYW1lPWYneFtuLXtuMH1dJykpXG5maWcudXBkYXRlX2xheW91dCh0aXRsZT0nVGltZSBTaGlmdGluZycsIHhheGlzX3RpdGxlPSduJywgeWF4aXNfdGl0bGU9J0FtcGxpdHVkZScsIHdpZHRoPTYwMCwgaGVpZ2h0PTQwMClcbmZpZy5zaG93KCkifQ==
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5pbXBvcnQgcGxvdGx5LmdyYXBoX29iamVjdHMgYXMgZ29cblxuIyBEZWZpbmUgYSBzaW1wbGUgaW5wdXQgc2lnbmFsXG54X24gPSBucC5hcnJheShbMSwgMiwgMywgNCwgNV0pICMgeFswXT0xLCB4WzFdPTIsIC4uLlxubl9vcmlnaW5hbCA9IG5wLmFyYW5nZShsZW4oeF9uKSlcblxuIyBEZWxheWVkIHNpZ25hbCB4W24tMl1cbm4wID0gMlxueF9kZWxheWVkID0gbnAuemVyb3MobGVuKHhfbikgKyBuMClcbnhfZGVsYXllZFtuMDpuMCtsZW4oeF9uKV0gPSB4X25cbm5fZGVsYXllZCA9IG5wLmFyYW5nZShsZW4oeF9kZWxheWVkKSkgLSBuMFxuXG5maWcgPSBnby5GaWd1cmUoKVxuZmlnLmFkZF90cmFjZShnby5TY2F0dGVyKHg9bl9vcmlnaW5hbCwgeT14X24sIG1vZGU9J21hcmtlcnMrbGluZXMnLCBuYW1lPSd4W25dJykpXG5maWcuYWRkX3RyYWNlKGdvLlNjYXR0ZXIoeD1uX2RlbGF5ZWQsIHk9eF9kZWxheWVkLCBtb2RlPSdtYXJrZXJzK2xpbmVzJywgbmFtZT1mJ3hbbi17bjB9XScpKVxuZmlnLnVwZGF0ZV9sYXlvdXQodGl0bGU9J1RpbWUgU2hpZnRpbmcnLCB4YXhpc190aXRsZT0nbicsIHlheGlzX3RpdGxlPSdBbXBsaXR1ZGUnLCB3aWR0aD02MDAsIGhlaWdodD00MDApXG5maWcuc2hvdygpIn0=
 </script>
 </div>
-</div></div>
 <aside class="notes">
 <p>Time shifting is another very intuitive property. Delaying a signal by <span class="math inline">\(n_0\)</span> samples in the time domain corresponds to multiplying its Z-transform by <span class="math inline">\(z^{-n_0}\)</span>. This algebraic operation in the Z-domain is much simpler than handling delays in the time domain, especially for complex systems.</p>
 <p>The changes in ROC at <span class="math inline">\(z=0\)</span> or <span class="math inline">\(z=\infty\)</span> are subtle but important to remember, as they relate to whether the original signal had poles/zeros at those locations that might be canceled or introduced by the <span class="math inline">\(z^{-n_0}\)</span> term. The interactive plot shows a simple signal and its delayed version.</p>
@@ -283,8 +242,6 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6OH0sImNvZGUiOiJpbXBv
 </section>
 <section id="scaling-in-the-z-domain" class="slide level2">
 <h2>10.5.3 Scaling in the <span class="math inline">\(z\)</span>-Domain</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
 <p><strong>Property:</strong></p>
 <p>If <span class="math inline">\(x[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X(z)\)</span> with ROC <span class="math inline">\(R\)</span>, then <span class="math display">\[
 z_0^n x[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X\left(\frac{z}{z_0}\right)
@@ -293,33 +250,8 @@ z_0^n x[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X\left(\frac{z}{z_0}\righ
 <p><span class="math display">\[
 e^{j\omega_0 n} x[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X(e^{-j\omega_0}z)
 \]</span> - ROC remains <span class="math inline">\(R\)</span> (since <span class="math inline">\(|e^{j\omega_0}|=1\)</span>). - Poles and zeros of <span class="math inline">\(X(z)\)</span> at <span class="math inline">\(z=a\)</span> are rotated to <span class="math inline">\(z=a e^{j\omega_0}\)</span> in <span class="math inline">\(X(e^{-j\omega_0}z)\)</span>. - This corresponds to a frequency shift in the DTFT.</p>
-</div><div class="column" style="width:50%;">
 <p><strong>Application Example: Demodulation</strong></p>
 <p>In digital communication systems, a signal might be modulated by multiplying it with a complex exponential. This property allows us to analyze the effect of this modulation (or demodulation) directly in the Z-domain.</p>
-<div class="cell" data-reveal="true" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<pre class="mermaid mermaid-js">graph LR
-    subgraph Original Pole-Zero Plot
-        A(Pole at a)
-        B(Zero at b)
-        C(Unit Circle)
-    end
-    subgraph Rotated Pole-Zero Plot
-        A_prime("Pole at a*exp(j*omega0"))
-        B_prime("Zero at b*exp(j*omega0)")
-        C_prime(Unit Circle)
-    end
-    Original_Pole_Zero_Plot -- "Multiplication by e^(j*omega0*n)" --&gt; Rotated_Pole_Zero_Plot
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-</div></div>
 <aside class="notes">
 <p>Scaling in the <span class="math inline">\(z\)</span>-domain, which means multiplying <span class="math inline">\(x[n]\)</span> by an exponential <span class="math inline">\(z_0^n\)</span>, has a profound effect on the Z-transform and its pole-zero plot. It scales the ROC and rotates/scales the pole-zero locations.</p>
 <p>The most common application is frequency shifting (when <span class="math inline">\(z_0\)</span> is a complex exponential <span class="math inline">\(e^{j\omega_0}\)</span>). This rotates the entire pole-zero pattern in the Z-plane. This property is crucial in communication systems for tasks like modulation and demodulation, where signals are shifted in frequency.</p>
@@ -337,8 +269,6 @@ e^{j\omega_0 n} x[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X(e^{-j\omega_0
 </section>
 <section id="time-reversal" class="slide level2">
 <h2>10.5.4 Time Reversal</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
 <p><strong>Property:</strong></p>
 <p>If <span class="math inline">\(x[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X(z)\)</span> with ROC <span class="math inline">\(R\)</span>, then <span class="math display">\[
 x[-n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X\left(\frac{1}{z}\right)
@@ -353,37 +283,12 @@ x[-n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X\left(\frac{1}{z}\right)
 <li>Poles/zeros on the unit circle stay on the unit circle.</li>
 </ul></li>
 </ul>
-</div><div class="column" style="width:50%;">
 <p><strong>Application Example:</strong> Useful in analyzing systems that process signals in reverse, or for understanding properties of symmetric signals.</p>
 <p>Consider <span class="math inline">\(x[n] = a^n u[n]\)</span>: <span class="math inline">\(X(z) = \frac{1}{1-az^{-1}}\)</span>, ROC <span class="math inline">\(|z|&gt;|a|\)</span>.</p>
 <p>Then <span class="math inline">\(x[-n] = a^{-n} u[-n]\)</span> (note: <span class="math inline">\(u[-n]\)</span> is a left-sided sequence starting at <span class="math inline">\(n=0\)</span>).</p>
 <p><span class="math inline">\(x[-n]\)</span> is related to <span class="math inline">\(a^{-n} u[-n-1]\)</span> which has <span class="math inline">\(Z\)</span>-transform <span class="math inline">\(\frac{-1}{1-a^{-1}z^{-1}}\)</span>, ROC <span class="math inline">\(|z|&lt;|a|^{-1}\)</span>.</p>
 <p>The property <span class="math inline">\(X(1/z)\)</span> applied to <span class="math inline">\(X(z)\)</span> gives <span class="math inline">\(\frac{1}{1-a(1/z)^{-1}} = \frac{1}{1-az}\)</span>.</p>
 <p>This is the <span class="math inline">\(Z\)</span>-transform of <span class="math inline">\(x[-n]\)</span> only if the ROC is specified correctly.</p>
-<div class="cell" data-reveal="true" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<pre class="mermaid mermaid-js">graph TD
-    subgraph Original Pole-Zero Plot
-        A(Pole at a)
-        B(Zero at b)
-        C(Unit Circle)
-    end
-    subgraph Time-Reversed Pole-Zero Plot
-        A_prime(Pole at 1/a)
-        B_prime(Zero at 1/b)
-        C_prime(Unit Circle)
-    end
-    Original_Pole_Zero_Plot -- Time Reversal --&gt; Time-Reversed_Pole_Zero_Plot
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-</div></div>
 <aside class="notes">
 <p>Time reversal flips the signal in time. In the Z-domain, this corresponds to replacing <span class="math inline">\(z\)</span> with <span class="math inline">\(1/z\)</span>. This operation has a direct impact on the pole-zero locations: each pole or zero at <span class="math inline">\(a\)</span> moves to <span class="math inline">\(1/a\)</span>. This means poles inside the unit circle move outside, and vice versa. The ROC also gets inverted. This property helps analyze signals that are symmetric or when dealing with concepts like minimum-phase systems.</p>
 <style type="text/css">
@@ -400,8 +305,6 @@ x[-n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X\left(\frac{1}{z}\right)
 </section>
 <section id="time-expansion" class="slide level2">
 <h2>10.5.5 Time Expansion</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
 <p><strong>Property:</strong></p>
 <p>If <span class="math inline">\(x[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X(z)\)</span> with ROC <span class="math inline">\(R\)</span>,</p>
 <p>and <span class="math inline">\(x_{(k)}[n]\)</span> is defined as <span class="math inline">\(x[n/k]\)</span> if <span class="math inline">\(n\)</span> is a multiple of <span class="math inline">\(k\)</span>, and <span class="math inline">\(0\)</span> otherwise (inserting <span class="math inline">\(k-1\)</span> zeros). Then <span class="math display">\[
@@ -411,7 +314,6 @@ x_{(k)}[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X(z^k)
 <p>From <span class="math inline">\(X(z) = \sum x[n]z^{-n}\)</span>,</p>
 <p><span class="math inline">\(X(z^k) = \sum x[n](z^k)^{-n} = \sum x[n]z^{-kn}\)</span>.</p>
 <p>This sum only contains terms <span class="math inline">\(z^{-m}\)</span> where <span class="math inline">\(m\)</span> is a multiple of <span class="math inline">\(k\)</span>. The coefficient of <span class="math inline">\(z^{-kn}\)</span> is <span class="math inline">\(x[n]\)</span>, which is <span class="math inline">\(x_{(k)}[kn]\)</span>. The coefficients of <span class="math inline">\(z^{-m}\)</span> where <span class="math inline">\(m\)</span> is not a multiple of <span class="math inline">\(k\)</span> are zero.</p>
-</div><div class="column" style="width:50%;">
 <p><strong>Application Example:</strong></p>
 <ul>
 <li><strong>Interpolation/Decimation:</strong> This property is crucial in multirate signal processing, where signals are upsampled (interpolation by inserting zeros) or downsampled.</li>
@@ -428,7 +330,6 @@ x_{(k)}[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X(z^k)
 eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5pbXBvcnQgcGxvdGx5LmdyYXBoX29iamVjdHMgYXMgZ29cblxueCA9IG5wLmFycmF5KFsxLCAyLCAzXSkgIyB4WzBdPTEsIHhbMV09MiwgeFsyXT0zXG5rID0gMiAjIEV4cGFuc2lvbiBmYWN0b3JcblxueF9leHBhbmRlZCA9IG5wLnplcm9zKGxlbih4KSAqIGspXG5mb3IgaSBpbiByYW5nZShsZW4oeCkpOlxuICAgIHhfZXhwYW5kZWRbaSAqIGtdID0geFtpXVxuXG5uX29yaWdpbmFsID0gbnAuYXJhbmdlKGxlbih4KSlcbm5fZXhwYW5kZWQgPSBucC5hcmFuZ2UobGVuKHhfZXhwYW5kZWQpKVxuXG5maWcgPSBnby5GaWd1cmUoKVxuZmlnLmFkZF90cmFjZShnby5TY2F0dGVyKHg9bl9vcmlnaW5hbCwgeT14LCBtb2RlPSdtYXJrZXJzK2xpbmVzJywgbmFtZT0neFtuXScpKVxuZmlnLmFkZF90cmFjZShnby5TY2F0dGVyKHg9bl9leHBhbmRlZCwgeT14X2V4cGFuZGVkLCBtb2RlPSdtYXJrZXJzK2xpbmVzJywgbmFtZT1mJ3hfKHtrfSlbbl0gKGV4cGFuZGVkKScpKVxuZmlnLnVwZGF0ZV9sYXlvdXQodGl0bGU9J1RpbWUgRXhwYW5zaW9uIChrPTIpJywgeGF4aXNfdGl0bGU9J24nLCB5YXhpc190aXRsZT0nQW1wbGl0dWRlJywgd2lkdGg9NjAwLCBoZWlnaHQ9NDAwKVxuZmlnLnNob3coKSJ9
 </script>
 </div>
-</div></div>
 <aside class="notes">
 <p>Time expansion, or upsampling, involves inserting zeros between samples of a discrete-time signal. In the Z-domain, this corresponds to replacing <span class="math inline">\(z\)</span> with <span class="math inline">\(z^k\)</span>. This property is fundamental in multirate signal processing, which is used extensively in audio, image, and communication systems to change sampling rates. The interactive plot shows how a signal looks after inserting zeros.</p>
 <style type="text/css">
@@ -445,8 +346,6 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1w
 </section>
 <section id="conjugation" class="slide level2">
 <h2>10.5.6 Conjugation</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
 <p><strong>Property:</strong></p>
 <p>If <span class="math inline">\(x[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X(z)\)</span> with ROC <span class="math inline">\(R\)</span>,</p>
 <p>then <span class="math display">\[
@@ -459,34 +358,8 @@ x^*[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X^*(z^*)
 <li>Complex poles/zeros always appear in conjugate pairs for real signals.</li>
 <li>This is why we always see complex conjugate poles in second-order systems with real coefficients.</li>
 </ul>
-</div><div class="column" style="width:50%;">
 <p><strong>Application Example:</strong></p>
 <p>When designing filters with real coefficients (which is almost always the case in practice), this property guarantees that if you place a complex pole or zero, its conjugate must also be present. This simplifies design by reducing the number of independent parameters.</p>
-<div class="cell" data-reveal="true" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<pre class="mermaid mermaid-js">graph TD
-    subgraph Z-Plane (Poles for Real Signal)
-        direction LR
-        Pole1("Pole at $$z_0$$")
-        Pole2("Pole at $$z_0^*$$")
-        Origin(0,0)
-
-        style Pole1 fill:#fff,stroke:#333,stroke-width:2px,color:#000,font-weight:bold,shape:cross
-        style Pole2 fill:#fff,stroke:#333,stroke-width:2px,color:#000,font-weight:bold,shape:cross
-
-        Origin --- Pole1
-        Origin --- Pole2
-    end
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-</div></div>
 <aside class="notes">
 <p>Conjugation is a straightforward property. If you take the complex conjugate of a signal, its Z-transform becomes the complex conjugate of <span class="math inline">\(X(z^*)\)</span>.</p>
 <p>The most important consequence is for real-valued signals. Since most physical signals are real, this property tells us that all complex poles and zeros in the Z-plane must appear in conjugate pairs. This simplifies filter design and analysis significantly because you only need to specify one of the complex conjugate pair.</p>
@@ -504,8 +377,6 @@ x^*[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X^*(z^*)
 </section>
 <section id="the-convolution-property" class="slide level2">
 <h2>10.5.7 The Convolution Property</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
 <p><strong>Property:</strong></p>
 <p>If <span class="math inline">\(x_1[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X_1(z)\)</span> with ROC <span class="math inline">\(R_1\)</span>, and <span class="math inline">\(x_2[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X_2(z)\)</span> with ROC <span class="math inline">\(R_2\)</span>, then <span class="math display">\[
 x_1[n] * x_2[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X_1(z) X_2(z)
@@ -522,7 +393,6 @@ x_1[n] * x_2[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X_1(z) X_2(z)
 <ul>
 <li>As with linearity, if pole-zero cancellation occurs in <span class="math inline">\(X_1(z)X_2(z)\)</span>, the ROC can be larger than <span class="math inline">\(R_1 \cap R_2\)</span>.</li>
 </ul>
-</div><div class="column" style="width:50%;">
 <p><strong>Application Example: LTI Systems</strong></p>
 <p>For an LTI system with impulse response <span class="math inline">\(h[n]\)</span> and input <span class="math inline">\(x[n]\)</span>, the output is <span class="math inline">\(y[n] = h[n] * x[n]\)</span>.</p>
 <p>In the Z-domain, this becomes <span class="math inline">\(Y(z) = H(z)X(z)\)</span>.</p>
@@ -534,7 +404,6 @@ x_1[n] * x_2[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X_1(z) X_2(z)
 <p><span class="math inline">\(w[n] = \sum_{k=-\infty}^{n} x[k] = u[n] * x[n]\)</span></p>
 <p><span class="math inline">\(W(z) = U(z)X(z) = \frac{1}{1-z^{-1}} X(z)\)</span></p>
 <p>So, <span class="math inline">\(H(z) = \frac{1}{1-z^{-1}}\)</span>. This is the Z-transform of <span class="math inline">\(h[n]=u[n]\)</span>.</p>
-</div></div>
 <aside class="notes">
 <p>The convolution property is arguably the most important property of the Z-transform for system analysis. It transforms complex time-domain convolutions into simple algebraic multiplications in the Z-domain. This greatly simplifies the analysis of LTI systems, allowing us to find system responses by merely multiplying transfer functions and input transforms.</p>
 <p>It also provides insights into operations like differencing and accumulation, showing their corresponding Z-domain representations.</p>
@@ -552,8 +421,6 @@ x_1[n] * x_2[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X_1(z) X_2(z)
 </section>
 <section id="differentiation-in-the-z-domain" class="slide level2">
 <h2>10.5.8 Differentiation in the <span class="math inline">\(z\)</span>-Domain</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
 <p><strong>Property:</strong></p>
 <p>If <span class="math inline">\(x[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} X(z)\)</span> with ROC <span class="math inline">\(R\)</span>, then <span class="math display">\[
 n x[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} -z \frac{dX(z)}{dz}
@@ -563,7 +430,6 @@ n x[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} -z \frac{dX(z)}{dz}
 <p>Differentiate with respect to <span class="math inline">\(z\)</span>:</p>
 <p><span class="math inline">\(\frac{dX(z)}{dz} = \sum_{n=-\infty}^{+\infty} x[n] (-n) z^{-n-1} = -z^{-1} \sum_{n=-\infty}^{+\infty} n x[n] z^{-n}\)</span> Multiply by <span class="math inline">\(-z\)</span>:</p>
 <p><span class="math inline">\(-z \frac{dX(z)}{dz} = \sum_{n=-\infty}^{+\infty} n x[n] z^{-n} = \mathcal{Z}\{n x[n]\}\)</span></p>
-</div><div class="column" style="width:50%;">
 <p><strong>Application Example 10.17:</strong></p>
 <p>Find <span class="math inline">\(x[n]\)</span> for <span class="math inline">\(X(z)=\log(1+az^{-1}), |z|&gt;|a|\)</span>.</p>
 <p>We know <span class="math inline">\(\mathcal{Z}\{nx[n]\} = -z \frac{dX(z)}{dz}\)</span>.</p>
@@ -573,7 +439,6 @@ n x[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} -z \frac{dX(z)}{dz}
 <p>Using time shifting (<span class="math inline">\(z^{-1}\)</span>): <span class="math inline">\(\frac{az^{-1}}{1+az^{-1}} \stackrel{\mathcal{Z}}{\longleftrightarrow} a(-a)^{n-1} u[n-1]\)</span>. So, <span class="math inline">\(nx[n] = a(-a)^{n-1}u[n-1]\)</span>.</p>
 <p><span class="math inline">\(x[n] = \frac{a(-a)^{n-1}}{n} u[n-1] = \frac{(-a)(-a)^{n-1}}{n} u[n-1] = \frac{-(-a)^n}{n} u[n-1]\)</span>.</p>
 <p>This matches Example 10.14.</p>
-</div></div>
 <aside class="notes">
 <p>Differentiation in the Z-domain relates to multiplication by <span class="math inline">\(n\)</span> in the time domain. This property is very useful for finding the Z-transforms of signals like <span class="math inline">\(n a^n u[n]\)</span> or for solving certain types of difference equations.</p>
 <p>The example demonstrates how we can use this property to inverse Z-transform a seemingly complex function like a logarithm by first differentiating it, which often turns it into a rational function that can be handled by other methods like partial-fraction expansion.</p>
@@ -591,8 +456,6 @@ n x[n] \stackrel{\mathcal{Z}}{\longleftrightarrow} -z \frac{dX(z)}{dz}
 </section>
 <section id="the-initial-value-theorem" class="slide level2">
 <h2>10.5.9 The Initial-Value Theorem</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
 <p><strong>Property:</strong></p>
 <p>If <span class="math inline">\(x[n]=0\)</span> for <span class="math inline">\(n&lt;0\)</span> (i.e., <span class="math inline">\(x[n]\)</span> is causal), then <span class="math display">\[
 x[0] = \lim_{z \rightarrow \infty} X(z)
@@ -604,7 +467,6 @@ x[0] = \lim_{z \rightarrow \infty} X(z)
 <li><span class="math inline">\(z^0 = 1\)</span>.</li>
 </ul>
 <p>So, <span class="math inline">\(\lim_{z \rightarrow \infty} X(z) = x[0]\)</span>.</p>
-</div><div class="column" style="width:50%;">
 <p><strong>Application Example 10.19:</strong></p>
 <p>Consider <span class="math inline">\(X(z)=\frac{1-\frac{3}{2} z^{-1}}{\left(1-\frac{1}{3} z^{-1}\right)\left(1-\frac{1}{2} z^{-1}\right)}\)</span> from Example 10.3 (where <span class="math inline">\(x[n]\)</span> was causal).</p>
 <p><span class="math inline">\(\lim_{z \rightarrow \infty} X(z) = \lim_{z \rightarrow \infty} \frac{1-\frac{3}{2} z^{-1}}{1-\frac{5}{6} z^{-1}+\frac{1}{6} z^{-2}}\)</span></p>
@@ -613,7 +475,6 @@ x[0] = \lim_{z \rightarrow \infty} X(z)
 <p>This is consistent with <span class="math inline">\(x[0]=1\)</span> found in Example 10.3.</p>
 <p><strong>Consequence:</strong></p>
 <p>For a causal <span class="math inline">\(X(z)\)</span>, if <span class="math inline">\(x[0]\)</span> is finite, then <span class="math inline">\(\lim_{z \rightarrow \infty} X(z)\)</span> must be finite. This means the number of finite zeros of <span class="math inline">\(X(z)\)</span> cannot be greater than the number of finite poles.</p>
-</div></div>
 <aside class="notes">
 <p>The initial-value theorem provides a quick way to find the first sample (<span class="math inline">\(x[0]\)</span>) of a causal signal directly from its Z-transform. It’s a useful check for calculations and provides insight into the behavior of the Z-transform at infinity. For causal systems, if <span class="math inline">\(x[0]\)</span> is finite, it also implies a constraint on the number of poles and zeros.</p>
 <style type="text/css">
@@ -630,8 +491,6 @@ x[0] = \lim_{z \rightarrow \infty} X(z)
 </section>
 <section id="summary-of-z-transform-properties" class="slide level2">
 <h2>Summary of Z-Transform Properties</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
 <table class="caption-top">
 <colgroup>
 <col style="width: 18%">
@@ -704,7 +563,6 @@ x[0] = \lim_{z \rightarrow \infty} X(z)
 </tr>
 </tbody>
 </table>
-</div><div class="column" style="width:50%;">
 <p><strong>Why these properties are important:</strong></p>
 <ul>
 <li><strong>Simplification:</strong> They convert complex time-domain operations (convolution, differentiation, shifting) into simpler algebraic manipulations in the Z-domain.</li>
@@ -725,7 +583,6 @@ x[0] = \lim_{z \rightarrow \infty} X(z)
 </div>
 </div>
 </div>
-</div></div>
 <aside class="notes">
 <p>This summary table is a quick reference for all the properties we’ve covered. It’s important to not just memorize them, but to understand what each property means intuitively and how it relates to real-world signals and systems.</p>
 <p>These properties are the reason the Z-transform is so valuable in ECE. They provide a mathematical framework that simplifies complex problems, allowing us to analyze, design, and implement discrete-time systems much more efficiently.</p>
