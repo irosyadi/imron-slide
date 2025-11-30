@@ -128,10 +128,6 @@
   </style>
   <script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
   <link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
-  <meta name="mermaid-theme" content="neutral">
-  <script src="site_libs/quarto-diagram/mermaid.min.js"></script>
-  <script src="site_libs/quarto-diagram/mermaid-init.js"></script>
-  <link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -167,17 +163,24 @@ Imron Rosyadi
           display:block!important;
       }</style></aside>
 </section>
-<section id="the-system-function-hz" class="slide level2 scrollable">
+<section id="the-system-function-hz" class="slide level2">
 <h2>The System Function <span class="math inline">\(H(z)\)</span></h2>
 <p><strong>Core Relationship:</strong></p>
 <p>For an LTI system, the output <span class="math inline">\(Y(z)\)</span> is the product of the input <span class="math inline">\(X(z)\)</span> and the system function <span class="math inline">\(H(z)\)</span>: <span class="math display">\[
 Y(z) = H(z)X(z)
-\]</span> - <span class="math inline">\(H(z)\)</span> is the Z-transform of the system’s impulse response <span class="math inline">\(h[n]\)</span>. - It’s also known as the <strong>transfer function</strong>.</p>
+\]</span></p>
+<ul>
+<li><span class="math inline">\(H(z)\)</span> is the Z-transform of the system’s impulse response <span class="math inline">\(h[n]\)</span>.</li>
+<li>It’s also known as the <strong>transfer function</strong>.</li>
+</ul>
 <p><strong>Connection to Frequency Response:</strong></p>
 <ul>
 <li>If the ROC of <span class="math inline">\(H(z)\)</span> includes the unit circle, then the frequency response <span class="math inline">\(H(e^{j\omega})\)</span> is obtained by evaluating <span class="math inline">\(H(z)\)</span> at <span class="math inline">\(z=e^{j\omega}\)</span>.</li>
 <li>This means <span class="math inline">\(H(z)\)</span> contains all information about the system’s frequency response.</li>
 </ul>
+</section>
+<section id="the-system-function-hz-1" class="slide level2 scrollable">
+<h2>The System Function <span class="math inline">\(H(z)\)</span></h2>
 <p><strong>Eigenfunctions:</strong></p>
 <ul>
 <li>Complex exponentials <span class="math inline">\(z^n\)</span> are eigenfunctions of LTI systems.</li>
@@ -193,25 +196,6 @@ Y(z) = H(z)X(z)
 <li>The locations of poles and zeros in the <span class="math inline">\(z\)</span>-plane provide a visual representation of the system’s characteristics.</li>
 <li>Combined with the ROC, this plot is a complete characterization of an LTI system in the Z-domain.</li>
 </ul>
-<div class="cell" data-reveal="true" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<pre class="mermaid mermaid-js">graph TD
-    X_n["x[n]"] --&gt; LTI_System(LTI System)
-    LTI_System --&gt; Y_n["y[n]"]
-
-    subgraph Z-Domain
-        X_z["X(z)"] --&gt; H_z("System Function H(z)")
-        H_z --&gt; Y_z["Y(z)"]
-    end
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
 <aside class="notes">
 <p>At the heart of LTI system analysis with Z-transforms is the system function, <span class="math inline">\(H(z)\)</span>. It’s essentially the Z-transform of the system’s impulse response. The convolution property tells us that in the Z-domain, the output is simply the product of the input and the system function.</p>
 <p>This algebraic relationship is incredibly powerful. The system function, along with its ROC, encapsulates all the information about an LTI system, including its frequency response and crucial properties like causality and stability. The pole-zero plot then gives us a visual map of these characteristics.</p>
@@ -240,6 +224,9 @@ Y(z) = H(z)X(z)
 <li>The ROC is the exterior of a circle outside the outermost pole.</li>
 <li>When <span class="math inline">\(H(z)\)</span> is expressed as a ratio of polynomials in <span class="math inline">\(z\)</span>, the order of the numerator cannot be greater than the order of the denominator. (This ensures that <span class="math inline">\(H(z)\)</span> is finite at <span class="math inline">\(z=\infty\)</span>).</li>
 </ol>
+</section>
+<section id="causality-1" class="slide level2">
+<h2>10.7.1 Causality</h2>
 <p><strong>Example 10.20 (Non-Causal):</strong></p>
 <p><span class="math inline">\(H(z)=\frac{z^{3}-2 z^{2}+z}{z^{2}+\frac{1}{4} z+\frac{1}{8}}\)</span></p>
 <ul>
@@ -255,21 +242,6 @@ Y(z) = H(z)X(z)
 <li>Numerator order (2) = Denominator order (2).</li>
 <li><strong>Conclusion: System IS causal.</strong></li>
 </ul>
-<div class="cell" data-reveal="true" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<pre class="mermaid mermaid-js">graph TD
-    A["Is h[n] right-sided?"] --&gt; B{Does ROC include infinity?}
-    B -- Yes --&gt; C[System is Causal]
-    B -- No --&gt; D[System is NOT Causal]
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
 <aside class="notes">
 <p>Causality is a crucial property for physically realizable systems; a causal system’s output cannot depend on future inputs. In the Z-domain, this translates directly to the properties of the ROC.</p>
 <p>For a general system, causality means the ROC must be an exterior region and include infinity. For rational system functions, this simplifies to two conditions: the ROC is outside the outermost pole, and the degree of the numerator polynomial is not greater than the degree of the denominator polynomial (when expressed in positive powers of <span class="math inline">\(z\)</span>). These conditions allow us to quickly determine causality by inspecting <span class="math inline">\(H(z)\)</span>.</p>
@@ -294,6 +266,9 @@ Y(z) = H(z)X(z)
 <p><strong>For Causal Systems with Rational <span class="math inline">\(H(z)\)</span>:</strong></p>
 <p>If a system is causal AND has a rational system function, then stability has a simpler condition:</p>
 <p>All poles of <span class="math inline">\(H(z)\)</span> must lie <strong>inside the unit circle</strong> (<span class="math inline">\(|p_k| &lt; 1\)</span> for all poles <span class="math inline">\(p_k\)</span>).</p>
+</section>
+<section id="stability-1" class="slide level2">
+<h2>10.7.2 Stability</h2>
 <p><strong>Example 10.22 (Unstable):</strong></p>
 <p><span class="math inline">\(H(z)=\frac{1}{1-\frac{1}{2} z^{-1}}+\frac{1}{1-2 z^{-1}}\)</span> with ROC <span class="math inline">\(|z|&gt;2\)</span>.</p>
 <ul>
@@ -309,21 +284,6 @@ Y(z) = H(z)X(z)
 <li>Thus, for a causal system, stability requires <span class="math inline">\(r&lt;1\)</span>.</li>
 <li><strong>Conclusion: Causal system is stable if and only if <span class="math inline">\(r&lt;1\)</span>.</strong></li>
 </ul>
-<div class="cell" data-reveal="true" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<pre class="mermaid mermaid-js">graph TD
-    A[Is ROC include Unit Circle?] --&gt; B{System is Stable}
-    A -- No --&gt; C[System is NOT Stable]
-    B -- Is system Causal? --&gt; D[All Poles Inside Unit Circle]
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
 <aside class="notes">
 <p>Stability is another critical property for LTI systems, ensuring that bounded inputs produce bounded outputs. In the Z-domain, stability means the ROC must contain the unit circle.</p>
 <p>For the common case of causal systems with rational system functions, stability is equivalent to all poles lying strictly inside the unit circle. This provides a very quick and visual way to check stability by looking at the pole-zero plot. The interactive example for the second-order system vividly shows how moving poles inside or outside the unit circle affects stability.</p>
@@ -351,7 +311,15 @@ Y(z) = H(z)X(z)
 </ol>
 <p><strong>Resulting System Function:</strong> <span class="math display">\[
 H(z)=\frac{Y(z)}{X(z)}=\frac{\sum_{k=0}^{M} b_{k} z^{-k}}{\sum_{k=0}^{N} a_{k} z^{-k}}
-\]</span> - The system function for such systems is <strong>always rational</strong>. - The difference equation alone does <strong>not</strong> specify the ROC. - Additional information (e.g., causality, stability) is needed to determine the ROC and thus the unique impulse response.</p>
+\]</span></p>
+<ul>
+<li>The system function for such systems is <strong>always rational</strong>.</li>
+<li>The difference equation alone does <strong>not</strong> specify the ROC.</li>
+<li>Additional information (e.g., causality, stability) is needed to determine the ROC and thus the unique impulse response.</li>
+</ul>
+</section>
+<section id="lti-systems-characterized-by-linear-constant-coefficient-difference-equations-1" class="slide level2">
+<h2>10.7.3 LTI Systems Characterized by Linear Constant-Coefficient Difference Equations</h2>
 <p><strong>Example 10.25:</strong></p>
 <p><span class="math inline">\(y[n]-\frac{1}{2} y[n-1]=x[n]+\frac{1}{3} x[n-1]\)</span></p>
 <p><strong>Z-Transforming:</strong></p>
@@ -412,6 +380,9 @@ H(z)=\frac{Y(z)}{X(z)}=\frac{\sum_{k=0}^{M} b_{k} z^{-k}}{\sum_{k=0}^{N} a_{k} z
 <li>Causal (numerator/denominator order is 2, ROC outside outermost pole).</li>
 <li>Stable (poles at <span class="math inline">\(z=1/2, z=1/3\)</span> are inside unit circle, ROC includes unit circle).</li>
 </ul>
+</section>
+<section id="examples-relating-system-behavior-to-the-system-function-1" class="slide level2 scrollable">
+<h2>10.7.4 Examples Relating System Behavior to the System Function</h2>
 <p><strong>Example 10.27: Property Deduction</strong></p>
 <p>Given: Stable and causal system, rational <span class="math inline">\(H(z)\)</span>, pole at <span class="math inline">\(z=1/2\)</span>, zero on unit circle.</p>
 <p><strong>Statements:</strong></p>
