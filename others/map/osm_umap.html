@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="../site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.26">
+
+  <meta name="author" content="Imron Rosyadi">
+  <title>Presenta – OSM and UMAP</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-b0356e9119c1bdfd0db189d130feb51c.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+  <link href="../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+  <meta name="mermaid-theme" content="neutral">
+  <script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+  <script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+  <link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">OSM and UMAP</h1>
+  <p class="subtitle">Collaborative Mapping and Map Visualization</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Imron Rosyadi 
+</div>
+</div>
+</div>
+
+</section>
+<section>
+<section id="mapping-and-editing-openstreetmap" class="title-slide slide level1 center">
+<h1>Mapping and Editing OpenStreetMap</h1>
+<p><strong>A Beginner’s Guide to Collaborative Cartography</strong></p>
+</section>
+<section id="what-is-openstreetmap-osm" class="slide level2">
+<h2>What is OpenStreetMap (OSM)?</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<ul>
+<li>A collaborative, open-source project to create a free, editable map of the world.</li>
+<li>Often called the “Wikipedia for maps.”</li>
+<li>Built by a community of volunteers who contribute and maintain data.</li>
+<li>Data includes roads, trails, buildings, points of interest, and much more.</li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>OSM is not just a map; it’s a massive database of geographic information (geodata).</p>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://learnosm.org/images/beginner/digital-maps-with-osm.png" class="quarto-figure quarto-figure-center" height="300"></p>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>Welcome everyone. Today, we’re diving into OpenStreetMap, or OSM. Think of it like Wikipedia, but for maps. It’s a global project where anyone can contribute geographic data, making it one of the most detailed and up-to-date map sources in the world.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="core-elements-of-osm-data" class="slide level2">
+<h2>Core Elements of OSM Data</h2>
+<p>OSM data is built from three basic geometric elements.</p>
+<div class="columns">
+<div class="column" style="width:40%;">
+<ul>
+<li><p><strong>Nodes:</strong> A single point in space, defined by latitude and longitude. Used for points of interest like trees or post boxes.</p></li>
+<li><p><strong>Ways:</strong> An ordered list of nodes that form a polyline or polygon. Used for linear features (roads, rivers) or areas (parks, buildings).</p></li>
+<li><p><strong>Relations:</strong> A group of nodes, ways, and other relations. Used for complex features, like a bus route (grouping stops and roads) or a building with a courtyard.</p></li>
+</ul>
+</div><div class="column" style="width:60%;">
+<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph TD
+    subgraph "Core Elements"
+        A["Node &lt;br&gt; (A single point)"]
+        B["Way &lt;br&gt; (A line or area from nodes)"]
+        C["Relation &lt;br&gt; (A group of elements)"]
+    end
+
+    A -- "Forms" --&gt; B
+    B -- "Can be part of" --&gt; C
+    A -- "Can be part of" --&gt; C
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#9f9,stroke:#333,stroke-width:2px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="map-features-the-power-of-tags" class="slide level2">
+<h2>Map Features: The Power of Tags</h2>
+<p>Elements have no meaning until you <strong>tag</strong> them. Tags describe what a feature is.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Tag Structure: <code>key=value</code></strong></p>
+<p>A tag consists of a <code>key</code> and a <code>value</code>.</p>
+<ul>
+<li><code>key</code>: The general category (e.g., <code>amenity</code>).</li>
+<li><code>value</code>: The specific type (e.g., <code>school</code>).</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<ul>
+<li>A road: <code>highway=residential</code></li>
+<li>A cafe: <code>amenity=cafe</code> and <code>name=The Daily Grind</code></li>
+<li>A park: <code>leisure=park</code></li>
+<li>A building: <code>building=yes</code></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    subgraph "A Cafe Feature"
+        A(Node or Way)
+        T1["key=amenity &lt;br&gt; value=cafe"]
+        T2["key=name &lt;br&gt; value=The Daily Grind"]
+        T3["key=cuisine &lt;br&gt; value=coffee_shop"]
+    end
+    A --&gt; T1
+    A --&gt; T2
+    A --&gt; T3
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div></div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Where to find tags?</strong></p>
+</div>
+<div class="callout-content">
+<p>The <strong>OSM Wiki</strong> is the ultimate guide for finding and using the correct tags for any feature. Always check it when in doubt!</p>
+</div>
+</div>
+</div>
+</section>
+<section id="how-to-edit-osm-your-toolkit" class="slide level2">
+<h2>How to Edit OSM: Your Toolkit</h2>
+<p>There are many editors, but the easiest to start with is <strong>iD</strong>.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>iD Editor (In-browser)</strong></p>
+<ul>
+<li>The default, web-based editor on <code>openstreetmap.org</code>.</li>
+<li>User-friendly and perfect for beginners.</li>
+<li>Runs directly in your browser, no installation needed.</li>
+<li>Integrated help and walkthrough.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://learnosm.org/images/beginner/id-editor_image2.png" class="quarto-figure quarto-figure-center" height="300"></p>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>Explain to the students that they can access this just by clicking “Edit” on the OSM website after creating an account. The image shows the main components: map view, feature panel, and tools.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="alternative-specialized-editors" class="slide level2">
+<h2>Alternative &amp; Specialized Editors</h2>
+<p>For more advanced or specific tasks, other editors are available.</p>
+<ul>
+<li><p><strong><a href="https://josm.openstreetmap.de/">JOSM (Java OpenStreetMap Editor)</a>:</strong> A powerful desktop application. Preferred by experienced mappers for its plugins, validation tools, and ability to handle large datasets.</p></li>
+<li><p><strong><a href="https://rapideditor.org/">Rapid</a>:</strong> Rapid is a fork of iD, developed by Meta. In addition to the Features of iD, Rapid offers tools to verify AI generated data and integrate it into the OSM database.</p></li>
+<li><p><strong>Mobile Editors:</strong> Great for on-the-ground surveying.</p>
+<ul>
+<li><strong><a href="https://play.google.com/store/apps/details?id=de.westnordost.streetcomplete">StreetComplete</a>:</strong> A gamified app for adding details to existing features.</li>
+<li><strong><a href="https://play.google.com/store/apps/details?id=info.zverev.ilya.every_door">Every Door</a>:</strong> Quickly add and edit shops and amenities.</li>
+<li><strong><a href="https://play.google.com/store/apps/details?id=fr.dogeo.osmgo">OSM Go!</a>:</strong> A comprehensive mobile editor.</li>
+<li><strong><a href="https://play.google.com/store/apps/details?id=de.blau.android">Vespucci</a>:</strong> A fully-featured Android editor.</li>
+</ul></li>
+</ul>
+</section>
+<section id="mapping-techniques" class="slide level2">
+<h2>Mapping Techniques</h2>
+<p>How do we gather the data to add to the map?</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="armchair-mapping">Armchair Mapping</h3>
+<p>Mapping done remotely from a computer.</p>
+<ul>
+<li><strong>Sources:</strong>
+<ul>
+<li>High-resolution aerial/satellite imagery.</li>
+<li>GPS traces uploaded by other users.</li>
+<li>Public domain data or street-level imagery (e.g., Mapillary).</li>
+</ul></li>
+<li><strong>Best for:</strong>
+<ul>
+<li>Tracing roads, buildings, and land use.</li>
+<li>Large-scale mapping projects.</li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="outdoor-mapping">Outdoor Mapping</h3>
+<p>Mapping done on-the-ground, in the field.</p>
+<ul>
+<li><strong>Tools:</strong>
+<ul>
+<li>GPS devices or smartphones with tracking apps.</li>
+<li>Field Papers (printed maps for annotation).</li>
+<li>Mobile editors like <em>StreetComplete</em> or <em>Every Door</em>.</li>
+</ul></li>
+<li><strong>Best for:</strong>
+<ul>
+<li>Capturing details not visible from above (e.g., shop names, opening hours, accessibility).</li>
+<li>Verifying existing data.</li>
+</ul></li>
+</ul>
+</div></div>
+</section>
+<section id="visualizing-the-mapping-workflow" class="slide level2">
+<h2>Visualizing the Mapping Workflow</h2>
+<p>Here is a simplified view of both armchair and field mapping.</p>
+<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph TD
+    subgraph "Armchair Mapping"
+        A1[Open iD Editor] --&gt; A2{Select Aerial Imagery};
+        A2 --&gt; A3[Trace a building or road];
+        A3 --&gt; A4[Add tags, e.g., `building=house`];
+        A4 --&gt; Z(Upload Changeset);
+    end
+
+    subgraph "Outdoor/Field Mapping"
+        B1["Open Mobile App &lt;br&gt; (e.g., Every Door)"] --&gt; B2{Walk down a street};
+        B2 --&gt; B3[Tap on a shop &lt;br&gt; and add its name];
+        B3 --&gt; B4[Add details like &lt;br&gt; opening hours];
+        B4 --&gt; Z;
+    end
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>This diagram contrasts the two main approaches. Emphasize that they are often used together. An armchair mapper might trace a new housing development, and a field mapper might later add the house numbers and street names.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="uploading-your-changes" class="slide level2 scrollable">
+<h2>Uploading Your Changes</h2>
+<p>When you save your work, you upload a <strong>changeset</strong> to OSM.</p>
+<ol type="1">
+<li><p><strong>Review Your Edits:</strong> Double-check the features you’ve added or modified.</p></li>
+<li><p><strong>Write a Changeset Comment:</strong> Briefly describe what you did and why. This is crucial for other mappers to understand your work.</p>
+<ul>
+<li><strong>Good:</strong> “Added newly opened cafe on Main St based on survey.”</li>
+<li><strong>Bad:</strong> “updates” or “fixed map”</li>
+</ul></li>
+<li><p><strong>Upload:</strong> Your contributions are now live on the map!</p></li>
+</ol>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Your Edits are Public and Live!</strong></p>
+</div>
+<div class="callout-content">
+<p>Your changes are visible to everyone and become part of the live database. Be confident and careful with your edits. It’s okay to start small!</p>
+</div>
+</div>
+</div>
+</section>
+<section id="beyond-the-map-osm-communities" class="slide level2">
+<h2>Beyond the Map: OSM Communities</h2>
+<p>OSM is more than data; it’s a global community with many specialized groups.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="humanitarian-osm-team-hot">Humanitarian OSM Team (HOT)</h3>
+<ul>
+<li>A global NGO that applies open mapping for humanitarian action and community development.</li>
+<li>Mappers create base maps of the world’s most vulnerable places.</li>
+<li>Crucial for disaster response.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://wiki.openstreetmap.org/w/images/thumb/1/11/HOT_logo_with_red_text_rgb.png/450px-HOT_logo_with_red_text_rgb.png" class="quarto-figure quarto-figure-center" height="100"></p>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<h3 id="other-communities">Other Communities</h3>
+<ul>
+<li><strong>Global Healthsites Mapping Project:</strong> Focuses on mapping every health facility in the world.</li>
+<li><strong>Local Chapters &amp; Meetups:</strong> Groups of mappers in a specific city or country who collaborate and socialize.</li>
+<li><strong>Thematic Groups:</strong> Mappers interested in public transport, accessibility, hiking trails, etc.</li>
+</ul>
+</div></div>
+</section>
+<section id="osm-guide" class="slide level2">
+<h2>OSM Guide</h2>
+<ul>
+<li><a href="https://wiki.openstreetmap.org/wiki/Beginners%27_guide">OSM Beginners’ guide</a></li>
+<li><a href="https://wiki.openstreetmap.org/wiki/Mapping_projects">Mapping projects</a></li>
+</ul>
+</section>
+<section id="get-mapping" class="slide level2">
+<h2>Get Mapping!</h2>
+<p>You have the knowledge to start contributing.</p>
+<ul>
+<li><strong>Create an account</strong> at <a href="https://www.openstreetmap.org">openstreetmap.org</a>.</li>
+<li><strong>Run the built-in walkthrough</strong> in the iD editor.</li>
+<li><strong>Start small:</strong> Add a park bench, a local shop, or correct a street name in an area you know well.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="creating-custom-maps-with-umap" class="title-slide slide level1 center">
+<h1>Creating Custom Maps with uMap</h1>
+<p><strong>Visualize Your Data on OpenStreetMap Layers</strong></p>
+</section>
+<section id="what-is-umap" class="slide level2">
+<h2>What is uMap?</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<ul>
+<li>An open-source tool to create custom, interactive maps quickly.</li>
+<li>It lets you place markers, lines, and polygons on top of various base maps, including OpenStreetMap.</li>
+<li>Your creations can be easily shared or embedded into a website.</li>
+<li>It’s perfect for visualizing custom datasets, planning routes, or creating thematic maps.</li>
+</ul>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Warning</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Important:</strong> uMap creates maps <em>using</em> OSM as a background. It does <strong>not</strong> edit the official OpenStreetMap database itself.</p>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://wiki.openstreetmap.org/w/images/thumb/b/b0/UMap_Overview_controls.jpg/600px-UMap_Overview_controls.jpg" class="quarto-figure quarto-figure-center" height="350"></p>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>Welcome. Today we’re exploring uMap, a powerful tool that lets anyone become a cartographer. Unlike the OSM editors we discussed before, uMap is for creating your own <em>private or public custom map layer</em> on top of OSM, not for contributing to the core OSM data. It’s for visualization and sharing.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="umap-in-the-wild-public-instances" class="slide level2">
+<h2>uMap in the Wild: Public Instances</h2>
+<p>uMap is open-source software that anyone can host. Here are two popular public instances.</p>
+<ul>
+<li><p><strong><a href="https://umap.openstreetmap.fr/">umap.openstreetmap.fr</a></strong> A general-purpose and widely used instance hosted by the French OSM community. A great place to start.</p></li>
+<li><p><strong><a href="https://umap.hotosm.org/">umap.hotosm.org</a></strong> Hosted by the Humanitarian OpenStreetMap Team (HOT). Often used for projects related to disaster response, public health, and humanitarian aid.</p></li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Maps created on one instance are not visible on another. Choose one and stick with it for your project.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="the-anatomy-of-a-umap" class="slide level2">
+<h2>The Anatomy of a uMap</h2>
+<p>Every uMap project is built from a clear hierarchy of components.</p>
+<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph TD
+    subgraph "Your Custom Map"
+        A["Background Map &lt;br&gt; (e.g., OSM, Satellite)"]
+        B("Layer 1 &lt;br&gt; e.g., Restaurants")
+        C("Layer 2 &lt;br&gt; e.g., Parks")
+      
+        D{"Marker &lt;br&gt; (Point)"}
+        E{"Polyline &lt;br&gt; (Line)"}
+        F{"Polygon &lt;br&gt; (Area)"}
+      
+        A -- Serves as base for --&gt; B
+        A -- Serves as base for --&gt; C
+        B --&gt; D
+        B --&gt; E
+        C --&gt; F
+    end
+
+    style A fill:#ddd,stroke:#333
+    style B fill:#lightgreen,stroke:#333
+    style C fill:#lightblue,stroke:#333
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Think of it like a digital painting. You start with a canvas (the Background Map). Then you add transparent sheets (Layers) on top. On each sheet, you draw your features (Markers, Lines, and Polygons). This separation keeps your data organized.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="level-1-managing-your-map" class="slide level2">
+<h2>Level 1: Managing Your Map</h2>
+<p>These are the global settings that control your entire map.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Map Properties</strong></p>
+<ul>
+<li><strong>Title &amp; Description:</strong> Give your map a name and context.</li>
+<li><strong>Initial View:</strong> Set the default zoom level and center point.</li>
+</ul>
+<p><strong>Import Data (Global)</strong></p>
+<ul>
+<li>Click the “Upload data” button (⬆️).</li>
+<li>Supports formats like <code>.geojson</code>, <code>.gpx</code>, <code>.kml</code>, and <code>.osm</code>.</li>
+<li>This will create a new layer for the imported data.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Permissions &amp; Sharing</strong></p>
+<ul>
+<li>Define who can see and edit your map.</li>
+<li><strong>Secret Links:</strong> Generate unique URLs for anonymous viewers or contributors.</li>
+<li><strong>Editors:</strong> Grant editing rights to specific OSM users.</li>
+<li><strong>Embed Options:</strong> Get the <code>&lt;iframe&gt;</code> code to place your map on a blog or website.</li>
+</ul>
+</div></div>
+</section>
+<section id="level-2-working-with-layers" class="slide level2">
+<h2>Level 2: Working with Layers</h2>
+<p>Layers are containers for your features. They help you organize and style data in bulk.</p>
+<ul>
+<li><strong>Purpose:</strong> Group similar objects.
+<ul>
+<li>Example: A layer for “Cafes,” another for “Bus Stops.”</li>
+</ul></li>
+<li><strong>Layer Properties:</strong>
+<ul>
+<li><strong>Name:</strong> Rename the layer for clarity.</li>
+<li><strong>Color:</strong> Set a default color for all features in the layer.</li>
+<li><strong>Icon Shape/Symbol:</strong> Set a default icon for all markers.</li>
+</ul></li>
+<li><strong>Data Management:</strong>
+<ul>
+<li><strong>Import:</strong> Add data directly into a specific layer.</li>
+<li><strong>Export:</strong> Download just that layer’s data.</li>
+<li><strong>Show/Hide:</strong> Toggle layer visibility on the map.</li>
+</ul></li>
+</ul>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Organizing features into layers is key to creating a clean and understandable map, especially for complex projects.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="level-3-objects---the-marker" class="slide level2 scrollable">
+<h2>Level 3: Objects - The Marker</h2>
+<p>A <strong>Marker</strong> represents a single point of interest (POI).</p>
+<p><strong>How to Create:</strong></p>
+<ol type="1">
+<li>Select the marker tool (📍) from the toolbar.</li>
+<li>Click on the map where you want to place the marker.</li>
+<li>The editing panel will open.</li>
+</ol>
+<p><strong>Key Properties:</strong></p>
+<ul>
+<li><strong>Name &amp; Description:</strong> Add a title and detailed info. The description supports <strong>Markdown</strong> for formatting!</li>
+<li><strong>Color:</strong> Override the layer’s default color.</li>
+<li><strong>Icon Symbol:</strong> Choose a unique symbol to represent the feature.</li>
+</ul>
+</section>
+<section id="level-4-objects---the-polyline" class="slide level2 scrollable">
+<h2>Level 4: Objects - The Polyline</h2>
+<p>A <strong>Polyline</strong> is an ordered series of points connected to form a line.</p>
+<p><strong>How to Create:</strong></p>
+<ol type="1">
+<li>Select the polyline tool.</li>
+<li>Click on the map to add vertices (points).</li>
+<li><strong>Double-click</strong> on the last point to finish drawing.</li>
+</ol>
+<p><strong>Use Cases:</strong></p>
+<ul>
+<li>Roads, paths, or trails.</li>
+<li>Bus routes.</li>
+<li>River courses.</li>
+</ul>
+<p><strong>Key Properties:</strong></p>
+<ul>
+<li>Name &amp; Description</li>
+<li><strong>Stroke Color &amp; Width:</strong> Control the line’s appearance.</li>
+<li><strong>Dash Style:</strong> Make it a solid, dashed, or dotted line.</li>
+</ul>
+</section>
+<section id="level-5-objects---the-polygon" class="slide level2 scrollable">
+<h2>Level 5: Objects - The Polygon</h2>
+<p>A <strong>Polygon</strong> is a closed shape used to represent an area.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>How to Create:</strong></p>
+<ol type="1">
+<li>Select the polygon tool.</li>
+<li>Click to add vertices for the boundary.</li>
+<li>Click back on the <strong>first point</strong> to close the shape.</li>
+</ol>
+<p><strong>Use Cases:</strong></p>
+<ul>
+<li>Park boundaries.</li>
+<li>Building footprints.</li>
+<li>Neighborhood zones or districts.</li>
+</ul>
+<p><strong>Key Properties:</strong></p>
+<ul>
+<li>All polyline properties (stroke, etc.).</li>
+<li><strong>Fill Color:</strong> The color inside the shape.</li>
+<li><strong>Fill Opacity:</strong> How transparent the fill is.</li>
+</ul>
+<aside class="notes">
+<p>The key difference between a polyline and a polygon is that a polygon is a closed area with a ‘fill’. This allows you to color in areas like parks or lakes, which is controlled by the fill color and opacity settings.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<hr>
+<section id="umap-structure" class="slide level2">
+<h2>uMAP Structure</h2>
+<p><img data-src="https://wiki.openstreetmap.org/w/images/thumb/1/13/UMap_menu_active.jpg/375px-UMap_menu_active.jpg"></p>
+<p><img data-src="https://wiki.openstreetmap.org/w/images/thumb/d/d2/UMap_structure.jpg/375px-UMap_structure.jpg"></p>
+<hr>
+</section>
+<section id="umap-guide" class="slide level2">
+<h2>uMap Guide</h2>
+<ul>
+<li><a href="https://wiki.openstreetmap.org/wiki/UMap">uMap</a></li>
+<li><a href="https://wiki.openstreetmap.org/wiki/UMap/Guide">uMap/Guide</a></li>
+</ul>
+<hr>
+</section>
+<section id="umap-examples" class="slide level2">
+<h2>uMap Examples</h2>
+<ul>
+<li><a href="https://umap.hotosm.org/en/map/understanding-barriers-to-accessibility-for-person_364#18/8.48579/-13.25105">Understanding barriers to accessibility for persons with disabilities in Kolleh Town, Sierra Leone</a></li>
+<li><a href="https://umap.hotosm.org/en/map/myanmar-earthquake-2025-coordinated-mapping_161#9/21.5821/96.0590">Myanmar Earthquake 2025</a></li>
+<li><a href="https://umap.hotosm.org/en/map/mapeo-granizal-crisis-del-agua_377#16/6.2983/-75.5271">Mapeo Granizal-crisis del agua</a></li>
+<li><a href="https://umap.openstreetmap.de/de/map/save-2025-12-05-_-grambower-moor-standorte-der-peg_116313#15/53.5994/11.2823">SAVE 2025-12-05 _ Grambower Moor - Standorte der Pegel-Messstationen</a></li>
+</ul>
+<hr>
+</section>
+<section id="create-your-map" class="slide level2">
+<h2>Create Your Map!</h2>
+<p>uMap is an accessible yet powerful tool for custom cartography.</p>
+<ul>
+<li><strong>Start your project</strong> at <a href="https://umap.hotosm.org/">umap.hotosm.org</a>.</li>
+<li><strong>Experiment:</strong> Try importing a GPX track from a run or a list of your favorite local spots.</li>
+<li><strong>Collaborate:</strong> Share the editor link with a friend and build a map together.</li>
+</ul>
+<hr>
+</section>
+<section id="mapping-for-impact-kkn-umap-project" class="title-slide slide level1 center">
+<h1>Mapping for Impact: KKN uMap Project</h1>
+<p><strong>Community Service Projects with uMap in Indonesian Villages</strong></p>
+<hr>
+</section>
+<section id="project-pages" class="slide level2">
+<h2>Project Pages</h2>
+<ul>
+<li><a href="https://umap.hotosm.org/en/map/gumelem-wetan_1852">Gumelem Wetan</a></li>
+<li><a href="https://umap.hotosm.org/en/map/derik_1853">Derik</a></li>
+</ul>
+<hr>
+</section>
+<section id="the-goal-from-data-to-action" class="slide level2">
+<h2>The Goal: From Data to Action</h2>
+<p>Today, we’ll explore practical community service ideas for villages in Indonesia using <strong>uMap</strong>.</p>
+<ul>
+<li>We will focus on creating <strong>thematic maps</strong> that visualize specific community needs.</li>
+<li>These maps help village leaders, NGOs, and residents make better decisions.</li>
+<li>uMap is the perfect tool for this—it’s free, easy to use, and builds on top of OpenStreetMap data.</li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Remember: uMap is for creating custom map <em>layers</em>. It does <strong>not</strong> edit the official OpenStreetMap database. It’s a visualization tool.</p>
+</div>
+</div>
+</div>
+<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+    A[Community Need] --&gt; B{Collect Data};
+    B --&gt; C[Create uMap];
+    C --&gt; D[Share Map];
+    D --&gt; E[Informed Action!];
+
+    style A fill:#f9f,stroke:#333
+    style E fill:#9f9,stroke:#333
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Welcome. The focus of this session is on impact. We’re going to take raw data and turn it into a powerful tool for community development using uMap. Think of it as telling a story with a map, a story that can lead to real change in a village.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<hr>
+</section>
+<section id="theme-1-infrastructure-governance" class="slide level2">
+<h2>Theme 1: Infrastructure &amp; Governance</h2>
+<p>Mapping a village’s core assets helps with planning, maintenance, and administration.</p>
+<h3 id="peta-aset-batas-desa">“Peta Aset &amp; Batas Desa”</h3>
+<ul>
+<li><strong>Public Facilities:</strong> Map schools, mosques, health posts (<em>Posyandu</em>), and the village office (<em>Kantor Desa</em>).</li>
+<li><strong>Asset Maintenance:</strong> Track street lights, water pumps, and public toilets. Use colors to show status (e.g., Green for ‘Working’, Red for ‘Broken’).</li>
+<li><strong>Community Boundaries:</strong> Draw polygons for Hamlet (<em>Dusun</em>) and Neighborhood (<em>RT/RW</em>) borders to reduce disputes.</li>
+</ul>
+<p><strong>Impact:</strong> Provides a visual dashboard for the village government to manage assets and plan budgets (<em>Dana Desa</em>).</p>
+<hr>
+</section>
+<section id="theme-1-infrastructure-governance-other-ideas" class="slide level2">
+<h2>Theme 1: Infrastructure &amp; Governance (other ideas)</h2>
+<h3 id="village-infrastructure-mapping"><strong>Village Infrastructure Mapping</strong></h3>
+<ul>
+<li>Map roads, paths, bridges, and public facilities (schools, mosques, health posts (posyandu), trash collection points).</li>
+<li>Highlight areas needing repair or improvement.</li>
+<li>Use layers to show accessibility for vehicles vs.&nbsp;foot traffic.</li>
+<li>Impact: Helps villagers navigate important facilities; supports village planning (perencanaan desa).</li>
+</ul>
+<hr>
+</section>
+<section id="theme-2-safety-environment" class="slide level2">
+<h2>Theme 2: Safety &amp; Environment</h2>
+<p>Visualizing risks and resources can save lives and protect the local environment.</p>
+<h3 id="desa-siaga-bencana-lestari">“Desa Siaga Bencana &amp; Lestari”</h3>
+<ul>
+<li><strong>Disaster Preparedness:</strong> Map flood-prone areas (<em>rawan banjir</em>), landslide zones, evacuation routes, and safe gathering points (<em>titik kumpul</em>).</li>
+<li><strong>Water &amp; Sanitation:</strong> Identify wells, public taps, and also areas with poor drainage or illegal waste dumps.</li>
+<li><strong>Environmental Watch:</strong> Plot locations of riverbank erosion, illegal logging, or community reforestation projects.</li>
+</ul>
+<p><strong>Impact:</strong> Empowers the village disaster taskforce (<em>Satgas</em>) and supports public health campaigns (e.g., dengue fever prevention).</p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>In the marker popups for evacuation points, add the contact number of the Hamlet Head (<em>Kepala Dusun</em>)!</p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="theme-2-safety-environment-other-ideas" class="slide level2">
+<h2>Theme 2: Safety &amp; Environment (other ideas)</h2>
+<h3 id="disaster-preparedness-maps"><strong>Disaster Preparedness Maps</strong></h3>
+<ul>
+<li>Map flood-prone zones, landslide areas, or evacuation routes.</li>
+<li>Add safe shelters and community gathering points.</li>
+<li>Provide villagers with printed or mobile-accessible maps for emergencies.</li>
+</ul>
+</section>
+<section id="emergency-response-map-peta-tanggap-darurat-desa" class="slide level2">
+<h2><strong>Emergency Response Map (“Peta Tanggap Darurat Desa”)</strong></h2>
+<ul>
+<li>Map of: Fire-risk zones (rumah panggung, kebun kering), Nearest fire stations or call numbers, Evacuation routes, Open gathering spaces (lapangan, GOR), Landslide-prone areas (rawan longsor), Flood evacuation points</li>
+<li>Impact: Supports BPBD, village disaster taskforce (Satgas Bencana), and education for villagers.</li>
+</ul>
+<hr>
+</section>
+<section id="theme-2-safety-environment-other-ideas-1" class="slide level2">
+<h2>Theme 2: Safety &amp; Environment (other ideas)</h2>
+<h3 id="water-sanitation-mapping"><strong>Water &amp; Sanitation Mapping</strong></h3>
+<ul>
+<li>Identify wells, water sources, and distribution points.</li>
+<li>Mark areas with poor sanitation or waste disposal sites.</li>
+<li>Help NGOs or local government prioritize clean water projects.</li>
+<li>Impact: Useful for sanitation programs, NGO water projects, and health campaigns.</li>
+</ul>
+<h3 id="environmental-biodiversity-mapping"><strong>Environmental &amp; Biodiversity Mapping</strong></h3>
+<ul>
+<li>Plot forests, rivers, and biodiversity hotspots.</li>
+<li>Identify illegal logging or waste dumping areas.</li>
+<li>Support conservation efforts with visual evidence.</li>
+</ul>
+</section>
+<section id="waste-management-environmental-map" class="slide level2">
+<h2><strong>Waste Management &amp; Environmental Map</strong></h2>
+<ul>
+<li>Map of: Illegal dumping sites (TPS liar), Flood-prone drainage, Reforestation locations (perhutanan sosial), Recycling points, Riverbank erosion areas</li>
+<li>Impact: Supports environmental policymaking and cleanup programs.</li>
+</ul>
+<hr>
+</section>
+<section id="theme-3-economy-livelihood" class="slide level2">
+<h2>Theme 3: Economy &amp; Livelihood</h2>
+<p>A map can be a powerful tool to boost the local economy and support farmers.</p>
+<h3 id="peta-ekonomi-wisata-desa">“Peta Ekonomi &amp; Wisata Desa”</h3>
+<ul>
+<li><strong>Agriculture:</strong> Map land use (rice fields, gardens), irrigation channels, and farmer group locations.</li>
+<li><strong>Local Business (MSME/UMKM):</strong> Plot home industries (e.g., snack producers), local cafes (<em>warung</em>), and workshops.</li>
+<li><strong>Tourism:</strong> Highlight attractions like waterfalls, homestays, or cultural sites to create a digital tourist guide.</li>
+</ul>
+<p><strong>Impact:</strong> Promotes local products, supports farmer cooperatives, and helps develop sustainable village tourism (<em>Desa Wisata</em>).</p>
+<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+    subgraph "Village Tourism Layer"
+        A(Attraction: &lt;br&gt; Waterfall)
+        B(Homestay)
+        C(Local Craft &lt;br&gt; Shop)
+        D(Culinary: &lt;br&gt; Warung Kopi)
+      
+        A -- "nearby" --&gt; B
+        A -- "nearby" --&gt; D
+    end
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="theme-3-economy-livelihood-other-ideas" class="slide level2">
+<h2>Theme 3: Economy &amp; Livelihood (other ideas)</h2>
+<h3 id="agricultural-resourceproductivity-mapping"><strong>Agricultural Resource/Productivity Mapping</strong></h3>
+<ul>
+<li>Plot rice fields, plantations, and irrigation channels.</li>
+<li>Map of:
+<ul>
+<li>Land-use types (sawah, tegalan, kebun, hutan)</li>
+<li>Irrigation networks (saluran irigasi)</li>
+<li>Crop distribution (padi, jagung, kelapa, coklat)</li>
+<li>Locations of farmer groups (kelompok tani)</li>
+<li>Post-harvest facilities (rice mills, drying yards)</li>
+</ul></li>
+<li>Add layers for crop types and seasonal planting cycles.</li>
+<li>Support farmer cooperatives with shared knowledge of land use.</li>
+<li>Impact: Helps village farmers plan irrigation, farming schedules, and harvest logistics.</li>
+</ul>
+<h3 id="tourism-cultural-heritage-mapping"><strong>Tourism &amp; Cultural Heritage Mapping</strong></h3>
+<ul>
+<li>Highlight local attractions (waterfalls, traditional houses, crafts).</li>
+<li>Map homestays or eco-tourism spots.</li>
+<li>Promote sustainable tourism that benefits the village economy.</li>
+</ul>
+<hr>
+</section>
+<section id="theme-3-economy-livelihood-other-ideas-1" class="slide level2">
+<h2>Theme 3: Economy &amp; Livelihood (other ideas)</h2>
+<h3 id="public-transportation-accessibility-map"><strong>Public Transportation &amp; Accessibility Map</strong></h3>
+<ul>
+<li>Map all mobility information:
+<ul>
+<li>Angkot routes</li>
+<li>Ojek bases</li>
+<li>Damri / shuttle pickup points</li>
+<li>Road quality (baik/sedang/rusak)</li>
+<li>Bridges and river crossings</li>
+<li>Walking paths and shortcuts used by villagers</li>
+</ul></li>
+<li>Impact: Useful for village infrastructure proposals and student mobility.</li>
+</ul>
+<h3 id="msme-local-economy-map"><strong>MSME &amp; Local Economy Map</strong></h3>
+<ul>
+<li>Map all villagers’ economic activities:
+<ul>
+<li>Home industries (keripik, tempe, gula aren)</li>
+<li>Fishing spots</li>
+<li>Warungs and kiosks</li>
+<li>Local tourism points (air terjun, kebun kopi)</li>
+<li>Cooperatives (koperasi desa)</li>
+</ul></li>
+<li>Impact: Promotes small businesses and tourism.</li>
+</ul>
+<h3 id="household-survey-map-participatory-mapping"><strong>Household Survey Map (Participatory Mapping)</strong></h3>
+<ul>
+<li>Train villagers to add their own data:
+<ul>
+<li>Poverty indicators (DTKS-friendly markers)</li>
+<li>Assistance recipients (PKH, BLT, BPNT)</li>
+<li>Flood history at each household</li>
+<li>Household electricity/water access</li>
+</ul></li>
+<li>Impact: Helps desa fulfill SDGs Desa and prepares for Musrenbangdes.</li>
+</ul>
+<hr>
+</section>
+<section id="theme-4-social-human-development" class="slide level2">
+<h2>Theme 4: Social &amp; Human Development</h2>
+<p>Mapping social data helps ensure that services reach the most vulnerable people.</p>
+<h3 id="peta-sosial-pendidikan">“Peta Sosial &amp; Pendidikan”</h3>
+<ul>
+<li><strong>Health Access:</strong> Map homes of the elderly or persons with disabilities to guide health visits. Visualize the distance from homes to the nearest clinic.</li>
+<li><strong>Social Aid (<em>Bansos</em>):</strong> Use heatmaps to show concentrations of vulnerable households, ensuring aid is distributed fairly without revealing personal data.</li>
+<li><strong>Education:</strong> Create a “safe routes to school” map, highlighting dangerous crossings or unlit paths. Map digital dead zones where students struggle with online learning.</li>
+</ul>
+<p><strong>Impact:</strong> Supports transparency in aid distribution and helps improve access to health and education for all residents.</p>
+<hr>
+</section>
+<section id="theme-4-social-human-development-other-ideas" class="slide level2">
+<h2>Theme 4: Social &amp; Human Development (other ideas)</h2>
+<h3 id="health-social-services-mapping"><strong>Health &amp; Social Services Mapping</strong></h3>
+<ul>
+<li>Map clinics, midwives, and traditional healers.</li>
+<li>Add data on vaccination points or maternal health services.</li>
+<li>Visualize underserved areas to guide outreach programs.</li>
+</ul>
+<h3 id="education-youth-engagement"><strong>Education &amp; Youth Engagement</strong></h3>
+<ul>
+<li>Map schools, libraries, and informal learning centers.</li>
+<li>Create a “safe routes to school” map for children.</li>
+<li>Involve students in data collection as a learning project.</li>
+</ul>
+<h3 id="health-risk-map"><strong>Health Risk Map</strong></h3>
+<ul>
+<li>Identify:
+<ul>
+<li>Dengue mosquito hotspots (jangka DBD)</li>
+<li>Waste accumulation spots</li>
+<li>Areas with poor drainage</li>
+<li>Home locations of elderly/disabled residents (for Posyandu Lansia)</li>
+<li>Distance heatmaps to nearest health service</li>
+</ul></li>
+<li>Impact: Supports Posyandu, Puskesmas, and public health efforts.</li>
+</ul>
+<hr>
+</section>
+<section id="theme-4-social-human-development-other-ideas-1" class="slide level2">
+<h2>Theme 4: Social &amp; Human Development (other ideas)</h2>
+</section>
+<section id="educational-access-map" class="slide level2">
+<h2><strong>Educational Access Map</strong></h2>
+<ul>
+<li>Map:
+<ul>
+<li>All schools and their student capacity</li>
+<li>Students’ walking paths to school</li>
+<li>Dangerous paths (no sidewalks, crossing rivers)</li>
+<li>Internet/Wi-Fi signal levels in different areas</li>
+<li>Community learning centers (PKBM, rumah belajar)</li>
+</ul></li>
+<li>Impact: Supports village education programs, proposals for safer roads.</li>
+</ul>
+</section>
+<section id="digital-connectivity-map" class="slide level2">
+<h2><strong>Digital Connectivity Map</strong></h2>
+<ul>
+<li>Collect signal measurements using villagers’ phones:
+<ul>
+<li>Telkomsel, XL, Indosat signal strength by location</li>
+<li>Wi-Fi hotspots (RT/RW Net, schools, warung)</li>
+<li>Dead zones (blank spots)</li>
+</ul></li>
+<li>Impact: Useful for proposing BTS towers, improving online schooling.</li>
+</ul>
+<hr>
+</section>
+<section id="a-practical-workflow" class="slide level2">
+<h2>A Practical Workflow</h2>
+<p>From walking the village to sharing the final map.</p>
+<ul>
+<li><strong>Collect data</strong>: Walk the village with GPS-enabled phones, record points of interest.</li>
+<li><strong>Upload to uMap</strong>: Use categories (health, education, agriculture, etc.).</li>
+<li><strong>Community workshops</strong>: Teach villagers how to read and contribute to maps.</li>
+<li><strong>Share outputs</strong>: Print maps for local use, embed interactive maps on village websites or WhatsApp groups.</li>
+</ul>
+<aside class="notes">
+<p>This is the process in a nutshell. Step 1 is about getting outside. Step 2 is organization. Step 3 is where the magic happens in uMap. And Step 4, crucially, is about getting the map into the hands of the people who can use it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<hr>
+</section>
+<section id="start-your-project" class="slide level2">
+<h2>Start Your Project!</h2>
+<p>You have a powerful framework for making a real difference.</p>
+<ul>
+<li><strong>Choose a theme</strong> that is most relevant to your target village.</li>
+<li><strong>Engage the community:</strong> Talk to the village head and residents. Their input is essential.</li>
+<li><strong>Start small:</strong> Don’t try to map everything at once. A well-made map of one theme is better than a messy map of ten.</li>
+</ul>
+
+
+</section>
+
+</div></div>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W119
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="../qrjs_pics/unsoed_logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="https://imron-slide.vercel.app">irosyadi-2025</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script type="ojs-module-contents">
+    eyJjb250ZW50cyI6W119
+    </script>
+    <script type="module">
+    if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+    window._ojs.paths.runtimeToDoc = "../../map";
+    window._ojs.paths.runtimeToRoot = "../..";
+    window._ojs.paths.docToRoot = "..";
+    window._ojs.selfContained = false;
+    window._ojs.runtime.interpretFromScriptTags();
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
