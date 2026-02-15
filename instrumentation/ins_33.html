@@ -1,0 +1,1985 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-html/tabby.min.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.27">
+
+  <meta name="author" content="Imron Rosyadi">
+  <title>Instrumentation – Data‑Acquisition Systems and Digital Data</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-b0356e9119c1bdfd0db189d130feb51c.css">
+  <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+  <link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Data‑Acquisition Systems and Digital Data</h1>
+  <p class="subtitle">Instruments 3.3</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Imron Rosyadi 
+</div>
+</div>
+</div>
+
+</section>
+<section id="learning-objectives" class="slide level2 scrollable">
+<h2>Learning Objectives</h2>
+<p>By the end of this session, you should be able to:</p>
+<ol type="1">
+<li>Describe the main hardware blocks of a PC plug‑in data‑acquisition board (DAS).</li>
+<li>Explain how software talks to a DAS using I/O port addresses, status bits, and interrupts.</li>
+<li>Compute ADC resolution and interpret what “ignorance about the value” really means.</li>
+<li>Choose an appropriate sampling rate for a control application, and relate it to Nyquist.</li>
+<li>Derive or apply simple linearization relationships (equation-based and table look‑up).</li>
+</ol>
+<aside class="notes">
+<p>Emphasize that this is not just theory: everything here appears in real PC‑based or embedded DAQ systems, PCI/PCIe boards, USB DAQs, and even SoC ADC peripherals.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="roadmap" class="slide level2 scrollable">
+<h2>Roadmap</h2>
+<ol type="1">
+<li>DAS hardware in PC-based systems</li>
+<li>DAS software and basic data‑acquisition sequence</li>
+<li>Example: programming a DAS (channel selection + timeout)</li>
+<li>Digital measurement characteristics
+<ul>
+<li>Resolution and quantization</li>
+<li>Sampled‑data systems and sampling rate choice</li>
+</ul></li>
+<li>Linearization of sensor outputs
+<ul>
+<li>Equation‑based</li>
+<li>Table look‑up</li>
+</ul></li>
+<li>Key takeaways and formula summary</li>
+</ol>
+</section>
+<section id="das-hardware-big-picture" class="slide level2">
+<h2>4.1 DAS Hardware – Big Picture</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>A <strong>data‑acquisition system (DAS)</strong> board for a PC expansion slot typically includes:</p>
+<ul>
+<li><strong>Analog inputs</strong> (multiple channels)</li>
+<li><strong>Analog multiplexer (MUX)</strong></li>
+<li><strong>Sample‑and‑hold (S/H)</strong></li>
+<li><strong>Analog‑to‑digital converter (ADC)</strong></li>
+<li><strong>Digital‑to‑analog converter (DAC)</strong> and <strong>output latch</strong></li>
+<li><strong>Address decoder / command processor</strong></li>
+<li><strong>Bus interface</strong> to the PC (data, address, control lines)</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/6ce899a5a54d9cfb804d66e32998e2de_MD5.jpg" height="260"></p>
+<figcaption>Figure 29: Typical layout of a PC data-acquisition board</figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>Map Figure 29 to blocks: - On a modern PCI/PCIe or USB DAQ, the same blocks exist, just integrated. - Explain that the PC CPU only sees I/O addresses and control registers; all analog details are hidden inside the DAS board.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="pc-bus-and-expansion-slots" class="slide level2">
+<h2>PC Bus and Expansion Slots</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>In a traditional PC:</p>
+<ul>
+<li><p>The CPU communicates with devices via <strong>bus lines</strong>:</p>
+<ul>
+<li><strong>Data bus</strong></li>
+<li><strong>Address bus</strong></li>
+<li><strong>Control lines</strong> (read/write, interrupt, etc.)</li>
+</ul></li>
+<li><p>The motherboard exposes <strong>expansion slots</strong> (ISA/PCI/PCIe) using a standard pinout.</p></li>
+<li><p>A DAS is a <strong>plug‑in board</strong> that:</p>
+<ul>
+<li>Connects to this bus</li>
+<li>Decodes addresses</li>
+<li>Presents registers for control, status, and data</li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:45%;">
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<p><img data-src="ins_33_files\figure-revealjs\mermaid-figure-1.png" style="width:8.72in;height:3.44in"></p>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>Relate this to microcontroller labs: MCU peripherals (ADC, timers) are like “internal boards” attached to the internal bus. PCs just do it with plug‑in cards.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="core-das-blocks-adc-and-sampleandhold" class="slide level2">
+<h2>Core DAS Blocks – ADC and Sample‑and‑Hold</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>ADC (Analog‑to‑Digital Converter)</strong></p>
+<ul>
+<li>Often <strong>successive‑approximation</strong> type</li>
+<li>Converts held analog voltage to an <span class="math inline">\(n\)</span>‑bit code</li>
+<li><strong>Conversion time</strong> dominates total sample time</li>
+</ul>
+<p><strong>Sample‑and‑Hold (S/H)</strong></p>
+<ul>
+<li>Captures and holds the input voltage while ADC converts</li>
+<li>Has its own <strong>acquisition time</strong> (time to “settle” to the input)</li>
+</ul>
+<p>Overall single‑sample delay:</p>
+<p><span class="math display">\[
+t_\text{sample} \approx t_\text{acq} + t_\text{conv}
+\]</span></p>
+</div><div class="column" style="width:50%;">
+<p><strong>Why S/H?</strong></p>
+<ul>
+<li>While the ADC is stepping through bits, the input must not change.</li>
+<li>The S/H “freezes” the analog signal long enough to get a reliable binary code.</li>
+</ul>
+<p><strong>ECE analogy:</strong></p>
+<ul>
+<li>Think of S/H like a <strong>zero‑order hold</strong> but in reverse: instead of holding the DAC output, we briefly hold the ADC input.</li>
+</ul>
+</div></div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>A faster ADC is useless if the S/H cannot acquire quickly enough for your signal bandwidth.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Stress that when designing or selecting a DAS, both ADC conversion time and S/H acquisition time matter for maximum throughput (samples/s).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="analog-multiplexer-mux-many-inputs-one-converter" class="slide level2">
+<h2>Analog Multiplexer (MUX) – Many Inputs, One Converter</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>The <strong>Analog MUX</strong> lets one ADC serve multiple input channels.</p>
+<ul>
+<li>Each input channel is a different analog source.</li>
+<li>MUX acts like an electronically controlled <strong>multi‑position switch</strong>.</li>
+<li>Controlled by digital lines from the DAS command processor.</li>
+</ul>
+<p>The DAS can:</p>
+<ul>
+<li>Select channels one at a time (on demand), or</li>
+<li>Be programmed to <strong>scan</strong> channels sequentially.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/1f059fbb6b5d5a126f02f495bd25dc28_MD5.jpg" height="240"></p>
+<figcaption>Figure 30: Analog multiplexer as multi-position switch</figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>Emphasize that all channels share: - The S/H - The ADC Thus, the effective per‑channel max sample rate = (overall rate) / (number of channels) if scanning.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="address-decoder-command-processor" class="slide level2">
+<h2>Address Decoder / Command Processor</h2>
+<ul>
+<li><p>The PC selects DAS functions using the <strong>address bus</strong> and <strong>control lines</strong>.</p></li>
+<li><p>The <strong>address decoder / command processor</strong> on the DAS:</p>
+<ul>
+<li>Watches for its <strong>base I/O address</strong> (e.g., 300H).</li>
+<li>Decodes <strong>offsets</strong> (base + 0, base + 1, …) as different registers:
+<ul>
+<li>Channel select register</li>
+<li>Command register (start convert, reset, etc.)</li>
+<li>Status register (EOC bit, error bits, etc.)</li>
+<li>Data register (ADC output, DAC input)</li>
+</ul></li>
+</ul></li>
+<li><p>It then issues appropriate internal signals to:</p>
+<ul>
+<li>The MUX (which channel?)</li>
+<li>S/H (sample or hold?)</li>
+<li>ADC (start conversion)</li>
+<li>DAC (update output)</li>
+</ul></li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>From the CPU’s perspective, a DAS is just a <strong>set of I/O ports</strong> that obey a defined register map and bit semantics.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Draw analogy to memory‑mapped peripherals on microcontrollers (e.g., <code>ADC1-&gt;CR2</code> in STM32). In the PC/ISA‑type DAS, instead of memory‑mapped registers, we often have port I/O space (e.g., x86 <code>IN</code> / <code>OUT</code> instructions).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="dac-and-latch-analog-outputs" class="slide level2">
+<h2>DAC and Latch – Analog Outputs</h2>
+<ul>
+<li><p>Many DAS boards also provide <strong>analog outputs</strong>:</p>
+<ul>
+<li><strong>Latch</strong>:
+<ul>
+<li>Holds the digital value written by the CPU.</li>
+<li>Ensures stable input to the DAC between updates.</li>
+</ul></li>
+<li><strong>DAC</strong>:
+<ul>
+<li>Converts that latched digital value to an analog voltage/current.</li>
+<li>Often <strong>unipolar</strong> (e.g., 0–10 V) or <strong>bipolar</strong> (e.g., −10 to +10 V).</li>
+</ul></li>
+</ul></li>
+<li><p>Used to:</p>
+<ul>
+<li>Drive actuators in control systems.</li>
+<li>Output test waveforms in instrumentation labs.</li>
+</ul></li>
+</ul>
+<aside class="notes">
+<p>Mention that in closed‑loop control, the ADC path goes from sensor→ADC→CPU, and the DAC path goes from CPU→DAC→actuator (valve, motor driver, etc.). Students should relate to typical lab setups with NI‑DAQ or similar.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="das-software-talking-to-the-board" class="slide level2 scrollable">
+<h2>4.2 DAS Software – Talking to the Board</h2>
+<p>When the CPU wants a sample from channel <span class="math inline">\(k\)</span>:</p>
+<ol type="1">
+<li><strong>Select channel</strong>
+<ul>
+<li>Write appropriate bits to a <strong>channel select register</strong> (e.g., base + 0).</li>
+</ul></li>
+<li><strong>Start conversion (SC)</strong>
+<ul>
+<li>Write a control word to a <strong>command register</strong> (e.g., base + 1).</li>
+<li>Internally, DAS:
+<ul>
+<li>Switches MUX to channel <span class="math inline">\(k\)</span></li>
+<li>Puts S/H into hold mode</li>
+<li>Starts ADC conversion</li>
+</ul></li>
+</ul></li>
+<li><strong>Wait for EOC (end of convert)</strong>
+<ul>
+<li>Poll a <strong>status register</strong> or</li>
+<li>Wait for an <strong>interrupt</strong> that signals EOC.</li>
+</ul></li>
+<li><strong>Read result</strong>
+<ul>
+<li>Read <strong>data register</strong> (e.g., base + 0) to get the ADC’s digital output.</li>
+</ul></li>
+<li><strong>(Optional) Write DAC</strong>
+<ul>
+<li>Write digital value to DAC register (e.g., base + 2).</li>
+</ul></li>
+</ol>
+<aside class="notes">
+<p>Emphasize the mapping: “base address + offset” is just how the OS and hardware agree on where the DAS appears in I/O space. In classic PC ISA cards, addresses like 300H were common for custom boards.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="flow-of-a-simple-pollingbased-acquisition" class="slide level2">
+<h2>Flow of a Simple Polling‑Based Acquisition</h2>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<p><img data-src="ins_33_files\figure-revealjs\mermaid-figure-3.png" style="width:4.13in;height:9.89in"></p>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Explain the problem with this naive loop: if EOC never arrives (DAS failure), the CPU is stuck forever. This motivates the need for <strong>timeouts</strong> or <strong>watchdogs</strong>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="protecting-against-das-failure-timeout" class="slide level2">
+<h2>Protecting Against DAS Failure – Timeout</h2>
+<ul>
+<li><p>Problem: in a simple polling loop, if EOC never happens, CPU is <strong>stuck forever</strong>.</p></li>
+<li><p>Solution: introduce a <strong>timeout</strong> mechanism:</p>
+<ul>
+<li>Start a <strong>software counter</strong> or use a <strong>hardware timer</strong>.</li>
+<li>Loop while:
+<ul>
+<li>EOC bit is not set, <strong>and</strong></li>
+<li>Timeout has not expired.</li>
+</ul></li>
+<li>If timeout expires before EOC:
+<ul>
+<li>Signal <strong>ERROR</strong> and jump to error‑handling routine.</li>
+</ul></li>
+</ul></li>
+</ul>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>In control systems, hanging in a loop is unacceptable: actuators may stay at stale outputs, causing unsafe operation. Timeouts are critical for <strong>fault‑tolerant control</strong>.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Highlight that in real OS‑based systems (Linux/Windows), you rarely spin in infinite loops; you might block with a timeout, use OS timers, or rely on driver‑level mechanisms. Concept is the same: <strong>never assume the hardware always responds</strong>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-25-das-specification-recap" class="slide level2 scrollable">
+<h2>Example 25 – DAS Specification Recap</h2>
+<p>A DAS has:</p>
+<ol type="1">
+<li><strong>8 analog input channels</strong>.</li>
+<li><strong>8‑bit bipolar ADC</strong>, <span class="math inline">\(V_\text{ref} = 5\)</span> V, <span class="math inline">\(t_\text{conv} = 25 \,\mu\text{s}\)</span>.</li>
+<li><strong>S/H acquisition time</strong> <span class="math inline">\(t_\text{acq} = 10 \,\mu\text{s}\)</span>.</li>
+<li><strong>8‑bit unipolar DAC</strong>, <span class="math inline">\(V_\text{ref} = 10\)</span> V.</li>
+</ol>
+<p>I/O addresses (base selectable from 000H to FFFH; use base = 300H):</p>
+<ul>
+<li><strong>BASE + 0</strong>
+<ul>
+<li>READ: inputs data sample from ADC.</li>
+<li>WRITE: selects input channel
+<ul>
+<li><span class="math inline">\(b_0\)</span> set → channel 0</li>
+<li>…</li>
+<li><span class="math inline">\(b_7\)</span> set → channel 7</li>
+</ul></li>
+</ul></li>
+<li><strong>BASE + 1</strong>
+<ul>
+<li>READ: inputs ADC status; EOC indicated by <span class="math inline">\(b_7\)</span> going <strong>low</strong>.</li>
+<li>WRITE:
+<ul>
+<li>if <span class="math inline">\(b_7\)</span> is high: initializes the DAS</li>
+<li>if <span class="math inline">\(b_7\)</span> is low: issuing SC by taking <span class="math inline">\(b_0\)</span> low</li>
+</ul></li>
+</ul></li>
+<li><strong>BASE + 2</strong>
+<ul>
+<li>READ: no action</li>
+<li>WRITE: sends data to DAC</li>
+</ul></li>
+</ul>
+<p>Task: flowchart to take a sample from <strong>channel 3</strong>, with <strong>100 µs timeout</strong>, then jump to ERROR if EOC not issued.</p>
+<aside class="notes">
+<p>Point out that in practice, you would know the approximate loop execution time in CPU cycles and derive <span class="math inline">\(N\)</span> for 100 µs. Example 25’s Figure 32 shows a vendor‑style flowchart.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-25-flowchart-logic-conceptual" class="slide level2">
+<h2>Example 25 – Flowchart Logic (Conceptual)</h2>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<p><img data-src="ins_33_files\figure-revealjs\mermaid-figure-2.png" style="width:7.78in;height:12.57in"></p>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Describe that: - <code>N</code> is chosen so that the loop time equals 100 µs (slightly greater than <span class="math inline">\(t_\text{acq} + t_\text{conv} = 35\,\mu\)</span>s). - For a 1 MHz tight loop, 100 iteration cycles ≈ 100 µs. - The actual Figure 32 in the book shows vendor‑specific details, but the core idea matches this diagram.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-exercise-simple-das-polling-logic-pseudoc" class="slide level2">
+<h2>Interactive Exercise – Simple DAS Polling Logic (Pseudo‑C)</h2>
+<div>
+<div id="pyodide-1" class="exercise-cell">
+
+</div>
+<script type="pyodide-1-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiIyBWZXJ5IHNpbXBsaWZpZWQgcHNldWRvLWxvZ2ljIGZvciBwb2xsaW5nIHdpdGggdGltZW91dC5cbiMgVHJ5IGNoYW5naW5nIE4gYW5kIHNlZSBpZiBFT0MgaXMgXCJkZXRlY3RlZFwiIG9yIHRpbWVzIG91dC5cblxuaW1wb3J0IHRpbWVcblxudF9jb252X3VzID0gMzUgICAgICMgdG90YWwgbmVlZGVkOiBTL0ggKyBBREMgaW4gbWljcm9zZWNvbmRzXG5OID0gMTAgICAgICAgICAgICAgIyBjaGFuZ2UgdGhpcyB2YWx1ZSB0byBzaW11bGF0ZSBkaWZmZXJlbnQgdGltZW91dCBsZW5ndGhzXG5sb29wX3RpbWVfdXMgPSA1ICAgIyBhc3N1bWUgZWFjaCBwb2xsIGxvb3AgdGFrZXMgfjUgbWljcm9zZWNvbmRzXG5cbnRpbWVvdXRfdXMgPSBOICogbG9vcF90aW1lX3VzXG5cbnByaW50KGZcIkxvb3AgdGltZW91dCA9IHt0aW1lb3V0X3VzfSB1c1wiKVxuXG5pZiB0aW1lb3V0X3VzIDwgdF9jb252X3VzOlxuICAgIHByaW50KFwiUmVzdWx0OiBUSU1FT1VUIGJlZm9yZSBFT0Mg4oaSIEVSUk9SXCIpXG5lbHNlOlxuICAgIHByaW50KFwiUmVzdWx0OiBFT0MgZGV0ZWN0ZWQgd2l0aGluIHRpbWVvdXQg4oaSIE9LXCIpIn0=
+</script>
+</div>
+<aside class="notes">
+<p>Encourage students to modify <code>N</code> and reason: - If <code>N * loop_time_us</code> &lt; 35 µs, then timeout occurs before the ADC is realistically done. - You want enough margin beyond <span class="math inline">\(t_\text{acq} + t_\text{conv}\)</span> but not so huge that fault detection is slow.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="characteristics-of-digital-data-big-picture" class="slide level2 scrollable">
+<h2>5 Characteristics of Digital Data – Big Picture</h2>
+<p>When we digitize analog signals and control them by computer, we pay a price for many advantages:</p>
+<ul>
+<li><p><strong>Pros:</strong> multi‑loop control, software flexibility, noise immunity, linearization, self‑tuning, error correction, failure recovery.</p></li>
+<li><p><strong>Cons:</strong></p>
+<ol type="1">
+<li><strong>Finite resolution</strong> → we lose continuous knowledge of the variable’s value.</li>
+<li><strong>Sampling in time</strong> → we only know values at discrete instants.</li>
+</ol></li>
+</ul>
+<p>The rest of this section quantifies those cons and shows how to live with them.</p>
+<aside class="notes">
+<p>Mention that understanding these limitations avoids overpromising what a digital control system can achieve (e.g., demanding ±0.1°C when resolution is ±0.8°C).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="digitized-value-adc-mapping" class="slide level2">
+<h2>5.1 Digitized Value – ADC Mapping</h2>
+<p>For an <span class="math inline">\(n\)</span>‑bit ADC, with input range <span class="math inline">\(V_{\min}\)</span> to <span class="math inline">\(V_{\max}\)</span>, the output is an integer code <span class="math inline">\(N\)</span> satisfying</p>
+<p><span class="math display">\[
+N = \frac{(V - V_{\min})}{(V_{\max} - V_{\min})} 2^n
+\tag{29}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(N\)</span> is the <strong>base‑10</strong> equivalent of the binary code (integer).</li>
+<li>Only the <strong>integer</strong> part of the right‑hand side is used.</li>
+</ul>
+<p>So one digital code represents a <strong>range</strong> of analog input values.</p>
+<p><strong>Resolution</strong> in volts per least significant bit (LSB):</p>
+<p><span class="math display">\[
+\Delta V = \frac{V_{\max} - V_{\min}}{2^n}
+\tag{30}
+\]</span></p>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Warning</strong></p>
+</div>
+<div class="callout-content">
+<p>Every ADC reading carries <strong>quantization uncertainty</strong> of roughly ±½ LSB. You cannot control more finely than this.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Draw analogy: rounding a real number to 2 decimal places. You know it within ±0.005. ADC rounding to codes is similar, just in voltage or temperature units.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-compute-adc-code-and-resolution" class="slide level2">
+<h2>Interactive – Compute ADC Code and Resolution</h2>
+<div>
+<div id="pyodide-2" class="exercise-cell">
+
+</div>
+<script type="pyodide-2-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiIyBDaGFuZ2Ugbl9iaXRzLCBWbWluLCBWbWF4LCBhbmQgVmluIHRvIHNlZSBob3cgY29kZSBhbmQgcmVzb2x1dGlvbiBiZWhhdmUuXG5cbm5fYml0cyA9IDhcblZtaW4gPSAwLjBcblZtYXggPSA1LjBcblZpbiA9IDMuMyAgICMgdHJ5IG90aGVyIHZhbHVlc1xuXG5kZWx0YVYgPSAoVm1heCAtIFZtaW4pIC8gKDIqKm5fYml0cylcbk4gPSBpbnQoKFZpbiAtIFZtaW4pIC8gKFZtYXggLSBWbWluKSAqICgyKipuX2JpdHMpKVxuXG5wcmludChmXCJSZXNvbHV0aW9uIM6UViA9IHtkZWx0YVY6LjRmfSBWL0xTQlwiKVxucHJpbnQoZlwiSW5wdXQgVmluID0ge1ZpbjouM2Z9IFYg4oaSIGNvZGUgTiA9IHtOfSAoMHh7TjowMlh9KVwiKVxuVl9sb3cgPSBWbWluICsgTipkZWx0YVZcblZfaGlnaCA9IFZfbG93ICsgZGVsdGFWXG5wcmludChmXCJSZXByZXNlbnRzIGFwcHJveGltYXRlbHk6IFt7Vl9sb3c6LjRmfSwge1ZfaGlnaDouNGZ9KSBWXCIpIn0=
+</script>
+</div>
+<aside class="notes">
+<p>Ask students: If <code>Vin</code> is 3.301 V and 3.349 V, same code? That is the <strong>ignorance interval</strong>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-26-system-description" class="slide level2 scrollable">
+<h2>Example 26 – System Description</h2>
+<p>A temperature <span class="math inline">\(T\)</span> between <span class="math inline">\(100^\circ\text{C}\)</span> and <span class="math inline">\(300^\circ\text{C}\)</span> is:</p>
+<ul>
+<li>First mapped to a <strong>0–5 V</strong> signal (ideal linear transducer).</li>
+<li>Then applied to an <strong>8‑bit ADC</strong> with <span class="math inline">\(V_\text{ref} = 5\)</span> V.</li>
+</ul>
+<p>Questions:</p>
+<ol type="1">
+<li>What is the <strong>actual measurement range</strong>?</li>
+<li>What is the <strong>resolution</strong> in °C/bit?</li>
+<li>What ADC hex output corresponds to <span class="math inline">\(T = 169^\circ\text{C}\)</span>?</li>
+<li>What temperature does an ADC output of C5H represent?</li>
+</ol>
+<p>We will step through the important ideas.</p>
+<aside class="notes">
+<p>Clarify that the ADC outputs 00H–FFH over its voltage range, but due to quantization, the actual temperature range is slightly narrower than 100–300°C.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-26-resolution-calculation" class="slide level2">
+<h2>Example 26 – Resolution Calculation</h2>
+<p>Temperature span:</p>
+<p><span class="math display">\[
+T_\text{span} = 300^\circ\text{C} - 100^\circ\text{C} = 200^\circ\text{C}
+\]</span></p>
+<p>With <span class="math inline">\(n = 8\)</span> bits: <span class="math inline">\(2^8 = 256\)</span> codes.</p>
+<p>Resolution (Equation 30, applied to temperature):</p>
+<p><span class="math display">\[
+\Delta T = \frac{200^\circ\text{C}}{256}
+\approx 0.78^\circ\text{C} / \text{bit}
+\]</span></p>
+<p>Interpretation:</p>
+<ul>
+<li>1 LSB step corresponds to about <span class="math inline">\(0.78^\circ\text{C}\)</span>.</li>
+<li>At any reading, you are <strong>uncertain</strong> by about this amount.</li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>If your control spec is ±0.2°C, this measurement system <strong>cannot</strong> support it, regardless of how good your controller algorithm is.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Emphasize: resolution is a physical limit due to number of bits. You can average or filter to reduce noise, but you cannot “beat” the LSB without changing the hardware.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-26-limits-of-measurement-range" class="slide level2">
+<h2>Example 26 – Limits of Measurement Range</h2>
+<p>The ADC saturates near its extremes:</p>
+<ul>
+<li><p>Highest code is FFH = 255. It appears at a voltage just below 5.0 V:</p>
+<ul>
+<li>LSB size in volts: <span class="math inline">\(\Delta V = 5/256 = 0.01953\)</span> V.</li>
+<li>Code FFH covers from <span class="math inline">\(5.0 - \Delta V\)</span> up to (but not including) 5.0 V → roughly 4.98 V to 5.00 V.</li>
+</ul></li>
+<li><p>Similarly, code 00H covers from 0 V up to <span class="math inline">\(\Delta V\)</span> (≈0.0195 V).</p></li>
+</ul>
+<p>Mapping voltage back to temperature (0–5 V ↔︎ 100–300°C):</p>
+<ul>
+<li>0 V ↔︎ 100°C</li>
+<li>5 V ↔︎ 300°C</li>
+</ul>
+<p>So:</p>
+<ul>
+<li>00H corresponds to <strong><span class="math inline">\(T &lt; 100.78^\circ\text{C}\)</span></strong>.</li>
+<li>FFH corresponds to <strong><span class="math inline">\(T &gt; 299.22^\circ\text{C}\)</span></strong>.</li>
+</ul>
+<p>Therefore, the <strong>usable measurement range</strong> is:</p>
+<ul>
+<li>From about <span class="math inline">\(100.78^\circ\text{C}\)</span> to <span class="math inline">\(299.22^\circ\text{C}\)</span>.</li>
+</ul>
+<aside class="notes">
+<p>The key idea: saturation at the ends cuts off some of the nominal range. Designers typically allow some safety margin beyond the expected operating range to avoid spending much time in saturation codes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-26-code-for-169c" class="slide level2">
+<h2>Example 26 – Code for 169°C</h2>
+<p>We use Equation (29) with <span class="math inline">\(V_{\min} \equiv T_{\min} = 100^\circ\text{C}\)</span>, <span class="math inline">\(V_{\max} \equiv T_{\max} = 300^\circ\text{C}\)</span>.</p>
+<p><span class="math display">\[
+N = \frac{169 - 100}{300 - 100} \cdot 2^8
+= \frac{69}{200} \cdot 256
+\approx 88.32
+\]</span></p>
+<p>Take integer part: <span class="math inline">\(N = 88_{10}\)</span>.</p>
+<p>Convert 88 to hex:</p>
+<ul>
+<li><span class="math inline">\(88_{10} = 58_\text{H}\)</span>.</li>
+</ul>
+<p>So <span class="math inline">\(169^\circ\text{C} \rightarrow 58\text{H}\)</span>.</p>
+<p>Alternate way:</p>
+<ul>
+<li><span class="math inline">\(N \approx \dfrac{T-100}{\Delta T} = \dfrac{69}{0.78} \approx 88.5 \rightarrow 58\text{H}\)</span>.</li>
+</ul>
+<aside class="notes">
+<p>Point out the small discrepancy is due to rounding differences; in hardware, the formula is exact at the voltage level, but we conceptually reason at temperature level.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-26-temperature-from-code-c5h" class="slide level2">
+<h2>Example 26 – Temperature from Code C5H</h2>
+<p>Now reverse the relationship.</p>
+<p>C5H in hex →</p>
+<ul>
+<li><span class="math inline">\(C_{{16}} = 12_{10}\)</span>, <span class="math inline">\(5_{16} = 5_{10}\)</span>, so</li>
+<li><span class="math inline">\(N = 12 \cdot 16 + 5 = 192 + 5 = 197_{10}\)</span>.</li>
+</ul>
+<p>Use Equation (29) solved for <span class="math inline">\(T\)</span>:</p>
+<p><span class="math display">\[
+N = \frac{T - 100}{300 - 100} \cdot 256
+\Rightarrow
+T = \frac{N \cdot 200}{256} + 100
+\]</span></p>
+<p>Plug in <span class="math inline">\(N = 197\)</span>:</p>
+<p><span class="math display">\[
+T = \frac{197 \cdot 200}{256} + 100
+\approx 253.9^\circ\text{C}
+\]</span></p>
+<p>Interpretation:</p>
+<ul>
+<li>Code C5H represents all temperatures in roughly a 0.78°C band around 253.9°C.</li>
+<li>We cannot distinguish exactly where in that band the true temperature lies.</li>
+</ul>
+</section>
+<section id="resolution-vs.-noise-vs.-bits" class="slide level2">
+<h2>Resolution vs.&nbsp;Noise vs.&nbsp;Bits</h2>
+<ul>
+<li><p>Increasing bits improves resolution:</p>
+<ul>
+<li>8 bits → 1 part in 256.</li>
+<li>16 bits → 1 part in 65,536.</li>
+</ul></li>
+<li><p>Example: 16‑bit ADC, <span class="math inline">\(V_\text{ref} = 5.0\)</span> V:</p>
+<p><span class="math display">\[
+\Delta V = \frac{5.0}{65{,}536} \approx 76.3 \,\mu\text{V}
+\]</span></p></li>
+<li><p>In industrial environments, <strong>electrical noise</strong> (mV level) often exceeds LSB by orders of magnitude.</p></li>
+</ul>
+<div class="callout callout-caution callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Caution</strong></p>
+</div>
+<div class="callout-content">
+<p>Extra bits do not help if your <strong>analog front end</strong> is too noisy. Always design filters, shielding, and grounding to match the ADC’s effective resolution.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Mention ENOB (Effective Number of Bits) as a real‑world spec that accounts for noise and distortion.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="sampled-data-systems-discrete-in-time" class="slide level2">
+<h2>5.2 Sampled Data Systems – Discrete in Time</h2>
+<p>In digital control systems, we also have <strong>discrete time</strong> knowledge:</p>
+<ul>
+<li>The computer samples the variable only every <span class="math inline">\(t_s\)</span> seconds.</li>
+<li>Sampling frequency: <span class="math inline">\(f_s = 1/t_s\)</span>.</li>
+</ul>
+<p>Consequences:</p>
+<ul>
+<li>We do not know what the variable does <strong>between</strong> samples.</li>
+<li>The control algorithm assumes certain smoothness or bounded frequency content of the process.</li>
+</ul>
+<p>There are both:</p>
+<ul>
+<li><strong>Maximum sampling rate</strong> (limited by ADC + computation time).</li>
+<li><strong>Minimum sampling rate</strong> (to capture the process dynamics).</li>
+</ul>
+<aside class="notes">
+<p>Relate to microcontroller labs: you cannot sample at 1 MHz if ADC + math takes 10 µs per sample; your max is ~100 kS/s in ideal conditions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="visualizing-sampling-figure-33" class="slide level2">
+<h2>Visualizing Sampling – Figure 33</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/18c5dee1d769c51994640921d8b12efa_MD5.jpg" height="130"></p>
+<figcaption>Figure 33a–d: Original signal and reconstructions from samples</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/d3db36ddbff8964c884aeb80d0456e59_MD5.jpg" height="100"></p>
+<figcaption>Figure 33b</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/35a35024f3890766791587aa3b90eb0a_MD5.jpg" height="100"></p>
+<figcaption>Figure 33c</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/53937eb023c0196e9264979a2c91a039_MD5.jpg" height="100"></p>
+<figcaption>Figure 33d</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:45%;">
+<ul>
+<li><strong>(a)</strong> Actual (continuous) signal.</li>
+<li><strong>(b)</strong> Sampling too slow → poor reconstruction, lost detail.</li>
+<li><strong>(c)</strong> <strong>Aliasing</strong>: signal appears to have a false low‑frequency component.</li>
+<li><strong>(d)</strong> Sampling fast enough → essential features preserved.</li>
+</ul>
+<p>Key idea: you must sample fast enough to capture the <strong>fastest significant component</strong> of the signal.</p>
+</div></div>
+<aside class="notes">
+<p>Emphasize aliasing: high‑frequency content “folds” into lower frequencies. In control, that can lead to misleading feedback and unstable behavior if unaccounted for.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="practical-rule-10-max-signal-frequency" class="slide level2">
+<h2>Practical Rule: 10× Max Signal Frequency</h2>
+<p>A reasonable engineering rule for control applications:</p>
+<p><span class="math display">\[
+f_s \approx 10 f_{\max}
+\tag{31}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(f_s\)</span>: sampling frequency</li>
+<li><span class="math inline">\(f_{\max}\)</span>: highest frequency component of interest in the signal</li>
+</ul>
+<p>Equivalently: about <strong>10 samples per shortest signal period</strong>.</p>
+<ul>
+<li>Enough points to reconstruct basic shape and behavior.</li>
+<li>Easier to design stable control algorithms.</li>
+</ul>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>This 10× rule is <strong>more conservative</strong> than Nyquist’s 2× rule, aiming at robust practical control, not just mathematical signal reconstruction.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Mention that for tight control, many designers use even higher multiples (e.g., 20×), but 10× is a good baseline.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-27-choosing-t_s-from-data" class="slide level2">
+<h2>Example 27 – Choosing <span class="math inline">\(t_s\)</span> from Data</h2>
+<p>Given pressure data (Figure 34):</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/ea05b9ac5f7a6edb4fcca9cc568338c0_MD5.jpg" height="220"></p>
+<figcaption>Figure 34: Pressure data vs time</figcaption>
+</figure>
+</div>
+<p>We observe from the plot:</p>
+<ul>
+<li><p><strong>Shortest time between peaks</strong> ≈ 0.15 s.</p></li>
+<li><p>So, maximum significant frequency:</p>
+<p><span class="math display">\[
+f_{\max} \approx \frac{1}{0.15} \approx 6.7 \,\text{Hz}
+\]</span></p></li>
+</ul>
+<p>Using Equation (31):</p>
+<ul>
+<li><p><span class="math inline">\(f_s = 10 f_{\max} \approx 67 \,\text{Hz}\)</span>.</p></li>
+<li><p>Maximum sample period:</p>
+<p><span class="math display">\[
+t_s = \frac{1}{f_s} \approx 0.015 \,\text{s} = 15 \,\text{ms}
+\]</span></p></li>
+</ul>
+<p>So the computer control system should not sample slower than <strong>every 15 ms</strong>.</p>
+<aside class="notes">
+<p>Encourage students to consider safety margins: if the process can change faster than what you see in historical data, you may want a slightly higher sampling frequency.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="nyquist-vs.-10-rule-no-contradiction" class="slide level2">
+<h2>Nyquist vs.&nbsp;10× Rule – No Contradiction</h2>
+<p><strong>Nyquist Theorem</strong>:</p>
+<ul>
+<li><p>If a signal is <strong>bandlimited</strong> to <span class="math inline">\(f_{\max}\)</span>, then sampling at</p>
+<p><span class="math display">\[
+f_s \ge 2 f_{\max}
+\]</span></p>
+<p>allows <strong>theoretical reconstruction</strong> (with ideal interpolation, infinite record length).</p></li>
+</ul>
+<p><strong>Practical control</strong>:</p>
+<ul>
+<li>Industrial signals are not perfectly bandlimited (noise, disturbances).</li>
+<li>Filters can impose an effective <span class="math inline">\(f_{\max}\)</span>, but the real world is messy.</li>
+<li>Sampling only at <span class="math inline">\(2 f_{\max}\)</span> yields minimal information, and reconstruction may require many samples and heavy processing.</li>
+</ul>
+<p>So Equation (31) (10× rule) is a <strong>practical compromise</strong>:</p>
+<ul>
+<li>More samples → better tracking of real‑world, non‑periodic data.</li>
+<li>Enough information to design and tune controllers.</li>
+</ul>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Use Nyquist (2×) as a <strong>hard lower bound</strong> and the 10× rule as a <strong>practical design target</strong>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="example-28-networked-control-and-cycle-time" class="slide level2">
+<h2>Example 28 – Networked Control and Cycle Time</h2>
+<p>A networked control system has:</p>
+<ul>
+<li>Network <strong>cycle time</strong> = 450 ms for sensor → controller.</li>
+<li>Need another 225 ms for controller → actuator response via network.</li>
+</ul>
+<p>Assume computation time negligible.</p>
+<p>Total round‑trip “sample” time:</p>
+<p><span class="math display">\[
+t_s = 0.45 \,\text{s} + 0.225 \,\text{s} = 0.675 \,\text{s}
+\]</span></p>
+<p>So sampling frequency:</p>
+<p><span class="math display">\[
+f_s = \frac{1}{0.675} \approx 1.48 \,\text{Hz}
+\]</span></p>
+<p>Using Equation (31):</p>
+<p><span class="math display">\[
+f_{\max} \approx \frac{f_s}{10} \approx 0.148 \,\text{Hz}
+\]</span></p>
+<p>Which corresponds to a period of about</p>
+<p><span class="math display">\[
+T_{\max} = \frac{1}{0.148} \approx 6.8 \,\text{s}
+\]</span></p>
+<p>Interpretation:</p>
+<ul>
+<li>You can only effectively control periodic variations <strong>slower</strong> than about 0.148 Hz (≈7 s per cycle).</li>
+<li>Faster oscillations will not be adequately sampled and controlled.</li>
+</ul>
+<aside class="notes">
+<p>Connect to fieldbus/industrial Ethernet: network latency and bus load directly cap the controllable bandwidth. Fast inner loops often remain local (e.g., local PID in a drive) while slower loops go over the network.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="linearization-why-we-need-it" class="slide level2 scrollable">
+<h2>5.3 Linearization – Why We Need It</h2>
+<p>Real sensors often have <strong>nonlinear</strong> response:</p>
+<ul>
+<li>Example: <span class="math inline">\(V \propto \sqrt{p}\)</span>, or complicated thermocouple curves, RTD self‑heating, etc.</li>
+</ul>
+<p>But control algorithms usually prefer a variable that is:</p>
+<ul>
+<li><strong>Linearly related</strong> to the physical quantity (e.g., pressure, temperature).</li>
+</ul>
+<p>Thus, in software we must <strong>linearize</strong>:</p>
+<ol type="1">
+<li><strong>Equation inversion</strong> (when a usable formula exists).</li>
+<li><strong>Table look‑up</strong> (when only tabulated calibration data is available or equation is too complex).</li>
+</ol>
+<aside class="notes">
+<p>Emphasize that linearization used to be done with analog circuits (diode networks, log/antilog amps), but now is usually done in software, especially in digital transmitters and PLCs.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="linearization-by-equation-concept" class="slide level2">
+<h2>Linearization by Equation – Concept</h2>
+<p>Suppose a transducer provides:</p>
+<p><span class="math display">\[
+V = K \sqrt{p}
+\tag{32}
+\]</span></p>
+<p>Then, after scaling to a digital number <span class="math inline">\(DV\)</span> by ADC,</p>
+<p><span class="math display">\[
+DV \propto \sqrt{p}
+\tag{33}
+\]</span></p>
+<p>Desired: a digital value <span class="math inline">\(DP\)</span> that is <strong>linearly proportional to <span class="math inline">\(p\)</span></strong>.</p>
+<p>Idea:</p>
+<p><span class="math display">\[
+DP = DV \times DV \propto (\sqrt{p})^2 = p
+\tag{34}
+\]</span></p>
+<p>In code:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb1-1"><a></a>DV <span class="op">=</span> ADC_read<span class="op">();</span></span>
+<span id="cb1-2"><a></a>DP <span class="op">=</span> DV <span class="op">*</span> DV<span class="op">;</span>   <span class="co">// now DP ∝ pressure</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Then apply scaling and offset so <code>DP</code> equals actual pressure units.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Equation‑based linearization is efficient if a closed‑form inverse exists and can be computed with available arithmetic (fixed‑point or floating‑point).</p>
+</div>
+</div>
+</div>
+</section>
+<section id="example-working-backward-through-adc" class="slide level2">
+<h2>Example – Working Backward Through ADC</h2>
+<p>Given pressure 50 to 400 psi, sensor law:</p>
+<p><span class="math display">\[
+V = 0.385 \sqrt{p} - 2.722
+\]</span></p>
+<p>An ADC with 5.0 V reference outputs 0–255 codes (00H–FFH) over this pressure range.</p>
+<p>Relationship between <span class="math inline">\(DV\)</span> (ADC code) and <span class="math inline">\(V\)</span>:</p>
+<p><span class="math display">\[
+DV = \frac{V}{V_\text{ref}} 2^8 = \frac{V}{5} \cdot 256
+\]</span></p>
+<p>So</p>
+<p><span class="math display">\[
+V = \frac{5}{256} DV
+\]</span></p>
+<p>Plug into the sensor law:</p>
+<p><span class="math display">\[
+0.385 \sqrt{p} - 2.722 = \frac{5}{256} DV
+\]</span></p>
+<p>Solve for <span class="math inline">\(p\)</span>:</p>
+<p>[ = ]</p>
+<p>[ p = ( DV + )^2 ]</p>
+<p>Numerically simplified to:</p>
+<p><span class="math display">\[
+p = (0.00507 DV + 7.071)^2
+\]</span></p>
+<p>So in software:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource pseudo number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a></a>DV = UDF(1)         // read ADC code 0–255</span>
+<span id="cb2-2"><a></a>p  = (0.00507*DV + 7.071)^2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Now <code>p</code> equals <strong>actual pressure in psi</strong>.</p>
+<aside class="notes">
+<p>Explain that UDF(1) is just a placeholder for a user‑defined function to fetch the ADC code. On an MCU, this might be <code>ADC1_ReadChannel()</code>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="linearization-by-table-lookup-idea" class="slide level2 scrollable">
+<h2>Linearization by Table Look‑up – Idea</h2>
+<p>When no simple equation is available or equation evaluation is expensive:</p>
+<ul>
+<li><p>Build a <strong>table</strong>:</p>
+<ul>
+<li>Column 1: input code <span class="math inline">\(DV\)</span> (or voltage, etc.).</li>
+<li>Column 2: corresponding physical value (temperature, pressure, etc.).</li>
+</ul></li>
+<li><p>Store it in memory as two contiguous arrays:</p>
+<ul>
+<li><span class="math inline">\(X[0..N-1]\)</span>: input codes in ascending order.</li>
+<li><span class="math inline">\(Y[0..N-1]\)</span>: corresponding physical values.</li>
+</ul></li>
+<li><p>For each measurement:</p>
+<ol type="1">
+<li>Read <span class="math inline">\(DV\)</span>.</li>
+<li>Search <span class="math inline">\(X\)</span> to find where <span class="math inline">\(DV\)</span> fits.</li>
+<li>Return corresponding <span class="math inline">\(Y\)</span> value (potentially interpolating between entries).</li>
+</ol></li>
+</ul>
+<p>This mimics what humans do with thermocouple tables.</p>
+</section>
+<section id="flowchart-for-table-lookup-figure-35" class="slide level2 scrollable">
+<h2>Flowchart for Table Look‑up (Figure 35)</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/a4f08619f79fd919fa2bc21e8ea4f152_MD5.jpg" height="260"></p>
+<figcaption>Figure 35: Linearization by table look-up flowchart</figcaption>
+</figure>
+</div>
+<p>Key steps:</p>
+<ol type="1">
+<li>Input measurement <span class="math inline">\(M\)</span> (e.g., <span class="math inline">\(DV\)</span>).</li>
+<li>Initialize index <span class="math inline">\(I = 0\)</span>.</li>
+<li>Compare <span class="math inline">\(M\)</span> with table entry <span class="math inline">\(X[I]\)</span>.</li>
+<li>While <span class="math inline">\(M &gt; X[I]\)</span> and <span class="math inline">\(I &lt; N\)</span>: increment <span class="math inline">\(I\)</span>.</li>
+<li>If exact match, take <span class="math inline">\(Y[I]\)</span> as the physical value.</li>
+<li>Else, interpolate between <span class="math inline">\(X[I-1], X[I]\)</span> and <span class="math inline">\(Y[I-1], Y[I]\)</span>.</li>
+</ol>
+<aside class="notes">
+<p>Mention that in practice we may: - Use binary search for speed. - Use piecewise linear or polynomial fits in each segment. - On small MCUs, tables are often in flash/EEPROM.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-simple-table-lookup-with-interpolation" class="slide level2">
+<h2>Interactive – Simple Table Look‑up with Interpolation</h2>
+<div>
+<div id="pyodide-3" class="exercise-cell">
+
+</div>
+<script type="pyodide-3-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiIyBFeGFtcGxlOiBsaW5lYXJpemluZyBhIGh5cG90aGV0aWNhbCBzZW5zb3Igd2l0aCBhIHNtYWxsIHRhYmxlLlxuXG5pbXBvcnQgYmlzZWN0XG5cbiMgRXhhbXBsZSBtYXBwaW5nOiByYXcgY29kZSAtPiB0ZW1wZXJhdHVyZSAoZGVnQylcbmNvZGVzID0gICAgWzAsICAgNjQsIDEyOCwgMTkyLCAyNTVdXG50ZW1wcyA9ICAgIFswLjAsIDI1LCAgNjAsICAxMDAsIDEzMF0gICMgbm9ubGluZWFyLWlzaFxuXG5kZWYgbG9va3VwX3RlbXBlcmF0dXJlKGNvZGUpOlxuICAgIGlmIGNvZGUgPD0gY29kZXNbMF06XG4gICAgICAgIHJldHVybiB0ZW1wc1swXVxuICAgIGlmIGNvZGUgPj0gY29kZXNbLTFdOlxuICAgICAgICByZXR1cm4gdGVtcHNbLTFdXG4gICAgaSA9IGJpc2VjdC5iaXNlY3RfbGVmdChjb2RlcywgY29kZSlcbiAgICB4MCwgeDEgPSBjb2Rlc1tpLTFdLCBjb2Rlc1tpXVxuICAgIHkwLCB5MSA9IHRlbXBzW2ktMV0sIHRlbXBzW2ldXG4gICAgIyBMaW5lYXIgaW50ZXJwb2xhdGlvbjpcbiAgICByZXR1cm4geTAgKyAoeTEgLSB5MCkqKGNvZGUgLSB4MCkvKHgxIC0geDApXG5cbmZvciB0ZXN0X2NvZGUgaW4gWzAsIDMyLCA4MCwgMTUwLCAyMjAsIDI1NV06XG4gICAgcHJpbnQoZlwiQ29kZSB7dGVzdF9jb2RlOjNkfSAtPiBUIOKJiCB7bG9va3VwX3RlbXBlcmF0dXJlKHRlc3RfY29kZSk6Ni4yZn0gwrBDXCIpIn0=
+</script>
+</div>
+<aside class="notes">
+<p>Encourage students to imagine that <code>codes</code> and <code>temps</code> come from calibration data. The algorithm is the software counterpart of using calibration curves in the lab.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="summary-key-points" class="slide level2 scrollable">
+<h2>Summary – Key Points</h2>
+<ol type="1">
+<li><strong>DAS Hardware</strong>
+<ul>
+<li>PC‑based DAS boards connect via expansion slots and appear as <strong>I/O ports</strong>.</li>
+<li>Core blocks: MUX, S/H, ADC, DAC, latch, address decoder/command processor.</li>
+</ul></li>
+<li><strong>DAS Software</strong>
+<ul>
+<li>CPU selects channel, issues start‑convert, waits for <strong>EOC</strong>, then reads data.</li>
+<li>Must handle <strong>timeouts</strong> and/or use <strong>interrupts</strong> for robustness.</li>
+</ul></li>
+<li><strong>Digital Measurements</strong>
+<ul>
+<li>ADC mapping: <span class="math inline">\(N = \dfrac{(V - V_{\min})}{(V_{\max} - V_{\min})}2^n\)</span>.</li>
+<li>Resolution: <span class="math inline">\(\Delta V = \dfrac{V_{\max} - V_{\min}}{2^n}\)</span>.</li>
+<li>Quantization introduces an unavoidable “ignorance interval.”</li>
+</ul></li>
+<li><strong>Sampled‑Data Considerations</strong>
+<ul>
+<li>Sample period <span class="math inline">\(t_s\)</span> and frequency <span class="math inline">\(f_s = 1/t_s\)</span>.</li>
+<li>Use practical rule <span class="math inline">\(f_s \approx 10 f_{\max}\)</span> in control applications.</li>
+<li>Nyquist (2×) is a theoretical lower bound, not always practical.</li>
+</ul></li>
+<li><strong>Linearization</strong>
+<ul>
+<li>Equation‑based: invert sensor law and ADC scaling.</li>
+<li>Table look‑up: store calibration pairs and interpolate at runtime.</li>
+</ul></li>
+</ol>
+</section>
+<section id="formula-summary" class="slide level2 scrollable">
+<h2>Formula Summary</h2>
+<ol type="1">
+<li><strong>ADC Code from Input Voltage</strong></li>
+</ol>
+<p><span class="math display">\[
+N = \frac{(V - V_{\min})}{(V_{\max} - V_{\min})} 2^n
+\]</span></p>
+<ol start="2" type="1">
+<li><strong>Resolution in Input Units</strong></li>
+</ol>
+<ul>
+<li>Voltage (or any physical quantity mapped linearly):</li>
+</ul>
+<p><span class="math display">\[
+\Delta V = \frac{V_{\max} - V_{\min}}{2^n}
+\]</span></p>
+<ol start="3" type="1">
+<li><strong>Sampling Period and Frequency</strong></li>
+</ol>
+<p><span class="math display">\[
+t_s = \frac{1}{f_s}, \quad f_s = \frac{1}{t_s}
+\]</span></p>
+<ol start="4" type="1">
+<li><strong>Practical Sampling Rule for Control</strong></li>
+</ol>
+<p><span class="math display">\[
+f_s \approx 10 f_{\max}
+\]</span></p>
+<ol start="5" type="1">
+<li><strong>Nyquist Sampling Criterion</strong></li>
+</ol>
+<p><span class="math display">\[
+f_s \ge 2 f_{\max}
+\]</span></p>
+<ol start="6" type="1">
+<li><strong>Example Linearization Equation</strong></li>
+</ol>
+<p>From ADC code <span class="math inline">\(DV\)</span> to pressure <span class="math inline">\(p\)</span> (psi):</p>
+<p><span class="math display">\[
+p = (0.00507\,DV + 7.071)^2
+\]</span></p>
+</section>
+<section id="closing-thought" class="slide level2">
+<h2>Closing Thought</h2>
+<p>In digital instrumentation and control, the <strong>hardware (DAS)</strong> and <strong>software (sampling, coding, linearization)</strong> must be co‑designed. You cannot fix poor resolution, too‑slow sampling, or nonlinear sensor behavior purely with clever software afterward—planning these aspects up front is essential to building reliable ECE systems.</p>
+<aside class="notes">
+<p>Invite questions focusing on: - Tradeoffs between bits, noise, and sampling rate. - How these concepts show up in specific platforms (Arduino, STM32, NI‑DAQ).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+
+<script type="pyodide-data">
+eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yNy4wL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIiwibnVtcHkiLCJwbG90bHkiLCJuYmZvcm1hdHMiXX19
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTMiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8zID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0zLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzMgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzMsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8yID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzIgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzIsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8xID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0xLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzEgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzEsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLXByZWx1ZGUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJweW9kaWRlT2pzID0ge1xuICBjb25zdCB7XG4gICAgUHlvZGlkZUV2YWx1YXRvcixcbiAgICBQeW9kaWRlRW52aXJvbm1lbnRNYW5hZ2VyLFxuICAgIHNldHVwUHl0aG9uLFxuICAgIHN0YXJ0UHlvZGlkZVdvcmtlcixcbiAgICBiNjREZWNvZGUsXG4gICAgY29sbGFwc2VQYXRoLFxuICB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzdGF0dXNDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctc3RhdHVzXCIpO1xuICBjb25zdCBpbmRpY2F0b3JDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpbmRpY2F0b3JDb250YWluZXIuY2xhc3NMaXN0LnJlbW92ZShcImQtbm9uZVwiKTtcblxuICBsZXQgc3RhdHVzVGV4dCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIilcbiAgc3RhdHVzVGV4dC5jbGFzc0xpc3QgPSBcImV4ZXJjaXNlLWxvYWRpbmctZGV0YWlsc1wiO1xuICBzdGF0dXNUZXh0ID0gc3RhdHVzQ29udGFpbmVyLmFwcGVuZENoaWxkKHN0YXR1c1RleHQpO1xuICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYEluaXRpYWxpc2VgO1xuXG4gIC8vIEhvaXN0IGluZGljYXRvciBvdXQgZnJvbSBmaW5hbCBzbGlkZSB3aGVuIHJ1bm5pbmcgdW5kZXIgcmV2ZWFsXG4gIGNvbnN0IHJldmVhbFN0YXR1cyA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsIC5leGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaWYgKHJldmVhbFN0YXR1cykge1xuICAgIHJldmVhbFN0YXR1cy5yZW1vdmUoKTtcbiAgICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCA+IC5zbGlkZXNcIikuYXBwZW5kQ2hpbGQocmV2ZWFsU3RhdHVzKTtcbiAgfVxuXG4gIC8vIE1ha2UgYW55IHJldmVhbCBzbGlkZXMgd2l0aCBsaXZlIGNlbGxzIHNjcm9sbGFibGVcbiAgZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbChcIi5yZXZlYWwgLmV4ZXJjaXNlLWNlbGxcIikuZm9yRWFjaCgoZWwpID0+IHtcbiAgICBlbC5jbG9zZXN0KCdzZWN0aW9uLnNsaWRlJykuY2xhc3NMaXN0LmFkZChcInNjcm9sbGFibGVcIik7XG4gIH0pXG5cbiAgLy8gUHlvZGlkZSBzdXBwbGVtZW50YWwgZGF0YSBhbmQgb3B0aW9uc1xuICBjb25zdCBkYXRhQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLWRhdGFcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBkYXRhID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZGF0YUNvbnRlbnQpKTtcblxuICAvLyBHcmFiIGxpc3Qgb2YgcmVzb3VyY2VzIHRvIGJlIGRvd25sb2FkZWRcbiAgY29uc3QgZmlsZXNDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInZmcy1maWxlXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZmlsZXMgPSBKU09OLnBhcnNlKGI2NERlY29kZShmaWxlc0NvbnRlbnQpKTtcblxuICBsZXQgcHlvZGlkZVByb21pc2UgPSAoYXN5bmMgKCkgPT4ge1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgUHlvZGlkZWA7XG4gICAgY29uc3QgcHlvZGlkZSA9IGF3YWl0IHN0YXJ0UHlvZGlkZVdvcmtlcihkYXRhLm9wdGlvbnMpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiBtaWNyb3BpcGA7XG4gICAgYXdhaXQgcHlvZGlkZS5sb2FkUGFja2FnZShcIm1pY3JvcGlwXCIpO1xuICAgIGNvbnN0IG1pY3JvcGlwID0gYXdhaXQgcHlvZGlkZS5weWltcG9ydChcIm1pY3JvcGlwXCIpO1xuICAgIGF3YWl0IGRhdGEucGFja2FnZXMucGtncy5tYXAoKHBrZykgPT4gKCkgPT4ge1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiAke3BrZ31gO1xuICAgICAgcmV0dXJuIG1pY3JvcGlwLmluc3RhbGwocGtnKTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcbiAgICBhd2FpdCBtaWNyb3BpcC5kZXN0cm95KCk7XG5cbiAgICAvLyBEb3dubG9hZCBhbmQgaW5zdGFsbCByZXNvdXJjZXNcbiAgICBhd2FpdCBmaWxlcy5tYXAoKGZpbGUpID0+IGFzeW5jICgpID0+IHtcbiAgICAgIGNvbnN0IG5hbWUgPSBmaWxlLnN1YnN0cmluZyhmaWxlLmxhc3RJbmRleE9mKCcvJykgKyAxKTtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcmVzb3VyY2U6ICR7bmFtZX1gO1xuICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChmaWxlKTtcbiAgICAgIGlmICghcmVzcG9uc2Uub2spIHtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBDYW4ndCBkb3dubG9hZCBcXGAke2ZpbGV9XFxgLiBFcnJvciAke3Jlc3BvbnNlLnN0YXR1c306IFwiJHtyZXNwb25zZS5zdGF0dXNUZXh0fVwiLmApO1xuICAgICAgfVxuICAgICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlc3BvbnNlLmFycmF5QnVmZmVyKCk7XG5cbiAgICAgIC8vIFN0b3JlIFVSTHMgaW4gdGhlIGN3ZCB3aXRob3V0IGFueSBzdWJkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBpZiAoZmlsZS5pbmNsdWRlcyhcIjovL1wiKSkge1xuICAgICAgICBmaWxlID0gbmFtZTtcbiAgICAgIH1cblxuICAgICAgLy8gQ29sbGFwc2UgaGlnaGVyIGRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGZpbGUgPSBjb2xsYXBzZVBhdGgoZmlsZSk7XG5cbiAgICAgIC8vIENyZWF0ZSBkaXJlY3RvcnkgdHJlZSwgaWdub3JpbmcgXCJkaXJlY3RvcnkgZXhpc3RzXCIgVkZTIGVycm9yc1xuICAgICAgY29uc3QgcGFydHMgPSBmaWxlLnNwbGl0KCcvJykuc2xpY2UoMCwgLTEpO1xuICAgICAgbGV0IHBhdGggPSAnJztcbiAgICAgIHdoaWxlIChwYXJ0cy5sZW5ndGggPiAwKSB7XG4gICAgICAgIHBhdGggKz0gcGFydHMuc2hpZnQoKSArICcvJztcbiAgICAgICAgdHJ5IHtcbiAgICAgICAgICBhd2FpdCBweW9kaWRlLkZTLm1rZGlyKHBhdGgpO1xuICAgICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgICAgaWYgKGUuZXJybm8gIT09IDIwKSB7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICAgICAgY29uc3QgZXJyb3JUZXh0ID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLlVURjhUb1N0cmluZyhlcnJvclRleHRQdHIpO1xuICAgICAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICAgIH1cblxuICAgICAgLy8gV3JpdGUgdGhpcyBmaWxlIHRvIHRoZSBWRlNcbiAgICAgIHRyeSB7XG4gICAgICAgIHJldHVybiBhd2FpdCBweW9kaWRlLkZTLndyaXRlRmlsZShmaWxlLCBuZXcgVWludDhBcnJheShkYXRhKSk7XG4gICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgIGlmIChlLm5hbWUgIT09IFwiRXJybm9FcnJvclwiKSB0aHJvdyBlO1xuICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgRmlsZXN5c3RlbSBFcnJvciAke2UuZXJybm99IFwiJHtlcnJvclRleHR9XCIuYCk7XG4gICAgICB9XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYFB5b2RpZGUgZW52aXJvbm1lbnQgc2V0dXBgO1xuICAgIGF3YWl0IHNldHVwUHl0aG9uKHB5b2RpZGUpO1xuXG4gICAgc3RhdHVzVGV4dC5yZW1vdmUoKTtcbiAgICBpZiAoc3RhdHVzQ29udGFpbmVyLmNoaWxkcmVuLmxlbmd0aCA9PSAwKSB7XG4gICAgICBzdGF0dXNDb250YWluZXIucGFyZW50Tm9kZS5yZW1vdmUoKTtcbiAgICB9XG4gICAgcmV0dXJuIHB5b2RpZGU7XG4gIH0pKCkuY2F0Y2goKGVycikgPT4ge1xuICAgIHN0YXR1c1RleHQuc3R5bGUuY29sb3IgPSBcInZhcigtLWV4ZXJjaXNlLWVkaXRvci1obC1lciwgI0FEMDAwMClcIjtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gZXJyLm1lc3NhZ2U7XG4gICAgLy9pbmRpY2F0b3JDb250YWluZXIucXVlcnlTZWxlY3RvcihcIi5zcGlubmVyLWdyb3dcIikuY2xhc3NMaXN0LmFkZChcImQtbm9uZVwiKTtcbiAgICB0aHJvdyBlcnI7XG4gIH0pO1xuXG4gIC8vIEtlZXAgdHJhY2sgb2YgaW5pdGlhbCBPSlMgYmxvY2sgcmVuZGVyXG4gIGNvbnN0IHJlbmRlcmVkT2pzID0ge307XG5cbiAgY29uc3QgcHJvY2VzcyA9IGFzeW5jIChjb250ZXh0LCBpbnB1dHMpID0+IHtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgcHlvZGlkZVByb21pc2U7XG4gICAgY29uc3QgZXZhbHVhdG9yID0gbmV3IFB5b2RpZGVFdmFsdWF0b3IocHlvZGlkZSwgY29udGV4dCk7XG4gICAgYXdhaXQgZXZhbHVhdG9yLnByb2Nlc3MoaW5wdXRzKTtcbiAgICByZXR1cm4gZXZhbHVhdG9yLmNvbnRhaW5lcjtcbiAgfVxuXG4gIHJldHVybiB7XG4gICAgcHlvZGlkZVByb21pc2UsXG4gICAgcmVuZGVyZWRPanMsXG4gICAgcHJvY2VzcyxcbiAgfTtcbn1cbiJ9XX0=
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="qrjs_pics/unsoed_logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="https://imron-slide.vercel.app">irosyadi-2026</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script type="ojs-module-contents">
+    eyJjb250ZW50cyI6W119
+    </script>
+    <script type="module">
+    if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+    window._ojs.paths.runtimeToDoc = "../..";
+    window._ojs.paths.runtimeToRoot = "../..";
+    window._ojs.paths.docToRoot = "";
+    window._ojs.selfContained = false;
+    window._ojs.runtime.interpretFromScriptTags();
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

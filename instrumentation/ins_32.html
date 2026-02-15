@@ -1,0 +1,2248 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-html/tabby.min.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.27">
+
+  <meta name="author" content="Imron Rosyadi">
+  <title>Instrumentation – Converters: Comparators, DACs, and ADCs</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-b0356e9119c1bdfd0db189d130feb51c.css">
+  <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+  <link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Converters: Comparators, DACs, and ADCs</h1>
+  <p class="subtitle">Instruments 3.2</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Imron Rosyadi 
+</div>
+</div>
+</div>
+
+</section>
+<section id="learning-objectives" class="slide level2 scrollable">
+<h2>Learning Objectives</h2>
+<p>By the end of this session, you should be able to:</p>
+<ol type="1">
+<li>Explain how <strong>comparators</strong> connect the analog world (sensors) to digital logic.</li>
+<li>Design simple <strong>alarm circuits</strong> using comparators (including open‑collector and hysteresis types).</li>
+<li>Compute outputs of <strong>digital‑to‑analog converters (DACs)</strong>, both unipolar and bipolar, and select word length from resolution specs.</li>
+<li>Compute codes and errors for <strong>analog‑to‑digital converters (ADCs)</strong>; distinguish unipolar vs bipolar operation.</li>
+<li>Compare <strong>successive‑approximation</strong> and <strong>dual‑slope</strong> ADC architectures and their conversion times.</li>
+<li>Analyze <strong>conversion‑time limits</strong>, and explain why we need <strong>sample‑and‑hold</strong> circuits.</li>
+<li>Describe and design basic <strong>frequency‑based conversion</strong> using counters and V‑to‑F converters / timers.</li>
+</ol>
+<aside class="notes">
+<p>I will move back and forth between the math and “what this means in real hardware.” Encourage students to pause me whenever a formula appears; every formula here maps to a circuit behavior they’ll see in the lab or industry.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="big-picture-why-converters" class="slide level2">
+<h2>Big Picture: Why Converters?</h2>
+<ul>
+<li><p>Sensors usually output <strong>analog</strong> (voltages, currents).</p></li>
+<li><p>Microcontrollers, FPGAs, and PLCs speak <strong>digital</strong> (bits, words).</p></li>
+<li><p>We need two “translators”:</p>
+<ul>
+<li><strong>ADC</strong> – Analog to Digital (sensor → computer).</li>
+<li><strong>DAC</strong> – Digital to Analog (computer → actuator).</li>
+</ul></li>
+</ul>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>Typical process‑control loop</strong></p>
+<ul>
+<li>Sensor → analog signal</li>
+<li>Signal conditioning (amp, filter)</li>
+<li><strong>ADC</strong> → digital data</li>
+<li>Digital controller (μC / PLC)</li>
+<li><strong>DAC</strong> → analog command</li>
+<li>Actuator (valve, motor drive, heater, etc.)</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<p><img data-src="ins_32_files\figure-revealjs\mermaid-figure-1.png" style="width:17.45in;height:1.36in"></p>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div></div>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Key idea:</strong> Every loop that uses a digital controller has at least one <strong>ADC</strong> and often a <strong>DAC</strong>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="roadmap-for-this-session" class="slide level2 scrollable">
+<h2>Roadmap for This Session</h2>
+<ol type="1">
+<li><strong>Comparators</strong> – the simplest analog/digital interface.</li>
+<li><strong>DACs</strong> – digital words → analog voltages.</li>
+<li><strong>ADCs</strong> – analog voltages → digital words (unipolar and bipolar).</li>
+<li><strong>ADC architectures &amp; timing</strong> – successive approximation, dual‑slope.</li>
+<li><strong>Sample‑and‑hold</strong> – freezing the analog value so ADCs don’t get confused.</li>
+<li><strong>Frequency‑based converters</strong> – when it’s easier to count pulses than measure volts.</li>
+</ol>
+<aside class="notes">
+<p>Set expectations: we will not memorize every formula by rote. Instead, I’ll highlight which ones are “core tools” that you’ll re‑use in design, exams, and labs.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="comparators-the-simplest-analogdigital-bridge" class="slide level2">
+<h2>3.1 Comparators – The Simplest Analog/Digital Bridge</h2>
+<p>A <strong>comparator</strong> compares two voltages and outputs a digital‑like signal.</p>
+<ul>
+<li>Inputs:
+<ul>
+<li><span class="math inline">\(V_a\)</span> and <span class="math inline">\(V_b\)</span> – analog voltages.</li>
+</ul></li>
+<li>Output:
+<ul>
+<li>Logic‑level high (1) if one input is larger.</li>
+<li>Logic‑level low (0) otherwise.</li>
+</ul></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/48861a2b1d79888aef10d0a124268c92_MD5.jpg" height="220"></p>
+<figcaption>Figure 6: Basic comparator compares voltages and produces a digital output.</figcaption>
+</figure>
+</div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Comparators are often used as:</p>
+<ul>
+<li>Alarm generators.</li>
+<li>Zero‑crossing detectors.</li>
+<li>Building blocks inside ADCs and DACs.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="comparator-operation" class="slide level2">
+<h2>Comparator Operation</h2>
+<p>Let’s define:</p>
+<ul>
+<li><span class="math inline">\(V_{in}\)</span> – variable sensor voltage.</li>
+<li><span class="math inline">\(V_{ref}\)</span> – fixed <strong>reference / trip</strong> voltage.</li>
+</ul>
+<p>Typical behavior (non‑inverting input as signal):</p>
+<ul>
+<li>If <span class="math inline">\(V_{in} &gt; V_{ref}\)</span> → output <strong>high</strong> (≈ logic “1”).</li>
+<li>If <span class="math inline">\(V_{in} &lt; V_{ref}\)</span> → output <strong>low</strong> (≈ logic “0”).</li>
+</ul>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<p><img data-src="ins_32_files\figure-revealjs\mermaid-figure-2.png" style="width:9.26in;height:1.81in"></p>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Mention voltage levels: with a 5 V supply, “high” may be near 5 V, “low” near 0 V, but check datasheet for actual thresholds and output structures.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-7-temperature-pressure-alarm-setup" class="slide level2">
+<h2>Example 7: Temperature &amp; Pressure Alarm – Setup</h2>
+<p><strong>Spec:</strong></p>
+<ul>
+<li>Trigger alarm if
+<ul>
+<li>Temperature <span class="math inline">\(T &gt; 160^\circ\mathrm{C}\)</span> <strong>and</strong></li>
+<li>Pressure <span class="math inline">\(P &gt; 10\ \mathrm{kPa}\)</span>.</li>
+</ul></li>
+</ul>
+<p><strong>Transducers:</strong></p>
+<ul>
+<li>Temperature: <span class="math inline">\(V_T = (2.2\ \mathrm{mV} / {}^\circ\mathrm{C}) \cdot T\)</span>.</li>
+<li>Pressure: <span class="math inline">\(V_P = (0.2\ \mathrm{V} / \mathrm{kPa}) \cdot P\)</span>.</li>
+</ul>
+<p><strong>Goal:</strong> Design an alarm system using <strong>comparators</strong> and logic.</p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Think of each comparator as a “threshold detector” for a single variable. Then combine their outputs with logic gates (AND, OR).</p>
+</div>
+</div>
+</div>
+</section>
+<section id="example-7-alarm-design-voltages-and-logic" class="slide level2 scrollable">
+<h2>Example 7: Alarm Design – Voltages and Logic</h2>
+<ol type="1">
+<li>Convert the temperature limit to volts:</li>
+</ol>
+<p><span class="math display">\[
+V_{T,\text{trip}} = (2.2\ \mathrm{mV/^\circ C})(160^\circ \mathrm{C}) = 0.352\ \mathrm{V}
+\]</span></p>
+<ol start="2" type="1">
+<li>Convert the pressure limit to volts:</li>
+</ol>
+<p><span class="math display">\[
+V_{P,\text{trip}} = (0.2\ \mathrm{V/kPa})(10\ \mathrm{kPa}) = 2.0\ \mathrm{V}
+\]</span></p>
+<ol start="3" type="1">
+<li>Use two comparators:</li>
+</ol>
+<ul>
+<li>Temp comparator: outputs 1 when <span class="math inline">\(V_T &gt; 0.352\ \mathrm{V}\)</span>.</li>
+<li>Pressure comparator: outputs 1 when <span class="math inline">\(V_P &gt; 2.0\ \mathrm{V}\)</span>.</li>
+</ul>
+<ol start="4" type="1">
+<li>Use an <strong>AND gate</strong> to combine both conditions.</li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/965b2dcbf1182c81feec0d81b3d196cc_MD5.jpg" height="250"></p>
+<figcaption>Figure 7: Example 7 alarm using two comparators and an AND gate.</figcaption>
+</figure>
+</div>
+<aside class="notes">
+<p>Emphasize: this is a <strong>digital logic</strong> condition applied to <strong>analog thresholds</strong>. Ask students: How would you modify this if you wanted an alarm on “OR” condition instead?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="opencollector-comparator-outputs" class="slide level2 scrollable">
+<h2>Open‑Collector Comparator Outputs</h2>
+<p>Many comparator ICs use an <strong>open‑collector</strong> output transistor.</p>
+<div class="columns">
+<div class="column" style="width:48%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/dd963c303d14fdbdaf9845f26f1be04b_MD5.jpg" height="160"></p>
+<figcaption>Figure 8a: Internal open-collector transistor.</figcaption>
+</figure>
+</div>
+<ul>
+<li>The comparator’s output pin is the <strong>collector</strong> of an internal transistor.</li>
+<li>No internal pull‑up resistor.</li>
+</ul>
+</div><div class="column" style="width:48%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/8c30d36e21ae0175b0041d82117af92d_MD5.jpg" height="160"></p>
+<figcaption>Figure 8b: External pull-up on open-collector output.</figcaption>
+</figure>
+</div>
+<ul>
+<li>You add an external <strong>pull‑up resistor</strong> to a supply <span class="math inline">\(V_s\)</span>.</li>
+<li>Output behavior:
+<ul>
+<li>Internal transistor ON → output ≈ 0 V (logic 0).</li>
+<li>Transistor OFF → resistor pulls output up to <span class="math inline">\(V_s\)</span> (logic 1).</li>
+</ul></li>
+</ul>
+</div></div>
+<p><strong>Advantages:</strong></p>
+<ol type="1">
+<li>Can use a <strong>different voltage</strong> for logic output than comparator’s internal Vcc (e.g., drive 12 V relay with 5 V comparator).</li>
+<li>Can <strong>wire‑OR</strong> multiple outputs: tie open collectors together + one pull‑up → any output pulling low dominates.</li>
+</ol>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Open‑collector outputs behave like <strong>“can pull down, but not up”</strong>. Always check that you added the pull‑up if you see a “stuck” output.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="comparator-jiggle-problem-noise-around-threshold" class="slide level2">
+<h2>Comparator “Jiggle” Problem – Noise Around Threshold</h2>
+<p>If the input signal is <strong>noisy</strong> or moves <strong>slowly</strong> through <span class="math inline">\(V_{ref}\)</span>:</p>
+<ul>
+<li>Small noise can repeatedly push <span class="math inline">\(V_{in}\)</span> above and below <span class="math inline">\(V_{ref}\)</span>.</li>
+<li>Output toggles rapidly: “jiggles” or <strong>chatter</strong>.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/a81ca534683dc70393b9386d04424cbb_MD5.jpg" height="220"></p>
+<figcaption>Figure 9: Noisy input causing comparator output jitter.</figcaption>
+</figure>
+</div>
+<p>This is bad for:</p>
+<ul>
+<li>Alarm relays (chattering contacts).</li>
+<li>Interrupt lines to microcontrollers (too many events).</li>
+<li>Motor/valve control (rapid on–off cycling).</li>
+</ul>
+</section>
+<section id="hysteresis-comparator-schmitt-trigger-concept" class="slide level2">
+<h2>Hysteresis Comparator (Schmitt Trigger) – Concept</h2>
+<p>Solution: add <strong>hysteresis</strong> (a deadband window).</p>
+<ul>
+<li>Two thresholds instead of one:
+<ul>
+<li>Upper threshold <span class="math inline">\(V_H\)</span>: trips output high.</li>
+<li>Lower threshold <span class="math inline">\(V_L\)</span>: trips output low.</li>
+</ul></li>
+<li>Once output changes state, you require a <strong>larger</strong> change in input to switch it back.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/35b571c3c9d1e8affa248086561b38b5_MD5.jpg" height="220"></p>
+<figcaption>Figure 10a: Hysteresis comparator circuit.</figcaption>
+</figure>
+</div>
+</section>
+<section id="hysteresis-comparator-equations" class="slide level2 scrollable">
+<h2>Hysteresis Comparator – Equations</h2>
+<p>With resistors <span class="math inline">\(R\)</span> and feedback <span class="math inline">\(R_f\)</span> (and <span class="math inline">\(R_f \gg R\)</span>):</p>
+<ul>
+<li>Upper threshold (going up):</li>
+</ul>
+<p><span class="math display">\[
+V_H = V_{\text{ref}}
+\]</span></p>
+<ul>
+<li>Lower threshold (coming down):</li>
+</ul>
+<p><span class="math display">\[
+V_L = V_{\text{ref}} - \frac{R}{R_f} V_0
+\]</span></p>
+<ul>
+<li>Hysteresis width (deadband):</li>
+</ul>
+<p><span class="math display">\[
+\Delta V_{\text{hyst}} = V_H - V_L = \frac{R}{R_f} V_0
+\]</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/d8b20bc393fae827104939569298f8bc_MD5.jpg" height="220"></p>
+<figcaption>Figure 10b: Hysteresis input–output relationship.</figcaption>
+</figure>
+</div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Design procedure:</p>
+<ol type="1">
+<li>Choose desired deadband <span class="math inline">\(\Delta V_{\text{hyst}}\)</span>.</li>
+<li>Use $ (R/R_f) V_0 = V_{} $ to pick a reasonable <span class="math inline">\(R_f\)</span>, then compute <span class="math inline">\(R\)</span>.</li>
+</ol>
+</div>
+</div>
+</div>
+</section>
+<section id="example-tank-level-with-splashing-hysteresis-design" class="slide level2 scrollable">
+<h2>Example: Tank Level with Splashing (Hysteresis Design)</h2>
+<p><strong>Sensor:</strong> <span class="math inline">\(V = 20\ \mathrm{mV/cm} \cdot \text{level}\)</span>.</p>
+<p><strong>Specs:</strong></p>
+<ul>
+<li>Comparator should go <strong>high (5 V)</strong> at level <span class="math inline">\(50\ \mathrm{cm}\)</span>.</li>
+<li>Level fluctuates by <span class="math inline">\(\pm 3\ \mathrm{cm}\)</span> due to splashing.</li>
+</ul>
+<ol type="1">
+<li>Nominal reference at 50 cm:</li>
+</ol>
+<p><span class="math display">\[
+V_{\text{ref}} = (20\ \mathrm{mV/cm})(50\ \mathrm{cm}) = 1.0\ \mathrm{V}
+\]</span></p>
+<ol start="2" type="1">
+<li>Splash noise amplitude:</li>
+</ol>
+<p><span class="math display">\[
+\pm 3\ \mathrm{cm} \Rightarrow \Delta V_{\text{noise}} = (20\ \mathrm{mV/cm})(\pm 3) = \pm 60\ \mathrm{mV}
+\]</span></p>
+<p>Total span = <span class="math inline">\(120\ \mathrm{mV}\)</span>. Choose deadband slightly larger: e.g., <span class="math inline">\(150\ \mathrm{mV}\)</span>.</p>
+<ol start="3" type="1">
+<li>Design resistors:</li>
+</ol>
+<p><span class="math display">\[
+(R/R_f)(5\ \mathrm{V}) = 150\ \mathrm{mV} \Rightarrow R/R_f = 0.03
+\]</span></p>
+<p>Pick <span class="math inline">\(R_f = 100\ \mathrm{k\Omega}\)</span> → <span class="math inline">\(R = 3\ \mathrm{k\Omega}\)</span>.</p>
+<p>Use these in the circuit of Figure 10a.</p>
+</section>
+<section id="quick-interactive-check-comparator-threshold" class="slide level2">
+<h2>Quick Interactive Check – Comparator Threshold</h2>
+<div>
+<div id="pyodide-1" class="exercise-cell">
+
+</div>
+<script type="pyodide-1-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiIyBTaW1wbGUgY2hlY2s6IGdpdmVuIHNlbnNvciBzY2FsZSAobVYvdW5pdCksIHRocmVzaG9sZCwgYW5kIG5vaXNlLFxuIyBjb21wdXRlIHZvbHRhZ2UgdGhyZXNob2xkIGFuZCBzdWdnZXN0ZWQgaHlzdGVyZXNpcyBiYW5kLlxuXG5zZW5zb3Jfc2NhbGVfbVZfcGVyX3VuaXQgPSAyMC4wICAjIG1WL2NtXG50aHJlc2hvbGRfdW5pdCA9IDUwLjAgICAgICAgICAgICAjIGNtXG5ub2lzZV91bml0ID0gMy4wICAgICAgICAgICAgICAgICAjIGNtXG5Wb3V0X2hpZ2ggPSA1LjAgICAgICAgICAgICAgICAgICAjIGNvbXBhcmF0b3Igb3V0cHV0IGhpZ2ggKFYpXG5cblZyZWYgPSAoc2Vuc29yX3NjYWxlX21WX3Blcl91bml0ICogMWUtMykgKiB0aHJlc2hvbGRfdW5pdFxuVm5vaXNlID0gKHNlbnNvcl9zY2FsZV9tVl9wZXJfdW5pdCAqIDFlLTMpICogbm9pc2VfdW5pdFxuZGVhZGJhbmRfbmVlZGVkID0gMiAqIFZub2lzZVxuXG5SX292ZXJfUmYgPSBkZWFkYmFuZF9uZWVkZWQgLyBWb3V0X2hpZ2hcblxucHJpbnQoZlwiVnJlZiA9IHtWcmVmOi4zZn0gVlwiKVxucHJpbnQoZlwiUmVxdWlyZWQgZGVhZGJhbmQg4omlIHtkZWFkYmFuZF9uZWVkZWQqMWUzOi4xZn0gbVZcIilcbnByaW50KGZcIlIvUmYgc2hvdWxkIGJlIGFib3V0IHtSX292ZXJfUmY6LjRmfVwiKSJ9
+</script>
+</div>
+<aside class="notes">
+<p>Invite students to edit <code>sensor_scale_mV_per_unit</code>, <code>threshold_unit</code>, and <code>noise_unit</code> and run to see how required hysteresis changes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="digitaltoanalog-converters-dacs-concept" class="slide level2">
+<h2>3.2 Digital‑to‑Analog Converters (DACs) – Concept</h2>
+<p>A <strong>DAC</strong> converts an <strong>n‑bit digital word</strong> into a proportional <strong>analog voltage</strong>.</p>
+<ul>
+<li>Input: <span class="math inline">\(b_1 b_2 \ldots b_n\)</span> (LSB to MSB).</li>
+<li>Reference voltage: <span class="math inline">\(V_R\)</span>.</li>
+<li>Output: stepwise voltage <span class="math inline">\(V_{\text{out}}\)</span>.</li>
+</ul>
+<p>Unipolar DAC (0 to near <span class="math inline">\(V_R\)</span>):</p>
+<p><span class="math display">\[
+V_{\text{out}} = V_R \left[b_1 2^{-1} + b_2 2^{-2} + \dots + b_n 2^{-n}\right]
+\tag{5}
+\]</span></p>
+<p>Alternative form using integer <span class="math inline">\(N\)</span> (0 to <span class="math inline">\(2^n-1\)</span>):</p>
+<p><span class="math display">\[
+V_{\text{out}} = \frac{N}{2^n} V_R
+\tag{6}
+\]</span></p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Think of <span class="math inline">\(N/2^n\)</span> as the <strong>fraction of full scale</strong>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="unipolar-dac-range-and-resolution" class="slide level2">
+<h2>Unipolar DAC Range and Resolution</h2>
+<ul>
+<li>Minimum output:
+<ul>
+<li><span class="math inline">\(N = 0\)</span> → <span class="math inline">\(V_{\text{out}} = 0\)</span>.</li>
+</ul></li>
+<li>Maximum output:
+<ul>
+<li><span class="math inline">\(N = 2^n - 1\)</span> →</li>
+</ul></li>
+</ul>
+<p><span class="math display">\[
+V_{\max} = \frac{2^n - 1}{2^n}V_R = \left(1 - 2^{-n}\right)V_R
+\]</span></p>
+<p>Example:</p>
+<ul>
+<li>4‑bit DAC:</li>
+</ul>
+<p><span class="math display">\[
+V_{\max} = (1 - 2^{-4})V_R = 0.9375 V_R
+\]</span></p>
+<ul>
+<li>8‑bit DAC:</li>
+</ul>
+<p><span class="math display">\[
+V_{\max} \approx 0.9961 V_R
+\]</span></p>
+<p><strong>Resolution (step size):</strong></p>
+<p><span class="math display">\[
+\Delta V_{\text{out}} = V_R 2^{-n}
+\tag{8}
+\]</span></p>
+</section>
+<section id="example-simple-8bit-dac-output" class="slide level2 scrollable">
+<h2>Example: Simple 8‑bit DAC Output</h2>
+<p>8‑bit, <span class="math inline">\(V_R = 5.0\ \mathrm{V}\)</span>, input word <span class="math inline">\(10100111_2\)</span>.</p>
+<ol type="1">
+<li>Compute <span class="math inline">\(N\)</span>:</li>
+</ol>
+<p><span class="math display">\[
+10100111_2 = 167_{10}
+\]</span></p>
+<ol start="2" type="1">
+<li>Use Equation (6):</li>
+</ol>
+<p><span class="math display">\[
+V_{\text{out}} = \frac{167}{256} \cdot 5.0 \approx 3.2617\ \mathrm{V}
+\]</span></p>
+<div>
+<div id="pyodide-2" class="exercise-cell">
+
+</div>
+<script type="pyodide-2-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiVnJlZiA9IDUuMFxuTiA9IDBiMTAxMDAxMTFcbm5fYml0cyA9IDhcblZvdXQgPSBOIC8gKDIqKm5fYml0cykgKiBWcmVmXG5wcmludChmXCJOID0ge059LCBWb3V0ID0ge1ZvdXQ6LjRmfSBWXCIpIn0=
+</script>
+</div>
+</section>
+<section id="example-9-10bit-dac-with-10-v-reference" class="slide level2 scrollable">
+<h2>Example 9: 10‑bit DAC with 10 V Reference</h2>
+<p><strong>Given:</strong> 10‑bit DAC, <span class="math inline">\(V_R = 10.0\ \mathrm{V}\)</span>.</p>
+<ol type="a">
+<li>Input = 0B5H <span class="math inline">\(= 0010110101_2\)</span>. Compute <span class="math inline">\(V_{\text{out}}\)</span> using Equation (5).</li>
+</ol>
+<p><span class="math display">\[
+V_{\text{out}} = 10.0\left[2^{-3} + 2^{-5} + 2^{-6} + 2^{-8} + 2^{-10}\right]
+\]</span></p>
+<p><span class="math display">\[
+V_{\text{out}} = 10.0[0.1767578] \approx 1.7676\ \mathrm{V}
+\]</span></p>
+<ol start="2" type="a">
+<li>Input = 20FH = <span class="math inline">\(527_{10}\)</span>. Use Equation (6):</li>
+</ol>
+<p><span class="math display">\[
+V_{\text{out}} = \frac{527}{1024} \cdot 10.0 \approx 5.1465\ \mathrm{V}
+\]</span></p>
+<ol start="3" type="a">
+<li>What input <span class="math inline">\(N\)</span> to get 6.5 V?</li>
+</ol>
+<p><span class="math display">\[
+N = 2^n \frac{V_{\text{out}}}{V_R} = 1024 \cdot \frac{6.5}{10} = 665.6
+\]</span></p>
+<p>We must use integers → cannot get exactly 6.5 V.</p>
+<ul>
+<li><span class="math inline">\(N = 665\)</span> → <span class="math inline">\(\approx 6.494\ \mathrm{V}\)</span>.</li>
+<li><span class="math inline">\(N = 666\)</span> → <span class="math inline">\(\approx 6.504\ \mathrm{V}\)</span>.</li>
+</ul>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Warning</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Important:</strong> Finite resolution → some target voltages are <strong>not exactly representable</strong>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="bipolar-dac-output-around-zero" class="slide level2">
+<h2>Bipolar DAC – Output Around Zero</h2>
+<p>Sometimes we need output in <span class="math inline">\(-V_{\text{max}}\)</span> to <span class="math inline">\(+V_{\text{max}}\)</span>.</p>
+<p>Typical bipolar DAC uses <strong>offset binary</strong>:</p>
+<p><span class="math display">\[
+V_{\text{out}} = \frac{N}{2^n} V_R - \frac{1}{2} V_R
+\tag{7}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(N = 0\)</span> → <span class="math inline">\(V_{\text{out}} = -V_R/2\)</span>.</li>
+<li><span class="math inline">\(N = 2^n - 1\)</span> →</li>
+</ul>
+<p><span class="math display">\[
+V_{\text{out}}(\max) = \left(\frac{1}{2} - \frac{1}{2^n}\right)V_R
+\]</span></p>
+<p>So positive side is <strong>slightly less</strong> than <span class="math inline">\(+V_R/2\)</span>.</p>
+</section>
+<section id="example-10-10bit-bipolar-dac" class="slide level2 scrollable">
+<h2>Example 10: 10‑bit Bipolar DAC</h2>
+<p>10‑bit, bipolar, <span class="math inline">\(V_R = 5\ \mathrm{V}\)</span>.</p>
+<ol type="1">
+<li>Inputs:
+<ul>
+<li>04FH = <span class="math inline">\(79_{10}\)</span>.</li>
+<li>2A4H = <span class="math inline">\(676_{10}\)</span>.</li>
+</ul></li>
+<li>Use Equation (7):</li>
+</ol>
+<p>For 79:</p>
+<p><span class="math display">\[
+V_{\text{out}} = \frac{79}{1024}(5) - \frac{5}{2} \approx -2.114\ \mathrm{V}
+\]</span></p>
+<p>For 676:</p>
+<p><span class="math display">\[
+V_{\text{out}} = \frac{676}{1024}(5) - \frac{5}{2} \approx 0.801\ \mathrm{V}
+\]</span></p>
+<ol start="3" type="1">
+<li>For zero output:</li>
+</ol>
+<p>Solve <span class="math inline">\(0 = \frac{N}{1024}5 - \frac{5}{2}\)</span> → <span class="math inline">\(N = 512 = 200\mathrm{H} = 1000000000_2\)</span>.</p>
+</section>
+<section id="dac-resolution-design-example" class="slide level2">
+<h2>DAC Resolution Design Example</h2>
+<p><strong>Spec:</strong> Find number of bits so that <span class="math inline">\(\Delta V_{\text{out}} \le 0.04\ \mathrm{V}\)</span> with <span class="math inline">\(V_R = 10\ \mathrm{V}\)</span>.</p>
+<p>Use Equation (8):</p>
+<p><span class="math display">\[
+\Delta V = V_R 2^{-n} \le 0.04
+\]</span></p>
+<p><span class="math display">\[
+0.04 = 10 \cdot 2^{-n} \Rightarrow 2^{-n} = 0.004
+\]</span></p>
+<p>Solve for <span class="math inline">\(n\)</span>:</p>
+<p><span class="math display">\[
+n = \frac{\log(10) - \log(0.04)}{\log 2} \approx 7.97
+\]</span></p>
+<p>So choose <span class="math inline">\(n = 8\)</span>.</p>
+<p>Check:</p>
+<p><span class="math display">\[
+\Delta V_{\text{out}} = 10 \cdot 2^{-8} = 0.03906\ \mathrm{V}
+\]</span></p>
+</section>
+<section id="dac-block-diagram-and-features" class="slide level2 scrollable">
+<h2>DAC Block Diagram and Features</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/f2758152bd65b03b55515dd9e8aac1ec_MD5.jpg" height="260"></p>
+<figcaption>Figure 11: Generic DAC diagram.</figcaption>
+</figure>
+</div>
+<p>Key characteristics:</p>
+<ol type="1">
+<li><strong>Digital input:</strong> parallel <span class="math inline">\(n\)</span>-bit word (often TTL/CMOS).</li>
+<li><strong>Power supply:</strong> typically ±12 to ±18 V (or single supply).</li>
+<li><strong>Reference supply:</strong> sets scale and resolution.</li>
+<li><strong>Analog output:</strong> stepped voltage (possibly bipolar).</li>
+<li><strong>Offset trim:</strong> to set true zero output for zero code.</li>
+<li><strong>Data latch:</strong> hold output value until new word is latched.</li>
+<li><strong>Conversion time:</strong> almost instantaneous (just amplifier settling, μs range).</li>
+</ol>
+</section>
+<section id="ladder-dac-internal-structure" class="slide level2">
+<h2>Ladder DAC Internal Structure</h2>
+<p>Most integrated DACs use an <strong>R–2R ladder network</strong>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/fc7e112f35e9eccbf5ceb0a7ab2a586f_MD5.jpg" height="260"></p>
+<figcaption>Figure 12: R-2R resistor ladder DAC.</figcaption>
+</figure>
+</div>
+<ul>
+<li>Each bit controls a switch connecting a ladder node to <span class="math inline">\(V_R\)</span> or ground.</li>
+<li>Network ensures each bit contributes the correct weight <span class="math inline">\(2^{-k}\)</span>.</li>
+<li>Output is typically buffered by an op‑amp.</li>
+</ul>
+<p>You usually treat this as a <strong>black box</strong> and use Equation (5) or (6).</p>
+</section>
+<section id="example-12-dac-controlling-a-valve" class="slide level2">
+<h2>Example 12: DAC Controlling a Valve</h2>
+<p>Valve opening is linear from 0 to 10 V. Controlled by 8‑bit DAC fed by microcomputer.</p>
+<p><strong>(a) Reference for full‑open at 10 V?</strong></p>
+<p>Full‑scale digital code: <span class="math inline">\(11111111_2 = 255_{10}\)</span>. Maximum DAC fraction: <span class="math inline">\((2^8 - 1)/2^8 = 0.9961\)</span>.</p>
+<p><span class="math display">\[
+10\ \mathrm{V} = 0.9961 V_R \Rightarrow V_R = \frac{10}{0.9961} \approx 10.039\ \mathrm{V}
+\]</span></p>
+<p><strong>(b) Percentage valve opening per 1‑bit change?</strong></p>
+<p>Resolution:</p>
+<p><span class="math display">\[
+\Delta V_{\text{out}} = V_R 2^{-8} \approx 10.039/256 \approx 0.0392\ \mathrm{V}
+\]</span></p>
+<p>Percentage of full scale (10 V):</p>
+<p><span class="math display">\[
+\% = \frac{0.0392}{10} \cdot 100 \approx 0.392\%
+\]</span></p>
+</section>
+<section id="analogtodigital-converters-adcs-concept" class="slide level2">
+<h2>3.3 Analog‑to‑Digital Converters (ADCs) – Concept</h2>
+<p>An <strong>ADC</strong> performs the <strong>inverse</strong> of the DAC:</p>
+<ul>
+<li>Input: analog voltage <span class="math inline">\(V_{\text{in}}\)</span> (plus a reference <span class="math inline">\(V_R\)</span>).</li>
+<li>Output: digital word <span class="math inline">\(b_1 b_2 \ldots b_n\)</span>.</li>
+</ul>
+<p>Unipolar ADC relationship:</p>
+<p><span class="math display">\[
+b_1 2^{-1} + b_2 2^{-2} + \dots + b_n 2^{-n} \le \frac{V_{\text{in}}}{V_R}
+\tag{9}
+\]</span></p>
+<ul>
+<li>Left side = fraction represented by digital code.</li>
+<li>Right side = scaled input <span class="math inline">\(V_{\text{in}}/V_R\)</span>.</li>
+<li>ADC chooses the <strong>largest code that does not exceed</strong> <span class="math inline">\(V_{\text{in}}/V_R\)</span>.</li>
+</ul>
+</section>
+<section id="adc-quantization-step-and-uncertainty" class="slide level2">
+<h2>ADC Quantization Step and Uncertainty</h2>
+<p>ADC output can only change in increments of <span class="math inline">\(2^{-n}\)</span> in the normalized fraction.</p>
+<p>So the <strong>voltage uncertainty</strong> for a given code is:</p>
+<p><span class="math display">\[
+\Delta V = V_R 2^{-n}
+\tag{10}
+\]</span></p>
+<p>Same as DAC resolution.</p>
+<p>Interpretation:</p>
+<ul>
+<li>For a given code, actual <span class="math inline">\(V_{\text{in}}\)</span> is known only within a <strong>bin</strong> of width <span class="math inline">\(\Delta V\)</span>.</li>
+<li>Lower bins: <span class="math inline">\(0\)</span> to <span class="math inline">\(\Delta V\)</span>, etc.</li>
+<li>Top bin: <span class="math inline">\(V_R (1 - 2^{-n})\)</span> to just below <span class="math inline">\(V_R\)</span>.</li>
+</ul>
+</section>
+<section id="example-13-adc-range-and-resolution-from-temperature-sensor" class="slide level2 scrollable">
+<h2>Example 13: ADC Range and Resolution from Temperature Sensor</h2>
+<p><strong>Sensor:</strong> <span class="math inline">\(V = 0.02\ \mathrm{V/^\circ C} \cdot T\)</span>. Measure 0 to <span class="math inline">\(100^\circ\mathrm{C}\)</span> with <span class="math inline">\(0.1^\circ\mathrm{C}\)</span> resolution.</p>
+<ol type="1">
+<li>Max voltage at 100°C:</li>
+</ol>
+<p><span class="math display">\[
+(0.02\ \mathrm{V/^\circ C})(100^\circ\mathrm{C}) = 2.0\ \mathrm{V}
+\]</span></p>
+<p>So choose <span class="math inline">\(V_R = 2.0\ \mathrm{V}\)</span>.</p>
+<ol start="2" type="1">
+<li>Required voltage change for 0.1°C:</li>
+</ol>
+<p><span class="math display">\[
+\Delta V_{\text{required}} = (0.1^\circ\mathrm{C})(0.02\ \mathrm{V/^\circ C}) = 2\ \mathrm{mV}
+\]</span></p>
+<p>We need <span class="math inline">\(\Delta V = V_R 2^{-n} \le 2\ \mathrm{mV}\)</span>.</p>
+<p><span class="math display">\[
+0.002 = 2 \cdot 2^{-n}
+\Rightarrow 2^{-n} = 0.001
+\Rightarrow n \approx 9.996 \approx 10
+\]</span></p>
+<p>So choose <strong>10 bits</strong>.</p>
+<p>Actual resolution:</p>
+<p><span class="math display">\[
+\Delta V = 2 \cdot 2^{-10} \approx 0.00195\ \mathrm{V}
+\]</span></p>
+<p>Temperature resolution ≈ <span class="math inline">\(0.0975^\circ\mathrm{C}\)</span>, slightly better than required.</p>
+</section>
+<section id="adc-code-limits-min-and-max" class="slide level2">
+<h2>ADC Code Limits – Min and Max</h2>
+<ul>
+<li>If output is all zeros:
+<ul>
+<li>We know <span class="math inline">\(0 \le V_{\text{in}} &lt; V_R 2^{-n}\)</span>.</li>
+</ul></li>
+<li>If output is all ones:
+<ul>
+<li>We know <span class="math inline">\(V_{\text{in}} \ge V_R(1 - 2^{-n})\)</span>.</li>
+</ul></li>
+</ul>
+<p>Using example above:</p>
+<ul>
+<li>10‑bit, <span class="math inline">\(V_R = 2\ \mathrm{V}\)</span>:
+<ul>
+<li><span class="math inline">\(V_L = 0\)</span>.</li>
+<li>Top code (all ones) step at</li>
+</ul></li>
+</ul>
+<p><span class="math display">\[
+V_{\text{step}} = V_R (1 - 2^{-10}) \approx 1.9980\ \mathrm{V}
+\]</span></p>
+<p>→ corresponds to about <span class="math inline">\(99.90^\circ\mathrm{C}\)</span>.</p>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Warning</strong></p>
+</div>
+<div class="callout-content">
+<p>So, in practice, we measure <strong>slightly less than full physical range</strong> (e.g., 0.1°C to 99.9°C).</p>
+</div>
+</div>
+</div>
+</section>
+<section id="fast-adc-code-computation-equation-11" class="slide level2">
+<h2>Fast ADC Code Computation – Equation (11)</h2>
+<p>Instead of binary fractions, we can directly compute integer code <span class="math inline">\(N\)</span>:</p>
+<p><span class="math display">\[
+N = \mathrm{INT}\left(\frac{V_{\text{in}}}{V_R} 2^n\right)
+\tag{11}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\mathrm{INT}()\)</span> is <strong>truncate</strong>, not round: <span class="math inline">\(\mathrm{INT}(3.99) = 3\)</span>.</li>
+</ul>
+<p>Then convert <span class="math inline">\(N\)</span> to binary or hex.</p>
+</section>
+<section id="example-14-5bit-adc-for-3.127-v-input" class="slide level2">
+<h2>Example 14: 5‑bit ADC for 3.127 V Input</h2>
+<p>5‑bit ADC, <span class="math inline">\(V_R = 5\ \mathrm{V}\)</span>, <span class="math inline">\(V_{\text{in}} = 3.127\ \mathrm{V}\)</span>.</p>
+<p>Normalized value:</p>
+<p><span class="math display">\[
+\frac{3.127}{5} = 0.6254
+\]</span></p>
+<p>Binary fraction method (step by step) yields code <span class="math inline">\(10100_2\)</span>.</p>
+<p>Using Equation (11):</p>
+<p><span class="math display">\[
+N = \mathrm{INT}\left(\frac{3.127}{5} \cdot 2^5\right)
+= \mathrm{INT}(20.0128) = 20
+\]</span></p>
+<p>20 in hex = 14H = <span class="math inline">\(10100_2\)</span>.</p>
+<div>
+<div id="pyodide-3" class="exercise-cell">
+
+</div>
+<script type="pyodide-3-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiVmluID0gMy4xMjdcblZyZWYgPSA1LjBcbm4gPSA1XG5OID0gaW50KChWaW4gLyBWcmVmKSAqICgyKipuKSlcbnByaW50KGZcIk4gPSB7Tn0sIGJpbmFyeSA9IHtOOjA1Yn0sIGhleCA9IHtOOlh9SFwiKSJ9
+</script>
+</div>
+</section>
+<section id="example-15-10bit-adc-find-code-and-backcompute-voltage" class="slide level2">
+<h2>Example 15: 10‑bit ADC, Find Code and Back‑Compute Voltage</h2>
+<p>10‑bit, <span class="math inline">\(V_R = 2.500\ \mathrm{V}\)</span>.</p>
+<p><strong>(a) Input 1.45 V → find output code</strong></p>
+<p><span class="math display">\[
+N = \mathrm{INT}\left(\frac{1.45}{2.5} 2^{10}\right)
+= \mathrm{INT}(593.92) = 593
+\]</span></p>
+<p>593 in hex = 251H.</p>
+<p><strong>(b) Given output 1B4H → find possible input range</strong></p>
+<p>1B4H = <span class="math inline">\(436_{10}\)</span>.</p>
+<p>Center of bin:</p>
+<p><span class="math display">\[
+V_{\text{in,mid}} = \frac{436}{1024} \cdot 2.5 \approx 1.06445\ \mathrm{V}
+\]</span></p>
+<p>Bin width:</p>
+<p><span class="math display">\[
+\Delta V = V_R 2^{-n} = 2.5 / 1024 \approx 0.00244\ \mathrm{V}
+\]</span></p>
+<p>So valid input for code 1B4H:</p>
+<p><span class="math display">\[
+1.06445\ \mathrm{V} \le V_{\text{in}} &lt; 1.06689\ \mathrm{V}
+\]</span></p>
+</section>
+<section id="bipolar-adc-offset-binary-equation" class="slide level2">
+<h2>Bipolar ADC: Offset Binary Equation</h2>
+<p>Bipolar ADC (offset binary mapping) formula:</p>
+<p><span class="math display">\[
+N = \mathrm{INT}\left[\left(\frac{V_{\text{in}}}{V_R} + \frac{1}{2}\right) 2^n\right]
+\tag{12}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(V_{\text{in}} = -V_R/2\)</span> → <span class="math inline">\(N = 0\)</span>.</li>
+<li><span class="math inline">\(V_{\text{in}} = 0\)</span> → <span class="math inline">\(N \approx 2^{n-1}\)</span>.</li>
+<li><span class="math inline">\(V_{\text{in}} \approx +V_R/2\)</span> → <span class="math inline">\(N \approx 2^n - 1\)</span> (slightly less due to step size).</li>
+</ul>
+<p>Example mapping for 8‑bit, <span class="math inline">\(V_R = 10\ \mathrm{V}\)</span>:</p>
+<ul>
+<li><span class="math inline">\(-5.000\ \mathrm{V} \Rightarrow 00000000_2\)</span>.</li>
+<li><span class="math inline">\(-0.039\ \mathrm{V} \Rightarrow 01111111_2\)</span>.</li>
+<li><span class="math inline">\(0.000\ \mathrm{V} \Rightarrow 10000000_2\)</span>.</li>
+<li><span class="math inline">\(+0.039\ \mathrm{V} \Rightarrow 10000001_2\)</span>.</li>
+<li><span class="math inline">\(+4.961\ \mathrm{V} \Rightarrow 11111111_2\)</span>.</li>
+</ul>
+</section>
+<section id="example-bipolar-8bit-adc-with-5-v-reference" class="slide level2">
+<h2>Example: Bipolar 8‑bit ADC with 5 V Reference</h2>
+<p>8‑bit, bipolar, <span class="math inline">\(V_R = 5.00\ \mathrm{V}\)</span>.</p>
+<p><strong>(a)</strong> Input <span class="math inline">\(V_{\text{in}} = -0.85\ \mathrm{V}\)</span>.</p>
+<p><span class="math display">\[
+N = \mathrm{INT}\left[\left(\frac{-0.85}{5} + 0.5\right) 256\right]
+= \mathrm{INT}(84.48) = 84
+\]</span></p>
+<p>84 = 54H = <span class="math inline">\(01010100_2\)</span>.</p>
+<p><strong>(b)</strong> Input <span class="math inline">\(V_{\text{in}} = +1.5\ \mathrm{V}\)</span>.</p>
+<p><span class="math display">\[
+N = \mathrm{INT}\left[\left(\frac{1.5}{5} + 0.5\right) 256\right]
+= \mathrm{INT}(204.8) = 204
+\]</span></p>
+<p>204 = CCH = <span class="math inline">\(11001100_2\)</span>.</p>
+<p><strong>(c)</strong> For output 72H (<span class="math inline">\(114_{10}\)</span>), solve for <span class="math inline">\(V_{\text{in}}\)</span>:</p>
+<p><span class="math display">\[
+V_{\text{in}} = \frac{N}{2^n}V_R - \frac{V_R}{2}
+= \frac{114}{256} 5.0 - 2.5 \approx -0.2734\ \mathrm{V}
+\]</span></p>
+<p>Valid actual input: <span class="math inline">\([-0.2734,\ -0.2539)\ \mathrm{V}\)</span>.</p>
+</section>
+<section id="adc-block-diagram-and-timing" class="slide level2 scrollable">
+<h2>ADC Block Diagram and Timing</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/a161645ed90fbddeea8e08f9d2d4b7f3_MD5.jpg" height="260"></p>
+<figcaption>Figure 13: Generic ADC diagram.</figcaption>
+</figure>
+</div>
+<p>Key points:</p>
+<ol type="1">
+<li><strong>Analog input</strong> – should remain <strong>constant during conversion</strong>.</li>
+<li><strong>Power supplies</strong> – analog ± rails + digital Vcc.</li>
+<li><strong>Reference voltage</strong> – sets range/resolution.</li>
+<li><strong>Digital outputs</strong> – <span class="math inline">\(n\)</span> parallel bits, often tri‑state.</li>
+<li><strong>Control lines</strong>:
+<ul>
+<li><strong>SC</strong> (Start Convert).</li>
+<li><strong>EOC</strong> (End Of Convert).</li>
+<li><strong>RD</strong> (Read / output enable).</li>
+</ul></li>
+</ol>
+<p>Conversion is not instantaneous → we need to respect <strong>conversion time</strong> in system design.</p>
+</section>
+<section id="typical-adc-data-acquisition-timing" class="slide level2 scrollable">
+<h2>Typical ADC Data Acquisition Timing</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/5842a3e1601af4ca331db02fb8a9ab55_MD5.jpg" height="260"></p>
+<figcaption>Figure 14: Data-acquisition timing with ADC.</figcaption>
+</figure>
+</div>
+<p>Sequence:</p>
+<ol type="1">
+<li>MCU drives SC low → ADC begins conversion.</li>
+<li>ADC asserts EOC high during conversion.</li>
+<li>When conversion complete → EOC falls.</li>
+<li>MCU waits for EOC, then asserts RD low → digital output appears on lines.</li>
+</ol>
+</section>
+<section id="adc-architectures-successive-approximation" class="slide level2 scrollable">
+<h2>ADC Architectures: Successive Approximation</h2>
+<p><strong>Parallel‑feedback (Successive Approximation) ADC</strong>:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/87872e3df9ff17a4e5fa5f45245415e4_MD5.jpg" height="260"></p>
+<figcaption>Figure 15: Successive-approximation ADC using DAC feedback.</figcaption>
+</figure>
+</div>
+<p>Components:</p>
+<ul>
+<li>Internal <strong>DAC</strong>.</li>
+<li><strong>Comparator</strong> comparing input <span class="math inline">\(V_x\)</span> with DAC output <span class="math inline">\(V_F\)</span>.</li>
+<li><strong>Successive approximation register (SAR)</strong> logic to set/test bits.</li>
+</ul>
+<p>Operation:</p>
+<ol type="1">
+<li>Start with all bits 0.</li>
+<li>Set MSB = 1, compute <span class="math inline">\(V_F\)</span>.</li>
+<li>If <span class="math inline">\(V_x \ge V_F\)</span>, keep bit = 1; else reset to 0.</li>
+<li>Move to next bit; repeat until LSB.</li>
+</ol>
+<p>Conversion time ≈ constant: ~1–5 μs/bit.</p>
+</section>
+<section id="example-17-4bit-sar-adc-for-3.217-v-vref-5-v" class="slide level2 scrollable">
+<h2>Example 17: 4‑bit SAR ADC for 3.217 V, Vref = 5 V</h2>
+<p>4‑bit, <span class="math inline">\(V_R = 5\ \mathrm{V}\)</span>, <span class="math inline">\(V_x = 3.217\ \mathrm{V}\)</span>.</p>
+<ol type="1">
+<li>Test bit 1 (MSB): <span class="math inline">\(b_1 = 1\)</span>.</li>
+</ol>
+<p><span class="math display">\[
+V_F = 5 \cdot 2^{-1} = 2.5\ \mathrm{V}
+\]</span></p>
+<p><span class="math inline">\(V_x &gt; 2.5\)</span> → keep <span class="math inline">\(b_1 = 1\)</span>.</p>
+<ol start="2" type="1">
+<li>Test bit 2: set <span class="math inline">\(b_2 = 1\)</span>.</li>
+</ol>
+<p><span class="math display">\[
+V_F = 5(2^{-1} + 2^{-2}) = 3.75\ \mathrm{V}
+\]</span></p>
+<p><span class="math inline">\(V_x &lt; 3.75\)</span> → reset <span class="math inline">\(b_2 = 0\)</span>.</p>
+<ol start="3" type="1">
+<li>Test bit 3: set <span class="math inline">\(b_3 = 1\)</span>.</li>
+</ol>
+<p><span class="math display">\[
+V_F = 5(2^{-1} + 2^{-3}) = 3.125\ \mathrm{V}
+\]</span></p>
+<p><span class="math inline">\(V_x &gt; 3.125\)</span> → keep <span class="math inline">\(b_3 = 1\)</span>.</p>
+<ol start="4" type="1">
+<li>Test bit 4 (LSB): set <span class="math inline">\(b_4 = 1\)</span>.</li>
+</ol>
+<p><span class="math display">\[
+V_F = 5(2^{-1} + 2^{-3} + 2^{-4}) = 3.4375\ \mathrm{V}
+\]</span></p>
+<p><span class="math inline">\(V_x &lt; 3.4375\)</span> → reset <span class="math inline">\(b_4 = 0\)</span>.</p>
+<p>Final code: <strong>1010₂</strong>.</p>
+</section>
+<section id="dualslope-ramp-adc" class="slide level2 scrollable">
+<h2>Dual‑Slope Ramp ADC</h2>
+<p>Used in <strong>digital multimeters</strong> and precise instruments.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/5c4d155f711ae45a6ea057017c88ddf4_MD5.jpg" height="260"></p>
+<figcaption>Figure 16: Dual-slope ADC using integrator and comparator.</figcaption>
+</figure>
+</div>
+<p>Steps:</p>
+<ol type="1">
+<li>Integrate input <span class="math inline">\(V_x\)</span> for fixed time <span class="math inline">\(T_1\)</span>. Output at integrator:</li>
+</ol>
+<p><span class="math display">\[
+V_1 = \frac{1}{RC}\int_0^{T_1} V_x\,dt = \frac{T_1}{RC} V_x
+\tag{14}
+\]</span></p>
+<ol start="2" type="1">
+<li>Switch input to <span class="math inline">\(-V_R\)</span>; integrator ramps back down.</li>
+</ol>
+<p><span class="math display">\[
+V_2 = V_1 - \frac{1}{RC}\int_0^{t_x} V_R\,dt = \frac{T_1}{RC} V_x - \frac{t_x}{RC} V_R
+\tag{16}
+\]</span></p>
+<ol start="3" type="1">
+<li>When <span class="math inline">\(V_2 = 0\)</span>, comparator stops counter at time <span class="math inline">\(t_x\)</span>:</li>
+</ol>
+<p><span class="math display">\[
+0 = \frac{T_1}{RC} V_x - \frac{t_x}{RC} V_R
+\Rightarrow V_x = \frac{t_x}{T_1} V_R
+\tag{17}
+\]</span></p>
+<p><strong>Key:</strong> Output code ∝ <span class="math inline">\(t_x\)</span>, independent of R and C tolerances.</p>
+</section>
+<section id="dualslope-timing-example-example-18" class="slide level2 scrollable">
+<h2>Dual‑Slope Timing Example (Example 18)</h2>
+<p>Given:</p>
+<ul>
+<li><span class="math inline">\(R = 100\ \mathrm{k\Omega}\)</span>, <span class="math inline">\(C = 0.01\ \mu\mathrm{F}\)</span>.</li>
+<li><span class="math inline">\(V_R = 10\ \mathrm{V}\)</span>.</li>
+<li>Integrate <span class="math inline">\(V_x = 6.8\ \mathrm{V}\)</span> for <span class="math inline">\(T_1 = 10\ \mathrm{ms}\)</span>.</li>
+</ul>
+<ol type="1">
+<li>First ramp (input <span class="math inline">\(V_x\)</span>):</li>
+</ol>
+<p><span class="math display">\[
+V_1 = \frac{T_1 V_x}{RC} = \frac{10\ \mathrm{ms} \cdot 6.8\ \mathrm{V}}{(100\ \mathrm{k\Omega})(0.01\ \mu\mathrm{F})} = 6.8\ \mathrm{V}
+\]</span></p>
+<ol start="2" type="1">
+<li>Second ramp (input <span class="math inline">\(-V_R\)</span>), solve for <span class="math inline">\(t_x\)</span>:</li>
+</ol>
+<p><span class="math display">\[
+t_x = \frac{T_1 V_x}{V_R} = \frac{10\ \mathrm{ms} \cdot 6.8}{10} = 6.8\ \mathrm{ms}
+\]</span></p>
+<p>Total conversion time = <span class="math inline">\(T_1 + t_x = 16.8\ \mathrm{ms}\)</span>.</p>
+<p><strong>Comparison:</strong> Much slower than SAR (tens of microseconds) but very accurate and noise‑immune.</p>
+</section>
+<section id="example-19-interface-sensor-to-adc-with-amplifier" class="slide level2 scrollable">
+<h2>Example 19: Interface Sensor to ADC with Amplifier</h2>
+<p><strong>Sensor:</strong> <span class="math inline">\(6.5\ \mathrm{mV/^\circ C}\)</span> up to <span class="math inline">\(100^\circ\mathrm{C}\)</span>. <strong>ADC:</strong> 6‑bit unipolar, <span class="math inline">\(V_R = 10\ \mathrm{V}\)</span>.</p>
+<ol type="a">
+<li>Design amplifier so that 100°C → ADC full scale (code 111111).</li>
+</ol>
+<p>Sensor output at 100°C:</p>
+<p><span class="math display">\[
+V_{\text{sensor,max}} = (6.5\ \mathrm{mV/^\circ C})(100^\circ\mathrm{C}) = 0.65\ \mathrm{V}
+\]</span></p>
+<p>ADC max code (all ones) fraction:</p>
+<p><span class="math display">\[
+\sum_{k=1}^6 2^{-k} = 1 - 2^{-6} = 0.984375
+\]</span></p>
+<p>So ADC full‑scale input:</p>
+<p><span class="math display">\[
+V_x = 10 \cdot 0.984375 = 9.84375\ \mathrm{V}
+\]</span></p>
+<p>Required amplifier gain:</p>
+<p><span class="math display">\[
+\text{gain} = \frac{9.84375}{0.65} \approx 15.14
+\]</span></p>
+<p>Implement with op‑amp (Figure 18).</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/ab855c16ccc79a2fba593ca39420d29c_MD5.jpg" height="250"></p>
+<figcaption>Figure 18: Analog amplifier for Example 19.</figcaption>
+</figure>
+</div>
+<ol start="2" type="a">
+<li>Resolution in °C:</li>
+</ol>
+<p>LSB voltage at ADC:</p>
+<p><span class="math display">\[
+\Delta V_{\text{ADC}} = V_R 2^{-6} = 10 \cdot 2^{-6} = 0.15625\ \mathrm{V}
+\]</span></p>
+<p>This corresponds to sensor change:</p>
+<p><span class="math display">\[
+\Delta V_{\text{sensor}} = \frac{0.15625}{15.14} \approx 0.01032\ \mathrm{V}
+\]</span></p>
+<p>Temperature resolution:</p>
+<p><span class="math display">\[
+\Delta T = \frac{0.01032\ \mathrm{V}}{6.5\ \mathrm{mV/^\circ C}} \approx 1.59^\circ\mathrm{C}
+\]</span></p>
+</section>
+<section id="conversiontime-limits-dynamic-signals" class="slide level2">
+<h2>Conversion‑Time Limits – Dynamic Signals</h2>
+<p>ADC assumes <strong>input is constant</strong> during conversion time <span class="math inline">\(\tau_c\)</span>.</p>
+<p>If <span class="math inline">\(V_{\text{in}}(t)\)</span> changes too fast, conversion error &gt; 1 LSB.</p>
+<p>Condition:</p>
+<p><span class="math display">\[
+\left|\frac{dV_{\text{in}}}{dt}\right| \le \frac{\Delta V}{\tau_c} = \frac{V_R}{2^n \tau_c}
+\tag{18}
+\]</span></p>
+<p><strong>Example:</strong> 10‑bit ADC, <span class="math inline">\(V_R = 5\ \mathrm{V}\)</span>, <span class="math inline">\(\tau_c = 20\ \mu\mathrm{s}\)</span>.</p>
+<p><span class="math display">\[
+\left|\frac{dV_{\text{in}}}{dt}\right| \le \frac{5}{2^{10} \cdot 20 \times 10^{-6}} \approx 244\ \mathrm{V/s}
+\]</span></p>
+<p>For a sinusoid <span class="math inline">\(V_{\text{in}} = V_0 \sin(\omega t)\)</span>,</p>
+<p><span class="math display">\[
+\left|\frac{dV_{\text{in}}}{dt}\right|_{\max} = \omega V_0
+\]</span></p>
+<p>so, with <span class="math inline">\(V_0 = V_R\)</span>:</p>
+<p><span class="math display">\[
+\omega \le \frac{V_R}{2^n \tau_c V_0} = \frac{1}{2^n \tau_c}
+\]</span></p>
+<p>Frequency limit:</p>
+<p><span class="math display">\[
+f \le \frac{\omega}{2\pi} \approx 7.8\ \mathrm{Hz}
+\tag{20}
+\]</span></p>
+<p><strong>Surprising:</strong> a “fast” 20 μs, 10‑bit ADC can only accurately track ~7.8 Hz full‑scale sinusoid without additional circuitry.</p>
+</section>
+<section id="example-20-triangular-wave-limit" class="slide level2">
+<h2>Example 20: Triangular Wave Limit</h2>
+<p>8‑bit, bipolar ADC, <span class="math inline">\(V_R = 5\ \mathrm{V}\)</span>, <span class="math inline">\(\tau_c = 12\ \mu\mathrm{s}\)</span>.</p>
+<p>Input: triangular wave from −1 V to +1 V (peak‑to‑peak 2 V).</p>
+<p>Slope of triangle:</p>
+<ul>
+<li>Period <span class="math inline">\(T\)</span>, frequency <span class="math inline">\(f\)</span>.</li>
+<li>Change 2 V over <span class="math inline">\(T/4\)</span>:</li>
+</ul>
+<p><span class="math display">\[
+\frac{dV_{\text{in}}}{dt} = \frac{2}{T/4} = \frac{8}{T} = 8f
+\]</span></p>
+<p>Use Equation (18):</p>
+<p><span class="math display">\[
+8f \le \frac{V_R}{2^n \tau_c} = \frac{5}{2^8 \cdot 12\times10^{-6}} = 1627.6
+\]</span></p>
+<p>So</p>
+<p><span class="math display">\[
+f \le 203.5\ \mathrm{Hz}
+\]</span></p>
+</section>
+<section id="sampleandhold-sh-freezing-the-input" class="slide level2 scrollable">
+<h2>Sample‑and‑Hold (S/H) – Freezing the Input</h2>
+<p>To remove the conversion‑time limitation, we <strong>hold</strong> the input constant during conversion.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/c20c3f9515d84c4ca266cdeedfe65434_MD5.jpg" height="260"></p>
+<figcaption>Figure 20: Basic sample-and-hold with ADC.</figcaption>
+</figure>
+</div>
+<p>Operation:</p>
+<ol type="1">
+<li><strong>Sample mode:</strong> switch closed → capacitor tracks input <span class="math inline">\(V_C(t) \approx V_{\text{in}}(t)\)</span>.</li>
+<li><strong>Hold mode:</strong> switch opens at time <span class="math inline">\(t_s\)</span>.
+<ul>
+<li>Capacitor “freezes” at <span class="math inline">\(V_C = V_{\text{in}}(t_s)\)</span>.</li>
+<li>ADC converts while <span class="math inline">\(V_C\)</span> is (almost) constant.</li>
+</ul></li>
+<li>After conversion (EOC), switch closes again → resume tracking.</li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/f4f58cbd10e14810c903e033f62c8dac_MD5.jpg" height="260"></p>
+<figcaption>Figure 21: Sample-and-hold behavior.</figcaption>
+</figure>
+</div>
+</section>
+<section id="real-sh-circuit-and-nonidealities" class="slide level2 scrollable">
+<h2>Real S/H Circuit and Nonidealities</h2>
+<p>Practical S/H often uses FET switch + op‑amp buffer.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/8a4854ff55cf409e9479cea58b81f6d0_MD5.jpg" height="260"></p>
+<figcaption>Figure 22: FET-based S/H implementation.</figcaption>
+</figure>
+</div>
+<p>Nonideal effects:</p>
+<ol type="1">
+<li><strong>Sampling mode:</strong> series resistance <span class="math inline">\(R_s + R_{\text{ON}}\)</span> + capacitor → low‑pass filter.</li>
+<li><strong>Hold mode:</strong> leakage via <span class="math inline">\(R_{\text{OFF}}\)</span> and buffer input <span class="math inline">\(R_{VF}\)</span> → capacitor droop.</li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/71e60772c7e4e1e4c3f5f339e5a4a8fc_MD5.jpg" height="180"></p>
+<figcaption>Figure 23a: Sampling equivalent.</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/463338ee3bfddc90943fc4221663e74f_MD5.jpg" height="180"></p>
+<figcaption>Figure 23b: Holding equivalent.</figcaption>
+</figure>
+</div>
+</section>
+<section id="sh-bandwidth-and-droop-equations" class="slide level2">
+<h2>S/H Bandwidth and Droop Equations</h2>
+<p><strong>Sampling bandwidth</strong> (−3 dB point):</p>
+<p><span class="math display">\[
+f_c = \frac{1}{2\pi (R_s + R_{\text{ON}}) C}
+\tag{21}
+\]</span></p>
+<p><strong>Hold droop time constant</strong>:</p>
+<p>Equivalent parallel of <span class="math inline">\(R_{\text{OFF}}\)</span> and <span class="math inline">\(R_{VF}\)</span>:</p>
+<p><span class="math display">\[
+\tau_D = \frac{R_{\text{OFF}} R_{VF}}{R_{\text{OFF}} + R_{VF}} C
+\tag{22}
+\]</span></p>
+<p>To keep droop voltage within 1 LSB during conversion:</p>
+<p><span class="math display">\[
+\frac{V_C}{\tau_D} \le \frac{V_R}{2^n \tau_c}
+\tag{23}
+\]</span></p>
+<p>Rearrange for <span class="math inline">\(\tau_D\)</span>:</p>
+<p><span class="math display">\[
+\tau_D \ge 2^n \tau_c \cdot \frac{V_C}{V_R}
+\tag{24}
+\]</span></p>
+<p>Use <span class="math inline">\(V_C \approx V_R\)</span> for worst case → design capacitor <span class="math inline">\(C\)</span> accordingly.</p>
+</section>
+<section id="example-21-design-sh-capacitor-and-find-bandwidth" class="slide level2 scrollable">
+<h2>Example 21: Design S/H Capacitor and Find Bandwidth</h2>
+<p><strong>Given:</strong></p>
+<ul>
+<li>12‑bit ADC, unipolar, <span class="math inline">\(\tau_c = 30\ \mu\mathrm{s}\)</span>.</li>
+<li><span class="math inline">\(R_{\text{ON}} = 10\ \Omega\)</span>.</li>
+<li><span class="math inline">\(R_{\text{OFF}} = 10\ \mathrm{M\Omega}\)</span>.</li>
+<li><span class="math inline">\(R_{VF} = 10\ \mathrm{M\Omega}\)</span>.</li>
+<li>Source resistance <span class="math inline">\(R_s = 50\ \Omega\)</span>.</li>
+</ul>
+<ol type="a">
+<li><strong>Capacitor for acceptable droop</strong></li>
+</ol>
+<p>Worst case <span class="math inline">\(V_C = V_R\)</span>:</p>
+<p><span class="math display">\[
+\tau_D \ge 2^{12} \cdot 30 \times 10^{-6} = 0.12288\ \mathrm{s}
+\]</span></p>
+<p>From Equation (22):</p>
+<p><span class="math display">\[
+\tau_D = \frac{(10^7)(10^7)}{10^7 + 10^7} C = 5 \times 10^6 C
+\]</span></p>
+<p>Set <span class="math inline">\(\tau_D \ge 0.12288\)</span>:</p>
+<p><span class="math display">\[
+5 \times 10^6 C \ge 0.12288 \Rightarrow C \ge 0.025\ \mu\mathrm{F}
+\]</span></p>
+<ol start="2" type="a">
+<li><strong>Sampling cutoff frequency</strong> using Equation (21):</li>
+</ol>
+<p><span class="math display">\[
+f_c = \frac{1}{2\pi (R_s + R_{\text{ON}}) C} = \frac{1}{2\pi (60)(0.025\times10^{-6})} \approx 108\ \mathrm{kHz}
+\]</span></p>
+<p>So S/H can track up to ≈108 kHz in sample mode with this capacitor.</p>
+</section>
+<section id="throughput-sample-convert-acquire" class="slide level2">
+<h2>Throughput: Sample + Convert + Acquire</h2>
+<p>Two more S/H timing parameters:</p>
+<ul>
+<li><strong>Acquisition time</strong> <span class="math inline">\(\tau_{\text{acq}}\)</span>: time to settle to within 1 LSB after going from hold → sample.</li>
+<li><strong>Aperture time</strong> <span class="math inline">\(\tau_{\text{ap}}\)</span>: delay from hold command to the actual instant the sample is held.</li>
+</ul>
+<p>Total time per sample:</p>
+<p><span class="math display">\[
+T = \tau_c + \tau_{\text{acq}} + \tau_{\text{ap}}
+\tag{25}
+\]</span></p>
+<p>Maximum sample rate:</p>
+<p><span class="math display">\[
+f_{\max} = \frac{1}{T}
+\]</span></p>
+<p>Example: <span class="math inline">\(\tau_c = 40\ \mu\mathrm{s}\)</span>, <span class="math inline">\(\tau_{\text{acq}} = 4\ \mu\mathrm{s}\)</span>, <span class="math inline">\(\tau_{\text{ap}} = 50\ \mathrm{ns}\)</span>.</p>
+<p><span class="math display">\[
+T = 40 + 4 + 0.05\ \mu\mathrm{s} = 44.05\ \mu\mathrm{s}
+\Rightarrow f_{\max} \approx 22.7\ \mathrm{kHz}
+\]</span></p>
+</section>
+<section id="microprocessorcompatible-adcs" class="slide level2 scrollable">
+<h2>Microprocessor‑Compatible ADCs</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/57b20b778796fe0e6a729ea1de792a5b_MD5.jpg" height="260"></p>
+<figcaption>Figure 24: ADC directly interfaced to microprocessor bus.</figcaption>
+</figure>
+</div>
+<ul>
+<li>ADC lines connect to data bus via tri‑state outputs.</li>
+<li>Address decoding logic:
+<ul>
+<li>Generates SC and RD.</li>
+<li>Receives EOC.</li>
+</ul></li>
+<li>To CPU, ADC looks like a memory‑mapped I/O device.</li>
+</ul>
+<p>Software flow:</p>
+<ol type="1">
+<li>Write to control register → SC.</li>
+<li>Poll or wait for EOC.</li>
+<li>Read from ADC’s data address.</li>
+</ol>
+</section>
+<section id="frequencybased-converters-counting-pulses" class="slide level2">
+<h2>3.4 Frequency‑Based Converters – Counting Pulses</h2>
+<p>Alternative conversion method: convert <strong>analog → frequency</strong> and then <strong>count pulses</strong>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/403628967df0f99ac7549e3b9feca162_MD5.jpg" height="260"></p>
+<figcaption>Figure 25: Frequency-based ADC using counter and one-shot.</figcaption>
+</figure>
+</div>
+<ul>
+<li>Sensor signal drives <strong>V‑to‑F converter</strong> → square wave <span class="math inline">\(f_s\)</span>.</li>
+<li>Counter counts edges for fixed <strong>count time</strong> <span class="math inline">\(T_c\)</span>.</li>
+<li>After <span class="math inline">\(T_c\)</span>, latch count and signal EOC to CPU.</li>
+</ul>
+<p>If counter has <span class="math inline">\(n\)</span> bits, maximum count is <span class="math inline">\(2^n - 1\)</span>. For maximum frequency <span class="math inline">\(f_{\max}\)</span>:</p>
+<p><span class="math display">\[
+T_c = \frac{2^n - 1}{f_{\max}}
+\tag{26}
+\]</span></p>
+<p>Count for any <span class="math inline">\(f\)</span>: <span class="math inline">\(N = f T_c\)</span>.</p>
+</section>
+<section id="example-23-8bit-frequencybased-adc" class="slide level2 scrollable">
+<h2>Example 23: 8‑bit Frequency‑Based ADC</h2>
+<p>Sensor frequency range: 2.0 kHz to 20 kHz. Use 8‑bit counter.</p>
+<ol type="1">
+<li>Compute <span class="math inline">\(T_c\)</span> so that <span class="math inline">\(f_{\max}\)</span> → full count (255):</li>
+</ol>
+<p><span class="math display">\[
+T_c = \frac{2^8 - 1}{20\,000} = \frac{255}{20,000} \approx 12.75\ \mathrm{ms}
+\]</span></p>
+<ol start="2" type="1">
+<li>For <span class="math inline">\(f = 2.0\ \mathrm{kHz}\)</span>:</li>
+</ol>
+<p><span class="math display">\[
+N = f T_c = 2000 \cdot 0.01275 \approx 25.5 \Rightarrow 25_{10} = 00011001_2
+\]</span></p>
+</section>
+<section id="voltagetofrequency-conversion-lm331" class="slide level2">
+<h2>Voltage‑to‑Frequency Conversion – LM331</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/7a6bd0d0b2156a64caafabd45ae8ef1f_MD5.jpg" height="260"></p>
+<figcaption>Figure 26: LM331 voltage-to-frequency converter.</figcaption>
+</figure>
+</div>
+<p>Approximate formula:</p>
+<p><span class="math display">\[
+f_{\text{out}} = \frac{R_S}{R_L} \cdot \frac{1}{R_t C_t} \cdot \frac{V_{\text{in}}}{2.09}
+\tag{27}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(R_S\)</span>: scaling resistor (10–20 kΩ, often trimmable).</li>
+<li><span class="math inline">\(R_L\)</span>: load resistor (~100 kΩ).</li>
+<li><span class="math inline">\(R_t, C_t\)</span>: timing resistor and capacitor.</li>
+<li><span class="math inline">\(V_{\text{in}}\)</span>: control voltage (0–5 V typical).</li>
+</ul>
+<p>Design example: 0–5 V → 0–10 kHz.</p>
+<p>Set <span class="math inline">\(R_S = 15\ \mathrm{k\Omega}\)</span>, <span class="math inline">\(R_L = 100\ \mathrm{k\Omega}\)</span>.</p>
+<p><span class="math display">\[
+10,000 = \frac{15k}{100k} \cdot \frac{5}{2.09} \cdot \frac{1}{R_t C_t}
+\Rightarrow R_t C_t \approx 3.59\times 10^{-5}\ \mathrm{s}
+\]</span></p>
+<p>Pick <span class="math inline">\(C_t = 0.01\ \mu\mathrm{F}\)</span> → <span class="math inline">\(R_t \approx 3.59\ \mathrm{k\Omega}\)</span>.</p>
+</section>
+<section id="frequency-from-r-or-c-555-timer" class="slide level2">
+<h2>Frequency from R or C – 555 Timer</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/25a6248164652fdc910f7e0bf2fe75b9_MD5.jpg" height="260"></p>
+<figcaption>Figure 27: 555 timer frequency depends on R and C.</figcaption>
+</figure>
+</div>
+<p>Astable 555 oscillator frequency:</p>
+<p><span class="math display">\[
+f = \frac{1}{0.693 (R_A + 2 R_B) C}
+\tag{28}
+\]</span></p>
+<p>If sensor is a variable resistor or capacitor, you can map sensed quantity → frequency.</p>
+<p>Then use a counter + fixed gate time to get a digital representation.</p>
+</section>
+<section id="example-24-light-sensor-to-frequencybased-10bit-adc" class="slide level2 scrollable">
+<h2>Example 24: Light Sensor to Frequency‑Based 10‑bit ADC</h2>
+<p>Resistor sensor: 36 kΩ at 1.5 W/m², 4 kΩ at 10 W/m². Use 555 from Figure 27, 10‑bit counter, count time <span class="math inline">\(T_c = 10\ \mathrm{ms}\)</span>.</p>
+<ol type="1">
+<li>Want full‑scale count 1023 at <strong>maximum frequency</strong> (R_A = 4 kΩ).</li>
+</ol>
+<p><span class="math display">\[
+f_{\max} = \frac{1023}{0.01} = 102,300\ \mathrm{Hz}
+\]</span></p>
+<ol start="2" type="1">
+<li>Using Equation (28) with <span class="math inline">\(R_A = 4\ \mathrm{k\Omega}\)</span>:</li>
+</ol>
+<p><span class="math display">\[
+102,300 = \frac{1}{0.693 (4k + 2 R_B) C}
+\]</span></p>
+<p>Choose <span class="math inline">\(R_B = 2\ \mathrm{k\Omega}\)</span>, solve for C:</p>
+<p><span class="math display">\[
+C \approx 0.0018\ \mu\mathrm{F}
+\]</span></p>
+<ol start="3" type="1">
+<li>For low light (R_A = 36 kΩ):</li>
+</ol>
+<p><span class="math display">\[
+f_{\min} = \frac{1}{0.693 (36k + 4k) \cdot 0.0018\ \mu\mathrm{F}} \approx 20,042\ \mathrm{Hz}
+\]</span></p>
+<p>Count:</p>
+<p><span class="math display">\[
+N = 20,042 \cdot 0.01 \approx 200
+\]</span></p>
+<p>Plot <span class="math inline">\(N\)</span> vs light intensity → <strong>nonlinear</strong> because <span class="math inline">\(f \propto 1/(R_A + 2R_B)\)</span>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_3/3f44fea713a211c29138d89db4c94681_MD5.jpg" height="260"></p>
+<figcaption>Figure 28: Example 24 counter output vs light intensity.</figcaption>
+</figure>
+</div>
+</section>
+<section id="interactive-dacadc-playground" class="slide level2">
+<h2>Interactive DAC/ADC Playground</h2>
+<p>Use this block to explore how <span class="math inline">\(n\)</span>, <span class="math inline">\(V_R\)</span>, and <span class="math inline">\(V_{\text{in}}\)</span> control DAC/ADC behavior.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="1540" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1539;"><span id="cb1-1540"><a></a>viewof bits <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">4</span><span class="op">,</span> <span class="dv">16</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"n (bits)"</span>})</span>
+<span id="cb1-1541"><a></a>viewof Vref <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"V_ref (V)"</span>})</span>
+<span id="cb1-1542"><a></a>viewof Vin <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"V_in (V) for ADC"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-4" class="exercise-cell">
+
+</div>
+<script type="pyodide-4-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImlucHV0IjpbImJpdHMiLCJWcmVmIiwiVmluIl0sIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1wb3J0IG1hdGhcblxubiA9IGludChiaXRzKVxuVl9SID0gVnJlZlxuVl9pbiA9IFZpblxuXG4jIEFEQyBjb2RlICh1bmlwb2xhciksIGNsaXBwZWQgdG8gcmFuZ2UgWzAsIDJebi0xXVxuTl9hZGMgPSBpbnQoKFZfaW4gLyBWX1IpICogKDIqKm4pKVxuTl9hZGMgPSBtYXgoMCwgbWluKE5fYWRjLCAyKipuIC0gMSkpXG5cbiMgREFDIG91dHB1dCBpZiB3ZSBmZWVkIE5fYWRjIHRvIGEgREFDIHdpdGggc2FtZSBWX1JcblZvdXRfZGFjID0gTl9hZGMgLyAoMioqbikgKiBWX1JcblxucHJpbnQoZlwiQURDIGNvZGUgTiA9IHtOX2FkY30gKGJpbmFyeSB7Tl9hZGM6MHtufWJ9KVwiKVxucHJpbnQoZlwiREFDKFZfcmVmPXtWX1I6LjJmfSBWLCBOPU5fYWRjKSAtPiBWb3V0IOKJiCB7Vm91dF9kYWM6LjRmfSBWXCIpXG5wcmludChmXCJTdGVwIHNpemUgzpRWID0ge1ZfUi8oMioqbik6LjZmfSBWXCIpIn0=
+</script>
+</div>
+<aside class="notes">
+<p>Encourage students to: - Change <code>bits</code> and observe resolution. - Change <code>Vin</code> and see quantization and clipping. - Connect to earlier examples numerically.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="summary-key-points" class="slide level2 scrollable">
+<h2>Summary / Key Points</h2>
+<ol type="1">
+<li><strong>Comparators</strong> convert analog comparisons into digital alarms; hysteresis prevents noise‑induced chatter.</li>
+<li><strong>Open‑collector outputs</strong> need pull‑up resistors and allow level shifting and wired‑OR logic.</li>
+<li><strong>DACs</strong>:
+<ul>
+<li>Unipolar: <span class="math inline">\(V_{\text{out}} = (N/2^n)V_R\)</span>.</li>
+<li>Bipolar: <span class="math inline">\(V_{\text{out}} = (N/2^n)V_R - V_R/2\)</span>.</li>
+<li>Resolution: <span class="math inline">\(\Delta V = V_R 2^{-n}\)</span>.</li>
+</ul></li>
+<li><strong>ADCs</strong>:
+<ul>
+<li>Unipolar: <span class="math inline">\(N = \mathrm{INT}((V_{\text{in}}/V_R)2^n)\)</span>.</li>
+<li>Bipolar (offset binary): <span class="math inline">\(N = \mathrm{INT}((V_{\text{in}}/V_R + 1/2)2^n)\)</span>.</li>
+<li>Quantization error ±½ LSB; codes cover ranges, not single values.</li>
+</ul></li>
+<li><strong>Successive‑approximation ADCs</strong> are fast with predictable conversion time; <strong>dual‑slope ADCs</strong> are slower but precise and good for DMMs.</li>
+<li><strong>Conversion‑time limits</strong> constrain how fast input can change; <strong>sample‑and‑hold circuits</strong> freeze the value during conversion, but add bandwidth and droop constraints.</li>
+<li><strong>Frequency‑based converters</strong> (V‑to‑F + counter, 555) are simple and robust for many process‑control applications, though generally slower than SAR ADCs.</li>
+</ol>
+</section>
+<section id="formula-summary" class="slide level2">
+<h2>Formula Summary</h2>
+<p><strong>Comparators with Hysteresis</strong></p>
+<ul>
+<li>Upper threshold: <span class="math inline">\(V_H = V_{\text{ref}}\)</span>.</li>
+<li>Lower threshold:</li>
+</ul>
+<p><span class="math display">\[
+V_L = V_{\text{ref}} - \frac{R}{R_f} V_0
+\]</span></p>
+<ul>
+<li>Hysteresis width:</li>
+</ul>
+<p><span class="math display">\[
+\Delta V_{\text{hyst}} = \frac{R}{R_f} V_0
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p><strong>DACs</strong></p>
+<ul>
+<li>Unipolar:</li>
+</ul>
+<p><span class="math display">\[
+V_{\text{out}} = V_R \sum_{k=1}^n b_k 2^{-k} = \frac{N}{2^n} V_R
+\]</span></p>
+<ul>
+<li>Bipolar (offset binary):</li>
+</ul>
+<p><span class="math display">\[
+V_{\text{out}} = \frac{N}{2^n} V_R - \frac{1}{2} V_R
+\]</span></p>
+<ul>
+<li>Resolution:</li>
+</ul>
+<p><span class="math display">\[
+\Delta V_{\text{out}} = V_R 2^{-n}
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p><strong>ADCs</strong></p>
+<ul>
+<li>Unipolar relationship:</li>
+</ul>
+<p><span class="math display">\[
+b_1 2^{-1} + \dots + b_n 2^{-n} \le \frac{V_{\text{in}}}{V_R}
+\]</span></p>
+<ul>
+<li>Direct code formula:</li>
+</ul>
+<p><span class="math display">\[
+N = \mathrm{INT}\left(\frac{V_{\text{in}}}{V_R} 2^n\right)
+\]</span></p>
+<ul>
+<li>Quantization step:</li>
+</ul>
+<p><span class="math display">\[
+\Delta V = V_R 2^{-n}
+\]</span></p>
+<ul>
+<li>Bipolar (offset binary):</li>
+</ul>
+<p><span class="math display">\[
+N = \mathrm{INT}\left[\left(\frac{V_{\text{in}}}{V_R} + \frac{1}{2}\right) 2^n\right]
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p><strong>Dynamic Constraints &amp; S/H</strong></p>
+<ul>
+<li>Max input slope during conversion:</li>
+</ul>
+<p><span class="math display">\[
+\left|\frac{dV_{\text{in}}}{dt}\right| \le \frac{V_R}{2^n \tau_c}
+\]</span></p>
+<ul>
+<li>For sinusoid full scale <span class="math inline">\(V_0 = V_R\)</span>:</li>
+</ul>
+<p><span class="math display">\[
+f \le \frac{1}{2^{n+1}\pi \tau_c}
+\]</span></p>
+<ul>
+<li>S/H sampling cutoff:</li>
+</ul>
+<p><span class="math display">\[
+f_c = \frac{1}{2\pi (R_s + R_{\text{ON}}) C}
+\]</span></p>
+<ul>
+<li>S/H droop time constant:</li>
+</ul>
+<p><span class="math display">\[
+\tau_D = \frac{R_{\text{OFF}} R_{VF}}{R_{\text{OFF}} + R_{VF}} C
+\]</span></p>
+<ul>
+<li>Droop constraint:</li>
+</ul>
+<p><span class="math display">\[
+\tau_D \ge 2^n \tau_c \frac{V_C}{V_R}
+\]</span></p>
+<ul>
+<li>Throughput:</li>
+</ul>
+<p><span class="math display">\[
+T = \tau_c + \tau_{\text{acq}} + \tau_{\text{ap}}, \quad f_{\max} = \frac{1}{T}
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p><strong>Frequency‑Based Conversion</strong></p>
+<ul>
+<li>Count time for n‑bit counter with max frequency <span class="math inline">\(f_{\max}\)</span>:</li>
+</ul>
+<p><span class="math display">\[
+T_c = \frac{2^n - 1}{f_{\max}}
+\]</span></p>
+<ul>
+<li>Count for any frequency:</li>
+</ul>
+<p><span class="math display">\[
+N = f T_c
+\]</span></p>
+<ul>
+<li>LM331 V‑to‑F:</li>
+</ul>
+<p><span class="math display">\[
+f_{\text{out}} = \frac{R_S}{R_L} \cdot \frac{1}{R_t C_t} \cdot \frac{V_{\text{in}}}{2.09}
+\]</span></p>
+<ul>
+<li>555 astable:</li>
+</ul>
+<p><span class="math display">\[
+f = \frac{1}{0.693 (R_A + 2R_B) C}
+\]</span></p>
+
+
+<script type="pyodide-data">
+eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yNy4wL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIiwibnVtcHkiLCJwbG90bHkiLCJuYmZvcm1hdHMiXX19
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTQiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl80ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS00LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNC1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzQgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzQsIHtiaXRzLCBWcmVmLCBWaW59KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTMiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8zID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0zLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzMgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzMsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8yID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzIgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzIsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8xID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0xLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzEgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzEsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLXByZWx1ZGUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJweW9kaWRlT2pzID0ge1xuICBjb25zdCB7XG4gICAgUHlvZGlkZUV2YWx1YXRvcixcbiAgICBQeW9kaWRlRW52aXJvbm1lbnRNYW5hZ2VyLFxuICAgIHNldHVwUHl0aG9uLFxuICAgIHN0YXJ0UHlvZGlkZVdvcmtlcixcbiAgICBiNjREZWNvZGUsXG4gICAgY29sbGFwc2VQYXRoLFxuICB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzdGF0dXNDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctc3RhdHVzXCIpO1xuICBjb25zdCBpbmRpY2F0b3JDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpbmRpY2F0b3JDb250YWluZXIuY2xhc3NMaXN0LnJlbW92ZShcImQtbm9uZVwiKTtcblxuICBsZXQgc3RhdHVzVGV4dCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIilcbiAgc3RhdHVzVGV4dC5jbGFzc0xpc3QgPSBcImV4ZXJjaXNlLWxvYWRpbmctZGV0YWlsc1wiO1xuICBzdGF0dXNUZXh0ID0gc3RhdHVzQ29udGFpbmVyLmFwcGVuZENoaWxkKHN0YXR1c1RleHQpO1xuICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYEluaXRpYWxpc2VgO1xuXG4gIC8vIEhvaXN0IGluZGljYXRvciBvdXQgZnJvbSBmaW5hbCBzbGlkZSB3aGVuIHJ1bm5pbmcgdW5kZXIgcmV2ZWFsXG4gIGNvbnN0IHJldmVhbFN0YXR1cyA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsIC5leGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaWYgKHJldmVhbFN0YXR1cykge1xuICAgIHJldmVhbFN0YXR1cy5yZW1vdmUoKTtcbiAgICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCA+IC5zbGlkZXNcIikuYXBwZW5kQ2hpbGQocmV2ZWFsU3RhdHVzKTtcbiAgfVxuXG4gIC8vIE1ha2UgYW55IHJldmVhbCBzbGlkZXMgd2l0aCBsaXZlIGNlbGxzIHNjcm9sbGFibGVcbiAgZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbChcIi5yZXZlYWwgLmV4ZXJjaXNlLWNlbGxcIikuZm9yRWFjaCgoZWwpID0+IHtcbiAgICBlbC5jbG9zZXN0KCdzZWN0aW9uLnNsaWRlJykuY2xhc3NMaXN0LmFkZChcInNjcm9sbGFibGVcIik7XG4gIH0pXG5cbiAgLy8gUHlvZGlkZSBzdXBwbGVtZW50YWwgZGF0YSBhbmQgb3B0aW9uc1xuICBjb25zdCBkYXRhQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLWRhdGFcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBkYXRhID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZGF0YUNvbnRlbnQpKTtcblxuICAvLyBHcmFiIGxpc3Qgb2YgcmVzb3VyY2VzIHRvIGJlIGRvd25sb2FkZWRcbiAgY29uc3QgZmlsZXNDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInZmcy1maWxlXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZmlsZXMgPSBKU09OLnBhcnNlKGI2NERlY29kZShmaWxlc0NvbnRlbnQpKTtcblxuICBsZXQgcHlvZGlkZVByb21pc2UgPSAoYXN5bmMgKCkgPT4ge1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgUHlvZGlkZWA7XG4gICAgY29uc3QgcHlvZGlkZSA9IGF3YWl0IHN0YXJ0UHlvZGlkZVdvcmtlcihkYXRhLm9wdGlvbnMpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiBtaWNyb3BpcGA7XG4gICAgYXdhaXQgcHlvZGlkZS5sb2FkUGFja2FnZShcIm1pY3JvcGlwXCIpO1xuICAgIGNvbnN0IG1pY3JvcGlwID0gYXdhaXQgcHlvZGlkZS5weWltcG9ydChcIm1pY3JvcGlwXCIpO1xuICAgIGF3YWl0IGRhdGEucGFja2FnZXMucGtncy5tYXAoKHBrZykgPT4gKCkgPT4ge1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiAke3BrZ31gO1xuICAgICAgcmV0dXJuIG1pY3JvcGlwLmluc3RhbGwocGtnKTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcbiAgICBhd2FpdCBtaWNyb3BpcC5kZXN0cm95KCk7XG5cbiAgICAvLyBEb3dubG9hZCBhbmQgaW5zdGFsbCByZXNvdXJjZXNcbiAgICBhd2FpdCBmaWxlcy5tYXAoKGZpbGUpID0+IGFzeW5jICgpID0+IHtcbiAgICAgIGNvbnN0IG5hbWUgPSBmaWxlLnN1YnN0cmluZyhmaWxlLmxhc3RJbmRleE9mKCcvJykgKyAxKTtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcmVzb3VyY2U6ICR7bmFtZX1gO1xuICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChmaWxlKTtcbiAgICAgIGlmICghcmVzcG9uc2Uub2spIHtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBDYW4ndCBkb3dubG9hZCBcXGAke2ZpbGV9XFxgLiBFcnJvciAke3Jlc3BvbnNlLnN0YXR1c306IFwiJHtyZXNwb25zZS5zdGF0dXNUZXh0fVwiLmApO1xuICAgICAgfVxuICAgICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlc3BvbnNlLmFycmF5QnVmZmVyKCk7XG5cbiAgICAgIC8vIFN0b3JlIFVSTHMgaW4gdGhlIGN3ZCB3aXRob3V0IGFueSBzdWJkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBpZiAoZmlsZS5pbmNsdWRlcyhcIjovL1wiKSkge1xuICAgICAgICBmaWxlID0gbmFtZTtcbiAgICAgIH1cblxuICAgICAgLy8gQ29sbGFwc2UgaGlnaGVyIGRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGZpbGUgPSBjb2xsYXBzZVBhdGgoZmlsZSk7XG5cbiAgICAgIC8vIENyZWF0ZSBkaXJlY3RvcnkgdHJlZSwgaWdub3JpbmcgXCJkaXJlY3RvcnkgZXhpc3RzXCIgVkZTIGVycm9yc1xuICAgICAgY29uc3QgcGFydHMgPSBmaWxlLnNwbGl0KCcvJykuc2xpY2UoMCwgLTEpO1xuICAgICAgbGV0IHBhdGggPSAnJztcbiAgICAgIHdoaWxlIChwYXJ0cy5sZW5ndGggPiAwKSB7XG4gICAgICAgIHBhdGggKz0gcGFydHMuc2hpZnQoKSArICcvJztcbiAgICAgICAgdHJ5IHtcbiAgICAgICAgICBhd2FpdCBweW9kaWRlLkZTLm1rZGlyKHBhdGgpO1xuICAgICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgICAgaWYgKGUuZXJybm8gIT09IDIwKSB7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICAgICAgY29uc3QgZXJyb3JUZXh0ID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLlVURjhUb1N0cmluZyhlcnJvclRleHRQdHIpO1xuICAgICAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICAgIH1cblxuICAgICAgLy8gV3JpdGUgdGhpcyBmaWxlIHRvIHRoZSBWRlNcbiAgICAgIHRyeSB7XG4gICAgICAgIHJldHVybiBhd2FpdCBweW9kaWRlLkZTLndyaXRlRmlsZShmaWxlLCBuZXcgVWludDhBcnJheShkYXRhKSk7XG4gICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgIGlmIChlLm5hbWUgIT09IFwiRXJybm9FcnJvclwiKSB0aHJvdyBlO1xuICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgRmlsZXN5c3RlbSBFcnJvciAke2UuZXJybm99IFwiJHtlcnJvclRleHR9XCIuYCk7XG4gICAgICB9XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYFB5b2RpZGUgZW52aXJvbm1lbnQgc2V0dXBgO1xuICAgIGF3YWl0IHNldHVwUHl0aG9uKHB5b2RpZGUpO1xuXG4gICAgc3RhdHVzVGV4dC5yZW1vdmUoKTtcbiAgICBpZiAoc3RhdHVzQ29udGFpbmVyLmNoaWxkcmVuLmxlbmd0aCA9PSAwKSB7XG4gICAgICBzdGF0dXNDb250YWluZXIucGFyZW50Tm9kZS5yZW1vdmUoKTtcbiAgICB9XG4gICAgcmV0dXJuIHB5b2RpZGU7XG4gIH0pKCkuY2F0Y2goKGVycikgPT4ge1xuICAgIHN0YXR1c1RleHQuc3R5bGUuY29sb3IgPSBcInZhcigtLWV4ZXJjaXNlLWVkaXRvci1obC1lciwgI0FEMDAwMClcIjtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gZXJyLm1lc3NhZ2U7XG4gICAgLy9pbmRpY2F0b3JDb250YWluZXIucXVlcnlTZWxlY3RvcihcIi5zcGlubmVyLWdyb3dcIikuY2xhc3NMaXN0LmFkZChcImQtbm9uZVwiKTtcbiAgICB0aHJvdyBlcnI7XG4gIH0pO1xuXG4gIC8vIEtlZXAgdHJhY2sgb2YgaW5pdGlhbCBPSlMgYmxvY2sgcmVuZGVyXG4gIGNvbnN0IHJlbmRlcmVkT2pzID0ge307XG5cbiAgY29uc3QgcHJvY2VzcyA9IGFzeW5jIChjb250ZXh0LCBpbnB1dHMpID0+IHtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgcHlvZGlkZVByb21pc2U7XG4gICAgY29uc3QgZXZhbHVhdG9yID0gbmV3IFB5b2RpZGVFdmFsdWF0b3IocHlvZGlkZSwgY29udGV4dCk7XG4gICAgYXdhaXQgZXZhbHVhdG9yLnByb2Nlc3MoaW5wdXRzKTtcbiAgICByZXR1cm4gZXZhbHVhdG9yLmNvbnRhaW5lcjtcbiAgfVxuXG4gIHJldHVybiB7XG4gICAgcHlvZGlkZVByb21pc2UsXG4gICAgcmVuZGVyZWRPanMsXG4gICAgcHJvY2VzcyxcbiAgfTtcbn1cbiJ9XX0=
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="qrjs_pics/unsoed_logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="https://imron-slide.vercel.app">irosyadi-2026</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script type="ojs-module-contents">
+    eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBiaXRzID0gSW5wdXRzLnJhbmdlKFs0LCAxNl0sIHtzdGVwOiAxLCBsYWJlbDogXCJuIChiaXRzKVwifSlcbnZpZXdvZiBWcmVmID0gSW5wdXRzLnJhbmdlKFsxLCAyMF0sIHtzdGVwOiAwLjUsIGxhYmVsOiBcIlZfcmVmIChWKVwifSlcbnZpZXdvZiBWaW4gPSBJbnB1dHMucmFuZ2UoWzAsIDEwXSwge3N0ZXA6IDAuMSwgbGFiZWw6IFwiVl9pbiAoVikgZm9yIEFEQ1wifSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnYml0cycpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdWcmVmJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ1ZpbicpIn1dfQ==
+    </script>
+    <script type="module">
+    if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+    window._ojs.paths.runtimeToDoc = "../..";
+    window._ojs.paths.runtimeToRoot = "../..";
+    window._ojs.paths.docToRoot = "";
+    window._ojs.selfContained = false;
+    window._ojs.runtime.interpretFromScriptTags();
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
