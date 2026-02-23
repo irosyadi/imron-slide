@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Rotary actuator position control – Instrumentation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-e31584831b205ffbb2d98406f31c2a5b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Instrumentation</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#regulator-design" id="toc-regulator-design" class="nav-link active" data-scroll-target="#regulator-design">Regulator design</a></li>
+  <li><a href="#how-to-use-this-notebook" id="toc-how-to-use-this-notebook" class="nav-link" data-scroll-target="#how-to-use-this-notebook">How to use this notebook?</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Rotary actuator position control</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="cell-1" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Erasmus+ ICCT project (2018-1-SI01-KA203-047081)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Toggle cell visibility</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> HTML</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>tag <span class="op">=</span> HTML(<span class="st">'''&lt;script&gt;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="st">code_show=true; </span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="st">function code_toggle() {</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="st">    if (code_show){</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="st">        $('div.input').hide()</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="st">    } else {</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="st">        $('div.input').show()</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="st">    }</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="st">    code_show = !code_show</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="st">} </span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="st">$( document ).ready(code_toggle);</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;/script&gt;</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="st">Toggle cell visibility &lt;a href="javascript:code_toggle()"&gt;here&lt;/a&gt;.'''</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>display(tag)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Hide the code completely</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># from IPython.display import HTML</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co"># tag = HTML('''&lt;style&gt;</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co"># div.input {</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co">#     display:none;</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co"># &lt;/style&gt;''')</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co"># display(tag)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<script>
+code_show=true; 
+function code_toggle() {
+    if (code_show){
+        $('div.input').hide()
+    } else {
+        $('div.input').show()
+    }
+    code_show = !code_show
+} 
+$( document ).ready(code_toggle);
+</script>
+Toggle cell visibility <a href="javascript:code_toggle()">here</a>.
+</div>
+</div>
+<div id="cell-2" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> control</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy <span class="im">as</span> sym</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display, Markdown</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ipywidgets <span class="im">as</span> widgets</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#print a matrix latex-like</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bmatrix(a):</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>     <span class="co">"""Returns a LaTeX bmatrix - by Damir Arbula (ICCT project)</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">     :a: numpy array</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">     :returns: LaTeX bmatrix as a string</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">     """</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>     <span class="cf">if</span> <span class="bu">len</span>(a.shape) <span class="op">&gt;</span> <span class="dv">2</span>:</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>         <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">'bmatrix can at most display two dimensions'</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>     lines <span class="op">=</span> <span class="bu">str</span>(a).replace(<span class="st">'['</span>, <span class="st">''</span>).replace(<span class="st">']'</span>, <span class="st">''</span>).splitlines()</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>     rv <span class="op">=</span> [<span class="vs">r'</span><span class="dv">\b</span><span class="vs">egin{bmatrix}'</span>]</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>     rv <span class="op">+=</span> [<span class="st">'  '</span> <span class="op">+</span> <span class="st">' &amp; '</span>.join(l.split()) <span class="op">+</span> <span class="vs">r'</span><span class="ch">\\</span><span class="vs">'</span> <span class="cf">for</span> l <span class="kw">in</span> lines]</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>     rv <span class="op">+=</span>  [<span class="vs">r'</span><span class="er">\</span><span class="vs">end{bmatrix}'</span>]</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>     <span class="cf">return</span> <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(rv)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Display formatted matrix: </span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> vmatrix(a):</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(a.shape) <span class="op">&gt;</span> <span class="dv">2</span>:</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>         <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">'bmatrix can at most display two dimensions'</span>)</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    lines <span class="op">=</span> <span class="bu">str</span>(a).replace(<span class="st">'['</span>, <span class="st">''</span>).replace(<span class="st">']'</span>, <span class="st">''</span>).splitlines()</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    rv <span class="op">=</span> [<span class="vs">r'</span><span class="dv">\b</span><span class="vs">egin{vmatrix}'</span>]</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    rv <span class="op">+=</span> [<span class="st">'  '</span> <span class="op">+</span> <span class="st">' &amp; '</span>.join(l.split()) <span class="op">+</span> <span class="vs">r'</span><span class="ch">\\</span><span class="vs">'</span> <span class="cf">for</span> l <span class="kw">in</span> lines]</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    rv <span class="op">+=</span>  [<span class="vs">r'</span><span class="er">\</span><span class="vs">end{vmatrix}'</span>]</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(rv)</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co">#matrixWidget is a matrix looking widget built with a VBox of HBox(es) that returns a numPy array as value !</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> matrixWidget(widgets.VBox):</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> updateM(<span class="va">self</span>,change):</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> irow <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>,<span class="va">self</span>.n):</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> icol <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>,<span class="va">self</span>.m):</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.M_[irow,icol] <span class="op">=</span> <span class="va">self</span>.children[irow].children[icol].value</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>                <span class="co">#print(self.M_[irow,icol])</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.value <span class="op">=</span> <span class="va">self</span>.M_</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> dummychangecallback(<span class="va">self</span>,change):</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>,n,m):</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.n <span class="op">=</span> n</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.m <span class="op">=</span> m</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.M_ <span class="op">=</span> numpy.matrix(numpy.zeros((<span class="va">self</span>.n,<span class="va">self</span>.m)))</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.value <span class="op">=</span> <span class="va">self</span>.M_</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>        widgets.VBox.<span class="fu">__init__</span>(<span class="va">self</span>,</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>                             children <span class="op">=</span> [</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>                                 widgets.HBox(children <span class="op">=</span> </span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>                                              [widgets.FloatText(value<span class="op">=</span><span class="fl">0.0</span>, layout<span class="op">=</span>widgets.Layout(width<span class="op">=</span><span class="st">'90px'</span>)) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(m)]</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>                                             ) </span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>                                 <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(n)</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>                             ])</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>        <span class="co">#fill in widgets and tell interact to call updateM each time a children changes value</span></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> irow <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>,<span class="va">self</span>.n):</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> icol <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>,<span class="va">self</span>.m):</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.children[irow].children[icol].value <span class="op">=</span> <span class="va">self</span>.M_[irow,icol]</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.children[irow].children[icol].observe(<span class="va">self</span>.updateM, names<span class="op">=</span><span class="st">'value'</span>)</span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>        <span class="co">#value = Unicode('example@example.com', help="The email value.").tag(sync=True)</span></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.observe(<span class="va">self</span>.updateM, names<span class="op">=</span><span class="st">'value'</span>, <span class="bu">type</span><span class="op">=</span> <span class="st">'All'</span>)</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> setM(<span class="va">self</span>, newM):</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>        <span class="co">#disable callbacks, change values, and reenable</span></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.unobserve(<span class="va">self</span>.updateM, names<span class="op">=</span><span class="st">'value'</span>, <span class="bu">type</span><span class="op">=</span> <span class="st">'All'</span>)</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> irow <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>,<span class="va">self</span>.n):</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> icol <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>,<span class="va">self</span>.m):</span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.children[irow].children[icol].unobserve(<span class="va">self</span>.updateM, names<span class="op">=</span><span class="st">'value'</span>)</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.M_ <span class="op">=</span> newM</span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.value <span class="op">=</span> <span class="va">self</span>.M_</span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> irow <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>,<span class="va">self</span>.n):</span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> icol <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>,<span class="va">self</span>.m):</span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.children[irow].children[icol].value <span class="op">=</span> <span class="va">self</span>.M_[irow,icol]</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> irow <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>,<span class="va">self</span>.n):</span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> icol <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>,<span class="va">self</span>.m):</span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.children[irow].children[icol].observe(<span class="va">self</span>.updateM, names<span class="op">=</span><span class="st">'value'</span>)</span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.observe(<span class="va">self</span>.updateM, names<span class="op">=</span><span class="st">'value'</span>, <span class="bu">type</span><span class="op">=</span> <span class="st">'All'</span>)        </span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>                <span class="co">#self.children[irow].children[icol].observe(self.updateM, names='value')</span></span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>             </span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a><span class="co">#overlaod class for state space systems that DO NOT remove "useless" states (what "professor" of automatic control would do this?)</span></span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> sss(control.StateSpace):</span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>,<span class="op">*</span>args):</span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>        <span class="co">#call base class init constructor</span></span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a>        control.StateSpace.<span class="fu">__init__</span>(<span class="va">self</span>,<span class="op">*</span>args)</span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a>    <span class="co">#disable function below in base class</span></span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _remove_useless_states(<span class="va">self</span>):</span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><img src="Images\EX34.svg" alt="drawing" width="400x400"></p>
+<p>The actuator consists of a DC motor actuating a disc where a disturbance torque may be exerted. System constants are:</p>
+<ul>
+<li>moment of inertia of the rotor <span class="math inline">\(J = 4E-6\)</span> kg/<span class="math inline">\(\text{m}^2\)</span>;<br>
+</li>
+<li>motor viscous friction constant <span class="math inline">\(b = 3.3E-6\)</span> Nms;<br>
+</li>
+<li>electromotive force constant <span class="math inline">\(K_b = 0.03\)</span> V/(rad/s);<br>
+</li>
+<li>motor torque constant <span class="math inline">\(K_t = 0.03\)</span> Nm/A;</li>
+<li>electric resistance <span class="math inline">\(R = 5\)</span> <span class="math inline">\(\Omega\)</span>;</li>
+<li>electric inductance <span class="math inline">\(L = 3E-3\)</span> <span class="math inline">\(\text{H}\)</span>.</li>
+</ul>
+<p>The torque generated by the motor, assuming fixed excitation field, is <span class="math inline">\(T=K_t i\)</span>, and the Back EMF voltage is <span class="math inline">\(e=K_b \dot{\theta}\)</span>. Assume there can also be an external disturbance torque <span class="math inline">\(T_d\)</span> that must be rejected.</p>
+<p>The dynamic equations can be written as:</p>
+<span class="math display">\[\begin{cases}
+      V = Ri+L\frac{di}{dt}+e = Ri+L\frac{di}{dt}+K_b\dot{\theta} \\
+      J\ddot{\theta} = -b\dot{\theta}+T+T_d = -b\dot{\theta}+K_ti +T_d
+\end{cases}\]</span>
+<p>and defining <span class="math inline">\(x=\begin{bmatrix} x_1 &amp; x_2 &amp; x_3 \end{bmatrix}^T=\begin{bmatrix} \dot{\theta} &amp; \theta &amp; i \end{bmatrix}^T\)</span> yields the state space form:</p>
+<span class="math display">\[\begin{cases}
+      \dot{x} = \begin{bmatrix} -\frac{b}{J} &amp; 0 &amp; \frac{K_t}{J} \\ 1 &amp; 0 &amp; 0 \\ -\frac{K_b}{L} &amp; 0 &amp; -\frac{R}{L} \end{bmatrix}x + \begin{bmatrix} 0 &amp; \frac{1}{J} \\ 0 &amp; 0 \\ \frac{1}{L} &amp; 0 \end{bmatrix}\begin{bmatrix} V \\ T_d \end{bmatrix} \\
+      y = \begin{bmatrix} 0 &amp; 1 &amp; 0 \end{bmatrix}x \, .
+\end{cases}\]</span>
+<p>The goal is to design a regulator that regulates the variable <span class="math inline">\(\theta\)</span> using the input <span class="math inline">\(V\)</span> according to: - settling time for 5% tolerance band of less than 0.06 seconds; - no steady-state error in response to a step position request; - full rejection of step-like disturbances <span class="math inline">\(T_d\)</span> (e.g.&nbsp;zero steady-state error in motor position when a step disturbance is applied); - <span class="math inline">\(|V|\leq 2.4\)</span> <span class="math inline">\(V\)</span>.</p>
+<section id="regulator-design" class="level3">
+<h3 class="anchored" data-anchor-id="regulator-design">Regulator design</h3>
+<section id="controller-design" class="level4">
+<h4 class="anchored" data-anchor-id="controller-design">Controller design</h4>
+<p>To meet the requirement of zero steady-state error and full rejection of step-like disturbances we add an integrator in the state feedback control by defining a new state <span class="math inline">\(\dot{x_4} = \theta-y_d\)</span>, where <span class="math inline">\(y_d\)</span> is the reference input. The new state equations became:</p>
+<span class="math display">\[\begin{cases}
+      \dot{x_a} = \begin{bmatrix} -\frac{b}{J} &amp; 0 &amp; \frac{K_t}{J} &amp; 0 \\ 1 &amp; 0 &amp; 0 &amp; 0 \\ -\frac{K_b}{L} &amp; 0 &amp; -\frac{R}{L} &amp; 0 \\ 0 &amp; 1 &amp; 0 &amp; 0 \end{bmatrix}x_a + \begin{bmatrix} 0 &amp; \frac{1}{J} &amp; 0 \\ 0 &amp; 0 &amp; 0 \\ \frac{1}{L} &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; -1 \end{bmatrix}\begin{bmatrix} V \\ T_d \\ y_d \end{bmatrix} \\
+      y_a = \begin{bmatrix} 0 &amp; 1 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{bmatrix}x_a \, .
+\end{cases}\]</span>
+<p>Since the augmented system still remains controllable with the input <span class="math inline">\(V\)</span> we design a state feedback control with only this input.</p>
+<p>The poles of the system are:</p>
+<div id="cell-4" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="fl">3.3E-6</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>J <span class="op">=</span> <span class="fl">4E-6</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>Kb <span class="op">=</span> <span class="fl">0.03</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>Kt <span class="op">=</span> <span class="fl">0.03</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>R <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> <span class="fl">3E-3</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> [[<span class="op">-</span>b<span class="op">/</span>J, <span class="dv">0</span>, Kt<span class="op">/</span>J, <span class="dv">0</span>],</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>     [<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>],</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>     [<span class="op">-</span>Kb<span class="op">/</span>L, <span class="dv">0</span>, <span class="op">-</span>R<span class="op">/</span>L, <span class="dv">0</span>],</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>     [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>]]</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> numpy.matrix(A)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> [[<span class="dv">0</span>, <span class="dv">1</span><span class="op">/</span>J, <span class="dv">0</span>],</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>     [<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>],</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>     [<span class="dv">1</span><span class="op">/</span>L, <span class="dv">0</span>, <span class="dv">0</span>],</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>     [<span class="dv">0</span>, <span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>]]</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> numpy.matrix(B)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>Bu <span class="op">=</span> B[:,<span class="dv">0</span>]</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>Bd <span class="op">=</span> B[:,<span class="dv">1</span>]</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>Br <span class="op">=</span> B[:,<span class="dv">2</span>]</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>C <span class="op">=</span> [[<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>],</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>     [<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>]]</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>C <span class="op">=</span> numpy.matrix(C)</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>D <span class="op">=</span> numpy.zeros((<span class="dv">2</span>,<span class="dv">3</span>))</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>display(Markdown(bmatrix(numpy.linalg.eigvals(A).<span class="bu">round</span>(<span class="dv">3</span>))))</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="co"># print(numpy.linalg.matrix_rank(control.ctrb(A,Bu)))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<span class="math display">\[\begin{bmatrix}
+  0. &amp; 0. &amp; -1620.357 &amp; -47.135\\
+\end{bmatrix}\]</span>
+</div>
+</div>
+<p>and since the mode associated with the pole in <span class="math inline">\(-1620.4\)</span> would have a settling time shorter that <span class="math inline">\(0.06\)</span> s we leave the pole as it is. We increase the frequency of the pole from <span class="math inline">\(-45.8\)</span> to <span class="math inline">\(-100\)</span>, and place the two integrators in <span class="math inline">\(-110\)</span>.</p>
+</section>
+<section id="design-of-the-observer" class="level4">
+<h4 class="anchored" data-anchor-id="design-of-the-observer">Design of the observer</h4>
+<p>For the observer we consider the augmented system and <span class="math inline">\(y_a\)</span> and we place the poles in <span class="math inline">\(-5000\)</span> in order to have an estimation dynamics faster than that of the closed-loop plant poles.</p>
+</section>
+</section>
+<section id="how-to-use-this-notebook" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-use-this-notebook">How to use this notebook?</h3>
+<ul>
+<li>Verify the performance with <span class="math inline">\(0\leq T_d\leq +5\)</span> mNm.</li>
+<li>Verify the performance with <span class="math inline">\(0\geq T_d\geq -5\)</span> mNm and if the requirements are not met, attempt a control system redesign.</li>
+<li>Verify the performance in presence of a sinusoidal <span class="math inline">\(T_d\)</span> with a period equal to <span class="math inline">\(0.01\)</span> s.</li>
+<li>When the system is subject to a disturbance the estimated states does not converge to <span class="math inline">\(0\)</span>. Why?</li>
+</ul>
+<div id="cell-6" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Preparatory cell</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>X0 <span class="op">=</span> numpy.matrix(<span class="st">'0.0; 0.0; 0.0; 0.0'</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>K <span class="op">=</span> numpy.matrix([<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>])</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> numpy.matrix([[<span class="dv">0</span>,<span class="dv">0</span>],[<span class="dv">0</span>,<span class="dv">0</span>],[<span class="dv">0</span>,<span class="dv">0</span>],[<span class="dv">0</span>,<span class="dv">0</span>]])</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>X0w <span class="op">=</span> matrixWidget(<span class="dv">4</span>,<span class="dv">1</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>X0w.setM(X0)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>Kw <span class="op">=</span> matrixWidget(<span class="dv">1</span>,<span class="dv">4</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>Kw.setM(K)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>Lw <span class="op">=</span> matrixWidget(<span class="dv">4</span>,<span class="dv">2</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>Lw.setM(L)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>eig1c <span class="op">=</span> matrixWidget(<span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>eig2c <span class="op">=</span> matrixWidget(<span class="dv">2</span>,<span class="dv">1</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>eig3c <span class="op">=</span> matrixWidget(<span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>eig4c <span class="op">=</span> matrixWidget(<span class="dv">2</span>,<span class="dv">1</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>eig1c.setM(numpy.matrix([<span class="op">-</span><span class="fl">1620.357</span>])) </span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>eig2c.setM(numpy.matrix([[<span class="op">-</span><span class="fl">110.</span>],[<span class="op">-</span><span class="fl">0.0</span>]]))</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>eig3c.setM(numpy.matrix([<span class="op">-</span><span class="fl">100.0</span>]))</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>eig4c.setM(numpy.matrix([[<span class="op">-</span><span class="dv">110</span>],[<span class="op">-</span><span class="fl">0.0</span>]]))</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>eig1o <span class="op">=</span> matrixWidget(<span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>eig2o <span class="op">=</span> matrixWidget(<span class="dv">2</span>,<span class="dv">1</span>)</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>eig3o <span class="op">=</span> matrixWidget(<span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>eig4o <span class="op">=</span> matrixWidget(<span class="dv">2</span>,<span class="dv">1</span>)</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>eig1o.setM(numpy.matrix([<span class="op">-</span><span class="fl">5000.</span>])) </span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>eig2o.setM(numpy.matrix([[<span class="op">-</span><span class="fl">5010.</span>],[<span class="fl">0.</span>]]))</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>eig3o.setM(numpy.matrix([<span class="op">-</span><span class="fl">5020.</span>]))</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>eig4o.setM(numpy.matrix([[<span class="op">-</span><span class="fl">5030.</span>],[<span class="fl">0.</span>]]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="cell-7" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Misc</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#create dummy widget </span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>DW <span class="op">=</span> widgets.FloatText(layout<span class="op">=</span>widgets.Layout(width<span class="op">=</span><span class="st">'0px'</span>, height<span class="op">=</span><span class="st">'0px'</span>))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#create button widget</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>START <span class="op">=</span> widgets.Button(</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">'Test'</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    disabled<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    button_style<span class="op">=</span><span class="st">''</span>, <span class="co"># 'success', 'info', 'warning', 'danger' or ''</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    tooltip<span class="op">=</span><span class="st">'Test'</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    icon<span class="op">=</span><span class="st">'check'</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>                       </span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> on_start_button_clicked(b):</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">#This is a workaround to have intreactive_output call the callback:</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   force the value of the dummy widget to change</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> DW.value<span class="op">&gt;</span> <span class="dv">0</span> :</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>        DW.value <span class="op">=</span> <span class="op">-</span><span class="dv">1</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>: </span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>        DW.value <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>START.on_click(on_start_button_clicked)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Define type of method </span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>selm <span class="op">=</span> widgets.Dropdown(</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    options<span class="op">=</span> [<span class="st">'Set K and L'</span>, <span class="st">'Set the eigenvalues'</span>],</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    value<span class="op">=</span> <span class="st">'Set the eigenvalues'</span>,</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">''</span>,</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    disabled<span class="op">=</span><span class="va">False</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the number of complex eigenvalues</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>selec <span class="op">=</span> widgets.Dropdown(</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    options<span class="op">=</span> [<span class="st">'0 complex eigenvalues'</span>, <span class="st">'2 complex eigenvalues'</span>, <span class="st">'4 complex eigenvalues'</span>],</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    value<span class="op">=</span> <span class="st">'0 complex eigenvalues'</span>,</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">'Eig controller:'</span>,</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>    disabled<span class="op">=</span><span class="va">False</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>seleo <span class="op">=</span> widgets.Dropdown(</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>    options<span class="op">=</span> [<span class="st">'0 complex eigenvalues'</span>, <span class="st">'2 complex eigenvalues'</span>],</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>    value<span class="op">=</span> <span class="st">'0 complex eigenvalues'</span>,</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">'Eig observer:'</span>,</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>    disabled<span class="op">=</span><span class="va">False</span></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a><span class="co">#define type of ipout </span></span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>selu <span class="op">=</span> widgets.Dropdown(</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>    options<span class="op">=</span>[<span class="st">'impulse'</span>, <span class="st">'step'</span>, <span class="st">'sinusoid'</span>, <span class="st">'square wave'</span>],</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>    value<span class="op">=</span><span class="st">'step'</span>,</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">'Type of disturbance:'</span>,</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>    style <span class="op">=</span> {<span class="st">'description_width'</span>: <span class="st">'initial'</span>},</span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>    disabled<span class="op">=</span><span class="va">False</span></span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the values of the input</span></span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>u <span class="op">=</span> widgets.FloatSlider(</span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>    value<span class="op">=</span><span class="dv">45</span>,</span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>    <span class="bu">min</span><span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>    <span class="bu">max</span><span class="op">=</span><span class="dv">90</span>,</span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a>    step<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">'Reference [deg]:'</span>,</span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>    disabled<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>    continuous_update<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>    orientation<span class="op">=</span><span class="st">'horizontal'</span>,</span>
+<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a>    readout<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>    readout_format<span class="op">=</span><span class="st">'.3f'</span>,</span>
+<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a>ud <span class="op">=</span> widgets.FloatSlider(</span>
+<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>    value<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a>    <span class="bu">min</span><span class="op">=-</span><span class="fl">10.</span>,</span>
+<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a>    <span class="bu">max</span><span class="op">=</span><span class="fl">10.</span>,</span>
+<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>    step<span class="op">=</span><span class="fl">0.1</span>,</span>
+<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">T_d</span><span class="dv">$</span><span class="vs"> </span><span class="pp">[mNm]</span><span class="vs">:'</span>,</span>
+<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a>    disabled<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a>    continuous_update<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a>    orientation<span class="op">=</span><span class="st">'horizontal'</span>,</span>
+<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a>    readout<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a>    readout_format<span class="op">=</span><span class="st">'.1f'</span>,</span>
+<span id="cb5-79"><a href="#cb5-79" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-80"><a href="#cb5-80" aria-hidden="true" tabindex="-1"></a>period <span class="op">=</span> widgets.FloatSlider(</span>
+<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a>    value<span class="op">=</span><span class="fl">0.01</span>,</span>
+<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a>    <span class="bu">min</span><span class="op">=</span><span class="fl">0.001</span>,</span>
+<span id="cb5-83"><a href="#cb5-83" aria-hidden="true" tabindex="-1"></a>    <span class="bu">max</span><span class="op">=</span><span class="fl">0.1</span>,</span>
+<span id="cb5-84"><a href="#cb5-84" aria-hidden="true" tabindex="-1"></a>    step<span class="op">=</span><span class="fl">0.001</span>,</span>
+<span id="cb5-85"><a href="#cb5-85" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">'Period [s]: '</span>,</span>
+<span id="cb5-86"><a href="#cb5-86" aria-hidden="true" tabindex="-1"></a>    disabled<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb5-87"><a href="#cb5-87" aria-hidden="true" tabindex="-1"></a>    continuous_update<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb5-88"><a href="#cb5-88" aria-hidden="true" tabindex="-1"></a>    orientation<span class="op">=</span><span class="st">'horizontal'</span>,</span>
+<span id="cb5-89"><a href="#cb5-89" aria-hidden="true" tabindex="-1"></a>    readout<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb5-90"><a href="#cb5-90" aria-hidden="true" tabindex="-1"></a>    readout_format<span class="op">=</span><span class="st">'.3f'</span>,</span>
+<span id="cb5-91"><a href="#cb5-91" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-92"><a href="#cb5-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-93"><a href="#cb5-93" aria-hidden="true" tabindex="-1"></a>simTime <span class="op">=</span> widgets.FloatText(</span>
+<span id="cb5-94"><a href="#cb5-94" aria-hidden="true" tabindex="-1"></a>    value<span class="op">=</span><span class="fl">0.1</span>,</span>
+<span id="cb5-95"><a href="#cb5-95" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">''</span>,</span>
+<span id="cb5-96"><a href="#cb5-96" aria-hidden="true" tabindex="-1"></a>    disabled<span class="op">=</span><span class="va">False</span></span>
+<span id="cb5-97"><a href="#cb5-97" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="cell-8" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Support functions</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> eigen_choice(selec,seleo):</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> selec <span class="op">==</span> <span class="st">'0 complex eigenvalues'</span>:</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        eig1c.children[<span class="dv">0</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        eig2c.children[<span class="dv">1</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        eig3c.children[<span class="dv">0</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        eig4c.children[<span class="dv">0</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        eig4c.children[<span class="dv">1</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        eigc <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> seleo <span class="op">==</span> <span class="st">'0 complex eigenvalues'</span>:</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        eig1o.children[<span class="dv">0</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        eig2o.children[<span class="dv">1</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        eig3o.children[<span class="dv">0</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        eig4o.children[<span class="dv">0</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        eig4o.children[<span class="dv">1</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        eigo <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> selec <span class="op">==</span> <span class="st">'2 complex eigenvalues'</span>:</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>        eig1c.children[<span class="dv">0</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>        eig2c.children[<span class="dv">1</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>        eig3c.children[<span class="dv">0</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>        eig4c.children[<span class="dv">0</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>        eig4c.children[<span class="dv">1</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>        eigc <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> seleo <span class="op">==</span> <span class="st">'2 complex eigenvalues'</span>:</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>        eig1o.children[<span class="dv">0</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>        eig2o.children[<span class="dv">1</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>        eig3o.children[<span class="dv">0</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>        eig4o.children[<span class="dv">0</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>        eig4o.children[<span class="dv">1</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>        eigo <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> selec <span class="op">==</span> <span class="st">'4 complex eigenvalues'</span>:</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>        eig1c.children[<span class="dv">0</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>        eig2c.children[<span class="dv">1</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>        eig3c.children[<span class="dv">0</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>        eig4c.children[<span class="dv">0</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>        eig4c.children[<span class="dv">1</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>        eigc <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> seleo <span class="op">==</span> <span class="st">'4 complex eigenvalues'</span>:</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>        eig1o.children[<span class="dv">0</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>        eig2o.children[<span class="dv">1</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>        eig3o.children[<span class="dv">0</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>        eig4o.children[<span class="dv">0</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>        eig4o.children[<span class="dv">1</span>].children[<span class="dv">0</span>].disabled <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>        eigo <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> eigc, eigo</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> method_choice(selm):</span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> selm <span class="op">==</span> <span class="st">'Set K and L'</span>:</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>        method <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>        selec.disabled <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>        seleo.disabled <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> selm <span class="op">==</span> <span class="st">'Set the eigenvalues'</span>:</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>        method <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>        selec.disabled <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>        seleo.disabled <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> method</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="cell-9" class="cell" data-scrolled="false" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># In order to suppress the warnings for tolerance</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">"ignore"</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> main_callback2(ud, X0w, K, L, eig1c, eig2c, eig3c, eig4c, eig1o, eig2o, eig3o, eig4o, u, period, selm, selec, seleo, selu, simTime, DW):</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    eigc, eigo <span class="op">=</span> eigen_choice(selec,seleo)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    method <span class="op">=</span> method_choice(selm)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> method <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        solc <span class="op">=</span> numpy.linalg.eig(A<span class="op">-</span>Bu<span class="op">*</span>K)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        solo <span class="op">=</span> numpy.linalg.eig(A<span class="op">-</span>L<span class="op">*</span>C)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> method <span class="op">==</span> <span class="dv">2</span>:</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>        <span class="co">#for bettere numerical stability of place</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> eig1c[<span class="dv">0</span>,<span class="dv">0</span>]<span class="op">==</span>eig2c[<span class="dv">0</span>,<span class="dv">0</span>] <span class="kw">or</span> eig1c[<span class="dv">0</span>,<span class="dv">0</span>]<span class="op">==</span>eig3c[<span class="dv">0</span>,<span class="dv">0</span>] <span class="kw">or</span> eig1c[<span class="dv">0</span>,<span class="dv">0</span>]<span class="op">==</span>eig4c[<span class="dv">0</span>,<span class="dv">0</span>]:</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>            eig1c[<span class="dv">0</span>,<span class="dv">0</span>] <span class="op">*=</span> <span class="fl">1.01</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> eig2c[<span class="dv">0</span>,<span class="dv">0</span>]<span class="op">==</span>eig3c[<span class="dv">0</span>,<span class="dv">0</span>] <span class="kw">or</span> eig2c[<span class="dv">0</span>,<span class="dv">0</span>]<span class="op">==</span>eig4c[<span class="dv">0</span>,<span class="dv">0</span>]:</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>            eig3c[<span class="dv">0</span>,<span class="dv">0</span>] <span class="op">*=</span> <span class="fl">1.015</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> eig1o[<span class="dv">0</span>,<span class="dv">0</span>]<span class="op">==</span>eig2o[<span class="dv">0</span>,<span class="dv">0</span>] <span class="kw">or</span> eig1o[<span class="dv">0</span>,<span class="dv">0</span>]<span class="op">==</span>eig3o[<span class="dv">0</span>,<span class="dv">0</span>] <span class="kw">or</span> eig1o[<span class="dv">0</span>,<span class="dv">0</span>]<span class="op">==</span>eig4o[<span class="dv">0</span>,<span class="dv">0</span>]:</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>            eig1o[<span class="dv">0</span>,<span class="dv">0</span>] <span class="op">*=</span> <span class="fl">1.01</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> eig2o[<span class="dv">0</span>,<span class="dv">0</span>]<span class="op">==</span>eig3o[<span class="dv">0</span>,<span class="dv">0</span>] <span class="kw">or</span> eig2o[<span class="dv">0</span>,<span class="dv">0</span>]<span class="op">==</span>eig4o[<span class="dv">0</span>,<span class="dv">0</span>]:</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>            eig3o[<span class="dv">0</span>,<span class="dv">0</span>] <span class="op">*=</span> <span class="fl">1.015</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> eigc <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>            K <span class="op">=</span> control.acker(A, Bu, [eig1c[<span class="dv">0</span>,<span class="dv">0</span>], eig2c[<span class="dv">0</span>,<span class="dv">0</span>], eig3c[<span class="dv">0</span>,<span class="dv">0</span>], eig4c[<span class="dv">0</span>,<span class="dv">0</span>]])</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>            Kw.setM(K)</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> eigc <span class="op">==</span> <span class="dv">2</span>:</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>            K <span class="op">=</span> control.acker(A, Bu, [eig3c[<span class="dv">0</span>,<span class="dv">0</span>],</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>                                      eig1c[<span class="dv">0</span>,<span class="dv">0</span>],</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>                                      numpy.<span class="bu">complex</span>(eig2c[<span class="dv">0</span>,<span class="dv">0</span>], eig2c[<span class="dv">1</span>,<span class="dv">0</span>]), </span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>                                      numpy.<span class="bu">complex</span>(eig2c[<span class="dv">0</span>,<span class="dv">0</span>],<span class="op">-</span>eig2c[<span class="dv">1</span>,<span class="dv">0</span>])])</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>            Kw.setM(K)</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> eigc <span class="op">==</span> <span class="dv">4</span>:</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>            K <span class="op">=</span> control.acker(A, Bu, [numpy.<span class="bu">complex</span>(eig4c[<span class="dv">0</span>,<span class="dv">0</span>], eig4c[<span class="dv">1</span>,<span class="dv">0</span>]), </span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>                                      numpy.<span class="bu">complex</span>(eig4c[<span class="dv">0</span>,<span class="dv">0</span>],<span class="op">-</span>eig4c[<span class="dv">1</span>,<span class="dv">0</span>]),</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>                                      numpy.<span class="bu">complex</span>(eig2c[<span class="dv">0</span>,<span class="dv">0</span>], eig2c[<span class="dv">1</span>,<span class="dv">0</span>]), </span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>                                      numpy.<span class="bu">complex</span>(eig2c[<span class="dv">0</span>,<span class="dv">0</span>],<span class="op">-</span>eig2c[<span class="dv">1</span>,<span class="dv">0</span>])])</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>            Kw.setM(K)</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> eigo <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>            L <span class="op">=</span> control.place(A.T, C.T, [eig1o[<span class="dv">0</span>,<span class="dv">0</span>], eig2o[<span class="dv">0</span>,<span class="dv">0</span>], eig3o[<span class="dv">0</span>,<span class="dv">0</span>], eig4o[<span class="dv">0</span>,<span class="dv">0</span>]]).T</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>            Lw.setM(L)</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> eigo <span class="op">==</span> <span class="dv">2</span>:</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>            L <span class="op">=</span> control.place(A.T, C.T, [eig3o[<span class="dv">0</span>,<span class="dv">0</span>],</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>                                         eig1o[<span class="dv">0</span>,<span class="dv">0</span>],</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>                                         numpy.<span class="bu">complex</span>(eig2o[<span class="dv">0</span>,<span class="dv">0</span>], eig2o[<span class="dv">1</span>,<span class="dv">0</span>]), </span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>                                         numpy.<span class="bu">complex</span>(eig2o[<span class="dv">0</span>,<span class="dv">0</span>],<span class="op">-</span>eig2o[<span class="dv">1</span>,<span class="dv">0</span>])]).T</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>            Lw.setM(L)</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> eigo <span class="op">==</span> <span class="dv">4</span>:</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>            L <span class="op">=</span> control.place(A.T, C.T, [numpy.<span class="bu">complex</span>(eig4o[<span class="dv">0</span>,<span class="dv">0</span>], eig4o[<span class="dv">1</span>,<span class="dv">0</span>]), </span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>                                      numpy.<span class="bu">complex</span>(eig4o[<span class="dv">0</span>,<span class="dv">0</span>],<span class="op">-</span>eig4o[<span class="dv">1</span>,<span class="dv">0</span>]),</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>                                      numpy.<span class="bu">complex</span>(eig2o[<span class="dv">0</span>,<span class="dv">0</span>], eig2o[<span class="dv">1</span>,<span class="dv">0</span>]), </span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>                                      numpy.<span class="bu">complex</span>(eig2o[<span class="dv">0</span>,<span class="dv">0</span>],<span class="op">-</span>eig2o[<span class="dv">1</span>,<span class="dv">0</span>])]).T</span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>            Lw.setM(L)</span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>    sys <span class="op">=</span> sss(A,numpy.hstack((Bu,Bd,Br)),[[<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>],[<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>],[<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>],[<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>]],[[<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>],[<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>],[<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>],[<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>]])</span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>    syse <span class="op">=</span> sss(A<span class="op">-</span>L<span class="op">*</span>C,numpy.hstack((Bu,Br,L)),numpy.eye(<span class="dv">4</span>),numpy.zeros((<span class="dv">4</span>,<span class="dv">4</span>)))</span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>    sysc <span class="op">=</span> sss(<span class="dv">0</span>,[<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>],<span class="dv">0</span>,<span class="op">-</span>K)</span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>    sys_append <span class="op">=</span> control.append(sys,syse,sysc)</span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a>        sys_CL <span class="op">=</span> control.<span class="ex">connect</span>(sys_append,</span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>                                 [[<span class="dv">1</span>,<span class="dv">9</span>],[<span class="dv">4</span>,<span class="dv">3</span>],[<span class="dv">5</span>,<span class="dv">4</span>],[<span class="dv">6</span>,<span class="dv">1</span>],[<span class="dv">7</span>,<span class="dv">2</span>],[<span class="dv">8</span>,<span class="dv">5</span>],[<span class="dv">9</span>,<span class="dv">6</span>],[<span class="dv">10</span>,<span class="dv">7</span>],[<span class="dv">11</span>,<span class="dv">8</span>]],</span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>                                 [<span class="dv">3</span>,<span class="dv">2</span>],</span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>                                 [<span class="dv">1</span>,<span class="dv">3</span>])</span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span>:</span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>        sys_CL <span class="op">=</span> control.<span class="ex">connect</span>(sys_append,</span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>                                 [[<span class="dv">1</span>,<span class="dv">9</span>],[<span class="dv">4</span>,<span class="dv">3</span>],[<span class="dv">5</span>,<span class="dv">4</span>],[<span class="dv">6</span>,<span class="dv">1</span>],[<span class="dv">7</span>,<span class="dv">2</span>],[<span class="dv">8</span>,<span class="dv">5</span>],[<span class="dv">9</span>,<span class="dv">6</span>],[<span class="dv">10</span>,<span class="dv">7</span>],[<span class="dv">11</span>,<span class="dv">8</span>]],</span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>                                 [<span class="dv">3</span>,<span class="dv">2</span>],</span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a>                                 [<span class="dv">1</span>,<span class="dv">3</span>])</span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a>    X0w1 <span class="op">=</span> numpy.zeros((<span class="dv">8</span>,<span class="dv">1</span>))</span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a>    X0w1[<span class="dv">4</span>,<span class="dv">0</span>] <span class="op">=</span> X0w[<span class="dv">0</span>,<span class="dv">0</span>]</span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a>    X0w1[<span class="dv">5</span>,<span class="dv">0</span>] <span class="op">=</span> X0w[<span class="dv">1</span>,<span class="dv">0</span>]</span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a>    X0w1[<span class="dv">6</span>,<span class="dv">0</span>] <span class="op">=</span> X0w[<span class="dv">2</span>,<span class="dv">0</span>]</span>
+<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a>    X0w1[<span class="dv">7</span>,<span class="dv">0</span>] <span class="op">=</span> X0w[<span class="dv">3</span>,<span class="dv">0</span>]</span>
+<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> simTime <span class="op">!=</span> <span class="dv">0</span>:</span>
+<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a>        T <span class="op">=</span> numpy.linspace(<span class="dv">0</span>, simTime, <span class="dv">10000</span>)</span>
+<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a>        T <span class="op">=</span> numpy.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">10000</span>)</span>
+<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a>    ud <span class="op">=</span> ud<span class="op">/</span><span class="dv">1000</span></span>
+<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a>    u <span class="op">=</span> u<span class="op">*</span>numpy.pi<span class="op">/</span><span class="dv">180</span></span>
+<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> selu <span class="op">==</span> <span class="st">'impulse'</span>: <span class="co">#selu</span></span>
+<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a>        Ud <span class="op">=</span> [<span class="dv">0</span> <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>,<span class="bu">len</span>(T))]</span>
+<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a>        Ud[<span class="dv">0</span>] <span class="op">=</span> ud</span>
+<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a>        U <span class="op">=</span> [u <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>,<span class="bu">len</span>(T))]</span>
+<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a>        T, yout, xout <span class="op">=</span> control.forced_response(sys_CL,T,[U,Ud],X0w1)</span>
+<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> selu <span class="op">==</span> <span class="st">'step'</span>:</span>
+<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a>        U <span class="op">=</span> [u <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>,<span class="bu">len</span>(T))]</span>
+<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a>        Ud <span class="op">=</span> [ud <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>,<span class="bu">len</span>(T))]</span>
+<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a>        T, yout, xout <span class="op">=</span> control.forced_response(sys_CL,T,[U,Ud],X0w1)</span>
+<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> selu <span class="op">==</span> <span class="st">'sinusoid'</span>:</span>
+<span id="cb7-91"><a href="#cb7-91" aria-hidden="true" tabindex="-1"></a>        Ud <span class="op">=</span> ud<span class="op">*</span>numpy.sin(<span class="dv">2</span><span class="op">*</span>numpy.pi<span class="op">/</span>period<span class="op">*</span>T)</span>
+<span id="cb7-92"><a href="#cb7-92" aria-hidden="true" tabindex="-1"></a>        U <span class="op">=</span> [u <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>,<span class="bu">len</span>(T))]</span>
+<span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a>        T, yout, xout <span class="op">=</span> control.forced_response(sys_CL,T,[U,Ud],X0w1)</span>
+<span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> selu <span class="op">==</span> <span class="st">'square wave'</span>:</span>
+<span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a>        Ud <span class="op">=</span> ud<span class="op">*</span>numpy.sign(numpy.sin(<span class="dv">2</span><span class="op">*</span>numpy.pi<span class="op">/</span>period<span class="op">*</span>T))</span>
+<span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a>        U <span class="op">=</span> [u <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>,<span class="bu">len</span>(T))]</span>
+<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a>        T, yout, xout <span class="op">=</span> control.forced_response(sys_CL,T,[U,Ud],X0w1)</span>
+<span id="cb7-98"><a href="#cb7-98" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-99"><a href="#cb7-99" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb7-100"><a href="#cb7-100" aria-hidden="true" tabindex="-1"></a>        step_info_dict <span class="op">=</span> control.step_info(sys_CL[<span class="dv">0</span>,<span class="dv">0</span>],SettlingTimeThreshold<span class="op">=</span><span class="fl">0.05</span>,T<span class="op">=</span>T)</span>
+<span id="cb7-101"><a href="#cb7-101" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">'Step info: </span><span class="ch">\n\t</span><span class="st">Rise time ='</span>,step_info_dict[<span class="st">'RiseTime'</span>],<span class="st">'</span><span class="ch">\n\t</span><span class="st">Settling time (5%) ='</span>,step_info_dict[<span class="st">'SettlingTime'</span>],<span class="st">'</span><span class="ch">\n\t</span><span class="st">Overshoot (%)='</span>,step_info_dict[<span class="st">'Overshoot'</span>])</span>
+<span id="cb7-102"><a href="#cb7-102" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">'Max u value (</span><span class="sc">% o</span><span class="st">f 2.4V)='</span>, <span class="bu">max</span>(<span class="bu">abs</span>(yout[<span class="dv">1</span>]))<span class="op">/</span>(<span class="fl">2.4</span>)<span class="op">*</span><span class="dv">100</span>)</span>
+<span id="cb7-103"><a href="#cb7-103" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span>:</span>
+<span id="cb7-104"><a href="#cb7-104" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Error in the calculation of step info."</span>)</span>
+<span id="cb7-105"><a href="#cb7-105" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-106"><a href="#cb7-106" aria-hidden="true" tabindex="-1"></a>    fig <span class="op">=</span> plt.figure(num<span class="op">=</span><span class="st">'Simulation1'</span>, figsize<span class="op">=</span>(<span class="dv">14</span>,<span class="dv">12</span>))</span>
+<span id="cb7-107"><a href="#cb7-107" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-108"><a href="#cb7-108" aria-hidden="true" tabindex="-1"></a>    fig.add_subplot(<span class="dv">221</span>)</span>
+<span id="cb7-109"><a href="#cb7-109" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">'Output response'</span>)</span>
+<span id="cb7-110"><a href="#cb7-110" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'Output [rad]'</span>)</span>
+<span id="cb7-111"><a href="#cb7-111" aria-hidden="true" tabindex="-1"></a>    plt.plot(T,yout[<span class="dv">0</span>],T,U,<span class="st">'r--'</span>)</span>
+<span id="cb7-112"><a href="#cb7-112" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'$t$ [s]'</span>)</span>
+<span id="cb7-113"><a href="#cb7-113" aria-hidden="true" tabindex="-1"></a>    plt.legend([<span class="st">'$y$'</span>,<span class="st">'Reference'</span>])</span>
+<span id="cb7-114"><a href="#cb7-114" aria-hidden="true" tabindex="-1"></a>    plt.axvline(x<span class="op">=</span><span class="dv">0</span>,color<span class="op">=</span><span class="st">'black'</span>,linewidth<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb7-115"><a href="#cb7-115" aria-hidden="true" tabindex="-1"></a>    plt.axhline(y<span class="op">=</span><span class="dv">0</span>,color<span class="op">=</span><span class="st">'black'</span>,linewidth<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb7-116"><a href="#cb7-116" aria-hidden="true" tabindex="-1"></a>    plt.grid()</span>
+<span id="cb7-117"><a href="#cb7-117" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-118"><a href="#cb7-118" aria-hidden="true" tabindex="-1"></a>    fig.add_subplot(<span class="dv">222</span>)</span>
+<span id="cb7-119"><a href="#cb7-119" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">'Input'</span>)</span>
+<span id="cb7-120"><a href="#cb7-120" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'$u$ [V]'</span>)</span>
+<span id="cb7-121"><a href="#cb7-121" aria-hidden="true" tabindex="-1"></a>    plt.plot(T,yout[<span class="dv">1</span>])</span>
+<span id="cb7-122"><a href="#cb7-122" aria-hidden="true" tabindex="-1"></a>    plt.plot(T,[<span class="fl">2.4</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(T))],<span class="st">'r--'</span>)</span>
+<span id="cb7-123"><a href="#cb7-123" aria-hidden="true" tabindex="-1"></a>    plt.plot(T,[<span class="op">-</span><span class="fl">2.4</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(T))],<span class="st">'r--'</span>)</span>
+<span id="cb7-124"><a href="#cb7-124" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'$t$ [s]'</span>)</span>
+<span id="cb7-125"><a href="#cb7-125" aria-hidden="true" tabindex="-1"></a>    plt.axvline(x<span class="op">=</span><span class="dv">0</span>,color<span class="op">=</span><span class="st">'black'</span>,linewidth<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb7-126"><a href="#cb7-126" aria-hidden="true" tabindex="-1"></a>    plt.axhline(y<span class="op">=</span><span class="dv">0</span>,color<span class="op">=</span><span class="st">'black'</span>,linewidth<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb7-127"><a href="#cb7-127" aria-hidden="true" tabindex="-1"></a>    plt.grid()</span>
+<span id="cb7-128"><a href="#cb7-128" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-129"><a href="#cb7-129" aria-hidden="true" tabindex="-1"></a>    fig.add_subplot(<span class="dv">223</span>)</span>
+<span id="cb7-130"><a href="#cb7-130" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">'Disturbance'</span>)</span>
+<span id="cb7-131"><a href="#cb7-131" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'$T_d$ [Nm]'</span>)</span>
+<span id="cb7-132"><a href="#cb7-132" aria-hidden="true" tabindex="-1"></a>    plt.plot(T,Ud,<span class="st">'r'</span>)</span>
+<span id="cb7-133"><a href="#cb7-133" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'$t$ [s]'</span>)</span>
+<span id="cb7-134"><a href="#cb7-134" aria-hidden="true" tabindex="-1"></a>    plt.axvline(x<span class="op">=</span><span class="dv">0</span>,color<span class="op">=</span><span class="st">'black'</span>,linewidth<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb7-135"><a href="#cb7-135" aria-hidden="true" tabindex="-1"></a>    plt.axhline(y<span class="op">=</span><span class="dv">0</span>,color<span class="op">=</span><span class="st">'black'</span>,linewidth<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb7-136"><a href="#cb7-136" aria-hidden="true" tabindex="-1"></a>    plt.grid()</span>
+<span id="cb7-137"><a href="#cb7-137" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-138"><a href="#cb7-138" aria-hidden="true" tabindex="-1"></a>    fig.add_subplot(<span class="dv">224</span>)</span>
+<span id="cb7-139"><a href="#cb7-139" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">'Estimation errors'</span>)</span>
+<span id="cb7-140"><a href="#cb7-140" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'Errors'</span>)</span>
+<span id="cb7-141"><a href="#cb7-141" aria-hidden="true" tabindex="-1"></a>    plt.plot(T,xout[<span class="dv">4</span>]<span class="op">-</span>xout[<span class="dv">0</span>])</span>
+<span id="cb7-142"><a href="#cb7-142" aria-hidden="true" tabindex="-1"></a>    plt.plot(T,xout[<span class="dv">5</span>]<span class="op">-</span>xout[<span class="dv">1</span>])</span>
+<span id="cb7-143"><a href="#cb7-143" aria-hidden="true" tabindex="-1"></a>    plt.plot(T,xout[<span class="dv">6</span>]<span class="op">-</span>xout[<span class="dv">2</span>])</span>
+<span id="cb7-144"><a href="#cb7-144" aria-hidden="true" tabindex="-1"></a>    plt.plot(T,xout[<span class="dv">7</span>]<span class="op">-</span>xout[<span class="dv">3</span>])</span>
+<span id="cb7-145"><a href="#cb7-145" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'$t$ [s]'</span>)</span>
+<span id="cb7-146"><a href="#cb7-146" aria-hidden="true" tabindex="-1"></a>    plt.legend([<span class="st">'$e_</span><span class="sc">{1}</span><span class="st">$'</span>,<span class="st">'$e_</span><span class="sc">{2}</span><span class="st">$'</span>,<span class="st">'$e_</span><span class="sc">{3}</span><span class="st">$'</span>,<span class="st">'$e_</span><span class="sc">{4}</span><span class="st">$'</span>])</span>
+<span id="cb7-147"><a href="#cb7-147" aria-hidden="true" tabindex="-1"></a>    plt.axvline(x<span class="op">=</span><span class="dv">0</span>,color<span class="op">=</span><span class="st">'black'</span>,linewidth<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb7-148"><a href="#cb7-148" aria-hidden="true" tabindex="-1"></a>    plt.axhline(y<span class="op">=</span><span class="dv">0</span>,color<span class="op">=</span><span class="st">'black'</span>,linewidth<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb7-149"><a href="#cb7-149" aria-hidden="true" tabindex="-1"></a>    plt.grid()</span>
+<span id="cb7-150"><a href="#cb7-150" aria-hidden="true" tabindex="-1"></a>    <span class="co">#plt.tight_layout()</span></span>
+<span id="cb7-151"><a href="#cb7-151" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb7-152"><a href="#cb7-152" aria-hidden="true" tabindex="-1"></a>alltogether2 <span class="op">=</span> widgets.VBox([widgets.HBox([selm, </span>
+<span id="cb7-153"><a href="#cb7-153" aria-hidden="true" tabindex="-1"></a>                                          selec,</span>
+<span id="cb7-154"><a href="#cb7-154" aria-hidden="true" tabindex="-1"></a>                                          seleo,</span>
+<span id="cb7-155"><a href="#cb7-155" aria-hidden="true" tabindex="-1"></a>                                          selu]),</span>
+<span id="cb7-156"><a href="#cb7-156" aria-hidden="true" tabindex="-1"></a>                            widgets.Label(<span class="st">' '</span>,border<span class="op">=</span><span class="dv">3</span>),</span>
+<span id="cb7-157"><a href="#cb7-157" aria-hidden="true" tabindex="-1"></a>                            widgets.HBox([widgets.HBox([widgets.Label(<span class="st">'K:'</span>,border<span class="op">=</span><span class="dv">3</span>), Kw, </span>
+<span id="cb7-158"><a href="#cb7-158" aria-hidden="true" tabindex="-1"></a>                                                        widgets.Label(<span class="st">'Eigenvalues:'</span>,border<span class="op">=</span><span class="dv">3</span>),</span>
+<span id="cb7-159"><a href="#cb7-159" aria-hidden="true" tabindex="-1"></a>                                                        widgets.HBox([eig1c, </span>
+<span id="cb7-160"><a href="#cb7-160" aria-hidden="true" tabindex="-1"></a>                                                                      eig2c, </span>
+<span id="cb7-161"><a href="#cb7-161" aria-hidden="true" tabindex="-1"></a>                                                                      eig3c,</span>
+<span id="cb7-162"><a href="#cb7-162" aria-hidden="true" tabindex="-1"></a>                                                                      eig4c])])]),</span>
+<span id="cb7-163"><a href="#cb7-163" aria-hidden="true" tabindex="-1"></a>                            widgets.Label(<span class="st">' '</span>,border<span class="op">=</span><span class="dv">3</span>),</span>
+<span id="cb7-164"><a href="#cb7-164" aria-hidden="true" tabindex="-1"></a>                            widgets.HBox([widgets.VBox([widgets.HBox([widgets.Label(<span class="st">'L:'</span>,border<span class="op">=</span><span class="dv">3</span>), Lw, widgets.Label(<span class="st">' '</span>,border<span class="op">=</span><span class="dv">3</span>),</span>
+<span id="cb7-165"><a href="#cb7-165" aria-hidden="true" tabindex="-1"></a>                                          widgets.Label(<span class="st">' '</span>,border<span class="op">=</span><span class="dv">3</span>),</span>
+<span id="cb7-166"><a href="#cb7-166" aria-hidden="true" tabindex="-1"></a>                                          widgets.Label(<span class="st">'Eigenvalues:'</span>,border<span class="op">=</span><span class="dv">3</span>), </span>
+<span id="cb7-167"><a href="#cb7-167" aria-hidden="true" tabindex="-1"></a>                                          eig1o, </span>
+<span id="cb7-168"><a href="#cb7-168" aria-hidden="true" tabindex="-1"></a>                                          eig2o,</span>
+<span id="cb7-169"><a href="#cb7-169" aria-hidden="true" tabindex="-1"></a>                                          eig3o, </span>
+<span id="cb7-170"><a href="#cb7-170" aria-hidden="true" tabindex="-1"></a>                                          eig4o,</span>
+<span id="cb7-171"><a href="#cb7-171" aria-hidden="true" tabindex="-1"></a>                                          widgets.Label(<span class="st">' '</span>,border<span class="op">=</span><span class="dv">3</span>),</span>
+<span id="cb7-172"><a href="#cb7-172" aria-hidden="true" tabindex="-1"></a>                                          widgets.Label(<span class="st">' '</span>,border<span class="op">=</span><span class="dv">3</span>),</span>
+<span id="cb7-173"><a href="#cb7-173" aria-hidden="true" tabindex="-1"></a>                                          widgets.Label(<span class="st">'X0 est.:'</span>,border<span class="op">=</span><span class="dv">3</span>), X0w]),</span>
+<span id="cb7-174"><a href="#cb7-174" aria-hidden="true" tabindex="-1"></a>                                          widgets.Label(<span class="st">' '</span>,border<span class="op">=</span><span class="dv">3</span>),</span>
+<span id="cb7-175"><a href="#cb7-175" aria-hidden="true" tabindex="-1"></a>                                                       widgets.HBox([</span>
+<span id="cb7-176"><a href="#cb7-176" aria-hidden="true" tabindex="-1"></a>                                          widgets.VBox([widgets.Label(<span class="st">'Simulation time (s):'</span>,border<span class="op">=</span><span class="dv">3</span>)]),</span>
+<span id="cb7-177"><a href="#cb7-177" aria-hidden="true" tabindex="-1"></a>                                          widgets.VBox([simTime])])]),</span>
+<span id="cb7-178"><a href="#cb7-178" aria-hidden="true" tabindex="-1"></a>                                          widgets.Label(<span class="st">' '</span>,border<span class="op">=</span><span class="dv">3</span>)]),</span>
+<span id="cb7-179"><a href="#cb7-179" aria-hidden="true" tabindex="-1"></a>                            widgets.Label(<span class="st">' '</span>,border<span class="op">=</span><span class="dv">3</span>),</span>
+<span id="cb7-180"><a href="#cb7-180" aria-hidden="true" tabindex="-1"></a>                            widgets.HBox([u,</span>
+<span id="cb7-181"><a href="#cb7-181" aria-hidden="true" tabindex="-1"></a>                                          ud,</span>
+<span id="cb7-182"><a href="#cb7-182" aria-hidden="true" tabindex="-1"></a>                                          period, </span>
+<span id="cb7-183"><a href="#cb7-183" aria-hidden="true" tabindex="-1"></a>                                          START])])</span>
+<span id="cb7-184"><a href="#cb7-184" aria-hidden="true" tabindex="-1"></a>out2 <span class="op">=</span> widgets.interactive_output(main_callback2, {<span class="st">'ud'</span>:ud, <span class="st">'X0w'</span>:X0w, <span class="st">'K'</span>:Kw, <span class="st">'L'</span>:Lw,</span>
+<span id="cb7-185"><a href="#cb7-185" aria-hidden="true" tabindex="-1"></a>                                                   <span class="st">'eig1c'</span>:eig1c, <span class="st">'eig2c'</span>:eig2c, <span class="st">'eig3c'</span>:eig3c, <span class="st">'eig4c'</span>:eig4c, </span>
+<span id="cb7-186"><a href="#cb7-186" aria-hidden="true" tabindex="-1"></a>                                                   <span class="st">'eig1o'</span>:eig1o, <span class="st">'eig2o'</span>:eig2o, <span class="st">'eig3o'</span>:eig3o, <span class="st">'eig4o'</span>:eig4o,  </span>
+<span id="cb7-187"><a href="#cb7-187" aria-hidden="true" tabindex="-1"></a>                                                   <span class="st">'u'</span>:u, <span class="st">'period'</span>:period, <span class="st">'selm'</span>:selm, <span class="st">'selec'</span>:selec, <span class="st">'seleo'</span>:seleo, <span class="st">'selu'</span>:selu, <span class="st">'simTime'</span>:simTime, <span class="st">'DW'</span>:DW})</span>
+<span id="cb7-188"><a href="#cb7-188" aria-hidden="true" tabindex="-1"></a>out2.layout.height <span class="op">=</span> <span class="st">'860px'</span></span>
+<span id="cb7-189"><a href="#cb7-189" aria-hidden="true" tabindex="-1"></a>display(out2, alltogether2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"b4dafec3c9b34126afc6514d7d995ce4","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"7e752e7cbf614b579fc6b6fcd70fdd9e","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
