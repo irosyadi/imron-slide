@@ -1096,7 +1096,7 @@
     "href": "control_21.html#learning-objectives",
     "title": "Modeling in the Frequency Domain",
     "section": "Learning Objectives",
-    "text": "Learning Objectives\nBy the end of this session, you will be able to:\n\nUnderstand the advantages of the frequency domain over the time domain for system modeling.\nApply the Laplace Transform to convert differential equations into algebraic equations.\nPerform Partial-Fraction Expansion for real, repeated, and complex roots.\nDerive Transfer Functions (\\(G(s)\\)) from linear, time-invariant (LTI) differential equations.\nCalculate system time responses using the Inverse Laplace Transform."
+    "text": "Learning Objectives\nBy the end of this session, you will be able to:\n\nExplain why control engineers prefer transfer functions over raw differential equations.\nRecall and use key Laplace transform pairs and theorems.\nPerform partial‑fraction expansion for real, repeated, and complex roots.\nUse Laplace transforms to solve linear differential equations with zero initial conditions.\nDefine and compute a transfer function from a given differential equation.\nRelate simple transfer functions to time‑domain responses (step, ramp) relevant to ECE systems.\n\n\nThis slide sets expectations. Emphasize the “why” (motivation) first: modeling in the frequency domain lets us separate input/system/output and use algebra instead of calculus. Then connect each objective to a concrete action they’ll perform in examples or interactive blocks."
   },
   {
     "objectID": "control_21.html#introduction-why-frequency-domain",
@@ -1131,7 +1131,7 @@
     "href": "control_21.html#laplace-transform-theorems",
     "title": "Modeling in the Frequency Domain",
     "section": "Laplace Transform Theorems",
-    "text": "Laplace Transform Theorems\nTheorems allow us to transform complex functions without using the integral definition.\n\n\n\nName\nTime Domain\nFrequency Domain\n\n\n\n\nLinearity\n\\(af_1(t) + bf_2(t)\\)\n\\(aF_1(s) + bF_2(s)\\)\n\n\nFreq. Shift\n\\(e^{-at}f(t)\\)\n\\(F(s+a)\\)\n\n\nDifferentiation\n\\(df/dt\\)\n\\(sF(s) - f(0-)\\)\n\n\nFinal Value\n\\(f(\\infty)\\)\n\\(\\lim_{s \\to 0} sF(s)\\)\n\n\n\n\n\n\n\n\n\nImportant\n\n\nThe Final Value Theorem is only valid if all roots of the denominator of \\(sF(s)\\) have negative real parts (stable system)."
+    "text": "Laplace Transform Theorems\n\n\nLinearity\n\n\\(\\mathcal{L}[k f(t)] = k F(s)\\)\n\\(\\mathcal{L}[f_1(t) + f_2(t)] = F_1(s) + F_2(s)\\)\n\nFrequency shift\n\n\\(\\mathcal{L}[e^{-a t} f(t)] = F(s + a)\\)\n\n\nDifferentiation in time\n\n\\(\\mathcal{L}\\left[\\dfrac{df}{dt}\\right] = sF(s) - f(0^-)\\)\n\nIntegration in time\n\n\\(\\mathcal{L}\\left[\\int_0^t f(\\tau)\\, d\\tau \\right] = \\dfrac{F(s)}{s}\\)\n\n\nValue theorems:\n\nFinal value: \\(f(\\infty) = \\displaystyle\\lim_{s\\to 0} s F(s)\\) (under stability conditions).\nInitial value: \\(f(0^+) = \\displaystyle\\lim_{s\\to\\infty} s F(s)\\) (under continuity conditions).\n\n\n\n\n\n\n\nWarning\n\n\nValue theorems have conditions:\n\nFinal value only if all poles of \\(sF(s)\\) have negative real parts or at most one at the origin.\nInitial value only if \\(f(t)\\) has no impulses at \\(t=0\\).\n\n\n\n\n\nExplain that these theorems are tools to avoid doing full inverses. In control design we often care about steady‑state error → final value theorem is heavily used. Give a quick mental example: step response of 1/(s+2) has \\(C(s)=1/(s(s+2))\\), so \\(c(\\infty) = \\lim_{s→0} s /(s(s+2)) = 1/2\\), matching the time‑domain expression."
   },
   {
     "objectID": "control_21.html#partial-fraction-expansion",
@@ -1187,14 +1187,14 @@
     "href": "control_21.html#summary-key-points",
     "title": "Modeling in the Frequency Domain",
     "section": "Summary / Key Points",
-    "text": "Summary / Key Points\n\nFrequency Domain modeling simplifies complex system analysis into algebraic manipulation.\nThe Laplace Transform is the primary tool for this conversion.\nTransfer Functions represent a system’s dynamics independently of the input signal.\nInitial Conditions must be zero for the standard definition of a Transfer Function.\nPartial Fraction Expansion is the bridge back to the time domain (\\(t\\))."
+    "text": "Summary / Key Points\n\nLaplace transform converts time‑domain functions and differential equations into algebraic expressions in \\(s\\).\nLaplace pairs and theorems (linearity, shift, differentiation, integration, value theorems) are essential tools.\nPartial‑fraction expansion is the main technique to invert rational \\(F(s)\\):\n\nCase 1: real distinct poles → sums of exponentials.\nCase 2: repeated poles → exponentials times polynomials in \\(t\\).\nCase 3: complex poles → exponentially damped sinusoids.\n\nA transfer function \\(G(s) = C(s)/R(s)\\) (zero initial conditions) cleanly separates input, system, and output and corresponds to block diagrams.\nFrom a DE ↔︎ transfer function:\n\nDE → Laplace → algebra → \\(C(s)/R(s) = G(s)\\).\n\\(G(s)\\) + input Laplace → \\(C(s)\\) → partial fractions → \\(c(t)\\).\n\n\n\nReinforce that everything in later Chapters 2–6 (root locus, Bode plots, steady‑state error) will assume comfort with Laplace transforms and transfer functions. Encourage students to practice going back and forth between differential equations, transfer functions, and time‑domain responses."
   },
   {
     "objectID": "control_21.html#formulas-summary",
     "href": "control_21.html#formulas-summary",
     "title": "Modeling in the Frequency Domain",
     "section": "Formulas Summary",
-    "text": "Formulas Summary\nLaplace Transform: \\(F(s) = \\int_{0-}^{\\infty} f(t)e^{-st} dt\\)\nTransfer Function: \\(G(s) = \\frac{C(s)}{R(s)}\\)\nResidue (Distinct Roots): \\(K_i = [(s+p_i)F(s)]_{s \\to -p_i}\\)\nInitial Value Theorem: \\(f(0+) = \\lim_{s \\to \\infty} sF(s)\\)\nFinal Value Theorem: \\(f(\\infty) = \\lim_{s \\to 0} sF(s)\\)# Modeling in the Frequency Domain\n2.1–2.3: Laplace Transform & Transfer Functions"
+    "text": "Formulas Summary\nLaplace transform definition:\n\\[\n\\mathcal{L}[f(t)] = F(s) = \\int_{0^-}^{\\infty} f(t) e^{-s t}\\, dt\n\\]\nInverse Laplace:\n\\[\n\\mathcal{L}^{-1}[F(s)] = \\frac{1}{2\\pi j} \\int_{\\sigma - j\\infty}^{\\sigma + j\\infty} F(s)e^{st}\\, ds = f(t)u(t)\n\\]"
   },
   {
     "objectID": "control_21.html#learning-objectives-1",
@@ -1278,7 +1278,7 @@
     "href": "control_21.html#case-1-real-distinct-poles",
     "title": "Modeling in the Frequency Domain",
     "section": "Case 1: Real, Distinct Poles",
-    "text": "Case 1: Real, Distinct Poles\nExample:\n\\[\nF(s) = \\frac{2}{(s+1)(s+2)}\n\\]\nAssume\n\\[\nF(s) = \\frac{K_1}{s+1} + \\frac{K_2}{s+2}\n\\]\nSolve residues:\n\nMultiply by \\((s+1)\\) and set \\(s=-1\\) → \\(K_1 = \\dfrac{2}{-1+2} = 2\\).\nMultiply by \\((s+2)\\) and set \\(s=-2\\) → \\(K_2 = \\dfrac{2}{-2+1} = -2\\).\n\nSo\n\\[\nF(s) = \\frac{2}{s+1} - \\frac{2}{s+2}\n\\]\nInverse Laplace:\n\\[\nf(t) = 2 e^{-t} - 2 e^{-2t}\n\\]\n\n\n\n\n\n\nTip\n\n\nFor distinct real poles at \\(-p_1, -p_2, ..., -p_n\\):\n\\[\nF(s) = \\sum_{i=1}^n \\frac{K_i}{s + p_i},\\quad\nK_i = (s + p_i) F(s)\\big|_{s = -p_i}\n\\]\n\n\n\n\nStress the “cover‑up” trick for simple real poles: multiply by the factor, then substitute the corresponding root. Mention that the exponents in time domain correspond to pole locations (modes of the system)."
+    "text": "Case 1: Real, Distinct Poles\nExample:\n\\[\nF(s) = \\frac{2}{(s+1)(s+2)}\n\\]\nAssume\n\\[\nF(s) = \\frac{K_1}{s+1} + \\frac{K_2}{s+2}\n\\]\nSolve residues:\n\nMultiply by \\((s+1)\\) and set \\(s=-1\\) → \\(K_1 = \\dfrac{2}{-1+2} = 2\\).\nMultiply by \\((s+2)\\) and set \\(s=-2\\) → \\(K_2 = \\dfrac{2}{-2+1} = -2\\)."
   },
   {
     "objectID": "control_21.html#example-2.3-de-solution-via-laplace-setup",
@@ -1292,7 +1292,7 @@
     "href": "control_21.html#example-2.3-partial-fractions-and-solution",
     "title": "Modeling in the Frequency Domain",
     "section": "Example 2.3 – Partial Fractions and Solution",
-    "text": "Example 2.3 – Partial Fractions and Solution\nAssume\n\\[\nY(s) = \\frac{K_1}{s} + \\frac{K_2}{s+4} + \\frac{K_3}{s+8}\n\\]\nUse cover‑up method:\n\n\\(K_1 = \\dfrac{32}{(s+4)(s+8)}\\bigg|_{s=0} = 1\\)\n\\(K_2 = \\dfrac{32}{s(s+8)}\\bigg|_{s=-4} = -2\\)\n\\(K_3 = \\dfrac{32}{s(s+4)}\\bigg|_{s=-8} = 1\\)\n\nSo\n\\[\nY(s) = \\frac{1}{s} - \\frac{2}{s+4} + \\frac{1}{s+8}\n\\]\nInverse Laplace:\n\\[\ny(t) = 1 - 2 e^{-4t} + e^{-8t}\n\\]\n\n\n\n\n\n\nNote\n\n\nWe often drop the explicit \\(u(t)\\) factor in notation, assuming causal systems with inputs applied at \\(t=0\\).\n\n\n\n\nInterpret the result physically: final value is 1 (matches right‑hand side 32 with static gain 1). Two decaying exponentials represent system dynamics with time constants 1/4 and 1/8 s. You can also quickly check final value via \\(\\lim_{s\\to0} sY(s)\\)."
+    "text": "Example 2.3 – Partial Fractions and Solution\nAssume\n\\[\nY(s) = \\frac{K_1}{s} + \\frac{K_2}{s+4} + \\frac{K_3}{s+8}\n\\]\nUse cover‑up method:\n\n\\(K_1 = \\dfrac{32}{(s+4)(s+8)}\\bigg|_{s=0} = 1\\)\n\\(K_2 = \\dfrac{32}{s(s+8)}\\bigg|_{s=-4} = -2\\)\n\\(K_3 = \\dfrac{32}{s(s+4)}\\bigg|_{s=-8} = 1\\)"
   },
   {
     "objectID": "control_21.html#interactive-practice-partial-fractions-in-python",
@@ -1306,14 +1306,14 @@
     "href": "control_21.html#case-2-real-repeated-poles",
     "title": "Modeling in the Frequency Domain",
     "section": "Case 2: Real, Repeated Poles",
-    "text": "Case 2: Real, Repeated Poles\nExample:\n\\[\nF(s) = \\frac{2}{(s+1)(s+2)^2}\n\\]\nWe write:\n\\[\nF(s) = \\frac{K_1}{s+1} + \\frac{K_2}{(s+2)^2} + \\frac{K_3}{s+2}\n\\]\nProcedure:\n\n\\(K_1\\) via cover‑up (still simple pole):\n\nMultiply by \\((s+1)\\) and set \\(s=-1\\): \\(K_1 = 2\\).\n\n\\(K_2\\) isolate by multiplying by \\((s+2)^2\\) and setting \\(s=-2\\):\n\n\\(K_2 = -2\\).\n\nFor \\(K_3\\) (other term in repeated root):\n\nDifferentiate the expression where \\((s+2)^2 F(s)\\) is isolated, then set \\(s=-2\\) to solve for \\(K_3\\): \\(K_3 = -2\\).\n\n\nSo\n\\[\nf(t) = 2 e^{-t} - 2 t e^{-2t} - 2 e^{-2t}\n\\]\n\n\n\n\n\n\nTip\n\n\nFor a repeated pole at \\(s = -p\\) of multiplicity \\(r\\), the expansion is\n\\[\n\\sum_{i=1}^r \\frac{K_i}{(s+p)^i}\n\\]\nCorresponding time terms are of the form \\(t^{i-1} e^{-p t}\\).\n\n\n\n\nHighlight that repeated poles lead to polynomial factors in time (e.g., \\(t e^{-2t}\\)), which correspond to non‑distinct system modes, such as critically damped or higher‑order repeated behavior."
+    "text": "Case 2: Real, Repeated Poles\nExample:\n\\[\nF(s) = \\frac{2}{(s+1)(s+2)^2}\n\\]\nWe write:\n\\[\nF(s) = \\frac{K_1}{s+1} + \\frac{K_2}{(s+2)^2} + \\frac{K_3}{s+2}\n\\]"
   },
   {
     "objectID": "control_21.html#case-3-complex-or-imaginary-poles",
     "href": "control_21.html#case-3-complex-or-imaginary-poles",
     "title": "Modeling in the Frequency Domain",
     "section": "Case 3: Complex or Imaginary Poles",
-    "text": "Case 3: Complex or Imaginary Poles\nExample:\n\\[\nF(s) = \\frac{3}{s(s^2 + 2s + 5)}\n\\]\nWe use\n\\[\nF(s) = \\frac{K_1}{s} + \\frac{K_2 s + K_3}{s^2 + 2s + 5}\n\\]\n\n\\(K_1 = \\dfrac{3}{5}\\).\nMultiply both sides by \\(s(s^2+2s+5)\\) and equate coefficients to find \\(K_2\\), \\(K_3\\).\n\nResult: \\(K_2 = -\\dfrac{3}{5}\\), \\(K_3 = -\\dfrac{6}{5}\\).\n\n\nSo\n\\[\nF(s) = \\frac{3/5}{s} - \\frac{3}{5}\\frac{s+2}{s^2 + 2s + 5}\n\\]\nComplete the square:\n\\[\ns^2 + 2s + 5 = (s + 1)^2 + 2^2\n\\]\nRewrite:\n\\[\nF(s) = \\frac{3/5}{s} - \\frac{3}{5} \\frac{(s+1) + 1}{(s+1)^2 + 4}\n\\]\nMatch with\n\\[\n\\mathcal{L}[A e^{-a t}\\cos\\omega t + B e^{-a t}\\sin\\omega t] =\n\\frac{A(s+a) + B\\omega}{(s+a)^2 + \\omega^2}\n\\]\nYield\n\\[\nf(t) = \\frac{3}{5} - \\frac{3}{5} e^{-t}\\left(\\cos 2t + \\frac{1}{2} \\sin 2t\\right)\n\\]\nOr equivalently\n\\[\nf(t) = 0.6 - 0.671 e^{-t} \\cos(2t - \\phi), \\quad \\phi \\approx 26.57^\\circ\n\\]\n\n\n\n\n\n\nNote\n\n\nComplex poles → damped sinusoidal modes (oscillations that decay over time). This is crucial for understanding underdamped systems (e.g., RLC circuits, motor torque responses).\n\n\n\n\nEmphasize geometric interpretation: complex poles at \\(-1 \\pm j2\\) have real part −1 (decay rate) and imaginary part 2 (oscillation frequency). Students will see these again in second‑order system analysis."
+    "text": "Case 3: Complex or Imaginary Poles\nExample:\n\\[\nF(s) = \\frac{3}{s(s^2 + 2s + 5)}\n\\]\nWe use\n\\[\nF(s) = \\frac{K_1}{s} + \\frac{K_2 s + K_3}{s^2 + 2s + 5}\n\\]\n\n\\(K_1 = \\dfrac{3}{5}\\).\nMultiply both sides by \\(s(s^2+2s+5)\\) and equate coefficients to find \\(K_2\\), \\(K_3\\).\n\nResult: \\(K_2 = -\\dfrac{3}{5}\\), \\(K_3 = -\\dfrac{6}{5}\\)."
   },
   {
     "objectID": "control_21.html#alternate-complexresidue-method-outline",
@@ -1362,7 +1362,7 @@
     "href": "control_21.html#example-2.5-step-response-from-gs",
     "title": "Modeling in the Frequency Domain",
     "section": "Example 2.5 – Step Response from \\(G(s)\\)",
-    "text": "Example 2.5 – Step Response from \\(G(s)\\)\nWe use \\(G(s) = 1/(s+2)\\) and input \\(r(t) = u(t)\\).\n\nLaplace of input: \\(R(s) = 1/s\\).\nOutput transform:\n\n\\[\nC(s) = G(s) R(s) = \\frac{1}{s(s+2)}\n\\]\n\nPartial fractions:\n\n\\[\nC(s) = \\frac{1/2}{s} - \\frac{1/2}{s+2}\n\\]\n\nInverse Laplace:\n\n\\[\nc(t) = \\frac{1}{2} - \\frac{1}{2} e^{-2t}\n\\]\nInterpretation:\n\nStarts at 0, asymptotically approaches 0.5.\nTime constant: 0.5 s → at \\(t = 0.5\\) s, ~63% of the way to 0.5.\n\n\n\n\n\n\n\nTip\n\n\nYou can check final value via final value theorem:\n\\[\nc(\\infty) = \\lim_{s\\to0} s \\cdot C(s) = \\lim_{s\\to0} \\frac{s}{s(s+2)} = \\frac{1}{2}\n\\]\n\n\n\n\nIf time permits, sketch or quickly plot the response. Emphasize that this procedure (transfer function + Laplace of input + partial fractions) is the standard pipeline for computing time responses."
+    "text": "Example 2.5 – Step Response from \\(G(s)\\)\nWe use \\(G(s) = 1/(s+2)\\) and input \\(r(t) = u(t)\\).\n\nLaplace of input: \\(R(s) = 1/s\\).\nOutput transform:\n\n\\[\nC(s) = G(s) R(s) = \\frac{1}{s(s+2)}\n\\]\n\nPartial fractions:\n\n\\[\nC(s) = \\frac{1/2}{s} - \\frac{1/2}{s+2}\n\\]"
   },
   {
     "objectID": "control_21.html#interactive-plot-firstorder-step-response",
@@ -1397,7 +1397,7 @@
     "href": "control_21.html#formulas-summary-1",
     "title": "Modeling in the Frequency Domain",
     "section": "Formulas Summary",
-    "text": "Formulas Summary\nLaplace transform definition:\n\\[\n\\mathcal{L}[f(t)] = F(s) = \\int_{0^-}^{\\infty} f(t) e^{-s t}\\, dt\n\\]\nInverse Laplace:\n\\[\n\\mathcal{L}^{-1}[F(s)] = \\frac{1}{2\\pi j} \\int_{\\sigma - j\\infty}^{\\sigma + j\\infty} F(s)e^{st}\\, ds = f(t)u(t)\n\\]\nSelected transform pairs:\n\n\\(\\delta(t) \\leftrightarrow 1\\)\n\\(u(t) \\leftrightarrow \\dfrac{1}{s}\\)\n\\(t^n u(t) \\leftrightarrow \\dfrac{n!}{s^{n+1}}\\)\n\\(e^{-at} u(t) \\leftrightarrow \\dfrac{1}{s+a}\\)\n\\(\\sin \\omega t\\, u(t) \\leftrightarrow \\dfrac{\\omega}{s^2 + \\omega^2}\\)\n\\(\\cos \\omega t\\, u(t) \\leftrightarrow \\dfrac{s}{s^2 + \\omega^2}\\)\n\nKey theorems:\n\nLinearity: \\(\\mathcal{L}[k f(t)] = kF(s)\\), \\(\\mathcal{L}[f_1+f_2] = F_1+F_2\\).\nFrequency shift: \\(\\mathcal{L}[e^{-at} f(t)] = F(s + a)\\).\nDifferentiation: \\(\\mathcal{L}\\left[\\dfrac{df}{dt}\\right] = sF(s) - f(0^-)\\).\nIntegration: \\(\\mathcal{L}\\left[\\int_0^{t} f(\\tau)d\\tau\\right] = \\dfrac{F(s)}{s}\\).\nFinal value: \\(f(\\infty) = \\lim_{s\\to 0} sF(s)\\) (under stability conditions).\nInitial value: \\(f(0^+) = \\lim_{s\\to \\infty} sF(s)\\) (if no impulses at 0).\n\nTransfer function (zero initial conditions):\n\nFrom DE:\n\\[\n\\frac{C(s)}{R(s)} = G(s) =\n\\frac{b_m s^m + \\cdots + b_0}\n     {a_n s^n + \\cdots + a_0}\n\\]\nInput–output relation:\n\\[\nC(s) = G(s) R(s)\n\\]\n\n\nLeave this as a concise reference slide. Suggest students copy or print it as a quick cheat‑sheet for homework and future lectures."
+    "text": "Formulas Summary\nSelected transform pairs:\n\n\\(\\delta(t) \\leftrightarrow 1\\)\n\\(u(t) \\leftrightarrow \\dfrac{1}{s}\\)\n\\(t^n u(t) \\leftrightarrow \\dfrac{n!}{s^{n+1}}\\)\n\\(e^{-at} u(t) \\leftrightarrow \\dfrac{1}{s+a}\\)\n\\(\\sin \\omega t\\, u(t) \\leftrightarrow \\dfrac{\\omega}{s^2 + \\omega^2}\\)\n\\(\\cos \\omega t\\, u(t) \\leftrightarrow \\dfrac{s}{s^2 + \\omega^2}\\)"
   },
   {
     "objectID": "index.html",
@@ -1552,5 +1552,432 @@
     "title": "Sistem Kendali",
     "section": "FAQ (Imron Rosyadi)",
     "text": "FAQ (Imron Rosyadi)\n\nBagaimana cara menerjemahkan materi kuliah ke bahasa Indonesia?\n\nInstall browser plugin untuk translation, misal: Immersive Translate\n\nBagaimana cara mencetak/menyimpan presentasi ke PDF?\n\nTekan menu kiri bawah (☰) &gt;&gt; Tools &gt;&gt; PDF Export Mode &gt;&gt; Ctrl+P &gt;&gt; Save as PDF &gt;&gt; Save\nTekan huruf e &gt;&gt; Ctrl+P &gt;&gt; Save as PDF &gt;&gt; Save"
+  },
+  {
+    "objectID": "control_1.html#learning-objectives",
+    "href": "control_1.html#learning-objectives",
+    "title": "Introduction to Control Systems",
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\nAfter this session, you will be able to:\n\nDefine a control system and recognize common ECE applications.\nDistinguish open-loop and closed-loop (feedback) systems.\nExplain transient response, steady-state error, and stability qualitatively.\nDescribe the main steps of the control system design process.\nAppreciate the role of computer-aided tools (e.g., MATLAB) in control design.\nInterpret the antenna-azimuth case study as a canonical position control problem.\n\n\nClarify that today’s focus is conceptual, with minimal equations. These objectives line up with Sections 1.1–1.7 of the text and the antenna case study. Point out that understanding this “big picture” will make the math in later chapters much more intuitive."
+  },
+  {
+    "objectID": "control_1.html#big-picture-what-is-a-control-system",
+    "href": "control_1.html#big-picture-what-is-a-control-system",
+    "title": "Introduction to Control Systems",
+    "section": "Big Picture: What Is a Control System?",
+    "text": "Big Picture: What Is a Control System?\n\n\nA control system is:\n\nA collection of subsystems and processes (the plant) assembled to produce a desired output, with desired performance, in response to a specified input.\n\nKey ingredients:\n\nInput (command / reference) – what we want.\nPlant / process – the physical system we influence.\nOutput – what actually happens.\nController – logic that decides how to drive the plant.\nOptionally: feedback that measures the output.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelate to something they know: - Audio volume knob → amplifier → speaker → sound level. - Temperature setpoint → HVAC → room temperature.\nHighlight that at this stage we’re not yet distinguishing open- vs. closed-loop; this is just the “block-level” view."
+  },
+  {
+    "objectID": "control_1.html#everyday-examples-ece-focus",
+    "href": "control_1.html#everyday-examples-ece-focus",
+    "title": "Introduction to Control Systems",
+    "section": "Everyday Examples (ECE Focus)",
+    "text": "Everyday Examples (ECE Focus)\n\n\nEngineering / technology examples\n\nElevator position and speed control.\nDisk drive head positioning.\nAntenna pointing for satellites.\nMotor drives in robots and drones.\nPower electronics: DC–DC converter voltage regulation.\nCommunication systems: automatic gain control (AGC).\n\n\nNatural / “biological” control systems\n\nBlood sugar regulation (pancreas / insulin).\nHeart rate and oxygen delivery in “fight or flight.”\nEye tracking to keep moving targets centered on the retina.\nMuscle control when you reach and place an object precisely.\n\n\n\n\n\n\n\n\nNote\n\n\nControl concepts cut across electrical, mechanical, chemical, biological, and even economic systems.\n\n\n\n\nUnderline the universality of feedback and regulation. Ask: “Who wears a smartwatch? It’s measuring your heart rate and sometimes controlling your behavior via notifications. That’s a cyber-physical control loop involving you.”"
+  },
+  {
+    "objectID": "control_1.html#case-study-learning-outcome",
+    "href": "control_1.html#case-study-learning-outcome",
+    "title": "Introduction to Control Systems",
+    "section": "Case-Study Learning Outcome",
+    "text": "Case-Study Learning Outcome\nWe will repeatedly return to a running case study:\nAntenna azimuth position control system\nYou will use it to:\n\nSee how a real electromechanical control loop is built.\nConnect physical hardware (motors, sensors, amplifiers) to block diagrams.\nVisualize transient response, steady-state error, and stability.\nPractice design trade-offs (speed vs. overshoot, accuracy vs. complexity).\n\n\nStress that this is not a one-off example; it threads through many chapters. The “antenna azimuth” problem is a classic, but it is also very close to modern applications: gimbals in drones, phased-array pointing, etc."
+  },
+  {
+    "objectID": "control_1.html#control-systems-all-around-us",
+    "href": "control_1.html#control-systems-all-around-us",
+    "title": "Introduction to Control Systems",
+    "section": "1.1 Control Systems All Around Us",
+    "text": "1.1 Control Systems All Around Us\nControl systems are integral to modern society:\n\nSpace shuttle launch and orbit control – rocket thrust, attitude, and trajectory.\nCNC machining – precise movement of tools with cooling and speed control.\nAutomated guided vehicles in factories – follow paths and avoid obstacles.\n\nNatural examples inside your body:\n\nHormonal control (e.g., insulin) maintains blood sugar.\nAdrenaline raises heart rate and breathing when stressed.\nEyes and hands coordinate to track and grasp objects.\n\nEven abstract systems like student performance vs. study time can be modeled as control systems.\n\nUse the study-time model as a fun analogy: - Input: study time. - Output: grade. - Disturbance: surprise extra chapter on the exam. - Control action: adjust study plan.\nThe point is not that the model is perfect, but that control thinking is pervasive."
+  },
+  {
+    "objectID": "control_1.html#control-system-definition-basic-block-diagram",
+    "href": "control_1.html#control-system-definition-basic-block-diagram",
+    "title": "Introduction to Control Systems",
+    "section": "Control System Definition & Basic Block Diagram",
+    "text": "Control System Definition & Basic Block Diagram\n\n\n\nFigure 1.1 Simplified description of a control system\n\n\nA control system consists of:\n\nController – implements the control law.\nPlant / process – physical system we’re controlling.\nInput – desired plant output (command).\nOutput – measured plant response.\n\n\nRelate Figure 1.1 to the previous generic block diagram. Emphasize: here, input is a desired output (e.g., desired elevator floor). Set up that later we will add feedback explicitly to this simple picture."
+  },
+  {
+    "objectID": "control_1.html#elevator-example-input-output-performance",
+    "href": "control_1.html#elevator-example-input-output-performance",
+    "title": "Introduction to Control Systems",
+    "section": "Elevator Example: Input, Output, Performance",
+    "text": "Elevator Example: Input, Output, Performance\n\n\n\nYou press the 4th floor button on the 1st floor.\nThe car should move:\n\nFast enough (but not scary).\nSmoothly, without oscillations.\nStop level with the floor.\n\n\nInput: “Go to 4th floor” (a step in desired position).\nOutput: actual car position vs. time.\n\n\n\n\nFigure 1.2 Elevator response\n\n\n\nTwo key performance aspects visible here:\n\nTransient response – how the elevator moves while changing floors.\nSteady-state error – how close the final position is to the floor.\n\n\nUse the plot conceptually, even if students cannot read all details yet. - Transient response → passenger comfort and patience. - Steady-state error → safety and convenience.\nAsk: “Have you ever felt an elevator ‘bounce’ a little at a floor?” That’s underdamped transient behavior."
+  },
+  {
+    "objectID": "control_1.html#why-use-control-systems",
+    "href": "control_1.html#why-use-control-systems",
+    "title": "Introduction to Control Systems",
+    "section": "Why Use Control Systems?",
+    "text": "Why Use Control Systems?\nWe build control systems to:\n\nAmplify power – small electrical signals command large mechanical power.\nEnable remote control – operate systems from a distance or hazardous area.\nChange input form – e.g., a knob position → room temperature.\nCompensate for disturbances – maintain performance despite wind, load changes, noise, etc.\n\n\nUse the elevator photos:\n\nEarly elevators: human operator pulls ropes, directly controlling motion.\nModern elevators: motors provide power, control systems manage position and speed.\n\nEmphasize that with control systems, a low-power, convenient command (button press) can safely control a high-power system."
+  },
+  {
+    "objectID": "control_1.html#disturbances-compensation-antenna-example",
+    "href": "control_1.html#disturbances-compensation-antenna-example",
+    "title": "Introduction to Control Systems",
+    "section": "Disturbances & Compensation: Antenna Example",
+    "text": "Disturbances & Compensation: Antenna Example\n\n\nExample: Antenna pointing system\n\nGoal: keep antenna aimed at a satellite.\nDisturbances:\n\nWind gusts push the antenna off target.\nMechanical friction or backlash.\nElectrical noise in sensors/actuators.\n\n\nA good control system:\n\nDetects deviation from commanded angle.\nApplies correction so the antenna returns to the right direction.\nDoes this automatically; the reference input does not change.\n\n\n\n\n\nRover robot arm in contaminated area\n\n\n\n\nUse Rover as another example of remote control in dangerous environments. Link to the antenna case study: we will design such a position loop."
+  },
+  {
+    "objectID": "control_1.html#brief-history-of-control-systems-human-designed",
+    "href": "control_1.html#brief-history-of-control-systems-human-designed",
+    "title": "Introduction to Control Systems",
+    "section": "1.2 Brief History of Control Systems (Human-Designed)",
+    "text": "1.2 Brief History of Control Systems (Human-Designed)\nControl ideas go back over 2000 years:\n\n300 B.C. – Greek water clocks (Ktesibios). Liquid-level regulation to maintain constant flow.\nAncient oil lamps (Philon of Byzantium). Self-regulated oil level by clever tubing and air pressure.\n1681 – Papin’s safety valve. Steam pressure regulation via weighted valve.\n17th century – Drebbel’s incubator. Mechanical temperature controller using alcohol/mercury expansion.\n\nKey theme: automatic regulation of a variable (level, pressure, temperature) using feedback-like mechanisms.\n\nYou don’t need students to remember names and dates. Instead, focus on the idea: humans have been building feedback-like devices for centuries. Draw parallels: liquid-level controller → modern tank-level control in chemical plants."
+  },
+  {
+    "objectID": "control_1.html#historical-milestones-speed-control",
+    "href": "control_1.html#historical-milestones-speed-control",
+    "title": "Introduction to Control Systems",
+    "section": "Historical Milestones: Speed Control",
+    "text": "Historical Milestones: Speed Control\n\n1745 – Edmund Lee\n\nWindmill speed control by automatically changing blade pitch.\n\n1809 – William Cubitt\n\nImproved windmill with movable louvers for better speed regulation.\n\nLate 18th century – James Watt’s flyball governor\n\nRotating balls rise with speed, mechanically throttling steam input.\nClassic mechanical speed feedback system.\n\n\nKey idea: speed is measured, compared to desired value, and used to adjust input.\n\nStudents often have seen animations of Watt’s governor. Make the connection: this is essentially a mechanical proportional feedback controller."
+  },
+  {
+    "objectID": "control_1.html#mathematical-foundations-stability-criteria",
+    "href": "control_1.html#mathematical-foundations-stability-criteria",
+    "title": "Introduction to Control Systems",
+    "section": "Mathematical Foundations: Stability Criteria",
+    "text": "Mathematical Foundations: Stability Criteria\nMajor contributions in the 19th century:\n\nMaxwell (1868) – early stability criterion for 3rd-order systems.\nRouth (1874, 1877) – extended criteria to higher orders → Routh–Hurwitz stability test.\nLyapunov (1892) – generalized stability theory to nonlinear systems.\n\nThese works turned practical control problems into mathematical questions about differential equations and their roots.\n\n\n\n\n\n\nTip\n\n\nIn later chapters, you will learn how to decide if a system is stable by looking at coefficients or roots of characteristic equations, not by trial-and-error experiments.\n\n\n\n\nReassure students: they don’t need to memorize all history, but they should recognize Routh and Lyapunov as names linked to stability methods they will use later."
+  },
+  {
+    "objectID": "control_1.html#th-century-frequency-and-root-locus-methods",
+    "href": "control_1.html#th-century-frequency-and-root-locus-methods",
+    "title": "Introduction to Control Systems",
+    "section": "20th-Century Frequency and Root-Locus Methods",
+    "text": "20th-Century Frequency and Root-Locus Methods\nKey developments:\n\nNicholas Minorsky (1920s) – theoretical basis of PID control for ship steering.\nBode & Nyquist (Bell Labs, 1920s–30s) –\n\nFeedback amplifier analysis.\nBode plots and Nyquist criteria for frequency-domain design.\n\nWalter R. Evans (1948) –\n\nRoot locus: graphical method to see how closed-loop poles move as a gain changes.\n\n\nThese are the core analysis tools for classical linear control.\n\nExplain that these methods remain in heavy use in industry and are embedded in tools like MATLAB’s Control System Toolbox. Set expectations: Bode/Nyquist → Chapters 10–11; root locus → Chapters 8–9, 13."
+  },
+  {
+    "objectID": "control_1.html#contemporary-applications",
+    "href": "control_1.html#contemporary-applications",
+    "title": "Introduction to Control Systems",
+    "section": "Contemporary Applications",
+    "text": "Contemporary Applications\nModern control systems are everywhere:\n\nAerospace – missile and spacecraft guidance, aircraft autopilots, UAVs.\nShips – heading control, roll stabilization, dynamic positioning.\nProcess industry – temperature, pressure, concentration, flow, and thickness regulation.\nAutomation & robotics – industrial robot arms, collaborative robots, warehouse robots.\nConsumer electronics – camera autofocus, disk drives, optical disk tracking.\n\nModern systems almost always include a digital computer as part of the controller.\n\nHighlight that ECE graduates will likely interact with digital controllers (microcontrollers, FPGAs, embedded CPUs) implementing control laws."
+  },
+  {
+    "objectID": "control_1.html#space-shuttle-a-complex-control-system",
+    "href": "control_1.html#space-shuttle-a-complex-control-system",
+    "title": "Introduction to Control Systems",
+    "section": "Space Shuttle: A Complex Control System",
+    "text": "Space Shuttle: A Complex Control System\nThe (now retired) space shuttle is a powerful example:\n\nOnboard computers handled:\n\nNavigation – estimating position and velocity from sensors.\nGuidance – computing desired trajectory and attitude.\nControl – generating commands to engines, thrusters, and aerosurfaces.\n\nControl subsystems included:\n\nOMS engine gimbaling in space.\nElevon and rudder control in atmosphere.\nReaction control system (RCS) jets for attitude when aero surfaces were ineffective.\nPower and life-support regulation (fuel cells, tank pressures, temperatures).\n\n\nAll these formed a hierarchical control architecture.\n\nUse this to convey the scale and complexity of real-world control systems. Make the point that what we study (single-loop position control, etc.) are building blocks in a much larger system-of-systems."
+  },
+  {
+    "objectID": "control_1.html#system-configurations-open--vs-closed-loop",
+    "href": "control_1.html#system-configurations-open--vs-closed-loop",
+    "title": "Introduction to Control Systems",
+    "section": "1.3 System Configurations: Open- vs Closed-Loop",
+    "text": "1.3 System Configurations: Open- vs Closed-Loop\n\n\n\nOpen-loop and closed-loop block diagrams\n\n\n\n\n\nClosed-loop system"
+  },
+  {
+    "objectID": "control_1.html#open-loop-control-structure",
+    "href": "control_1.html#open-loop-control-structure",
+    "title": "Introduction to Control Systems",
+    "section": "Open-Loop Control: Structure",
+    "text": "Open-Loop Control: Structure\nCharacteristics:\n\nControl signal depends only on the input, not on output.\nCannot correct for Disturbance 1 (added to controller output) or Disturbance 2 (added at plant output).\nOutput may deviate significantly if environment or plant changes.\n\n\nGive intuitive ECE-style examples: - DSM or microcontroller generating PWM to a heater without temperature feedback. - LED brightness scheduled from a lookup table, not measured. Emphasize: works only if the plant and disturbances are well known and nearly constant."
+  },
+  {
+    "objectID": "control_1.html#open-loop-examples",
+    "href": "control_1.html#open-loop-examples",
+    "title": "Introduction to Control Systems",
+    "section": "Open-Loop Examples",
+    "text": "Open-Loop Examples\n\nToaster\n\nInput: time setting.\nOutput: toast color.\nAssumes “longer time → darker toast.”\nDoes not sense actual color, bread type, or thickness.\n\nMass–spring–damper with constant force\n\nConstant force determines equilibrium position.\nIf another external force (disturbance) is applied, position changes and system does not correct.\n\nYour study plan\n\nYou compute hours to study for 3 chapters.\nProfessor adds a 4th chapter (disturbance).\nIf you don’t adjust your plan, you are acting as an open-loop system.\n\n\n\n\n\n\n\n\nWarning\n\n\nOpen-loop control is simple and cheap, but can be very sensitive to disturbances and modeling errors.\n\n\n\n\nThis is a good place to ask students for more open-loop examples. Guide them to think about devices whose operation is purely time-based or schedule-based, with no output measurement."
+  },
+  {
+    "objectID": "control_1.html#closed-loop-feedback-control-structure",
+    "href": "control_1.html#closed-loop-feedback-control-structure",
+    "title": "Introduction to Control Systems",
+    "section": "Closed-Loop (Feedback) Control: Structure",
+    "text": "Closed-Loop (Feedback) Control: Structure\nKey features:\n\nSensor / output transducer measures output.\nFeedback path returns a signal proportional to output.\nAt the summing junction, feedback is subtracted from input to form an error (actuating) signal.\nController drives plant to reduce error toward zero.\n\n\nExplain “unity transducers”: when generation/measurement gains are 1, the actuator signal equals the actual physical error. Emphasize that the system acts to minimize error: if output lags input, error is nonzero, and the controller pushes the plant in the right direction."
+  },
+  {
+    "objectID": "control_1.html#why-feedback-helps",
+    "href": "control_1.html#why-feedback-helps",
+    "title": "Introduction to Control Systems",
+    "section": "Why Feedback Helps",
+    "text": "Why Feedback Helps\nClosed-loop systems:\n\nAre less sensitive to disturbances and plant parameter variations.\nCan achieve higher accuracy (lower steady-state error).\nAllow designers to shape transient response and steady-state behavior more flexibly by adjusting loop gain or adding compensators.\n\nTrade-offs:\n\nMore complex hardware and software.\nAdditional sensors, actuators, and signal processing.\nPotential for instability if the loop is not designed carefully."
+  },
+  {
+    "objectID": "control_1.html#computer-controlled-systems",
+    "href": "control_1.html#computer-controlled-systems",
+    "title": "Introduction to Control Systems",
+    "section": "Computer-Controlled Systems",
+    "text": "Computer-Controlled Systems\nIn many modern systems, the controller is a digital computer (microcontroller, DSP, FPGA, etc.).\nAdvantages:\n\nTime-sharing: one computer can manage many loops.\nEasy to change controller characteristics via software, not hardware.\nImplement complex algorithms: adaptive control, optimal control, digital filters.\nPerform supervisory tasks: scheduling, fault detection, diagnostics, user interface.\n\nExample: Space Shuttle Main Engine (SSME) controller\n\nTwo digital computers monitored: pressures, temperatures, flows, turbopump speed, valve positions, servo actuators.\nProvided closed-loop control of thrust and mixture ratio.\n\n\nConnect with students’ embedded systems courses: They’ve likely programmed microcontrollers; here, the difference is the use of feedback on physical variables to meet dynamic performance specs."
+  },
+  {
+    "objectID": "control_1.html#analysis-and-design-objectives",
+    "href": "control_1.html#analysis-and-design-objectives",
+    "title": "Introduction to Control Systems",
+    "section": "1.4 Analysis and Design Objectives",
+    "text": "1.4 Analysis and Design Objectives\nAnalysis vs. design:\n\nAnalysis – determine how a given system behaves.\n\nEvaluate transient response and steady-state error.\nCheck stability.\n\nDesign – choose or modify system components/parameters to meet performance specs.\n\nThree major objectives for control-system design:\n\nDesired transient response.\nAcceptable steady-state error.\nStability.\n\nOther considerations: cost, robustness, hardware constraints.\n\nTell students that nearly every problem in later chapters will boil down to: “Given a plant and specs on speed, overshoot, error, and stability, design a controller that meets them.”"
+  },
+  {
+    "objectID": "control_1.html#transient-response-what-happens-before-steady-state",
+    "href": "control_1.html#transient-response-what-happens-before-steady-state",
+    "title": "Introduction to Control Systems",
+    "section": "Transient Response: What Happens Before Steady State?",
+    "text": "Transient Response: What Happens Before Steady State?\nTransient response = system behavior from the moment the input changes until it settles.\nImportant because:\n\nAffects comfort and usability (elevator, car cruise control).\nAffects throughput (disk drive head must settle before reading/writing).\nMay affect mechanical stress and reliability (too aggressive motion can damage hardware)."
+  },
+  {
+    "objectID": "control_1.html#steady-state-response-error",
+    "href": "control_1.html#steady-state-response-error",
+    "title": "Introduction to Control Systems",
+    "section": "Steady-State Response & Error",
+    "text": "Steady-State Response & Error\nSteady-state response = behavior after transients have effectively died out.\nSteady-state error (SSE) = difference between desired output and actual output in steady state.\nExamples:\n\nElevator leveling error: a few centimeters off can be dangerous.\nAntenna tracking error: if too large, satellite falls outside the beam.\nDisk drive head offset: results in read/write errors.\n\nDesign goals:\n\nSSE must be small enough to meet accuracy and safety requirements.\nBut sometimes we trade between transient performance and SSE.\n\n\n\n\n\n\n\nImportant\n\n\nLater we will quantify SSE for standard input types (step, ramp, parabola) and relate it to system type and gain.\n\n\n\n\nEmphasize that SSE depends on both system structure (e.g., integrator presence) and loop gain. This foreshadows integral control and error constants."
+  },
+  {
+    "objectID": "control_1.html#stability-the-non-negotiable-requirement",
+    "href": "control_1.html#stability-the-non-negotiable-requirement",
+    "title": "Introduction to Control Systems",
+    "section": "Stability: The Non-Negotiable Requirement",
+    "text": "Stability: The Non-Negotiable Requirement\nTotal response = natural response + forced response\n\\[\n\\text{Total response} = \\text{Natural response} + \\text{Forced response}\n\\]\n\nNatural response – how the system behaves due to its own dynamics (homogeneous solution).\nForced response – driven directly by the input (particular solution).\n\nA useful control system must have a natural response that:\n\nDecays to zero as time → ∞, or\nOscillates with bounded amplitude.\n\nIf the natural response grows without bound, the system is unstable:\n\nElevator overspeeds and crashes limit stops.\nAircraft diverges into uncontrollable roll.\nAntenna oscillates with increasing amplitude, hitting mechanical stops.\n\n\n\n\n\n\n\nWarning\n\n\nIf the system is unstable, discussions of transient response and steady-state error are meaningless. Stability is the first checkpoint.\n\n\n\n\nMention that in many linear systems, we can infer stability directly from pole locations or Routh-Hurwitz tables. Assure students that they’ll learn precise stability tests, but the intuition is: does the system “settle” or “blow up”?"
+  },
+  {
+    "objectID": "control_1.html#other-design-considerations",
+    "href": "control_1.html#other-design-considerations",
+    "title": "Introduction to Control Systems",
+    "section": "Other Design Considerations",
+    "text": "Other Design Considerations\nBeyond transient, SSE, and stability, we must consider:\n\nHardware constraints\n\nMotor torque and speed limits.\nSensor accuracy, range, and bandwidth.\nActuator saturation and dead zones.\n\nCost and manufacturability\n\nComponent selection vs. budget.\nCost per unit for mass-produced products.\n\nRobustness / Sensitivity\n\nReal systems’ parameters change (temperature, aging, wear).\nA robust design maintains performance despite parameter variations.\nSensitivity analysis quantifies how much specs change when parameters change.\n\n\n\nForeshadow that Chapters 7–8 will look at sensitivity and robustness in more mathematical detail. Point out that several mathematically “optimal” designs are rejected in practice because they are too sensitive or fragile."
+  },
+  {
+    "objectID": "control_1.html#case-study-antenna-azimuth-control",
+    "href": "control_1.html#case-study-antenna-azimuth-control",
+    "title": "Introduction to Control Systems",
+    "section": "Case Study: Antenna Azimuth Control",
+    "text": "Case Study: Antenna Azimuth Control\n\n\n\nWe want an antenna to rotate (azimuth) to a commanded angle.\nTypical ECE components:\n\nPotentiometer for position sensing.\nAmplifiers for signal and power.\nDC motor and gears to move the antenna.\n\n\nThis is a position control system, similar in spirit to:\n\nRobot joint control.\nCamera pan/tilt platforms.\nRadar and satellite dish pointing.\n\n\n\n\n\nRadio antenna with position control\n\n\n\n\nTell students that by understanding this one system well, they gain insight applicable to many other systems with similar structure."
+  },
+  {
+    "objectID": "control_1.html#antenna-azimuth-system-layout",
+    "href": "control_1.html#antenna-azimuth-system-layout",
+    "title": "Introduction to Control Systems",
+    "section": "Antenna Azimuth System Layout",
+    "text": "Antenna Azimuth System Layout\n \nGoal: output angle \\(\\theta_o(t)\\) tracks input command \\(\\theta_i(t)\\).\nFlow (qualitative):\n\nInput angle \\(\\theta_i(t)\\) → potentiometer → input voltage.\nOutput angle \\(\\theta_o(t)\\) → feedback potentiometer → feedback voltage.\nError = input voltage – feedback voltage.\nSignal and power amplifiers amplify error to drive DC motor.\nMotor + load rotate antenna until error ≈ 0.\n\n\nWalk through both physical layout and block diagram: - Physical: students see actual motor, gears, potentiometers. - Functional: they see how to abstract to blocks.\nEmphasize that in steady state (no disturbance), motor stops when input and output match."
+  },
+  {
+    "objectID": "control_1.html#effect-of-controller-gain-on-response",
+    "href": "control_1.html#effect-of-controller-gain-on-response",
+    "title": "Introduction to Control Systems",
+    "section": "Effect of Controller Gain on Response",
+    "text": "Effect of Controller Gain on Response\n\n\n\nWith low gain:\n\nMotor turns slowly.\nResponse is sluggish; long time to reach final angle.\nOften no overshoot.\n\nWith high gain:\n\nMotor turns faster toward target.\nMay overshoot and oscillate before settling.\nCan produce damped oscillations (under-damped response).\n\n\nSteady-state value may still be exactly correct (zero steady-state error) in both cases, but transients differ.\n\n\n\n\nEffect of controller gain on response\n\n\n\n\nClarify that, for this system type and step input, increasing gain usually reduces steady-state error but can worsen overshoot and oscillations. Point out that later we’ll see “too much gain” eventually causes instability."
+  },
+  {
+    "objectID": "control_1.html#need-for-more-than-just-gain-compensators",
+    "href": "control_1.html#need-for-more-than-just-gain-compensators",
+    "title": "Introduction to Control Systems",
+    "section": "Need for More Than Just Gain: Compensators",
+    "text": "Need for More Than Just Gain: Compensators\nSometimes, adjusting only the gain cannot meet both:\n\nA desired fast, well-damped transient response, and\nA desired small steady-state error.\n\nSolution: use a controller with dynamic behavior, e.g.:\n\nAdd integrators or filters in the controller.\nImplement full PID controllers or lead/lag compensators.\nPossibly add dynamic elements in the feedback path.\n\nThese added dynamics are called compensators.\n\n\n\n\n\n\nNote\n\n\nCompensators give us more degrees of freedom to shape both transient and steady-state performance, at the price of more complexity.\n\n\n\n\nExplain that a pure gain can sometimes force a trade-off (overshoot vs SSE). Compensators (e.g., lead, lag, PID) help to break this trade-off in many cases. You don’t need to define specific compensators yet—that comes in later chapters."
+  },
+  {
+    "objectID": "control_1.html#the-control-system-design-process",
+    "href": "control_1.html#the-control-system-design-process",
+    "title": "Introduction to Control Systems",
+    "section": "1.5 The Control System Design Process",
+    "text": "1.5 The Control System Design Process\n\n\n\nDesign process flow"
+  },
+  {
+    "objectID": "control_1.html#step-1-from-requirements-to-physical-system",
+    "href": "control_1.html#step-1-from-requirements-to-physical-system",
+    "title": "Introduction to Control Systems",
+    "section": "Step 1 – From Requirements to Physical System",
+    "text": "Step 1 – From Requirements to Physical System\nRequirements might say:\n\nAntenna must track commands with:\n\nMax settling time: e.g., 1 second.\nMax overshoot: e.g., 10%.\nMax steady-state error: small fraction of a degree.\n\nConstraints: weight, size, power, environmental limits.\nOperational needs: remote operation, maintainability.\n\nFrom these, we propose a physical concept:\n\nAntenna + gear train + motor + sensors + electronics.\n\n\nHighlight that interpreting vague or verbal requirements into precise performance specs is a key engineering skill. Explain that at this stage you think qualitatively about architecture, not detailed math."
+  },
+  {
+    "objectID": "control_1.html#step-2-functional-block-diagram",
+    "href": "control_1.html#step-2-functional-block-diagram",
+    "title": "Introduction to Control Systems",
+    "section": "Step 2 – Functional Block Diagram",
+    "text": "Step 2 – Functional Block Diagram\nWe translate the physical idea into functional blocks:\n\nInput transducer (potentiometer).\nController (amplifiers, logic).\nPlant (motor + load).\nOutput transducer (feedback potentiometer).\n\n\n\n\nFunctional block diagram of antenna system\n\n\n\nStress that block diagrams are about functions and interconnections, not exact component values. They are a bridge between physical understanding and mathematical modeling."
+  },
+  {
+    "objectID": "control_1.html#step-3-schematic-diagram",
+    "href": "control_1.html#step-3-schematic-diagram",
+    "title": "Introduction to Control Systems",
+    "section": "Step 3 – Schematic Diagram",
+    "text": "Step 3 – Schematic Diagram\nNext, we draw a more detailed electrical / mechanical schematic:\n\nShow potentiometers, amplifiers, motor, gear train, load inertia, friction.\nMake simplifying assumptions:\n\nPotentiometer inertia and friction negligible.\nAmplifier dynamics much faster than motor → model as pure gain \\(K\\).\nDC motor armature inductance small → model with resistance only.\n\n\n\n\n\nAntenna schematic (simplified)\n\n\n\nExplain that we deliberately simplify to get a tractable model, then later verify these approximations via analysis and experimental testing."
+  },
+  {
+    "objectID": "control_1.html#step-4-mathematical-model",
+    "href": "control_1.html#step-4-mathematical-model",
+    "title": "Introduction to Control Systems",
+    "section": "Step 4 – Mathematical Model",
+    "text": "Step 4 – Mathematical Model\nWe use physical laws to derive equations:\n\nKirchhoff’s voltage law (KVL) – sum of voltages around any closed loop is zero.\nKirchhoff’s current law (KCL) – sum of currents at a node is zero.\nNewton’s laws – sum of forces (or torques) equals mass (or inertia) times acceleration.\n\nFor many systems, the model is a linear, time-invariant (LTI) differential equation:\n\\[\n\\frac{d^{n} c(t)}{dt^{n}}\n+ a_{n-1} \\frac{d^{n-1} c(t)}{dt^{n-1}}\n+ \\cdots + a_0 c(t)\n=\nb_m \\frac{d^{m} r(t)}{dt^{m}}\n+ b_{m-1} \\frac{d^{m-1} r(t)}{dt^{m-1}}\n+ \\cdots + b_0 r(t)\n\\]\nWhere:\n\n\\(c(t)\\) = output, \\(r(t)\\) = input.\nCoefficients \\(a_i, b_j\\) are functions of physical parameters."
+  },
+  {
+    "objectID": "control_1.html#step-5-block-diagram-reduction",
+    "href": "control_1.html#step-5-block-diagram-reduction",
+    "title": "Introduction to Control Systems",
+    "section": "Step 5 – Block Diagram Reduction",
+    "text": "Step 5 – Block Diagram Reduction\nWe interconnect subsystem transfer functions to get an overall block diagram.\nFor the antenna azimuth system, we can reduce the full diagram to an equivalent single block:\n\n\n\nEquivalent antenna block diagram\n\n\nThis “big” transfer function describes the relationship between:\n\nInput: commanded angle \\(\\Theta_i(s)\\).\nOutput: antenna angle \\(\\Theta_o(s)\\).\n\n\nMention that Chapter 5 will cover formal rules for combining blocks in series, parallel, and feedback to get an equivalent transfer function."
+  },
+  {
+    "objectID": "control_1.html#step-6-analyze-and-design",
+    "href": "control_1.html#step-6-analyze-and-design",
+    "title": "Introduction to Control Systems",
+    "section": "Step 6 – Analyze and Design",
+    "text": "Step 6 – Analyze and Design\nNow we:\n\nApply standard test inputs to predict performance:\n\nImpulse, step, ramp, parabola, sinusoid.\n\nAnalyze:\n\nStability.\nTransient response metrics.\nSteady-state error.\n\nDesign / tune:\n\nAdjust gains.\nAdd compensators.\nPossibly revise earlier steps if specs cannot be met."
+  },
+  {
+    "objectID": "control_1.html#interactive-exercise-step-response-intuition",
+    "href": "control_1.html#interactive-exercise-step-response-intuition",
+    "title": "Introduction to Control Systems",
+    "section": "Interactive Exercise – Step Response Intuition",
+    "text": "Interactive Exercise – Step Response Intuition\nUse this interactive block to explore how gain affects a second-order system’s step response.\n\nviewof wn = Inputs.range([0.1, 10], {step: 0.1, value: 2, label: \"Natural frequency ω_n\"})\nviewof zeta = Inputs.range([0, 2], {step: 0.05, value: 0.4, label: \"Damping ratio ζ\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAsk students to: - Decrease ζ → observe more oscillations and overshoot. - Increase ζ → slower but smoother response. - Increase ωₙ → faster system overall.\nTie this back to the antenna example: gain changes effectively modify these parameters."
+  },
+  {
+    "objectID": "control_1.html#computer-aided-design-cad",
+    "href": "control_1.html#computer-aided-design-cad",
+    "title": "Introduction to Control Systems",
+    "section": "1.6 Computer-Aided Design (CAD)",
+    "text": "1.6 Computer-Aided Design (CAD)\nHistorically:\n\nControl design involved hand calculations and manual plotting.\nLarge mainframes were needed for complex simulations.\n\nToday:\n\nDesktop/laptop tools like MATLAB + Control System Toolbox, Simulink, LabVIEW, and others allow:\n\nEasy simulation of linear and nonlinear systems.\nRapid “what-if” tuning of parameters.\nAutomated plotting of time and frequency responses.\nDesign and optimization of controllers (PID, state feedback, etc.).\n\n\n\n\n\n\n\n\nTip\n\n\nIn this course, you should: - First understand the theory and hand calculations. - Then use tools like MATLAB to speed up analysis and explore more complex designs.\n\n\n\n\nWarn students against becoming “button-pushers”: the tools are powerful, but only if they understand what the plots and numbers mean."
+  },
+  {
+    "objectID": "control_1.html#the-control-systems-engineer",
+    "href": "control_1.html#the-control-systems-engineer",
+    "title": "Introduction to Control Systems",
+    "section": "1.7 The Control Systems Engineer",
+    "text": "1.7 The Control Systems Engineer\nA control systems engineer often:\n\nWorks at a system level defining and refining requirements.\nInterfaces with multiple disciplines:\n\nElectrical, mechanical, chemical, aerospace, biomedical.\nComputer science / software, applied mathematics, physics.\n\nEngages in top-down design:\n\nStart with system-level goals and constraints.\nBreak them down into subsystems and detailed designs.\n\n\nBenefits of studying control systems:\n\nYou will see how earlier courses (circuits, signals, mechanics, programming) fit into a unified system design process.\nYou learn a common language that bridges different engineering domains.\n\n\nReassure students that this course will help them connect many bits of their curriculum into a coherent whole. Encourage them to think of control as a “glue discipline” that makes systems intelligent and robust."
+  },
+  {
+    "objectID": "control_1.html#summary-key-points",
+    "href": "control_1.html#summary-key-points",
+    "title": "Introduction to Control Systems",
+    "section": "Summary / Key Points",
+    "text": "Summary / Key Points\n\nA control system regulates a plant’s output to follow a desired input, often in the presence of disturbances.\nControl systems are everywhere: elevators, antennas, disk drives, robots, power converters, biological systems, and more.\nThere are two main architectures:\n\nOpen-loop – simple but cannot correct for disturbances.\nClosed-loop (feedback) – uses output measurement to reduce error and improve robustness.\n\nCore performance objectives:\n\nDesired transient response.\nSmall steady-state error.\nGuaranteed stability."
+  },
+  {
+    "objectID": "control_1.html#formula-concept-summary",
+    "href": "control_1.html#formula-concept-summary",
+    "title": "Introduction to Control Systems",
+    "section": "Formula & Concept Summary",
+    "text": "Formula & Concept Summary\nAlthough this chapter is mostly conceptual, remember these key mathematical ideas and terms:\n\nTotal response decomposition: \\[\n\\text{Total response} = \\text{Natural response} + \\text{Forced response}\n\\]\nStandard linear differential equation model (LTI system): \\[\n\\frac{d^{n} c(t)}{dt^{n}}\n+ a_{n-1} \\frac{d^{n-1} c(t)}{dt^{n-1}}\n+ \\cdots + a_0 c(t)\n=\nb_m \\frac{d^{m} r(t)}{dt^{m}}\n+ b_{m-1} \\frac{d^{m-1} r(t)}{dt^{m-1}}\n+ \\cdots + b_0 r(t)\n\\]\nKey performance concepts (to be quantified later):\n\nTransient response – rise time, overshoot, settling time, damping.\nSteady-state error – final error for step/ramp/parabola inputs.\nStability – whether natural response decays or grows unbounded."
+  },
+  {
+    "objectID": "control_1.html#practice-problem-conceptual",
+    "href": "control_1.html#practice-problem-conceptual",
+    "title": "Introduction to Control Systems",
+    "section": "Practice Problem (Conceptual)",
+    "text": "Practice Problem (Conceptual)\nYou press the accelerator pedal in a car to go from 40 km/h to 60 km/h using cruise control.\n\nIdentify:\n\nInput (reference).\nPlant.\nOutput.\nFeedback signal.\n\nSuppose the cruise control is disabled and you manually hold the pedal at a fixed position.\n\nIs this open-loop or closed-loop control?\nWhat kind of disturbances might affect your speed?\n\nWith cruise control enabled, what advantages does closed-loop control give compared to holding the pedal manually?\n\n\nUse this as in-class discussion or a quiz. Tie answers back to open-loop vs closed-loop, disturbance rejection, and driver as a (slow, imprecise) feedback element vs electronic controller."
+  },
+  {
+    "objectID": "control_1.html#next-steps",
+    "href": "control_1.html#next-steps",
+    "title": "Introduction to Control Systems",
+    "section": "Next Steps",
+    "text": "Next Steps\nIn the next chapter, we will:\n\nLearn how to derive mathematical models (transfer functions, state-space) from electrical and mechanical schematics.\nStart connecting physical parameters (mass, resistance, inductance, gain) to dynamic behavior.\nApply these techniques to the antenna azimuth case study.\n\nEncouraged preparation:\n\nReview basic differential equations (homogeneous + particular solutions).\nReview Laplace transforms and linear time-invariant systems if you’ve seen them.\n\n\nEnd by setting expectations: some math is coming, but it will be grounded in physical systems like the antenna. Remind students that the conceptual picture from this chapter should guide their understanding of all the upcoming technical details."
+  },
+  {
+    "objectID": "control_1.html#system-configurations-open--vs-closed-loop-1",
+    "href": "control_1.html#system-configurations-open--vs-closed-loop-1",
+    "title": "Introduction to Control Systems",
+    "section": "1.3 System Configurations: Open- vs Closed-Loop",
+    "text": "1.3 System Configurations: Open- vs Closed-Loop\nTwo main architectures:\n\nOpen-loop systems – no feedback; no automatic correction.\nClosed-loop (feedback) systems – output is measured and used to adjust input.\n\n\nShow both figures and verbally identify each block. Stress that in ECE, almost all interesting high-performance controllers are closed-loop; but open-loop still has uses when environment is predictable."
+  },
+  {
+    "objectID": "control_1.html#why-feedback-helps-1",
+    "href": "control_1.html#why-feedback-helps-1",
+    "title": "Introduction to Control Systems",
+    "section": "Why Feedback Helps",
+    "text": "Why Feedback Helps\nExample: smart toaster oven\n\nMeasures internal light level / humidity → estimates toast “doneness.”\nAdjusts time and heat dynamically.\nMore accurate but more complex and costly than a simple timer toaster.\n\n\nStress that complexity must be justified by performance gains and application needs. Point ahead: much of this course is about using math to design stable, high-performance feedback loops."
+  },
+  {
+    "objectID": "control_1.html#transient-response-what-happens-before-steady-state-1",
+    "href": "control_1.html#transient-response-what-happens-before-steady-state-1",
+    "title": "Introduction to Control Systems",
+    "section": "Transient Response: What Happens Before Steady State?",
+    "text": "Transient Response: What Happens Before Steady State?\nExample: disk drive head\n\n\n\nComputer hard disk and head\n\n\n\nHead moves from one track to another.\nReading/writing cannot start until motion settles.\nTransient performance (speed, overshoot, damping) directly affects transfer rate.\n\n\nIn later chapters we will define metrics like rise time, overshoot, settling time, etc. For now, just convey that transient design is crucial to performance and user experience."
+  },
+  {
+    "objectID": "control_1.html#the-control-system-design-process-1",
+    "href": "control_1.html#the-control-system-design-process-1",
+    "title": "Introduction to Control Systems",
+    "section": "1.5 The Control System Design Process",
+    "text": "1.5 The Control System Design Process\nTypical steps:\n\nTransform requirements into a physical system concept.\nDraw a functional block diagram.\nCreate a schematic with actual components.\nDevelop a mathematical model (differential equations, transfer functions, or state-space).\nReduce to an equivalent block diagram (simplify interconnections).\nAnalyze and design to meet performance specs; iterate with testing.\n\n\nEmphasize that real design is iterative: - If testing (Step 6) fails, you may need to refine the schematic (Step 3) or even revisit requirements (Step 1). Mention that this flow will structure the rest of the course."
+  },
+  {
+    "objectID": "control_1.html#step-4-mathematical-model-1",
+    "href": "control_1.html#step-4-mathematical-model-1",
+    "title": "Introduction to Control Systems",
+    "section": "Step 4 – Mathematical Model",
+    "text": "Step 4 – Mathematical Model\nAlternative models:\n\nTransfer functions (Laplace domain).\nState-space models (first-order vector form).\n\n\nYou don’t need to derive the equation in class here, but do stress: - Linear models are approximations; they’re powerful because they enable analytic design. - Nonlinear or time-varying aspects may be considered later or in simulations."
+  },
+  {
+    "objectID": "control_1.html#step-6-analyze-and-design-1",
+    "href": "control_1.html#step-6-analyze-and-design-1",
+    "title": "Introduction to Control Systems",
+    "section": "Step 6 – Analyze and Design",
+    "text": "Step 6 – Analyze and Design\nStandard test inputs:\n\nImpulse \\(\\delta(t)\\) → pure transient characterization, modeling.\nStep \\(u(t)\\) → transient + steady-state error.\nRamp \\(t u(t)\\), parabola \\(\\frac12 t^2 u(t)\\) → steady-state tracking quality.\nSinusoid \\(\\sin \\omega t\\) → frequency response and modeling.\n\n    \n\nEmphasize that these simple inputs are mathematically convenient and still capture key aspects of performance. We often design so these test responses meet specs, which correlates well with performance under more complicated real inputs."
+  },
+  {
+    "objectID": "control_1.html#summary-key-points-1",
+    "href": "control_1.html#summary-key-points-1",
+    "title": "Introduction to Control Systems",
+    "section": "Summary / Key Points",
+    "text": "Summary / Key Points\n\nThe design process follows an ordered sequence: from requirements → physical concept → functional diagram → schematic → mathematical model → analysis and design.\nComputer tools (MATLAB, Simulink, LabVIEW, etc.) are essential, but must be used with understanding.\nThe antenna azimuth position control system provides a concrete case study to illustrate these ideas throughout the course.\n\n\nUse this slide as a quick recap. Ask students to volunteer one real-world control system they’ve encountered and identify: input, plant, output, feedback (if any)."
+  },
+  {
+    "objectID": "control_1.html#formula-concept-summary-1",
+    "href": "control_1.html#formula-concept-summary-1",
+    "title": "Introduction to Control Systems",
+    "section": "Formula & Concept Summary",
+    "text": "Formula & Concept Summary\n\nStandard test inputs (Table 1.1):\n\nImpulse: \\(\\delta(t)\\).\nStep: \\(u(t)\\).\nRamp: \\(t\\,u(t)\\).\nParabola: \\(\\frac{1}{2} t^2 u(t)\\).\nSinusoid: \\(\\sin \\omega t\\).\n\n\n\nMention that upcoming chapters will: - Turn these conceptual definitions into precise mathematical metrics. - Show how to derive transfer functions and state-space models from schematics. - Use these formulas to actually design controllers."
+  },
+  {
+    "objectID": "control_21.html#why-frequencydomain-modeling",
+    "href": "control_21.html#why-frequencydomain-modeling",
+    "title": "Modeling in the Frequency Domain",
+    "section": "Why Frequency‑Domain Modeling?",
+    "text": "Why Frequency‑Domain Modeling?\n\nLaplace transform:\n\nHandles exponentials and sinusoids.\nTurns \\(d/dt\\) into multiplication by \\(s\\).\n\nThis leads to transfer functions: algebraic ratios in \\(s\\) that:\n\nModel circuits, motors, sensors, amplifiers.\nAre easy to connect and analyze.\n\n\n\n\n\n\n\n\nTip\n\n\nThink: time domain = “oscilloscope view”. Laplace/frequency domain = “algebra and plots” view for design.\n\n\n\n\nMake explicit analogy: phasors are to sinusoidal steady state as Laplace transforms are to full transient + steady state. Remind them that \\(s = \\sigma + j\\omega\\); phasors correspond to the special case \\(\\sigma = 0\\). This helps ECE students connect current knowledge to Laplace and transfer functions."
+  },
+  {
+    "objectID": "control_21.html#case-1-real-distinct-poles-1",
+    "href": "control_21.html#case-1-real-distinct-poles-1",
+    "title": "Modeling in the Frequency Domain",
+    "section": "Case 1: Real, Distinct Poles",
+    "text": "Case 1: Real, Distinct Poles\nSo\n\\[\nF(s) = \\frac{2}{s+1} - \\frac{2}{s+2}\n\\]\nInverse Laplace:\n\\[\nf(t) = 2 e^{-t} - 2 e^{-2t}\n\\]\n\n\n\n\n\n\nTip\n\n\nFor distinct real poles at \\(-p_1, -p_2, ..., -p_n\\):\n\\[\nF(s) = \\sum_{i=1}^n \\frac{K_i}{s + p_i},\\quad\nK_i = (s + p_i) F(s)\\big|_{s = -p_i}\n\\]\n\n\n\n\nStress the “cover‑up” trick for simple real poles: multiply by the factor, then substitute the corresponding root. Mention that the exponents in time domain correspond to pole locations (modes of the system)."
+  },
+  {
+    "objectID": "control_21.html#example-2.3-partial-fractions-and-solution-1",
+    "href": "control_21.html#example-2.3-partial-fractions-and-solution-1",
+    "title": "Modeling in the Frequency Domain",
+    "section": "Example 2.3 – Partial Fractions and Solution",
+    "text": "Example 2.3 – Partial Fractions and Solution\nSo\n\\[\nY(s) = \\frac{1}{s} - \\frac{2}{s+4} + \\frac{1}{s+8}\n\\]\nInverse Laplace:\n\\[\ny(t) = 1 - 2 e^{-4t} + e^{-8t}\n\\]\n\n\n\n\n\n\nNote\n\n\nWe often drop the explicit \\(u(t)\\) factor in notation, assuming causal systems with inputs applied at \\(t=0\\).\n\n\n\n\nInterpret the result physically: final value is 1 (matches right‑hand side 32 with static gain 1). Two decaying exponentials represent system dynamics with time constants 1/4 and 1/8 s. You can also quickly check final value via \\(\\lim_{s\\to0} sY(s)\\)."
+  },
+  {
+    "objectID": "control_21.html#case-2-real-repeated-poles-1",
+    "href": "control_21.html#case-2-real-repeated-poles-1",
+    "title": "Modeling in the Frequency Domain",
+    "section": "Case 2: Real, Repeated Poles",
+    "text": "Case 2: Real, Repeated Poles\nProcedure:\n\n\\(K_1\\) via cover‑up (still simple pole):\n\nMultiply by \\((s+1)\\) and set \\(s=-1\\): \\(K_1 = 2\\).\n\n\\(K_2\\) isolate by multiplying by \\((s+2)^2\\) and setting \\(s=-2\\):\n\n\\(K_2 = -2\\).\n\nFor \\(K_3\\) (other term in repeated root):\n\nDifferentiate the expression where \\((s+2)^2 F(s)\\) is isolated, then set \\(s=-2\\) to solve for \\(K_3\\): \\(K_3 = -2\\).\n\n\nSo\n\\[\nf(t) = 2 e^{-t} - 2 t e^{-2t} - 2 e^{-2t}\n\\]\n\n\n\n\n\n\nTip\n\n\nFor a repeated pole at \\(s = -p\\) of multiplicity \\(r\\), the expansion is\n\\[\n\\sum_{i=1}^r \\frac{K_i}{(s+p)^i}\n\\]\nCorresponding time terms are of the form \\(t^{i-1} e^{-p t}\\).\n\n\n\n\nHighlight that repeated poles lead to polynomial factors in time (e.g., \\(t e^{-2t}\\)), which correspond to non‑distinct system modes, such as critically damped or higher‑order repeated behavior."
+  },
+  {
+    "objectID": "control_21.html#case-3-complex-or-imaginary-poles-1",
+    "href": "control_21.html#case-3-complex-or-imaginary-poles-1",
+    "title": "Modeling in the Frequency Domain",
+    "section": "Case 3: Complex or Imaginary Poles",
+    "text": "Case 3: Complex or Imaginary Poles\nSo\n\\[\nF(s) = \\frac{3/5}{s} - \\frac{3}{5}\\frac{s+2}{s^2 + 2s + 5}\n\\]\nComplete the square:\n\\[\ns^2 + 2s + 5 = (s + 1)^2 + 2^2\n\\]\nRewrite:\n\\[\nF(s) = \\frac{3/5}{s} - \\frac{3}{5} \\frac{(s+1) + 1}{(s+1)^2 + 4}\n\\]\nMatch with\n\\[\n\\mathcal{L}[A e^{-a t}\\cos\\omega t + B e^{-a t}\\sin\\omega t] =\n\\frac{A(s+a) + B\\omega}{(s+a)^2 + \\omega^2}\n\\]\nYield\n\\[\nf(t) = \\frac{3}{5} - \\frac{3}{5} e^{-t}\\left(\\cos 2t + \\frac{1}{2} \\sin 2t\\right)\n\\]\nOr equivalently\n\\[\nf(t) = 0.6 - 0.671 e^{-t} \\cos(2t - \\phi), \\quad \\phi \\approx 26.57^\\circ\n\\]\n\n\n\n\n\n\nNote\n\n\nComplex poles → damped sinusoidal modes (oscillations that decay over time). This is crucial for understanding underdamped systems (e.g., RLC circuits, motor torque responses).\n\n\n\n\nEmphasize geometric interpretation: complex poles at \\(-1 \\pm j2\\) have real part −1 (decay rate) and imaginary part 2 (oscillation frequency). Students will see these again in second‑order system analysis."
+  },
+  {
+    "objectID": "control_21.html#example-2.5-step-response-from-gs-1",
+    "href": "control_21.html#example-2.5-step-response-from-gs-1",
+    "title": "Modeling in the Frequency Domain",
+    "section": "Example 2.5 – Step Response from \\(G(s)\\)",
+    "text": "Example 2.5 – Step Response from \\(G(s)\\)\n\nInverse Laplace:\n\n\\[\nc(t) = \\frac{1}{2} - \\frac{1}{2} e^{-2t}\n\\]\nInterpretation:\n\nStarts at 0, asymptotically approaches 0.5.\nTime constant: 0.5 s → at \\(t = 0.5\\) s, ~63% of the way to 0.5.\n\n\n\n\n\n\n\nTip\n\n\nYou can check final value via final value theorem:\n\\[\nc(\\infty) = \\lim_{s\\to0} s \\cdot C(s) = \\lim_{s\\to0} \\frac{s}{s(s+2)} = \\frac{1}{2}\n\\]\n\n\n\n\nIf time permits, sketch or quickly plot the response. Emphasize that this procedure (transfer function + Laplace of input + partial fractions) is the standard pipeline for computing time responses."
+  },
+  {
+    "objectID": "control_21.html#additional-skillassessment-examples",
+    "href": "control_21.html#additional-skillassessment-examples",
+    "title": "Modeling in the Frequency Domain",
+    "section": "Additional Skill‑Assessment Examples",
+    "text": "Additional Skill‑Assessment Examples\n\nExercise 2.3: From DE\n\\[\n\\frac{d^3 c}{dt^3} + 3\\frac{d^2 c}{dt^2} + 7\\frac{dc}{dt} + 5c =\n\\frac{d^2 r}{dt^2} + 4\\frac{dr}{dt} + 3r\n\\]\nTransfer function:\n\\[\nG(s) = \\frac{s^2 + 4s + 3}{s^3 + 3s^2 + 7s + 5}\n\\]\nExercise 2.4: From \\(G(s)\\) back to DE:\n\\[\nG(s) = \\frac{2s + 1}{s^2 + 6s + 2}\n\\]\nmultiply both sides by denominator and inverse Laplace to get\n\\[\n\\frac{d^2 c}{dt^2} + 6\\frac{dc}{dt} + 2c = 2\\frac{dr}{dt} + r\n\\]"
+  },
+  {
+    "objectID": "control_21.html#additional-skillassessment-examples-1",
+    "href": "control_21.html#additional-skillassessment-examples-1",
+    "title": "Modeling in the Frequency Domain",
+    "section": "Additional Skill‑Assessment Examples",
+    "text": "Additional Skill‑Assessment Examples\n\nExercise 2.5: Ramp response from \\(G(s) = \\dfrac{s}{(s+4)(s+8)}\\)\n\nRamp input: \\(r(t) = t u(t) \\Rightarrow R(s) = 1/s^2\\).\nThen \\(C(s) = G(s)R(s)\\), do partial fractions, invert.\n\n\n\nYou don’t need to derive these fully in class, but use them to illustrate both directions: DE → G(s) and G(s) → DE, and also different inputs (step, ramp). Emphasize ramp as modeling linearly increasing commands, like a linearly increasing set‑point voltage or speed reference."
+  },
+  {
+    "objectID": "control_21.html#formulas-summary-2",
+    "href": "control_21.html#formulas-summary-2",
+    "title": "Modeling in the Frequency Domain",
+    "section": "Formulas Summary",
+    "text": "Formulas Summary\nKey theorems:\n\nLinearity: \\(\\mathcal{L}[k f(t)] = kF(s)\\), \\(\\mathcal{L}[f_1+f_2] = F_1+F_2\\).\nFrequency shift: \\(\\mathcal{L}[e^{-at} f(t)] = F(s + a)\\).\nDifferentiation: \\(\\mathcal{L}\\left[\\dfrac{df}{dt}\\right] = sF(s) - f(0^-)\\).\nIntegration: \\(\\mathcal{L}\\left[\\int_0^{t} f(\\tau)d\\tau\\right] = \\dfrac{F(s)}{s}\\).\nFinal value: \\(f(\\infty) = \\lim_{s\\to 0} sF(s)\\) (under stability conditions).\nInitial value: \\(f(0^+) = \\lim_{s\\to \\infty} sF(s)\\) (if no impulses at 0).\n\nTransfer function (zero initial conditions):\n\nFrom DE:\n\\[\n\\frac{C(s)}{R(s)} = G(s) =\n\\frac{b_m s^m + \\cdots + b_0}\n     {a_n s^n + \\cdots + a_0}\n\\]\nInput–output relation:\n\\[\nC(s) = G(s) R(s)\n\\]\n\n\nLeave this as a concise reference slide. Suggest students copy or print it as a quick cheat‑sheet for homework and future lectures."
   }
 ]
