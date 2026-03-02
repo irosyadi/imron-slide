@@ -1411,14 +1411,14 @@
     "href": "index.html#week-1-introduction-to-control",
     "title": "Control System",
     "section": "Week 1 (Introduction to Control)",
-    "text": "Week 1 (Introduction to Control)\n\nRPS\nControl 1\nControl 2.1\nControl 2.2"
+    "text": "Week 1 (Introduction to Control)\n\nRPS\nControl 1\nControl 2.1"
   },
   {
     "objectID": "index.html#week-2",
     "href": "index.html#week-2",
     "title": "Control System",
     "section": "Week 2",
-    "text": "Week 2"
+    "text": "Week 2\n\nControl 2.2\nControl 2.3"
   },
   {
     "objectID": "index.html#week-3",
@@ -1979,5 +1979,705 @@
     "title": "Modeling in the Frequency Domain",
     "section": "Formulas Summary",
     "text": "Formulas Summary\nKey theorems:\n\nLinearity: \\(\\mathcal{L}[k f(t)] = kF(s)\\), \\(\\mathcal{L}[f_1+f_2] = F_1+F_2\\).\nFrequency shift: \\(\\mathcal{L}[e^{-at} f(t)] = F(s + a)\\).\nDifferentiation: \\(\\mathcal{L}\\left[\\dfrac{df}{dt}\\right] = sF(s) - f(0^-)\\).\nIntegration: \\(\\mathcal{L}\\left[\\int_0^{t} f(\\tau)d\\tau\\right] = \\dfrac{F(s)}{s}\\).\nFinal value: \\(f(\\infty) = \\lim_{s\\to 0} sF(s)\\) (under stability conditions).\nInitial value: \\(f(0^+) = \\lim_{s\\to \\infty} sF(s)\\) (if no impulses at 0).\n\nTransfer function (zero initial conditions):\n\nFrom DE:\n\\[\n\\frac{C(s)}{R(s)} = G(s) =\n\\frac{b_m s^m + \\cdots + b_0}\n     {a_n s^n + \\cdots + a_0}\n\\]\nInput–output relation:\n\\[\nC(s) = G(s) R(s)\n\\]\n\n\nLeave this as a concise reference slide. Suggest students copy or print it as a quick cheat‑sheet for homework and future lectures."
+  },
+  {
+    "objectID": "control_22.html#learning-objectives",
+    "href": "control_22.html#learning-objectives",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\nBy the end of this section, you will be able to:\n\nUse Laplace-domain impedance and admittance to model R, L, C components.\nDerive transfer functions for simple RLC circuits using:\n\nDifferential equations\nMesh (loop) analysis\nNodal analysis\nVoltage division\n\nWrite mesh and node equations for multi-loop / multi-node circuits by inspection.\nDerive transfer functions for inverting and noninverting op-amp circuits.\nRecognize how these circuit transfer functions become building blocks in control systems (e.g., PID controllers).\n\n\nEmphasize to students that this section is the “bridge” between basic circuit analysis and control systems.\nWe are not just solving circuits; we are systematically getting from physical circuits to transfer functions, which later plug directly into block diagrams and control design software."
+  },
+  {
+    "objectID": "control_22.html#big-picture-why-we-care-about-transfer-functions-in-ece",
+    "href": "control_22.html#big-picture-why-we-care-about-transfer-functions-in-ece",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Big Picture: Why We Care About Transfer Functions in ECE",
+    "text": "Big Picture: Why We Care About Transfer Functions in ECE\n\nA transfer function tells us how an input signal \\(U(s)\\) affects an output signal \\(Y(s)\\) in the Laplace domain.\nFor circuits, typical inputs: source voltages or currents.\nTypical outputs: voltages across elements, branch currents, etc.\nOnce we have \\(G(s) = \\dfrac{Y(s)}{U(s)}\\), we can:\n\nAnalyze stability and transient behavior.\nDesign controllers (like PID) around them.\nSimulate entire systems in MATLAB/Simulink.\n\n\n\n\n\n\n\n\nTip\n\n\nThink of the transfer function as a “black-box equation” describing your circuit’s behavior.\nLater, multiple black boxes will be connected to form full control systems.\n\n\n\n\nConnect this with what students have already seen: step response, eigenvalues, poles/zeros.\nAlso mention that RLC filters and op-amp circuits they saw in circuits courses are special cases of what they are now formalizing via transfer functions."
+  },
+  {
+    "objectID": "control_22.html#fundamental-r-l-c-relationships-time-domain",
+    "href": "control_22.html#fundamental-r-l-c-relationships-time-domain",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Fundamental R, L, C Relationships (Time Domain)",
+    "text": "Fundamental R, L, C Relationships (Time Domain)\n\n\nVariables and Units\n\nVoltage: \\(v(t)\\) [V]\nCurrent: \\(i(t)\\) [A]\nCharge: \\(q(t)\\) [C]\nResistor: \\(R\\) [Ω]\nConductance: \\(G = 1/R\\) [mho or S]\nCapacitor: \\(C\\) [F]\nInductor: \\(L\\) [H]\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nBriefly review these as “known” from basic circuits, but stress we’ll now connect them systematically to Laplace-domain models.\nMention the zero-initial-condition assumption explicitly: this is crucial for using simple \\(Z(s)\\) expressions."
+  },
+  {
+    "objectID": "control_22.html#table-r-l-c-relationships-zero-initial-conditions",
+    "href": "control_22.html#table-r-l-c-relationships-zero-initial-conditions",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Table: R, L, C Relationships (Zero Initial Conditions)",
+    "text": "Table: R, L, C Relationships (Zero Initial Conditions)\nTime-domain and impedance/admittance relationships\n\n\n\n\n\n\n\n\n\n\n\nComponent\nVoltage–current\nCurrent–voltage\nVoltage–charge\nImpedance \\(Z(s) = \\dfrac{V(s)}{I(s)}\\)\nAdmittance \\(Y(s) = \\dfrac{I(s)}{V(s)}\\)\n\n\n\n\nCapacitor\n\\(v(t) = \\dfrac{1}{C}\\displaystyle\\int_{0}^{t} i(\\tau)\\,d\\tau\\)\n\\(i(t) = C \\dfrac{dv(t)}{dt}\\)\n\\(v(t) = \\dfrac{1}{C} q(t)\\)\n\\(\\dfrac{1}{Cs}\\)\n\\(Cs\\)\n\n\nResistor\n\\(v(t) = R\\,i(t)\\)\n\\(i(t) = \\dfrac{1}{R} v(t)\\)\n\\(v(t) = R \\dfrac{dq(t)}{dt}\\)\n\\(R\\)\n\\(\\dfrac{1}{R} = G\\)\n\n\nInductor\n\\(v(t) = L \\dfrac{di(t)}{dt}\\)\n\\(i(t) = \\dfrac{1}{L}\\displaystyle\\int_{0}^{t} v(\\tau)\\,d\\tau\\)\n\\(v(t) = L \\dfrac{d^{2}q(t)}{dt^{2}}\\)\n\\(Ls\\)\n\\(\\dfrac{1}{Ls}\\)\n\n\n\n\n\n\n\n\n\nImportant\n\n\nZero initial conditions are assumed for the impedance formulas. If \\(i(0^-)\\) or \\(v(0^-)\\) is nonzero, extra terms appear in the Laplace transform.\n\n\n\n\nPoint out that the integral limits in the original text had typos (0 to 1); we correct to 0 to \\(t\\).\nStress: impedance expressions \\(Z_C = 1/(Cs)\\), \\(Z_L = Ls\\) are the key to building “transformed circuits” in the \\(s\\)-domain."
+  },
+  {
+    "objectID": "control_22.html#from-circuits-to-transfer-functions-overall-workflow",
+    "href": "control_22.html#from-circuits-to-transfer-functions-overall-workflow",
+    "title": "Electrical Network Transfer Functions",
+    "section": "From Circuits to Transfer Functions: Overall Workflow",
+    "text": "From Circuits to Transfer Functions: Overall Workflow\n\nChoose input and output variables.\nUse Kirchhoff’s laws (KVL or KCL) to write time-domain equations.\nConvert to differential / integral equations if needed.\nApply Laplace transform (assume zero initial conditions).\nSolve algebraically for \\(\\dfrac{\\text{Output}(s)}{\\text{Input}(s)}\\).\n\nAlternative shortcut:\n\nReplace elements by impedances \\(Z(s)\\) (or admittances \\(Y(s)\\)).\nWork entirely in the Laplace domain using KVL/KCL and circuit techniques (mesh, nodal, voltage division).\n\n\nExplain that in simple circuits we can afford the “full” route via differential equations, but the impedance/admittance method is dramatically faster and generalizes to complex networks.\nSet expectation: first example is “long way,” then we show multiple short ways leading to the same result."
+  },
+  {
+    "objectID": "control_22.html#example-2.6-series-rlc-circuit-and-goal",
+    "href": "control_22.html#example-2.6-series-rlc-circuit-and-goal",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Example 2.6 – Series RLC: Circuit and Goal",
+    "text": "Example 2.6 – Series RLC: Circuit and Goal\n\n\nProblem\n\nCircuit: series RLC with input voltage \\(v(t)\\) and output \\(v_C(t)\\) across the capacitor.\nFind transfer function:\n\n\\[\n\\frac{V_C(s)}{V(s)}\n\\]\nAssume zero initial conditions.\n\n\n\n\nFigure 2.3: Series RLC network\n\n\n\n\nAsk students: “What other choices could we have made for the output?” (inductor voltage, resistor voltage, current).\nRelate to control: \\(v_C(t)\\) could be a sensor voltage representing temperature, position, etc."
+  },
+  {
+    "objectID": "control_22.html#example-2.6-step-1-kvl-and-integro-differential-equation",
+    "href": "control_22.html#example-2.6-step-1-kvl-and-integro-differential-equation",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Example 2.6 – Step 1: KVL and Integro-Differential Equation",
+    "text": "Example 2.6 – Step 1: KVL and Integro-Differential Equation\nUsing KVL around the loop:\n\\[\nL\\frac{di(t)}{dt} + R i(t) + \\frac{1}{C}\\int_{0}^{t} i(\\tau)\\,d\\tau = v(t)\n\\]\nUse current–charge relationship:\n\\[\ni(t) = \\frac{dq(t)}{dt}\n\\]\nSubstitute into KVL:\n\\[\nL\\frac{d^{2}q(t)}{dt^{2}} + R\\frac{dq(t)}{dt} + \\frac{1}{C}q(t) = v(t)\n\\]\n\nHighlight the appearance of a 2nd-order ODE: this is why RLC circuits are natural examples for 2nd-order system behavior (oscillation, damping, etc.).\nWe temporarily use \\(q(t)\\) just to leverage simpler capacitor relations."
+  },
+  {
+    "objectID": "control_22.html#example-2.6-step-2-express-in-terms-of-capacitor-voltage",
+    "href": "control_22.html#example-2.6-step-2-express-in-terms-of-capacitor-voltage",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Example 2.6 – Step 2: Express in Terms of Capacitor Voltage",
+    "text": "Example 2.6 – Step 2: Express in Terms of Capacitor Voltage\nFor the capacitor, voltage–charge relationship:\n\\[\nq(t) = C\\,v_C(t)\n\\]\nSubstitute into the ODE:\n\\[\nLC\\frac{d^{2}v_C(t)}{dt^{2}} + RC\\frac{dv_C(t)}{dt} + v_C(t) = v(t)\n\\]\nNow both input and output are voltages, which is convenient for transfer functions.\n\nEmphasize the modeling step: translating the loop equation into an ODE relating input \\(v(t)\\) and output \\(v_C(t)\\).\nStudents should see how choices of state variable (current, charge, voltage) are flexible as long as they are related."
+  },
+  {
+    "objectID": "control_22.html#example-2.6-step-3-laplace-transform-and-transfer-function",
+    "href": "control_22.html#example-2.6-step-3-laplace-transform-and-transfer-function",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Example 2.6 – Step 3: Laplace Transform and Transfer Function",
+    "text": "Example 2.6 – Step 3: Laplace Transform and Transfer Function\nTake Laplace transform (zero initial conditions):\n\\[\nLC s^{2} V_C(s) + RC s V_C(s) + V_C(s) = V(s)\n\\]\nFactor \\(V_C(s)\\):\n\\[\n(LC s^{2} + RC s + 1)V_C(s) = V(s)\n\\]\nSolve for transfer function:\n\\[\n\\frac{V_C(s)}{V(s)} = \\frac{1}{LC s^{2} + RC s + 1}\n= \\frac{\\frac{1}{LC}}{s^{2} + \\frac{R}{L}s + \\frac{1}{LC}}\n\\]\n\n\n\nBlock-diagram representation\n\n\n\nPoint out that the denominator looks like the standard 2nd-order form \\(s^{2} + 2\\zeta\\omega_n s + \\omega_n^{2}\\).\nStudents can map: \\(\\omega_n^{2} = 1/(LC)\\) and \\(2\\zeta\\omega_n = R/L\\).\nThis is a key connection between circuit parameters and dynamic behavior (damping, natural frequency)."
+  },
+  {
+    "objectID": "control_22.html#impedance-in-the-laplace-domain",
+    "href": "control_22.html#impedance-in-the-laplace-domain",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Impedance in the Laplace Domain",
+    "text": "Impedance in the Laplace Domain\nTake Laplace transforms of time-domain voltage–current relations (zero initial conditions):\n\nCapacitor:\n\n\\[\nv(t) = \\frac{1}{C}\\int_{0}^{t} i(\\tau)\\,d\\tau \\quad \\Rightarrow \\quad V(s) = \\frac{1}{Cs}I(s)\n\\]\n\nResistor:\n\n\\[\nv(t) = R i(t) \\quad \\Rightarrow \\quad V(s) = R I(s)\n\\]\n\nInductor:\n\n\\[\nv(t) = L \\frac{di(t)}{dt} \\quad \\Rightarrow \\quad V(s) = Ls I(s)\n\\]"
+  },
+  {
+    "objectID": "control_22.html#transforming-the-rlc-circuit-to-the-s-domain",
+    "href": "control_22.html#transforming-the-rlc-circuit-to-the-s-domain",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Transforming the RLC Circuit to the \\(s\\)-Domain",
+    "text": "Transforming the RLC Circuit to the \\(s\\)-Domain\nStarting from the RLC loop equation in the \\(s\\)-domain:\n\\[\n\\left(Ls + R + \\frac{1}{Cs}\\right) I(s) = V(s)\n\\]\nThis has the form:\n\\[\n[\\text{Sum of impedances}]\\,I(s) = [\\text{Sum of applied voltages}]\n\\]"
+  },
+  {
+    "objectID": "control_22.html#example-2.7-same-rlc-mesh-loop-analysis-in-s-domain",
+    "href": "control_22.html#example-2.7-same-rlc-mesh-loop-analysis-in-s-domain",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Example 2.7 – Same RLC, Mesh (Loop) Analysis in \\(s\\)-Domain",
+    "text": "Example 2.7 – Same RLC, Mesh (Loop) Analysis in \\(s\\)-Domain\nFrom Figure 2.5:\nKVL in \\(s\\)-domain:\n\\[\n\\left(Ls + R + \\frac{1}{Cs}\\right) I(s) = V(s)\n\\]\nSolve for current:\n\\[\n\\frac{I(s)}{V(s)} = \\frac{1}{Ls + R + \\frac{1}{Cs}}\n\\]\nCapacitor voltage:\n\\[\nV_C(s) = I(s) \\cdot Z_C(s) = I(s)\\cdot \\frac{1}{Cs}\n\\]"
+  },
+  {
+    "objectID": "control_22.html#example-2.8-single-node-via-nodal-analysis",
+    "href": "control_22.html#example-2.8-single-node-via-nodal-analysis",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Example 2.8 – Single Node via Nodal Analysis",
+    "text": "Example 2.8 – Single Node via Nodal Analysis\nUse Figure 2.5 again, but now apply KCL at the node with voltage \\(V_C(s)\\).\nAssume:\n\nCurrents leaving the node are positive, entering are negative.\n\nCurrents:\n\nThrough capacitor: \\(\\displaystyle I_C(s) = \\frac{V_C(s)}{1/(Cs)} = Cs\\,V_C(s)\\)\nThrough \\(R\\)–\\(L\\) series branch (from \\(V_C\\) to source node at \\(V\\)):\n\n\\[\nI_{RL}(s) = \\frac{V_C(s) - V(s)}{R + Ls}\n\\]\nKCL at node \\(V_C(s)\\) (sum of leaving currents = 0):\n\\[\n\\frac{V_C(s)}{1/Cs} + \\frac{V_C(s) - V(s)}{R + Ls} = 0\n\\]\nSolve this equation for \\(\\dfrac{V_C(s)}{V(s)}\\); the result again matches Example 2.6.\n\nHighlight that in nodal analysis, admittance \\(Y = 1/Z\\) is often more convenient than impedance.\nRemind: this is purely an algebraic equation in \\(s\\)—no explicit derivatives or integrals now."
+  },
+  {
+    "objectID": "control_22.html#example-2.9-voltage-division-in-the-s-domain",
+    "href": "control_22.html#example-2.9-voltage-division-in-the-s-domain",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Example 2.9 – Voltage Division in the \\(s\\)-Domain",
+    "text": "Example 2.9 – Voltage Division in the \\(s\\)-Domain\nSame RLC transformed circuit: series combination of \\(Z_L(s)\\), \\(Z_R(s)\\), and \\(Z_C(s)\\).\nVoltage division:\n\\[\nV_C(s) = \\frac{Z_C(s)}{Z_L(s) + Z_R(s) + Z_C(s)} \\, V(s)\n= \\frac{\\dfrac{1}{Cs}}{Ls + R + \\dfrac{1}{Cs}}\\,V(s)\n\\]\nThus:\n\\[\n\\frac{V_C(s)}{V(s)} = \\frac{1/Cs}{Ls + R + 1/Cs}\n\\]\nAlgebra gives the same transfer function as before.\n\n\n\n\n\n\nNote\n\n\nThree different methods (ODE, mesh, nodal/voltage division) all give the same \\(G(s)\\). Choosing the fastest correct method is a key engineering skill.\n\n\n\n\nUse this as a checkpoint: quickly quiz students—“Which method would you use on an exam and why?”\nTransition: simple circuits are fine with any of these; complex circuits demand a systematic mesh/nodal approach."
+  },
+  {
+    "objectID": "control_22.html#moving-to-complex-circuits-mesh-vs.-nodal",
+    "href": "control_22.html#moving-to-complex-circuits-mesh-vs.-nodal",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Moving to Complex Circuits – Mesh vs. Nodal",
+    "text": "Moving to Complex Circuits – Mesh vs. Nodal\nFor multi-loop networks, direct ODE writing becomes painful.\nTwo scalable strategies:\n\nMesh analysis (KVL)\n\nUnknowns: loop currents.\nBest when fewer loops than nodes.\n\nNodal analysis (KCL)\n\nUnknowns: node voltages.\nBest when fewer nodes than loops, especially with many current sources.\n\n\nBoth reduce to solving simultaneous algebraic equations in \\(s\\).\n\nRemind students of similar tradeoffs in basic circuit analysis.\nThe novelty here is simply that the “resistances” are now \\(Z(s)\\) or \\(Y(s)\\)."
+  },
+  {
+    "objectID": "control_22.html#example-2.10-two-loop-transfer-function-via-mesh-analysis",
+    "href": "control_22.html#example-2.10-two-loop-transfer-function-via-mesh-analysis",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Example 2.10 – Two-Loop Transfer Function via Mesh Analysis",
+    "text": "Example 2.10 – Two-Loop Transfer Function via Mesh Analysis\n\n\nGiven\n\nNetwork of Figure 2.6(a).\nInput: \\(V(s)\\).\nOutput: loop 2 current \\(I_2(s)\\).\n\nGoal\n\\[\nG(s) = \\frac{I_2(s)}{V(s)}\n\\]\n\n\n\n\nFigure 2.6a: Original two-loop network\n\n\n\n\n\nFigure 2.6b: Transformed two-loop network\n\n\n\n\n\nFigure 2.6c: Block diagram\n\n\n\n\nExplain figure (b) carefully: all resistors and inductor now shown as \\(R_1\\), \\(R_2\\), \\(Ls\\), capacitor as \\(1/(Cs)\\).\nGoal is to show how straightforward it is to write mesh equations in \\(s\\)-domain, then solve for \\(I_2 / V\\)."
+  },
+  {
+    "objectID": "control_22.html#example-2.10-mesh-equations",
+    "href": "control_22.html#example-2.10-mesh-equations",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Example 2.10 – Mesh Equations",
+    "text": "Example 2.10 – Mesh Equations\nAssume mesh currents \\(I_1(s)\\) and \\(I_2(s)\\) as shown.\nMesh 1 (around left loop):\n\\[\nR_1 I_1(s) + Ls I_1(s) - Ls I_2(s) = V(s)\n\\]\nMesh 2 (around right loop):\n\\[\nLs I_2(s) + R_2 I_2(s) + \\frac{1}{Cs} I_2(s) - Ls I_1(s) = 0\n\\]\nCombine terms:\n\\[\n(R_1 + Ls) I_1(s) - Ls I_2(s) = V(s)\n\\]\n\\[\n- Ls I_1(s) + \\left(Ls + R_2 + \\frac{1}{Cs}\\right) I_2(s) = 0\n\\]\n\nAsk students to identify:\n\n“Self-impedance” terms on the diagonal (sum of all impedances around each mesh).\n“Mutual impedance” terms (common elements with opposite sign).\n\nThis pattern leads to the inspection technique later."
+  },
+  {
+    "objectID": "control_22.html#example-2.10-solving-by-cramers-rule",
+    "href": "control_22.html#example-2.10-solving-by-cramers-rule",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Example 2.10 – Solving by Cramer’s Rule",
+    "text": "Example 2.10 – Solving by Cramer’s Rule\nWrite the system in matrix form:\n\\[\n\\begin{bmatrix}\nR_1 + Ls & -Ls \\\\\n-Ls & Ls + R_2 + \\dfrac{1}{Cs}\n\\end{bmatrix}\n\\begin{bmatrix}\nI_1(s) \\\\ I_2(s)\n\\end{bmatrix}\n=\n\\begin{bmatrix}\nV(s) \\\\ 0\n\\end{bmatrix}\n\\]\nLet the determinant:\n\\[\n\\Delta =\n\\begin{vmatrix}\nR_1 + Ls & -Ls \\\\\n-Ls & Ls + R_2 + \\dfrac{1}{Cs}\n\\end{vmatrix}\n\\]\nFor \\(I_2(s)\\), Cramer’s Rule:\n\\[\nI_2(s) = \\frac{\n\\begin{vmatrix}\nR_1 + Ls & V(s) \\\\\n-Ls & 0\n\\end{vmatrix}\n}{\\Delta}\n= \\frac{Ls\\,V(s)}{\\Delta}\n\\]"
+  },
+  {
+    "objectID": "control_22.html#mesh-equation-pattern-two-loops",
+    "href": "control_22.html#mesh-equation-pattern-two-loops",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Mesh-Equation Pattern (Two Loops)",
+    "text": "Mesh-Equation Pattern (Two Loops)\nThe general form of the two-mesh equations observed:\n\\[\n\\left[\\text{Sum of impedances around Mesh 1}\\right] I_1(s)\n- \\left[\\text{Sum of common impedances}\\right] I_2(s)\n= \\left[\\text{Sum of applied voltages around Mesh 1}\\right]\n\\]\n\\[\n- \\left[\\text{Sum of common impedances}\\right] I_1(s)\n+ \\left[\\text{Sum of impedances around Mesh 2}\\right] I_2(s)\n= \\left[\\text{Sum of applied voltages around Mesh 2}\\right]\n\\]\nRecognizing this structure lets you write mesh equations by inspection without rederiving each term.\n\n\n\n\n\n\nTip\n\n\nInspection rule for mesh \\(k\\):\n\nDiagonal term: sum of all impedances in that mesh.\nOff-diagonal term: negative sum of impedances shared with the other mesh.\n\n\n\n\n\nPrepare students for mechanical systems: inertia, springs, dampers produce the same matrix structure as RLC circuits once written in \\(s\\)-domain.\nThis “pattern recognition” is a huge time saver in modeling."
+  },
+  {
+    "objectID": "control_22.html#nodal-analysis-and-admittance",
+    "href": "control_22.html#nodal-analysis-and-admittance",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Nodal Analysis and Admittance",
+    "text": "Nodal Analysis and Admittance\nDefine admittance:\n\\[\nY(s) = \\frac{1}{Z(s)} = \\frac{I(s)}{V(s)}\n\\]\nFor basic elements:\n\nCapacitor: \\(Y_C(s) = Cs\\)\nResistor: \\(Y_R(s) = 1/R = G\\)\nInductor: \\(Y_L(s) = 1/(Ls)\\)\n\nUsing admittance can make KCL equations more compact, especially when multiple parallel branches are present.\n\nConnect to DC nodal analysis: there you used conductances; here it’s the same but now frequency-dependent via \\(s\\).\nSet up for Example 2.11 where the two-loop network is re-analyzed via nodes."
+  },
+  {
+    "objectID": "control_22.html#example-2.11-transfer-function-via-nodal-analysis",
+    "href": "control_22.html#example-2.11-transfer-function-via-nodal-analysis",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Example 2.11 – Transfer Function via Nodal Analysis",
+    "text": "Example 2.11 – Transfer Function via Nodal Analysis\nUse the transformed circuit of Figure 2.6(b).\nNodes:\n\nNode at inductor: \\(V_L(s)\\)\nNode at capacitor: \\(V_C(s)\\)\n\nKCL at \\(V_L(s)\\): sum of currents leaving node = 0:\n\\[\n\\frac{V_L(s) - V(s)}{R_1} + \\frac{V_L(s)}{Ls} + \\frac{V_L(s) - V_C(s)}{R_2} = 0\n\\]\nKCL at \\(V_C(s)\\):\n\\[\nCs\\,V_C(s) + \\frac{V_C(s) - V_L(s)}{R_2} = 0\n\\]\nExpress resistances as conductances \\(G_1 = 1/R_1\\), \\(G_2 = 1/R_2\\):\n\\[\n\\left(G_1 + G_2 + \\frac{1}{Ls}\\right) V_L(s) - G_2 V_C(s) = G_1 V(s)\n\\]\n\\[\n- G_2 V_L(s) + (G_2 + Cs) V_C(s) = 0\n\\]"
+  },
+  {
+    "objectID": "control_22.html#norton-equivalent-and-current-source-view",
+    "href": "control_22.html#norton-equivalent-and-current-source-view",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Norton Equivalent and Current-Source View",
+    "text": "Norton Equivalent and Current-Source View\nSometimes nodal analysis is simpler if we convert voltage sources in series with impedances into current sources in parallel with admittances (Norton’s theorem).\n\nVoltage source \\(V(s)\\) in series with \\(Z_s(s)\\) \\(\\Rightarrow\\) equivalent current source \\(\\dfrac{V(s)}{Z_s(s)}\\) in parallel with \\(Z_s(s)\\) (or \\(Y_s = 1/Z_s\\)).\n\nThis leads to nodal equations of the general form:\n\\[\n\\left[\\text{Sum of admittances connected to Node 1}\\right] V_1(s)\n- \\left[\\text{Common admittances}\\right] V_2(s)\n= \\left[\\text{Sum of applied currents at Node 1}\\right]\n\\]\n…and similarly for Node 2.\n\nUse this to motivate Example 2.12 where the same two-node network is redrawn in a Norton form.\nStress that this is a modeling choice; physically both circuits are equivalent."
+  },
+  {
+    "objectID": "control_22.html#example-2.12-nodal-analysis-with-current-sources",
+    "href": "control_22.html#example-2.12-nodal-analysis-with-current-sources",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Example 2.12 – Nodal Analysis with Current Sources",
+    "text": "Example 2.12 – Nodal Analysis with Current Sources\n\n\n\nFigure 2.8: Norton-equivalent nodal network\n\n\n\nConvert all impedances to admittances (\\(G_1\\), \\(G_2\\), \\(Cs\\), \\(1/(Ls)\\)).\nConvert series voltage sources to equivalent current sources."
+  },
+  {
+    "objectID": "control_22.html#example-2.13-mesh-equations-by-inspection-three-loops",
+    "href": "control_22.html#example-2.13-mesh-equations-by-inspection-three-loops",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Example 2.13 – Mesh Equations by Inspection (Three Loops)",
+    "text": "Example 2.13 – Mesh Equations by Inspection (Three Loops)\n\n\n\nFigure 2.9: Three-loop electrical network\n\n\nGoal: Write, but do not solve, the mesh equations.\nGeneral structure for Mesh 1:\n\\[\n\\bigl[\\text{Sum of impedances around Mesh 1}\\bigr] I_1(s)\n- \\bigl[\\text{Common impedances (1–2)}\\bigr] I_2(s)\n- \\bigl[\\text{Common impedances (1–3)}\\bigr] I_3(s)\n= \\bigl[\\text{Sum of applied voltages around Mesh 1}\\bigr]\n\\]\nSimilarly for Meshes 2 and 3."
+  },
+  {
+    "objectID": "control_22.html#operational-amplifiers-in-control-systems",
+    "href": "control_22.html#operational-amplifiers-in-control-systems",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Operational Amplifiers in Control Systems",
+    "text": "Operational Amplifiers in Control Systems\nAn operational amplifier (op-amp) is used to implement transfer functions electronically.\nIdeal op-amp assumptions:\n\nDifferential input: \\(v_2(t) - v_1(t)\\) drives the amplifier.\nInput impedance \\(Z_i \\to \\infty\\) (no input current).\nOutput impedance \\(Z_o \\to 0\\) (ideal voltage source behavior).\nOpen-loop gain \\(A \\to \\infty\\) (very large).\n\nBasic relationship:\n\\[\nv_o(t) = A \\bigl(v_2(t) - v_1(t)\\bigr)\n\\]\n\n\n\nFigure 2.10a: Op-amp symbol\n\n\n\nConnect to prior circuits knowledge: they might know inverting/noninverting configurations already.\nKey for control: op-amps let us realize transfer functions using RC networks—filters and controllers (P, PI, PID)."
+  },
+  {
+    "objectID": "control_22.html#inverting-op-amp-configuration",
+    "href": "control_22.html#inverting-op-amp-configuration",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Inverting Op-Amp Configuration",
+    "text": "Inverting Op-Amp Configuration\nIf the non-inverting input is grounded (\\(v_2 = 0\\)), we get an inverting amplifier:\n\\[\nv_o(t) = -A v_1(t)\n\\]\nWith impedances \\(Z_1(s)\\) and \\(Z_2(s)\\) connected as in Figure 2.10(c):\n\n\n\nFigure 2.10c: Inverting op-amp realization\n\n\nKey consequences of ideal assumptions:\n\nInput current \\(I_a(s) = 0\\) (no current into op-amp input).\nTherefore, \\(I_1(s) = -I_2(s)\\) through \\(Z_1\\) and \\(Z_2\\).\nLarge \\(A\\) forces \\(v_1(t) \\approx 0\\) (virtual ground)."
+  },
+  {
+    "objectID": "control_22.html#example-2.14-inverting-op-amp-as-a-pid-controller",
+    "href": "control_22.html#example-2.14-inverting-op-amp-as-a-pid-controller",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Example 2.14 – Inverting Op-Amp as a PID Controller",
+    "text": "Example 2.14 – Inverting Op-Amp as a PID Controller\n\n\n\nFigure 2.11: Inverting op-amp circuit\n\n\nWe know:\n\\[\n\\frac{V_o(s)}{V_i(s)} = -\\frac{Z_2(s)}{Z_1(s)}\n\\]"
+  },
+  {
+    "objectID": "control_22.html#noninverting-op-amp-configuration",
+    "href": "control_22.html#noninverting-op-amp-configuration",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Noninverting Op-Amp Configuration",
+    "text": "Noninverting Op-Amp Configuration\n\n\n\nFigure 2.12: Noninverting op-amp\n\n\n\nInput \\(V_i(s)\\) is applied to the non-inverting terminal.\nFeedback network: \\(Z_1(s)\\)–\\(Z_2(s)\\) forming a voltage divider.\n\nOp-amp equation:\n\\[\nV_o(s) = A\\bigl(V_i(s) - V_1(s)\\bigr)\n\\]"
+  },
+  {
+    "objectID": "control_22.html#example-2.15-noninverting-op-amp-with-rc-networks",
+    "href": "control_22.html#example-2.15-noninverting-op-amp-with-rc-networks",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Example 2.15 – Noninverting Op-Amp with R–C Networks",
+    "text": "Example 2.15 – Noninverting Op-Amp with R–C Networks\n\n\n\nFigure 2.13: Noninverting circuit\n\n\nGiven:\n\n\\(Z_1(s) = R_1 + \\dfrac{1}{C_1 s}\\) (series \\(R_1\\) and \\(C_1\\)).\n\\(Z_2(s) = \\dfrac{R_2 \\bigl(1/(C_2 s)\\bigr)}{R_2 + 1/(C_2 s)}\\) (parallel \\(R_2\\) and \\(C_2\\))."
+  },
+  {
+    "objectID": "control_22.html#skill-assessment-example-mesh-vs.-nodal-consistency",
+    "href": "control_22.html#skill-assessment-example-mesh-vs.-nodal-consistency",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Skill-Assessment Example – Mesh vs. Nodal Consistency",
+    "text": "Skill-Assessment Example – Mesh vs. Nodal Consistency\n\n\n\nFigure 2.14: RLC network for Skill-Assessment 2.6\n\n\nProblem:\nFind \\(G(s) = V_L(s)/V(s)\\) using:\n\nMesh analysis (KVL in \\(s\\)-domain).\nNodal analysis (KCL in \\(s\\)-domain).\n\nShow both methods give:\n\\[\n\\frac{V_L(s)}{V(s)} = \\frac{s^{2} + 2s + 1}{s^{2} + 5s + 2}\n\\]\n\n\n\n\n\n\nTip\n\n\nTry both methods yourself: - Mesh: define loop currents, write equations by inspection. - Nodal: select unknown node voltages, write KCL using admittances.\nThis is great practice for exam-style problems.\n\n\n\n\nIf time allows, outline one of the methods on the board and assign the other as an in-class exercise.\nTalk through checking: compare final expressions term-by-term to verify equivalence."
+  },
+  {
+    "objectID": "control_22.html#skill-assessment-example-simple-op-amp-transfer-functions",
+    "href": "control_22.html#skill-assessment-example-simple-op-amp-transfer-functions",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Skill-Assessment Example – Simple Op-Amp Transfer Functions",
+    "text": "Skill-Assessment Example – Simple Op-Amp Transfer Functions\nGiven:\n\n\\(Z_1(s)\\) = impedance of a 10 μF capacitor: \\(Z_1(s) = \\dfrac{1}{C s} = \\dfrac{1}{10\\times 10^{-6} s} = \\dfrac{10^5}{s}\\).\n\\(Z_2(s)\\) = impedance of a 100 kΩ resistor: \\(Z_2(s) = 10^5\\ \\Omega\\).\n\n\nInverting amplifier (Figure 2.10(c)):\n\n\\[\nG(s) = \\frac{V_o(s)}{V_i(s)} = -\\frac{Z_2}{Z_1} = -\\frac{10^5}{10^5/s} = -s\n\\]\n\nNoninverting amplifier (Figure 2.12):\n\n\\[\nG(s) = \\frac{Z_1 + Z_2}{Z_1} = \\frac{\\dfrac{10^5}{s} + 10^5}{\\dfrac{10^5}{s}} = s + 1\n\\]\n\n\n\n\n\n\nNote\n\n\nResult:\n\nInverting configuration behaves like a differentiator: \\(G(s) = -s\\).\nNoninverting configuration behaves like a differentiator plus proportional term: \\(G(s) = s + 1\\).\n\n\n\n\n\nMention that practical differentiators need high-frequency roll-off and noise considerations; ideal \\(s\\)-behavior is a starting point.\nThis illustrates how simple op-amp + RC networks already implement fundamental control operations (P, D, and later I)."
+  },
+  {
+    "objectID": "control_22.html#real-world-ece-application-rlc-filters-and-sensors",
+    "href": "control_22.html#real-world-ece-application-rlc-filters-and-sensors",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Real-World ECE Application: RLC Filters and Sensors",
+    "text": "Real-World ECE Application: RLC Filters and Sensors\n\nA series RLC circuit like Example 2.6 can be used as a band-pass filter in audio or communication systems.\nThe transfer function \\(V_C(s)/V(s)\\) shapes how different frequencies are passed or attenuated.\nIn control systems, the same RLC can be part of a sensor conditioning circuit, where \\(v_C(t)\\) represents a measured physical quantity (e.g., strain gauge + filter).\nDesigning the resistor, inductor, and capacitor values sets the “dynamic response” (rise time, overshoot) of the measured signal feeding the controller.\n\n\nUse this slide to connect the math back to hardware: filter design, sensor interfaces, analog front-ends.\nAsk: “If we want a faster sensor, which parameter might we reduce — \\(L\\), \\(C\\), or \\(R\\)? What does that do to \\(\\omega_n\\) and damping?”"
+  },
+  {
+    "objectID": "control_22.html#summary-key-points",
+    "href": "control_22.html#summary-key-points",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Summary / Key Points",
+    "text": "Summary / Key Points\n\nR, L, C elements have simple Laplace-domain impedances: \\(Z_R = R\\), \\(Z_L = Ls\\), \\(Z_C = 1/(Cs)\\).\nWe can model circuits in the \\(s\\)-domain by replacing each element with \\(Z(s)\\) and applying KVL/KCL just like in DC circuits.\nFor simple circuits, transfer functions can be obtained via:\n\nDifferential equation → Laplace transform.\nMesh analysis (KVL in \\(s\\)-domain).\nNodal analysis (KCL in \\(s\\)-domain).\nVoltage division using impedances.\n\nFor multi-loop / multi-node circuits:\n\nMesh equations: diagonal terms = sum of mesh impedances; off-diagonals = negative common impedances.\nNode equations: diagonal terms = sum of admittances at node; off-diagonals = negative common admittances."
+  },
+  {
+    "objectID": "control_22.html#key-formulas-summary",
+    "href": "control_22.html#key-formulas-summary",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Key Formulas Summary",
+    "text": "Key Formulas Summary\nR, L, C Impedances and Admittances\n\nResistor:\n\n\\[\nZ_R(s) = R, \\quad Y_R(s) = \\frac{1}{R} = G\n\\]\n\nCapacitor:\n\n\\[\nZ_C(s) = \\frac{1}{Cs}, \\quad Y_C(s) = Cs\n\\]\n\nInductor:\n\n\\[\nZ_L(s) = Ls, \\quad Y_L(s) = \\frac{1}{Ls}\n\\]"
+  },
+  {
+    "objectID": "control_22.html#interactive-agenda",
+    "href": "control_22.html#interactive-agenda",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Interactive Agenda",
+    "text": "Interactive Agenda\n\nExplore R, L, C impedances in Python (Pyodide).\nExperiment with pole locations of an RLC circuit and see their effect on \\(G(s)\\).\nCompare mesh vs. nodal analysis numerically.\nInteractively explore inverting and noninverting op-amp transfer functions.\n\n\nThis addendum is meant to be used after students have seen the main slides.\nEncourage them to modify parameters, re-run cells, and observe how circuit behavior changes numerically and graphically."
+  },
+  {
+    "objectID": "control_22.html#interactive-r-l-c-impedance-calculator",
+    "href": "control_22.html#interactive-r-l-c-impedance-calculator",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Interactive: R, L, C Impedance Calculator",
+    "text": "Interactive: R, L, C Impedance Calculator\nUse this live Python block to calculate impedances for R, L, C at a chosen value of \\(s = \\sigma + j\\omega\\).\n\n\n\n\n\n\n\nAsk students to:\n\nSet \\(\\sigma = 0\\) and vary \\(\\omega\\) to see frequency-dependent behavior.\nNotice that \\(|Z_L|\\) increases with \\(\\omega\\) and \\(|Z_C|\\) decreases.\n\nConnect this to intuition from AC circuit analysis and Bode plots they’ll see later."
+  },
+  {
+    "objectID": "control_22.html#reactive-visualizing-r-l-c-magnitudes-vs-frequency",
+    "href": "control_22.html#reactive-visualizing-r-l-c-magnitudes-vs-frequency",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Reactive: Visualizing R, L, C Magnitudes vs Frequency",
+    "text": "Reactive: Visualizing R, L, C Magnitudes vs Frequency\nUse the sliders to change \\(R\\), \\(L\\), and \\(C\\) values, and see how the impedance magnitudes vary with frequency.\n\nviewof R_val = Inputs.range([10, 5000], {step: 10, value: 1000, label: \"R (Ω)\"})\nviewof L_val = Inputs.range([1e-4, 0.1], {step: 1e-4, value: 1e-2, label: \"L (H)\"})\nviewof C_val = Inputs.range([1e-9, 1e-4], {step: 1e-9, value: 1e-6, label: \"C (F)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHave students:\n\nIncrease \\(L\\) and see \\(|Z_L|\\) grow faster with frequency.\nIncrease \\(C\\) and see \\(|Z_C|\\) drop faster with frequency.\n\nLink this to the behavior of filters and resonance in RLC circuits."
+  },
+  {
+    "objectID": "control_22.html#interactive-series-rlc-transfer-function-coefficients",
+    "href": "control_22.html#interactive-series-rlc-transfer-function-coefficients",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Interactive: Series RLC Transfer Function Coefficients",
+    "text": "Interactive: Series RLC Transfer Function Coefficients\nRecall for the series RLC with capacitor voltage output (Example 2.6):\n\\[\n\\frac{V_C(s)}{V(s)} = \\frac{1/LC}{s^{2} + \\dfrac{R}{L}s + \\dfrac{1}{LC}}\n\\]\nUse Python to compute the denominator coefficients for your chosen \\(R\\), \\(L\\), \\(C\\).\n\n\n\n\n\n\n\nConnect: - \\(a_0 = \\omega_n^2 = 1/(LC)\\). - \\(a_1 = 2 \\zeta \\omega_n = R/L\\).\nStudents can change \\(R\\) and see how damping ratio changes qualitatively (although we don’t compute \\(\\zeta\\) explicitly here)."
+  },
+  {
+    "objectID": "control_22.html#reactive-poles-of-the-series-rlc-transfer-function",
+    "href": "control_22.html#reactive-poles-of-the-series-rlc-transfer-function",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Reactive: Poles of the Series RLC Transfer Function",
+    "text": "Reactive: Poles of the Series RLC Transfer Function\nInteractively vary \\(R\\), \\(L\\), and \\(C\\), and observe the pole locations of:\n\\[\nG(s) = \\frac{V_C(s)}{V(s)} = \\frac{1/LC}{s^{2} + \\frac{R}{L}s + \\frac{1}{LC}}\n\\]\n\nviewof R_rlc = Inputs.range([0, 100], {step: 1, value: 10, label: \"R (Ω)\"})\nviewof L_rlc = Inputs.range([1e-4, 1e-1], {step: 1e-4, value: 1e-3, label: \"L (H)\"})\nviewof C_rlc = Inputs.range([1e-9, 1e-4], {step: 1e-9, value: 1e-6, label: \"C (F)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAsk students:\n\nReduce \\(R\\) towards 0. What happens to the poles? (Complex conjugate with small real part: oscillatory).\nIncrease \\(R\\) large. Do the poles become real and move further left?\n\nThis visually ties component values to stability and damping behavior."
+  },
+  {
+    "objectID": "control_22.html#interactive-mesh-vs.-nodal-equation-coefficients-conceptual",
+    "href": "control_22.html#interactive-mesh-vs.-nodal-equation-coefficients-conceptual",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Interactive: Mesh vs. Nodal Equation Coefficients (Conceptual)",
+    "text": "Interactive: Mesh vs. Nodal Equation Coefficients (Conceptual)\nFor the two-loop mesh system in Example 2.10, the equations:\n\\[\n(R_1 + Ls) I_1(s) - Ls I_2(s) = V(s)\n\\]\n\\[\n- Ls I_1(s) + \\left(Ls + R_2 + \\frac{1}{Cs}\\right) I_2(s) = 0\n\\]\nUse Python to build the coefficient matrix symbolically for selected \\(R_1\\), \\(R_2\\), \\(L\\), \\(C\\) at a particular \\(s\\).\n\n\n\n\n\n\n\nThis reinforces the “pattern” of mesh equations and gives students a symbolic-algebra view.\nThey can change \\(R_1, R_2, L, C\\) and see how each term changes the matrix entries."
+  },
+  {
+    "objectID": "control_22.html#reactive-inverting-op-amp-frequency-response-magnitude",
+    "href": "control_22.html#reactive-inverting-op-amp-frequency-response-magnitude",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Reactive: Inverting Op-Amp – Frequency Response Magnitude",
+    "text": "Reactive: Inverting Op-Amp – Frequency Response Magnitude\nFor an inverting op-amp:\n\\[\nG(s) = -\\frac{Z_2(s)}{Z_1(s)}\n\\]\nHere, choose:\n\n\\(Z_1\\) as a capacitor \\(C_1\\) (pure integrator).\n\\(Z_2\\) as a resistor \\(R_2\\).\n\nThen:\n\\[\nG(s) = -R_2 C_1 s\n\\]\nMagnitude grows linearly with \\(\\omega\\). Explore this behavior interactively.\n\nviewof R2_inv = Inputs.range([1e3, 1e6], {step: 1e3, value: 1e5, label: \"R2 (Ω)\"})\nviewof C1_inv = Inputs.range([1e-8, 1e-4], {step: 1e-8, value: 1e-5, label: \"C1 (F)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nStudents should see:\n\nIncreasing \\(R_2\\) or \\(C_1\\) shifts the magnitude curve up.\nThis illustrates how component choice sets differentiator gain.\n\nYou may also discuss why in practice high-frequency gain is limited to reduce noise amplification."
+  },
+  {
+    "objectID": "control_22.html#interactive-noninverting-op-amp-dc-gain-with-resistive-network",
+    "href": "control_22.html#interactive-noninverting-op-amp-dc-gain-with-resistive-network",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Interactive: Noninverting Op-Amp – DC Gain with Resistive Network",
+    "text": "Interactive: Noninverting Op-Amp – DC Gain with Resistive Network\nFor large-\\(A\\) noninverting op-amp:\n\\[\nG(s) = \\frac{Z_1 + Z_2}{Z_1}\n\\]\nLet \\(Z_1 = R_1\\) and \\(Z_2 = R_2\\) (purely resistive):\n\\[\nG = 1 + \\frac{R_2}{R_1}\n\\]\nUse Python to compute the DC gain for selected resistor values.\n\n\n\n\n\n\n\nEncourage students to try different resistor ratios and connect to amplifier design:\n\nFor \\(G = 2\\), what ratio \\(R_2/R_1\\) do we need?\nFor \\(G = 10\\)?\n\nThis also links to the special case used often in sensor amplifiers."
+  },
+  {
+    "objectID": "control_22.html#reactive-noninverting-op-amp-with-simple-rc-feedback",
+    "href": "control_22.html#reactive-noninverting-op-amp-with-simple-rc-feedback",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Reactive: Noninverting Op-Amp with Simple RC Feedback",
+    "text": "Reactive: Noninverting Op-Amp with Simple RC Feedback\nMake \\(Z_1 = R_1 + 1/(C_1 s)\\) and \\(Z_2 = R_2\\) (for simplicity). Then approximately:\n\\[\nG(s) = \\frac{Z_1 + Z_2}{Z_1} = 1 + \\frac{R_2}{R_1 + 1/(C_1 s)}\n\\]\nInteractively explore \\(|G(j\\omega)|\\) as \\(R_1\\), \\(R_2\\), and \\(C_1\\) vary.\n\nviewof R1_ni = Inputs.range([1e3, 1e6], {step: 1e3, value: 1e4, label: \"R1 (Ω)\"})\nviewof R2_ni = Inputs.range([1e3, 1e6], {step: 1e3, value: 9e4, label: \"R2 (Ω)\"})\nviewof C1_ni = Inputs.range([1e-9, 1e-4], {step: 1e-9, value: 1e-6, label: \"C1 (F)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nStudents can see how adding a capacitor in series with \\(R_1\\) introduces frequency dependence into the gain.\nThis is a simple step towards understanding frequency-compensated amplifiers and lead/lag compensators in control."
+  },
+  {
+    "objectID": "control_22.html#wrap-up-interactive-check",
+    "href": "control_22.html#wrap-up-interactive-check",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Wrap-Up Interactive Check",
+    "text": "Wrap-Up Interactive Check\nUse the block below as a quick self-check: given \\(R\\), \\(L\\), \\(C\\) and the form\n\\[\nG(s) = \\frac{1/LC}{s^{2} + \\frac{R}{L}s + \\frac{1}{LC}},\n\\]\nnumerically evaluate \\(|G(j\\omega)|\\) at a chosen frequency.\n\n\n\n\n\n\n\nEncourage students to compare this numeric magnitude with what they see on the pole plot and Bode-like plots earlier.\nThis ties everything—component values, transfer function form, poles, and numerical frequency response—into a coherent picture."
+  },
+  {
+    "objectID": "control_22.html#impedance-in-the-laplace-domain-1",
+    "href": "control_22.html#impedance-in-the-laplace-domain-1",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Impedance in the Laplace Domain",
+    "text": "Impedance in the Laplace Domain\nDefine impedance:\n\\[\nZ(s) \\equiv \\frac{V(s)}{I(s)}\n\\]\nThus:\n\n\\(Z_C(s) = \\dfrac{1}{Cs}\\)\n\\(Z_R(s) = R\\)\n\\(Z_L(s) = Ls\\)\n\n\n\n\n\n\n\nNote\n\n\nImpedance generalizes resistance to dynamic components (C and L). It captures frequency-dependent behavior in a single algebraic expression.\n\n\n\n\nRelate to phasor analysis: \\(Z(j\\omega)\\) for sinusoidal steady state is analogous, but here \\(s\\) is a complex variable (not restricted to \\(j\\omega\\)).\nHighlight that once we move to \\(Z(s)\\), we can solve circuits exactly like DC resistive networks, just with symbolic impedances."
+  },
+  {
+    "objectID": "control_22.html#transforming-the-rlc-circuit-to-the-s-domain-1",
+    "href": "control_22.html#transforming-the-rlc-circuit-to-the-s-domain-1",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Transforming the RLC Circuit to the \\(s\\)-Domain",
+    "text": "Transforming the RLC Circuit to the \\(s\\)-Domain\nWe can draw the transformed circuit by replacing each element with its impedance:\n\n\n\nFigure 2.5: Laplace-transformed circuit\n\n\nSteps to build the transformed circuit:\n\nReplace all time functions \\(v(t)\\), \\(i(t)\\), etc. with \\(V(s)\\), \\(I(s)\\), etc.\nReplace each component by its impedance \\(Z(s)\\).\n\n\nStress the payoff: we no longer have to write differential equations explicitly.\nOnce in the \\(s\\)-domain, we’re just doing algebra with impedances, exactly like resistive circuits."
+  },
+  {
+    "objectID": "control_22.html#example-2.7-same-rlc-mesh-loop-analysis-in-s-domain-1",
+    "href": "control_22.html#example-2.7-same-rlc-mesh-loop-analysis-in-s-domain-1",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Example 2.7 – Same RLC, Mesh (Loop) Analysis in \\(s\\)-Domain",
+    "text": "Example 2.7 – Same RLC, Mesh (Loop) Analysis in \\(s\\)-Domain\nTherefore:\n\\[\n\\frac{V_C(s)}{V(s)} = \\frac{1}{Cs}\\cdot \\frac{1}{Ls + R + \\frac{1}{Cs}}\n\\]\nAlgebraic simplification recovers the same transfer function as in Example 2.6.\n\n\n\n\n\n\nTip\n\n\nBy working directly with \\(Z(s)\\), we bypass writing and transforming the differential equation. This becomes essential for more complex networks.\n\n\n\n\nAsk: “Which method do you find conceptually clearer?” Some will like the time-domain ODE, others the algebra.\nEncourage students to be fluent in both views but to solve exam / design problems using the transformed-circuit shortcut."
+  },
+  {
+    "objectID": "control_22.html#example-2.10-solving-by-cramers-rule-1",
+    "href": "control_22.html#example-2.10-solving-by-cramers-rule-1",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Example 2.10 – Solving by Cramer’s Rule",
+    "text": "Example 2.10 – Solving by Cramer’s Rule\nSo:\n\\[\nG(s) = \\frac{I_2(s)}{V(s)} = \\frac{Ls}{\\Delta}\n\\]\nCarrying out determinant algebra yields:\n\\[\nG(s) = \\frac{LC s^{2}}{(R_1 + R_2)LC s^{2} + (R_1 R_2 C + L)s + R_1}\n\\]\n(as in Figure 2.6(c)).\n\nYou do not need students to memorize the exact polynomial; more important is that they understand how to get it.\nMention that Symbolic Math Toolbox in MATLAB can compute \\(G(s)\\) automatically from the matrix form."
+  },
+  {
+    "objectID": "control_22.html#example-2.11-transfer-function-via-nodal-analysis-1",
+    "href": "control_22.html#example-2.11-transfer-function-via-nodal-analysis-1",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Example 2.11 – Transfer Function via Nodal Analysis",
+    "text": "Example 2.11 – Transfer Function via Nodal Analysis\nSolve simultaneously for \\(V_C(s)/V(s)\\):\n\\[\n\\frac{V_C(s)}{V(s)} =\n\\frac{\\dfrac{G_1 G_2}{C} s}{\n(G_1 + G_2) s^{2} + \\dfrac{G_1 G_2 L + C}{LC} s + \\dfrac{G_2}{LC}\n}\n\\]\n(as shown in Figure 2.7).\n\n\n\nBlock diagram from node voltage\n\n\n\nEncourage students to compare this expression with the mesh-based one from Example 2.10.\nBoth represent the same physical network but with different input–output choices.\nPoint out how readily admittances appear in the coefficients when using nodal analysis."
+  },
+  {
+    "objectID": "control_22.html#example-2.12-nodal-analysis-with-current-sources-1",
+    "href": "control_22.html#example-2.12-nodal-analysis-with-current-sources-1",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Example 2.12 – Nodal Analysis with Current Sources",
+    "text": "Example 2.12 – Nodal Analysis with Current Sources\nKCL at \\(V_L(s)\\):\n\\[\nG_1 V_L(s) + \\frac{1}{Ls} V_L(s) + G_2\\bigl[V_L(s) - V_C(s)\\bigr] = G_1 V(s)\n\\]\nKCL at \\(V_C(s)\\):\n\\[\nCs\\,V_C(s) + G_2\\bigl[V_C(s) - V_L(s)\\bigr] = 0\n\\]\nThese are algebraically identical to the equations in Example 2.11, thus yielding the same \\(V_C(s)/V(s)\\).\n\n\n\n\n\n\nTip\n\n\nPattern for node equations:\n\nDiagonal term (for node \\(k\\)): sum of admittances connected to node \\(k\\).\nOff-diagonal: negative sum of admittances common to nodes \\(k\\) and \\(\\ell\\).\n\n\n\n\n\nReinforce the analogy to the mesh pattern: diagonals = self, off-diagonals = negative mutual.\nEmphasize: once students see this pattern, they can write equations for large nodal networks very quickly."
+  },
+  {
+    "objectID": "control_22.html#example-2.13-mesh-equations-by-inspection-three-loops-1",
+    "href": "control_22.html#example-2.13-mesh-equations-by-inspection-three-loops-1",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Example 2.13 – Mesh Equations by Inspection (Three Loops)",
+    "text": "Example 2.13 – Mesh Equations by Inspection (Three Loops)\nAfter substituting values from Figure 2.9, we obtain:\nMesh 1:\n\\[\n(2s + 2) I_1(s) - (2s + 1) I_2(s) - I_3(s) = V(s)\n\\]\nMesh 2:\n\\[\n-(2s + 1) I_1(s) + (9s + 1) I_2(s) - 4s\\,I_3(s) = 0\n\\]\nMesh 3:\n\\[\n- I_1(s) - 4s\\,I_2(s) + \\left(4s + 1 + \\frac{1}{s}\\right) I_3(s) = 0\n\\]\nThese can be solved for any desired transfer function, e.g., \\(I_3(s)/V(s)\\).\n\nRecommend that students practice identifying self and mutual impedances by visually circling each mesh and shared branches.\nMention the MATLAB snippet in the text (TryIt 2.8) which uses symbolic matrices to solve these equations."
+  },
+  {
+    "objectID": "control_22.html#inverting-op-amp-configuration-1",
+    "href": "control_22.html#inverting-op-amp-configuration-1",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Inverting Op-Amp Configuration",
+    "text": "Inverting Op-Amp Configuration\nSo:\n\\[\nI_1(s) = \\frac{V_i(s)}{Z_1(s)}, \\quad I_2(s) = \\frac{V_o(s)}{Z_2(s)}\n\\]\nFrom \\(I_1 = -I_2\\):\n\\[\n\\frac{V_o(s)}{Z_2(s)} = -\\frac{V_i(s)}{Z_1(s)}\n\\Rightarrow\n\\frac{V_o(s)}{V_i(s)} = -\\frac{Z_2(s)}{Z_1(s)}\n\\]\n\n\n\n\n\n\nNote\n\n\nInverting op-amp transfer function:\n\\[\nG(s) = \\frac{V_o(s)}{V_i(s)} = -\\frac{Z_2(s)}{Z_1(s)}\n\\]\n\n\n\n\nEmphasize the generality: by choosing \\(Z_1(s)\\) and \\(Z_2(s)\\) as resistor, capacitor, or their combinations, we can realize many transfer functions.\nPreview: Example 2.14 will show how this becomes a PID controller."
+  },
+  {
+    "objectID": "control_22.html#example-2.14-inverting-op-amp-as-a-pid-controller-1",
+    "href": "control_22.html#example-2.14-inverting-op-amp-as-a-pid-controller-1",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Example 2.14 – Inverting Op-Amp as a PID Controller",
+    "text": "Example 2.14 – Inverting Op-Amp as a PID Controller\nCompute \\(Z_1(s)\\): parallel \\(R_1\\) and \\(C_1\\):\n\nAdmittances in parallel add: \\(Y_1(s) = C_1 s + \\dfrac{1}{R_1}\\).\nTherefore:\n\n\\[\nZ_1(s) = \\frac{1}{C_1 s + \\dfrac{1}{R_1}}\n= \\frac{1}{C_1 s + G_1}\n\\]\n(Numerical combination gives: \\(Z_1(s) = \\dfrac{360\\times 10^{3}}{2.016 s + 1}\\) in the text.)\nCompute \\(Z_2(s)\\): series \\(R_2\\) and \\(C_2\\):\n\\[\nZ_2(s) = R_2 + \\frac{1}{C_2 s}\n\\]\nPlug into \\(-Z_2/Z_1\\) and simplify:\n\\[\n\\frac{V_o(s)}{V_i(s)} = -1.232 \\frac{s^{2} + 45.95 s + 22.55}{s}\n\\]\nThis is of the form:\n\\[\nK\\left( s + \\frac{\\text{something}}{s} + 1 \\right)\n\\]\nwhich corresponds to a PID (Proportional–Integral–Derivative) controller.\n\nEmphasize:\n\nThe \\(s\\) term behaves like a differentiator.\nThe \\(1/s\\) term behaves like an integrator.\nConstant terms give proportional action.\n\nThis is a concrete example of how op-amp circuits implement control algorithms in analog hardware."
+  },
+  {
+    "objectID": "control_22.html#noninverting-op-amp-configuration-1",
+    "href": "control_22.html#noninverting-op-amp-configuration-1",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Noninverting Op-Amp Configuration",
+    "text": "Noninverting Op-Amp Configuration\nBy voltage division:\n\\[\nV_1(s) = \\frac{Z_1(s)}{Z_1(s) + Z_2(s)} V_o(s)\n\\]\nSubstitute into op-amp equation:\n\\[\nV_o(s) = A\\left[V_i(s) - \\frac{Z_1}{Z_1 + Z_2} V_o(s)\\right]\n\\]\nRearrange and solve for \\(V_o/V_i\\):\n\\[\n\\frac{V_o(s)}{V_i(s)} = \\frac{A}{1 + A Z_1(s)/(Z_1(s) + Z_2(s))}\n\\]\nFor large \\(A\\), the “1” in the denominator is negligible:\n\\[\n\\frac{V_o(s)}{V_i(s)} \\approx \\frac{Z_1(s) + Z_2(s)}{Z_1(s)}\n\\]\n\n\n\n\n\n\nNote\n\n\nNoninverting op-amp transfer function (large \\(A\\)):\n\\[\nG(s) = \\frac{V_o(s)}{V_i(s)} = \\frac{Z_1(s) + Z_2(s)}{Z_1(s)}\n\\]\n\n\n\n\nHighlight difference vs inverting case: output is noninverting and gain expression differs.\nAgain, if \\(Z_1\\) and \\(Z_2\\) are frequency-dependent, we get frequency-selective amplifiers and control elements."
+  },
+  {
+    "objectID": "control_22.html#example-2.15-noninverting-op-amp-with-rc-networks-1",
+    "href": "control_22.html#example-2.15-noninverting-op-amp-with-rc-networks-1",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Example 2.15 – Noninverting Op-Amp with R–C Networks",
+    "text": "Example 2.15 – Noninverting Op-Amp with R–C Networks\nUse:\n\\[\n\\frac{V_o(s)}{V_i(s)} = \\frac{Z_1(s) + Z_2(s)}{Z_1(s)}\n\\]\nAfter substituting and simplifying:\n\\[\n\\frac{V_o(s)}{V_i(s)} =\n\\frac{C_2 C_1 R_2 R_1 s^{2} + (C_2 R_2 + C_1 R_2 + C_1 R_1)s + 1}\n{C_2 C_1 R_2 R_1 s^{2} + (C_2 R_2 + C_1 R_1)s + 1}\n\\]\n\nNote that numerator and denominator are very similar; this suggests particular frequency-response characteristics (e.g., some zeros cancel near certain poles).\nStudents don’t need to memorize this expression; the key is the method: find \\(Z_1\\), \\(Z_2\\), use the general noninverting formula."
+  },
+  {
+    "objectID": "control_22.html#summary-key-points-1",
+    "href": "control_22.html#summary-key-points-1",
+    "title": "Electrical Network Transfer Functions",
+    "section": "Summary / Key Points",
+    "text": "Summary / Key Points\n\nOp-amp circuits (inverting and noninverting) realize transfer functions:\n\nInverting: \\(G(s) = -Z_2(s)/Z_1(s)\\).\nNoninverting (large \\(A\\)): \\(G(s) = [Z_1(s)+Z_2(s)]/Z_1(s)\\).\n\nThese circuit transfer functions become building blocks for controllers (e.g., PID) and analog filters in control systems.\n\n\nReinforce the unifying theme: once we have \\(G(s)\\), we can treat circuits like any other dynamic system (mechanical, thermal, etc.), using the same control tools.\nPreview: next, we’ll apply identical modeling ideas to mechanical systems via analogies (force–voltage, velocity–current)."
+  },
+  {
+    "objectID": "control_23.html#learning-objectives",
+    "href": "control_23.html#learning-objectives",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\nBy the end of this session, you should be able to:\n\nWrite equations of motion for translational and rotational mechanical systems using Newton’s laws.\nDerive transfer functions \\(G(s)\\) relating displacement (or angle) to applied force (or torque).\nUse the concept of mechanical impedance to write equations directly in the \\(s\\)‑domain without first writing time‑domain differential equations.\nRecognize and exploit the electrical–mechanical analogies (R, L, C ↔︎ damper, mass, spring).\nWrite equations of motion for multi‑degree‑of‑freedom systems by inspection, using “mesh‑like” patterns.\n\n\nStress that the algebra they already know from circuits is now being “reused” in mechanics. The key new ideas: - Mechanical impedance \\(Z_M(s) = F(s)/X(s)\\) or \\(T(s)/\\theta(s)\\). - Degrees of freedom (DOF) and how they map to number of equations. - Two big analogies: - Force–Voltage / Velocity–Current (“mesh” style) - Force–Current / Velocity–Voltage (“node” style, mentioned but not used here)."
+  },
+  {
+    "objectID": "control_23.html#big-picture-why-we-care",
+    "href": "control_23.html#big-picture-why-we-care",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Big Picture: Why We Care",
+    "text": "Big Picture: Why We Care\n\n\nControl systems in ECE often involve mechanics:\n\nHard disk drive head positioning (rotational + translational).\n3D printer or CNC axis control.\nAutomotive suspensions (sprung mass).\nRobotics joints with flexible couplings.\n\nTo design controllers, we need transfer functions that describe how motion responds to forces/torques.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTip\n\n\nWe will show that mechanical systems can be modeled just like electrical RLC circuits, enabling us to reuse circuit techniques.\n\n\n\n\nConnect this to their intuition: cars bouncing, drones tilting, motors driving loads. Emphasize: once we have \\(G(s)\\), all the Laplace/transfer function tools (stability, step responses, Bode plots) become available."
+  },
+  {
+    "objectID": "control_23.html#review-transfer-functions",
+    "href": "control_23.html#review-transfer-functions",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Review: Transfer Functions",
+    "text": "Review: Transfer Functions\nFor any linear time-invariant (LTI) system with zero initial conditions:\n\\[\nG(s) = \\frac{Y(s)}{U(s)}\n\\]\nwhere\n\n\\(U(s)\\) = Laplace transform of input\n\\(Y(s)\\) = Laplace transform of output\n\nIn circuits, examples:\n\n\\(G(s) = \\dfrac{V_{\\text{out}}(s)}{V_{\\text{in}}(s)}\\)\n\\(G(s) = \\dfrac{I_{\\text{out}}(s)}{V_{\\text{in}}(s)}\\)\n\nIn mechanical systems, we will see examples like:\n\n\\(G(s) = \\dfrac{X(s)}{F(s)}\\) (displacement per force)\n\\(G(s) = \\dfrac{\\theta(s)}{T(s)}\\) (angle per torque)\n\n\nRemind them that the procedure is: 1. Write differential equation(s) from physics. 2. Laplace transform (zero ICs). 3. Solve algebraically for output over input to get \\(G(s)\\).\nWe now do this for mechanical systems."
+  },
+  {
+    "objectID": "control_23.html#translational-mechanical-elements",
+    "href": "control_23.html#translational-mechanical-elements",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Translational Mechanical Elements",
+    "text": "Translational Mechanical Elements\n\n\nThree basic translational elements\n\nSpring (stiffness \\(K\\))\nViscous damper (damping coefficient \\(f_v\\))\nMass (\\(M\\))\n\nVariables:\n\nForce: \\(f(t)\\) [N]\nDisplacement: \\(x(t)\\) [m]\nVelocity: \\(v(t) = \\dfrac{dx}{dt}\\) [m/s]\n\n\n\n\n![images/chapter_2/Pasted%20image%2020260221134345.png){height=170}\n\n\nIf the images don’t show, verbally describe: - Spring exerts force proportional to displacement. - Damper exerts force proportional to relative velocity (like a shock absorber). - Mass resists acceleration (inertia).\nMention SI units explicitly to reinforce physical meaning."
+  },
+  {
+    "objectID": "control_23.html#translational-element-equations-time-domain",
+    "href": "control_23.html#translational-element-equations-time-domain",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Translational Element Equations (Time Domain)",
+    "text": "Translational Element Equations (Time Domain)\nTable 2.4 (time-domain relations)\n\n\n\n\n\n\n\n\nComponent\nForce–velocity\nForce–displacement\n\n\n\n\nSpring\n\\(f(t) = K \\displaystyle\\int_{0}^{t} v(\\tau)\\, d\\tau\\)\n\\(f(t) = K x(t)\\)\n\n\nViscous damper\n\\(f(t) = f_v v(t)\\)\n\\(f(t) = f_v \\dfrac{dx(t)}{dt}\\)\n\n\nMass\n\\(f(t) = M \\dfrac{dv(t)}{dt}\\)\n\\(f(t) = M \\dfrac{d^2 x(t)}{dt^2}\\)\n\n\n\nUnits recap:\n\n\\(f(t)\\) – N (newtons)\n\\(x(t)\\) – m (meters)\n\\(v(t)\\) – m/s\n\\(K\\) – N/m\n\\(f_v\\) – N·s/m\n\\(M\\) – kg (= N·s²/m)\n\n\nEmphasize two equivalent descriptions:\n\nIn terms of velocity (left column) – closer to circuit analogies where current is “rate of charge”.\nIn terms of displacement (right column) – more convenient because we often care about position.\n\nWe will primarily work with displacement-based equations."
+  },
+  {
+    "objectID": "control_23.html#electricalmechanical-analogies-mesh-style",
+    "href": "control_23.html#electricalmechanical-analogies-mesh-style",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Electrical–Mechanical Analogies (Mesh-Style)",
+    "text": "Electrical–Mechanical Analogies (Mesh-Style)\nFrom comparing mechanical and electrical tables:\n\nMechanical force \\(f\\) ↔︎ Electrical voltage \\(v\\)\nMechanical velocity \\(v\\) ↔︎ Electrical current \\(i\\)\nMechanical displacement \\(x\\) ↔︎ Electrical charge \\(q\\)\n\nElement analogies (this “mesh-style” view):\n\nSpring ↔︎ Capacitor\nViscous damper ↔︎ Resistor\nMass ↔︎ Inductor\n\nImplication:\n\nSumming forces (in terms of velocity) ↔︎ Summing voltages (in terms of current)\nEquations look like mesh equations in circuits."
+  },
+  {
+    "objectID": "control_23.html#dof-translational-system-physical-setup",
+    "href": "control_23.html#dof-translational-system-physical-setup",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "1‑DOF Translational System: Physical Setup",
+    "text": "1‑DOF Translational System: Physical Setup\nConsider the system in Figure 2.15(a):\n\nA mass \\(M\\) attached to a fixed wall by a spring (\\(K\\)) and a damper (\\(f_v\\)) in parallel.\nAn external force \\(f(t)\\) is applied to the mass.\nWe measure the mass displacement \\(x(t)\\).\n\n\n\nGoal: Find transfer function \\(G(s) = \\dfrac{X(s)}{F(s)}\\).\nSteps:\n\nDraw a free-body diagram (FBD).\nApply Newton’s 2nd law (sum of forces = mass × acceleration).\nWrite the equation of motion.\nLaplace transform and solve for \\(G(s)\\).\n\n\n\n\n\nFigure 2.15(a): Mass–spring–damper system\n\n\n\n\nRemind them: pick a positive direction (to the right). All forces acting on the mass in that direction are positive; opposing forces are negative."
+  },
+  {
+    "objectID": "control_23.html#dof-translational-free-body-diagram",
+    "href": "control_23.html#dof-translational-free-body-diagram",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "1‑DOF Translational: Free-Body Diagram",
+    "text": "1‑DOF Translational: Free-Body Diagram\n\n\n\nFigure 2.16(a): Free-body diagram\n\n\nFor motion assumed to the right:\n\nApplied force \\(f(t)\\) acts to the right.\nSpring force \\(Kx(t)\\) acts left (restoring).\nDamper force \\(f_v \\dfrac{dx}{dt}\\) acts left (opposes motion).\nInertial force \\(M \\dfrac{d^2x}{dt^2}\\) (mass × acceleration) effectively appears on left side of the equation.\n\nEquation from Newton’s law (sum of forces = \\(M\\ddot{x}\\)):\n\\[\nM\\frac{d^{2}x(t)}{dt^{2}}+f_{v}\\frac{dx(t)}{dt}+Kx(t)=f(t)\n\\]\n\nShow sign reasoning explicitly:\n\nWrite \\(\\Sigma f = M \\ddot{x}\\) with directions.\nRearranged, this yields “all impedance-like terms times \\(x(t)\\) equals applied force”.\n\nThis is their first “mechanical differential equation of motion” in the course."
+  },
+  {
+    "objectID": "control_23.html#dof-translational-transfer-function",
+    "href": "control_23.html#dof-translational-transfer-function",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "1‑DOF Translational: Transfer Function",
+    "text": "1‑DOF Translational: Transfer Function\nTake Laplace transform with zero initial conditions:\n\\[\nM s^{2}X(s)+f_{v}s X(s)+K X(s)=F(s)\n\\]\nFactor \\(X(s)\\):\n\\[\n(M s^{2}+f_{v}s+K)X(s)=F(s)\n\\]\nTransfer function:\n\\[\nG(s) = \\frac{X(s)}{F(s)}=\\frac{1}{Ms^{2}+f_{v}s+K}\n\\]\nBlock diagram (Figure 2.15(b)):\n\n\n\nBlock diagram\n\n\n\nHighlight structure:\n\nDenominator is second-order polynomial in \\(s\\).\nCoefficients relate directly to physical parameters (\\(M\\), \\(f_v\\), \\(K\\)).\nThis is exactly like \\(RLC\\) transfer functions.\n\nAsk: what happens if \\(f_v = 0\\)? (undamped second-order system)."
+  },
+  {
+    "objectID": "control_23.html#mechanical-impedance-shortcut-in-the-sdomain",
+    "href": "control_23.html#mechanical-impedance-shortcut-in-the-sdomain",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Mechanical Impedance: Shortcut in the \\(s\\)‑Domain",
+    "text": "Mechanical Impedance: Shortcut in the \\(s\\)‑Domain\nFrom Table 2.4, taking Laplace transforms:\n\nSpring: \\[\nF(s)=K X(s) \\Rightarrow Z_M(s) = \\frac{F(s)}{X(s)} = K\n\\]\nDamper: \\[\nF(s)=f_{v}s X(s) \\Rightarrow Z_M(s) = f_v s\n\\]\nMass: \\[\nF(s)=M s^{2}X(s) \\Rightarrow Z_M(s) = Ms^2\n\\]\n\nDefine mechanical impedance:\n\\[\nZ_{M}(s)=\\frac{F(s)}{X(s)}\n\\]\n\n\n\n\n\n\nImportant\n\n\nOnce each element has \\(Z_M(s)\\), we can skip writing the differential equation, just like in AC circuit analysis with impedances.\n\n\n\n\nEmphasize that \\(Z_M\\) captures how “hard it is” to move the system at frequency \\(s\\). Reinforce that \\(Z_M\\) is linear in the Laplace domain, enabling algebraic solutions."
+  },
+  {
+    "objectID": "control_23.html#dof-translational-impedance-picture",
+    "href": "control_23.html#dof-translational-impedance-picture",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "1‑DOF Translational: Impedance Picture",
+    "text": "1‑DOF Translational: Impedance Picture\nFrom the FBD, in the \\(s\\)‑domain each force is of the form\n\\[\nF(s) = Z_M(s) X(s)\n\\]\nSo in Figure 2.16(b):\n\n\n\nFigure 2.16(b): Transformed FBD with impedances\n\n\nWe get directly:\n\\[\n[Ms^{2}+f_{v}s+K]X(s) = F(s)\n\\]\nThis is of the form\n\\[\n[\\text{Sum of impedances}] \\cdot X(s) = [\\text{Sum of applied forces}]\n\\]\nsimilar (but not strictly analogous) to a mesh equation.\n\nPoint out: this is purely algebra; no derivatives appear explicitly once we are in the \\(s\\)‑domain. This is the power of Laplace + impedance."
+  },
+  {
+    "objectID": "control_23.html#degrees-of-freedom-dof",
+    "href": "control_23.html#degrees-of-freedom-dof",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Degrees of Freedom (DOF)",
+    "text": "Degrees of Freedom (DOF)\nDefinition:\n\nA system’s number of degrees of freedom (DOF) = number of independent motions.\nA point of motion is independent if it can move while all other points are held still.\n\nConsequences:\n\nNumber of DOF = number of independent equations of motion needed.\nMotions are usually coupled (springs, dampers) but still count as separate DOF.\n\nAnalogy with circuits:\n\nIn a 2‑loop circuit, two mesh currents: 2 equations.\nIn a 2‑mass mechanical system, two independent displacements: 2 equations.\n\n\n\n\n\n\n\nTip\n\n\nTo solve:\n\nDraw a free-body diagram for each DOF.\nWrite force balance (Newton’s law) for each.\nLaplace transform the set of equations and solve for the desired transfer function.\n\n\n\n\n\nUse a physical example: two masses connected by a spring on a frictionless surface. Each can move independently if the other is held fixed."
+  },
+  {
+    "objectID": "control_23.html#example-2.17-two-dof-translational-system",
+    "href": "control_23.html#example-2.17-two-dof-translational-system",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Example 2.17: Two-DOF Translational System",
+    "text": "Example 2.17: Two-DOF Translational System\n\n\nProblem:\nFind transfer function \\(G(s) = \\dfrac{X_2(s)}{F(s)}\\) for the system in Figure 2.17(a).\n\nTwo masses \\(M_1, M_2\\)\nSprings \\(K_1, K_2, K_3\\)\nDampers \\(f_{v1}, f_{v2}, f_{v3}\\)\n\nDOF:\n\n\\(x_1(t)\\): motion of \\(M_1\\)\n\\(x_2(t)\\): motion of \\(M_2\\)\n\n\\(\\Rightarrow\\) 2 equations of motion needed.\n\n\n\n\nFigure 2.17(a): 2‑DOF translational system\n\n\n\n\n\nFigure 2.17(b): Block diagram\n\n\n\n\nTell students: This is like two “masses on a track” with couplings. Goal: show how superposition is used to systematically derive equations."
+  },
+  {
+    "objectID": "control_23.html#example-2.17-superposition-for-fbds",
+    "href": "control_23.html#example-2.17-superposition-for-fbds",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Example 2.17: Superposition for FBDs",
+    "text": "Example 2.17: Superposition for FBDs\nTo get forces on \\(M_1\\):\n\nMove \\(M_1\\) to the right, hold \\(M_2\\) still → forces due to \\(M_1\\)’s own motion.\nHold \\(M_1\\) still, move \\(M_2\\) to the right → forces on \\(M_1\\) due to \\(M_2\\)’s motion.\nAdd the two sets of forces (superposition) → total forces on \\(M_1\\).\n\nFigures 2.18(a–c) illustrate this:\n\n\n\nForces on M1 due to motions\n\n\n\n\n\nAll forces on M1\n\n\nSimilarly for \\(M_2\\) using Figures 2.19(a–c).\n\nKey pedagogical point: Instead of guessing signs, we systematically build the FBD using superposition. This method becomes essential when systems get more complex."
+  },
+  {
+    "objectID": "control_23.html#example-2.17-equations-of-motion-laplace-form",
+    "href": "control_23.html#example-2.17-equations-of-motion-laplace-form",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Example 2.17: Equations of Motion (Laplace Form)",
+    "text": "Example 2.17: Equations of Motion (Laplace Form)\nFrom the FBDs (Figures 2.18(c), 2.19(c)), we obtain in the Laplace domain:\n\\[\n\\big[M_{1}s^{2} + (f_{v_{1}}+f_{v_{3}})s + (K_{1}+K_{2})\\big]X_{1}(s) - (f_{v_{3}}s+K_{2})X_{2}(s) = F(s)\n\\]\n\\[\n-(f_{v_{3}}s+K_{2})X_{1}(s) + \\big[M_{2}s^{2} + (f_{v_{2}}+f_{v_{3}})s + (K_{2}+K_{3})\\big]X_{2}(s) = 0\n\\]\nWe can write these in matrix form:\n\\[\n\\begin{bmatrix}\nZ_{11} & Z_{12} \\\\\nZ_{21} & Z_{22}\n\\end{bmatrix}\n\\begin{bmatrix}\nX_1(s) \\\\ X_2(s)\n\\end{bmatrix}\n=\n\\begin{bmatrix}\nF(s) \\\\ 0\n\\end{bmatrix}\n\\]\nwhere\n\n\\(Z_{11}\\) = sum of impedances connected to \\(x_1\\)\n\\(Z_{22}\\) = sum of impedances connected to \\(x_2\\)\n\\(Z_{12} = Z_{21} = -(f_{v_3}s + K_2)\\) = negative sum of impedances between \\(x_1\\) and \\(x_2\\)\n\n\nEmphasize the pattern:\n\nDiagonal entries: “self” impedances (mass + all elements to ground).\nOff-diagonals: negative of coupling impedances.\n\nThis is the mesh-equation structure they already know."
+  },
+  {
+    "objectID": "control_23.html#example-2.17-transfer-function",
+    "href": "control_23.html#example-2.17-transfer-function",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Example 2.17: Transfer Function",
+    "text": "Example 2.17: Transfer Function\nSolve the 2×2 system for \\(X_2(s)/F(s)\\):\n\\[\n\\frac{X_{2}(s)}{F(s)} = G(s) = \\frac{(f_{v_{3}}s+K_{2})}{\\Delta}\n\\]\nwhere\n\\[\n\\Delta=\\left|\\begin{array}{cc}\nM_{1}s^{2} + (f_{v_{1}}+f_{v_{3}})s + (K_{1}+K_{2}) & -(f_{v_{3}}s+K_{2})\\\\\n-(f_{v_{3}}s+K_{2}) & M_{2}s^{2} + (f_{v_{2}}+f_{v_{3}})s + (K_{2}+K_{3})\n\\end{array}\\right|\n\\]\nThis is the determinant of the impedance matrix.\n\n\n\n\n\n\nNote\n\n\nAgain, form is identical to a 2‑loop RLC circuit if we replace masses, springs, dampers with inductors, capacitors, resistors via the analogy.\n\n\n\n\nIf time permits, briefly show or mention how Cramer’s Rule leads to the numerator/denominator structure. You can also quickly discuss resonance and coupled modes for intuition, but keep the algebra the primary focus."
+  },
+  {
+    "objectID": "control_23.html#example-2.18-3dof-translational-equations-by-inspection",
+    "href": "control_23.html#example-2.18-3dof-translational-equations-by-inspection",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Example 2.18: 3‑DOF Translational — Equations by Inspection",
+    "text": "Example 2.18: 3‑DOF Translational — Equations by Inspection\n\n\n\nFigure 2.20: 3‑DOF translational system\n\n\nWe have three masses → 3 DOF (\\(x_1, x_2, x_3\\)).\nGeneral patterns (mesh-style):\nFor \\(M_1\\):\n\\[\n\\big[\\text{Sum of impedances connected to } x_1\\big]X_{1}(s) -\n\\big[\\text{Impedances between } x_1 \\text{ and } x_2\\big] X_{2}(s) -\n\\big[\\text{Impedances between } x_1 \\text{ and } x_3\\big] X_{3}(s)\n=\n\\big[\\text{Sum of applied forces at } x_1\\big]\n\\]\nSimilar structures hold for \\(x_2\\) and \\(x_3\\).\n\nThis is an important conceptual leap: you can write equations by inspection from a network diagram, just like circuit mesh analysis, without individual FBDs."
+  },
+  {
+    "objectID": "control_23.html#example-2.18-final-equations",
+    "href": "control_23.html#example-2.18-final-equations",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Example 2.18: Final Equations",
+    "text": "Example 2.18: Final Equations\nUsing impedances (Table 2.4) and the pattern, we get:\nFor \\(M_1\\):\n\\[\n[M_{1}s^{2} + (f_{v_{1}}+f_{v_{3}})s + (K_{1}+K_{2})]X_{1}(s) - K_{2}X_{2}(s) - f_{v_{3}}s X_{3}(s) = 0\n\\]\nFor \\(M_2\\):\n\\[\n-K_{2}X_{1}(s) + [M_{2}s^{2} + (f_{v_{2}}+f_{v_{4}})s + K_{2}]X_{2}(s) - f_{v_{4}}sX_{3}(s) = F(s)\n\\]\nFor \\(M_3\\):\n\\[\n-f_{v_{3}}s X_{1}(s) - f_{v_{4}}s X_{2}(s) + [M_{3}s^{2}+(f_{v_{3}}+f_{v_{4}})s]X_{3}(s) = 0\n\\]\nThese are the equations of motion; we can solve for any \\(X_i(s)\\) or transfer function we need.\n\nPoint out that solving a 3×3 system is algebraically messier, but software (MATLAB, Python) handles it easily. The key skill is setting up the equations correctly."
+  },
+  {
+    "objectID": "control_23.html#skill-assessment-translational-practice-2.8",
+    "href": "control_23.html#skill-assessment-translational-practice-2.8",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Skill Assessment: Translational Practice (2.8)",
+    "text": "Skill Assessment: Translational Practice (2.8)\n\n\n\nTranslational system for Skill-Assessment 2.8\n\n\nGiven system in Figure 2.21:\nTask: Find \\(G(s) = \\dfrac{X_2(s)}{F(s)}\\).\nAnswer provided:\n\\[\nG(s) = \\frac{3s + 1}{s(s^3 + 7s^2 + 5s + 1)}\n\\]\n\n\n\n\n\n\nTip\n\n\nTry to:\n\nIdentify DOF and define \\(x_1(t)\\), \\(x_2(t)\\), etc.\nWrite equations by inspection using mechanical impedances.\nSolve the system to confirm the given \\(G(s)\\).\n\nComplete solution is available on the book’s website.\n\n\n\n\nUse this slide for in-class or homework reinforcement. Ask students to outline the steps even if they don’t fully compute the algebra in class."
+  },
+  {
+    "objectID": "control_23.html#transition-to-rotational-systems",
+    "href": "control_23.html#transition-to-rotational-systems",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Transition to Rotational Systems",
+    "text": "Transition to Rotational Systems\nWe now move from translational to rotational systems.\nThe procedure is identical, except:\n\nForce \\(f\\) → Torque \\(T\\)\nDisplacement \\(x\\) → Angular displacement \\(\\theta\\)\nVelocity \\(v\\) → Angular velocity \\(\\omega\\)\nMass \\(M\\) → Moment of inertia \\(J\\)\n\nMechanical elements:\n\nRotational spring (twist)\nRotational damper (torsional friction)\nInertia\n\n\n\n\n\n\n\nNote\n\n\nEverything we did for \\(x(t)\\) and \\(f(t)\\) now repeats for \\(\\theta(t)\\) and \\(T(t)\\).\n\n\n\n\nThis is a good moment to connect to physical ECE systems: motors, gear trains, torsional shafts, disk drives."
+  },
+  {
+    "objectID": "control_23.html#rotational-elements-equations-time-domain",
+    "href": "control_23.html#rotational-elements-equations-time-domain",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Rotational Elements & Equations (Time Domain)",
+    "text": "Rotational Elements & Equations (Time Domain)\nTable 2.5: Rotational analogs\n\n\n\n\n\n\n\n\nComponent\nTorque–angular velocity\nTorque–angular displacement\n\n\n\n\nSpring\n\\(T(t) = K\\displaystyle\\int_{0}^{t}\\omega(\\tau)d\\tau\\)\n\\(T(t) = K\\theta(t)\\)\n\n\nViscous damper\n\\(T(t) = D\\omega(t)\\)\n\\(T(t) = D\\dfrac{d\\theta(t)}{dt}\\)\n\n\nInertia\n\\(T(t) = J\\dfrac{d\\omega(t)}{dt}\\)\n\\(T(t) = J\\dfrac{d^{2}\\theta(t)}{dt^{2}}\\)\n\n\n\nUnits:\n\n\\(T(t)\\) – N·m\n\\(\\theta(t)\\) – rad\n\\(\\omega(t)\\) – rad/s\n\\(K\\) – N·m/rad\n\\(D\\) – N·m·s/rad\n\\(J\\) – kg·m²\n\nRotational impedance:\n\\[\nZ_M(s) = \\frac{T(s)}{\\theta(s)} =\n\\begin{cases}\nK & \\text{(spring)} \\\\\nDs & \\text{(damper)} \\\\\nJs^2 & \\text{(inertia)}\n\\end{cases}\n\\]\n\nPoint out how perfectly analogous this table is to Table 2.4. Students should be convinced that the same mathematical machinery applies."
+  },
+  {
+    "objectID": "control_23.html#rotational-example-2.19-physical-setup",
+    "href": "control_23.html#rotational-example-2.19-physical-setup",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Rotational Example 2.19: Physical Setup",
+    "text": "Rotational Example 2.19: Physical Setup\n\n\nProblem:\nFind \\(G(s) = \\dfrac{\\theta_2(s)}{T(s)}\\) for the system in Figure 2.22(a).\n\nA shaft undergoing torsion between two inertias \\(J_1\\) and \\(J_2\\).\nA torque input \\(T(t)\\) applied at the left.\nOutput is angular displacement \\(\\theta_2\\) at the right.\n\nModeling approximations:\n\nShaft torsion modeled as a lumped spring of stiffness \\(K\\).\nInertia on left = \\(J_1\\), on right = \\(J_2\\).\nDamping in shaft is negligible; local inertias have viscous damping \\(D_1\\), \\(D_2\\).\n\n\n\n\n\nFigure 2.22(a–b): Physical system and schematic\n\n\n\n\n\nFigure 2.22(a–b): Physical system and schematic\n\n\n\n\n\nFigure 2.22(c): Block diagram\n\n\n\n\nMention that this models things like a motor connected to a load by a flexible shaft. The “springiness” of the shaft can introduce torsional oscillations."
+  },
+  {
+    "objectID": "control_23.html#example-2.19-free-body-diagrams-by-superposition",
+    "href": "control_23.html#example-2.19-free-body-diagrams-by-superposition",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Example 2.19: Free-Body Diagrams by Superposition",
+    "text": "Example 2.19: Free-Body Diagrams by Superposition\nWe again use superposition:\nFor \\(J_1\\):\n\nRotate \\(J_1\\) with \\(J_2\\) fixed → torques due to \\(J_1\\)’s own motion (inertia, damping, spring twist).\nRotate \\(J_2\\) with \\(J_1\\) fixed → torques on \\(J_1\\) due to \\(J_2\\)’s motion (spring twist).\nAdd them → total torques on \\(J_1\\).\n\n\n\n\nTorques on J1\n\n\nSimilarly for \\(J_2\\), using Figure 2.24.\n\n\n\nTorques on J2\n\n\n\nExplain the spring torque: \\(K(\\theta_1 - \\theta_2)\\). When you fix one angle and move the other, you get a torque proportional to their relative displacement."
+  },
+  {
+    "objectID": "control_23.html#example-2.19-equations-of-motion-laplace",
+    "href": "control_23.html#example-2.19-equations-of-motion-laplace",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Example 2.19: Equations of Motion (Laplace)",
+    "text": "Example 2.19: Equations of Motion (Laplace)\nFrom the FBDs:\n\\[\n(J_{1}s^{2}+D_{1}s+K)\\theta_{1}(s)-K\\theta_{2}(s)=T(s)\n\\]\n\\[\n-K\\theta_{1}(s)+(J_{2}s^{2}+D_{2}s+K)\\theta_{2}(s)=0\n\\]\nAgain, matrix form:\n\\[\n\\begin{bmatrix}\nJ_{1}s^{2}+D_{1}s+K & -K\\\\\n-K & J_{2}s^{2}+D_{2}s+K\n\\end{bmatrix}\n\\begin{bmatrix}\n\\theta_1(s) \\\\ \\theta_2(s)\n\\end{bmatrix}\n=\n\\begin{bmatrix}\nT(s) \\\\ 0\n\\end{bmatrix}\n\\]\nSolve for \\(\\theta_2(s)/T(s)\\):\n\\[\n\\frac{\\theta_{2}(s)}{T(s)}=\\frac{K}{\\Delta}\n\\]\nwith\n\\[\n\\Delta=\\left|\\begin{array}{cc}\nJ_{1}s^{2}+D_{1}s+K & -K\\\\\n-K & J_{2}s^{2}+D_{2}s+K\n\\end{array}\\right|\n\\]\n\nCompare side-by-side with Example 2.17: same structure, just \\(J,D,K,\\theta\\) instead of \\(M,f_v,K,x\\). This confirms that students can reuse translational intuition for rotational systems."
+  },
+  {
+    "objectID": "control_23.html#example-2.19-matlab-support-tryit-2.9",
+    "href": "control_23.html#example-2.19-matlab-support-tryit-2.9",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Example 2.19: MATLAB Support (TryIt 2.9)",
+    "text": "Example 2.19: MATLAB Support (TryIt 2.9)\nIn MATLAB with Symbolic Math Toolbox, the matrix equation can be solved symbolically:\nsyms s J1 D1 K T J2 D2 theta1 theta2\n\nA = [J1*s^2 + D1*s + K,   -K;\n     -K,                  J2*s^2 + D2*s + K];\n\nB = [theta1; theta2];\nC = [T; 0];\n\nB = inv(A)*C;     % or B = A\\C;\ntheta2 = B(2)\npretty(theta2)\nThis yields an expression matching\n\\[\n\\theta_2(s) = \\frac{K}{\\Delta} T(s)\n\\]\n\nEncourage students to use symbolic tools to check their algebra, but emphasize they should still be able to set up the equations themselves."
+  },
+  {
+    "objectID": "control_23.html#example-2.20-3dof-rotational-equations-by-inspection",
+    "href": "control_23.html#example-2.20-3dof-rotational-equations-by-inspection",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Example 2.20: 3‑DOF Rotational — Equations by Inspection",
+    "text": "Example 2.20: 3‑DOF Rotational — Equations by Inspection\n\n\n\nFigure 2.25: 3‑DOF rotational system\n\n\nAngles: \\(\\theta_1, \\theta_2, \\theta_3\\) → 3 DOF.\nThe generic pattern (mesh-style):\nFor \\(\\theta_1\\):\n\nSum of impedances connected to \\(\\theta_1\\) times \\(\\theta_1(s)\\)\nMinus each impedance between \\(\\theta_1\\) and other DOF times the corresponding angle = Sum of applied torques at \\(\\theta_1\\)\n\nSame idea for \\(\\theta_2\\) and \\(\\theta_3\\).\n\nThis is the direct rotational analog of Example 2.18. Again, the main learning target is recognizing and applying the pattern."
+  },
+  {
+    "objectID": "control_23.html#example-2.20-final-equations",
+    "href": "control_23.html#example-2.20-final-equations",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Example 2.20: Final Equations",
+    "text": "Example 2.20: Final Equations\nApplying the pattern:\n\\[\n\\begin{aligned}\n(J_{1}s^{2}+D_{1}s+K)\\theta_{1}(s) &- K\\theta_{2}(s) &- 0\\theta_{3}(s) &= T(s) \\\\\n-K\\theta_{1}(s) &+ (J_{2}s^{2}+D_{2}s+K)\\theta_{2}(s) &- D_{2}s\\theta_{3}(s) &= 0\\\\\n-0\\theta_{1}(s) &- D_{2}s\\theta_{2}(s) &+ (J_{3}s^{2}+D_{3}s+D_{2}s)\\theta_{3}(s) &= 0\n\\end{aligned}\n\\]\nAgain, we have a 3×3 linear system in \\(\\theta_1(s)\\), \\(\\theta_2(s)\\), \\(\\theta_3(s)\\).\n\n\n\n\n\n\nNote\n\n\nThese equations are ready to be solved for transfer functions like \\(\\theta_3(s)/T(s)\\) or \\(\\theta_2(s)/T(s)\\) using matrix methods.\n\n\n\n\nPoint out that cross-coupling appears in the off-diagonal terms: \\(-K\\) and \\(-D_2 s\\). Students should see how springs and dampers “connect” DOFs just like resistors connect nodes or meshes."
+  },
+  {
+    "objectID": "control_23.html#skill-assessment-rotational-practice-2.9",
+    "href": "control_23.html#skill-assessment-rotational-practice-2.9",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Skill Assessment: Rotational Practice (2.9)",
+    "text": "Skill Assessment: Rotational Practice (2.9)\n\n\n\nRotational system for Skill-Assessment 2.9\n\n\nProblem: For the system in Figure 2.26, find:\n\\[\nG(s) = \\frac{\\theta_2(s)}{T(s)}\n\\]\nAnswer:\n\\[\nG(s) = \\frac{1}{2s^{2} + s + 1}\n\\]\n\n\n\n\n\n\nTip\n\n\nCheck yourself:\n\nIdentify DOF and define \\(\\theta_1\\), \\(\\theta_2\\).\nWrite FBDs or use impedance inspection.\nDerive equations of motion in Laplace domain.\nSolve for \\(\\theta_2(s)/T(s)\\) and compare with the given answer.\n\n\n\n\n\nAgain, encourage students to actually attempt the derivation before checking the textbook solution online."
+  },
+  {
+    "objectID": "control_23.html#real-world-ece-applications",
+    "href": "control_23.html#real-world-ece-applications",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Real-World ECE Applications",
+    "text": "Real-World ECE Applications\n\n\nWhere do these models show up?\n\nDC motor position control:\n\nMotor rotor → inertia \\(J\\)\nLoad gear/shaft → spring \\(K\\) (torsional flexibility) + damping \\(D\\)\n\nServo systems (antenna pointing, camera gimbals):\n\nRotational shafts with compliance and damping.\n\nHard disk drives / tape drives:\n\nRotational platters and head actuators.\n\nRobotics joints:\n\nLink flexibilities modeled with springs/dampers; joint inertia modeled as \\(J\\).\n\n\nIn each case, the controller design relies on an accurate transfer function.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTie back to the earlier torsional example: the motor–load shaft system is mathematically the same as Example 2.19. Highlight that modeling flexibility (non-rigid connections) is often crucial to avoid oscillations and instability."
+  },
+  {
+    "objectID": "control_23.html#summary-key-points",
+    "href": "control_23.html#summary-key-points",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Summary / Key Points",
+    "text": "Summary / Key Points\n\nTranslational elements:\n\nSpring: \\(f(t)=Kx(t)\\), \\(Z_M=K\\)\nDamper: \\(f(t)=f_v \\dfrac{dx}{dt}\\), \\(Z_M=f_v s\\)\nMass: \\(f(t)=M \\dfrac{d^{2}x}{dt^{2}}\\), \\(Z_M=Ms^2\\)\n\nRotational elements:\n\nSpring: \\(T(t)=K\\theta(t)\\), \\(Z_M=K\\)\nDamper: \\(T(t)=D \\dfrac{d\\theta}{dt}\\), \\(Z_M=Ds\\)\nInertia: \\(T(t)=J \\dfrac{d^{2}\\theta}{dt^{2}}\\), \\(Z_M=Js^2\\)\n\nMechanical impedance \\(Z_M(s)=\\dfrac{F(s)}{X(s)}\\) or \\(\\dfrac{T(s)}{\\theta(s)}\\) allows circuit-like analysis.\nDegrees of freedom (DOF) = number of independent motions = number of equations of motion.\nEquations of motion for multi-DOF systems resemble mesh equations:\n\nDiagonal: sum of impedances connected to a DOF.\nOff-diagonal: negative of impedances between DOFs.\n\nTransfer functions are obtained by solving the Laplace-domain linear system for output over input.\n\n\nEncourage students to reflect: can they now look at a mechanical drawing and (a) identify DOF, (b) write Laplace-domain equations by inspection? That’s the main competency from this part of the course."
+  },
+  {
+    "objectID": "control_23.html#formula-summary-cheat-sheet",
+    "href": "control_23.html#formula-summary-cheat-sheet",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Formula Summary (Cheat Sheet)",
+    "text": "Formula Summary (Cheat Sheet)\nTranslational:\n\nSpring: \\[\nf(t)=Kx(t), \\quad F(s)=KX(s), \\quad Z_M = K\n\\]\nDamper: \\[\nf(t)=f_{v}\\frac{dx}{dt}, \\quad F(s)=f_{v}sX(s), \\quad Z_M = f_v s\n\\]\nMass: \\[\nf(t)=M\\frac{d^{2}x}{dt^{2}}, \\quad F(s)=Ms^{2}X(s), \\quad Z_M = Ms^2\n\\]\n\nRotational:\n\nSpring: \\[\nT(t)=K\\theta(t), \\quad T(s)=K\\theta(s), \\quad Z_M = K\n\\]\nDamper: \\[\nT(t)=D\\frac{d\\theta}{dt}, \\quad T(s)=Ds\\theta(s), \\quad Z_M = Ds\n\\]\nInertia: \\[\nT(t)=J\\frac{d^{2}\\theta}{dt^{2}}, \\quad T(s)=Js^{2}\\theta(s), \\quad Z_M = Js^2\n\\]\n\nGeneral transfer function pattern (1‑DOF):\n\nTranslational: \\(G(s)=\\dfrac{X(s)}{F(s)} = \\dfrac{1}{Ms^{2}+f_v s + K}\\)\nRotational: \\(G(s)=\\dfrac{\\theta(s)}{T(s)} = \\dfrac{1}{Js^{2}+Ds + K}\\)\n\n\nSuggest students copy this slide into their notes as a reference. They will use these formulas repeatedly in later chapters (time response, root locus, frequency response, controller design)."
+  },
+  {
+    "objectID": "control_23.html#next-steps",
+    "href": "control_23.html#next-steps",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Next Steps",
+    "text": "Next Steps\nFor practice before the next class:\n\nRe-derive the answers for Skill-Assessment Exercises 2.8 and 2.9.\nTry creating your own 2‑DOF mechanical system (translational or rotational), draw it, and write its equations of motion by inspection.\nIn the next lecture, we will extend these ideas to systems with electrical and mechanical parts together (mechatronic systems) and discuss how to cascade their transfer functions.\n\n\nWrap up by reinforcing continuity: next topic will integrate these mechanical models with electrical subsystems, completing the picture for many real ECE control problems."
+  },
+  {
+    "objectID": "control_23.html#how-this-interactive-deck-works",
+    "href": "control_23.html#how-this-interactive-deck-works",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "How This Interactive Deck Works",
+    "text": "How This Interactive Deck Works\nThis addendum lets you experiment with the ideas from Sections 2.5–2.6 directly in the browser.\nYou will:\n\nTweak mass–spring–damper and rotational parameters and see how transfer functions and responses change.\nUse Pyodide (Python in WebAssembly) for live code execution.\nUse Observable JS (OJS) sliders + Pyodide + Plotly for reactive plots.\n\nTips:\n\nChange parameters and re‑run code blocks to see immediate effects.\nFocus on the connection between physical parameters (\\(M, f_v, K, J, D\\)) and the resulting transfer function / response."
+  },
+  {
+    "objectID": "control_23.html#translational-massspringdamper-build-the-transfer-function",
+    "href": "control_23.html#translational-massspringdamper-build-the-transfer-function",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "1. Translational Mass–Spring–Damper: Build the Transfer Function",
+    "text": "1. Translational Mass–Spring–Damper: Build the Transfer Function\nUse this interactive Python cell to compute the transfer function\n\\[\nG(s) = \\frac{X(s)}{F(s)} = \\frac{1}{Ms^2 + f_v s + K}\n\\]\nfor user‑chosen parameters.\n\n\n\n\n\n\nTry:\n\nSet fv_val = 0.0 to see the undamped transfer function.\nIncrease fv_val and observe how the denominator changes."
+  },
+  {
+    "objectID": "control_23.html#translational-system-explore-pole-locations",
+    "href": "control_23.html#translational-system-explore-pole-locations",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "2. Translational System: Explore Pole Locations",
+    "text": "2. Translational System: Explore Pole Locations\nThe poles of \\(G(s)\\) are the roots of \\(Ms^2 + f_v s + K = 0\\).\nUse this block to compute the poles for your chosen parameters.\n\n\n\n\n\n\nQuestions to think about:\n\nWhen are the poles real vs. complex?\nHow does increasing damping \\(f_v\\) move the poles?"
+  },
+  {
+    "objectID": "control_23.html#reactive-plot-translational-step-response-vs.-parameters",
+    "href": "control_23.html#reactive-plot-translational-step-response-vs.-parameters",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "3. Reactive Plot: Translational Step Response vs. Parameters",
+    "text": "3. Reactive Plot: Translational Step Response vs. Parameters\nUse the sliders to adjust \\(M\\), \\(f_v\\), and \\(K\\). A step response of the mass–spring–damper system will update automatically.\n\nviewof M_tr = Inputs.range([0.2, 5], {step: 0.2, label: \"Mass M (kg)\", value: 1})\nviewof fv_tr = Inputs.range([0, 10], {step: 0.5, label: \"Damping f_v (N·s/m)\", value: 2})\nviewof K_tr = Inputs.range([0.5, 20], {step: 0.5, label: \"Stiffness K (N/m)\", value: 5})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTry:\n\nSet fv_tr = 0 and see the oscillatory behavior.\nIncrease fv_tr and observe the motion become more damped.\nChange K_tr to see how the stiffness changes the oscillation frequency."
+  },
+  {
+    "objectID": "control_23.html#visualizing-mechanical-impedance-magnitudes",
+    "href": "control_23.html#visualizing-mechanical-impedance-magnitudes",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "4. Visualizing Mechanical Impedance Magnitudes",
+    "text": "4. Visualizing Mechanical Impedance Magnitudes\nMechanical impedances in the \\(s=j\\omega\\) domain:\n\nMass: \\(Z_M(j\\omega) = M (j\\omega)^2 = -M\\omega^2\\)\nDamper: \\(Z_M(j\\omega) = f_v (j\\omega)\\)\nSpring: \\(Z_M(j\\omega) = K\\)\n\nUse sliders to vary \\(M\\), \\(f_v\\), and \\(K\\), and see how the magnitude of each changes over frequency.\n\nviewof M_imp = Inputs.range([0.2, 5], {step: 0.2, label: \"Mass M for impedance\", value: 1})\nviewof fv_imp = Inputs.range([0, 10], {step: 0.5, label: \"Damping f_v for impedance\", value: 2})\nviewof K_imp = Inputs.range([0.5, 20], {step: 0.5, label: \"Stiffness K for impedance\", value: 5})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nObserve:\n\nAt low frequency, which element dominates?\nAt high frequency, which element dominates?\nHow does increasing each parameter shift the curves?"
+  },
+  {
+    "objectID": "control_23.html#dof-translational-system-interactive-coefficients",
+    "href": "control_23.html#dof-translational-system-interactive-coefficients",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "5. 2‑DOF Translational System: Interactive Coefficients",
+    "text": "5. 2‑DOF Translational System: Interactive Coefficients\nConsider the 2‑DOF system from Example 2.17. We focus on the diagonal terms of the impedance matrix:\n\n\\(Z_{11} = M_1 s^2 + (f_{v1}+f_{v3})s + (K_1 + K_2)\\)\n\\(Z_{22} = M_2 s^2 + (f_{v2}+f_{v3})s + (K_2 + K_3)\\)\n\nUse sliders to choose parameters and see how the coefficients of \\(s^2\\), \\(s\\), and constant terms change.\n\nviewof M1_2dof = Inputs.range([0.5, 5], {step: 0.5, label: \"M1 (kg)\", value: 1})\nviewof M2_2dof = Inputs.range([0.5, 5], {step: 0.5, label: \"M2 (kg)\", value: 2})\n\nviewof fv1_2dof = Inputs.range([0, 10], {step: 0.5, label: \"f_v1 (N·s/m)\", value: 1})\nviewof fv2_2dof = Inputs.range([0, 10], {step: 0.5, label: \"f_v2 (N·s/m)\", value: 1})\nviewof fv3_2dof = Inputs.range([0, 10], {step: 0.5, label: \"f_v3 (N·s/m)\", value: 2})\n\nviewof K1_2dof = Inputs.range([0, 20], {step: 1, label: \"K1 (N/m)\", value: 2})\nviewof K2_2dof = Inputs.range([0, 20], {step: 1, label: \"K2 (N/m)\", value: 5})\nviewof K3_2dof = Inputs.range([0, 20], {step: 1, label: \"K3 (N/m)\", value: 3})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nUse this to see the mesh-like pattern:\n\nDiagonal terms: “self” impedances.\nOff-diagonal: negative of “between” impedances."
+  },
+  {
+    "objectID": "control_23.html#rotational-system-build-the-transfer-function",
+    "href": "control_23.html#rotational-system-build-the-transfer-function",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "6. Rotational System: Build the Transfer Function",
+    "text": "6. Rotational System: Build the Transfer Function\nNow switch to rotational systems. For a 1‑DOF rotational system (spring–damper–inertia):\n\\[\nG(s) = \\frac{\\theta(s)}{T(s)} = \\frac{1}{Js^2 + D s + K}\n\\]\nExperiment with this interactive block.\n\n\n\n\n\n\nCompare this form with the translational case. They are structurally identical, just with different physical units."
+  },
+  {
+    "objectID": "control_23.html#rotational-2dof-example-2.19-impedance-matrix-exploration",
+    "href": "control_23.html#rotational-2dof-example-2.19-impedance-matrix-exploration",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "7. Rotational 2‑DOF (Example 2.19): Impedance Matrix Exploration",
+    "text": "7. Rotational 2‑DOF (Example 2.19): Impedance Matrix Exploration\nFor Example 2.19, the equations are:\n\\[\n(J_{1}s^{2}+D_{1}s+K)\\theta_{1}(s)-K\\theta_{2}(s)=T(s)\n\\]\n\\[\n-K\\theta_{1}(s)+(J_{2}s^{2}+D_{2}s+K)\\theta_{2}(s)=0\n\\]\nUse sliders to explore the impedance matrix and its determinant \\(\\Delta\\).\n\nviewof J1_rot = Inputs.range([0.1, 5], {step: 0.1, label: \"J1 (kg·m²)\", value: 0.5})\nviewof J2_rot = Inputs.range([0.1, 5], {step: 0.1, label: \"J2 (kg·m²)\", value: 1.0})\n\nviewof D1_rot = Inputs.range([0, 5], {step: 0.2, label: \"D1 (N·m·s/rad)\", value: 0.5})\nviewof D2_rot = Inputs.range([0, 5], {step: 0.2, label: \"D2 (N·m·s/rad)\", value: 0.5})\n\nviewof K_rot = Inputs.range([0.5, 20], {step: 0.5, label: \"K (N·m/rad)\", value: 5})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nReflect:\n\nHow does increasing \\(K\\) affect \\(\\Delta\\) and \\(G(s)\\)?\nWhat happens if you increase \\(D_1\\) or \\(D_2\\)?"
+  },
+  {
+    "objectID": "control_23.html#rotational-1dof-reactive-step-response",
+    "href": "control_23.html#rotational-1dof-reactive-step-response",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "8. Rotational 1‑DOF: Reactive Step Response",
+    "text": "8. Rotational 1‑DOF: Reactive Step Response\nUse sliders to adjust \\(J\\), \\(D\\), and \\(K\\) and see the step response in angle \\(\\theta(t)\\).\n\nviewof J_step = Inputs.range([0.1, 5], {step: 0.1, label: \"J (kg·m²)\", value: 1})\nviewof D_step = Inputs.range([0, 5], {step: 0.1, label: \"D (N·m·s/rad)\", value: 0.5})\nviewof K_step = Inputs.range([0.5, 20], {step: 0.5, label: \"K (N·m/rad)\", value: 3})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExplore:\n\n\\(D = 0\\) → purely oscillatory response.\nLarger \\(D\\) → more damping.\nLarger \\(K\\) → higher natural frequency."
+  },
+  {
+    "objectID": "control_23.html#compare-translational-vs-rotational-models-side-by-side",
+    "href": "control_23.html#compare-translational-vs-rotational-models-side-by-side",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "9. Compare Translational vs Rotational Models Side-by-Side",
+    "text": "9. Compare Translational vs Rotational Models Side-by-Side\nUse this cell to print both transfer functions side-by-side for your chosen parameters.\n\n\n\n\n\n\nNotice the pattern:\n\nSame mathematical structure, different physical meanings.\nThis is why mechanical systems can be treated like RLC networks once we define appropriate analogies and impedances."
+  },
+  {
+    "objectID": "control_23.html#your-turn-design-a-simple-2dof-system",
+    "href": "control_23.html#your-turn-design-a-simple-2dof-system",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "10. Your Turn: Design a Simple 2‑DOF System",
+    "text": "10. Your Turn: Design a Simple 2‑DOF System\nUse this empty template to quickly prototype your own 2‑DOF translational system equations in Python.\n\n\n\n\n\n\nNext challenge (outside this block):\n\nAssume input force \\(F(s)\\) acts at \\(x_1\\), write the right‑hand side vector, and solve for \\(X_2(s)/F(s)\\)."
+  },
+  {
+    "objectID": "control_23.html#wrap-up-what-you-should-take-away",
+    "href": "control_23.html#wrap-up-what-you-should-take-away",
+    "title": "Translational & Rotational Mechanical System Transfer Functions",
+    "section": "Wrap-Up: What You Should Take Away",
+    "text": "Wrap-Up: What You Should Take Away\nUsing these interactive blocks, you have:\n\nManipulated mass–spring–damper and rotational system parameters and seen their impact on transfer functions and time responses.\nObserved how mechanical impedance shapes frequency response.\nSeen how multi‑DOF systems lead to mesh-like impedance matrices, just like in circuits.\nPracticed using symbolic and numerical tools (via Pyodide) to reinforce the theory from Sections 2.5–2.6.\n\nUse this deck as a sandbox: modify code, change parameters, and relate every change you see back to the underlying physics + Laplace-domain algebra."
   }
 ]

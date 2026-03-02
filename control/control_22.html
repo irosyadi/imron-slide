@@ -1,0 +1,2636 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-html/tabby.min.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.27">
+
+  <meta name="author" content="Imron Rosyadi">
+  <title>Instrumentation – Electrical Network Transfer Functions</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-b0356e9119c1bdfd0db189d130feb51c.css">
+  <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+  <link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Electrical Network Transfer Functions</h1>
+  <p class="subtitle">Control 2.2</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Imron Rosyadi 
+</div>
+</div>
+</div>
+
+</section>
+<section id="learning-objectives" class="slide level2">
+<h2>Learning Objectives</h2>
+<p>By the end of this section, you will be able to:</p>
+<ul>
+<li>Use Laplace-domain impedance and admittance to model R, L, C components.</li>
+<li>Derive transfer functions for simple RLC circuits using:
+<ul>
+<li>Differential equations</li>
+<li>Mesh (loop) analysis</li>
+<li>Nodal analysis</li>
+<li>Voltage division</li>
+</ul></li>
+<li>Write mesh and node equations for multi-loop / multi-node circuits by inspection.</li>
+<li>Derive transfer functions for inverting and noninverting op-amp circuits.</li>
+<li>Recognize how these circuit transfer functions become building blocks in control systems (e.g., PID controllers).</li>
+</ul>
+<aside class="notes">
+<p>Emphasize to students that this section is the “bridge” between basic circuit analysis and control systems.</p>
+<p>We are not just solving circuits; we are systematically getting from physical circuits to transfer functions, which later plug directly into block diagrams and control design software.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="big-picture-why-we-care-about-transfer-functions-in-ece" class="slide level2">
+<h2>Big Picture: Why We Care About Transfer Functions in ECE</h2>
+<ul>
+<li>A transfer function tells us how an input signal <span class="math inline">\(U(s)\)</span> affects an output signal <span class="math inline">\(Y(s)\)</span> in the Laplace domain.</li>
+<li>For circuits, typical inputs: source voltages or currents.</li>
+<li>Typical outputs: voltages across elements, branch currents, etc.</li>
+<li>Once we have <span class="math inline">\(G(s) = \dfrac{Y(s)}{U(s)}\)</span>, we can:
+<ul>
+<li>Analyze stability and transient behavior.</li>
+<li>Design controllers (like PID) around them.</li>
+<li>Simulate entire systems in MATLAB/Simulink.</li>
+</ul></li>
+</ul>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Think of the transfer function as a “black-box equation” describing your circuit’s behavior.</p>
+<p>Later, multiple black boxes will be connected to form full control systems.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Connect this with what students have already seen: step response, eigenvalues, poles/zeros.</p>
+<p>Also mention that RLC filters and op-amp circuits they saw in circuits courses are special cases of what they are now formalizing via transfer functions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="fundamental-r-l-c-relationships-time-domain" class="slide level2">
+<h2>Fundamental R, L, C Relationships (Time Domain)</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Variables and Units</strong></p>
+<ul>
+<li><p>Voltage: <span class="math inline">\(v(t)\)</span> [V]</p></li>
+<li><p>Current: <span class="math inline">\(i(t)\)</span> [A]</p></li>
+<li><p>Charge: <span class="math inline">\(q(t)\)</span> [C]</p></li>
+<li><p>Resistor: <span class="math inline">\(R\)</span> [Ω]</p></li>
+<li><p>Conductance: <span class="math inline">\(G = 1/R\)</span> [mho or S]</p></li>
+<li><p>Capacitor: <span class="math inline">\(C\)</span> [F]</p></li>
+<li><p>Inductor: <span class="math inline">\(L\)</span> [H]</p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/5c9d35c916e03c6d19161129cbfaf1ff_MD5.jpg" class="quarto-figure quarto-figure-center" height="60"></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/441440c9f63a5fc2472a9f980df4df72_MD5.jpg" class="quarto-figure quarto-figure-center" height="60"></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/b1a3af0157c9551dd22624b82cc87186_MD5.jpg" class="quarto-figure quarto-figure-center" height="60"></p>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>Briefly review these as “known” from basic circuits, but stress we’ll now connect them systematically to Laplace-domain models.</p>
+<p>Mention the zero-initial-condition assumption explicitly: this is crucial for using simple <span class="math inline">\(Z(s)\)</span> expressions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="table-r-l-c-relationships-zero-initial-conditions" class="slide level2">
+<h2>Table: R, L, C Relationships (Zero Initial Conditions)</h2>
+<p><strong>Time-domain and impedance/admittance relationships</strong></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 4%">
+<col style="width: 21%">
+<col style="width: 21%">
+<col style="width: 15%">
+<col style="width: 18%">
+<col style="width: 18%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Component</th>
+<th>Voltage–current</th>
+<th>Current–voltage</th>
+<th>Voltage–charge</th>
+<th>Impedance <span class="math inline">\(Z(s) = \dfrac{V(s)}{I(s)}\)</span></th>
+<th>Admittance <span class="math inline">\(Y(s) = \dfrac{I(s)}{V(s)}\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Capacitor</td>
+<td><span class="math inline">\(v(t) = \dfrac{1}{C}\displaystyle\int_{0}^{t} i(\tau)\,d\tau\)</span></td>
+<td><span class="math inline">\(i(t) = C \dfrac{dv(t)}{dt}\)</span></td>
+<td><span class="math inline">\(v(t) = \dfrac{1}{C} q(t)\)</span></td>
+<td><span class="math inline">\(\dfrac{1}{Cs}\)</span></td>
+<td><span class="math inline">\(Cs\)</span></td>
+</tr>
+<tr class="even">
+<td>Resistor</td>
+<td><span class="math inline">\(v(t) = R\,i(t)\)</span></td>
+<td><span class="math inline">\(i(t) = \dfrac{1}{R} v(t)\)</span></td>
+<td><span class="math inline">\(v(t) = R \dfrac{dq(t)}{dt}\)</span></td>
+<td><span class="math inline">\(R\)</span></td>
+<td><span class="math inline">\(\dfrac{1}{R} = G\)</span></td>
+</tr>
+<tr class="odd">
+<td>Inductor</td>
+<td><span class="math inline">\(v(t) = L \dfrac{di(t)}{dt}\)</span></td>
+<td><span class="math inline">\(i(t) = \dfrac{1}{L}\displaystyle\int_{0}^{t} v(\tau)\,d\tau\)</span></td>
+<td><span class="math inline">\(v(t) = L \dfrac{d^{2}q(t)}{dt^{2}}\)</span></td>
+<td><span class="math inline">\(Ls\)</span></td>
+<td><span class="math inline">\(\dfrac{1}{Ls}\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>Zero initial conditions are assumed for the impedance formulas. If <span class="math inline">\(i(0^-)\)</span> or <span class="math inline">\(v(0^-)\)</span> is nonzero, extra terms appear in the Laplace transform.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Point out that the integral limits in the original text had typos (0 to 1); we correct to 0 to <span class="math inline">\(t\)</span>.</p>
+<p>Stress: impedance expressions <span class="math inline">\(Z_C = 1/(Cs)\)</span>, <span class="math inline">\(Z_L = Ls\)</span> are the key to building “transformed circuits” in the <span class="math inline">\(s\)</span>-domain.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="from-circuits-to-transfer-functions-overall-workflow" class="slide level2 scrollable">
+<h2>From Circuits to Transfer Functions: Overall Workflow</h2>
+<ol type="1">
+<li>Choose input and output variables.</li>
+<li>Use Kirchhoff’s laws (KVL or KCL) to write time-domain equations.</li>
+<li>Convert to differential / integral equations if needed.</li>
+<li>Apply Laplace transform (assume zero initial conditions).</li>
+<li>Solve algebraically for <span class="math inline">\(\dfrac{\text{Output}(s)}{\text{Input}(s)}\)</span>.</li>
+</ol>
+<p>Alternative shortcut:</p>
+<ul>
+<li>Replace elements by impedances <span class="math inline">\(Z(s)\)</span> (or admittances <span class="math inline">\(Y(s)\)</span>).</li>
+<li>Work entirely in the Laplace domain using KVL/KCL and circuit techniques (mesh, nodal, voltage division).</li>
+</ul>
+<aside class="notes">
+<p>Explain that in simple circuits we can afford the “full” route via differential equations, but the impedance/admittance method is dramatically faster and generalizes to complex networks.</p>
+<p>Set expectation: first example is “long way,” then we show multiple short ways leading to the same result.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-2.6-series-rlc-circuit-and-goal" class="slide level2">
+<h2>Example 2.6 – Series RLC: Circuit and Goal</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Problem</strong></p>
+<ul>
+<li><p>Circuit: series RLC with input voltage <span class="math inline">\(v(t)\)</span> and output <span class="math inline">\(v_C(t)\)</span> across the capacitor.</p></li>
+<li><p>Find transfer function:</p></li>
+</ul>
+<p><span class="math display">\[
+\frac{V_C(s)}{V(s)}
+\]</span></p>
+<p>Assume zero initial conditions.</p>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/4cc6b303df75083231646318ebc82b2b_MD5.jpg" height="240"></p>
+<figcaption>Figure 2.3: Series RLC network</figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>Ask students: “What other choices could we have made for the output?” (inductor voltage, resistor voltage, current).</p>
+<p>Relate to control: <span class="math inline">\(v_C(t)\)</span> could be a sensor voltage representing temperature, position, etc.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-2.6-step-1-kvl-and-integro-differential-equation" class="slide level2">
+<h2>Example 2.6 – Step 1: KVL and Integro-Differential Equation</h2>
+<p>Using KVL around the loop:</p>
+<p><span class="math display">\[
+L\frac{di(t)}{dt} + R i(t) + \frac{1}{C}\int_{0}^{t} i(\tau)\,d\tau = v(t)
+\]</span></p>
+<p>Use current–charge relationship:</p>
+<p><span class="math display">\[
+i(t) = \frac{dq(t)}{dt}
+\]</span></p>
+<p>Substitute into KVL:</p>
+<p><span class="math display">\[
+L\frac{d^{2}q(t)}{dt^{2}} + R\frac{dq(t)}{dt} + \frac{1}{C}q(t) = v(t)
+\]</span></p>
+<aside class="notes">
+<p>Highlight the appearance of a 2nd-order ODE: this is why RLC circuits are natural examples for 2nd-order system behavior (oscillation, damping, etc.).</p>
+<p>We temporarily use <span class="math inline">\(q(t)\)</span> just to leverage simpler capacitor relations.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-2.6-step-2-express-in-terms-of-capacitor-voltage" class="slide level2">
+<h2>Example 2.6 – Step 2: Express in Terms of Capacitor Voltage</h2>
+<p>For the capacitor, voltage–charge relationship:</p>
+<p><span class="math display">\[
+q(t) = C\,v_C(t)
+\]</span></p>
+<p>Substitute into the ODE:</p>
+<p><span class="math display">\[
+LC\frac{d^{2}v_C(t)}{dt^{2}} + RC\frac{dv_C(t)}{dt} + v_C(t) = v(t)
+\]</span></p>
+<p>Now both input and output are voltages, which is convenient for transfer functions.</p>
+<aside class="notes">
+<p>Emphasize the modeling step: translating the loop equation into an ODE relating input <span class="math inline">\(v(t)\)</span> and output <span class="math inline">\(v_C(t)\)</span>.</p>
+<p>Students should see how choices of state variable (current, charge, voltage) are flexible as long as they are related.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-2.6-step-3-laplace-transform-and-transfer-function" class="slide level2">
+<h2>Example 2.6 – Step 3: Laplace Transform and Transfer Function</h2>
+<p>Take Laplace transform (zero initial conditions):</p>
+<p><span class="math display">\[
+LC s^{2} V_C(s) + RC s V_C(s) + V_C(s) = V(s)
+\]</span></p>
+<p>Factor <span class="math inline">\(V_C(s)\)</span>:</p>
+<p><span class="math display">\[
+(LC s^{2} + RC s + 1)V_C(s) = V(s)
+\]</span></p>
+<p>Solve for transfer function:</p>
+<p><span class="math display">\[
+\frac{V_C(s)}{V(s)} = \frac{1}{LC s^{2} + RC s + 1}
+= \frac{\frac{1}{LC}}{s^{2} + \frac{R}{L}s + \frac{1}{LC}}
+\]</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/1fbb669c109ad4d955509aa0e7419d11_MD5.jpg" height="100"></p>
+<figcaption>Block-diagram representation</figcaption>
+</figure>
+</div>
+<aside class="notes">
+<p>Point out that the denominator looks like the standard 2nd-order form <span class="math inline">\(s^{2} + 2\zeta\omega_n s + \omega_n^{2}\)</span>.</p>
+<p>Students can map: <span class="math inline">\(\omega_n^{2} = 1/(LC)\)</span> and <span class="math inline">\(2\zeta\omega_n = R/L\)</span>.</p>
+<p>This is a key connection between circuit parameters and dynamic behavior (damping, natural frequency).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="impedance-in-the-laplace-domain" class="slide level2">
+<h2>Impedance in the Laplace Domain</h2>
+<p>Take Laplace transforms of time-domain voltage–current relations (zero initial conditions):</p>
+<ul>
+<li>Capacitor:</li>
+</ul>
+<p><span class="math display">\[
+v(t) = \frac{1}{C}\int_{0}^{t} i(\tau)\,d\tau \quad \Rightarrow \quad V(s) = \frac{1}{Cs}I(s)
+\]</span></p>
+<ul>
+<li>Resistor:</li>
+</ul>
+<p><span class="math display">\[
+v(t) = R i(t) \quad \Rightarrow \quad V(s) = R I(s)
+\]</span></p>
+<ul>
+<li>Inductor:</li>
+</ul>
+<p><span class="math display">\[
+v(t) = L \frac{di(t)}{dt} \quad \Rightarrow \quad V(s) = Ls I(s)
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p>Define <strong>impedance</strong>:</p>
+<p><span class="math display">\[
+Z(s) \equiv \frac{V(s)}{I(s)}
+\]</span></p>
+<p>Thus:</p>
+<ul>
+<li><span class="math inline">\(Z_C(s) = \dfrac{1}{Cs}\)</span></li>
+<li><span class="math inline">\(Z_R(s) = R\)</span></li>
+<li><span class="math inline">\(Z_L(s) = Ls\)</span></li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Impedance generalizes resistance to dynamic components (C and L). It captures frequency-dependent behavior in a single algebraic expression.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Relate to phasor analysis: <span class="math inline">\(Z(j\omega)\)</span> for sinusoidal steady state is analogous, but here <span class="math inline">\(s\)</span> is a complex variable (not restricted to <span class="math inline">\(j\omega\)</span>).</p>
+<p>Highlight that once we move to <span class="math inline">\(Z(s)\)</span>, we can solve circuits exactly like DC resistive networks, just with symbolic impedances.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="transforming-the-rlc-circuit-to-the-s-domain" class="slide level2">
+<h2>Transforming the RLC Circuit to the <span class="math inline">\(s\)</span>-Domain</h2>
+<p>Starting from the RLC loop equation in the <span class="math inline">\(s\)</span>-domain:</p>
+<p><span class="math display">\[
+\left(Ls + R + \frac{1}{Cs}\right) I(s) = V(s)
+\]</span></p>
+<p>This has the form:</p>
+<p><span class="math display">\[
+[\text{Sum of impedances}]\,I(s) = [\text{Sum of applied voltages}]
+\]</span></p>
+</section>
+<section class="slide level2 scrollable">
+
+<p>We can draw the <strong>transformed circuit</strong> by replacing each element with its impedance:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/7ce35f92d988b9f27d6a1714b75fbabc_MD5.jpg" height="220"></p>
+<figcaption>Figure 2.5: Laplace-transformed circuit</figcaption>
+</figure>
+</div>
+<p>Steps to build the transformed circuit:</p>
+<ol type="1">
+<li>Replace all time functions <span class="math inline">\(v(t)\)</span>, <span class="math inline">\(i(t)\)</span>, etc. with <span class="math inline">\(V(s)\)</span>, <span class="math inline">\(I(s)\)</span>, etc.</li>
+<li>Replace each component by its impedance <span class="math inline">\(Z(s)\)</span>.</li>
+</ol>
+<aside class="notes">
+<p>Stress the payoff: we no longer have to write differential equations explicitly.</p>
+<p>Once in the <span class="math inline">\(s\)</span>-domain, we’re just doing algebra with impedances, exactly like resistive circuits.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-2.7-same-rlc-mesh-loop-analysis-in-s-domain" class="slide level2">
+<h2>Example 2.7 – Same RLC, Mesh (Loop) Analysis in <span class="math inline">\(s\)</span>-Domain</h2>
+<p>From Figure 2.5:</p>
+<p>KVL in <span class="math inline">\(s\)</span>-domain:</p>
+<p><span class="math display">\[
+\left(Ls + R + \frac{1}{Cs}\right) I(s) = V(s)
+\]</span></p>
+<p>Solve for current:</p>
+<p><span class="math display">\[
+\frac{I(s)}{V(s)} = \frac{1}{Ls + R + \frac{1}{Cs}}
+\]</span></p>
+<p>Capacitor voltage:</p>
+<p><span class="math display">\[
+V_C(s) = I(s) \cdot Z_C(s) = I(s)\cdot \frac{1}{Cs}
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p>Therefore:</p>
+<p><span class="math display">\[
+\frac{V_C(s)}{V(s)} = \frac{1}{Cs}\cdot \frac{1}{Ls + R + \frac{1}{Cs}}
+\]</span></p>
+<p>Algebraic simplification recovers the same transfer function as in Example 2.6.</p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>By working directly with <span class="math inline">\(Z(s)\)</span>, we bypass writing and transforming the differential equation. This becomes essential for more complex networks.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Ask: “Which method do you find conceptually clearer?” Some will like the time-domain ODE, others the algebra.</p>
+<p>Encourage students to be fluent in both views but to solve exam / design problems using the transformed-circuit shortcut.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-2.8-single-node-via-nodal-analysis" class="slide level2">
+<h2>Example 2.8 – Single Node via Nodal Analysis</h2>
+<p>Use Figure 2.5 again, but now apply KCL at the node with voltage <span class="math inline">\(V_C(s)\)</span>.</p>
+<p>Assume:</p>
+<ul>
+<li>Currents leaving the node are positive, entering are negative.</li>
+</ul>
+<p>Currents:</p>
+<ul>
+<li>Through capacitor: <span class="math inline">\(\displaystyle I_C(s) = \frac{V_C(s)}{1/(Cs)} = Cs\,V_C(s)\)</span></li>
+<li>Through <span class="math inline">\(R\)</span>–<span class="math inline">\(L\)</span> series branch (from <span class="math inline">\(V_C\)</span> to source node at <span class="math inline">\(V\)</span>):</li>
+</ul>
+<p><span class="math display">\[
+I_{RL}(s) = \frac{V_C(s) - V(s)}{R + Ls}
+\]</span></p>
+<p>KCL at node <span class="math inline">\(V_C(s)\)</span> (sum of leaving currents = 0):</p>
+<p><span class="math display">\[
+\frac{V_C(s)}{1/Cs} + \frac{V_C(s) - V(s)}{R + Ls} = 0
+\]</span></p>
+<p>Solve this equation for <span class="math inline">\(\dfrac{V_C(s)}{V(s)}\)</span>; the result again matches Example 2.6.</p>
+<aside class="notes">
+<p>Highlight that in nodal analysis, admittance <span class="math inline">\(Y = 1/Z\)</span> is often more convenient than impedance.</p>
+<p>Remind: this is purely an algebraic equation in <span class="math inline">\(s\)</span>—no explicit derivatives or integrals now.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-2.9-voltage-division-in-the-s-domain" class="slide level2">
+<h2>Example 2.9 – Voltage Division in the <span class="math inline">\(s\)</span>-Domain</h2>
+<p>Same RLC transformed circuit: series combination of <span class="math inline">\(Z_L(s)\)</span>, <span class="math inline">\(Z_R(s)\)</span>, and <span class="math inline">\(Z_C(s)\)</span>.</p>
+<p>Voltage division:</p>
+<p><span class="math display">\[
+V_C(s) = \frac{Z_C(s)}{Z_L(s) + Z_R(s) + Z_C(s)} \, V(s)
+= \frac{\dfrac{1}{Cs}}{Ls + R + \dfrac{1}{Cs}}\,V(s)
+\]</span></p>
+<p>Thus:</p>
+<p><span class="math display">\[
+\frac{V_C(s)}{V(s)} = \frac{1/Cs}{Ls + R + 1/Cs}
+\]</span></p>
+<p>Algebra gives the same transfer function as before.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Three different methods (ODE, mesh, nodal/voltage division) all give the same <span class="math inline">\(G(s)\)</span>. Choosing the fastest correct method is a key engineering skill.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Use this as a checkpoint: quickly quiz students—“Which method would you use on an exam and why?”</p>
+<p>Transition: simple circuits are fine with any of these; complex circuits demand a systematic mesh/nodal approach.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="moving-to-complex-circuits-mesh-vs.-nodal" class="slide level2 scrollable">
+<h2>Moving to Complex Circuits – Mesh vs.&nbsp;Nodal</h2>
+<p>For multi-loop networks, direct ODE writing becomes painful.</p>
+<p>Two scalable strategies:</p>
+<ol type="1">
+<li><strong>Mesh analysis (KVL)</strong>
+<ul>
+<li>Unknowns: loop currents.</li>
+<li>Best when fewer loops than nodes.</li>
+</ul></li>
+<li><strong>Nodal analysis (KCL)</strong>
+<ul>
+<li>Unknowns: node voltages.</li>
+<li>Best when fewer nodes than loops, especially with many current sources.</li>
+</ul></li>
+</ol>
+<p>Both reduce to solving simultaneous algebraic equations in <span class="math inline">\(s\)</span>.</p>
+<aside class="notes">
+<p>Remind students of similar tradeoffs in basic circuit analysis.</p>
+<p>The novelty here is simply that the “resistances” are now <span class="math inline">\(Z(s)\)</span> or <span class="math inline">\(Y(s)\)</span>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-2.10-two-loop-transfer-function-via-mesh-analysis" class="slide level2">
+<h2>Example 2.10 – Two-Loop Transfer Function via Mesh Analysis</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Given</strong></p>
+<ul>
+<li>Network of Figure 2.6(a).</li>
+<li>Input: <span class="math inline">\(V(s)\)</span>.</li>
+<li>Output: loop 2 current <span class="math inline">\(I_2(s)\)</span>.</li>
+</ul>
+<p><strong>Goal</strong></p>
+<p><span class="math display">\[
+G(s) = \frac{I_2(s)}{V(s)}
+\]</span></p>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/0bd048a5d74803c926e155ff8132667c_MD5.jpg" height="220"></p>
+<figcaption>Figure 2.6a: Original two-loop network</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/e87877749a5bd5ce1c547856aa318f56_MD5.jpg" height="220"></p>
+<figcaption>Figure 2.6b: Transformed two-loop network</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/97ec27fed5083177f479d1077fda7dae_MD5.jpg" height="100"></p>
+<figcaption>Figure 2.6c: Block diagram</figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>Explain figure (b) carefully: all resistors and inductor now shown as <span class="math inline">\(R_1\)</span>, <span class="math inline">\(R_2\)</span>, <span class="math inline">\(Ls\)</span>, capacitor as <span class="math inline">\(1/(Cs)\)</span>.</p>
+<p>Goal is to show how straightforward it is to write mesh equations in <span class="math inline">\(s\)</span>-domain, then solve for <span class="math inline">\(I_2 / V\)</span>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-2.10-mesh-equations" class="slide level2">
+<h2>Example 2.10 – Mesh Equations</h2>
+<p>Assume mesh currents <span class="math inline">\(I_1(s)\)</span> and <span class="math inline">\(I_2(s)\)</span> as shown.</p>
+<p>Mesh 1 (around left loop):</p>
+<p><span class="math display">\[
+R_1 I_1(s) + Ls I_1(s) - Ls I_2(s) = V(s)
+\]</span></p>
+<p>Mesh 2 (around right loop):</p>
+<p><span class="math display">\[
+Ls I_2(s) + R_2 I_2(s) + \frac{1}{Cs} I_2(s) - Ls I_1(s) = 0
+\]</span></p>
+<p>Combine terms:</p>
+<p><span class="math display">\[
+(R_1 + Ls) I_1(s) - Ls I_2(s) = V(s)
+\]</span></p>
+<p><span class="math display">\[
+- Ls I_1(s) + \left(Ls + R_2 + \frac{1}{Cs}\right) I_2(s) = 0
+\]</span></p>
+<aside class="notes">
+<p>Ask students to identify:</p>
+<ul>
+<li>“Self-impedance” terms on the diagonal (sum of all impedances around each mesh).</li>
+<li>“Mutual impedance” terms (common elements with opposite sign).</li>
+</ul>
+<p>This pattern leads to the inspection technique later.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-2.10-solving-by-cramers-rule" class="slide level2">
+<h2>Example 2.10 – Solving by Cramer’s Rule</h2>
+<p>Write the system in matrix form:</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+R_1 + Ls &amp; -Ls \\
+-Ls &amp; Ls + R_2 + \dfrac{1}{Cs}
+\end{bmatrix}
+\begin{bmatrix}
+I_1(s) \\ I_2(s)
+\end{bmatrix}
+=
+\begin{bmatrix}
+V(s) \\ 0
+\end{bmatrix}
+\]</span></p>
+<p>Let the determinant:</p>
+<p><span class="math display">\[
+\Delta =
+\begin{vmatrix}
+R_1 + Ls &amp; -Ls \\
+-Ls &amp; Ls + R_2 + \dfrac{1}{Cs}
+\end{vmatrix}
+\]</span></p>
+<p>For <span class="math inline">\(I_2(s)\)</span>, Cramer’s Rule:</p>
+<p><span class="math display">\[
+I_2(s) = \frac{
+\begin{vmatrix}
+R_1 + Ls &amp; V(s) \\
+-Ls &amp; 0
+\end{vmatrix}
+}{\Delta}
+= \frac{Ls\,V(s)}{\Delta}
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p>So:</p>
+<p><span class="math display">\[
+G(s) = \frac{I_2(s)}{V(s)} = \frac{Ls}{\Delta}
+\]</span></p>
+<p>Carrying out determinant algebra yields:</p>
+<p><span class="math display">\[
+G(s) = \frac{LC s^{2}}{(R_1 + R_2)LC s^{2} + (R_1 R_2 C + L)s + R_1}
+\]</span></p>
+<p>(as in Figure 2.6(c)).</p>
+<aside class="notes">
+<p>You do not need students to memorize the exact polynomial; more important is that they understand how to get it.</p>
+<p>Mention that Symbolic Math Toolbox in MATLAB can compute <span class="math inline">\(G(s)\)</span> automatically from the matrix form.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="mesh-equation-pattern-two-loops" class="slide level2">
+<h2>Mesh-Equation Pattern (Two Loops)</h2>
+<p>The general form of the two-mesh equations observed:</p>
+<p><span class="math display">\[
+\left[\text{Sum of impedances around Mesh 1}\right] I_1(s)
+- \left[\text{Sum of common impedances}\right] I_2(s)
+= \left[\text{Sum of applied voltages around Mesh 1}\right]
+\]</span></p>
+<p><span class="math display">\[
+- \left[\text{Sum of common impedances}\right] I_1(s)
++ \left[\text{Sum of impedances around Mesh 2}\right] I_2(s)
+= \left[\text{Sum of applied voltages around Mesh 2}\right]
+\]</span></p>
+<p>Recognizing this structure lets you <strong>write mesh equations by inspection</strong> without rederiving each term.</p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Inspection rule for mesh <span class="math inline">\(k\)</span>:</p>
+<ul>
+<li>Diagonal term: sum of all impedances in that mesh.</li>
+<li>Off-diagonal term: negative sum of impedances shared with the other mesh.</li>
+</ul>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Prepare students for mechanical systems: inertia, springs, dampers produce the same matrix structure as RLC circuits once written in <span class="math inline">\(s\)</span>-domain.</p>
+<p>This “pattern recognition” is a huge time saver in modeling.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="nodal-analysis-and-admittance" class="slide level2">
+<h2>Nodal Analysis and Admittance</h2>
+<p>Define <strong>admittance</strong>:</p>
+<p><span class="math display">\[
+Y(s) = \frac{1}{Z(s)} = \frac{I(s)}{V(s)}
+\]</span></p>
+<p>For basic elements:</p>
+<ul>
+<li>Capacitor: <span class="math inline">\(Y_C(s) = Cs\)</span></li>
+<li>Resistor: <span class="math inline">\(Y_R(s) = 1/R = G\)</span></li>
+<li>Inductor: <span class="math inline">\(Y_L(s) = 1/(Ls)\)</span></li>
+</ul>
+<p>Using admittance can make KCL equations more compact, especially when multiple parallel branches are present.</p>
+<aside class="notes">
+<p>Connect to DC nodal analysis: there you used conductances; here it’s the same but now frequency-dependent via <span class="math inline">\(s\)</span>.</p>
+<p>Set up for Example 2.11 where the two-loop network is re-analyzed via nodes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-2.11-transfer-function-via-nodal-analysis" class="slide level2">
+<h2>Example 2.11 – Transfer Function via Nodal Analysis</h2>
+<p>Use the transformed circuit of Figure 2.6(b).</p>
+<p>Nodes:</p>
+<ul>
+<li>Node at inductor: <span class="math inline">\(V_L(s)\)</span></li>
+<li>Node at capacitor: <span class="math inline">\(V_C(s)\)</span></li>
+</ul>
+<p>KCL at <span class="math inline">\(V_L(s)\)</span>: sum of currents leaving node = 0:</p>
+<p><span class="math display">\[
+\frac{V_L(s) - V(s)}{R_1} + \frac{V_L(s)}{Ls} + \frac{V_L(s) - V_C(s)}{R_2} = 0
+\]</span></p>
+<p>KCL at <span class="math inline">\(V_C(s)\)</span>:</p>
+<p><span class="math display">\[
+Cs\,V_C(s) + \frac{V_C(s) - V_L(s)}{R_2} = 0
+\]</span></p>
+<p>Express resistances as conductances <span class="math inline">\(G_1 = 1/R_1\)</span>, <span class="math inline">\(G_2 = 1/R_2\)</span>:</p>
+<p><span class="math display">\[
+\left(G_1 + G_2 + \frac{1}{Ls}\right) V_L(s) - G_2 V_C(s) = G_1 V(s)
+\]</span></p>
+<p><span class="math display">\[
+- G_2 V_L(s) + (G_2 + Cs) V_C(s) = 0
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p>Solve simultaneously for <span class="math inline">\(V_C(s)/V(s)\)</span>:</p>
+<p><span class="math display">\[
+\frac{V_C(s)}{V(s)} =
+\frac{\dfrac{G_1 G_2}{C} s}{
+(G_1 + G_2) s^{2} + \dfrac{G_1 G_2 L + C}{LC} s + \dfrac{G_2}{LC}
+}
+\]</span></p>
+<p>(as shown in Figure 2.7).</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/468b25e36f64917d8398bbc032e83ced_MD5.jpg" height="200"></p>
+<figcaption>Block diagram from node voltage</figcaption>
+</figure>
+</div>
+<aside class="notes">
+<p>Encourage students to compare this expression with the mesh-based one from Example 2.10.</p>
+<p>Both represent the same physical network but with different input–output choices.</p>
+<p>Point out how readily admittances appear in the coefficients when using nodal analysis.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="norton-equivalent-and-current-source-view" class="slide level2">
+<h2>Norton Equivalent and Current-Source View</h2>
+<p>Sometimes nodal analysis is simpler if we convert voltage sources in series with impedances into current sources in parallel with admittances (Norton’s theorem).</p>
+<ul>
+<li>Voltage source <span class="math inline">\(V(s)\)</span> in series with <span class="math inline">\(Z_s(s)\)</span> <span class="math inline">\(\Rightarrow\)</span> equivalent current source <span class="math inline">\(\dfrac{V(s)}{Z_s(s)}\)</span> in parallel with <span class="math inline">\(Z_s(s)\)</span> (or <span class="math inline">\(Y_s = 1/Z_s\)</span>).</li>
+</ul>
+<p>This leads to nodal equations of the general form:</p>
+<p><span class="math display">\[
+\left[\text{Sum of admittances connected to Node 1}\right] V_1(s)
+- \left[\text{Common admittances}\right] V_2(s)
+= \left[\text{Sum of applied currents at Node 1}\right]
+\]</span></p>
+<p>…and similarly for Node 2.</p>
+<aside class="notes">
+<p>Use this to motivate Example 2.12 where the same two-node network is redrawn in a Norton form.</p>
+<p>Stress that this is a modeling choice; physically both circuits are equivalent.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-2.12-nodal-analysis-with-current-sources" class="slide level2">
+<h2>Example 2.12 – Nodal Analysis with Current Sources</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/1f999101419557f7379938fbd78b07e9_MD5.jpg" height="260"></p>
+<figcaption>Figure 2.8: Norton-equivalent nodal network</figcaption>
+</figure>
+</div>
+<ul>
+<li>Convert all impedances to admittances (<span class="math inline">\(G_1\)</span>, <span class="math inline">\(G_2\)</span>, <span class="math inline">\(Cs\)</span>, <span class="math inline">\(1/(Ls)\)</span>).</li>
+<li>Convert series voltage sources to equivalent current sources.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>KCL at <span class="math inline">\(V_L(s)\)</span>:</p>
+<p><span class="math display">\[
+G_1 V_L(s) + \frac{1}{Ls} V_L(s) + G_2\bigl[V_L(s) - V_C(s)\bigr] = G_1 V(s)
+\]</span></p>
+<p>KCL at <span class="math inline">\(V_C(s)\)</span>:</p>
+<p><span class="math display">\[
+Cs\,V_C(s) + G_2\bigl[V_C(s) - V_L(s)\bigr] = 0
+\]</span></p>
+<p>These are algebraically identical to the equations in Example 2.11, thus yielding the same <span class="math inline">\(V_C(s)/V(s)\)</span>.</p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Pattern for node equations:</p>
+<ul>
+<li>Diagonal term (for node <span class="math inline">\(k\)</span>): sum of admittances connected to node <span class="math inline">\(k\)</span>.</li>
+<li>Off-diagonal: negative sum of admittances common to nodes <span class="math inline">\(k\)</span> and <span class="math inline">\(\ell\)</span>.</li>
+</ul>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Reinforce the analogy to the mesh pattern: diagonals = self, off-diagonals = negative mutual.</p>
+<p>Emphasize: once students see this pattern, they can write equations for large nodal networks very quickly.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-2.13-mesh-equations-by-inspection-three-loops" class="slide level2">
+<h2>Example 2.13 – Mesh Equations by Inspection (Three Loops)</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/f043b8359b11bfa8e26d452a089bf744_MD5.jpg" height="280"></p>
+<figcaption>Figure 2.9: Three-loop electrical network</figcaption>
+</figure>
+</div>
+<p>Goal: <strong>Write</strong>, but do not solve, the mesh equations.</p>
+<p>General structure for Mesh 1:</p>
+<p><span class="math display">\[
+\bigl[\text{Sum of impedances around Mesh 1}\bigr] I_1(s)
+- \bigl[\text{Common impedances (1–2)}\bigr] I_2(s)
+- \bigl[\text{Common impedances (1–3)}\bigr] I_3(s)
+= \bigl[\text{Sum of applied voltages around Mesh 1}\bigr]
+\]</span></p>
+<p>Similarly for Meshes 2 and 3.</p>
+</section>
+<section class="slide level2">
+
+<p>After substituting values from Figure 2.9, we obtain:</p>
+<p>Mesh 1:</p>
+<p><span class="math display">\[
+(2s + 2) I_1(s) - (2s + 1) I_2(s) - I_3(s) = V(s)
+\]</span></p>
+<p>Mesh 2:</p>
+<p><span class="math display">\[
+-(2s + 1) I_1(s) + (9s + 1) I_2(s) - 4s\,I_3(s) = 0
+\]</span></p>
+<p>Mesh 3:</p>
+<p><span class="math display">\[
+- I_1(s) - 4s\,I_2(s) + \left(4s + 1 + \frac{1}{s}\right) I_3(s) = 0
+\]</span></p>
+<p>These can be solved for any desired transfer function, e.g., <span class="math inline">\(I_3(s)/V(s)\)</span>.</p>
+<aside class="notes">
+<p>Recommend that students practice identifying self and mutual impedances by visually circling each mesh and shared branches.</p>
+<p>Mention the MATLAB snippet in the text (TryIt 2.8) which uses symbolic matrices to solve these equations.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="operational-amplifiers-in-control-systems" class="slide level2 scrollable">
+<h2>Operational Amplifiers in Control Systems</h2>
+<p>An operational amplifier (op-amp) is used to implement transfer functions electronically.</p>
+<p>Ideal op-amp assumptions:</p>
+<ol type="1">
+<li>Differential input: <span class="math inline">\(v_2(t) - v_1(t)\)</span> drives the amplifier.</li>
+<li>Input impedance <span class="math inline">\(Z_i \to \infty\)</span> (no input current).</li>
+<li>Output impedance <span class="math inline">\(Z_o \to 0\)</span> (ideal voltage source behavior).</li>
+<li>Open-loop gain <span class="math inline">\(A \to \infty\)</span> (very large).</li>
+</ol>
+<p>Basic relationship:</p>
+<p><span class="math display">\[
+v_o(t) = A \bigl(v_2(t) - v_1(t)\bigr)
+\]</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/16664a781642e84851ce7a6e4b33374a_MD5.jpg" height="180"></p>
+<figcaption>Figure 2.10a: Op-amp symbol</figcaption>
+</figure>
+</div>
+<aside class="notes">
+<p>Connect to prior circuits knowledge: they might know inverting/noninverting configurations already.</p>
+<p>Key for control: op-amps let us <strong>realize transfer functions</strong> using RC networks—filters and controllers (P, PI, PID).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="inverting-op-amp-configuration" class="slide level2">
+<h2>Inverting Op-Amp Configuration</h2>
+<p>If the non-inverting input is grounded (<span class="math inline">\(v_2 = 0\)</span>), we get an <strong>inverting amplifier</strong>:</p>
+<p><span class="math display">\[
+v_o(t) = -A v_1(t)
+\]</span></p>
+<p>With impedances <span class="math inline">\(Z_1(s)\)</span> and <span class="math inline">\(Z_2(s)\)</span> connected as in Figure 2.10(c):</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/5cacfc2c901ce4cd56693fb67a6982d1_MD5.jpg" height="220"></p>
+<figcaption>Figure 2.10c: Inverting op-amp realization</figcaption>
+</figure>
+</div>
+<p>Key consequences of ideal assumptions:</p>
+<ul>
+<li>Input current <span class="math inline">\(I_a(s) = 0\)</span> (no current into op-amp input).</li>
+<li>Therefore, <span class="math inline">\(I_1(s) = -I_2(s)\)</span> through <span class="math inline">\(Z_1\)</span> and <span class="math inline">\(Z_2\)</span>.</li>
+<li>Large <span class="math inline">\(A\)</span> forces <span class="math inline">\(v_1(t) \approx 0\)</span> (virtual ground).</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>So:</p>
+<p><span class="math display">\[
+I_1(s) = \frac{V_i(s)}{Z_1(s)}, \quad I_2(s) = \frac{V_o(s)}{Z_2(s)}
+\]</span></p>
+<p>From <span class="math inline">\(I_1 = -I_2\)</span>:</p>
+<p><span class="math display">\[
+\frac{V_o(s)}{Z_2(s)} = -\frac{V_i(s)}{Z_1(s)}
+\Rightarrow
+\frac{V_o(s)}{V_i(s)} = -\frac{Z_2(s)}{Z_1(s)}
+\]</span></p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Inverting op-amp transfer function:</p>
+<p><span class="math display">\[
+G(s) = \frac{V_o(s)}{V_i(s)} = -\frac{Z_2(s)}{Z_1(s)}
+\]</span></p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Emphasize the generality: by choosing <span class="math inline">\(Z_1(s)\)</span> and <span class="math inline">\(Z_2(s)\)</span> as resistor, capacitor, or their combinations, we can realize many transfer functions.</p>
+<p>Preview: Example 2.14 will show how this becomes a PID controller.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-2.14-inverting-op-amp-as-a-pid-controller" class="slide level2">
+<h2>Example 2.14 – Inverting Op-Amp as a PID Controller</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/bbdd35a9315b7a397bad112abfe8eef6_MD5.jpg" height="260"></p>
+<figcaption>Figure 2.11: Inverting op-amp circuit</figcaption>
+</figure>
+</div>
+<p>We know:</p>
+<p><span class="math display">\[
+\frac{V_o(s)}{V_i(s)} = -\frac{Z_2(s)}{Z_1(s)}
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p>Compute <span class="math inline">\(Z_1(s)\)</span>: parallel <span class="math inline">\(R_1\)</span> and <span class="math inline">\(C_1\)</span>:</p>
+<ul>
+<li>Admittances in parallel add: <span class="math inline">\(Y_1(s) = C_1 s + \dfrac{1}{R_1}\)</span>.</li>
+<li>Therefore:</li>
+</ul>
+<p><span class="math display">\[
+Z_1(s) = \frac{1}{C_1 s + \dfrac{1}{R_1}}
+= \frac{1}{C_1 s + G_1}
+\]</span></p>
+<p>(Numerical combination gives: <span class="math inline">\(Z_1(s) = \dfrac{360\times 10^{3}}{2.016 s + 1}\)</span> in the text.)</p>
+<p>Compute <span class="math inline">\(Z_2(s)\)</span>: series <span class="math inline">\(R_2\)</span> and <span class="math inline">\(C_2\)</span>:</p>
+<p><span class="math display">\[
+Z_2(s) = R_2 + \frac{1}{C_2 s}
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p>Plug into <span class="math inline">\(-Z_2/Z_1\)</span> and simplify:</p>
+<p><span class="math display">\[
+\frac{V_o(s)}{V_i(s)} = -1.232 \frac{s^{2} + 45.95 s + 22.55}{s}
+\]</span></p>
+<p>This is of the form:</p>
+<p><span class="math display">\[
+K\left( s + \frac{\text{something}}{s} + 1 \right)
+\]</span></p>
+<p>which corresponds to a <strong>PID (Proportional–Integral–Derivative) controller</strong>.</p>
+<aside class="notes">
+<p>Emphasize:</p>
+<ul>
+<li>The <span class="math inline">\(s\)</span> term behaves like a differentiator.</li>
+<li>The <span class="math inline">\(1/s\)</span> term behaves like an integrator.</li>
+<li>Constant terms give proportional action.</li>
+</ul>
+<p>This is a concrete example of how op-amp circuits implement control algorithms in analog hardware.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="noninverting-op-amp-configuration" class="slide level2">
+<h2>Noninverting Op-Amp Configuration</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/66874f81f421c876283657843d7f4b6d_MD5.jpg" height="240"></p>
+<figcaption>Figure 2.12: Noninverting op-amp</figcaption>
+</figure>
+</div>
+<ul>
+<li>Input <span class="math inline">\(V_i(s)\)</span> is applied to the non-inverting terminal.</li>
+<li>Feedback network: <span class="math inline">\(Z_1(s)\)</span>–<span class="math inline">\(Z_2(s)\)</span> forming a voltage divider.</li>
+</ul>
+<p>Op-amp equation:</p>
+<p><span class="math display">\[
+V_o(s) = A\bigl(V_i(s) - V_1(s)\bigr)
+\]</span></p>
+</section>
+<section id="noninverting-op-amp-configuration-1" class="slide level2">
+<h2>Noninverting Op-Amp Configuration</h2>
+<p>By voltage division:</p>
+<p><span class="math display">\[
+V_1(s) = \frac{Z_1(s)}{Z_1(s) + Z_2(s)} V_o(s)
+\]</span></p>
+<p>Substitute into op-amp equation:</p>
+<p><span class="math display">\[
+V_o(s) = A\left[V_i(s) - \frac{Z_1}{Z_1 + Z_2} V_o(s)\right]
+\]</span></p>
+<p>Rearrange and solve for <span class="math inline">\(V_o/V_i\)</span>:</p>
+<p><span class="math display">\[
+\frac{V_o(s)}{V_i(s)} = \frac{A}{1 + A Z_1(s)/(Z_1(s) + Z_2(s))}
+\]</span></p>
+<p>For large <span class="math inline">\(A\)</span>, the “1” in the denominator is negligible:</p>
+<p><span class="math display">\[
+\frac{V_o(s)}{V_i(s)} \approx \frac{Z_1(s) + Z_2(s)}{Z_1(s)}
+\]</span></p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Noninverting op-amp transfer function (large <span class="math inline">\(A\)</span>):</p>
+<p><span class="math display">\[
+G(s) = \frac{V_o(s)}{V_i(s)} = \frac{Z_1(s) + Z_2(s)}{Z_1(s)}
+\]</span></p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Highlight difference vs inverting case: output is <strong>noninverting</strong> and gain expression differs.</p>
+<p>Again, if <span class="math inline">\(Z_1\)</span> and <span class="math inline">\(Z_2\)</span> are frequency-dependent, we get frequency-selective amplifiers and control elements.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-2.15-noninverting-op-amp-with-rc-networks" class="slide level2">
+<h2>Example 2.15 – Noninverting Op-Amp with R–C Networks</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/22dac4211cf6f760ab44e7fab4a9744a_MD5.jpg" height="260"></p>
+<figcaption>Figure 2.13: Noninverting circuit</figcaption>
+</figure>
+</div>
+<p>Given:</p>
+<ul>
+<li><span class="math inline">\(Z_1(s) = R_1 + \dfrac{1}{C_1 s}\)</span> (series <span class="math inline">\(R_1\)</span> and <span class="math inline">\(C_1\)</span>).</li>
+<li><span class="math inline">\(Z_2(s) = \dfrac{R_2 \bigl(1/(C_2 s)\bigr)}{R_2 + 1/(C_2 s)}\)</span> (parallel <span class="math inline">\(R_2\)</span> and <span class="math inline">\(C_2\)</span>).</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>Use:</p>
+<p><span class="math display">\[
+\frac{V_o(s)}{V_i(s)} = \frac{Z_1(s) + Z_2(s)}{Z_1(s)}
+\]</span></p>
+<p>After substituting and simplifying:</p>
+<p><span class="math display">\[
+\frac{V_o(s)}{V_i(s)} =
+\frac{C_2 C_1 R_2 R_1 s^{2} + (C_2 R_2 + C_1 R_2 + C_1 R_1)s + 1}
+{C_2 C_1 R_2 R_1 s^{2} + (C_2 R_2 + C_1 R_1)s + 1}
+\]</span></p>
+<aside class="notes">
+<p>Note that numerator and denominator are very similar; this suggests particular frequency-response characteristics (e.g., some zeros cancel near certain poles).</p>
+<p>Students don’t need to memorize this expression; the key is the method: find <span class="math inline">\(Z_1\)</span>, <span class="math inline">\(Z_2\)</span>, use the general noninverting formula.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="skill-assessment-example-mesh-vs.-nodal-consistency" class="slide level2 scrollable">
+<h2>Skill-Assessment Example – Mesh vs.&nbsp;Nodal Consistency</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/49d7a6b814dea795f58be0221d628a4f_MD5.jpg" height="260"></p>
+<figcaption>Figure 2.14: RLC network for Skill-Assessment 2.6</figcaption>
+</figure>
+</div>
+<p><strong>Problem:</strong></p>
+<p>Find <span class="math inline">\(G(s) = V_L(s)/V(s)\)</span> using:</p>
+<ol type="1">
+<li>Mesh analysis (KVL in <span class="math inline">\(s\)</span>-domain).</li>
+<li>Nodal analysis (KCL in <span class="math inline">\(s\)</span>-domain).</li>
+</ol>
+<p>Show both methods give:</p>
+<p><span class="math display">\[
+\frac{V_L(s)}{V(s)} = \frac{s^{2} + 2s + 1}{s^{2} + 5s + 2}
+\]</span></p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Try both methods yourself: - Mesh: define loop currents, write equations by inspection. - Nodal: select unknown node voltages, write KCL using admittances.</p>
+<p>This is great practice for exam-style problems.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>If time allows, outline one of the methods on the board and assign the other as an in-class exercise.</p>
+<p>Talk through checking: compare final expressions term-by-term to verify equivalence.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="skill-assessment-example-simple-op-amp-transfer-functions" class="slide level2 scrollable">
+<h2>Skill-Assessment Example – Simple Op-Amp Transfer Functions</h2>
+<p><strong>Given:</strong></p>
+<ul>
+<li><span class="math inline">\(Z_1(s)\)</span> = impedance of a 10 μF capacitor: <span class="math inline">\(Z_1(s) = \dfrac{1}{C s} = \dfrac{1}{10\times 10^{-6} s} = \dfrac{10^5}{s}\)</span>.</li>
+<li><span class="math inline">\(Z_2(s)\)</span> = impedance of a 100 kΩ resistor: <span class="math inline">\(Z_2(s) = 10^5\ \Omega\)</span>.</li>
+</ul>
+<ol type="a">
+<li><strong>Inverting amplifier</strong> (Figure 2.10(c)):</li>
+</ol>
+<p><span class="math display">\[
+G(s) = \frac{V_o(s)}{V_i(s)} = -\frac{Z_2}{Z_1} = -\frac{10^5}{10^5/s} = -s
+\]</span></p>
+<ol start="2" type="a">
+<li><strong>Noninverting amplifier</strong> (Figure 2.12):</li>
+</ol>
+<p><span class="math display">\[
+G(s) = \frac{Z_1 + Z_2}{Z_1} = \frac{\dfrac{10^5}{s} + 10^5}{\dfrac{10^5}{s}} = s + 1
+\]</span></p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Result:</p>
+<ul>
+<li>Inverting configuration behaves like a <strong>differentiator</strong>: <span class="math inline">\(G(s) = -s\)</span>.</li>
+<li>Noninverting configuration behaves like a <strong>differentiator plus proportional term</strong>: <span class="math inline">\(G(s) = s + 1\)</span>.</li>
+</ul>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Mention that practical differentiators need high-frequency roll-off and noise considerations; ideal <span class="math inline">\(s\)</span>-behavior is a starting point.</p>
+<p>This illustrates how simple op-amp + RC networks already implement fundamental control operations (P, D, and later I).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="real-world-ece-application-rlc-filters-and-sensors" class="slide level2">
+<h2>Real-World ECE Application: RLC Filters and Sensors</h2>
+<ul>
+<li>A series RLC circuit like Example 2.6 can be used as a band-pass filter in audio or communication systems.</li>
+<li>The transfer function <span class="math inline">\(V_C(s)/V(s)\)</span> shapes how different frequencies are passed or attenuated.</li>
+<li>In control systems, the same RLC can be part of a sensor conditioning circuit, where <span class="math inline">\(v_C(t)\)</span> represents a measured physical quantity (e.g., strain gauge + filter).</li>
+<li>Designing the resistor, inductor, and capacitor values sets the “dynamic response” (rise time, overshoot) of the measured signal feeding the controller.</li>
+</ul>
+<aside class="notes">
+<p>Use this slide to connect the math back to hardware: filter design, sensor interfaces, analog front-ends.</p>
+<p>Ask: “If we want a faster sensor, which parameter might we reduce — <span class="math inline">\(L\)</span>, <span class="math inline">\(C\)</span>, or <span class="math inline">\(R\)</span>? What does that do to <span class="math inline">\(\omega_n\)</span> and damping?”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="summary-key-points" class="slide level2">
+<h2>Summary / Key Points</h2>
+<ul>
+<li>R, L, C elements have simple Laplace-domain impedances: <span class="math inline">\(Z_R = R\)</span>, <span class="math inline">\(Z_L = Ls\)</span>, <span class="math inline">\(Z_C = 1/(Cs)\)</span>.</li>
+<li>We can model circuits in the <span class="math inline">\(s\)</span>-domain by replacing each element with <span class="math inline">\(Z(s)\)</span> and applying KVL/KCL just like in DC circuits.</li>
+<li>For simple circuits, transfer functions can be obtained via:
+<ul>
+<li>Differential equation → Laplace transform.</li>
+<li>Mesh analysis (KVL in <span class="math inline">\(s\)</span>-domain).</li>
+<li>Nodal analysis (KCL in <span class="math inline">\(s\)</span>-domain).</li>
+<li>Voltage division using impedances.</li>
+</ul></li>
+<li>For multi-loop / multi-node circuits:
+<ul>
+<li>Mesh equations: diagonal terms = sum of mesh impedances; off-diagonals = negative common impedances.</li>
+<li>Node equations: diagonal terms = sum of admittances at node; off-diagonals = negative common admittances.</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>Op-amp circuits (inverting and noninverting) realize transfer functions:
+<ul>
+<li>Inverting: <span class="math inline">\(G(s) = -Z_2(s)/Z_1(s)\)</span>.</li>
+<li>Noninverting (large <span class="math inline">\(A\)</span>): <span class="math inline">\(G(s) = [Z_1(s)+Z_2(s)]/Z_1(s)\)</span>.</li>
+</ul></li>
+<li>These circuit transfer functions become building blocks for controllers (e.g., PID) and analog filters in control systems.</li>
+</ul>
+<aside class="notes">
+<p>Reinforce the unifying theme: once we have <span class="math inline">\(G(s)\)</span>, we can treat circuits like any other dynamic system (mechanical, thermal, etc.), using the same control tools.</p>
+<p>Preview: next, we’ll apply identical modeling ideas to mechanical systems via analogies (force–voltage, velocity–current).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="key-formulas-summary" class="slide level2">
+<h2>Key Formulas Summary</h2>
+<p><strong>R, L, C Impedances and Admittances</strong></p>
+<ul>
+<li>Resistor:</li>
+</ul>
+<p><span class="math display">\[
+Z_R(s) = R, \quad Y_R(s) = \frac{1}{R} = G
+\]</span></p>
+<ul>
+<li>Capacitor:</li>
+</ul>
+<p><span class="math display">\[
+Z_C(s) = \frac{1}{Cs}, \quad Y_C(s) = Cs
+\]</span></p>
+<ul>
+<li>Inductor:</li>
+</ul>
+<p><span class="math display">\[
+Z_L(s) = Ls, \quad Y_L(s) = \frac{1}{Ls}
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p><strong>Generic Transfer Function Definition</strong></p>
+<ul>
+<li>For input <span class="math inline">\(U(s)\)</span> and output <span class="math inline">\(Y(s)\)</span>:</li>
+</ul>
+<p><span class="math display">\[
+G(s) = \frac{Y(s)}{U(s)}
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p><strong>Series RLC (capacitor output) – Example 2.6</strong></p>
+<p><span class="math display">\[
+\frac{V_C(s)}{V(s)} = \frac{1/LC}{s^{2} + \dfrac{R}{L}s + \dfrac{1}{LC}}
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p><strong>Series Impedances in Loop Equation</strong></p>
+<ul>
+<li>General KVL in <span class="math inline">\(s\)</span>-domain:</li>
+</ul>
+<p><span class="math display">\[
+\bigl[\text{Sum of impedances}\bigr] I(s) = \bigl[\text{Sum of sources}\bigr]
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p><strong>Two-Mesh Pattern</strong></p>
+<p><span class="math display">\[
+\begin{bmatrix}
+\sum Z_{\text{Mesh 1}} &amp; -\sum Z_{\text{common}} \\
+-\sum Z_{\text{common}} &amp; \sum Z_{\text{Mesh 2}}
+\end{bmatrix}
+\begin{bmatrix}
+I_1(s) \\ I_2(s)
+\end{bmatrix}
+=
+\begin{bmatrix}
+\sum V_{\text{Mesh 1}} \\ \sum V_{\text{Mesh 2}}
+\end{bmatrix}
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p><strong>Two-Node Pattern (Admittances)</strong></p>
+<p><span class="math display">\[
+\begin{bmatrix}
+\sum Y_{\text{Node 1}} &amp; -\sum Y_{\text{common}} \\
+-\sum Y_{\text{common}} &amp; \sum Y_{\text{Node 2}}
+\end{bmatrix}
+\begin{bmatrix}
+V_1(s) \\ V_2(s)
+\end{bmatrix}
+=
+\begin{bmatrix}
+\sum I_{\text{Node 1}} \\ \sum I_{\text{Node 2}}
+\end{bmatrix}
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p><strong>Op-Amp Transfer Functions</strong></p>
+<ul>
+<li>Inverting configuration:</li>
+</ul>
+<p><span class="math display">\[
+\frac{V_o(s)}{V_i(s)} = -\frac{Z_2(s)}{Z_1(s)}
+\]</span></p>
+<ul>
+<li>Noninverting configuration (large <span class="math inline">\(A\)</span>):</li>
+</ul>
+<p><span class="math display">\[
+\frac{V_o(s)}{V_i(s)} = \frac{Z_1(s) + Z_2(s)}{Z_1(s)}
+\]</span></p>
+<aside class="notes">
+<p>Encourage students to keep this formula slide handy as a reference while doing homework and labs, especially the <span class="math inline">\(Z(s)\)</span> of R, L, C and the op-amp formulas.</p>
+<p>This reduces algebra mistakes and lets them focus on modeling choices and interpretation of <span class="math inline">\(G(s)\)</span>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section>
+<section>
+<section id="interactive-deck" class="title-slide slide level1 center">
+<h1>Interactive Deck</h1>
+
+</section>
+<section id="interactive-agenda" class="slide level2">
+<h2>Interactive Agenda</h2>
+<ul>
+<li>Explore R, L, C impedances in Python (Pyodide).</li>
+<li>Experiment with pole locations of an RLC circuit and see their effect on <span class="math inline">\(G(s)\)</span>.</li>
+<li>Compare mesh vs.&nbsp;nodal analysis numerically.</li>
+<li>Interactively explore inverting and noninverting op-amp transfer functions.</li>
+</ul>
+<aside class="notes">
+<p>This addendum is meant to be used <em>after</em> students have seen the main slides.</p>
+<p>Encourage them to modify parameters, re-run cells, and observe how circuit behavior changes numerically and graphically.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-r-l-c-impedance-calculator" class="slide level2">
+<h2>Interactive: R, L, C Impedance Calculator</h2>
+<p>Use this live Python block to calculate impedances for R, L, C at a chosen value of <span class="math inline">\(s = \sigma + j\omega\)</span>.</p>
+<div>
+<div id="pyodide-1" class="exercise-cell">
+
+</div>
+<script type="pyodide-1-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1wb3J0IGNtYXRoXG5cbiMgRWRpdCB0aGVzZSB2YWx1ZXMgYW5kIHJlLXJ1blxuUiA9IDEwMDAuMCAgICAgICAgIyBPaG1zXG5MID0gMTBlLTMgICAgICAgICAjIEhlbnJpZXNcbkMgPSAxZS02ICAgICAgICAgICMgRmFyYWRzXG5zaWdtYSA9IDAuMCAgICAgICAjIFJlYWwgcGFydCBvZiBzXG5vbWVnYSA9IDEwMDAuMCAgICAjIEltYWcgcGFydCAocmFkL3MpLCBzID0gaipvbWVnYSBoZXJlXG5cbnMgPSBjb21wbGV4KHNpZ21hLCBvbWVnYSlcblxuWl9SID0gUlxuWl9MID0gTCAqIHNcblpfQyA9IDEgLyAoQyAqIHMpXG5cbnByaW50KGZcInMgPSB7czouMWZ9XCIpXG5wcmludChmXCJaX1IgPSB7Wl9SOi4yZn0gzqlcIilcbnByaW50KGZcIlpfTCA9IHtaX0w6LjJmfSDOqVwiKVxucHJpbnQoZlwiWl9DID0ge1pfQzouMmZ9IM6pXCIpIn0=
+</script>
+</div>
+<aside class="notes">
+<p>Ask students to:</p>
+<ul>
+<li>Set <span class="math inline">\(\sigma = 0\)</span> and vary <span class="math inline">\(\omega\)</span> to see frequency-dependent behavior.</li>
+<li>Notice that <span class="math inline">\(|Z_L|\)</span> increases with <span class="math inline">\(\omega\)</span> and <span class="math inline">\(|Z_C|\)</span> decreases.</li>
+</ul>
+<p>Connect this to intuition from AC circuit analysis and Bode plots they’ll see later.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reactive-visualizing-r-l-c-magnitudes-vs-frequency" class="slide level2">
+<h2>Reactive: Visualizing R, L, C Magnitudes vs Frequency</h2>
+<p>Use the sliders to change <span class="math inline">\(R\)</span>, <span class="math inline">\(L\)</span>, and <span class="math inline">\(C\)</span> values, and see how the impedance magnitudes vary with frequency.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="1347" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1346;"><span id="cb1-1347"><a></a>viewof R_val <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">10</span><span class="op">,</span> <span class="dv">5000</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">1000</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"R (Ω)"</span>})</span>
+<span id="cb1-1348"><a></a>viewof L_val <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">1e-4</span><span class="op">,</span> <span class="fl">0.1</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">1e-4</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="fl">1e-2</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"L (H)"</span>})</span>
+<span id="cb1-1349"><a></a>viewof C_val <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">1e-9</span><span class="op">,</span> <span class="fl">1e-4</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">1e-9</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="fl">1e-6</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"C (F)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-2" class="exercise-cell">
+
+</div>
+<script type="pyodide-2-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiUl92YWwiLCJMX3ZhbCIsIkNfdmFsIl19LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5pbXBvcnQgcGxvdGx5LmdyYXBoX29iamVjdHMgYXMgZ29cblxuUiA9IGZsb2F0KFJfdmFsKVxuTCA9IGZsb2F0KExfdmFsKVxuQyA9IGZsb2F0KENfdmFsKVxuXG53ID0gbnAubG9nc3BhY2UoMSwgNSwgMjAwKSAgICAgICAgICAgIyAxMCB0byAxZTUgcmFkL3NcbnMgPSAxaiAqIHdcblxuWl9SID0gUiAqIG5wLm9uZXNfbGlrZSh3KVxuWl9MID0gTCAqIHNcblpfQyA9IDEgLyAoQyAqIHMpXG5cbmZpZyA9IGdvLkZpZ3VyZSgpXG5maWcuYWRkX3RyYWNlKGdvLlNjYXR0ZXIoeD13LCB5PW5wLmFicyhaX1IpLCBtb2RlPVwibGluZXNcIiwgbmFtZT1cInxaX1J8XCIpKVxuZmlnLmFkZF90cmFjZShnby5TY2F0dGVyKHg9dywgeT1ucC5hYnMoWl9MKSwgbW9kZT1cImxpbmVzXCIsIG5hbWU9XCJ8Wl9MfFwiKSlcbmZpZy5hZGRfdHJhY2UoZ28uU2NhdHRlcih4PXcsIHk9bnAuYWJzKFpfQyksIG1vZGU9XCJsaW5lc1wiLCBuYW1lPVwifFpfQ3xcIikpXG5cbmZpZy51cGRhdGVfbGF5b3V0KFxuICAgIHhheGlzX3R5cGU9XCJsb2dcIiwgeWF4aXNfdHlwZT1cImxvZ1wiLFxuICAgIHhheGlzX3RpdGxlPVwiz4kgKHJhZC9zKVwiLFxuICAgIHlheGlzX3RpdGxlPVwifFp8ICjOqSlcIixcbiAgICB0aXRsZT1cIkltcGVkYW5jZSBNYWduaXR1ZGVzIHZzIEZyZXF1ZW5jeVwiXG4pXG5maWcifQ==
+</script>
+</div>
+<aside class="notes">
+<p>Have students:</p>
+<ul>
+<li>Increase <span class="math inline">\(L\)</span> and see <span class="math inline">\(|Z_L|\)</span> grow faster with frequency.</li>
+<li>Increase <span class="math inline">\(C\)</span> and see <span class="math inline">\(|Z_C|\)</span> drop faster with frequency.</li>
+</ul>
+<p>Link this to the behavior of filters and resonance in RLC circuits.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-series-rlc-transfer-function-coefficients" class="slide level2">
+<h2>Interactive: Series RLC Transfer Function Coefficients</h2>
+<p>Recall for the series RLC with capacitor voltage output (Example 2.6):</p>
+<p><span class="math display">\[
+\frac{V_C(s)}{V(s)} = \frac{1/LC}{s^{2} + \dfrac{R}{L}s + \dfrac{1}{LC}}
+\]</span></p>
+<p>Use Python to compute the denominator coefficients for your chosen <span class="math inline">\(R\)</span>, <span class="math inline">\(L\)</span>, <span class="math inline">\(C\)</span>.</p>
+<div>
+<div id="pyodide-3" class="exercise-cell">
+
+</div>
+<script type="pyodide-3-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiIyBFZGl0IHZhbHVlc1xuUiA9IDEwLjAgICAgICAgIyBPaG1zXG5MID0gMWUtMyAgICAgICAjIEhcbkMgPSAxZS02ICAgICAgICMgRlxuXG5hMiA9IDEuMFxuYTEgPSBSIC8gTFxuYTAgPSAxLjAgLyAoTCAqIEMpXG5cbnByaW50KFwiRGVub21pbmF0b3I6IHNeMiArIChSL0wpIHMgKyAxLyhMQylcIilcbnByaW50KGZcImEyID0ge2EyOi4zZ30sIGExID0ge2ExOi4zZ30sIGEwID0ge2EwOi4zZ31cIikifQ==
+</script>
+</div>
+<aside class="notes">
+<p>Connect: - <span class="math inline">\(a_0 = \omega_n^2 = 1/(LC)\)</span>. - <span class="math inline">\(a_1 = 2 \zeta \omega_n = R/L\)</span>.</p>
+<p>Students can change <span class="math inline">\(R\)</span> and see how damping ratio changes qualitatively (although we don’t compute <span class="math inline">\(\zeta\)</span> explicitly here).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reactive-poles-of-the-series-rlc-transfer-function" class="slide level2">
+<h2>Reactive: Poles of the Series RLC Transfer Function</h2>
+<p>Interactively vary <span class="math inline">\(R\)</span>, <span class="math inline">\(L\)</span>, and <span class="math inline">\(C\)</span>, and observe the pole locations of:</p>
+<p><span class="math display">\[
+G(s) = \frac{V_C(s)}{V(s)} = \frac{1/LC}{s^{2} + \frac{R}{L}s + \frac{1}{LC}}
+\]</span></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="1441" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1440;"><span id="cb2-1441"><a></a>viewof R_rlc <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">100</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"R (Ω)"</span>})</span>
+<span id="cb2-1442"><a></a>viewof L_rlc <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">1e-4</span><span class="op">,</span> <span class="fl">1e-1</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">1e-4</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="fl">1e-3</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"L (H)"</span>})</span>
+<span id="cb2-1443"><a></a>viewof C_rlc <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">1e-9</span><span class="op">,</span> <span class="fl">1e-4</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">1e-9</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="fl">1e-6</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"C (F)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-4" class="exercise-cell">
+
+</div>
+<script type="pyodide-4-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiUl9ybGMiLCJMX3JsYyIsIkNfcmxjIl19LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5pbXBvcnQgcGxvdGx5LmdyYXBoX29iamVjdHMgYXMgZ29cbmltcG9ydCBjbWF0aFxuXG5SID0gZmxvYXQoUl9ybGMpXG5MID0gZmxvYXQoTF9ybGMpXG5DID0gZmxvYXQoQ19ybGMpXG5cbiMgRGVub21pbmF0b3I6IHNeMiArIChSL0wpcyArIDEvKExDKVxuYSA9IDEuMFxuYiA9IFIgLyBMXG5jID0gMS4wIC8gKEwgKiBDKVxuXG5kaXNjID0gYioqMiAtIDQqYSpjXG5yb290MSA9ICgtYiArIGNtYXRoLnNxcnQoZGlzYykpIC8gKDIqYSlcbnJvb3QyID0gKC1iIC0gY21hdGguc3FydChkaXNjKSkgLyAoMiphKVxuXG5maWcgPSBnby5GaWd1cmUoKVxuZmlnLmFkZF90cmFjZShnby5TY2F0dGVyKFxuICAgIHg9W3Jvb3QxLnJlYWwsIHJvb3QyLnJlYWxdLFxuICAgIHk9W3Jvb3QxLmltYWcsIHJvb3QyLmltYWddLFxuICAgIG1vZGU9XCJtYXJrZXJzK3RleHRcIixcbiAgICB0ZXh0PVtcInAxXCIsIFwicDJcIl0sXG4gICAgdGV4dHBvc2l0aW9uPVwidG9wIGNlbnRlclwiLFxuICAgIG5hbWU9XCJQb2xlc1wiXG4pKVxuXG5maWcuYWRkX3NoYXBlKFxuICAgIHR5cGU9XCJsaW5lXCIsIHgwPS0xMDAwLCB4MT0xMDAwLCB5MD0wLCB5MT0wLFxuICAgIGxpbmU9ZGljdChjb2xvcj1cImdyYXlcIiwgZGFzaD1cImRhc2hcIilcbilcblxuZmlnLnVwZGF0ZV9sYXlvdXQoXG4gICAgeGF4aXNfdGl0bGU9XCJSZShzKVwiLCB5YXhpc190aXRsZT1cIkltKHMpXCIsXG4gICAgdGl0bGU9ZlwiUkxDIFBvbGVzOiBwMT17cm9vdDE6LjNnfSwgcDI9e3Jvb3QyOi4zZ31cIixcbiAgICB4YXhpcz1kaWN0KHplcm9saW5lPVRydWUsIHplcm9saW5lY29sb3I9XCJibGFja1wiKSxcbiAgICB5YXhpcz1kaWN0KHplcm9saW5lPVRydWUsIHplcm9saW5lY29sb3I9XCJibGFja1wiKVxuKVxuZmlnIn0=
+</script>
+</div>
+<aside class="notes">
+<p>Ask students:</p>
+<ul>
+<li>Reduce <span class="math inline">\(R\)</span> towards 0. What happens to the poles? (Complex conjugate with small real part: oscillatory).</li>
+<li>Increase <span class="math inline">\(R\)</span> large. Do the poles become real and move further left?</li>
+</ul>
+<p>This visually ties component values to stability and damping behavior.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-mesh-vs.-nodal-equation-coefficients-conceptual" class="slide level2">
+<h2>Interactive: Mesh vs.&nbsp;Nodal Equation Coefficients (Conceptual)</h2>
+<p>For the two-loop mesh system in Example 2.10, the equations:</p>
+<p><span class="math display">\[
+(R_1 + Ls) I_1(s) - Ls I_2(s) = V(s)
+\]</span></p>
+<p><span class="math display">\[
+- Ls I_1(s) + \left(Ls + R_2 + \frac{1}{Cs}\right) I_2(s) = 0
+\]</span></p>
+<p>Use Python to build the coefficient matrix symbolically for selected <span class="math inline">\(R_1\)</span>, <span class="math inline">\(R_2\)</span>, <span class="math inline">\(L\)</span>, <span class="math inline">\(C\)</span> at a particular <span class="math inline">\(s\)</span>.</p>
+<div>
+<div id="pyodide-5" class="exercise-cell">
+
+</div>
+<script type="pyodide-5-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1wb3J0IHN5bXB5IGFzIHNwXG5cbiMgRGVmaW5lIHN5bWJvbHNcbnMgPSBzcC5zeW1ib2xzKCdzJylcblIxLCBSMiwgTCwgQyA9IDEuMCwgMi4wLCAwLjUsIDAuMjUgICAjIEVkaXQgdGhlc2UgaWYgZGVzaXJlZFxuXG5BMTEgPSBSMSArIEwqc1xuQTEyID0gLUwqc1xuQTIxID0gLUwqc1xuQTIyID0gTCpzICsgUjIgKyAxLyhDKnMpXG5cbkEgPSBzcC5NYXRyaXgoW1tBMTEsIEExMl0sXG4gICAgICAgICAgICAgICBbQTIxLCBBMjJdXSlcblxucHJpbnQoXCJNZXNoIGNvZWZmaWNpZW50IG1hdHJpeCBBKHMpID1cIilcbnNwLnBwcmludChBKSJ9
+</script>
+</div>
+<aside class="notes">
+<p>This reinforces the “pattern” of mesh equations and gives students a symbolic-algebra view.</p>
+<p>They can change <span class="math inline">\(R_1, R_2, L, C\)</span> and see how each term changes the matrix entries.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reactive-inverting-op-amp-frequency-response-magnitude" class="slide level2">
+<h2>Reactive: Inverting Op-Amp – Frequency Response Magnitude</h2>
+<p>For an inverting op-amp:</p>
+<p><span class="math display">\[
+G(s) = -\frac{Z_2(s)}{Z_1(s)}
+\]</span></p>
+<p>Here, choose:</p>
+<ul>
+<li><span class="math inline">\(Z_1\)</span> as a capacitor <span class="math inline">\(C_1\)</span> (pure integrator).</li>
+<li><span class="math inline">\(Z_2\)</span> as a resistor <span class="math inline">\(R_2\)</span>.</li>
+</ul>
+<p>Then:</p>
+<p><span class="math display">\[
+G(s) = -R_2 C_1 s
+\]</span></p>
+<p>Magnitude grows linearly with <span class="math inline">\(\omega\)</span>. Explore this behavior interactively.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="1568" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1567;"><span id="cb3-1568"><a></a>viewof R2_inv <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">1e3</span><span class="op">,</span> <span class="fl">1e6</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">1e3</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="fl">1e5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"R2 (Ω)"</span>})</span>
+<span id="cb3-1569"><a></a>viewof C1_inv <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">1e-8</span><span class="op">,</span> <span class="fl">1e-4</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">1e-8</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="fl">1e-5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"C1 (F)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-6" class="exercise-cell">
+
+</div>
+<script type="pyodide-6-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiUjJfaW52IiwiQzFfaW52Il19LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5pbXBvcnQgcGxvdGx5LmdyYXBoX29iamVjdHMgYXMgZ29cblxuUjIgPSBmbG9hdChSMl9pbnYpXG5DMSA9IGZsb2F0KEMxX2ludilcblxudyA9IG5wLmxvZ3NwYWNlKDEsIDUsIDIwMClcbnMgPSAxaiAqIHdcblxuRyA9IC1SMiAqIEMxICogc1xuXG5maWcgPSBnby5GaWd1cmUoKVxuZmlnLmFkZF90cmFjZShnby5TY2F0dGVyKHg9dywgeT1ucC5hYnMoRyksIG1vZGU9XCJsaW5lc1wiLCBuYW1lPVwifEcoas+JKXxcIikpXG5cbmZpZy51cGRhdGVfbGF5b3V0KFxuICAgIHhheGlzX3R5cGU9XCJsb2dcIiwgeWF4aXNfdHlwZT1cImxvZ1wiLFxuICAgIHhheGlzX3RpdGxlPVwiz4kgKHJhZC9zKVwiLFxuICAgIHlheGlzX3RpdGxlPVwifEcoas+JKXxcIixcbiAgICB0aXRsZT1cIk1hZ25pdHVkZSBvZiBJbnZlcnRpbmcgRGlmZmVyZW50aWF0b3IgRyhqz4kpID0gLVLigoJD4oKBIGrPiVwiXG4pXG5maWcifQ==
+</script>
+</div>
+<aside class="notes">
+<p>Students should see:</p>
+<ul>
+<li>Increasing <span class="math inline">\(R_2\)</span> or <span class="math inline">\(C_1\)</span> shifts the magnitude curve up.</li>
+<li>This illustrates how component choice sets differentiator gain.</li>
+</ul>
+<p>You may also discuss why in practice high-frequency gain is limited to reduce noise amplification.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-noninverting-op-amp-dc-gain-with-resistive-network" class="slide level2">
+<h2>Interactive: Noninverting Op-Amp – DC Gain with Resistive Network</h2>
+<p>For large-<span class="math inline">\(A\)</span> noninverting op-amp:</p>
+<p><span class="math display">\[
+G(s) = \frac{Z_1 + Z_2}{Z_1}
+\]</span></p>
+<p>Let <span class="math inline">\(Z_1 = R_1\)</span> and <span class="math inline">\(Z_2 = R_2\)</span> (purely resistive):</p>
+<p><span class="math display">\[
+G = 1 + \frac{R_2}{R_1}
+\]</span></p>
+<p>Use Python to compute the DC gain for selected resistor values.</p>
+<div>
+<div id="pyodide-7" class="exercise-cell">
+
+</div>
+<script type="pyodide-7-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiIyBFZGl0IHZhbHVlcyBmb3IgUjEgYW5kIFIyIChPaG1zKVxuUjEgPSAxMF8wMDAuMFxuUjIgPSA5MF8wMDAuMFxuXG5HID0gMSArIFIyIC8gUjFcblxucHJpbnQoZlwiTm9uaW52ZXJ0aW5nIERDIGdhaW4gd2l0aCBSMT17UjE6LjBmfSDOqSwgUjI9e1IyOi4wZn0gzqk6XCIpXG5wcmludChmXCJHID0ge0c6LjJmfVwiKSJ9
+</script>
+</div>
+<aside class="notes">
+<p>Encourage students to try different resistor ratios and connect to amplifier design:</p>
+<ul>
+<li>For <span class="math inline">\(G = 2\)</span>, what ratio <span class="math inline">\(R_2/R_1\)</span> do we need?</li>
+<li>For <span class="math inline">\(G = 10\)</span>?</li>
+</ul>
+<p>This also links to the special case used often in sensor amplifiers.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reactive-noninverting-op-amp-with-simple-rc-feedback" class="slide level2">
+<h2>Reactive: Noninverting Op-Amp with Simple RC Feedback</h2>
+<p>Make <span class="math inline">\(Z_1 = R_1 + 1/(C_1 s)\)</span> and <span class="math inline">\(Z_2 = R_2\)</span> (for simplicity). Then approximately:</p>
+<p><span class="math display">\[
+G(s) = \frac{Z_1 + Z_2}{Z_1} = 1 + \frac{R_2}{R_1 + 1/(C_1 s)}
+\]</span></p>
+<p>Interactively explore <span class="math inline">\(|G(j\omega)|\)</span> as <span class="math inline">\(R_1\)</span>, <span class="math inline">\(R_2\)</span>, and <span class="math inline">\(C_1\)</span> vary.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="1661" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1660;"><span id="cb4-1661"><a></a>viewof R1_ni <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">1e3</span><span class="op">,</span> <span class="fl">1e6</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">1e3</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="fl">1e4</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"R1 (Ω)"</span>})</span>
+<span id="cb4-1662"><a></a>viewof R2_ni <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">1e3</span><span class="op">,</span> <span class="fl">1e6</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">1e3</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="fl">9e4</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"R2 (Ω)"</span>})</span>
+<span id="cb4-1663"><a></a>viewof C1_ni <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">1e-9</span><span class="op">,</span> <span class="fl">1e-4</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">1e-9</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="fl">1e-6</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"C1 (F)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-8" class="exercise-cell">
+
+</div>
+<script type="pyodide-8-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiUjFfbmkiLCJSMl9uaSIsIkMxX25pIl19LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5pbXBvcnQgcGxvdGx5LmdyYXBoX29iamVjdHMgYXMgZ29cblxuUjEgPSBmbG9hdChSMV9uaSlcblIyID0gZmxvYXQoUjJfbmkpXG5DMSA9IGZsb2F0KEMxX25pKVxuXG53ID0gbnAubG9nc3BhY2UoMSwgNSwgMjAwKVxucyA9IDFqICogd1xuXG5aMSA9IFIxICsgMS8oQzEgKiBzKVxuWjIgPSBSMlxuXG5HID0gKFoxICsgWjIpIC8gWjFcblxuZmlnID0gZ28uRmlndXJlKClcbmZpZy5hZGRfdHJhY2UoZ28uU2NhdHRlcih4PXcsIHk9bnAuYWJzKEcpLCBtb2RlPVwibGluZXNcIiwgbmFtZT1cInxHKGrPiSl8XCIpKVxuXG5maWcudXBkYXRlX2xheW91dChcbiAgICB4YXhpc190eXBlPVwibG9nXCIsIHlheGlzX3R5cGU9XCJsb2dcIixcbiAgICB4YXhpc190aXRsZT1cIs+JIChyYWQvcylcIixcbiAgICB5YXhpc190aXRsZT1cInxHKGrPiSl8XCIsXG4gICAgdGl0bGU9XCJOb25pbnZlcnRpbmcgUkMgRmVlZGJhY2s6IHxHKGrPiSl8XCJcbilcbmZpZyJ9
+</script>
+</div>
+<aside class="notes">
+<p>Students can see how adding a capacitor in series with <span class="math inline">\(R_1\)</span> introduces frequency dependence into the gain.</p>
+<p>This is a simple step towards understanding frequency-compensated amplifiers and lead/lag compensators in control.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="wrap-up-interactive-check" class="slide level2">
+<h2>Wrap-Up Interactive Check</h2>
+<p>Use the block below as a quick self-check: given <span class="math inline">\(R\)</span>, <span class="math inline">\(L\)</span>, <span class="math inline">\(C\)</span> and the form</p>
+<p><span class="math display">\[
+G(s) = \frac{1/LC}{s^{2} + \frac{R}{L}s + \frac{1}{LC}},
+\]</span></p>
+<p>numerically evaluate <span class="math inline">\(|G(j\omega)|\)</span> at a chosen frequency.</p>
+<div>
+<div id="pyodide-9" class="exercise-cell">
+
+</div>
+<script type="pyodide-9-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1wb3J0IGNtYXRoXG5cbiMgRWRpdCB0aGVzZSB2YWx1ZXNcblIgPSAxMC4wICAgICAgIyBPaG1zXG5MID0gMWUtMyAgICAgICMgSFxuQyA9IDFlLTYgICAgICAjIEZcbm9tZWdhID0gMTAwMCAgIyByYWQvc1xuXG5zID0gMWogKiBvbWVnYVxubnVtID0gMS8oTCpDKVxuZGVuID0gcyoqMiArIChSL0wpKnMgKyAxLyhMKkMpXG5HID0gbnVtIC8gZGVuXG5cbnByaW50KGZcInMgPSBqe29tZWdhfVwiKVxucHJpbnQoZlwiRyhqz4kpID0ge0c6LjRnfVwiKVxucHJpbnQoZlwifEcoas+JKXwgPSB7YWJzKEcpOi40Z31cIikifQ==
+</script>
+</div>
+<aside class="notes">
+<p>Encourage students to compare this numeric magnitude with what they see on the pole plot and Bode-like plots earlier.</p>
+<p>This ties everything—component values, transfer function form, poles, and numerical frequency response—into a coherent picture.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+
+<script type="pyodide-data">
+eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yOC4xL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIiwibnVtcHkiLCJwbG90bHkiLCJuYmZvcm1hdCJdfX0=
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTkiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl85ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS05LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtOS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzkgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzksIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTgiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoiX3B5b2RpZGVfdmFsdWVfOCA9IHtcbiAgY29uc3QgeyBoaWdobGlnaHRQeXRob24sIGI2NERlY29kZX0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS04LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgLy8gRGVmYXVsdCBldmFsdWF0aW9uIGNvbmZpZ3VyYXRpb25cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oe1xuICAgIGlkOiBcInB5b2RpZGUtOC1jb250ZW50c1wiLFxuICAgIGVjaG86IHRydWUsXG4gICAgb3V0cHV0OiB0cnVlXG4gIH0sIGJsb2NrLmF0dHIpO1xuXG4gIC8vIEV2YWx1YXRlIHRoZSBwcm92aWRlZCBQeXRob24gY29kZVxuICBjb25zdCByZXN1bHQgPSBweW9kaWRlT2pzLnByb2Nlc3Moe2NvZGU6IGJsb2NrLmNvZGUsIG9wdGlvbnN9LCB7UjFfbmksIFIyX25pLCBDMV9uaX0pO1xuXG4gIC8vIEVhcmx5IHlpZWxkIHdoaWxlIHdlIHdhaXQgZm9yIHRoZSBmaXJzdCBldmFsdWF0aW9uIGFuZCByZW5kZXJcbiAgaWYgKG9wdGlvbnMub3V0cHV0ICYmICEoXCI4XCIgaW4gcHlvZGlkZU9qcy5yZW5kZXJlZE9qcykpIHtcbiAgICBjb25zdCBjb250YWluZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpO1xuICAgIGNvbnN0IHNwaW5uZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpO1xuXG4gICAgaWYgKG9wdGlvbnMuZWNobykge1xuICAgICAgLy8gU2hvdyBvdXRwdXQgYXMgaGlnaGxpZ2h0ZWQgc291cmNlXG4gICAgICBjb25zdCBwcmVFbGVtID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcInByZVwiKTtcbiAgICAgIGNvbnRhaW5lci5jbGFzc05hbWUgPSBcInNvdXJjZUNvZGVcIjtcbiAgICAgIHByZUVsZW0uY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlIHB5dGhvblwiO1xuICAgICAgcHJlRWxlbS5hcHBlbmRDaGlsZChoaWdobGlnaHRQeXRob24oYmxvY2suY29kZSkpO1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItZ3JvdyBzcGlubmVyLWdyb3ctc20gbS0yIHBvc2l0aW9uLWFic29sdXRlIHRvcC0wIGVuZC0wXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKHNwaW5uZXIpO1xuICAgICAgY29udGFpbmVyLmFwcGVuZENoaWxkKHByZUVsZW0pO1xuICAgIH0gZWxzZSB7XG4gICAgICBzcGlubmVyLmNsYXNzTmFtZSA9IFwic3Bpbm5lci1ib3JkZXIgc3Bpbm5lci1ib3JkZXItc21cIjtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICB9XG5cbiAgICB5aWVsZCBjb250YWluZXI7XG4gIH1cblxuICBweW9kaWRlT2pzLnJlbmRlcmVkT2pzW1wiOFwiXSA9IHRydWU7XG4gIHlpZWxkIGF3YWl0IHJlc3VsdDtcbn1cbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTciLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl83ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS03LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzcgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzcsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTYiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoiX3B5b2RpZGVfdmFsdWVfNiA9IHtcbiAgY29uc3QgeyBoaWdobGlnaHRQeXRob24sIGI2NERlY29kZX0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS02LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgLy8gRGVmYXVsdCBldmFsdWF0aW9uIGNvbmZpZ3VyYXRpb25cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oe1xuICAgIGlkOiBcInB5b2RpZGUtNi1jb250ZW50c1wiLFxuICAgIGVjaG86IHRydWUsXG4gICAgb3V0cHV0OiB0cnVlXG4gIH0sIGJsb2NrLmF0dHIpO1xuXG4gIC8vIEV2YWx1YXRlIHRoZSBwcm92aWRlZCBQeXRob24gY29kZVxuICBjb25zdCByZXN1bHQgPSBweW9kaWRlT2pzLnByb2Nlc3Moe2NvZGU6IGJsb2NrLmNvZGUsIG9wdGlvbnN9LCB7UjJfaW52LCBDMV9pbnZ9KTtcblxuICAvLyBFYXJseSB5aWVsZCB3aGlsZSB3ZSB3YWl0IGZvciB0aGUgZmlyc3QgZXZhbHVhdGlvbiBhbmQgcmVuZGVyXG4gIGlmIChvcHRpb25zLm91dHB1dCAmJiAhKFwiNlwiIGluIHB5b2RpZGVPanMucmVuZGVyZWRPanMpKSB7XG4gICAgY29uc3QgY29udGFpbmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcbiAgICBjb25zdCBzcGlubmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcblxuICAgIGlmIChvcHRpb25zLmVjaG8pIHtcbiAgICAgIC8vIFNob3cgb3V0cHV0IGFzIGhpZ2hsaWdodGVkIHNvdXJjZVxuICAgICAgY29uc3QgcHJlRWxlbSA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJwcmVcIik7XG4gICAgICBjb250YWluZXIuY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlXCI7XG4gICAgICBwcmVFbGVtLmNsYXNzTmFtZSA9IFwic291cmNlQ29kZSBweXRob25cIjtcbiAgICAgIHByZUVsZW0uYXBwZW5kQ2hpbGQoaGlnaGxpZ2h0UHl0aG9uKGJsb2NrLmNvZGUpKTtcbiAgICAgIHNwaW5uZXIuY2xhc3NOYW1lID0gXCJzcGlubmVyLWdyb3cgc3Bpbm5lci1ncm93LXNtIG0tMiBwb3NpdGlvbi1hYnNvbHV0ZSB0b3AtMCBlbmQtMFwiO1xuICAgICAgcHJlRWxlbS5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChwcmVFbGVtKTtcbiAgICB9IGVsc2Uge1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItYm9yZGVyIHNwaW5uZXItYm9yZGVyLXNtXCI7XG4gICAgICBjb250YWluZXIuYXBwZW5kQ2hpbGQoc3Bpbm5lcik7XG4gICAgfVxuXG4gICAgeWllbGQgY29udGFpbmVyO1xuICB9XG5cbiAgcHlvZGlkZU9qcy5yZW5kZXJlZE9qc1tcIjZcIl0gPSB0cnVlO1xuICB5aWVsZCBhd2FpdCByZXN1bHQ7XG59XG4ifSx7ImNlbGxOYW1lIjoicHlvZGlkZS01IiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6InZpZXdvZiBfcHlvZGlkZV9lZGl0b3JfNSA9IHtcbiAgY29uc3QgeyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IsIGI2NERlY29kZSB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInB5b2RpZGUtNS1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHsgaWQ6IGBweW9kaWRlLTUtY29udGVudHNgIH0sIGJsb2NrLmF0dHIpO1xuICBjb25zdCBlZGl0b3IgPSBuZXcgUHlvZGlkZUV4ZXJjaXNlRWRpdG9yKFxuICAgIHB5b2RpZGVPanMucHlvZGlkZVByb21pc2UsXG4gICAgYmxvY2suY29kZSxcbiAgICBvcHRpb25zXG4gICk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fcHlvZGlkZV92YWx1ZV81ID0gcHlvZGlkZU9qcy5wcm9jZXNzKF9weW9kaWRlX2VkaXRvcl81LCB7fSk7XG4ifSx7ImNlbGxOYW1lIjoicHlvZGlkZS00IiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6Il9weW9kaWRlX3ZhbHVlXzQgPSB7XG4gIGNvbnN0IHsgaGlnaGxpZ2h0UHl0aG9uLCBiNjREZWNvZGV9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInB5b2RpZGUtNC1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIC8vIERlZmF1bHQgZXZhbHVhdGlvbiBjb25maWd1cmF0aW9uXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHtcbiAgICBpZDogXCJweW9kaWRlLTQtY29udGVudHNcIixcbiAgICBlY2hvOiB0cnVlLFxuICAgIG91dHB1dDogdHJ1ZVxuICB9LCBibG9jay5hdHRyKTtcblxuICAvLyBFdmFsdWF0ZSB0aGUgcHJvdmlkZWQgUHl0aG9uIGNvZGVcbiAgY29uc3QgcmVzdWx0ID0gcHlvZGlkZU9qcy5wcm9jZXNzKHtjb2RlOiBibG9jay5jb2RlLCBvcHRpb25zfSwge1JfcmxjLCBMX3JsYywgQ19ybGN9KTtcblxuICAvLyBFYXJseSB5aWVsZCB3aGlsZSB3ZSB3YWl0IGZvciB0aGUgZmlyc3QgZXZhbHVhdGlvbiBhbmQgcmVuZGVyXG4gIGlmIChvcHRpb25zLm91dHB1dCAmJiAhKFwiNFwiIGluIHB5b2RpZGVPanMucmVuZGVyZWRPanMpKSB7XG4gICAgY29uc3QgY29udGFpbmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcbiAgICBjb25zdCBzcGlubmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcblxuICAgIGlmIChvcHRpb25zLmVjaG8pIHtcbiAgICAgIC8vIFNob3cgb3V0cHV0IGFzIGhpZ2hsaWdodGVkIHNvdXJjZVxuICAgICAgY29uc3QgcHJlRWxlbSA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJwcmVcIik7XG4gICAgICBjb250YWluZXIuY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlXCI7XG4gICAgICBwcmVFbGVtLmNsYXNzTmFtZSA9IFwic291cmNlQ29kZSBweXRob25cIjtcbiAgICAgIHByZUVsZW0uYXBwZW5kQ2hpbGQoaGlnaGxpZ2h0UHl0aG9uKGJsb2NrLmNvZGUpKTtcbiAgICAgIHNwaW5uZXIuY2xhc3NOYW1lID0gXCJzcGlubmVyLWdyb3cgc3Bpbm5lci1ncm93LXNtIG0tMiBwb3NpdGlvbi1hYnNvbHV0ZSB0b3AtMCBlbmQtMFwiO1xuICAgICAgcHJlRWxlbS5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChwcmVFbGVtKTtcbiAgICB9IGVsc2Uge1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItYm9yZGVyIHNwaW5uZXItYm9yZGVyLXNtXCI7XG4gICAgICBjb250YWluZXIuYXBwZW5kQ2hpbGQoc3Bpbm5lcik7XG4gICAgfVxuXG4gICAgeWllbGQgY29udGFpbmVyO1xuICB9XG5cbiAgcHlvZGlkZU9qcy5yZW5kZXJlZE9qc1tcIjRcIl0gPSB0cnVlO1xuICB5aWVsZCBhd2FpdCByZXN1bHQ7XG59XG4ifSx7ImNlbGxOYW1lIjoicHlvZGlkZS0zIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6InZpZXdvZiBfcHlvZGlkZV9lZGl0b3JfMyA9IHtcbiAgY29uc3QgeyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IsIGI2NERlY29kZSB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInB5b2RpZGUtMy1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHsgaWQ6IGBweW9kaWRlLTMtY29udGVudHNgIH0sIGJsb2NrLmF0dHIpO1xuICBjb25zdCBlZGl0b3IgPSBuZXcgUHlvZGlkZUV4ZXJjaXNlRWRpdG9yKFxuICAgIHB5b2RpZGVPanMucHlvZGlkZVByb21pc2UsXG4gICAgYmxvY2suY29kZSxcbiAgICBvcHRpb25zXG4gICk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fcHlvZGlkZV92YWx1ZV8zID0gcHlvZGlkZU9qcy5wcm9jZXNzKF9weW9kaWRlX2VkaXRvcl8zLCB7fSk7XG4ifSx7ImNlbGxOYW1lIjoicHlvZGlkZS0yIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6Il9weW9kaWRlX3ZhbHVlXzIgPSB7XG4gIGNvbnN0IHsgaGlnaGxpZ2h0UHl0aG9uLCBiNjREZWNvZGV9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInB5b2RpZGUtMi1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIC8vIERlZmF1bHQgZXZhbHVhdGlvbiBjb25maWd1cmF0aW9uXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHtcbiAgICBpZDogXCJweW9kaWRlLTItY29udGVudHNcIixcbiAgICBlY2hvOiB0cnVlLFxuICAgIG91dHB1dDogdHJ1ZVxuICB9LCBibG9jay5hdHRyKTtcblxuICAvLyBFdmFsdWF0ZSB0aGUgcHJvdmlkZWQgUHl0aG9uIGNvZGVcbiAgY29uc3QgcmVzdWx0ID0gcHlvZGlkZU9qcy5wcm9jZXNzKHtjb2RlOiBibG9jay5jb2RlLCBvcHRpb25zfSwge1JfdmFsLCBMX3ZhbCwgQ192YWx9KTtcblxuICAvLyBFYXJseSB5aWVsZCB3aGlsZSB3ZSB3YWl0IGZvciB0aGUgZmlyc3QgZXZhbHVhdGlvbiBhbmQgcmVuZGVyXG4gIGlmIChvcHRpb25zLm91dHB1dCAmJiAhKFwiMlwiIGluIHB5b2RpZGVPanMucmVuZGVyZWRPanMpKSB7XG4gICAgY29uc3QgY29udGFpbmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcbiAgICBjb25zdCBzcGlubmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcblxuICAgIGlmIChvcHRpb25zLmVjaG8pIHtcbiAgICAgIC8vIFNob3cgb3V0cHV0IGFzIGhpZ2hsaWdodGVkIHNvdXJjZVxuICAgICAgY29uc3QgcHJlRWxlbSA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJwcmVcIik7XG4gICAgICBjb250YWluZXIuY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlXCI7XG4gICAgICBwcmVFbGVtLmNsYXNzTmFtZSA9IFwic291cmNlQ29kZSBweXRob25cIjtcbiAgICAgIHByZUVsZW0uYXBwZW5kQ2hpbGQoaGlnaGxpZ2h0UHl0aG9uKGJsb2NrLmNvZGUpKTtcbiAgICAgIHNwaW5uZXIuY2xhc3NOYW1lID0gXCJzcGlubmVyLWdyb3cgc3Bpbm5lci1ncm93LXNtIG0tMiBwb3NpdGlvbi1hYnNvbHV0ZSB0b3AtMCBlbmQtMFwiO1xuICAgICAgcHJlRWxlbS5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChwcmVFbGVtKTtcbiAgICB9IGVsc2Uge1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItYm9yZGVyIHNwaW5uZXItYm9yZGVyLXNtXCI7XG4gICAgICBjb250YWluZXIuYXBwZW5kQ2hpbGQoc3Bpbm5lcik7XG4gICAgfVxuXG4gICAgeWllbGQgY29udGFpbmVyO1xuICB9XG5cbiAgcHlvZGlkZU9qcy5yZW5kZXJlZE9qc1tcIjJcIl0gPSB0cnVlO1xuICB5aWVsZCBhd2FpdCByZXN1bHQ7XG59XG4ifSx7ImNlbGxOYW1lIjoicHlvZGlkZS0xIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6InZpZXdvZiBfcHlvZGlkZV9lZGl0b3JfMSA9IHtcbiAgY29uc3QgeyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IsIGI2NERlY29kZSB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInB5b2RpZGUtMS1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHsgaWQ6IGBweW9kaWRlLTEtY29udGVudHNgIH0sIGJsb2NrLmF0dHIpO1xuICBjb25zdCBlZGl0b3IgPSBuZXcgUHlvZGlkZUV4ZXJjaXNlRWRpdG9yKFxuICAgIHB5b2RpZGVPanMucHlvZGlkZVByb21pc2UsXG4gICAgYmxvY2suY29kZSxcbiAgICBvcHRpb25zXG4gICk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fcHlvZGlkZV92YWx1ZV8xID0gcHlvZGlkZU9qcy5wcm9jZXNzKF9weW9kaWRlX2VkaXRvcl8xLCB7fSk7XG4ifSx7ImNlbGxOYW1lIjoicHlvZGlkZS1wcmVsdWRlIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoicHlvZGlkZU9qcyA9IHtcbiAgY29uc3Qge1xuICAgIFB5b2RpZGVFdmFsdWF0b3IsXG4gICAgUHlvZGlkZUVudmlyb25tZW50TWFuYWdlcixcbiAgICBzZXR1cFB5dGhvbixcbiAgICBzdGFydFB5b2RpZGVXb3JrZXIsXG4gICAgYjY0RGVjb2RlLFxuICAgIGNvbGxhcHNlUGF0aCxcbiAgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc3RhdHVzQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJleGVyY2lzZS1sb2FkaW5nLXN0YXR1c1wiKTtcbiAgY29uc3QgaW5kaWNhdG9yQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJleGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaW5kaWNhdG9yQ29udGFpbmVyLmNsYXNzTGlzdC5yZW1vdmUoXCJkLW5vbmVcIik7XG5cbiAgbGV0IHN0YXR1c1RleHQgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpXG4gIHN0YXR1c1RleHQuY2xhc3NMaXN0ID0gXCJleGVyY2lzZS1sb2FkaW5nLWRldGFpbHNcIjtcbiAgc3RhdHVzVGV4dCA9IHN0YXR1c0NvbnRhaW5lci5hcHBlbmRDaGlsZChzdGF0dXNUZXh0KTtcbiAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBJbml0aWFsaXNlYDtcblxuICAvLyBIb2lzdCBpbmRpY2F0b3Igb3V0IGZyb20gZmluYWwgc2xpZGUgd2hlbiBydW5uaW5nIHVuZGVyIHJldmVhbFxuICBjb25zdCByZXZlYWxTdGF0dXMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCAuZXhlcmNpc2UtbG9hZGluZy1pbmRpY2F0b3JcIik7XG4gIGlmIChyZXZlYWxTdGF0dXMpIHtcbiAgICByZXZlYWxTdGF0dXMucmVtb3ZlKCk7XG4gICAgZG9jdW1lbnQucXVlcnlTZWxlY3RvcihcIi5yZXZlYWwgPiAuc2xpZGVzXCIpLmFwcGVuZENoaWxkKHJldmVhbFN0YXR1cyk7XG4gIH1cblxuICAvLyBNYWtlIGFueSByZXZlYWwgc2xpZGVzIHdpdGggbGl2ZSBjZWxscyBzY3JvbGxhYmxlXG4gIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoXCIucmV2ZWFsIC5leGVyY2lzZS1jZWxsXCIpLmZvckVhY2goKGVsKSA9PiB7XG4gICAgZWwuY2xvc2VzdCgnc2VjdGlvbi5zbGlkZScpLmNsYXNzTGlzdC5hZGQoXCJzY3JvbGxhYmxlXCIpO1xuICB9KVxuXG4gIC8vIFB5b2RpZGUgc3VwcGxlbWVudGFsIGRhdGEgYW5kIG9wdGlvbnNcbiAgY29uc3QgZGF0YUNvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS1kYXRhXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZGF0YSA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKGRhdGFDb250ZW50KSk7XG5cbiAgLy8gR3JhYiBsaXN0IG9mIHJlc291cmNlcyB0byBiZSBkb3dubG9hZGVkXG4gIGNvbnN0IGZpbGVzQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJ2ZnMtZmlsZVxcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGZpbGVzID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZmlsZXNDb250ZW50KSk7XG5cbiAgbGV0IHB5b2RpZGVQcm9taXNlID0gKGFzeW5jICgpID0+IHtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIFB5b2RpZGVgO1xuICAgIGNvbnN0IHB5b2RpZGUgPSBhd2FpdCBzdGFydFB5b2RpZGVXb3JrZXIoZGF0YS5vcHRpb25zKTtcblxuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcGFja2FnZTogbWljcm9waXBgO1xuICAgIGF3YWl0IHB5b2RpZGUubG9hZFBhY2thZ2UoXCJtaWNyb3BpcFwiKTtcbiAgICBjb25zdCBtaWNyb3BpcCA9IGF3YWl0IHB5b2RpZGUucHlpbXBvcnQoXCJtaWNyb3BpcFwiKTtcbiAgICBhd2FpdCBkYXRhLnBhY2thZ2VzLnBrZ3MubWFwKChwa2cpID0+ICgpID0+IHtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcGFja2FnZTogJHtwa2d9YDtcbiAgICAgIHJldHVybiBtaWNyb3BpcC5pbnN0YWxsKHBrZyk7XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG4gICAgYXdhaXQgbWljcm9waXAuZGVzdHJveSgpO1xuXG4gICAgLy8gRG93bmxvYWQgYW5kIGluc3RhbGwgcmVzb3VyY2VzXG4gICAgYXdhaXQgZmlsZXMubWFwKChmaWxlKSA9PiBhc3luYyAoKSA9PiB7XG4gICAgICBjb25zdCBuYW1lID0gZmlsZS5zdWJzdHJpbmcoZmlsZS5sYXN0SW5kZXhPZignLycpICsgMSk7XG4gICAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHJlc291cmNlOiAke25hbWV9YDtcbiAgICAgIGNvbnN0IHJlc3BvbnNlID0gYXdhaXQgZmV0Y2goZmlsZSk7XG4gICAgICBpZiAoIXJlc3BvbnNlLm9rKSB7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgQ2FuJ3QgZG93bmxvYWQgXFxgJHtmaWxlfVxcYC4gRXJyb3IgJHtyZXNwb25zZS5zdGF0dXN9OiBcIiR7cmVzcG9uc2Uuc3RhdHVzVGV4dH1cIi5gKTtcbiAgICAgIH1cbiAgICAgIGNvbnN0IGRhdGEgPSBhd2FpdCByZXNwb25zZS5hcnJheUJ1ZmZlcigpO1xuXG4gICAgICAvLyBTdG9yZSBVUkxzIGluIHRoZSBjd2Qgd2l0aG91dCBhbnkgc3ViZGlyZWN0b3J5IHN0cnVjdHVyZVxuICAgICAgaWYgKGZpbGUuaW5jbHVkZXMoXCI6Ly9cIikpIHtcbiAgICAgICAgZmlsZSA9IG5hbWU7XG4gICAgICB9XG5cbiAgICAgIC8vIENvbGxhcHNlIGhpZ2hlciBkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBmaWxlID0gY29sbGFwc2VQYXRoKGZpbGUpO1xuXG4gICAgICAvLyBDcmVhdGUgZGlyZWN0b3J5IHRyZWUsIGlnbm9yaW5nIFwiZGlyZWN0b3J5IGV4aXN0c1wiIFZGUyBlcnJvcnNcbiAgICAgIGNvbnN0IHBhcnRzID0gZmlsZS5zcGxpdCgnLycpLnNsaWNlKDAsIC0xKTtcbiAgICAgIGxldCBwYXRoID0gJyc7XG4gICAgICB3aGlsZSAocGFydHMubGVuZ3RoID4gMCkge1xuICAgICAgICBwYXRoICs9IHBhcnRzLnNoaWZ0KCkgKyAnLyc7XG4gICAgICAgIHRyeSB7XG4gICAgICAgICAgYXdhaXQgcHlvZGlkZS5GUy5ta2RpcihwYXRoKTtcbiAgICAgICAgfSBjYXRjaCAoZSkge1xuICAgICAgICAgIGlmIChlLm5hbWUgIT09IFwiRXJybm9FcnJvclwiKSB0aHJvdyBlO1xuICAgICAgICAgIGlmIChlLmVycm5vICE9PSAyMCkge1xuICAgICAgICAgICAgY29uc3QgZXJyb3JUZXh0UHRyID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLl9zdHJlcnJvcihlLmVycm5vKTtcbiAgICAgICAgICAgIGNvbnN0IGVycm9yVGV4dCA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5VVEY4VG9TdHJpbmcoZXJyb3JUZXh0UHRyKTtcbiAgICAgICAgICAgIHRocm93IG5ldyBFcnJvcihgRmlsZXN5c3RlbSBFcnJvciAke2UuZXJybm99IFwiJHtlcnJvclRleHR9XCIuYCk7XG4gICAgICAgICAgfVxuICAgICAgICB9XG4gICAgICB9XG5cbiAgICAgIC8vIFdyaXRlIHRoaXMgZmlsZSB0byB0aGUgVkZTXG4gICAgICB0cnkge1xuICAgICAgICByZXR1cm4gYXdhaXQgcHlvZGlkZS5GUy53cml0ZUZpbGUoZmlsZSwgbmV3IFVpbnQ4QXJyYXkoZGF0YSkpO1xuICAgICAgfSBjYXRjaCAoZSkge1xuICAgICAgICBpZiAoZS5uYW1lICE9PSBcIkVycm5vRXJyb3JcIikgdGhyb3cgZTtcbiAgICAgICAgY29uc3QgZXJyb3JUZXh0UHRyID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLl9zdHJlcnJvcihlLmVycm5vKTtcbiAgICAgICAgY29uc3QgZXJyb3JUZXh0ID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLlVURjhUb1N0cmluZyhlcnJvclRleHRQdHIpO1xuICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYEZpbGVzeXN0ZW0gRXJyb3IgJHtlLmVycm5vfSBcIiR7ZXJyb3JUZXh0fVwiLmApO1xuICAgICAgfVxuICAgIH0pLnJlZHVjZSgoY3VyLCBuZXh0KSA9PiBjdXIudGhlbihuZXh0KSwgUHJvbWlzZS5yZXNvbHZlKCkpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBQeW9kaWRlIGVudmlyb25tZW50IHNldHVwYDtcbiAgICBhd2FpdCBzZXR1cFB5dGhvbihweW9kaWRlKTtcblxuICAgIHN0YXR1c1RleHQucmVtb3ZlKCk7XG4gICAgaWYgKHN0YXR1c0NvbnRhaW5lci5jaGlsZHJlbi5sZW5ndGggPT0gMCkge1xuICAgICAgc3RhdHVzQ29udGFpbmVyLnBhcmVudE5vZGUucmVtb3ZlKCk7XG4gICAgfVxuICAgIHJldHVybiBweW9kaWRlO1xuICB9KSgpLmNhdGNoKChlcnIpID0+IHtcbiAgICBzdGF0dXNUZXh0LnN0eWxlLmNvbG9yID0gXCJ2YXIoLS1leGVyY2lzZS1lZGl0b3ItaGwtZXIsICNBRDAwMDApXCI7XG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGVyci5tZXNzYWdlO1xuICAgIC8vaW5kaWNhdG9yQ29udGFpbmVyLnF1ZXJ5U2VsZWN0b3IoXCIuc3Bpbm5lci1ncm93XCIpLmNsYXNzTGlzdC5hZGQoXCJkLW5vbmVcIik7XG4gICAgdGhyb3cgZXJyO1xuICB9KTtcblxuICAvLyBLZWVwIHRyYWNrIG9mIGluaXRpYWwgT0pTIGJsb2NrIHJlbmRlclxuICBjb25zdCByZW5kZXJlZE9qcyA9IHt9O1xuXG4gIGNvbnN0IHByb2Nlc3MgPSBhc3luYyAoY29udGV4dCwgaW5wdXRzKSA9PiB7XG4gICAgY29uc3QgcHlvZGlkZSA9IGF3YWl0IHB5b2RpZGVQcm9taXNlO1xuICAgIGNvbnN0IGV2YWx1YXRvciA9IG5ldyBQeW9kaWRlRXZhbHVhdG9yKHB5b2RpZGUsIGNvbnRleHQpO1xuICAgIGF3YWl0IGV2YWx1YXRvci5wcm9jZXNzKGlucHV0cyk7XG4gICAgcmV0dXJuIGV2YWx1YXRvci5jb250YWluZXI7XG4gIH1cblxuICByZXR1cm4ge1xuICAgIHB5b2RpZGVQcm9taXNlLFxuICAgIHJlbmRlcmVkT2pzLFxuICAgIHByb2Nlc3MsXG4gIH07XG59XG4ifV19
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="qrjs_pics/unsoed_logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="https://imron-slide.vercel.app">irosyadi-2025</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-zoomit-ish/zoomit-ish-config.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-zoomit-ish/zoomit-ish-core.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-zoomit-ish/zoomit-ish-draw.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-zoomit-ish/zoomit-ish-text.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-zoomit-ish/zoomit-ish-canvas.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-zoomit-ish/zoomit-ish-history.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-zoomit-ish/zoomit-ish-zoom.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-zoomit-ish/zoomit-ish-timer.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-zoomit-ish/zoomit-ish-message.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-zoomit-ish/zoomit-ish-keyboard.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-zoomit-ish/zoomit-ish.js"></script>
+  <script src="site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, RevealZoomitIsh, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script type="ojs-module-contents">
+    eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBSX3ZhbCA9IElucHV0cy5yYW5nZShbMTAsIDUwMDBdLCB7c3RlcDogMTAsIHZhbHVlOiAxMDAwLCBsYWJlbDogXCJSICjOqSlcIn0pXG52aWV3b2YgTF92YWwgPSBJbnB1dHMucmFuZ2UoWzFlLTQsIDAuMV0sIHtzdGVwOiAxZS00LCB2YWx1ZTogMWUtMiwgbGFiZWw6IFwiTCAoSClcIn0pXG52aWV3b2YgQ192YWwgPSBJbnB1dHMucmFuZ2UoWzFlLTksIDFlLTRdLCB7c3RlcDogMWUtOSwgdmFsdWU6IDFlLTYsIGxhYmVsOiBcIkMgKEYpXCJ9KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0yIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoidmlld29mIFJfcmxjID0gSW5wdXRzLnJhbmdlKFswLCAxMDBdLCB7c3RlcDogMSwgdmFsdWU6IDEwLCBsYWJlbDogXCJSICjOqSlcIn0pXG52aWV3b2YgTF9ybGMgPSBJbnB1dHMucmFuZ2UoWzFlLTQsIDFlLTFdLCB7c3RlcDogMWUtNCwgdmFsdWU6IDFlLTMsIGxhYmVsOiBcIkwgKEgpXCJ9KVxudmlld29mIENfcmxjID0gSW5wdXRzLnJhbmdlKFsxZS05LCAxZS00XSwge3N0ZXA6IDFlLTksIHZhbHVlOiAxZS02LCBsYWJlbDogXCJDIChGKVwifSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMyIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBSMl9pbnYgPSBJbnB1dHMucmFuZ2UoWzFlMywgMWU2XSwge3N0ZXA6IDFlMywgdmFsdWU6IDFlNSwgbGFiZWw6IFwiUjIgKM6pKVwifSlcbnZpZXdvZiBDMV9pbnYgPSBJbnB1dHMucmFuZ2UoWzFlLTgsIDFlLTRdLCB7c3RlcDogMWUtOCwgdmFsdWU6IDFlLTUsIGxhYmVsOiBcIkMxIChGKVwifSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNCIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBSMV9uaSA9IElucHV0cy5yYW5nZShbMWUzLCAxZTZdLCB7c3RlcDogMWUzLCB2YWx1ZTogMWU0LCBsYWJlbDogXCJSMSAozqkpXCJ9KVxudmlld29mIFIyX25pID0gSW5wdXRzLnJhbmdlKFsxZTMsIDFlNl0sIHtzdGVwOiAxZTMsIHZhbHVlOiA5ZTQsIGxhYmVsOiBcIlIyICjOqSlcIn0pXG52aWV3b2YgQzFfbmkgPSBJbnB1dHMucmFuZ2UoWzFlLTksIDFlLTRdLCB7c3RlcDogMWUtOSwgdmFsdWU6IDFlLTYsIGxhYmVsOiBcIkMxIChGKVwifSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnUl92YWwnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnTF92YWwnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnQ192YWwnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnUl9ybGMnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnTF9ybGMnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnQ19ybGMnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnUjJfaW52JykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ0MxX2ludicpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdSMV9uaScpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdSMl9uaScpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdDMV9uaScpIn1dfQ==
+    </script>
+    <script type="module">
+    if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+    window._ojs.paths.runtimeToDoc = "../..";
+    window._ojs.paths.runtimeToRoot = "../..";
+    window._ojs.paths.docToRoot = "";
+    window._ojs.selfContained = false;
+    window._ojs.runtime.interpretFromScriptTags();
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
