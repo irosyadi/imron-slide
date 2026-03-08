@@ -212,24 +212,19 @@ Imron Rosyadi
 </div>
 
 </section>
-<section>
-<section id="introduction" class="title-slide slide level1 center">
-<h1>Introduction</h1>
-
-</section>
-<section id="instructional-objectives" class="slide level2">
-<h2>Instructional Objectives</h2>
-<p>The purpose of this presentation is to introduce analog signal-conditioning methods used in process-control systems.</p>
+<section id="learning-objectives" class="slide level2">
+<h2>Learning Objectives</h2>
+<p>By the end of this session, you should be able to:</p>
 <ul>
-<li>Define the principles of <strong>analog signal conditioning</strong>.</li>
-<li>Analyze the impact of <strong>loading</strong> on measurement accuracy.</li>
-<li>Evaluate <strong>passive circuits</strong> (dividers, bridges, and filters).</li>
-<li>Design simple <strong>RC filters</strong> for noise reduction.</li>
+<li>Explain the role of <strong>analog signal conditioning</strong> in a measurement / control system.</li>
+<li>Describe and apply basic <strong>signal-level changes</strong>: biasing, amplification, attenuation.</li>
+<li>Explain <strong>loading</strong> using Thévenin models and compute its effect on measurements.</li>
+<li>Use <strong>voltage dividers</strong> and <strong>bridge circuits</strong> to convert resistance/impedance changes into voltages.</li>
+<li>Analyze <strong>RC filters</strong> (low-pass, high-pass, band-pass, notch) and design simple filters for noise reduction.</li>
+<li>Connect these concepts to <strong>real ECE applications</strong>: sensors, ADC interfaces, and industrial 4–20 mA loops.</li>
 </ul>
 <aside class="notes">
-<p>Welcome to the lecture on Analog Signal Conditioning.<br>
-In process control, sensors rarely provide a signal that can be plugged directly into a controller or computer.<br>
-Today, we will focus on how we transform those raw sensor signals using passive components like resistors and capacitors to make them usable.</p>
+<p>Emphasize that this lecture is about the “plumbing” between sensors and the rest of the system. Students often jump to digital / microcontroller code and ignore the analog front end, which is where many real‑world problems show up.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -242,21 +237,133 @@ Today, we will focus on how we transform those raw sensor signals using passive 
           display:block!important;
       }</style></aside>
 </section>
-<section id="what-is-signal-conditioning" class="slide level2">
-<h2>What is Signal Conditioning?</h2>
-<p>Signal conditioning refers to operations performed on signals to convert them into a form suitable for interfacing with other elements in a process-control loop.</p>
+<section id="big-picture-where-does-signal-conditioning-live" class="slide level2 scrollable">
+<h2>Big Picture: Where Does Signal Conditioning Live?</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p><strong>Typical Instrumentation / Control Chain</strong></p>
+<ol type="1">
+<li>Physical quantity (temperature, pressure, light, force, …)</li>
+<li><strong>Sensor / transducer</strong> → electrical signal (V, I, R, f)</li>
+<li><strong>Analog signal conditioning</strong>
 <ul>
-<li><strong>Conditioned Output:</strong> Remains an analog representation of the variable.</li>
-<li><strong>Interface Requirement:</strong> Crucial before Analog-to-Digital Conversion (ADC).</li>
-<li><strong>Transfer Function:</strong> The mathematical relationship between input and output.
+<li>Level &amp; bias changes</li>
+<li>Linearization</li>
+<li>Conversions (R→V, V→I, etc.)</li>
+<li>Filtering &amp; impedance matching</li>
+</ul></li>
+<li>ADC / digital logic / microcontroller</li>
+<li>Control algorithm / data logging</li>
+<li>Actuator / display / network interface</li>
+</ol>
+</div><div class="column" style="width:40%;">
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<p><img data-src="ins_21_files\figure-revealjs\mermaid-figure-1.png" style="width:2.26in;height:6.06in"></p>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div></div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Key idea:</strong> Signal conditioning makes the raw sensor signal <strong>usable</strong> by the next block in the chain.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Make this diagram concrete with one example: - Thermocouple measuring temperature, producing a few mV. - We amplify, filter 50/60 Hz, shift level to match 0–5 V ADC, then digitize. Ask: what goes wrong if we connect the thermocouple directly to the ADC? (Poor resolution, noise, incorrect range).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-is-analog-signal-conditioning" class="slide level2">
+<h2>1. What Is Analog Signal Conditioning?</h2>
 <ul>
-<li><em>Example:</em> A voltage amplifier has a transfer function <span class="math inline">\(V_{out} = G \cdot V_{in}\)</span>.</li>
+<li>Operations on <strong>analog signals</strong> to convert them into a form suitable for:
+<ul>
+<li>Other analog circuits (amplifiers, filters, actuators).</li>
+<li><strong>ADC inputs</strong> in mixed‑signal systems.</li>
+</ul></li>
+<li>In this chapter, we focus on <strong>analog transformations</strong> (output still analog).</li>
+<li>Even if the final processing is digital, <strong>analog conditioning almost always happens first</strong>.</li>
+</ul>
+<p>Real ECE examples:</p>
+<ul>
+<li>ECG front‑end: microvolt cardiac signals → 1–3 V, filtered, centered, then digitized.</li>
+<li>Strain gauge bridge on a load cell → mV → amplified / filtered → 4–20 mA transmitter.</li>
+<li>Light sensor (CdS cell) → resistance change → voltage via divider/bridge → linearized / scaled for an ADC.</li>
+</ul>
+<aside class="notes">
+<p>Point out that students see this in lab whenever they need to scale a sensor to an Arduino’s 0–5 V analog input. Stress that this is not “extra stuff”—it’s what determines measurement accuracy and robustness.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="principles-of-analog-signal-conditioning" class="slide level2">
+<h2>2. Principles of Analog Signal Conditioning</h2>
+<h3 id="sensors-transfer-functions">2.1 Sensors &amp; Transfer Functions</h3>
+<ul>
+<li>A <strong>sensor / transducer</strong> converts a physical variable into an electrical quantity:
+<ul>
+<li>Voltage, current, resistance, capacitance, inductance, or frequency.</li>
+</ul></li>
+<li>The relationship between input (physical) and output (electrical) is its <strong>transfer function</strong>.</li>
+</ul>
+<p>Example:</p>
+<ul>
+<li>Cadmium sulfide (CdS) photoresistor:
+<ul>
+<li>Resistance <span class="math inline">\(R_{\text{CdS}}\)</span> varies <strong>nonlinearly</strong> and inversely with light intensity.</li>
+<li>We don’t get to choose this curve; nature chose it.</li>
+</ul></li>
+<li>A <strong>signal conditioning block</strong> also has a transfer function, e.g.
+<ul>
+<li>Simple voltage amplifier: <span class="math inline">\(V_{\text{out}} = K V_{\text{in}}\)</span> (gain <span class="math inline">\(K\)</span>).</li>
 </ul></li>
 </ul>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>When you design a measurement system, you are really designing the <strong>overall transfer function</strong> from physical variable → final electrical (or digital) output.</p>
+</div>
+</div>
+</div>
 <aside class="notes">
-<p>Even in a digital world, the “front end” is almost always analog.<br>
-We use the term ‘Transfer Function’ to describe how the circuit alters the signal.<br>
-If we have a sensor outputting 0.2V and we need 5V, our conditioning circuit must have a specific gain and bias.</p>
+<p>Stress the idea of transfer functions as “input–output relationships.” Students often see them only in Laplace / systems courses, but here it’s simpler: slope, linear vs.&nbsp;nonlinear, etc.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -268,102 +375,1624 @@ If we have a sensor outputting 0.2V and we need 5V, our conditioning circuit mus
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+</section>
+<section id="signal-level-and-bias-changes" class="slide level2 scrollable">
+<h2>2.1 Signal-Level and Bias Changes</h2>
+<p>Scenario:</p>
+<ul>
+<li>Sensor output: <span class="math inline">\(0.2\ \text{V}\)</span> to <span class="math inline">\(0.6\ \text{V}\)</span> over measurement range.</li>
+<li>ADC or controller expects: <span class="math inline">\(0\)</span> to <span class="math inline">\(5\ \text{V}\)</span> for that same range.</li>
+</ul>
+<p>Steps:</p>
+<ol type="1">
+<li><strong>Bias (zero shift)</strong>: shift 0.2 V → 0 V.
+<ul>
+<li>Subtract 0.2 V: <span class="math inline">\(V' = V_{\text{sensor}} - 0.2\ \text{V}\)</span>.</li>
+<li>Now <span class="math inline">\(V'\)</span> ranges 0 to 0.4 V.</li>
+</ul></li>
+<li><strong>Gain (amplification)</strong>: scale 0–0.4 V → 0–5 V.
+<ul>
+<li>Gain <span class="math inline">\(G = 5 / 0.4 = 12.5\)</span>.</li>
+<li><span class="math inline">\(V_{\text{out}} = 12.5\,V'\)</span>.</li>
+</ul></li>
+</ol>
+<p>If <span class="math inline">\(G &gt; 1\)</span> → <strong>amplification</strong>. If <span class="math inline">\(G &lt; 1\)</span> → <strong>attenuation</strong> (still called an amplifier circuit).</p>
+<p>Design concerns:</p>
+<ul>
+<li><strong>Frequency response</strong>: bandwidth must cover the signal spectrum.</li>
+<li><strong>Input impedance</strong>: high enough not to load previous stage.</li>
+<li><strong>Output impedance</strong>: low enough to drive next stage.</li>
+</ul>
+<aside class="notes">
+<p>Relate to op‑amp circuits they know: summing amplifier can do both level shift and gain in one block. Mention that “offset and gain calibration” is exactly this.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="linearization" class="slide level2">
+<h2>2.2 Linearization</h2>
+<p><img data-src="images/chapter_2/6f031e1ff32c9109833839c887a702de_MD5.jpg" class="quarto-figure quarto-figure-center" height="150"> <img data-src="images/chapter_2/449293b3b7533be55456463ae0fe80fe_MD5.jpg" class="quarto-figure quarto-figure-center" height="60"> <img data-src="images/chapter_2/b3031d5c30f5436cc8bb174f7cde750e_MD5.jpg" class="quarto-figure quarto-figure-center" height="150"></p>
+<p><em>Figure 1: Linearization concept. (a) Nonlinear sensor output vs variable. (b) Block diagram of linearizer. (c) Resulting linear output vs variable.</em></p>
+<ul>
+<li>Many sensors are <strong>nonlinear</strong>: <span class="math inline">\(V_{\text{sensor}}(x)\)</span> vs <span class="math inline">\(x\)</span> is curved.</li>
+<li>But most ADCs / controllers assume a <strong>linear</strong> mapping between measured variable and digital value.</li>
+</ul>
+</section>
+<section class="slide level2 scrollable">
+
+<p>Two approaches:</p>
+<ol type="1">
+<li><strong>Old school (pure analog)</strong>:
+<ul>
+<li>Design nonlinear analog circuits (diodes, piecewise linear networks, log/antilog amplifiers) to reshape the curve.</li>
+<li>Works but is hard and limited to narrow ranges.</li>
+</ul></li>
+<li><strong>Modern approach (mixed‑signal)</strong>:
+<ul>
+<li>Feed the nonlinear analog signal into an ADC.</li>
+<li>Use <strong>software</strong> to map it: table lookup, polynomial calibration, or interpolation.</li>
+<li>Can handle virtually any nonlinearity, in (near) real time.</li>
+</ul></li>
+</ol>
+<p>ECE example: thermistor temperature sensor + microcontroller performing table‑based linearization.</p>
+<aside class="notes">
+<p>Explain that in older instrumentation texts you’ll see elaborate analog linearizers; today we mostly do “good enough” analog conditioning, then correct the rest digitally.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="conversions-rv-vi-analogdigital" class="slide level2">
+<h2>2.3 Conversions (R→V, V→I, Analog→Digital)</h2>
+<p>Common conversion tasks in instrumentation:</p>
+<ul>
+<li><strong>Resistance change → voltage</strong>
+<ul>
+<li>Using <strong>voltage dividers</strong> or <strong>bridges</strong> (covered later).</li>
+</ul></li>
+<li><strong>Voltage → current</strong> (V‑to‑I converter) for transmission.</li>
+<li><strong>Current → voltage</strong> (I‑to‑V converter) at receiver.</li>
+<li><strong>Analog → Digital</strong> (ADC input scaling).</li>
+</ul>
 </section>
 <section class="slide level2">
 
-</section></section>
-<section>
-<section id="principles-of-analog-signal-conditioning" class="title-slide slide level1 center">
-<h1>Principles of Analog Signal Conditioning</h1>
-
+<h3 id="ma-current-loop">4–20 mA current loop</h3>
+<ul>
+<li>Industrial standard: transmit measurement as <strong>4–20 mA</strong> current.</li>
+<li>Why current?
+<ul>
+<li>Immune to series resistance: voltage drops along long cables don’t change current (much).</li>
+<li>4 mA “live zero” distinguishes broken wire (0 mA).</li>
+</ul></li>
+</ul>
+<p>Need:</p>
+<ul>
+<li>At <strong>transmitter</strong>: convert sensor R or V to 4–20 mA.</li>
+<li>At <strong>receiver</strong>: convert 4–20 mA to voltage, typically via a precision shunt resistor.</li>
+</ul>
 </section>
-<section id="common-operations" class="slide level2">
-<h2>Common Operations</h2>
+<section class="slide level2">
+
+<h3 id="analog-to-digital-interface">Analog to Digital Interface</h3>
+<ul>
+<li>ADC input may require, e.g.&nbsp;0–5 V, 0–3.3 V, ±2.5 V, etc.</li>
+<li>Sensor might yield 30–80 mV, or a resistance.</li>
+<li>Analog conditioning:
+<ul>
+<li>Gain + offset + possibly filtering.</li>
+<li>Ensure sensor output fully uses ADC input range → better resolution.</li>
+</ul></li>
+</ul>
+<aside class="notes">
+<p>Make this concrete with: - 4–20 mA loop driving a 250 Ω resistor → 1–5 V input. - Show quick mental calculation: 20 mA × 250 Ω = 5 V.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="filtering-and-impedance-matching" class="slide level2">
+<h2>2.4 Filtering and Impedance Matching</h2>
+<h3 id="filtering">Filtering</h3>
+<ul>
+<li>Real environments have <strong>noise</strong>:
+<ul>
+<li>50/60 Hz line interference.</li>
+<li>Motor start transients, switching spikes.</li>
+<li>High‑frequency EMI from radios, inverters, etc.</li>
+</ul></li>
+</ul>
+<p>Use filters to:</p>
+<ul>
+<li>Pass desired band of frequencies.</li>
+<li>Reject low / high / narrow‑band noise.</li>
+</ul>
+<p>Types (passive or active):</p>
+<ul>
+<li><strong>Low-pass</strong>: pass low f, block high f (e.g., DC sensor + 60 Hz noise).</li>
+<li><strong>High-pass</strong>: pass high f, block low f (e.g., remove DC offset / drift).</li>
+<li><strong>Band-pass</strong>: pass midband (e.g., audio channel).</li>
+<li><strong>Band-reject / notch</strong>: reject narrow band (e.g., 60 Hz notch).</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="impedance-matching">Impedance Matching</h3>
+<ul>
+<li>If sensor or line impedance is not matched to the receiving circuit:
+<ul>
+<li>You get <strong>loading</strong> → amplitude errors.</li>
+<li>Possible reflections (at high frequency / transmission lines).</li>
+</ul></li>
+<li>Use passive or active networks to:
+<ul>
+<li>Present high input impedance to the sensor.</li>
+<li>Provide low output impedance to whatever you drive.</li>
+</ul></li>
+</ul>
+<aside class="notes">
+<p>Connect this to their previous circuits course: source/load model, maximum power transfer vs.&nbsp;measurement accuracy. Here, we usually care about <strong>small loading</strong>, not max power.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="concept-of-loading" class="slide level2">
+<h2>2.5 Concept of Loading</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/b0ac34a0d92e68925fdf27e23719f917_MD5.jpg" height="220"></p>
+<figcaption>Figure 2: Thévenin model of a sensor and loading by a finite load resistance.</figcaption>
+</figure>
+</div>
+<ul>
+<li>Any two‑terminal source can be modeled (Thévenin) as:
+<ul>
+<li>Ideal voltage source <span class="math inline">\(V_x\)</span> in series with internal resistance <span class="math inline">\(R_x\)</span>.</li>
+</ul></li>
+<li>When <strong>open‑circuit</strong> (no load): output voltage = <span class="math inline">\(V_x\)</span>.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>When you connect a load <span class="math inline">\(R_L\)</span>:
+<ul>
+<li>Current flows, some voltage drops across <span class="math inline">\(R_x\)</span>.</li>
+<li>Loaded output voltage:</li>
+</ul></li>
+</ul>
+<p><span class="math display">\[
+V_y = V_x\left(1 - \frac{R_x}{R_L + R_x}\right)
+\]</span></p>
+<ul>
+<li>If <span class="math inline">\(R_L\)</span> is not &gt;&gt; <span class="math inline">\(R_x\)</span>, <span class="math inline">\(V_y\)</span> is significantly &lt; <span class="math inline">\(V_x\)</span>.</li>
+</ul>
+<p><strong>Goal in measurement systems:</strong> make <span class="math inline">\(R_L \gg R_x\)</span> to minimize loading.</p>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Warning</strong></p>
+</div>
+<div class="callout-content">
+<p>Loading changes the apparent transfer function of your sensor + conditioning block. If your measurement depends on <strong>amplitude</strong>, loading matters a lot.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Remind them: in frequency or digital (0/1) detection, exact amplitude may not matter, but for analog magnitude (temperature, pressure), it does.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-1-loading-between-sensor-and-amplifier" class="slide level2">
+<h2>Example 1 — Loading Between Sensor and Amplifier</h2>
+<p><img data-src="images/chapter_2/7ebfa295db388a0092084c29c7317a0a_MD5.jpg" class="quarto-figure quarto-figure-center" height="150"> <img data-src="images/chapter_2/c78219a147d2816cbe30def0b702e240_MD5.jpg" class="quarto-figure quarto-figure-center" height="150"> Figure 3: (a) Naive model ignoring loading. (b) Correct model including sensor output resistance and amplifier input resistance.</p>
+<p><strong>Given:</strong></p>
+<ul>
+<li>Amplifier gain <span class="math inline">\(= 10\)</span>, input resistance <span class="math inline">\(R_L = 10\ \text{k}\Omega\)</span>.</li>
+<li>Sensor transfer function: <span class="math inline">\(20\ \text{mV}/^\circ\text{C}\)</span>, output resistance <span class="math inline">\(R_x = 5.0\ \text{k}\Omega\)</span>.</li>
+<li>Temperature <span class="math inline">\(T = 50^\circ\text{C}\)</span>.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p><strong>Naive (no loading) answer:</strong></p>
+<ul>
+<li>Sensor open‑circuit: <span class="math inline">\(V_T = (20\ \text{mV}/^\circ\text{C})(50^\circ\text{C}) = 1.0\ \text{V}\)</span>.</li>
+<li>Amplifier output: <span class="math inline">\(V_{\text{out}} = 10\cdot 1.0\ \text{V} = 10\ \text{V}\)</span>.</li>
+</ul>
+<p><strong>Correct answer (include loading):</strong></p>
+<ul>
+<li>Sensor and amplifier form a divider:</li>
+</ul>
+<p><span class="math display">\[
+V_{\text{in}}
+= V_T\left(1 - \frac{R_x}{R_x + R_L}\right)
+= 1.0\text{ V}\left(1 - \frac{5.0\text{ k}\Omega}{5.0\text{ k}\Omega + 10\text{ k}\Omega}\right)
+\]</span></p>
+<ul>
+<li>Numerically: <span class="math inline">\(V_{\text{in}} \approx 0.67\ \text{V}\)</span>.</li>
+<li>Amplifier output: <span class="math inline">\(V_{\text{out}} = 10 \cdot 0.67\ \text{V} = 6.7\ \text{V}\)</span>.</li>
+</ul>
+<p><strong>Error from ignoring loading:</strong> <span class="math inline">\(10\ \text{V}\)</span> vs <span class="math inline">\(6.7\ \text{V}\)</span> → 33% error.</p>
+<aside class="notes">
+<p>Use this as a wake‑up example: 33% error is huge. Ask students to think: how could we reduce it? (Increase amplifier input resistance; use a buffer amplifier).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="passive-circuits-in-signal-conditioning" class="slide level2">
+<h2>3. Passive Circuits in Signal Conditioning</h2>
+<ul>
+<li>Two essential passive building blocks:
+<ul>
+<li><strong>Voltage dividers</strong>.</li>
+<li><strong>Bridge circuits</strong> (Wheatstone, AC bridges).</li>
+</ul></li>
+<li>RC networks used for <strong>filtering</strong>.</li>
+</ul>
+<p>Even though op‑amps are cheap, passive circuits still matter:</p>
+<ul>
+<li>High accuracy (e.g., precision bridges).</li>
+<li>Simple, low‑power, and often very <strong>low noise</strong>.</li>
+</ul>
+</section>
+<section id="voltage-divider-circuits" class="slide level2">
+<h2>3.1 Voltage Divider Circuits</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/efd39373523947f6b2a9496333c3c436_MD5.jpg" height="220"></p>
+<figcaption>Figure 4: Simple voltage divider used to convert resistance change into voltage change.</figcaption>
+</figure>
+</div>
+<ul>
+<li>Two resistors, <span class="math inline">\(R_1\)</span> and <span class="math inline">\(R_2\)</span>, in series across supply <span class="math inline">\(V_s\)</span>.</li>
+<li>Output is taken across <span class="math inline">\(R_2\)</span>.</li>
+</ul>
+<p>Divider equation:</p>
+<p><span class="math display">\[
+V_D = \frac{R_2}{R_1 + R_2} V_s
+\tag{2}
+\]</span></p>
+<p>Often, either <span class="math inline">\(R_1\)</span> or <span class="math inline">\(R_2\)</span> is the <strong>sensor</strong> whose resistance varies with the measured variable.</p>
+</section>
+<section class="slide level2 scrollable">
+
+<p>Issues to consider:</p>
+<ol type="1">
+<li><strong>Nonlinearity</strong>:
+<ul>
+<li>Even if sensor resistance varies <strong>linearly</strong> with variable, <span class="math inline">\(V_D\)</span> vs variable is <strong>nonlinear</strong> (rational function).</li>
+</ul></li>
+<li><strong>Output impedance</strong>:
+<ul>
+<li><span class="math inline">\(Z_{\text{out}} = R_1 \parallel R_2\)</span>.</li>
+<li>Might not be high enough → loading by next stage.</li>
+</ul></li>
+<li><strong>Power dissipation</strong>:
+<ul>
+<li>Current through divider: <span class="math inline">\(I = V_s / (R_1 + R_2)\)</span>.</li>
+<li>Both resistors dissipate <span class="math inline">\(P = I^2R\)</span>; sensor must not be overheated.</li>
+</ul></li>
+</ol>
+<aside class="notes">
+<p>Connect this to using a potentiometer as a sensor: it is exactly a divider. Mention that in low‑power sensor applications, we often increase resistances to reduce power, but must then be careful about noise and input bias currents.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-2-divider-with-variable-sensor-resistance" class="slide level2">
+<h2>Example 2 — Divider with Variable Sensor Resistance</h2>
+<p><strong>Given (Figure 4):</strong></p>
+<ul>
+<li><span class="math inline">\(R_1 = 10.0\ \text{k}\Omega\)</span>, <span class="math inline">\(V_s = 5.00\ \text{V}\)</span>.</li>
+<li><span class="math inline">\(R_2\)</span> is a sensor varying from <span class="math inline">\(4.00\ \text{k}\Omega\)</span> to <span class="math inline">\(12.0\ \text{k}\Omega\)</span>.</li>
+</ul>
+<p><strong>(a) Range of <span class="math inline">\(V_D\)</span></strong></p>
+<p>Use Equation (2).</p>
+<p>For <span class="math inline">\(R_2 = 4\ \text{k}\Omega\)</span>:</p>
+<p><span class="math display">\[
+V_D = \frac{(5\ \text{V})(4\ \text{k}\Omega)}{10\ \text{k}\Omega + 4\ \text{k}\Omega} = 1.43\ \text{V}
+\]</span></p>
+<p>For <span class="math inline">\(R_2 = 12\ \text{k}\Omega\)</span>:</p>
+<p><span class="math display">\[
+V_D = \frac{(5\ \text{V})(12\ \text{k}\Omega)}{10\ \text{k}\Omega + 12\ \text{k}\Omega} = 2.73\ \text{V}
+\]</span></p>
+<p>So <span class="math inline">\(V_D\)</span> ranges from 1.43 V to 2.73 V.</p>
+</section>
+<section class="slide level2">
+
+<p><strong>(b) Output impedance range</strong></p>
+<p><span class="math inline">\(Z_{\text{out}} = R_1 \parallel R_2\)</span>.</p>
+<ul>
+<li>For <span class="math inline">\(R_2 = 4\ \text{k}\Omega\)</span>: <span class="math inline">\(Z_{\text{out}} = 2.86\ \text{k}\Omega\)</span>.</li>
+<li>For <span class="math inline">\(R_2 = 12\ \text{k}\Omega\)</span>: <span class="math inline">\(Z_{\text{out}} = 5.45\ \text{k}\Omega\)</span>.</li>
+</ul>
+<p><strong>(c) Power dissipated in <span class="math inline">\(R_2\)</span></strong></p>
+<p>Use <span class="math inline">\(P = V_D^2 / R_2\)</span>:</p>
+<ul>
+<li>At 4 kΩ: <span class="math inline">\(P \approx 0.51\ \text{mW}\)</span>.</li>
+<li>At 12 kΩ: <span class="math inline">\(P \approx 0.62\ \text{mW}\)</span>.</li>
+</ul>
+<aside class="notes">
+<p>Point out: divider output is only ~1.4–2.7 V from 5 V supply → not using full dynamic range. Later you can mention: we may want to add gain to map this to 0–5 V for ADC usage.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="wheatstone-bridge-circuits" class="slide level2">
+<h2>3.2 Wheatstone Bridge Circuits</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/fab4f52bb6953e81041afeb0edd48a76_MD5.jpg" height="230"></p>
+<figcaption>Figure 5: Basic DC Wheatstone bridge.</figcaption>
+</figure>
+</div>
+<ul>
+<li><strong>Purpose</strong>: convert small resistance changes into measurable voltage changes.</li>
+<li>Very commonly used with:
+<ul>
+<li>Strain gauges, RTDs, pressure sensors, etc.</li>
+</ul></li>
+<li>Arrangement: four resistors in a diamond, excited by a voltage <span class="math inline">\(V\)</span>.</li>
+<li>Detector <span class="math inline">\(D\)</span> senses voltage difference between points <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>Define:</p>
+<ul>
+<li><span class="math inline">\(V_a =\)</span> potential at node <span class="math inline">\(a\)</span> w.r.t. node <span class="math inline">\(c\)</span>.</li>
+<li><span class="math inline">\(V_b =\)</span> potential at node <span class="math inline">\(b\)</span> w.r.t. node <span class="math inline">\(c\)</span>.</li>
+<li>Offset: <span class="math inline">\(\Delta V = V_a - V_b\)</span>.</li>
+</ul>
+<p>Assuming infinite detector impedance (no current through D):</p>
+<p><span class="math display">\[
+V_a = \frac{V R_3}{R_1 + R_3}
+\tag{4}
+\]</span></p>
+<p><span class="math display">\[
+V_b = \frac{V R_4}{R_2 + R_4}
+\tag{5}
+\]</span></p>
+<p>So</p>
+<p><span class="math display">\[
+\Delta V = V_a - V_b
+= V\frac{R_3R_2 - R_1R_4}{(R_1 + R_3)(R_2 + R_4)}
+\tag{7}
+\]</span></p>
+<p><strong>Null (balanced bridge):</strong></p>
+<ul>
+<li>When <span class="math inline">\(\Delta V = 0\)</span>, condition is:</li>
+</ul>
+<p><span class="math display">\[
+R_3 R_2 = R_1 R_4
+\tag{8}
+\]</span></p>
+<p>Key advantage: null condition is independent of supply voltage <span class="math inline">\(V\)</span>.</p>
+<aside class="notes">
+<p>Show that in many sensors, one or more arms are active (change with variable); others are fixed or used for temperature compensation.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-3-finding-an-unknown-resistance-from-bridge-null" class="slide level2">
+<h2>Example 3 — Finding an Unknown Resistance from Bridge Null</h2>
+<p><strong>Given:</strong></p>
+<ul>
+<li>Bridge nulls (ΔV = 0) with <span class="math inline">\(R_1 = 1000\ \Omega\)</span>, <span class="math inline">\(R_2 = 842\ \Omega\)</span>, <span class="math inline">\(R_3 = 500\ \Omega\)</span>.</li>
+<li>Find <span class="math inline">\(R_4\)</span>.</li>
+</ul>
+<p>Use Equation (8):</p>
+<p><span class="math display">\[
+R_1 R_4 = R_3 R_2
+\Rightarrow
+R_4 = \frac{R_3R_2}{R_1}
+= \frac{(500\ \Omega)(842\ \Omega)}{1000\ \Omega}
+= 421\ \Omega
+\]</span></p>
+<p>So the unknown resistance is 421 Ω.</p>
+<aside class="notes">
+<p>This is essentially how precise ohmmeters using bridges worked historically. Now replaced by more integrated circuitry but the principle is the same.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-4-small-offset-from-nearly-balanced-bridge" class="slide level2">
+<h2>Example 4 — Small Offset from Nearly Balanced Bridge</h2>
+<p><strong>Given:</strong></p>
+<ul>
+<li><span class="math inline">\(R_1 = R_2 = R_3 = 120\ \Omega\)</span>, <span class="math inline">\(R_4 = 121\ \Omega\)</span>, <span class="math inline">\(V = 10.0\ \text{V}\)</span>.</li>
+<li>Find voltage offset ΔV.</li>
+</ul>
+<p>Using Equation (7):</p>
+<p><span class="math display">\[
+\Delta V
+= 10\ \text{V}\cdot
+\frac{(120\ \Omega)(120\ \Omega) - (120\ \Omega)(121\ \Omega)}
+{(120\ \Omega + 120\ \Omega)(120\ \Omega + 121\ \Omega)}
+\]</span></p>
+<p>Result:</p>
+<p><span class="math display">\[
+\Delta V = -20.7\ \text{mV}
+\]</span></p>
+<p>Negative sign → <span class="math inline">\(V_b &gt; V_a\)</span>.</p>
+<aside class="notes">
+<p>Highlight sensitivity: 1 Ω change (out of 120 Ω) in one resistor yields ~20 mV offset. With an amplifier, we can detect very small resistance changes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="bridges-with-galvanometer-detectors-finite-detector-resistance" class="slide level2">
+<h2>Bridges with Galvanometer Detectors (Finite Detector Resistance)</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/3a68ad2bd73b88e7860ed3c75152590c_MD5.jpg" height="230"></p>
+<figcaption>Figure 6: Thévenin equivalent of a bridge seen by a galvanometer detector.</figcaption>
+</figure>
+</div>
+<p>If the detector is a galvanometer or any finite resistance <span class="math inline">\(R_G\)</span>:</p>
+<ul>
+<li>We replace bridge (between nodes <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>) by its Thévenin equivalent:
+<ul>
+<li>Thévenin voltage <span class="math inline">\(V_{\text{Th}}\)</span> (open‑circuit ΔV).</li>
+<li>Thévenin resistance <span class="math inline">\(R_{\text{Th}}\)</span>.</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>From earlier:</p>
+<p><span class="math display">\[
+V_{\text{Th}} = V\frac{R_3R_2 - R_1R_4}{(R_1 + R_3)(R_2 + R_4)}
+\tag{9}
+\]</span></p>
+<p>Thévenin resistance between <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>:</p>
+<p><span class="math display">\[
+R_{\text{Th}} = \frac{R_1R_3}{R_1 + R_3} + \frac{R_2R_4}{R_2 + R_4}
+\tag{10}
+\]</span></p>
+<p>Detector current:</p>
+<p><span class="math display">\[
+I_G = \frac{V_{\text{Th}}}{R_{\text{Th}} + R_G}
+\tag{11}
+\]</span></p>
+<p>Bridge null condition is <strong>still</strong> Equation (8).</p>
+<aside class="notes">
+<p>This is more historical but useful because the same math applies if D is, say, a low‑input‑impedance amplifier; you must then consider loading of the bridge arms.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-5-offset-current-with-galvanometer" class="slide level2 scrollable">
+<h2>Example 5 — Offset Current with Galvanometer</h2>
+<p><strong>Given:</strong></p>
+<ul>
+<li>Bridge: <span class="math inline">\(R_1 = R_2 = R_3 = 2.00\ \text{k}\Omega\)</span>, <span class="math inline">\(R_4 = 2.05\ \text{k}\Omega\)</span>, <span class="math inline">\(V = 5.00\ \text{V}\)</span>.</li>
+<li>Galvanometer internal resistance <span class="math inline">\(R_G = 50.0\ \Omega\)</span>.</li>
+<li>Find offset current <span class="math inline">\(I_G\)</span>.</li>
+</ul>
+<ol type="1">
+<li><p>Find <span class="math inline">\(V_{\text{Th}}\)</span> from Equation (9):</p>
+<p><span class="math inline">\(V_{\text{Th}} = -30.9\ \text{mV}\)</span>.</p></li>
+<li><p>Find <span class="math inline">\(R_{\text{Th}}\)</span> from Equation (10):</p>
+<p><span class="math inline">\(R_{\text{Th}} \approx 2.01\ \text{k}\Omega\)</span>.</p></li>
+<li><p>Detector current (Equation 11):</p></li>
+</ol>
+<p><span class="math display">\[
+I_G = \frac{-30.9\ \text{mV}}{2.01\ \text{k}\Omega + 50\ \Omega}
+\approx -15.0\ \mu\text{A}
+\]</span></p>
+<p>Negative → current flows from <span class="math inline">\(b\)</span> to <span class="math inline">\(a\)</span>.</p>
+</section>
+<section id="bridge-resolution" class="slide level2">
+<h2>Bridge Resolution</h2>
+<ul>
+<li><strong>Detector resolution</strong> (minimum measurable ΔV or ΔI) translates to <strong>minimum detectable resistance change</strong> in the bridge.</li>
+<li>For high‑input‑impedance detector (e.g., DVM): use Equation (7) or (6) and solve for <span class="math inline">\(\Delta R\)</span> such that <span class="math inline">\(\Delta V\)</span> equals detector resolution.</li>
+</ul>
+</section>
+<section id="example-6-smallest-measurable-resistance-change" class="slide level2">
+<h2>Example 6 — Smallest Measurable Resistance Change</h2>
+<p><strong>Given:</strong></p>
+<ul>
+<li>Bridge: <span class="math inline">\(R_1 = R_2 = R_3 = R_4 = 120.0\ \Omega\)</span>, <span class="math inline">\(V = 10.0\ \text{V}\)</span>.</li>
+<li>Detector: 3½‑digit DVM on 200 mV range → resolution = <span class="math inline">\(0.1\ \text{mV} = 100\ \mu\text{V}\)</span>.</li>
+<li>Find resolution (smallest <span class="math inline">\(\Delta R_4\)</span>) for measurement of <span class="math inline">\(R_4\)</span>.</li>
+</ul>
+<p>Approach:</p>
+<ul>
+<li>Bridge is initially nulled (ΔV = 0) when all resistors are 120 Ω.</li>
+<li>Now assume <span class="math inline">\(R_4\)</span> changes to some value giving ΔV = 100 μV.</li>
+<li>Use Equation (6) with unknown <span class="math inline">\(R_4\)</span> and solve.</li>
+</ul>
+<p>Result:</p>
+<ul>
+<li><span class="math inline">\(R_4 = 119.9952\ \Omega\)</span>.</li>
+<li><span class="math inline">\(\Delta R_4 = 120.0000 - 119.9952 = 0.0048\ \Omega\)</span>.</li>
+</ul>
+<p>So resolution: about <span class="math inline">\(4.8\ \text{m}\Omega\)</span>.</p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Resolution here also tells you the <strong>measurement uncertainty</strong> (best‑case) using this bridge and detector.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="lead-compensation-in-bridges" class="slide level2">
+<h2>Lead Compensation in Bridges</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/35f42bb4bf4971c67d7259c2cf3f5f5e_MD5.jpg" height="220"></p>
+<figcaption>Figure 7: Lead compensation in a remote bridge sensor.</figcaption>
+</figure>
+</div>
+<p>When sensor <span class="math inline">\(R_4\)</span> is remotely located, long wires add resistance and can vary with:</p>
+<ul>
+<li>Temperature.</li>
+<li>Mechanical stress.</li>
+<li>Corrosion / chemical vapors.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p><strong>Lead compensation idea:</strong></p>
+<ul>
+<li>Route the wiring so that lead resistance changes are <strong>mirrored</strong> in two arms (<span class="math inline">\(R_3\)</span> and <span class="math inline">\(R_4\)</span>) of the bridge.</li>
+<li>If both arms change by same amount, condition <span class="math inline">\(R_3R_2 = R_1R_4\)</span> still holds → no change in ΔV.</li>
+</ul>
+<p>ECE analogy: 3‑wire RTD configuration widely used in industrial temperature measurement.</p>
+<aside class="notes">
+<p>Clarify that wire (3) in the figure is just a supply lead, so changes in its resistance don’t affect the bridge balance.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="current-balance-bridge" class="slide level2">
+<h2>Current-Balance Bridge</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/a1325db6a847fefe3a43438e81b7e088_MD5.jpg" height="220"></p>
+<figcaption>Figure 8: Current balance bridge.</figcaption>
+</figure>
+</div>
+<p>Motivation:</p>
+<ul>
+<li>Mechanical feedback (motors adjusting resistors) is slow and noisy.</li>
+<li>Better to <strong>electronically</strong> null the bridge using a current source.</li>
+</ul>
+<p>Construction:</p>
+<ul>
+<li>Split one arm into <span class="math inline">\(R_4\)</span> and <span class="math inline">\(R_5\)</span>.</li>
+<li>Inject current <span class="math inline">\(I\)</span> at their junction (into <span class="math inline">\(R_5\)</span> mostly).</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>Under conditions <span class="math inline">\(R_4 \gg R_5\)</span> or <span class="math inline">\((R_2 + R_4) \gg R_5\)</span>:</p>
+<ul>
+<li>Voltage at <span class="math inline">\(b\)</span>:</li>
+</ul>
+<p><span class="math display">\[
+V_b = \frac{V(R_4 + R_5)}{R_2 + R_4 + R_5} + I R_5
+\tag{14}
+\]</span></p>
+<ul>
+<li>Voltage at <span class="math inline">\(a\)</span>: still Equation (4).</li>
+<li>Bridge offset:</li>
+</ul>
+<p><span class="math display">\[
+\Delta V = V_a - V_b
+= \frac{V R_3}{R_1 + R_3} - \frac{V(R_4 + R_5)}{R_2 + R_4 + R_5} - I R_5
+\tag{15}
+\]</span></p>
+<p>To null the bridge: adjust <span class="math inline">\(I\)</span> so that <span class="math inline">\(\Delta V = 0\)</span>.</p>
+<aside class="notes">
+<p>This is conceptually similar to DAC or feedback current that “balances” an analog bridge — useful in self‑balancing instrumentation.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-7-current-required-to-renull-a-current-balance-bridge" class="slide level2 scrollable">
+<h2>Example 7 — Current Required to Renull a Current-Balance Bridge</h2>
+<p><strong>Given (Figure 8):</strong></p>
+<ul>
+<li><span class="math inline">\(R_1 = R_2 = 10\ \text{k}\Omega\)</span>, <span class="math inline">\(R_3 = 1\ \text{k}\Omega\)</span>, <span class="math inline">\(R_4 = 950\ \Omega\)</span>, <span class="math inline">\(R_5 = 50\ \Omega\)</span>.</li>
+<li>High‑impedance detector, supply <span class="math inline">\(V = 10\ \text{V}\)</span>.</li>
+<li>Initially, with <span class="math inline">\(R_3 = 1000\ \Omega\)</span>, bridge is nulled at <span class="math inline">\(I = 0\)</span>.</li>
+<li>Now <span class="math inline">\(R_3\)</span> increases by 1 Ω to 1001 Ω. Find <span class="math inline">\(I\)</span> required to renull.</li>
+</ul>
+<p>Steps:</p>
+<ol type="1">
+<li><p>Compute <span class="math inline">\(V_a\)</span> with new <span class="math inline">\(R_3\)</span>:</p>
+<p><span class="math inline">\(V_a = \dfrac{10\ \text{V}\cdot 1001}{10000 + 1001} = 0.9099\ \text{V}\)</span>.</p></li>
+<li><p>Originally (with <span class="math inline">\(I = 0\)</span>), <span class="math inline">\(V_a = V_b = 0.9091\ \text{V}\)</span>.</p>
+<ul>
+<li>So now <span class="math inline">\(V_b\)</span> must also be 0.9099 V to null.</li>
+<li>Required increase: <span class="math inline">\(0.8\ \text{mV}\)</span>.</li>
+</ul></li>
+<li><p>Using Equation (15) with <span class="math inline">\(\Delta V = 0\)</span> and only <span class="math inline">\(IR_5\)</span> as adjustable term:</p>
+<p><span class="math inline">\(IR_5 = 0.8\ \text{mV} \Rightarrow I = 0.8\ \text{mV} / 50\ \Omega = 16\ \mu\text{A}\)</span>.</p></li>
+</ol>
+</section>
+<section id="bridges-for-potential-measurements" class="slide level2">
+<h2>Bridges for Potential Measurements</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/2338992f617a69f62ab6240e2ac0cfa5_MD5.jpg" height="220"></p>
+<figcaption>Figure 9: Using a bridge to measure an unknown potential without drawing current from it.</figcaption>
+</figure>
+</div>
+<ul>
+<li>Place unknown voltage <span class="math inline">\(V_x\)</span> in series with the detector between <span class="math inline">\(c\)</span> and <span class="math inline">\(b\)</span>.</li>
+<li>Detector measures <span class="math inline">\(\Delta V = V_c - V_b\)</span>.</li>
+<li>At null (<span class="math inline">\(\Delta V = 0\)</span>): no current flows through <span class="math inline">\(V_x\)</span>.</li>
+</ul>
+<p>For conventional bridge:</p>
+<ul>
+<li><span class="math inline">\(V_c = V_x + V_a\)</span>, and <span class="math inline">\(V_b\)</span> from Equation (5).</li>
+<li>Null condition:</li>
+</ul>
+<p><span class="math display">\[
+V_x + \frac{R_3 V}{R_1 + R_3} - \frac{V R_4}{R_2 + R_4} = 0
+\tag{17}
+\]</span></p>
+<p>So <span class="math inline">\(V_x\)</span> can be found by choosing resistors to null the detector.</p>
+</section>
+<section id="example-8-measuring-an-unknown-potential-with-a-bridge" class="slide level2">
+<h2>Example 8 — Measuring an Unknown Potential with a Bridge</h2>
+<p><strong>Given:</strong></p>
+<ul>
+<li><span class="math inline">\(R_1 = R_2 = 1\ \text{k}\Omega\)</span>, <span class="math inline">\(R_3 = 605\ \Omega\)</span>, <span class="math inline">\(R_4 = 500\ \Omega\)</span>, <span class="math inline">\(V = 10\ \text{V}\)</span>.</li>
+<li>Bridge nulls when unknown potential <span class="math inline">\(V_x\)</span> is inserted as in Figure 9.</li>
+<li>Find <span class="math inline">\(V_x\)</span>.</li>
+</ul>
+<p>Using Equation (17):</p>
+<p><span class="math display">\[
+V_x + \frac{605\cdot 10}{605 + 1000} - \frac{500\cdot 10}{1000 + 500} = 0
+\]</span></p>
+<p>Compute:</p>
+<ul>
+<li><span class="math inline">\(\frac{605\cdot 10}{1605} \approx 3.769\ \text{V}\)</span>.</li>
+<li><span class="math inline">\(\frac{500\cdot 10}{1500} = 3.333\ \text{V}\)</span>.</li>
+</ul>
+<p>So</p>
+<p><span class="math display">\[
+V_x + 3.769 - 3.333 = 0 \Rightarrow V_x = -0.436\ \text{V}
+\]</span></p>
+<p>Negative sign → polarity opposite to assumed orientation.</p>
+</section>
+<section id="example-9-potential-measurement-with-current-balance-bridge" class="slide level2">
+<h2>Example 9 — Potential Measurement with Current Balance Bridge</h2>
+<p>For current‑balance configuration (Figure 8) with <span class="math inline">\(V_x\)</span> in series with detector:</p>
+<ul>
+<li>Null condition (Equation 18):</li>
+</ul>
+<p><span class="math display">\[
+V_x + \frac{R_3 V}{R_1 + R_3} - \frac{V(R_4 + R_5)}{R_2 + R_4 + R_5} - I R_5 = 0
+\tag{18}
+\]</span></p>
+<p>If fixed resistors are chosen so that bridge nulls with <span class="math inline">\(I = 0\)</span>, <span class="math inline">\(V_x = 0\)</span>, middle terms cancel:</p>
+<p><span class="math display">\[
+V_x - I R_5 = 0
+\tag{19}
+\]</span></p>
+<p><strong>Given:</strong></p>
+<ul>
+<li><span class="math inline">\(R_1 = R_2 = 5\ \text{k}\Omega\)</span>, <span class="math inline">\(R_3 = 1\ \text{k}\Omega\)</span>, <span class="math inline">\(R_4 = 990\ \Omega\)</span>, <span class="math inline">\(R_5 = 10\ \Omega\)</span>, <span class="math inline">\(V = 10\ \text{V}\)</span>.</li>
+<li>For <span class="math inline">\(V_x = 12\ \text{mV}\)</span>, find <span class="math inline">\(I\)</span> to null.</li>
+</ul>
+<p>From Equation (19):</p>
+<p><span class="math display">\[
+12\ \text{mV} - 10 I = 0 \Rightarrow I = 1.2\ \text{mA}
+\]</span></p>
+</section>
+<section id="ac-bridges" class="slide level2">
+<h2>AC Bridges</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/1b36f0c4657249c3d65087936f7ce129_MD5.jpg" height="220"></p>
+<figcaption>Figure 10: General AC bridge.</figcaption>
+</figure>
+</div>
+<ul>
+<li>Same idea as DC bridge, but <strong>impedances</strong> <span class="math inline">\(Z_1, Z_2, Z_3, Z_4\)</span> and AC excitation <span class="math inline">\(E\)</span>.</li>
+<li>Offset (phasor) voltage:</li>
+</ul>
+<p><span class="math display">\[
+\Delta E = E\frac{Z_3Z_2 - Z_1Z_4}{(Z_1 + Z_3)(Z_2 + Z_4)}
+\tag{20}
+\]</span></p>
+<ul>
+<li>Null condition:</li>
+</ul>
+<p><span class="math display">\[
+Z_3 Z_2 = Z_1 Z_4
+\tag{21}
+\]</span></p>
+<p>Special note: if the detector is phase sensitive, both in‑phase and quadrature components must be nulled.</p>
+</section>
+<section id="example-10-finding-unknown-r-and-c-from-an-ac-bridge" class="slide level2">
+<h2>Example 10 — Finding Unknown R and C from an AC Bridge</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/9ea1399b6b93f383f50ae8fffc3d03f3_MD5.jpg" height="220"></p>
+<figcaption>Figure 11: AC bridge for Example 10.</figcaption>
+</figure>
+</div>
+<p>Assume:</p>
+<ul>
+<li><span class="math inline">\(Z_1 = R_1\)</span>, <span class="math inline">\(Z_2 = R_2\)</span>, <span class="math inline">\(Z_3 = R_3 - j/\omega C\)</span>, <span class="math inline">\(Z_x = R_x - j/(\omega C_x)\)</span>.</li>
+</ul>
+<p>At null: <span class="math inline">\(Z_2 Z_3 = Z_1 Z_x\)</span>.</p>
+</section>
+<section class="slide level2">
+
+<p>Real and imaginary parts must match:</p>
+<ul>
+<li>From real part:</li>
+</ul>
+<p><span class="math display">\[
+R_x = \frac{R_2 R_3}{R_1}
+\]</span></p>
+<ul>
+<li>From imaginary part:</li>
+</ul>
+<p><span class="math display">\[
+C_x = C\frac{R_1}{R_2}
+\]</span></p>
+<p>With numbers given in the original text:</p>
+<ul>
+<li><span class="math inline">\(R_x = 2\ \text{k}\Omega\)</span>.</li>
+<li><span class="math inline">\(C_x = 0.5\ \mu\text{F}\)</span>.</li>
+</ul>
+</section>
+<section id="nonlinearity-of-bridge-response" class="slide level2">
+<h2>Nonlinearity of Bridge Response</h2>
 <div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="level-bias-changes">1. Level &amp; Bias Changes</h3>
-<p>Adjusting the magnitude (gain) and zero-value (offset).</p>
-<ul>
-<li><strong>Amplification:</strong> Gain <span class="math inline">\(&gt; 1\)</span></li>
-<li><strong>Attenuation:</strong> Gain <span class="math inline">\(&lt; 1\)</span></li>
-</ul>
-<h3 id="linearization">2. Linearization</h3>
-<p>Converting nonlinear sensor outputs (like CdS cells) into linear representations via circuits or software.</p>
-</div><div class="column" style="width:50%;">
-<h3 id="conversions">3. Conversions</h3>
-<ul>
-<li><strong>Resistance to Voltage:</strong> Bridges.</li>
-<li><strong>Voltage to Current:</strong> 4-20 mA standards for transmission.</li>
-</ul>
-<h3 id="filtering-matching">4. Filtering &amp; Matching</h3>
-<ul>
-<li><strong>Filtering:</strong> Removing 60 Hz line noise.</li>
-<li><strong>Impedance Matching:</strong> Preventing signal loss.</li>
-</ul>
+<div class="column">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/4599c5b3fd953522b4ab65881379a10b_MD5.jpg" height="220"></p>
+<figcaption>Figure 12a: ΔV vs R4 for a wide range — clearly nonlinear.</figcaption>
+</figure>
+</div>
+</div><div class="column">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/306cd4b311354cdc0c0d43f89284d62f_MD5.jpg" height="220"></p>
+<figcaption>Figure 12b: ΔV vs R4 near the null — approximately linear.</figcaption>
+</figure>
+</div>
 </div></div>
-<aside class="notes">
-<p>These four pillars define the engineer’s toolkit.<br>
-Level and bias adjustments are like the ‘zero’ and ‘span’ on an instrument.<br>
-Conversions are vital because while many sensors change resistance, most controllers expect voltage or current.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<!-- end columns -->
+<ul>
+<li>Equation (7) is <strong>nonlinear</strong> in any resistor.</li>
+<li>If sensor resistance varies over a <strong>wide range</strong>, bridge voltage vs resistance is significantly curved (Figure 12a).</li>
+<li>If resistance variation is <strong>small and centered</strong> on the null (e.g., 90–110 Ω around 100 Ω):
+<ul>
+<li>The curve is almost linear over that small range (Figure 12b).</li>
+<li>We can amplify the small off‑null voltage to expand the scale.</li>
+</ul></li>
+</ul>
+<p>Design tip: operate bridges close to null and limit sensor range to maintain approximate linearity, then do software calibration if needed.</p>
 </section>
-<section id="the-concept-of-loading" class="slide level2">
-<h2>The Concept of Loading</h2>
-<p>Loading occurs when connecting a measurement circuit to a sensor causes the sensor’s output voltage to drop.</p>
-<p><strong>Thévenin’s Theorem Model:</strong></p>
-<p>A sensor can be modeled as a voltage source (<span class="math inline">\(V_x\)</span>) in series with an internal resistance (<span class="math inline">\(R_x\)</span>).</p>
-<p><span class="math display">\[V_y = V_x \left(1 - \frac{R_x}{R_L + R_x}\right)\]</span></p>
-<p>To minimize loading errors, we require <span class="math inline">\(R_L \gg R_x\)</span>.</p>
-<aside class="notes">
-<p>This is a critical concept for ECE students.<br>
-If you use a multimeter with low input impedance to measure a high-impedance source, your reading will be wrong.<br>
-Equation 1 shows that if the load resistance RL is not significantly larger than the source resistance Rx, the measured voltage Vy will be lower than the actual source voltage Vx.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<section id="rc-filters-basics" class="slide level2">
+<h2>3.3 RC Filters — Basics</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/086deabbf469a5f1dd19d23b4d132cbe_MD5.jpg" height="160"></p>
+<figcaption>Figure 13: Low-pass RC filter.</figcaption>
+</figure>
+</div>
+<p>Simple first‑order filters built from one <strong>R</strong> and one <strong>C</strong>:</p>
+<ul>
+<li><strong>Low-pass</strong> (Figure 13): passes DC/low frequencies, attenuates high frequencies.</li>
+<li><strong>High-pass</strong> (Figure 15): passes high frequencies, attenuates low frequencies.</li>
+</ul>
+<p>Critical / cutoff frequency:</p>
+<p><span class="math display">\[
+f_c = \frac{1}{2\pi RC}
+\tag{22}
+\]</span></p>
+<p>At <span class="math inline">\(f = f_c\)</span>:</p>
+<ul>
+<li><span class="math inline">\(|V_{\text{out}}/V_{\text{in}}| = 1/\sqrt{2} \approx 0.707\)</span> → −3 dB point.</li>
+</ul>
 </section>
-<section id="interactive-loading-simulation" class="slide level2">
-<h2>Interactive Loading Simulation</h2>
-<p>Adjust the Load Resistance (<span class="math inline">\(R_L\)</span>) to see how it affects the measured voltage.</p>
-<p><strong>Sensor:</strong> <span class="math inline">\(V_x = 10V\)</span>, <span class="math inline">\(R_{source} = 5k\Omega\)</span>.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="126" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 125;"><span id="cb1-126"><a></a>viewof rl <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">100</span><span class="op">,</span> <span class="dv">100000</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">5000</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Load Resistance (Ω)"</span>})<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display">
-<div id="ojs-cell-1" data-nodetype="declaration">
+<section id="low-pass-rc-filter" class="slide level2">
+<h2>Low-Pass RC Filter</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/83a5c601bc09fe1929ceb199bfc35b46_MD5.jpg" height="220"></p>
+<figcaption>Figure 14: Magnitude response of low-pass RC filter.</figcaption>
+</figure>
+</div>
+<p>Transfer magnitude:</p>
+<p><span class="math display">\[
+\left| \frac{V_{\text{out}}}{V_{\text{in}}} \right| =
+\frac{1}{\sqrt{1 + (f/f_c)^2}}
+\tag{23}
+\]</span></p>
+<p>Applications:</p>
+<ul>
+<li>Measure DC or slowly varying signals while rejecting high‑frequency noise.</li>
+<li>Anti‑aliasing before an ADC (though often higher‑order filters are used).</li>
+</ul>
+</section>
+<section class="slide level2 scrollable">
 
+<h3 id="design-guidelines">Design Guidelines</h3>
+<ol type="1">
+<li>Choose a capacitor in the μF–pF range.</li>
+<li>Compute <span class="math inline">\(R\)</span> from <span class="math inline">\(R = 1/(2\pi f_c C)\)</span>.</li>
+<li>Aim for <span class="math inline">\(1\ \text{k}\Omega \le R \le 1\ \text{M}\Omega\)</span> to avoid excessive current or noise.</li>
+<li>Component tolerances (e.g., ±20% for capacitors) mean <span class="math inline">\(f_c\)</span> is approximate.</li>
+<li>If precise <span class="math inline">\(f_c\)</span> is needed, measure <span class="math inline">\(C\)</span> and use a trim pot for <span class="math inline">\(R\)</span>.</li>
+</ol>
+</section>
+<section id="example-11-low-pass-filter-for-1-mhz-noise" class="slide level2">
+<h2>Example 11 — Low-Pass Filter for 1 MHz Noise</h2>
+<p><strong>Goal:</strong></p>
+<ul>
+<li>Measurement signal frequencies &lt; 1 kHz.</li>
+<li>Unwanted noise around 1 MHz.</li>
+<li>Want noise at 1 MHz attenuated to 1% (<span class="math inline">\(|V_{\text{out}}/V_{\text{in}}| = 0.01\)</span>).</li>
+<li>What is effect on desired 1 kHz signal?</li>
+</ul>
+<p>Use Equation (23):</p>
+<p>Set <span class="math inline">\(f = 1\ \text{MHz}\)</span>, <span class="math inline">\(|V_{\text{out}}/V_{\text{in}}| = 0.01\)</span>:</p>
+<p><span class="math display">\[
+0.01 = \frac{1}{\sqrt{1 + (10^6/f_c)^2}}
+\Rightarrow (10^6/f_c)^2 \approx 9999
+\]</span></p>
+<p>So <span class="math inline">\(f_c \approx 10\ \text{kHz}\)</span>.</p>
+<p>Pick <span class="math inline">\(C = 0.01\ \mu\text{F}\)</span> ⇒</p>
+<p><span class="math display">\[
+R = \frac{1}{2\pi f_c C} \approx 1591\ \Omega
+\]</span></p>
+<p>Use standard <span class="math inline">\(R = 1.5\ \text{k}\Omega\)</span> ⇒ actual <span class="math inline">\(f_c \approx 10.6\ \text{kHz}\)</span>.</p>
+<p>Noise attenuation at 1 MHz: very close to 0.01 (slightly better).</p>
+<p>Effect on 1 kHz signal:</p>
+<p><span class="math display">\[
+\left| \frac{V_{\text{out}}}{V_{\text{in}}} \right| =
+\frac{1}{\sqrt{1 + (1000/10610)^2}} \approx 0.996
+\]</span></p>
+<p>Only about 0.4% loss in the desired band.</p>
+<aside class="notes">
+<p>Highlight the design trade‑off: place <span class="math inline">\(f_c\)</span> comfortably above signal band yet far below noise frequency.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="high-pass-rc-filter" class="slide level2">
+<h2>High-Pass RC Filter</h2>
+<div class="columns">
+<div class="column">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/d8ccc3841d7c8cea26d4bf4283ee5d39_MD5.jpg" height="160"></p>
+<figcaption>Figure 15: High-pass RC filter.</figcaption>
+</figure>
 </div>
+</div><div class="column">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/f5e74245c981b5287154988893333951_MD5.jpg" height="220"></p>
+<figcaption>Figure 16: Magnitude response of high-pass RC filter.</figcaption>
+</figure>
 </div>
+</div></div>
+<!-- end columns -->
+<p>Transfer magnitude:</p>
+<p><span class="math display">\[
+\left| \frac{V_{\text{out}}}{V_{\text{in}}} \right| =
+\frac{f/f_c}{\sqrt{1 + (f/f_c)^2}}
+\tag{24}
+\]</span></p>
+<p>At <span class="math inline">\(f = f_c\)</span> → <span class="math inline">\(|V_{\text{out}}/V_{\text{in}}| = 0.707\)</span> (−3 dB).</p>
+<p>Applications:</p>
+<ul>
+<li>Remove DC offsets or low‑frequency drift from signals.</li>
+<li>AC‑coupled amplifiers; pulse transmission.</li>
+</ul>
+</section>
+<section id="example-12-high-pass-filter-for-60-hz-noise" class="slide level2">
+<h2>Example 12 — High-Pass Filter for 60 Hz Noise</h2>
+<p><strong>Goal:</strong></p>
+<ul>
+<li>Pulses for a stepper motor at 2000 Hz.</li>
+<li>60 Hz noise present.</li>
+<li>Want to reduce 60 Hz noise strongly, but allow pulse amplitude to be reduced by no more than 3 dB (≈0.707).</li>
+</ul>
+<p>Since 3 dB corresponds to <span class="math inline">\(|V_{\text{out}}/V_{\text{in}}| = 0.707\)</span>, we choose:</p>
+<ul>
+<li><span class="math inline">\(f_c = 2000\ \text{Hz}\)</span>.</li>
+</ul>
+<p>Now effect on 60 Hz:</p>
+<p><span class="math display">\[
+\left| \frac{V_{\text{out}}}{V_{\text{in}}} \right|
+= \frac{60/2000}{\sqrt{1 + (60/2000)^2}} \approx 0.03
+\]</span></p>
+<p>So 60 Hz noise is reduced to about 3% (97% attenuation).</p>
+<p>Design: pick <span class="math inline">\(C = 0.01\ \mu\text{F}\)</span> →</p>
+<p><span class="math display">\[
+R = \frac{1}{2\pi f_c C} \approx 7.96\ \text{k}\Omega
+\]</span></p>
+<p>Choose standard 7.5 kΩ or 8.2 kΩ as close approximations.</p>
+</section>
+<section id="practical-considerations-for-rc-filters" class="slide level2 scrollable">
+<h2>Practical Considerations for RC Filters</h2>
+<ol type="1">
+<li><strong>Component range</strong>:
+<ul>
+<li>Avoid too small <span class="math inline">\(R\)</span> (large currents, loading).</li>
+<li>Avoid very large <span class="math inline">\(C\)</span> (size, leakage).</li>
+</ul></li>
+<li><strong>Loading</strong>:
+<ul>
+<li>Finite source impedance + filter input impedance.</li>
+<li>Filter output impedance + load impedance.</li>
+<li>May need buffer stages (op‑amp followers) to avoid loading.</li>
+</ul></li>
+<li><strong>Cascading filters</strong>:
+<ul>
+<li>Magnitudes multiply.</li>
+<li>Overall transfer = (first‑order response)^N for N cascaded sections (if no loading).</li>
+<li>Be careful: second stage can load first stage → more attenuation than expected.</li>
+</ul></li>
+</ol>
+</section>
+<section id="example-13-1-vs-2-high-pass-stages" class="slide level2">
+<h2>Example 13 — 1 vs 2 High-Pass Stages</h2>
+<p><strong>Goal:</strong></p>
+<ul>
+<li>2 kHz data signal contaminated by 60 Hz noise.</li>
+<li>Want 60 dB attenuation of 60 Hz (<span class="math inline">\(|V_{\text{out}}/V_{\text{in}}| = 10^{-3}\)</span>).</li>
+</ul>
+<h3 id="single-stage-high-pass">Single-stage high-pass</h3>
+<p>Use Equation (24):</p>
+<p><span class="math display">\[
+0.001 = \frac{60/f_c}{\sqrt{1 + (60/f_c)^2}}
+\]</span></p>
+<p>Solve → <span class="math inline">\(f_c \approx 60\ \text{kHz}\)</span>.</p>
+<p>Effect on 2 kHz data:</p>
+<p><span class="math display">\[
+\left|\frac{V_{\text{out}}}{V_{\text{in}}}\right|
+= \frac{2000/60000}{\sqrt{1 + (2000/60000)^2}} \approx 0.033
+\]</span></p>
+<p>Only 3.3% of data amplitude remains → too much attenuation.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="two-cascaded-stages-same-f_c">Two cascaded stages (same <span class="math inline">\(f_c\)</span>)</h3>
+<ul>
+<li>Overall response ≈ (Equation 24)<span class="math inline">\(^2\)</span>.</li>
+<li>For same 60 dB attenuation of 60 Hz noise, solve:</li>
+</ul>
+<p><span class="math display">\[
+0.001 = \frac{(60/f_c)^2}{1 + (60/f_c)^2}
+\]</span></p>
+<p>→ <span class="math inline">\(f_c \approx 1896\ \text{Hz}\)</span>.</p>
+<p>Now effect on 2 kHz signal (using squared response):</p>
+<p><span class="math display">\[
+\left|\frac{V_{\text{out}}}{V_{\text{in}}}\right|
+= \frac{(2000/1896)^2}{1 + (2000/1896)^2} \approx 0.53
+\]</span></p>
+<p>So about 53% of signal remains, much better than 3.3%.</p>
+<aside class="notes">
+<p>Moral: multiple gentle filter stages often better than one very aggressive stage.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-14-loading-between-cascaded-rc-stages" class="slide level2">
+<h2>Example 14 — Loading Between Cascaded RC Stages</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/caf4393116523e1901b6f094baf2171b_MD5.jpg" height="160"></p>
+<figcaption>Figure 17: Cascaded high-pass RC filter.</figcaption>
+</figure>
 </div>
+<p>We now consider loading for Example 13 with specific component choices.</p>
+<p><strong>Given:</strong></p>
+<ul>
+<li>First stage: choose <span class="math inline">\(C = 0.001\ \mu\text{F}\)</span>; need <span class="math inline">\(f_c = 1896\ \text{Hz}\)</span>.</li>
+<li>From <span class="math inline">\(f_c = 1/(2\pi RC)\)</span>:</li>
+</ul>
+<p><span class="math display">\[
+R = \frac{1}{2\pi f_c C} \approx 83.9\ \text{k}\Omega
+\]</span></p>
+<ul>
+<li>Second stage uses same <span class="math inline">\(R\)</span> and <span class="math inline">\(C\)</span>.</li>
+<li>Evaluate loading effect at <span class="math inline">\(f = 2\ \text{kHz}\)</span>.</li>
+</ul>
+</section>
+<section class="slide level2 scrollable">
+
+<p>Key steps:</p>
+<ol type="1">
+<li>Compute capacitor reactance at 2 kHz: <span class="math inline">\(X_C \approx 79.6\ \text{k}\Omega\)</span>.</li>
+<li>Find equivalent impedances and Thévenin equivalent of first stage.</li>
+<li>Use AC divider to find effective input to second stage.</li>
+</ol>
+<p>Result:</p>
+<ul>
+<li>Without loading, two‑stage response at 2 kHz was <span class="math inline">\(\approx 0.53\)</span>.</li>
+<li>With loading, actual overall response ≈ 0.36.</li>
+</ul>
+<p>So loading reduces signal to 36% instead of 53%.</p>
+<p>Still better than 3.3% from single stage, but emphasizes: - <strong>Need for buffers</strong> between stages when precision matters.</p>
+</section>
+<section id="band-pass-rc-filters" class="slide level2">
+<h2>Band-Pass RC Filters</h2>
+<div class="columns">
+<div class="column">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/2835eabe3390c76991e56012a63286d7_MD5.jpg" height="220"></p>
+<figcaption>Figure 19: Generic band-pass filter response.</figcaption>
+</figure>
+</div>
+</div><div class="column">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/7604fbf94b77c537a3ace622582ff22f_MD5.jpg" height="160"></p>
+<figcaption>Figure 20: RC band-pass filter = high-pass + low-pass in cascade.</figcaption>
+</figure>
+</div>
+</div></div>
+<!-- end columns -->
+<ul>
+<li>Constructed by cascading a <strong>high-pass</strong> and a <strong>low-pass</strong> filter.</li>
+<li>Lower critical frequency <span class="math inline">\(f_L\)</span> from high-pass; upper critical frequency <span class="math inline">\(f_H\)</span> from low-pass.</li>
+<li>Passband is <span class="math inline">\(f_L &lt; f &lt; f_H\)</span>.</li>
+</ul>
+<p>For the RC band‑pass in Figure 20 (including loading via ratio <span class="math inline">\(r = R_H / R_L\)</span>):</p>
+<p><span class="math display">\[
+\left|\frac{V_{\text{out}}}{V_{\text{in}}}\right| =
+\frac{f_H f}
+{\sqrt{(f^2 - f_H f_L)^2 + [f_L + (1 + r)f_H]^2 f^2}}
+\tag{25}
+\]</span></p>
+<p>with</p>
+<p><span class="math display">\[
+f_H = \frac{1}{2\pi R_L C_L}, \quad
+f_L = \frac{1}{2\pi R_H C_H}
+\tag{26}
+\]</span></p>
+<p>Design tips:</p>
+<ul>
+<li>Want <strong>wide separation</strong> between <span class="math inline">\(f_L\)</span> and <span class="math inline">\(f_H\)</span>.</li>
+<li>Keep <span class="math inline">\(r = R_H / R_L \le 0.01\)</span> to minimize loading effects.</li>
+</ul>
+</section>
+<section id="example-15-band-pass-for-660-khz-data" class="slide level2">
+<h2>Example 15 — Band-Pass for 6–60 kHz Data</h2>
+<p><strong>Goal:</strong></p>
+<ul>
+<li>Signal frequencies: 6 kHz to 60 kHz.</li>
+<li>Noise at 120 Hz and 1 MHz.</li>
+<li>Design RC band‑pass to reduce noise by 90% (|Vout/Vin| = 0.1).</li>
+</ul>
+<h3 id="lower-cutoff-high-pass-part">Lower cutoff (high-pass part)</h3>
+<p>At 120 Hz, want |Vout/Vin| ≈ 0.1:</p>
+<p>Use Equation (24):</p>
+<p><span class="math display">\[
+0.1 = \frac{120/f_L}{\sqrt{1 + (120/f_L)^2}} \Rightarrow f_L \approx 1200\ \text{Hz}
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<h3 id="upper-cutoff-low-pass-part">Upper cutoff (low-pass part)</h3>
+<p>At 1 MHz, want |Vout/Vin| ≈ 0.1:</p>
+<p>Use Equation (23):</p>
+<p><span class="math display">\[
+0.1 = \frac{1}{\sqrt{1 + (10^6/f_H)^2}} \Rightarrow f_H \approx 100\ \text{kHz}
+\]</span></p>
+<p>Plot of Equation (25) (Figure 21 in text) shows:</p>
+<ul>
+<li>For <span class="math inline">\(r = 0.1\)</span> vs <span class="math inline">\(r = 0.01\)</span>, loaded passband is lower in amplitude for larger <span class="math inline">\(r\)</span>.</li>
+</ul>
+<p>Design with <span class="math inline">\(r = 0.01\)</span>:</p>
+<ul>
+<li>Choose <span class="math inline">\(R_L = 100\ \text{k}\Omega\)</span>, then <span class="math inline">\(R_H = rR_L = 1\ \text{k}\Omega\)</span>.</li>
+<li>From Equation (26):
+<ul>
+<li><span class="math inline">\(C_H = 0.133\ \mu\text{F}\)</span>.</li>
+<li><span class="math inline">\(C_L = 15.9\ \text{pF}\)</span>.</li>
+</ul></li>
+</ul>
+<p>Effect on data:</p>
+<ul>
+<li>At 6 kHz: |Vout/Vin| ≈ 0.969 (3% reduction).</li>
+<li>At 60 kHz: |Vout/Vin| ≈ 0.851 (15% reduction).</li>
+</ul>
+</section>
+<section id="band-reject-notch-filters" class="slide level2">
+<h2>Band-Reject (Notch) Filters</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/46ebf47ae50e2ada8febcd000442c0ce_MD5.jpg" height="220"></p>
+<figcaption>Figure 22: Generic band-reject (notch) filter response.</figcaption>
+</figure>
+</div>
+<ul>
+<li>Reject a <strong>range</strong> of frequencies (especially a narrow band).</li>
+<li>Useful when one particular frequency interferes, e.g., 50/60 Hz hum in audio or ECG.</li>
+</ul>
+<p>Passive RC implementation with good performance is hard; inductive or active filters usually better.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="twin-t-notch-filter">Twin-T Notch Filter</h3>
+<div class="columns">
+<div class="column">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/4531dc48af8d94c7df6f1cf838526199_MD5.jpg" height="220"></p>
+<figcaption>Figure 23: Twin-T notch RC filter.</figcaption>
+</figure>
+</div>
+</div><div class="column">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/97b14a14a781013200bed0efa0916752_MD5.jpg" height="220"></p>
+<figcaption>Figure 24: Twin-T notch response.</figcaption>
+</figure>
+</div>
+</div></div>
+<!-- end columns -->
+<p>Configuration:</p>
+<ul>
+<li>Top T: series–parallel of R and C.</li>
+<li>Bottom T: R and C interchanged.</li>
+<li>Grounding components <span class="math inline">\(R_1\)</span> and <span class="math inline">\(C_1\)</span> tune the notch.</li>
+</ul>
+<p>For <span class="math inline">\(R_1 = \frac{\pi R}{10}\)</span> and <span class="math inline">\(C_1 = \frac{10C}{\pi}\)</span>:</p>
+<ul>
+<li>Critical frequency:</li>
+</ul>
+<p><span class="math display">\[
+f_n = 0.785 f_c, \quad \text{where } f_c = \frac{1}{2\pi RC}
+\tag{27}
+\]</span></p>
+<ul>
+<li>Frequencies for −3 dB (0.707):</li>
+</ul>
+<p><span class="math display">\[
+f_L = 0.187 f_c, \quad f_H = 4.57 f_c
+\tag{28}
+\]</span></p>
+<p>At <span class="math inline">\(f_n\)</span>, |Vout/Vin| ≈ 0.002 ⇒ good but not perfect rejection.</p>
+</section>
+<section id="example-16-400-hz-notch-filter-twin-t" class="slide level2">
+<h2>Example 16 — 400 Hz Notch Filter (Twin-T)</h2>
+<p><strong>Goal:</strong></p>
+<ul>
+<li>On an aircraft, 400 Hz is the power frequency.</li>
+<li>Want to reject 400 Hz.</li>
+<li>Evaluate effect on voice band (10–300 Hz) and find upper −3 dB frequency.</li>
+</ul>
+<p>We want <span class="math inline">\(f_n = 400\ \text{Hz}\)</span>. From Equation (27):</p>
+<p><span class="math display">\[
+400 = 0.785 f_c \Rightarrow f_c \approx 510\ \text{Hz}
+\]</span></p>
+<p>Pick <span class="math inline">\(C = 0.01\ \mu\text{F}\)</span> →</p>
+<p><span class="math display">\[
+R = \frac{1}{2\pi f_c C} \approx 31.2\ \text{k}\Omega
+\]</span></p>
+<p>Grounding components:</p>
+<p><span class="math display">\[
+R_1 = \frac{\pi R}{10} \approx 9800\ \Omega
+\]</span></p>
+<p><span class="math display">\[
+C_1 = \frac{10C}{\pi} \approx 0.0318\ \mu\text{F}
+\]</span></p>
+<p>Effect on voice band:</p>
+<ul>
+<li>At 10 Hz: <span class="math inline">\(10/400 = 0.025\)</span> → from Figure 24, |Vout/Vin| ≈ 0.99 (little attenuation).</li>
+<li>At 300 Hz: <span class="math inline">\(300/400 = 0.75\)</span> → |Vout/Vin| ≈ 0.03 (significant attenuation).</li>
+</ul>
+<p>Upper −3 dB frequency:</p>
+<ul>
+<li>From Equation (28): <span class="math inline">\(f_H = 4.57 f_c ≈ 2300\ \text{Hz}\)</span>.</li>
+</ul>
+<p>So: - Very good rejection at 400 Hz. - Low voice frequencies largely unaffected, higher low frequencies more attenuated.</p>
+<aside class="notes">
+<p>Mention that in practice, active notch filters using op‑amps provide deeper notches and more controllable Q factor. Twin‑T is still useful conceptually and in simple analog designs.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="summary-key-points" class="slide level2">
+<h2>Summary / Key Points</h2>
+<ul>
+<li><strong>Signal conditioning</strong> bridges the gap between raw sensor outputs and the requirements of downstream electronics (amplifiers, ADCs, transmitters).</li>
+<li>Key tasks:
+<ul>
+<li><strong>Signal-level &amp; bias changes</strong>: match sensor outputs to required voltage ranges.</li>
+<li><strong>Linearization</strong>: historically analog, now often done in software.</li>
+<li><strong>Conversions</strong>: R→V, V↔︎I, analog→digital interface.</li>
+<li><strong>Filtering</strong>: low-pass, high-pass, band-pass, band-reject/notch.</li>
+<li><strong>Impedance matching &amp; loading mitigation</strong>: maintain accuracy.</li>
+</ul></li>
+<li><strong>Loading</strong>:
+<ul>
+<li>Real sources have internal resistance.</li>
+<li>When load is not ≫ source resistance, measured voltage drops (Thévenin model).</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
+<li><strong>Passive circuits</strong>:
+<ul>
+<li>Voltage dividers: simple R→V conversion but nonlinear, have finite output impedance, dissipate power.</li>
+<li>Wheatstone bridges: highly sensitive resistance measurement and R→V conversion; null condition independent of supply.</li>
+<li>AC bridges: extend bridges to impedances (R, C, L), account for magnitude and phase.</li>
+</ul></li>
+<li><strong>RC filters</strong>:
+<ul>
+<li>First‑order low-pass and high-pass with cutoff <span class="math inline">\(f_c = 1/(2\pi RC)\)</span>.</li>
+<li>Easy to design but limited slope (−20 dB/decade).</li>
+<li>Cascading increases slope but requires attention to loading.</li>
+<li>Band-pass = high-pass + low-pass; band-reject (notch) can be implemented with twin‑T for narrow band rejection.</li>
+</ul></li>
+<li>In modern systems, <strong>analog conditioning and digital processing complement each other</strong>:
+<ul>
+<li>Analog front‑end: scaling, basic filtering, protecting ADC.</li>
+<li>Digital side: precise calibration, linearization, advanced filtering.</li>
+</ul></li>
+</ul>
+</section>
+<section id="formulas-summary" class="slide level2">
+<h2>Formulas Summary</h2>
+<p><strong>Transfer function basics</strong></p>
+<ul>
+<li>Simple voltage gain: <span class="math inline">\(V_{\text{out}} = K V_{\text{in}}\)</span>.</li>
+</ul>
+<p><strong>Loading (Thévenin model)</strong></p>
+<ul>
+<li>Loaded output:</li>
+</ul>
+<p><span class="math display">\[
+V_y = V_x\left(1 - \frac{R_x}{R_L + R_x}\right)
+\]</span></p>
+<p><strong>Divider circuit</strong></p>
+<ul>
+<li>Output voltage:</li>
+</ul>
+<p><span class="math display">\[
+V_D = \frac{R_2}{R_1 + R_2} V_s
+\tag{2}
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p><strong>Wheatstone bridge (DC)</strong></p>
+<ul>
+<li>Node voltages:</li>
+</ul>
+<p><span class="math display">\[
+V_a = \frac{V R_3}{R_1 + R_3}, \quad
+V_b = \frac{V R_4}{R_2 + R_4}
+\]</span></p>
+<ul>
+<li>Offset voltage:</li>
+</ul>
+<p><span class="math display">\[
+\Delta V = V_a - V_b =
+V\frac{R_3R_2 - R_1R_4}{(R_1 + R_3)(R_2 + R_4)}
+\tag{7}
+\]</span></p>
+<ul>
+<li>Null condition:</li>
+</ul>
+<p><span class="math display">\[
+R_3 R_2 = R_1 R_4
+\tag{8}
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p><strong>Bridge Thévenin equivalent</strong></p>
+<ul>
+<li>Thévenin voltage:</li>
+</ul>
+<p><span class="math display">\[
+V_{\text{Th}} = \Delta V
+\tag{9}
+\]</span></p>
+<ul>
+<li>Thévenin resistance:</li>
+</ul>
+<p><span class="math display">\[
+R_{\text{Th}}
+= \frac{R_1R_3}{R_1 + R_3} + \frac{R_2R_4}{R_2 + R_4}
+\tag{10}
+\]</span></p>
+<ul>
+<li>Detector current:</li>
+</ul>
+<p><span class="math display">\[
+I_G = \frac{V_{\text{Th}}}{R_{\text{Th}} + R_G}
+\tag{11}
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p><strong>Current-balance bridge</strong></p>
+<ul>
+<li>High‑impedance detector:</li>
+</ul>
+<p><span class="math display">\[
+V_b = \frac{V(R_4 + R_5)}{R_2 + R_4 + R_5} + I R_5
+\tag{14}
+\]</span></p>
+<p><span class="math display">\[
+\Delta V = V_a - V_b
+= \frac{V R_3}{R_1 + R_3} - \frac{V(R_4 + R_5)}{R_2 + R_4 + R_5} - I R_5
+\tag{15}
+\]</span></p>
+<ul>
+<li>For potential measurement with properly chosen resistors:</li>
+</ul>
+<p><span class="math display">\[
+V_x - I R_5 = 0
+\tag{19}
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p><strong>AC bridge</strong></p>
+<ul>
+<li>Offset (phasor):</li>
+</ul>
+<p><span class="math display">\[
+\Delta E = E\frac{Z_3Z_2 - Z_1Z_4}{(Z_1 + Z_3)(Z_2 + Z_4)}
+\tag{20}
+\]</span></p>
+<ul>
+<li>Null condition:</li>
+</ul>
+<p><span class="math display">\[
+Z_3 Z_2 = Z_1 Z_4
+\tag{21}
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p><strong>RC filters</strong></p>
+<ul>
+<li>Cutoff frequency (low-pass &amp; high-pass):</li>
+</ul>
+<p><span class="math display">\[
+f_c = \frac{1}{2\pi RC}
+\tag{22}
+\]</span></p>
+<ul>
+<li>Low-pass magnitude:</li>
+</ul>
+<p><span class="math display">\[
+\left| \frac{V_{\text{out}}}{V_{\text{in}}} \right|
+= \frac{1}{\sqrt{1 + (f/f_c)^2}}
+\tag{23}
+\]</span></p>
+<ul>
+<li>High-pass magnitude:</li>
+</ul>
+<p><span class="math display">\[
+\left| \frac{V_{\text{out}}}{V_{\text{in}}} \right|
+= \frac{f/f_c}{\sqrt{1 + (f/f_c)^2}}
+\tag{24}
+\]</span></p>
+<ul>
+<li>Band-pass RC (including loading, <span class="math inline">\(r = R_H/R_L\)</span>):</li>
+</ul>
+<p><span class="math display">\[
+\left| \frac{V_{\text{out}}}{V_{\text{in}}} \right| =
+\frac{f_H f}
+{\sqrt{(f^2 - f_H f_L)^2 + [f_L + (1 + r)f_H]^2 f^2}}
+\tag{25}
+\]</span></p>
+<p>with</p>
+<p><span class="math display">\[
+f_H = \frac{1}{2\pi R_L C_L}, \quad f_L = \frac{1}{2\pi R_H C_H}
+\tag{26}
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p><strong>Twin-T notch filter</strong></p>
+<ul>
+<li>Core RC frequency:</li>
+</ul>
+<p><span class="math display">\[
+f_c = \frac{1}{2\pi RC}
+\]</span></p>
+<ul>
+<li>Notch frequency:</li>
+</ul>
+<p><span class="math display">\[
+f_n = 0.785 f_c
+\tag{27}
+\]</span></p>
+<ul>
+<li>−3 dB frequencies:</li>
+</ul>
+<p><span class="math display">\[
+f_L = 0.187 f_c, \quad f_H = 4.57 f_c
+\tag{28}
+\]</span></p>
+</section>
+<section>
+<section id="analog-signal-conditioning-interactive-deck" class="title-slide slide level1 center">
+<h1>Analog Signal Conditioning – Interactive Deck</h1>
+
+</section>
+<section id="loading-sensor-amplifier-as-a-divider-pyodide" class="slide level2">
+<h2>1. Loading: Sensor + Amplifier as a Divider (Pyodide)</h2>
+<p>Explore Example 1 numerically. The sensor has internal resistance <span class="math inline">\(R_x\)</span> and the amplifier has input resistance <span class="math inline">\(R_L\)</span>. The loaded voltage is</p>
+<p><span class="math display">\[
+V_{\text{in}} = V_T \left(1 - \frac{R_x}{R_x + R_L}\right)
+\]</span></p>
+<p>Try changing <span class="math inline">\(R_L\)</span> and <span class="math inline">\(R_x\)</span> and see how the amplifier output changes.</p>
 <div>
 <div id="pyodide-1" class="exercise-cell">
 
 </div>
 <script type="pyodide-1-contents">
-eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsicmwiXX0sImNvZGUiOiJpbXBvcnQgbWF0cGxvdGxpYi5weXBsb3QgYXMgcGx0XG5cbnZ4ID0gMTAuMFxucnggPSA1MDAwLjBcbnZ5ID0gdnggKiAocmwgLyAocmwgKyByeCkpXG5lcnJvciA9ICgodnggLSB2eSkgLyB2eCkgKiAxMDBcblxucHJpbnQoZlwiTWVhc3VyZWQgVm9sdGFnZSAoVnkpOiB7dnk6LjJmfSBWXCIpXG5wcmludChmXCJMb2FkaW5nIEVycm9yOiB7ZXJyb3I6LjJmfSAlXCIpIn0=
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiIyBFeGFtcGxlOiBsb2FkaW5nIGJldHdlZW4gc2Vuc29yIGFuZCBhbXBsaWZpZXJcblZfVCA9IDEuMCAgICAgICAjIFVubG9hZGVkIHNlbnNvciB2b2x0YWdlIFtWXVxuUl94ID0gNV8wMDAuMCAgICMgU2Vuc29yIG91dHB1dCByZXNpc3RhbmNlIFtvaG1zXVxuUl9MID0gMTBfMDAwLjAgICMgQW1wbGlmaWVyIGlucHV0IHJlc2lzdGFuY2UgW29obXNdXG5nYWluID0gMTAuMCAgICAgIyBBbXBsaWZpZXIgZ2FpblxuXG5WX2luID0gVl9UICogKDEgLSBSX3ggLyAoUl94ICsgUl9MKSlcblZfb3V0ID0gZ2FpbiAqIFZfaW5cblxucHJpbnQoZlwiU2Vuc29yIG9wZW4tY2lyY3VpdCB2b2x0YWdlIFZUID0ge1ZfVDouMmZ9IFZcIilcbnByaW50KGZcIlNlbnNvciByZXNpc3RhbmNlIFJ4ID0ge1JfeC8xZTM6LjFmfSBrzqlcIilcbnByaW50KGZcIkFtcGxpZmllciBpbnB1dCBSTCA9IHtSX0wvMWUzOi4xZn0ga86pXCIpXG5wcmludChmXCJMb2FkZWQgYW1wbGlmaWVyIGlucHV0IFZpbiA9IHtWX2luOi4zZn0gVlwiKVxucHJpbnQoZlwiQW1wbGlmaWVyIG91dHB1dCBWb3V0ID0ge1Zfb3V0Oi4zZn0gVlwiKVxuXG4jIFRyeTogaW5jcmVhc2UgUkwgdG8gMTAwXzAwMCBhbmQgcmVydW4uIFdoYXQgaGFwcGVucyB0byBWb3V0PyJ9
 </script>
 </div>
 <aside class="notes">
-<p>In this simulation, watch how the error increases as RL approaches 5000 ohms.<br>
-When RL equals Rx, the voltage is halved (5V).<br>
-This demonstrates why high input impedance is a primary requirement for instrumentation amplifiers.</p>
+<p>Ask students: - Set <code>R_L = 10_000</code>, then to <code>100_000</code>, then <code>1_000</code>. - Which case is “good instrumentation practice,” and why?</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -376,112 +2005,55 @@ This demonstrates why high input impedance is a primary requirement for instrume
           display:block!important;
       }</style></aside>
 </section>
-<section class="slide level2">
-
-</section></section>
-<section>
-<section id="passive-circuits" class="title-slide slide level1 center">
-<h1>Passive Circuits</h1>
-
-</section>
-<section id="voltage-divider-circuits" class="slide level2 scrollable">
-<h2>Voltage Divider Circuits</h2>
-<p>The simplest way to convert resistance change to voltage change.</p>
-<div class="cell" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<p><img data-src="ins_21_files\figure-revealjs\mermaid-figure-1.png" style="width:1.63in;height:4.63in"></p>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-<p><span class="math display">\[V_D = \frac{R_2 V_s}{R_1 + R_2}\]</span></p>
-<p><strong>Challenges:</strong></p>
-<ol type="1">
-<li><strong>Nonlinear:</strong> <span class="math inline">\(V_D\)</span> vs <span class="math inline">\(R_2\)</span> is not a straight line.</li>
-<li><strong>Output Impedance:</strong> <span class="math inline">\(Z_{out} = R_1 \parallel R_2\)</span>.</li>
-<li><strong>Self-Heating:</strong> Current through <span class="math inline">\(R_2\)</span> may change its temperature.</li>
-</ol>
-<aside class="notes">
-<p>The voltage divider is common but has flaws.<br>
-The relationship between R2 and VD is hyperbolic, not linear.<br>
-Also, the current required to generate a voltage drop might heat up the sensor, leading to measurement errors.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="wheatstone-bridge" class="slide level2">
-<h2>Wheatstone Bridge</h2>
-<p>Used for high-precision measurement of small resistance changes.</p>
-<div class="cell" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<p><img data-src="ins_21_files\figure-revealjs\mermaid-figure-2.png" style="width:3.27in;height:6.13in"></p>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-<p><strong>Null Condition (<span class="math inline">\(V_a = V_b\)</span>):</strong> <span class="math display">\[R_3 R_2 = R_1 R_4\]</span></p>
-<aside class="notes">
-<p>The Wheatstone bridge is the gold standard for resistive sensors like strain gauges. Its greatest advantage is that it provides a differential output that is zero when the bridge is balanced. This allows us to amplify only the <em>change</em> in signal.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="bridge-offset-voltage" class="slide level2">
-<h2>Bridge Offset Voltage</h2>
-<p>When the bridge is not balanced, the offset voltage <span class="math inline">\(\Delta V\)</span> (assuming infinite detector impedance) is:</p>
-<p><span class="math display">\[\Delta V = V \left[ \frac{R_3}{R_1 + R_3} - \frac{R_4}{R_2 + R_4} \right]\]</span></p>
-<ul>
-<li>For small changes (<span class="math inline">\(\Delta R\)</span>), the output is approximately linear.</li>
-<li>For large changes, the output becomes significantly nonlinear.</li>
-</ul>
-<aside class="notes">
-<p>Note the formula. If all resistors are equal, Delta V is zero. As R4 changes slightly, Delta V changes.<br>
-Engineers must decide if the sensor’s range stays within the ‘approximately linear’ region or if software linearization is needed.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="interactive-wheatstone-bridge" class="slide level2">
-<h2>Interactive Wheatstone Bridge</h2>
-<p>Balance the bridge by adjusting <span class="math inline">\(R_3\)</span>.</p>
-<p><strong>Given:</strong> <span class="math inline">\(V = 10V\)</span>, <span class="math inline">\(R_1=100\Omega\)</span>, <span class="math inline">\(R_2=100\Omega\)</span>, <span class="math inline">\(R_4 (Sensor)=120\Omega\)</span>.</p>
+<section id="loading-error-vs.-load-resistance-reactive-plot" class="slide level2">
+<h2>2. Loading Error vs.&nbsp;Load Resistance (Reactive Plot)</h2>
+<p>Use a slider to change <span class="math inline">\(R_L\)</span> and see how the <strong>percentage error</strong> caused by loading changes.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="235" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 234;"><span id="cb2-235"><a></a>viewof r3_val <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">50</span><span class="op">,</span> <span class="dv">150</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"R3 (Ω)"</span>})<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="1644" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1643;"><span id="cb1-1644"><a></a>viewof RL_k <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb1-1645"><a></a>  [<span class="dv">1</span><span class="op">,</span> <span class="dv">200</span>]<span class="op">,</span> </span>
+<span id="cb1-1646"><a></a>  {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Amplifier input resistance RL [kΩ]"</span>}</span>
+<span id="cb1-1647"><a></a>)</span>
+<span id="cb1-1648"><a></a></span>
+<span id="cb1-1649"><a></a>viewof Rx_k <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb1-1650"><a></a>  [<span class="fl">0.1</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span></span>
+<span id="cb1-1651"><a></a>  {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Sensor resistance Rx [kΩ]"</span>}</span>
+<span id="cb1-1652"><a></a>)</span>
+<span id="cb1-1653"><a></a></span>
+<span id="cb1-1654"><a></a>viewof VT <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb1-1655"><a></a>  [<span class="fl">0.1</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span></span>
+<span id="cb1-1656"><a></a>  {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="fl">1.0</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Sensor open-circuit VT [V]"</span>}</span>
+<span id="cb1-1657"><a></a>)</span>
+<span id="cb1-1658"><a></a></span>
+<span id="cb1-1659"><a></a>viewof gain <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb1-1660"><a></a>  [<span class="dv">1</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span></span>
+<span id="cb1-1661"><a></a>  {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Amplifier gain"</span>}</span>
+<span id="cb1-1662"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
-<div id="ojs-cell-2" data-nodetype="declaration">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
 
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-4" data-nodetype="declaration">
+
+</div>
 </div>
 </div>
 </div>
@@ -490,12 +2062,11 @@ Engineers must decide if the sensor’s range stays within the ‘approximately 
 
 </div>
 <script type="pyodide-2-contents">
-eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsicjNfdmFsIl19LCJjb2RlIjoidl9zdXBwbHkgPSAxMC4wXG5yMSA9IDEwMC4wXG5yMiA9IDEwMC4wXG5yNCA9IDEyMC4wXG5cbnZhID0gdl9zdXBwbHkgKiAocjNfdmFsIC8gKHIxICsgcjNfdmFsKSlcbnZiID0gdl9zdXBwbHkgKiAocjQgLyAocjIgKyByNCkpXG5kZWx0YV92ID0gdmEgLSB2YlxuXG5wcmludChmXCJCcmlkZ2UgT2Zmc2V0IChEZWx0YSBWKToge2RlbHRhX3YqMTAwMDouMmZ9IG1WXCIpXG5pZiBhYnMoZGVsdGFfdikgPCAwLjAxOlxuICAgIHByaW50KFwiQlJJREdFIEJBTEFOQ0VEIVwiKVxuZWxzZTpcbiAgICBwcmludChmXCJSZXF1aXJlZCBSMyBmb3IgTnVsbDogeyhyMSpyNCkvcjI6LjFmfSDOqVwiKSJ9
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiUkxfayIsIlJ4X2siLCJWVCIsImdhaW4iXX0sImNvZGUiOiJpbXBvcnQgbnVtcHkgYXMgbnBcbmltcG9ydCBwbG90bHkuZXhwcmVzcyBhcyBweFxuXG5SeCA9IFJ4X2sgKiAxZTNcblJMX3ZhbHVlcyA9IG5wLmxvZ3NwYWNlKDIsIDcsIDIwMCkgICAjIDAuMSBrzqkgdG8gMTAwMCBrzqlcblZfaWRlYWxfb3V0ID0gZ2FpbiAqIFZUXG5cbmVycm9ycyA9IFtdXG5mb3IgUkwgaW4gUkxfdmFsdWVzOlxuICAgIFZfaW4gPSBWVCAqICgxIC0gUngvKFJ4ICsgUkwpKVxuICAgIFZfb3V0ID0gZ2FpbiAqIFZfaW5cbiAgICBlcnJfcGN0ID0gMTAwICogKFZfaWRlYWxfb3V0IC0gVl9vdXQpIC8gVl9pZGVhbF9vdXRcbiAgICBlcnJvcnMuYXBwZW5kKGVycl9wY3QpXG5cbmZpZyA9IHB4LmxpbmUoXG4gICAgeD1STF92YWx1ZXMvMWUzLFxuICAgIHk9ZXJyb3JzLFxuICAgIGxhYmVscz17XCJ4XCI6IFwiTG9hZCByZXNpc3RhbmNlIFJMIFtrzqldXCIsIFwieVwiOiBcIkxvYWRpbmcgZXJyb3IgWyVdXCJ9LFxuICAgIHRpdGxlPVwiTG9hZGluZyBFcnJvciB2cyBMb2FkIFJlc2lzdGFuY2VcIlxuKVxuZmlnLnVwZGF0ZV9sYXlvdXQoeGF4aXNfdHlwZT1cImxvZ1wiKVxuZmlnIn0=
 </script>
 </div>
 <aside class="notes">
-<p>Try to find the null point. You’ll notice that as R3 increases, the offset crosses zero.<br>
-This balance point is independent of the supply voltage stability, which is why bridges are so stable.</p>
+<p>Guide students: “Move the RL slider to match the curve to your chosen Rx and VT; notice that when RL ≫ Rx, error is small.” Also highlight the log scale on RL.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -508,53 +2079,23 @@ This balance point is independent of the supply voltage stability, which is why 
           display:block!important;
       }</style></aside>
 </section>
-<section id="lead-compensation" class="slide level2">
-<h2>Lead Compensation</h2>
-<p>In industrial settings, sensors are often far from the bridge circuit. Long wires add resistance that changes with temperature.</p>
-<p><strong>Solution: Three-wire connection</strong></p>
-<ul>
-<li><strong>Wire 1:</strong> In series with <span class="math inline">\(R_3\)</span>.</li>
-<li><strong>Wire 2:</strong> In series with <span class="math inline">\(R_4\)</span> (sensor).</li>
-<li><strong>Wire 3:</strong> Power lead (carries no bridge current).</li>
-</ul>
-<p>Since Wire 1 and Wire 2 are identical and experience the same environment, their resistance changes cancel out in the null equation.</p>
-<aside class="notes">
-<p>This is a classic engineering solution to a “real-world” problem.<br>
-By placing one lead in each arm of the bridge, the error becomes a “common-mode” signal that the bridge naturally rejects.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section class="slide level2">
+<section id="voltage-divider-nonlinear-sensor-to-voltage-mapping-pyodide" class="slide level2">
+<h2>3. Voltage Divider: Nonlinear Sensor-to-Voltage Mapping (Pyodide)</h2>
+<p>Revisit the divider from Example 2:</p>
+<p><span class="math display">\[
+V_D = \frac{R_2}{R_1 + R_2} V_s
+\]</span></p>
+<p>Here, <span class="math inline">\(R_2\)</span> is a sensor that changes with the physical variable.</p>
+<div>
+<div id="pyodide-3" class="exercise-cell">
 
-</section></section>
-<section>
-<section id="rc-filters" class="title-slide slide level1 center">
-<h1>RC Filters</h1>
-
-</section>
-<section id="low-pass-and-high-pass-basics" class="slide level2">
-<h2>Low-Pass and High-Pass Basics</h2>
-<p>Used to eliminate unwanted noise (like 60 Hz hum or high-frequency transients).</p>
-<p><strong>Critical Frequency (<span class="math inline">\(f_c\)</span>):</strong></p>
-<p>The frequency where output power drops by half (<span class="math inline">\(-3\text{ dB}\)</span>) or voltage drops to <span class="math inline">\(0.707 V_{in}\)</span>.</p>
-<p><span class="math display">\[f_c = \frac{1}{2\pi RC}\]</span></p>
-<ul>
-<li><strong>Low-Pass:</strong> Passes <span class="math inline">\(f &lt; f_c\)</span>, blocks <span class="math inline">\(f &gt; f_c\)</span>.</li>
-<li><strong>High-Pass:</strong> Passes <span class="math inline">\(f &gt; f_c\)</span>, blocks <span class="math inline">\(f &lt; f_c\)</span>.</li>
-</ul>
+</div>
+<script type="pyodide-3-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5cblZzID0gNS4wICAgICAgICAgICMgc3VwcGx5IHZvbHRhZ2UgW1ZdXG5SMSA9IDEwXzAwMC4wICAgICAjIGZpeGVkIHJlc2lzdG9yIFtvaG1zXVxuUjJfbWluID0gNF8wMDAuMCAgIyBzZW5zb3IgbWluIFtvaG1zXVxuUjJfbWF4ID0gMTJfMDAwLjAgIyBzZW5zb3IgbWF4IFtvaG1zXVxuXG5mb3IgUjIgaW4gbnAubGluc3BhY2UoUjJfbWluLCBSMl9tYXgsIDUpOlxuICAgIFZkID0gVnMgKiBSMi8oUjEgKyBSMilcbiAgICBwcmludChmXCJSMiA9IHtSMi8xZTM6NC4xZn0ga86pIC0+IFZkID0ge1ZkOjQuMmZ9IFZcIilcblxuIyBUcnkgdG8gY2hhbmdlIFIxIGFuZCByZXJ1bi5cbiMgSG93IGRvZXMgdGhlIFZkIHJhbmdlIGFuZCBzZW5zaXRpdml0eSBjaGFuZ2U/In0=
+</script>
+</div>
 <aside class="notes">
-<p>Filters are essential for cleaning up signals.<br>
-A low-pass filter is like a sponge that soaks up fast jitters while letting the slow, steady signal through.<br>
-We choose R and C values to set the “cutoff” point where this soaking starts.</p>
+<p>Ask: Is V_D vs R_2 linear in R_2? If the physical variable is proportional to R_2, what does this do to linearity of measurement vs actual variable?</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -567,12 +2108,141 @@ We choose R and C values to set the “cutoff” point where this soaking starts
           display:block!important;
       }</style></aside>
 </section>
-<section id="filter-response-interactivity" class="slide level2">
-<h2>Filter Response Interactivity</h2>
-<p>Visualize the frequency response of an RC filter. Adjust <span class="math inline">\(R\)</span> and <span class="math inline">\(C\)</span> to move the cutoff.</p>
+<section id="voltage-divider-transfer-curve-reactive-plot" class="slide level2">
+<h2>4. Voltage Divider Transfer Curve (Reactive Plot)</h2>
+<p>Visualize the full curve <span class="math inline">\(V_D(R_2)\)</span> and relate it to nonlinearity.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="314" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 313;"><span id="cb3-314"><a></a>viewof r_filt <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">100</span><span class="op">,</span> <span class="dv">10000</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">1000</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Resistance (Ω)"</span>})<span class="op">;</span></span>
-<span id="cb3-315"><a></a>viewof c_filt <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.01</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Capacitance (μF)"</span>})<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="1741" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1740;"><span id="cb2-1741"><a></a>viewof R1_k_div <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb2-1742"><a></a>  [<span class="dv">1</span><span class="op">,</span> <span class="dv">50</span>]<span class="op">,</span></span>
+<span id="cb2-1743"><a></a>  {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"R1 [kΩ]"</span>}</span>
+<span id="cb2-1744"><a></a>)</span>
+<span id="cb2-1745"><a></a></span>
+<span id="cb2-1746"><a></a>viewof Vs_div <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb2-1747"><a></a>  [<span class="dv">1</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span></span>
+<span id="cb2-1748"><a></a>  {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="fl">5.0</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Vs [V]"</span>}</span>
+<span id="cb2-1749"><a></a>)</span>
+<span id="cb2-1750"><a></a></span>
+<span id="cb2-1751"><a></a>viewof R2_min_k <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb2-1752"><a></a>  [<span class="dv">1</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span></span>
+<span id="cb2-1753"><a></a>  {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">4</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Sensor R2_min [kΩ]"</span>}</span>
+<span id="cb2-1754"><a></a>)</span>
+<span id="cb2-1755"><a></a></span>
+<span id="cb2-1756"><a></a>viewof R2_max_k <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb2-1757"><a></a>  [<span class="dv">2</span><span class="op">,</span> <span class="dv">50</span>]<span class="op">,</span></span>
+<span id="cb2-1758"><a></a>  {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">12</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Sensor R2_max [kΩ]"</span>}</span>
+<span id="cb2-1759"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-4" class="exercise-cell">
+
+</div>
+<script type="pyodide-4-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiUjFfa19kaXYiLCJWc19kaXYiLCJSMl9taW5fayIsIlIyX21heF9rIl19LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5pbXBvcnQgcGxvdGx5LmV4cHJlc3MgYXMgcHhcblxuUjEgPSBSMV9rX2RpdiAqIDFlM1xuVnMgPSBWc19kaXZcblIyX3ZhbHMgPSBucC5saW5zcGFjZShSMl9taW5fayoxZTMsIFIyX21heF9rKjFlMywgMjAwKVxuVmRfdmFscyA9IFZzICogUjJfdmFscy8oUjEgKyBSMl92YWxzKVxuXG5maWcgPSBweC5saW5lKFxuICAgIHg9UjJfdmFscy8xZTMsXG4gICAgeT1WZF92YWxzLFxuICAgIGxhYmVscz17XCJ4XCI6IFwiUjIgW2vOqV1cIiwgXCJ5XCI6IFwiRGl2aWRlciBvdXRwdXQgVmQgW1ZdXCJ9LFxuICAgIHRpdGxlPVwiVm9sdGFnZSBEaXZpZGVyIE91dHB1dCB2cyBTZW5zb3IgUmVzaXN0YW5jZSBSMlwiXG4pXG5maWcifQ==
+</script>
+</div>
+<aside class="notes">
+<p>Encourage students to adjust <code>R1</code> and see how the slope and curvature change. Point out that any straight line they “fit” will only be accurate over a small R2 range.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="wheatstone-bridge-offset-voltage-pyodide" class="slide level2">
+<h2>5. Wheatstone Bridge Offset Voltage (Pyodide)</h2>
+<p>Let’s compute the DC Wheatstone bridge offset:</p>
+<p><span class="math display">\[
+\Delta V = V\frac{R_3R_2 - R_1R_4}{(R_1 + R_3)(R_2 + R_4)}
+\]</span></p>
+<div>
+<div id="pyodide-5" class="exercise-cell">
+
+</div>
+<script type="pyodide-5-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiIyBXaGVhdHN0b25lIGJyaWRnZSBvZmZzZXQgY2FsY3VsYXRpb25cblxuViA9IDEwLjAgICMgc3VwcGx5IHZvbHRhZ2UgW1ZdXG5cblIxID0gMTIwLjBcblIyID0gMTIwLjBcblIzID0gMTIwLjBcblI0ID0gMTIxLjAgICAjIGNoYW5nZSB0aGlzIHRvIHNlZSBuZXcgb2Zmc2V0c1xuXG5udW0gPSBSMypSMiAtIFIxKlI0XG5kZW4gPSAoUjEgKyBSMykqKFIyICsgUjQpXG5kZWx0YV9WID0gViAqIG51bS9kZW5cblxucHJpbnQoZlwiQnJpZGdlIHJlc2lzdGFuY2VzIFvOqV06IFIxPXtSMX0sIFIyPXtSMn0sIFIzPXtSM30sIFI0PXtSNH1cIilcbnByaW50KGZcIlZvbHRhZ2Ugb2Zmc2V0IM6UViA9IHtkZWx0YV9WKjFlMzouMmZ9IG1WXCIpXG5cbiMgVHJ5IHNldCBSNCA9IDEyMCBvciB2YXJ5IFI0IGJ5IMKxMSDOqSBhcm91bmQgMTIwIn0=
+</script>
+</div>
+<aside class="notes">
+<p>Link to Example 4: their calculated −20.7 mV should match what students obtain here.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="wheatstone-bridge-δv-vs-sensor-resistance-reactive-plot" class="slide level2">
+<h2>6. Wheatstone Bridge ΔV vs Sensor Resistance (Reactive Plot)</h2>
+<p>Visualize bridge nonlinearity: how ΔV changes with sensor resistance <span class="math inline">\(R_4\)</span>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="1833" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1832;"><span id="cb3-1833"><a></a>viewof R1_b <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb3-1834"><a></a>  [<span class="dv">50</span><span class="op">,</span> <span class="dv">500</span>]<span class="op">,</span></span>
+<span id="cb3-1835"><a></a>  {<span class="dt">step</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"R1 [Ω]"</span>}</span>
+<span id="cb3-1836"><a></a>)</span>
+<span id="cb3-1837"><a></a></span>
+<span id="cb3-1838"><a></a>viewof R2_b <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb3-1839"><a></a>  [<span class="dv">50</span><span class="op">,</span> <span class="dv">500</span>]<span class="op">,</span></span>
+<span id="cb3-1840"><a></a>  {<span class="dt">step</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"R2 [Ω]"</span>}</span>
+<span id="cb3-1841"><a></a>)</span>
+<span id="cb3-1842"><a></a></span>
+<span id="cb3-1843"><a></a>viewof R3_b <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb3-1844"><a></a>  [<span class="dv">50</span><span class="op">,</span> <span class="dv">500</span>]<span class="op">,</span></span>
+<span id="cb3-1845"><a></a>  {<span class="dt">step</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"R3 [Ω]"</span>}</span>
+<span id="cb3-1846"><a></a>)</span>
+<span id="cb3-1847"><a></a></span>
+<span id="cb3-1848"><a></a>viewof Vb <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb3-1849"><a></a>  [<span class="dv">1</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span></span>
+<span id="cb3-1850"><a></a>  {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Bridge supply V [V]"</span>}</span>
+<span id="cb3-1851"><a></a>)</span>
+<span id="cb3-1852"><a></a></span>
+<span id="cb3-1853"><a></a>viewof R4_min <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb3-1854"><a></a>  [<span class="dv">10</span><span class="op">,</span> <span class="dv">500</span>]<span class="op">,</span></span>
+<span id="cb3-1855"><a></a>  {<span class="dt">step</span><span class="op">:</span> <span class="dv">5</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"R4_min [Ω] (sensor)"</span>}</span>
+<span id="cb3-1856"><a></a>)</span>
+<span id="cb3-1857"><a></a></span>
+<span id="cb3-1858"><a></a>viewof R4_max <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb3-1859"><a></a>  [<span class="dv">50</span><span class="op">,</span> <span class="dv">1000</span>]<span class="op">,</span></span>
+<span id="cb3-1860"><a></a>  {<span class="dt">step</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">500</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"R4_max [Ω] (sensor)"</span>}</span>
+<span id="cb3-1861"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-3-1" data-nodetype="declaration">
@@ -587,20 +2257,45 @@ We choose R and C values to set the “cutoff” point where this soaking starts
 </div>
 </div>
 </div>
-</div>
+<div class="cell-output cell-output-display">
 <div>
-<div id="pyodide-3" class="exercise-cell">
+<div id="ojs-cell-3-3" data-nodetype="declaration">
 
 </div>
-<script type="pyodide-3-contents">
-eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsicl9maWx0IiwiY19maWx0Il19LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5pbXBvcnQgcGxvdGx5LmdyYXBoX29iamVjdHMgYXMgZ29cblxuZmMgPSAxIC8gKDIgKiBucC5waSAqIHJfZmlsdCAqIChjX2ZpbHQgKiAxZS02KSlcbmZyZXEgPSBucC5sb2dzcGFjZSgwLCA2LCAxMDApXG5nYWluID0gMSAvIG5wLnNxcnQoMSArIChmcmVxL2ZjKSoqMilcblxuZmlnID0gZ28uRmlndXJlKClcbmZpZy5hZGRfdHJhY2UoZ28uU2NhdHRlcih4PWZyZXEsIHk9Z2FpbiwgbmFtZT0nTG93IFBhc3MnKSlcbmZpZy51cGRhdGVfeGF4ZXModHlwZT1cImxvZ1wiLCB0aXRsZT1cIkZyZXF1ZW5jeSAoSHopXCIpXG5maWcudXBkYXRlX3lheGVzKHRpdGxlPVwiVm9sdGFnZSBHYWluIChWb3V0L1ZpbilcIilcbmZpZy5hZGRfdmxpbmUoeD1mYywgbGluZV9kYXNoPVwiZGFzaFwiLCBhbm5vdGF0aW9uX3RleHQ9ZlwiZmM9e2ZjOi4xZn1IelwiKVxuZmlnLnNob3coKSJ9
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-6" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-6" class="exercise-cell">
+
+</div>
+<script type="pyodide-6-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiUjFfYiIsIlIyX2IiLCJSM19iIiwiVmIiLCJSNF9taW4iLCJSNF9tYXgiXX0sImNvZGUiOiJpbXBvcnQgbnVtcHkgYXMgbnBcbmltcG9ydCBwbG90bHkuZXhwcmVzcyBhcyBweFxuXG5SMSA9IFIxX2JcblIyID0gUjJfYlxuUjMgPSBSM19iXG5WID0gVmJcblxuUjRfc3RhcnQgPSBtYXgoUjRfbWluLCAxKSAgICMgYXZvaWQgemVyb1xuUjRfZW5kID0gbWF4KFI0X3N0YXJ0ICsgMSwgUjRfbWF4KSAgIyBlbnN1cmUgcmFuZ2VcblI0X3ZhbHMgPSBucC5saW5zcGFjZShSNF9zdGFydCwgUjRfZW5kLCAzMDApXG5cbm51bSA9IFIzKlIyIC0gUjEqUjRfdmFsc1xuZGVuID0gKFIxICsgUjMpKihSMiArIFI0X3ZhbHMpXG5kZWx0YV9WID0gViAqIG51bS9kZW5cblxuZmlnID0gcHgubGluZShcbiAgICB4PVI0X3ZhbHMsXG4gICAgeT1kZWx0YV9WLFxuICAgIGxhYmVscz17XCJ4XCI6IFwiUjQgW86pXVwiLCBcInlcIjogXCLOlFYgW1ZdXCJ9LFxuICAgIHRpdGxlPVwiQnJpZGdlIE9mZnNldCBWb2x0YWdlIM6UViB2cyBTZW5zb3IgUmVzaXN0YW5jZSBSNFwiXG4pXG5maWcuYWRkX2hsaW5lKHk9MCwgbGluZV9kYXNoPVwiZGFzaFwiKVxuZmlnIn0=
 </script>
 </div>
 <aside class="notes">
-<p>The plot shows a Log-Log scale.<br>
-Notice that at low frequencies, the gain is 1.<br>
-As we pass the critical frequency (fc), the gain drops off at 20dB per decade.<br>
-If we need a sharper drop, we would cascade multiple filters.</p>
+<p>Ask students to zoom into a small region around the null (where ΔV ≈ 0) and see that the curve looks almost linear there. This reinforces the “small‑signal linear” region concept.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -613,296 +2308,217 @@ If we need a sharper drop, we would cascade multiple filters.</p>
           display:block!important;
       }</style></aside>
 </section>
-<section id="advanced-passive-filtering" class="slide level2">
-<h2>Advanced Passive Filtering</h2>
-<h3 id="cascaded-filters">Cascaded Filters</h3>
+<section id="low-pass-rc-filter-magnitude-response-pyodide" class="slide level2">
+<h2>7. Low-Pass RC Filter Magnitude Response (Pyodide)</h2>
+<p>Recall:</p>
 <ul>
-<li>Used to increase the “sharpness” of the cutoff.</li>
-<li><strong>Loading Warning:</strong> The second stage loads the first stage.</li>
-<li>Resulting gain is the product of individual gains (if isolated).</li>
+<li>Cutoff frequency: <span class="math inline">\(f_c = \dfrac{1}{2\pi RC}\)</span>.</li>
+<li>Magnitude response:</li>
 </ul>
-<h3 id="band-pass-filters">Band-Pass Filters</h3>
-<ul>
-<li>Combination of a High-Pass and a Low-Pass in series.</li>
-<li>Defined by a lower cutoff <span class="math inline">\(f_L\)</span> and higher cutoff <span class="math inline">\(f_H\)</span>.</li>
-</ul>
-<h3 id="notch-filters-twin-t">Notch Filters (Twin-T)</h3>
-<ul>
-<li>Specifically designed to reject a very narrow range of frequencies (e.g., exactly 60 Hz).</li>
-</ul>
-<aside class="notes">
-<p>A Twin-T notch filter is particularly useful in medical electronics like ECGs, where the 60Hz power line noise is often much larger than the heart signal itself.<br>
-However, passive notch filters are sensitive to component tolerances, often requiring precision resistors.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="summary-key-takeaways" class="slide level2 scrollable">
-<h2>Summary &amp; Key Takeaways</h2>
-<ol type="1">
-<li><strong>Signal Conditioning</strong> is the bridge between the raw sensor and the data acquisition system.</li>
-<li><strong>Loading</strong> is the enemy of accuracy; always ensure <span class="math inline">\(R_{in} \gg R_{source}\)</span>.</li>
-<li><strong>Bridges</strong> convert resistance to voltage with high precision and provide a differential “zero” reference.</li>
-<li><strong>RC Filters</strong> are simple but effective tools for noise management, defined by <span class="math inline">\(f_c = 1/(2\pi RC)\)</span>.</li>
-</ol>
-<aside class="notes">
-<p>To conclude: always look at the impedances before you connect two circuits.<br>
-In our next session, we will look at how Operational Amplifiers (Op-Amps) can make these conditioning tasks much easier by providing high input impedance and active filtering.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="problem-1-loading-effects" class="slide level2">
-<h2>Problem 1: Loading Effects</h2>
-<p><strong>Scenario:</strong></p>
-<p>A temperature sensor has an output resistance of <span class="math inline">\(5.0 \, \text{k}\Omega\)</span> and a transfer function of <span class="math inline">\(20 \, \text{mV/}^\circ\text{C}\)</span>.</p>
-<p>It is connected to an amplifier with an input resistance of <span class="math inline">\(10 \, \text{k}\Omega\)</span> and a gain of 10.</p>
-<p><strong>Task:</strong></p>
-<p>Calculate the actual amplifier output voltage when the temperature is <span class="math inline">\(50^\circ\text{C}\)</span>.</p>
-<aside class="notes">
-<p>Students often calculate the “ideal” value first (1.0V). The key is to realize the sensor acts as a Thévenin source, and the amplifier’s input resistance acts as a load. This demonstrates that <span class="math inline">\(R_{in}\)</span> must be much larger than <span class="math inline">\(R_{source}\)</span> to maintain accuracy.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="solution-1-loading-effects" class="slide level2">
-<h2>Solution 1: Loading Effects</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><strong>Step 1: Ideal Sensor Output</strong></p>
-<p><span class="math inline">\(V_T = (20 \, \text{mV/}^\circ\text{C}) \times 50^\circ\text{C} = 1.0 \, \text{V}\)</span></p>
-<p><strong>Step 2: Loaded Input (<span class="math inline">\(V_{in}\)</span>)</strong></p>
-<p>Using the loading formula:</p>
-<p><span class="math inline">\(V_{in} = V_T \left( \frac{R_L}{R_L + R_x} \right)\)</span></p>
-<p><span class="math inline">\(V_{in} = 1.0 \left( \frac{10 \, \text{k}\Omega}{10 \, \text{k}\Omega + 5 \, \text{k}\Omega} \right) = 0.67 \, \text{V}\)</span></p>
-</div><div class="column" style="width:50%;">
-<p><strong>Step 3: Amplifier Output</strong></p>
-<p><span class="math inline">\(V_{out} = \text{Gain} \times V_{in}\)</span></p>
-<p><span class="math inline">\(V_{out} = 10 \times 0.67 \, \text{V} = 6.7 \, \text{V}\)</span></p>
-<p><strong>Conclusion:</strong></p>
-<p>Without considering loading, we would have expected <span class="math inline">\(10 \, \text{V}\)</span>.</p>
-<p>The error is a staggering <strong>33%</strong>.</p>
-</div></div>
-</section>
-<section id="problem-2-voltage-divider-design" class="slide level2 scrollable">
-<h2>Problem 2: Voltage Divider Design</h2>
-<p><strong>Scenario:</strong></p>
-<p>A supply voltage <span class="math inline">\(V_s = 5.0 \, \text{V}\)</span> is connected to a divider where <span class="math inline">\(R_1 = 10.0 \, \text{k}\Omega\)</span>.</p>
-<p><span class="math inline">\(R_2\)</span> is a sensor that varies from <span class="math inline">\(4.0 \, \text{k}\Omega\)</span> to <span class="math inline">\(12.0 \, \text{k}\Omega\)</span>.</p>
-<p><strong>Task:</strong></p>
-<ol type="1">
-<li>Find the range of the output voltage <span class="math inline">\(V_D\)</span>.</li>
-<li>Determine the maximum power dissipated by the sensor.</li>
-</ol>
-<aside class="notes">
-<p>Dividers are the simplest conversion circuits. Note how the output voltage doesn’t change linearly with R2. Power dissipation is critical to avoid “self-heating” errors in thermal sensors.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="solution-2-voltage-divider" class="slide level2">
-<h2>Solution 2: Voltage Divider</h2>
-<p><strong>1. Output Voltage Range:</strong></p>
-<ul>
-<li>At <span class="math inline">\(R_2 = 4 \, \text{k}\Omega\)</span>: <span class="math inline">\(V_{D} = \frac{5 \times 4}{10 + 4} = 1.43 \, \text{V}\)</span></li>
-<li>At <span class="math inline">\(R_2 = 12 \, \text{k}\Omega\)</span>: <span class="math inline">\(V_{D} = \frac{5 \times 12}{10 + 12} = 2.73 \, \text{V}\)</span></li>
-</ul>
-<p><strong>2. Power Dissipation (<span class="math inline">\(P = V^2 / R\)</span>):</strong></p>
-<ul>
-<li><span class="math inline">\(P_{min} = \frac{(1.43)^2}{4000} \approx 0.51 \, \text{mW}\)</span></li>
-<li><span class="math inline">\(P_{max} = \frac{(2.73)^2}{12000} \approx 0.62 \, \text{mW}\)</span></li>
-</ul>
-<div class="callout callout-tip callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Tip</strong></p>
-</div>
-<div class="callout-content">
-<p>In ECE design, always check if <span class="math inline">\(0.62 \, \text{mW}\)</span> exceeds the sensor’s power rating to prevent damage or bias.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="problem-3-bridge-resolution" class="slide level2">
-<h2>Problem 3: Bridge Resolution</h2>
-<p><strong>Scenario:</strong></p>
-<p>A Wheatstone bridge has <span class="math inline">\(R_1 = R_2 = R_3 = R_4 = 120 \, \Omega\)</span> and <span class="math inline">\(V = 10.0 \, \text{V}\)</span>.</p>
-<p>A Digital Voltmeter (DVM) with <span class="math inline">\(100 \, \mu\text{V}\)</span> resolution is used as the detector.</p>
-<p><strong>Task:</strong></p>
-<p>Find the smallest measurable change in resistance (<span class="math inline">\(\Delta R_4\)</span>) that the DVM can detect.</p>
-<aside class="notes">
-<p>Resolution defines the sensitivity of our measurement system. Even if a sensor changes resistance, if the bridge output change is smaller than the DVM resolution, we can’t see it.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="solution-3-bridge-resolution" class="slide level2">
-<h2>Solution 3: Bridge Resolution</h2>
-<p>The offset voltage is:</p>
-<p><span class="math inline">\(\Delta V = \frac{V R_3}{R_1 + R_3} - \frac{V (R_4 - \Delta R)}{R_2 + (R_4 - \Delta R)}\)</span></p>
-<p>Given <span class="math inline">\(\Delta V = 100 \, \mu\text{V}\)</span>, <span class="math inline">\(V = 10 \, \text{V}\)</span>, and <span class="math inline">\(R = 120 \, \Omega\)</span>:</p>
-<p><span class="math inline">\(10^{-4} = \frac{10(120)}{240} - \frac{10(120 - \Delta R)}{120 + (120 - \Delta R)}\)</span></p>
-<p><span class="math inline">\(10^{-4} = 5 - \frac{1200 - 10\Delta R}{240 - \Delta R}\)</span></p>
-<p>Solving for <span class="math inline">\(\Delta R\)</span>:</p>
-<p><span class="math inline">\(\Delta R \approx 0.0048 \, \Omega\)</span></p>
-<p><strong>Result:</strong> The bridge can resolve a resistance change as small as <span class="math inline">\(4.8 \, \text{m}\Omega\)</span>.</p>
-</section>
-<section id="problem-4-ac-bridge-balance" class="slide level2">
-<h2>Problem 4: AC Bridge Balance</h2>
-<p><strong>Scenario:</strong></p>
-<p>An AC bridge is at null.</p>
-<p><span class="math inline">\(Z_1 = 1 \, \text{k}\Omega\)</span> (Resistor). <span class="math inline">\(Z_2 = 2 \, \text{k}\Omega\)</span> (Resistor). <span class="math inline">\(Z_3 = 1 \, \text{k}\Omega\)</span> resistor in series with a <span class="math inline">\(1 \, \mu\text{F}\)</span> capacitor.</p>
-<p><strong>Task:</strong></p>
-<p>Find the equivalent resistance (<span class="math inline">\(R_x\)</span>) and capacitance (<span class="math inline">\(C_x\)</span>) for the unknown arm <span class="math inline">\(Z_x\)</span>.</p>
-<aside class="notes">
-<p>In AC bridges, we must balance both the real (magnitude) and imaginary (phase) parts. The frequency (<span class="math inline">\(\omega\)</span>) usually cancels out in simple RC bridges, making the balance independent of frequency.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="solution-4-ac-bridge-balance" class="slide level2">
-<h2>Solution 4: AC Bridge Balance</h2>
-<p><strong>Null Condition:</strong> <span class="math inline">\(Z_1 Z_x = Z_2 Z_3\)</span></p>
-<p><span class="math inline">\(R_1 (R_x - \frac{j}{\omega C_x}) = R_2 (R_3 - \frac{j}{\omega C})\)</span></p>
-<p><strong>Equating Real Parts:</strong></p>
-<p><span class="math inline">\(R_1 R_x = R_2 R_3 \implies R_x = \frac{R_2 R_3}{R_1} = \frac{(2\text{k})(1\text{k})}{1\text{k}} = 2 \, \text{k}\Omega\)</span></p>
-<p><strong>Equating Imaginary Parts:</strong></p>
-<p><span class="math inline">\(\frac{R_1}{\omega C_x} = \frac{R_2}{\omega C} \implies C_x = C \frac{R_1}{R_2} = (1 \, \mu\text{F}) \frac{1\text{k}}{2\text{k}} = 0.5 \, \mu\text{F}\)</span></p>
-</section>
-<section id="problem-5-low-pass-filter-design" class="slide level2 scrollable">
-<h2>Problem 5: Low-Pass Filter Design</h2>
-<p><strong>Requirement:</strong></p>
-<p>A signal contains data at <span class="math inline">\(f &lt; 1 \, \text{kHz}\)</span> but has noise at <span class="math inline">\(1 \, \text{MHz}\)</span>. Design a filter that attenuates the <span class="math inline">\(1 \, \text{MHz}\)</span> noise to <span class="math inline">\(1\%\)</span> of its original amplitude (<span class="math inline">\(V_{out}/V_{in} = 0.01\)</span>).</p>
-<p><strong>Task:</strong></p>
-<ol type="1">
-<li>Calculate the required critical frequency <span class="math inline">\(f_c\)</span>.</li>
-<li>Select <span class="math inline">\(R\)</span> and <span class="math inline">\(C\)</span> values.</li>
-</ol>
-<aside class="notes">
-<p>Engineers often start with a desired attenuation at a specific noise frequency. Then they work backward to find the cutoff frequency.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="solution-5-low-pass-filter" class="slide level2">
-<h2>Solution 5: Low-Pass Filter</h2>
-<p><strong>Step 1: Find <span class="math inline">\(f_c\)</span></strong></p>
-<p><span class="math inline">\(\frac{V_{out}}{V_{in}} = \frac{1}{\sqrt{1 + (f/f_c)^2}}\)</span> <span class="math inline">\(0.01 = \frac{1}{\sqrt{1 + (10^6/f_c)^2}} \implies (10^6/f_c)^2 \approx 10,000\)</span></p>
-<p><span class="math inline">\(f_c = 10 \, \text{kHz}\)</span></p>
-<p><strong>Step 2: Component Selection</strong></p>
-<p>Pick <span class="math inline">\(C = 0.01 \, \mu\text{F}\)</span>:</p>
-<p><span class="math inline">\(R = \frac{1}{2 \pi f_c C} = \frac{1}{2 \pi (10^4)(10^{-8})} = 1591 \, \Omega\)</span></p>
-<p><strong>Standard Choice:</strong> Use <span class="math inline">\(R = 1.5 \, \text{k}\Omega\)</span> or a <span class="math inline">\(1.6 \, \text{k}\Omega\)</span> resistor.</p>
-</section>
-<section id="problem-6-twin-t-notch-filter" class="slide level2 scrollable">
-<h2>Problem 6: Twin-T Notch Filter</h2>
-<p><strong>Scenario:</strong></p>
-<p>An EKG monitor is picking up <span class="math inline">\(60 \, \text{Hz}\)</span> interference from power lines.</p>
-<p>Design a Twin-T notch filter to reject this specific frequency.</p>
-<p><strong>Task:</strong></p>
-<ol type="1">
-<li>Find <span class="math inline">\(f_c\)</span> for the Twin-T circuit.</li>
-<li>If <span class="math inline">\(C = 0.1 \, \mu\text{F}\)</span>, find <span class="math inline">\(R, R_1,\)</span> and <span class="math inline">\(C_1\)</span>.</li>
-</ol>
-<aside class="notes">
-<p>The Twin-T is a special passive filter. Note that the notch frequency <span class="math inline">\(f_n\)</span> is NOT equal to <span class="math inline">\(f_c\)</span>. It is <span class="math inline">\(0.785 \times f_c\)</span>. This is a common point of confusion for students.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="solution-6-twin-t-notch-filter" class="slide level2">
-<h2>Solution 6: Twin-T Notch Filter</h2>
-<p><strong>Step 1: Calculate <span class="math inline">\(f_c\)</span></strong></p>
-<p><span class="math inline">\(f_n = 0.785 f_c \implies 60 = 0.785 f_c\)</span></p>
-<p><span class="math inline">\(f_c = 76.43 \, \text{Hz}\)</span></p>
-<p><strong>Step 2: Calculate Components</strong></p>
-<ul>
-<li><p><span class="math inline">\(R = \frac{1}{2 \pi f_c C} = \frac{1}{2 \pi (76.43)(10^{-7})} = 20,823 \, \Omega\)</span></p></li>
-<li><p><span class="math inline">\(R_1 = \frac{\pi R}{10} = \frac{\pi (20823)}{10} \approx 6,541 \, \Omega\)</span></p></li>
-<li><p><span class="math inline">\(C_1 = \frac{10 C}{\pi} = \frac{10 (0.1 \, \mu\text{F})}{\pi} \approx 0.318 \, \mu\text{F}\)</span></p></li>
-</ul>
-</section>
-<section id="design-your-own-bridge" class="slide level2">
-<h2>Design your own Bridge</h2>
-<p>Use the editor below to calculate the bridge offset for your own sensor parameters.</p>
-<p>Change <code>r_sensor</code> to see the effect on <code>delta_v</code>.</p>
+<p><span class="math display">\[
+\left|\frac{V_{\text{out}}}{V_{\text{in}}}\right| =
+\frac{1}{\sqrt{1 + (f/f_c)^2}}
+\]</span></p>
+<p>Explore numerically.</p>
 <div>
-<div id="pyodide-4" class="exercise-cell">
+<div id="pyodide-7" class="exercise-cell">
 
 </div>
-<script type="pyodide-4-contents">
-eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5cbiMgQ2hhbmdlIHRoZXNlIHZhbHVlcyFcbnZfc3VwcGx5ID0gMTIuMFxucjEsIHIyLCByMyA9IDEwMDAsIDEwMDAsIDEwMDBcbnJfc2Vuc29yID0gMTA1MCAgIyBDdXJyZW50IHNlbnNvciByZXNpc3RhbmNlXG5cbiMgQ2FsY3VsYXRpb25cbnZhID0gdl9zdXBwbHkgKiAocjMgLyAocjEgKyByMykpXG52YiA9IHZfc3VwcGx5ICogKHJfc2Vuc29yIC8gKHIyICsgcl9zZW5zb3IpKVxuZGVsdGFfdiA9IHZhIC0gdmJcblxucHJpbnQoZlwiVm9sdGFnZSBhdCBub2RlIGE6IHt2YTouM2Z9IFZcIilcbnByaW50KGZcIlZvbHRhZ2UgYXQgbm9kZSBiOiB7dmI6LjNmfSBWXCIpXG5wcmludChmXCJCcmlkZ2UgT2Zmc2V0ICjOlFYpOiB7ZGVsdGFfdioxMDAwOi4yZn0gbVZcIikifQ==
+<script type="pyodide-7-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5cblIgPSAxXzUwMC4wICAgICAgICAgICMgb2htc1xuQyA9IDAuMDFlLTYgICAgICAgICAgIyBmYXJhZHMgKDAuMDEgwrVGKVxuZmMgPSAxLygyKm5wLnBpKlIqQylcblxucHJpbnQoZlwiUiA9IHtSOi4wZn0gzqksIEMgPSB7QyoxZTY6LjNmfSDCtUZcIilcbnByaW50KGZcIkN1dG9mZiBmcmVxdWVuY3kgZmMg4omIIHtmYzouMWZ9IEh6XCIpXG5cbmZvciBmIGluIFsxMDAsIDFfMDAwLCAxMF8wMDAsIDEwMF8wMDBdOlxuICAgIHJhdGlvID0gMS9ucC5zcXJ0KDEgKyAoZi9mYykqKjIpXG4gICAgcHJpbnQoZlwiZiA9IHtmOjcuMGZ9IEh6IC0+IHxWb3V0L1ZpbnwgPSB7cmF0aW86LjRmfVwiKSJ9
 </script>
 </div>
 <aside class="notes">
-<p>Encourage students to test “unbalanced” bridges. What happens if R1 is doubled? What happens if the supply voltage drops to 5V? This helps them build intuition for sensitivity and supply dependence.</p>
+<p>Encourage students to modify R and C so that fc moves below or above the test frequencies; observe how |Vout/Vin| changes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="low-pass-rc-bode-magnitude-plot-reactive-plot" class="slide level2">
+<h2>8. Low-Pass RC Bode Magnitude Plot (Reactive Plot)</h2>
+<p>Interactive plot of <span class="math inline">\(|V_{\text{out}}/V_{\text{in}}|\)</span> vs <span class="math inline">\(f\)</span> (log scale), with adjustable R and C.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="1947" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1946;"><span id="cb4-1947"><a></a>viewof R_lp <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb4-1948"><a></a>  [<span class="dv">100</span><span class="op">,</span> <span class="dv">100_000</span>]<span class="op">,</span></span>
+<span id="cb4-1949"><a></a>  {<span class="dt">step</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">1_500</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"R [Ω] (low-pass)"</span>}</span>
+<span id="cb4-1950"><a></a>)</span>
+<span id="cb4-1951"><a></a></span>
+<span id="cb4-1952"><a></a>viewof C_lp_nF <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb4-1953"><a></a>  [<span class="fl">0.1</span><span class="op">,</span> <span class="dv">1000</span>]<span class="op">,</span></span>
+<span id="cb4-1954"><a></a>  {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="fl">10.0</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"C [nF] (low-pass)"</span>}</span>
+<span id="cb4-1955"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-8" class="exercise-cell">
+
+</div>
+<script type="pyodide-8-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiUl9scCIsIkNfbHBfbkYiXX0sImNvZGUiOiJpbXBvcnQgbnVtcHkgYXMgbnBcbmltcG9ydCBwbG90bHkuZXhwcmVzcyBhcyBweFxuXG5SID0gUl9scFxuQyA9IENfbHBfbkYgKiAxZS05ICAgIyBjb252ZXJ0IG5GIHRvIEZcbmZjID0gMS8oMipucC5waSpSKkMpXG5cbmYgPSBucC5sb2dzcGFjZSgxLCA2LCAzMDApICAjIDEwIEh6IHRvIDEgTUh6XG5yYXRpbyA9IDEvbnAuc3FydCgxICsgKGYvZmMpKioyKVxuXG5maWcgPSBweC5saW5lKFxuICAgIHg9ZixcbiAgICB5PTIwKm5wLmxvZzEwKHJhdGlvKSxcbiAgICBsYWJlbHM9e1wieFwiOiBcIkZyZXF1ZW5jeSBbSHpdXCIsIFwieVwiOiBcIk1hZ25pdHVkZSBbZEJdXCJ9LFxuICAgIHRpdGxlPWZcIkxvdy1wYXNzIFJDIE1hZ25pdHVkZSBSZXNwb25zZSAoZmMg4omIIHtmYzouMWZ9IEh6KVwiXG4pXG5maWcudXBkYXRlX2xheW91dCh4YXhpc190eXBlPVwibG9nXCIpXG5maWcuYWRkX2hsaW5lKHk9LTMsIGxpbmVfZGFzaD1cImRhc2hcIilcbmZpZyJ9
+</script>
+</div>
+<aside class="notes">
+<p>Highlight: - The −3 dB line is where f ≈ fc. - Slope approaches −20 dB/decade at high frequency.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="high-pass-rc-magnitude-response-reactive-plot" class="slide level2">
+<h2>9. High-Pass RC Magnitude Response (Reactive Plot)</h2>
+<p>For high-pass:</p>
+<p><span class="math display">\[
+\left|\frac{V_{\text{out}}}{V_{\text{in}}}\right| =
+\frac{f/f_c}{\sqrt{1 + (f/f_c)^2}}
+\]</span></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb5" data-startfrom="2002" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 2001;"><span id="cb5-2002"><a></a>viewof R_hp <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb5-2003"><a></a>  [<span class="dv">100</span><span class="op">,</span> <span class="dv">100_000</span>]<span class="op">,</span></span>
+<span id="cb5-2004"><a></a>  {<span class="dt">step</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">8_000</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"R [Ω] (high-pass)"</span>}</span>
+<span id="cb5-2005"><a></a>)</span>
+<span id="cb5-2006"><a></a></span>
+<span id="cb5-2007"><a></a>viewof C_hp_nF <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb5-2008"><a></a>  [<span class="fl">0.1</span><span class="op">,</span> <span class="dv">1000</span>]<span class="op">,</span></span>
+<span id="cb5-2009"><a></a>  {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="fl">10.0</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"C [nF] (high-pass)"</span>}</span>
+<span id="cb5-2010"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-5-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-5-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-9" class="exercise-cell">
+
+</div>
+<script type="pyodide-9-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiUl9ocCIsIkNfaHBfbkYiXX0sImNvZGUiOiJpbXBvcnQgbnVtcHkgYXMgbnBcbmltcG9ydCBwbG90bHkuZXhwcmVzcyBhcyBweFxuXG5SID0gUl9ocFxuQyA9IENfaHBfbkYgKiAxZS05XG5mYyA9IDEvKDIqbnAucGkqUipDKVxuXG5mID0gbnAubG9nc3BhY2UoMSwgNiwgMzAwKVxucmF0aW8gPSAoZi9mYykvbnAuc3FydCgxICsgKGYvZmMpKioyKVxuXG5maWcgPSBweC5saW5lKFxuICAgIHg9ZixcbiAgICB5PTIwKm5wLmxvZzEwKHJhdGlvKSxcbiAgICBsYWJlbHM9e1wieFwiOiBcIkZyZXF1ZW5jeSBbSHpdXCIsIFwieVwiOiBcIk1hZ25pdHVkZSBbZEJdXCJ9LFxuICAgIHRpdGxlPWZcIkhpZ2gtcGFzcyBSQyBNYWduaXR1ZGUgUmVzcG9uc2UgKGZjIOKJiCB7ZmM6LjFmfSBIeilcIlxuKVxuZmlnLnVwZGF0ZV9sYXlvdXQoeGF4aXNfdHlwZT1cImxvZ1wiKVxuZmlnLmFkZF9obGluZSh5PS0zLCBsaW5lX2Rhc2g9XCJkYXNoXCIpXG5maWcifQ==
+</script>
+</div>
+<aside class="notes">
+<p>Relate this to Example 12 and 13: e.g., set fc ≈ 2 kHz and observe attenuation at 60 Hz vs 2 kHz.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="band-pass-from-cascaded-high-pass-and-low-pass-reactive" class="slide level2">
+<h2>10. Band-Pass from Cascaded High-Pass and Low-Pass (Reactive)</h2>
+<p>Model a simple band-pass as:</p>
+<p><span class="math display">\[
+H_{\text{BP}}(f) = H_{\text{HP}}(f) \cdot H_{\text{LP}}(f)
+\]</span></p>
+<p>with the first-order formulas for each.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="2056" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 2055;"><span id="cb6-2056"><a></a>viewof fc_low <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb6-2057"><a></a>  [<span class="dv">10</span><span class="op">,</span> <span class="dv">100_000</span>]<span class="op">,</span></span>
+<span id="cb6-2058"><a></a>  {<span class="dt">step</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">1_200</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"High-pass cutoff fL [Hz]"</span>}</span>
+<span id="cb6-2059"><a></a>)</span>
+<span id="cb6-2060"><a></a></span>
+<span id="cb6-2061"><a></a>viewof fc_high <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb6-2062"><a></a>  [<span class="dv">1_000</span><span class="op">,</span> <span class="dv">500_000</span>]<span class="op">,</span></span>
+<span id="cb6-2063"><a></a>  {<span class="dt">step</span><span class="op">:</span> <span class="dv">1_000</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">100_000</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Low-pass cutoff fH [Hz]"</span>}</span>
+<span id="cb6-2064"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-6-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-6-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-10" class="exercise-cell">
+
+</div>
+<script type="pyodide-10-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiZmNfbG93IiwiZmNfaGlnaCJdfSwiY29kZSI6ImltcG9ydCBudW1weSBhcyBucFxuaW1wb3J0IHBsb3RseS5leHByZXNzIGFzIHB4XG5cbmZMID0gZmNfbG93XG5mSCA9IGZjX2hpZ2hcblxuZiA9IG5wLmxvZ3NwYWNlKDEsIDYsIDQwMClcbkhfaHAgPSAoZi9mTCkvbnAuc3FydCgxICsgKGYvZkwpKioyKVxuSF9scCA9IDEvbnAuc3FydCgxICsgKGYvZkgpKioyKVxuSF9icCA9IEhfaHAgKiBIX2xwXG5cbmZpZyA9IHB4LmxpbmUoXG4gICAgeD1mLFxuICAgIHk9MjAqbnAubG9nMTAoSF9icCksXG4gICAgbGFiZWxzPXtcInhcIjogXCJGcmVxdWVuY3kgW0h6XVwiLCBcInlcIjogXCJNYWduaXR1ZGUgW2RCXVwifSxcbiAgICB0aXRsZT1mXCJCYW5kLXBhc3MgUmVzcG9uc2UgKGZMIOKJiCB7Zkx9IEh6LCBmSCDiiYgge2ZIfSBIeilcIlxuKVxuZmlnLnVwZGF0ZV9sYXlvdXQoeGF4aXNfdHlwZT1cImxvZ1wiKVxuZmlnLmFkZF9obGluZSh5PS0zLCBsaW5lX2Rhc2g9XCJkYXNoXCIpXG5maWcifQ==
+</script>
+</div>
+<aside class="notes">
+<p>Connect to Example 15: - Try fL ≈ 1.2 kHz and fH ≈ 100 kHz. - Check attenuation at 120 Hz and 1 MHz; compare to ~0.1 (−20 dB).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="twin-t-notch-frequency-mapping-pyodide" class="slide level2">
+<h2>11. Twin-T Notch: Frequency Mapping (Pyodide)</h2>
+<p>For a Twin‑T notch:</p>
+<ul>
+<li><span class="math inline">\(f_c = \dfrac{1}{2\pi RC}\)</span>.</li>
+<li>Notch frequency: <span class="math inline">\(f_n = 0.785 f_c\)</span>.</li>
+<li>−3 dB frequencies: <span class="math inline">\(f_L = 0.187 f_c\)</span>, <span class="math inline">\(f_H = 4.57 f_c\)</span>.</li>
+</ul>
+<p>Compute these for given R and C.</p>
+<div>
+<div id="pyodide-11" class="exercise-cell">
+
+</div>
+<script type="pyodide-11-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5cblIgPSAzMV8yMDAuMCAgICAgICAgIyBvaG1zXG5DID0gMC4wMWUtNiAgICAgICAgICMgRiAoMC4wMSDCtUYpXG5mYyA9IDEvKDIqbnAucGkqUipDKVxuZm4gPSAwLjc4NSAqIGZjXG5mTCA9IDAuMTg3ICogZmNcbmZIID0gNC41NyAqIGZjXG5cbnByaW50KGZcIlIgPSB7UjouMGZ9IM6pLCBDID0ge0MqMWU2Oi4zZn0gwrVGXCIpXG5wcmludChmXCJmYyA9IHtmYzouMWZ9IEh6XCIpXG5wcmludChmXCJOb3RjaCBmcmVxdWVuY3kgZm4g4omIIHtmbjouMWZ9IEh6XCIpXG5wcmludChmXCItMyBkQiBmcmVxdWVuY2llczogZkwg4omIIHtmTDouMWZ9IEh6LCBmSCDiiYgge2ZIOi4xZn0gSHpcIikifQ==
+</script>
+</div>
+<aside class="notes">
+<p>Let students set R and C so that fn ≈ 400 Hz as in Example 16, and check fL and fH.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -917,10 +2533,10 @@ eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1w
 
 
 <script type="pyodide-data">
-eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yNy4wL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIiwibnVtcHkiLCJtYXRwbG90bGliIiwicGxvdGx5IiwibmJmb3JtYXQiXX19
+eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yNy4wL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIiwibnVtcHkiLCJtYXRwbG90bGliIiwicGxvdGx5IiwibmJmb3JtYXQiLCJwYW5kYXMiXX19
 </script>
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTQiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl80ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS00LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNC1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzQgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzQsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTMiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoiX3B5b2RpZGVfdmFsdWVfMyA9IHtcbiAgY29uc3QgeyBoaWdobGlnaHRQeXRob24sIGI2NERlY29kZX0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0zLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgLy8gRGVmYXVsdCBldmFsdWF0aW9uIGNvbmZpZ3VyYXRpb25cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oe1xuICAgIGlkOiBcInB5b2RpZGUtMy1jb250ZW50c1wiLFxuICAgIGVjaG86IHRydWUsXG4gICAgb3V0cHV0OiB0cnVlXG4gIH0sIGJsb2NrLmF0dHIpO1xuXG4gIC8vIEV2YWx1YXRlIHRoZSBwcm92aWRlZCBQeXRob24gY29kZVxuICBjb25zdCByZXN1bHQgPSBweW9kaWRlT2pzLnByb2Nlc3Moe2NvZGU6IGJsb2NrLmNvZGUsIG9wdGlvbnN9LCB7cl9maWx0LCBjX2ZpbHR9KTtcblxuICAvLyBFYXJseSB5aWVsZCB3aGlsZSB3ZSB3YWl0IGZvciB0aGUgZmlyc3QgZXZhbHVhdGlvbiBhbmQgcmVuZGVyXG4gIGlmIChvcHRpb25zLm91dHB1dCAmJiAhKFwiM1wiIGluIHB5b2RpZGVPanMucmVuZGVyZWRPanMpKSB7XG4gICAgY29uc3QgY29udGFpbmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcbiAgICBjb25zdCBzcGlubmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcblxuICAgIGlmIChvcHRpb25zLmVjaG8pIHtcbiAgICAgIC8vIFNob3cgb3V0cHV0IGFzIGhpZ2hsaWdodGVkIHNvdXJjZVxuICAgICAgY29uc3QgcHJlRWxlbSA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJwcmVcIik7XG4gICAgICBjb250YWluZXIuY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlXCI7XG4gICAgICBwcmVFbGVtLmNsYXNzTmFtZSA9IFwic291cmNlQ29kZSBweXRob25cIjtcbiAgICAgIHByZUVsZW0uYXBwZW5kQ2hpbGQoaGlnaGxpZ2h0UHl0aG9uKGJsb2NrLmNvZGUpKTtcbiAgICAgIHNwaW5uZXIuY2xhc3NOYW1lID0gXCJzcGlubmVyLWdyb3cgc3Bpbm5lci1ncm93LXNtIG0tMiBwb3NpdGlvbi1hYnNvbHV0ZSB0b3AtMCBlbmQtMFwiO1xuICAgICAgcHJlRWxlbS5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChwcmVFbGVtKTtcbiAgICB9IGVsc2Uge1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItYm9yZGVyIHNwaW5uZXItYm9yZGVyLXNtXCI7XG4gICAgICBjb250YWluZXIuYXBwZW5kQ2hpbGQoc3Bpbm5lcik7XG4gICAgfVxuXG4gICAgeWllbGQgY29udGFpbmVyO1xuICB9XG5cbiAgcHlvZGlkZU9qcy5yZW5kZXJlZE9qc1tcIjNcIl0gPSB0cnVlO1xuICB5aWVsZCBhd2FpdCByZXN1bHQ7XG59XG4ifSx7ImNlbGxOYW1lIjoicHlvZGlkZS0yIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6Il9weW9kaWRlX3ZhbHVlXzIgPSB7XG4gIGNvbnN0IHsgaGlnaGxpZ2h0UHl0aG9uLCBiNjREZWNvZGV9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInB5b2RpZGUtMi1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIC8vIERlZmF1bHQgZXZhbHVhdGlvbiBjb25maWd1cmF0aW9uXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHtcbiAgICBpZDogXCJweW9kaWRlLTItY29udGVudHNcIixcbiAgICBlY2hvOiB0cnVlLFxuICAgIG91dHB1dDogdHJ1ZVxuICB9LCBibG9jay5hdHRyKTtcblxuICAvLyBFdmFsdWF0ZSB0aGUgcHJvdmlkZWQgUHl0aG9uIGNvZGVcbiAgY29uc3QgcmVzdWx0ID0gcHlvZGlkZU9qcy5wcm9jZXNzKHtjb2RlOiBibG9jay5jb2RlLCBvcHRpb25zfSwge3IzX3ZhbH0pO1xuXG4gIC8vIEVhcmx5IHlpZWxkIHdoaWxlIHdlIHdhaXQgZm9yIHRoZSBmaXJzdCBldmFsdWF0aW9uIGFuZCByZW5kZXJcbiAgaWYgKG9wdGlvbnMub3V0cHV0ICYmICEoXCIyXCIgaW4gcHlvZGlkZU9qcy5yZW5kZXJlZE9qcykpIHtcbiAgICBjb25zdCBjb250YWluZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpO1xuICAgIGNvbnN0IHNwaW5uZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpO1xuXG4gICAgaWYgKG9wdGlvbnMuZWNobykge1xuICAgICAgLy8gU2hvdyBvdXRwdXQgYXMgaGlnaGxpZ2h0ZWQgc291cmNlXG4gICAgICBjb25zdCBwcmVFbGVtID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcInByZVwiKTtcbiAgICAgIGNvbnRhaW5lci5jbGFzc05hbWUgPSBcInNvdXJjZUNvZGVcIjtcbiAgICAgIHByZUVsZW0uY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlIHB5dGhvblwiO1xuICAgICAgcHJlRWxlbS5hcHBlbmRDaGlsZChoaWdobGlnaHRQeXRob24oYmxvY2suY29kZSkpO1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItZ3JvdyBzcGlubmVyLWdyb3ctc20gbS0yIHBvc2l0aW9uLWFic29sdXRlIHRvcC0wIGVuZC0wXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKHNwaW5uZXIpO1xuICAgICAgY29udGFpbmVyLmFwcGVuZENoaWxkKHByZUVsZW0pO1xuICAgIH0gZWxzZSB7XG4gICAgICBzcGlubmVyLmNsYXNzTmFtZSA9IFwic3Bpbm5lci1ib3JkZXIgc3Bpbm5lci1ib3JkZXItc21cIjtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICB9XG5cbiAgICB5aWVsZCBjb250YWluZXI7XG4gIH1cblxuICBweW9kaWRlT2pzLnJlbmRlcmVkT2pzW1wiMlwiXSA9IHRydWU7XG4gIHlpZWxkIGF3YWl0IHJlc3VsdDtcbn1cbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoiX3B5b2RpZGVfdmFsdWVfMSA9IHtcbiAgY29uc3QgeyBoaWdobGlnaHRQeXRob24sIGI2NERlY29kZX0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0xLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgLy8gRGVmYXVsdCBldmFsdWF0aW9uIGNvbmZpZ3VyYXRpb25cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oe1xuICAgIGlkOiBcInB5b2RpZGUtMS1jb250ZW50c1wiLFxuICAgIGVjaG86IHRydWUsXG4gICAgb3V0cHV0OiB0cnVlXG4gIH0sIGJsb2NrLmF0dHIpO1xuXG4gIC8vIEV2YWx1YXRlIHRoZSBwcm92aWRlZCBQeXRob24gY29kZVxuICBjb25zdCByZXN1bHQgPSBweW9kaWRlT2pzLnByb2Nlc3Moe2NvZGU6IGJsb2NrLmNvZGUsIG9wdGlvbnN9LCB7cmx9KTtcblxuICAvLyBFYXJseSB5aWVsZCB3aGlsZSB3ZSB3YWl0IGZvciB0aGUgZmlyc3QgZXZhbHVhdGlvbiBhbmQgcmVuZGVyXG4gIGlmIChvcHRpb25zLm91dHB1dCAmJiAhKFwiMVwiIGluIHB5b2RpZGVPanMucmVuZGVyZWRPanMpKSB7XG4gICAgY29uc3QgY29udGFpbmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcbiAgICBjb25zdCBzcGlubmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcblxuICAgIGlmIChvcHRpb25zLmVjaG8pIHtcbiAgICAgIC8vIFNob3cgb3V0cHV0IGFzIGhpZ2hsaWdodGVkIHNvdXJjZVxuICAgICAgY29uc3QgcHJlRWxlbSA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJwcmVcIik7XG4gICAgICBjb250YWluZXIuY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlXCI7XG4gICAgICBwcmVFbGVtLmNsYXNzTmFtZSA9IFwic291cmNlQ29kZSBweXRob25cIjtcbiAgICAgIHByZUVsZW0uYXBwZW5kQ2hpbGQoaGlnaGxpZ2h0UHl0aG9uKGJsb2NrLmNvZGUpKTtcbiAgICAgIHNwaW5uZXIuY2xhc3NOYW1lID0gXCJzcGlubmVyLWdyb3cgc3Bpbm5lci1ncm93LXNtIG0tMiBwb3NpdGlvbi1hYnNvbHV0ZSB0b3AtMCBlbmQtMFwiO1xuICAgICAgcHJlRWxlbS5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChwcmVFbGVtKTtcbiAgICB9IGVsc2Uge1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItYm9yZGVyIHNwaW5uZXItYm9yZGVyLXNtXCI7XG4gICAgICBjb250YWluZXIuYXBwZW5kQ2hpbGQoc3Bpbm5lcik7XG4gICAgfVxuXG4gICAgeWllbGQgY29udGFpbmVyO1xuICB9XG5cbiAgcHlvZGlkZU9qcy5yZW5kZXJlZE9qc1tcIjFcIl0gPSB0cnVlO1xuICB5aWVsZCBhd2FpdCByZXN1bHQ7XG59XG4ifSx7ImNlbGxOYW1lIjoicHlvZGlkZS1wcmVsdWRlIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoicHlvZGlkZU9qcyA9IHtcbiAgY29uc3Qge1xuICAgIFB5b2RpZGVFdmFsdWF0b3IsXG4gICAgUHlvZGlkZUVudmlyb25tZW50TWFuYWdlcixcbiAgICBzZXR1cFB5dGhvbixcbiAgICBzdGFydFB5b2RpZGVXb3JrZXIsXG4gICAgYjY0RGVjb2RlLFxuICAgIGNvbGxhcHNlUGF0aCxcbiAgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc3RhdHVzQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJleGVyY2lzZS1sb2FkaW5nLXN0YXR1c1wiKTtcbiAgY29uc3QgaW5kaWNhdG9yQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJleGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaW5kaWNhdG9yQ29udGFpbmVyLmNsYXNzTGlzdC5yZW1vdmUoXCJkLW5vbmVcIik7XG5cbiAgbGV0IHN0YXR1c1RleHQgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpXG4gIHN0YXR1c1RleHQuY2xhc3NMaXN0ID0gXCJleGVyY2lzZS1sb2FkaW5nLWRldGFpbHNcIjtcbiAgc3RhdHVzVGV4dCA9IHN0YXR1c0NvbnRhaW5lci5hcHBlbmRDaGlsZChzdGF0dXNUZXh0KTtcbiAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBJbml0aWFsaXNlYDtcblxuICAvLyBIb2lzdCBpbmRpY2F0b3Igb3V0IGZyb20gZmluYWwgc2xpZGUgd2hlbiBydW5uaW5nIHVuZGVyIHJldmVhbFxuICBjb25zdCByZXZlYWxTdGF0dXMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCAuZXhlcmNpc2UtbG9hZGluZy1pbmRpY2F0b3JcIik7XG4gIGlmIChyZXZlYWxTdGF0dXMpIHtcbiAgICByZXZlYWxTdGF0dXMucmVtb3ZlKCk7XG4gICAgZG9jdW1lbnQucXVlcnlTZWxlY3RvcihcIi5yZXZlYWwgPiAuc2xpZGVzXCIpLmFwcGVuZENoaWxkKHJldmVhbFN0YXR1cyk7XG4gIH1cblxuICAvLyBNYWtlIGFueSByZXZlYWwgc2xpZGVzIHdpdGggbGl2ZSBjZWxscyBzY3JvbGxhYmxlXG4gIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoXCIucmV2ZWFsIC5leGVyY2lzZS1jZWxsXCIpLmZvckVhY2goKGVsKSA9PiB7XG4gICAgZWwuY2xvc2VzdCgnc2VjdGlvbi5zbGlkZScpLmNsYXNzTGlzdC5hZGQoXCJzY3JvbGxhYmxlXCIpO1xuICB9KVxuXG4gIC8vIFB5b2RpZGUgc3VwcGxlbWVudGFsIGRhdGEgYW5kIG9wdGlvbnNcbiAgY29uc3QgZGF0YUNvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS1kYXRhXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZGF0YSA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKGRhdGFDb250ZW50KSk7XG5cbiAgLy8gR3JhYiBsaXN0IG9mIHJlc291cmNlcyB0byBiZSBkb3dubG9hZGVkXG4gIGNvbnN0IGZpbGVzQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJ2ZnMtZmlsZVxcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGZpbGVzID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZmlsZXNDb250ZW50KSk7XG5cbiAgbGV0IHB5b2RpZGVQcm9taXNlID0gKGFzeW5jICgpID0+IHtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIFB5b2RpZGVgO1xuICAgIGNvbnN0IHB5b2RpZGUgPSBhd2FpdCBzdGFydFB5b2RpZGVXb3JrZXIoZGF0YS5vcHRpb25zKTtcblxuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcGFja2FnZTogbWljcm9waXBgO1xuICAgIGF3YWl0IHB5b2RpZGUubG9hZFBhY2thZ2UoXCJtaWNyb3BpcFwiKTtcbiAgICBjb25zdCBtaWNyb3BpcCA9IGF3YWl0IHB5b2RpZGUucHlpbXBvcnQoXCJtaWNyb3BpcFwiKTtcbiAgICBhd2FpdCBkYXRhLnBhY2thZ2VzLnBrZ3MubWFwKChwa2cpID0+ICgpID0+IHtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcGFja2FnZTogJHtwa2d9YDtcbiAgICAgIHJldHVybiBtaWNyb3BpcC5pbnN0YWxsKHBrZyk7XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG4gICAgYXdhaXQgbWljcm9waXAuZGVzdHJveSgpO1xuXG4gICAgLy8gRG93bmxvYWQgYW5kIGluc3RhbGwgcmVzb3VyY2VzXG4gICAgYXdhaXQgZmlsZXMubWFwKChmaWxlKSA9PiBhc3luYyAoKSA9PiB7XG4gICAgICBjb25zdCBuYW1lID0gZmlsZS5zdWJzdHJpbmcoZmlsZS5sYXN0SW5kZXhPZignLycpICsgMSk7XG4gICAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHJlc291cmNlOiAke25hbWV9YDtcbiAgICAgIGNvbnN0IHJlc3BvbnNlID0gYXdhaXQgZmV0Y2goZmlsZSk7XG4gICAgICBpZiAoIXJlc3BvbnNlLm9rKSB7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgQ2FuJ3QgZG93bmxvYWQgXFxgJHtmaWxlfVxcYC4gRXJyb3IgJHtyZXNwb25zZS5zdGF0dXN9OiBcIiR7cmVzcG9uc2Uuc3RhdHVzVGV4dH1cIi5gKTtcbiAgICAgIH1cbiAgICAgIGNvbnN0IGRhdGEgPSBhd2FpdCByZXNwb25zZS5hcnJheUJ1ZmZlcigpO1xuXG4gICAgICAvLyBTdG9yZSBVUkxzIGluIHRoZSBjd2Qgd2l0aG91dCBhbnkgc3ViZGlyZWN0b3J5IHN0cnVjdHVyZVxuICAgICAgaWYgKGZpbGUuaW5jbHVkZXMoXCI6Ly9cIikpIHtcbiAgICAgICAgZmlsZSA9IG5hbWU7XG4gICAgICB9XG5cbiAgICAgIC8vIENvbGxhcHNlIGhpZ2hlciBkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBmaWxlID0gY29sbGFwc2VQYXRoKGZpbGUpO1xuXG4gICAgICAvLyBDcmVhdGUgZGlyZWN0b3J5IHRyZWUsIGlnbm9yaW5nIFwiZGlyZWN0b3J5IGV4aXN0c1wiIFZGUyBlcnJvcnNcbiAgICAgIGNvbnN0IHBhcnRzID0gZmlsZS5zcGxpdCgnLycpLnNsaWNlKDAsIC0xKTtcbiAgICAgIGxldCBwYXRoID0gJyc7XG4gICAgICB3aGlsZSAocGFydHMubGVuZ3RoID4gMCkge1xuICAgICAgICBwYXRoICs9IHBhcnRzLnNoaWZ0KCkgKyAnLyc7XG4gICAgICAgIHRyeSB7XG4gICAgICAgICAgYXdhaXQgcHlvZGlkZS5GUy5ta2RpcihwYXRoKTtcbiAgICAgICAgfSBjYXRjaCAoZSkge1xuICAgICAgICAgIGlmIChlLm5hbWUgIT09IFwiRXJybm9FcnJvclwiKSB0aHJvdyBlO1xuICAgICAgICAgIGlmIChlLmVycm5vICE9PSAyMCkge1xuICAgICAgICAgICAgY29uc3QgZXJyb3JUZXh0UHRyID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLl9zdHJlcnJvcihlLmVycm5vKTtcbiAgICAgICAgICAgIGNvbnN0IGVycm9yVGV4dCA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5VVEY4VG9TdHJpbmcoZXJyb3JUZXh0UHRyKTtcbiAgICAgICAgICAgIHRocm93IG5ldyBFcnJvcihgRmlsZXN5c3RlbSBFcnJvciAke2UuZXJybm99IFwiJHtlcnJvclRleHR9XCIuYCk7XG4gICAgICAgICAgfVxuICAgICAgICB9XG4gICAgICB9XG5cbiAgICAgIC8vIFdyaXRlIHRoaXMgZmlsZSB0byB0aGUgVkZTXG4gICAgICB0cnkge1xuICAgICAgICByZXR1cm4gYXdhaXQgcHlvZGlkZS5GUy53cml0ZUZpbGUoZmlsZSwgbmV3IFVpbnQ4QXJyYXkoZGF0YSkpO1xuICAgICAgfSBjYXRjaCAoZSkge1xuICAgICAgICBpZiAoZS5uYW1lICE9PSBcIkVycm5vRXJyb3JcIikgdGhyb3cgZTtcbiAgICAgICAgY29uc3QgZXJyb3JUZXh0UHRyID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLl9zdHJlcnJvcihlLmVycm5vKTtcbiAgICAgICAgY29uc3QgZXJyb3JUZXh0ID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLlVURjhUb1N0cmluZyhlcnJvclRleHRQdHIpO1xuICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYEZpbGVzeXN0ZW0gRXJyb3IgJHtlLmVycm5vfSBcIiR7ZXJyb3JUZXh0fVwiLmApO1xuICAgICAgfVxuICAgIH0pLnJlZHVjZSgoY3VyLCBuZXh0KSA9PiBjdXIudGhlbihuZXh0KSwgUHJvbWlzZS5yZXNvbHZlKCkpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBQeW9kaWRlIGVudmlyb25tZW50IHNldHVwYDtcbiAgICBhd2FpdCBzZXR1cFB5dGhvbihweW9kaWRlKTtcblxuICAgIHN0YXR1c1RleHQucmVtb3ZlKCk7XG4gICAgaWYgKHN0YXR1c0NvbnRhaW5lci5jaGlsZHJlbi5sZW5ndGggPT0gMCkge1xuICAgICAgc3RhdHVzQ29udGFpbmVyLnBhcmVudE5vZGUucmVtb3ZlKCk7XG4gICAgfVxuICAgIHJldHVybiBweW9kaWRlO1xuICB9KSgpLmNhdGNoKChlcnIpID0+IHtcbiAgICBzdGF0dXNUZXh0LnN0eWxlLmNvbG9yID0gXCJ2YXIoLS1leGVyY2lzZS1lZGl0b3ItaGwtZXIsICNBRDAwMDApXCI7XG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGVyci5tZXNzYWdlO1xuICAgIC8vaW5kaWNhdG9yQ29udGFpbmVyLnF1ZXJ5U2VsZWN0b3IoXCIuc3Bpbm5lci1ncm93XCIpLmNsYXNzTGlzdC5hZGQoXCJkLW5vbmVcIik7XG4gICAgdGhyb3cgZXJyO1xuICB9KTtcblxuICAvLyBLZWVwIHRyYWNrIG9mIGluaXRpYWwgT0pTIGJsb2NrIHJlbmRlclxuICBjb25zdCByZW5kZXJlZE9qcyA9IHt9O1xuXG4gIGNvbnN0IHByb2Nlc3MgPSBhc3luYyAoY29udGV4dCwgaW5wdXRzKSA9PiB7XG4gICAgY29uc3QgcHlvZGlkZSA9IGF3YWl0IHB5b2RpZGVQcm9taXNlO1xuICAgIGNvbnN0IGV2YWx1YXRvciA9IG5ldyBQeW9kaWRlRXZhbHVhdG9yKHB5b2RpZGUsIGNvbnRleHQpO1xuICAgIGF3YWl0IGV2YWx1YXRvci5wcm9jZXNzKGlucHV0cyk7XG4gICAgcmV0dXJuIGV2YWx1YXRvci5jb250YWluZXI7XG4gIH1cblxuICByZXR1cm4ge1xuICAgIHB5b2RpZGVQcm9taXNlLFxuICAgIHJlbmRlcmVkT2pzLFxuICAgIHByb2Nlc3MsXG4gIH07XG59XG4ifV19
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTExIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6InZpZXdvZiBfcHlvZGlkZV9lZGl0b3JfMTEgPSB7XG4gIGNvbnN0IHsgUHlvZGlkZUV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLTExLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMTEtY29udGVudHNgIH0sIGJsb2NrLmF0dHIpO1xuICBjb25zdCBlZGl0b3IgPSBuZXcgUHlvZGlkZUV4ZXJjaXNlRWRpdG9yKFxuICAgIHB5b2RpZGVPanMucHlvZGlkZVByb21pc2UsXG4gICAgYmxvY2suY29kZSxcbiAgICBvcHRpb25zXG4gICk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fcHlvZGlkZV92YWx1ZV8xMSA9IHB5b2RpZGVPanMucHJvY2VzcyhfcHlvZGlkZV9lZGl0b3JfMTEsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTEwIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6Il9weW9kaWRlX3ZhbHVlXzEwID0ge1xuICBjb25zdCB7IGhpZ2hsaWdodFB5dGhvbiwgYjY0RGVjb2RlfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLTEwLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgLy8gRGVmYXVsdCBldmFsdWF0aW9uIGNvbmZpZ3VyYXRpb25cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oe1xuICAgIGlkOiBcInB5b2RpZGUtMTAtY29udGVudHNcIixcbiAgICBlY2hvOiB0cnVlLFxuICAgIG91dHB1dDogdHJ1ZVxuICB9LCBibG9jay5hdHRyKTtcblxuICAvLyBFdmFsdWF0ZSB0aGUgcHJvdmlkZWQgUHl0aG9uIGNvZGVcbiAgY29uc3QgcmVzdWx0ID0gcHlvZGlkZU9qcy5wcm9jZXNzKHtjb2RlOiBibG9jay5jb2RlLCBvcHRpb25zfSwge2ZjX2xvdywgZmNfaGlnaH0pO1xuXG4gIC8vIEVhcmx5IHlpZWxkIHdoaWxlIHdlIHdhaXQgZm9yIHRoZSBmaXJzdCBldmFsdWF0aW9uIGFuZCByZW5kZXJcbiAgaWYgKG9wdGlvbnMub3V0cHV0ICYmICEoXCIxMFwiIGluIHB5b2RpZGVPanMucmVuZGVyZWRPanMpKSB7XG4gICAgY29uc3QgY29udGFpbmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcbiAgICBjb25zdCBzcGlubmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcblxuICAgIGlmIChvcHRpb25zLmVjaG8pIHtcbiAgICAgIC8vIFNob3cgb3V0cHV0IGFzIGhpZ2hsaWdodGVkIHNvdXJjZVxuICAgICAgY29uc3QgcHJlRWxlbSA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJwcmVcIik7XG4gICAgICBjb250YWluZXIuY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlXCI7XG4gICAgICBwcmVFbGVtLmNsYXNzTmFtZSA9IFwic291cmNlQ29kZSBweXRob25cIjtcbiAgICAgIHByZUVsZW0uYXBwZW5kQ2hpbGQoaGlnaGxpZ2h0UHl0aG9uKGJsb2NrLmNvZGUpKTtcbiAgICAgIHNwaW5uZXIuY2xhc3NOYW1lID0gXCJzcGlubmVyLWdyb3cgc3Bpbm5lci1ncm93LXNtIG0tMiBwb3NpdGlvbi1hYnNvbHV0ZSB0b3AtMCBlbmQtMFwiO1xuICAgICAgcHJlRWxlbS5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChwcmVFbGVtKTtcbiAgICB9IGVsc2Uge1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItYm9yZGVyIHNwaW5uZXItYm9yZGVyLXNtXCI7XG4gICAgICBjb250YWluZXIuYXBwZW5kQ2hpbGQoc3Bpbm5lcik7XG4gICAgfVxuXG4gICAgeWllbGQgY29udGFpbmVyO1xuICB9XG5cbiAgcHlvZGlkZU9qcy5yZW5kZXJlZE9qc1tcIjEwXCJdID0gdHJ1ZTtcbiAgeWllbGQgYXdhaXQgcmVzdWx0O1xufVxuIn0seyJjZWxsTmFtZSI6InB5b2RpZGUtOSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJfcHlvZGlkZV92YWx1ZV85ID0ge1xuICBjb25zdCB7IGhpZ2hsaWdodFB5dGhvbiwgYjY0RGVjb2RlfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLTktY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICAvLyBEZWZhdWx0IGV2YWx1YXRpb24gY29uZmlndXJhdGlvblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7XG4gICAgaWQ6IFwicHlvZGlkZS05LWNvbnRlbnRzXCIsXG4gICAgZWNobzogdHJ1ZSxcbiAgICBvdXRwdXQ6IHRydWVcbiAgfSwgYmxvY2suYXR0cik7XG5cbiAgLy8gRXZhbHVhdGUgdGhlIHByb3ZpZGVkIFB5dGhvbiBjb2RlXG4gIGNvbnN0IHJlc3VsdCA9IHB5b2RpZGVPanMucHJvY2Vzcyh7Y29kZTogYmxvY2suY29kZSwgb3B0aW9uc30sIHtSX2hwLCBDX2hwX25GfSk7XG5cbiAgLy8gRWFybHkgeWllbGQgd2hpbGUgd2Ugd2FpdCBmb3IgdGhlIGZpcnN0IGV2YWx1YXRpb24gYW5kIHJlbmRlclxuICBpZiAob3B0aW9ucy5vdXRwdXQgJiYgIShcIjlcIiBpbiBweW9kaWRlT2pzLnJlbmRlcmVkT2pzKSkge1xuICAgIGNvbnN0IGNvbnRhaW5lciA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIik7XG4gICAgY29uc3Qgc3Bpbm5lciA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIik7XG5cbiAgICBpZiAob3B0aW9ucy5lY2hvKSB7XG4gICAgICAvLyBTaG93IG91dHB1dCBhcyBoaWdobGlnaHRlZCBzb3VyY2VcbiAgICAgIGNvbnN0IHByZUVsZW0gPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwicHJlXCIpO1xuICAgICAgY29udGFpbmVyLmNsYXNzTmFtZSA9IFwic291cmNlQ29kZVwiO1xuICAgICAgcHJlRWxlbS5jbGFzc05hbWUgPSBcInNvdXJjZUNvZGUgcHl0aG9uXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKGhpZ2hsaWdodFB5dGhvbihibG9jay5jb2RlKSk7XG4gICAgICBzcGlubmVyLmNsYXNzTmFtZSA9IFwic3Bpbm5lci1ncm93IHNwaW5uZXItZ3Jvdy1zbSBtLTIgcG9zaXRpb24tYWJzb2x1dGUgdG9wLTAgZW5kLTBcIjtcbiAgICAgIHByZUVsZW0uYXBwZW5kQ2hpbGQoc3Bpbm5lcik7XG4gICAgICBjb250YWluZXIuYXBwZW5kQ2hpbGQocHJlRWxlbSk7XG4gICAgfSBlbHNlIHtcbiAgICAgIHNwaW5uZXIuY2xhc3NOYW1lID0gXCJzcGlubmVyLWJvcmRlciBzcGlubmVyLWJvcmRlci1zbVwiO1xuICAgICAgY29udGFpbmVyLmFwcGVuZENoaWxkKHNwaW5uZXIpO1xuICAgIH1cblxuICAgIHlpZWxkIGNvbnRhaW5lcjtcbiAgfVxuXG4gIHB5b2RpZGVPanMucmVuZGVyZWRPanNbXCI5XCJdID0gdHJ1ZTtcbiAgeWllbGQgYXdhaXQgcmVzdWx0O1xufVxuIn0seyJjZWxsTmFtZSI6InB5b2RpZGUtOCIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJfcHlvZGlkZV92YWx1ZV84ID0ge1xuICBjb25zdCB7IGhpZ2hsaWdodFB5dGhvbiwgYjY0RGVjb2RlfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLTgtY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICAvLyBEZWZhdWx0IGV2YWx1YXRpb24gY29uZmlndXJhdGlvblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7XG4gICAgaWQ6IFwicHlvZGlkZS04LWNvbnRlbnRzXCIsXG4gICAgZWNobzogdHJ1ZSxcbiAgICBvdXRwdXQ6IHRydWVcbiAgfSwgYmxvY2suYXR0cik7XG5cbiAgLy8gRXZhbHVhdGUgdGhlIHByb3ZpZGVkIFB5dGhvbiBjb2RlXG4gIGNvbnN0IHJlc3VsdCA9IHB5b2RpZGVPanMucHJvY2Vzcyh7Y29kZTogYmxvY2suY29kZSwgb3B0aW9uc30sIHtSX2xwLCBDX2xwX25GfSk7XG5cbiAgLy8gRWFybHkgeWllbGQgd2hpbGUgd2Ugd2FpdCBmb3IgdGhlIGZpcnN0IGV2YWx1YXRpb24gYW5kIHJlbmRlclxuICBpZiAob3B0aW9ucy5vdXRwdXQgJiYgIShcIjhcIiBpbiBweW9kaWRlT2pzLnJlbmRlcmVkT2pzKSkge1xuICAgIGNvbnN0IGNvbnRhaW5lciA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIik7XG4gICAgY29uc3Qgc3Bpbm5lciA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIik7XG5cbiAgICBpZiAob3B0aW9ucy5lY2hvKSB7XG4gICAgICAvLyBTaG93IG91dHB1dCBhcyBoaWdobGlnaHRlZCBzb3VyY2VcbiAgICAgIGNvbnN0IHByZUVsZW0gPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwicHJlXCIpO1xuICAgICAgY29udGFpbmVyLmNsYXNzTmFtZSA9IFwic291cmNlQ29kZVwiO1xuICAgICAgcHJlRWxlbS5jbGFzc05hbWUgPSBcInNvdXJjZUNvZGUgcHl0aG9uXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKGhpZ2hsaWdodFB5dGhvbihibG9jay5jb2RlKSk7XG4gICAgICBzcGlubmVyLmNsYXNzTmFtZSA9IFwic3Bpbm5lci1ncm93IHNwaW5uZXItZ3Jvdy1zbSBtLTIgcG9zaXRpb24tYWJzb2x1dGUgdG9wLTAgZW5kLTBcIjtcbiAgICAgIHByZUVsZW0uYXBwZW5kQ2hpbGQoc3Bpbm5lcik7XG4gICAgICBjb250YWluZXIuYXBwZW5kQ2hpbGQocHJlRWxlbSk7XG4gICAgfSBlbHNlIHtcbiAgICAgIHNwaW5uZXIuY2xhc3NOYW1lID0gXCJzcGlubmVyLWJvcmRlciBzcGlubmVyLWJvcmRlci1zbVwiO1xuICAgICAgY29udGFpbmVyLmFwcGVuZENoaWxkKHNwaW5uZXIpO1xuICAgIH1cblxuICAgIHlpZWxkIGNvbnRhaW5lcjtcbiAgfVxuXG4gIHB5b2RpZGVPanMucmVuZGVyZWRPanNbXCI4XCJdID0gdHJ1ZTtcbiAgeWllbGQgYXdhaXQgcmVzdWx0O1xufVxuIn0seyJjZWxsTmFtZSI6InB5b2RpZGUtNyIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3B5b2RpZGVfZWRpdG9yXzcgPSB7XG4gIGNvbnN0IHsgUHlvZGlkZUV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLTctY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgcHlvZGlkZS03LWNvbnRlbnRzYCB9LCBibG9jay5hdHRyKTtcbiAgY29uc3QgZWRpdG9yID0gbmV3IFB5b2RpZGVFeGVyY2lzZUVkaXRvcihcbiAgICBweW9kaWRlT2pzLnB5b2RpZGVQcm9taXNlLFxuICAgIGJsb2NrLmNvZGUsXG4gICAgb3B0aW9uc1xuICApO1xuXG4gIHJldHVybiBlZGl0b3IuY29udGFpbmVyO1xufVxuX3B5b2RpZGVfdmFsdWVfNyA9IHB5b2RpZGVPanMucHJvY2VzcyhfcHlvZGlkZV9lZGl0b3JfNywge30pO1xuIn0seyJjZWxsTmFtZSI6InB5b2RpZGUtNiIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJfcHlvZGlkZV92YWx1ZV82ID0ge1xuICBjb25zdCB7IGhpZ2hsaWdodFB5dGhvbiwgYjY0RGVjb2RlfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLTYtY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICAvLyBEZWZhdWx0IGV2YWx1YXRpb24gY29uZmlndXJhdGlvblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7XG4gICAgaWQ6IFwicHlvZGlkZS02LWNvbnRlbnRzXCIsXG4gICAgZWNobzogdHJ1ZSxcbiAgICBvdXRwdXQ6IHRydWVcbiAgfSwgYmxvY2suYXR0cik7XG5cbiAgLy8gRXZhbHVhdGUgdGhlIHByb3ZpZGVkIFB5dGhvbiBjb2RlXG4gIGNvbnN0IHJlc3VsdCA9IHB5b2RpZGVPanMucHJvY2Vzcyh7Y29kZTogYmxvY2suY29kZSwgb3B0aW9uc30sIHtSMV9iLCBSMl9iLCBSM19iLCBWYiwgUjRfbWluLCBSNF9tYXh9KTtcblxuICAvLyBFYXJseSB5aWVsZCB3aGlsZSB3ZSB3YWl0IGZvciB0aGUgZmlyc3QgZXZhbHVhdGlvbiBhbmQgcmVuZGVyXG4gIGlmIChvcHRpb25zLm91dHB1dCAmJiAhKFwiNlwiIGluIHB5b2RpZGVPanMucmVuZGVyZWRPanMpKSB7XG4gICAgY29uc3QgY29udGFpbmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcbiAgICBjb25zdCBzcGlubmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcblxuICAgIGlmIChvcHRpb25zLmVjaG8pIHtcbiAgICAgIC8vIFNob3cgb3V0cHV0IGFzIGhpZ2hsaWdodGVkIHNvdXJjZVxuICAgICAgY29uc3QgcHJlRWxlbSA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJwcmVcIik7XG4gICAgICBjb250YWluZXIuY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlXCI7XG4gICAgICBwcmVFbGVtLmNsYXNzTmFtZSA9IFwic291cmNlQ29kZSBweXRob25cIjtcbiAgICAgIHByZUVsZW0uYXBwZW5kQ2hpbGQoaGlnaGxpZ2h0UHl0aG9uKGJsb2NrLmNvZGUpKTtcbiAgICAgIHNwaW5uZXIuY2xhc3NOYW1lID0gXCJzcGlubmVyLWdyb3cgc3Bpbm5lci1ncm93LXNtIG0tMiBwb3NpdGlvbi1hYnNvbHV0ZSB0b3AtMCBlbmQtMFwiO1xuICAgICAgcHJlRWxlbS5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChwcmVFbGVtKTtcbiAgICB9IGVsc2Uge1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItYm9yZGVyIHNwaW5uZXItYm9yZGVyLXNtXCI7XG4gICAgICBjb250YWluZXIuYXBwZW5kQ2hpbGQoc3Bpbm5lcik7XG4gICAgfVxuXG4gICAgeWllbGQgY29udGFpbmVyO1xuICB9XG5cbiAgcHlvZGlkZU9qcy5yZW5kZXJlZE9qc1tcIjZcIl0gPSB0cnVlO1xuICB5aWVsZCBhd2FpdCByZXN1bHQ7XG59XG4ifSx7ImNlbGxOYW1lIjoicHlvZGlkZS01IiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6InZpZXdvZiBfcHlvZGlkZV9lZGl0b3JfNSA9IHtcbiAgY29uc3QgeyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IsIGI2NERlY29kZSB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInB5b2RpZGUtNS1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHsgaWQ6IGBweW9kaWRlLTUtY29udGVudHNgIH0sIGJsb2NrLmF0dHIpO1xuICBjb25zdCBlZGl0b3IgPSBuZXcgUHlvZGlkZUV4ZXJjaXNlRWRpdG9yKFxuICAgIHB5b2RpZGVPanMucHlvZGlkZVByb21pc2UsXG4gICAgYmxvY2suY29kZSxcbiAgICBvcHRpb25zXG4gICk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fcHlvZGlkZV92YWx1ZV81ID0gcHlvZGlkZU9qcy5wcm9jZXNzKF9weW9kaWRlX2VkaXRvcl81LCB7fSk7XG4ifSx7ImNlbGxOYW1lIjoicHlvZGlkZS00IiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6Il9weW9kaWRlX3ZhbHVlXzQgPSB7XG4gIGNvbnN0IHsgaGlnaGxpZ2h0UHl0aG9uLCBiNjREZWNvZGV9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInB5b2RpZGUtNC1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIC8vIERlZmF1bHQgZXZhbHVhdGlvbiBjb25maWd1cmF0aW9uXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHtcbiAgICBpZDogXCJweW9kaWRlLTQtY29udGVudHNcIixcbiAgICBlY2hvOiB0cnVlLFxuICAgIG91dHB1dDogdHJ1ZVxuICB9LCBibG9jay5hdHRyKTtcblxuICAvLyBFdmFsdWF0ZSB0aGUgcHJvdmlkZWQgUHl0aG9uIGNvZGVcbiAgY29uc3QgcmVzdWx0ID0gcHlvZGlkZU9qcy5wcm9jZXNzKHtjb2RlOiBibG9jay5jb2RlLCBvcHRpb25zfSwge1IxX2tfZGl2LCBWc19kaXYsIFIyX21pbl9rLCBSMl9tYXhfa30pO1xuXG4gIC8vIEVhcmx5IHlpZWxkIHdoaWxlIHdlIHdhaXQgZm9yIHRoZSBmaXJzdCBldmFsdWF0aW9uIGFuZCByZW5kZXJcbiAgaWYgKG9wdGlvbnMub3V0cHV0ICYmICEoXCI0XCIgaW4gcHlvZGlkZU9qcy5yZW5kZXJlZE9qcykpIHtcbiAgICBjb25zdCBjb250YWluZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpO1xuICAgIGNvbnN0IHNwaW5uZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpO1xuXG4gICAgaWYgKG9wdGlvbnMuZWNobykge1xuICAgICAgLy8gU2hvdyBvdXRwdXQgYXMgaGlnaGxpZ2h0ZWQgc291cmNlXG4gICAgICBjb25zdCBwcmVFbGVtID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcInByZVwiKTtcbiAgICAgIGNvbnRhaW5lci5jbGFzc05hbWUgPSBcInNvdXJjZUNvZGVcIjtcbiAgICAgIHByZUVsZW0uY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlIHB5dGhvblwiO1xuICAgICAgcHJlRWxlbS5hcHBlbmRDaGlsZChoaWdobGlnaHRQeXRob24oYmxvY2suY29kZSkpO1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItZ3JvdyBzcGlubmVyLWdyb3ctc20gbS0yIHBvc2l0aW9uLWFic29sdXRlIHRvcC0wIGVuZC0wXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKHNwaW5uZXIpO1xuICAgICAgY29udGFpbmVyLmFwcGVuZENoaWxkKHByZUVsZW0pO1xuICAgIH0gZWxzZSB7XG4gICAgICBzcGlubmVyLmNsYXNzTmFtZSA9IFwic3Bpbm5lci1ib3JkZXIgc3Bpbm5lci1ib3JkZXItc21cIjtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICB9XG5cbiAgICB5aWVsZCBjb250YWluZXI7XG4gIH1cblxuICBweW9kaWRlT2pzLnJlbmRlcmVkT2pzW1wiNFwiXSA9IHRydWU7XG4gIHlpZWxkIGF3YWl0IHJlc3VsdDtcbn1cbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTMiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8zID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0zLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzMgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzMsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoiX3B5b2RpZGVfdmFsdWVfMiA9IHtcbiAgY29uc3QgeyBoaWdobGlnaHRQeXRob24sIGI2NERlY29kZX0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgLy8gRGVmYXVsdCBldmFsdWF0aW9uIGNvbmZpZ3VyYXRpb25cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oe1xuICAgIGlkOiBcInB5b2RpZGUtMi1jb250ZW50c1wiLFxuICAgIGVjaG86IHRydWUsXG4gICAgb3V0cHV0OiB0cnVlXG4gIH0sIGJsb2NrLmF0dHIpO1xuXG4gIC8vIEV2YWx1YXRlIHRoZSBwcm92aWRlZCBQeXRob24gY29kZVxuICBjb25zdCByZXN1bHQgPSBweW9kaWRlT2pzLnByb2Nlc3Moe2NvZGU6IGJsb2NrLmNvZGUsIG9wdGlvbnN9LCB7UkxfaywgUnhfaywgVlQsIGdhaW59KTtcblxuICAvLyBFYXJseSB5aWVsZCB3aGlsZSB3ZSB3YWl0IGZvciB0aGUgZmlyc3QgZXZhbHVhdGlvbiBhbmQgcmVuZGVyXG4gIGlmIChvcHRpb25zLm91dHB1dCAmJiAhKFwiMlwiIGluIHB5b2RpZGVPanMucmVuZGVyZWRPanMpKSB7XG4gICAgY29uc3QgY29udGFpbmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcbiAgICBjb25zdCBzcGlubmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcblxuICAgIGlmIChvcHRpb25zLmVjaG8pIHtcbiAgICAgIC8vIFNob3cgb3V0cHV0IGFzIGhpZ2hsaWdodGVkIHNvdXJjZVxuICAgICAgY29uc3QgcHJlRWxlbSA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJwcmVcIik7XG4gICAgICBjb250YWluZXIuY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlXCI7XG4gICAgICBwcmVFbGVtLmNsYXNzTmFtZSA9IFwic291cmNlQ29kZSBweXRob25cIjtcbiAgICAgIHByZUVsZW0uYXBwZW5kQ2hpbGQoaGlnaGxpZ2h0UHl0aG9uKGJsb2NrLmNvZGUpKTtcbiAgICAgIHNwaW5uZXIuY2xhc3NOYW1lID0gXCJzcGlubmVyLWdyb3cgc3Bpbm5lci1ncm93LXNtIG0tMiBwb3NpdGlvbi1hYnNvbHV0ZSB0b3AtMCBlbmQtMFwiO1xuICAgICAgcHJlRWxlbS5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChwcmVFbGVtKTtcbiAgICB9IGVsc2Uge1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItYm9yZGVyIHNwaW5uZXItYm9yZGVyLXNtXCI7XG4gICAgICBjb250YWluZXIuYXBwZW5kQ2hpbGQoc3Bpbm5lcik7XG4gICAgfVxuXG4gICAgeWllbGQgY29udGFpbmVyO1xuICB9XG5cbiAgcHlvZGlkZU9qcy5yZW5kZXJlZE9qc1tcIjJcIl0gPSB0cnVlO1xuICB5aWVsZCBhd2FpdCByZXN1bHQ7XG59XG4ifSx7ImNlbGxOYW1lIjoicHlvZGlkZS0xIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6InZpZXdvZiBfcHlvZGlkZV9lZGl0b3JfMSA9IHtcbiAgY29uc3QgeyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IsIGI2NERlY29kZSB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInB5b2RpZGUtMS1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHsgaWQ6IGBweW9kaWRlLTEtY29udGVudHNgIH0sIGJsb2NrLmF0dHIpO1xuICBjb25zdCBlZGl0b3IgPSBuZXcgUHlvZGlkZUV4ZXJjaXNlRWRpdG9yKFxuICAgIHB5b2RpZGVPanMucHlvZGlkZVByb21pc2UsXG4gICAgYmxvY2suY29kZSxcbiAgICBvcHRpb25zXG4gICk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fcHlvZGlkZV92YWx1ZV8xID0gcHlvZGlkZU9qcy5wcm9jZXNzKF9weW9kaWRlX2VkaXRvcl8xLCB7fSk7XG4ifSx7ImNlbGxOYW1lIjoicHlvZGlkZS1wcmVsdWRlIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoicHlvZGlkZU9qcyA9IHtcbiAgY29uc3Qge1xuICAgIFB5b2RpZGVFdmFsdWF0b3IsXG4gICAgUHlvZGlkZUVudmlyb25tZW50TWFuYWdlcixcbiAgICBzZXR1cFB5dGhvbixcbiAgICBzdGFydFB5b2RpZGVXb3JrZXIsXG4gICAgYjY0RGVjb2RlLFxuICAgIGNvbGxhcHNlUGF0aCxcbiAgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc3RhdHVzQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJleGVyY2lzZS1sb2FkaW5nLXN0YXR1c1wiKTtcbiAgY29uc3QgaW5kaWNhdG9yQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJleGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaW5kaWNhdG9yQ29udGFpbmVyLmNsYXNzTGlzdC5yZW1vdmUoXCJkLW5vbmVcIik7XG5cbiAgbGV0IHN0YXR1c1RleHQgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpXG4gIHN0YXR1c1RleHQuY2xhc3NMaXN0ID0gXCJleGVyY2lzZS1sb2FkaW5nLWRldGFpbHNcIjtcbiAgc3RhdHVzVGV4dCA9IHN0YXR1c0NvbnRhaW5lci5hcHBlbmRDaGlsZChzdGF0dXNUZXh0KTtcbiAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBJbml0aWFsaXNlYDtcblxuICAvLyBIb2lzdCBpbmRpY2F0b3Igb3V0IGZyb20gZmluYWwgc2xpZGUgd2hlbiBydW5uaW5nIHVuZGVyIHJldmVhbFxuICBjb25zdCByZXZlYWxTdGF0dXMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCAuZXhlcmNpc2UtbG9hZGluZy1pbmRpY2F0b3JcIik7XG4gIGlmIChyZXZlYWxTdGF0dXMpIHtcbiAgICByZXZlYWxTdGF0dXMucmVtb3ZlKCk7XG4gICAgZG9jdW1lbnQucXVlcnlTZWxlY3RvcihcIi5yZXZlYWwgPiAuc2xpZGVzXCIpLmFwcGVuZENoaWxkKHJldmVhbFN0YXR1cyk7XG4gIH1cblxuICAvLyBNYWtlIGFueSByZXZlYWwgc2xpZGVzIHdpdGggbGl2ZSBjZWxscyBzY3JvbGxhYmxlXG4gIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoXCIucmV2ZWFsIC5leGVyY2lzZS1jZWxsXCIpLmZvckVhY2goKGVsKSA9PiB7XG4gICAgZWwuY2xvc2VzdCgnc2VjdGlvbi5zbGlkZScpLmNsYXNzTGlzdC5hZGQoXCJzY3JvbGxhYmxlXCIpO1xuICB9KVxuXG4gIC8vIFB5b2RpZGUgc3VwcGxlbWVudGFsIGRhdGEgYW5kIG9wdGlvbnNcbiAgY29uc3QgZGF0YUNvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS1kYXRhXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZGF0YSA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKGRhdGFDb250ZW50KSk7XG5cbiAgLy8gR3JhYiBsaXN0IG9mIHJlc291cmNlcyB0byBiZSBkb3dubG9hZGVkXG4gIGNvbnN0IGZpbGVzQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJ2ZnMtZmlsZVxcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGZpbGVzID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZmlsZXNDb250ZW50KSk7XG5cbiAgbGV0IHB5b2RpZGVQcm9taXNlID0gKGFzeW5jICgpID0+IHtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIFB5b2RpZGVgO1xuICAgIGNvbnN0IHB5b2RpZGUgPSBhd2FpdCBzdGFydFB5b2RpZGVXb3JrZXIoZGF0YS5vcHRpb25zKTtcblxuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcGFja2FnZTogbWljcm9waXBgO1xuICAgIGF3YWl0IHB5b2RpZGUubG9hZFBhY2thZ2UoXCJtaWNyb3BpcFwiKTtcbiAgICBjb25zdCBtaWNyb3BpcCA9IGF3YWl0IHB5b2RpZGUucHlpbXBvcnQoXCJtaWNyb3BpcFwiKTtcbiAgICBhd2FpdCBkYXRhLnBhY2thZ2VzLnBrZ3MubWFwKChwa2cpID0+ICgpID0+IHtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcGFja2FnZTogJHtwa2d9YDtcbiAgICAgIHJldHVybiBtaWNyb3BpcC5pbnN0YWxsKHBrZyk7XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG4gICAgYXdhaXQgbWljcm9waXAuZGVzdHJveSgpO1xuXG4gICAgLy8gRG93bmxvYWQgYW5kIGluc3RhbGwgcmVzb3VyY2VzXG4gICAgYXdhaXQgZmlsZXMubWFwKChmaWxlKSA9PiBhc3luYyAoKSA9PiB7XG4gICAgICBjb25zdCBuYW1lID0gZmlsZS5zdWJzdHJpbmcoZmlsZS5sYXN0SW5kZXhPZignLycpICsgMSk7XG4gICAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHJlc291cmNlOiAke25hbWV9YDtcbiAgICAgIGNvbnN0IHJlc3BvbnNlID0gYXdhaXQgZmV0Y2goZmlsZSk7XG4gICAgICBpZiAoIXJlc3BvbnNlLm9rKSB7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgQ2FuJ3QgZG93bmxvYWQgXFxgJHtmaWxlfVxcYC4gRXJyb3IgJHtyZXNwb25zZS5zdGF0dXN9OiBcIiR7cmVzcG9uc2Uuc3RhdHVzVGV4dH1cIi5gKTtcbiAgICAgIH1cbiAgICAgIGNvbnN0IGRhdGEgPSBhd2FpdCByZXNwb25zZS5hcnJheUJ1ZmZlcigpO1xuXG4gICAgICAvLyBTdG9yZSBVUkxzIGluIHRoZSBjd2Qgd2l0aG91dCBhbnkgc3ViZGlyZWN0b3J5IHN0cnVjdHVyZVxuICAgICAgaWYgKGZpbGUuaW5jbHVkZXMoXCI6Ly9cIikpIHtcbiAgICAgICAgZmlsZSA9IG5hbWU7XG4gICAgICB9XG5cbiAgICAgIC8vIENvbGxhcHNlIGhpZ2hlciBkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBmaWxlID0gY29sbGFwc2VQYXRoKGZpbGUpO1xuXG4gICAgICAvLyBDcmVhdGUgZGlyZWN0b3J5IHRyZWUsIGlnbm9yaW5nIFwiZGlyZWN0b3J5IGV4aXN0c1wiIFZGUyBlcnJvcnNcbiAgICAgIGNvbnN0IHBhcnRzID0gZmlsZS5zcGxpdCgnLycpLnNsaWNlKDAsIC0xKTtcbiAgICAgIGxldCBwYXRoID0gJyc7XG4gICAgICB3aGlsZSAocGFydHMubGVuZ3RoID4gMCkge1xuICAgICAgICBwYXRoICs9IHBhcnRzLnNoaWZ0KCkgKyAnLyc7XG4gICAgICAgIHRyeSB7XG4gICAgICAgICAgYXdhaXQgcHlvZGlkZS5GUy5ta2RpcihwYXRoKTtcbiAgICAgICAgfSBjYXRjaCAoZSkge1xuICAgICAgICAgIGlmIChlLm5hbWUgIT09IFwiRXJybm9FcnJvclwiKSB0aHJvdyBlO1xuICAgICAgICAgIGlmIChlLmVycm5vICE9PSAyMCkge1xuICAgICAgICAgICAgY29uc3QgZXJyb3JUZXh0UHRyID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLl9zdHJlcnJvcihlLmVycm5vKTtcbiAgICAgICAgICAgIGNvbnN0IGVycm9yVGV4dCA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5VVEY4VG9TdHJpbmcoZXJyb3JUZXh0UHRyKTtcbiAgICAgICAgICAgIHRocm93IG5ldyBFcnJvcihgRmlsZXN5c3RlbSBFcnJvciAke2UuZXJybm99IFwiJHtlcnJvclRleHR9XCIuYCk7XG4gICAgICAgICAgfVxuICAgICAgICB9XG4gICAgICB9XG5cbiAgICAgIC8vIFdyaXRlIHRoaXMgZmlsZSB0byB0aGUgVkZTXG4gICAgICB0cnkge1xuICAgICAgICByZXR1cm4gYXdhaXQgcHlvZGlkZS5GUy53cml0ZUZpbGUoZmlsZSwgbmV3IFVpbnQ4QXJyYXkoZGF0YSkpO1xuICAgICAgfSBjYXRjaCAoZSkge1xuICAgICAgICBpZiAoZS5uYW1lICE9PSBcIkVycm5vRXJyb3JcIikgdGhyb3cgZTtcbiAgICAgICAgY29uc3QgZXJyb3JUZXh0UHRyID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLl9zdHJlcnJvcihlLmVycm5vKTtcbiAgICAgICAgY29uc3QgZXJyb3JUZXh0ID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLlVURjhUb1N0cmluZyhlcnJvclRleHRQdHIpO1xuICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYEZpbGVzeXN0ZW0gRXJyb3IgJHtlLmVycm5vfSBcIiR7ZXJyb3JUZXh0fVwiLmApO1xuICAgICAgfVxuICAgIH0pLnJlZHVjZSgoY3VyLCBuZXh0KSA9PiBjdXIudGhlbihuZXh0KSwgUHJvbWlzZS5yZXNvbHZlKCkpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBQeW9kaWRlIGVudmlyb25tZW50IHNldHVwYDtcbiAgICBhd2FpdCBzZXR1cFB5dGhvbihweW9kaWRlKTtcblxuICAgIHN0YXR1c1RleHQucmVtb3ZlKCk7XG4gICAgaWYgKHN0YXR1c0NvbnRhaW5lci5jaGlsZHJlbi5sZW5ndGggPT0gMCkge1xuICAgICAgc3RhdHVzQ29udGFpbmVyLnBhcmVudE5vZGUucmVtb3ZlKCk7XG4gICAgfVxuICAgIHJldHVybiBweW9kaWRlO1xuICB9KSgpLmNhdGNoKChlcnIpID0+IHtcbiAgICBzdGF0dXNUZXh0LnN0eWxlLmNvbG9yID0gXCJ2YXIoLS1leGVyY2lzZS1lZGl0b3ItaGwtZXIsICNBRDAwMDApXCI7XG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGVyci5tZXNzYWdlO1xuICAgIC8vaW5kaWNhdG9yQ29udGFpbmVyLnF1ZXJ5U2VsZWN0b3IoXCIuc3Bpbm5lci1ncm93XCIpLmNsYXNzTGlzdC5hZGQoXCJkLW5vbmVcIik7XG4gICAgdGhyb3cgZXJyO1xuICB9KTtcblxuICAvLyBLZWVwIHRyYWNrIG9mIGluaXRpYWwgT0pTIGJsb2NrIHJlbmRlclxuICBjb25zdCByZW5kZXJlZE9qcyA9IHt9O1xuXG4gIGNvbnN0IHByb2Nlc3MgPSBhc3luYyAoY29udGV4dCwgaW5wdXRzKSA9PiB7XG4gICAgY29uc3QgcHlvZGlkZSA9IGF3YWl0IHB5b2RpZGVQcm9taXNlO1xuICAgIGNvbnN0IGV2YWx1YXRvciA9IG5ldyBQeW9kaWRlRXZhbHVhdG9yKHB5b2RpZGUsIGNvbnRleHQpO1xuICAgIGF3YWl0IGV2YWx1YXRvci5wcm9jZXNzKGlucHV0cyk7XG4gICAgcmV0dXJuIGV2YWx1YXRvci5jb250YWluZXI7XG4gIH1cblxuICByZXR1cm4ge1xuICAgIHB5b2RpZGVQcm9taXNlLFxuICAgIHJlbmRlcmVkT2pzLFxuICAgIHByb2Nlc3MsXG4gIH07XG59XG4ifV19
 </script>
 <div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
 <div id="exercise-loading-status" class="d-flex gap-2">
@@ -1153,7 +2769,7 @@ W10=
       });
     </script>
     <script type="ojs-module-contents">
-    eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBybCA9IElucHV0cy5yYW5nZShbMTAwLCAxMDAwMDBdLCB7dmFsdWU6IDUwMDAsIHN0ZXA6IDEwMCwgbGFiZWw6IFwiTG9hZCBSZXNpc3RhbmNlICjOqSlcIn0pO1xuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0yIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoidmlld29mIHIzX3ZhbCA9IElucHV0cy5yYW5nZShbNTAsIDE1MF0sIHt2YWx1ZTogMTAwLCBzdGVwOiAwLjEsIGxhYmVsOiBcIlIzICjOqSlcIn0pO1xuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0zIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoidmlld29mIHJfZmlsdCA9IElucHV0cy5yYW5nZShbMTAwLCAxMDAwMF0sIHt2YWx1ZTogMTAwMCwgc3RlcDogMTAwLCBsYWJlbDogXCJSZXNpc3RhbmNlICjOqSlcIn0pO1xudmlld29mIGNfZmlsdCA9IElucHV0cy5yYW5nZShbMC4wMSwgMTBdLCB7dmFsdWU6IDEsIHN0ZXA6IDAuMSwgbGFiZWw6IFwiQ2FwYWNpdGFuY2UgKM68RilcIn0pO1xuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdybCcpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdyM192YWwnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgncl9maWx0JykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2NfZmlsdCcpIn1dfQ==
+    eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBSTF9rID0gSW5wdXRzLnJhbmdlKFxuICBbMSwgMjAwXSwgXG4gIHtzdGVwOiAxLCB2YWx1ZTogMTAsIGxhYmVsOiBcIkFtcGxpZmllciBpbnB1dCByZXNpc3RhbmNlIFJMIFtrzqldXCJ9XG4pXG5cbnZpZXdvZiBSeF9rID0gSW5wdXRzLnJhbmdlKFxuICBbMC4xLCAyMF0sXG4gIHtzdGVwOiAwLjEsIHZhbHVlOiA1LCBsYWJlbDogXCJTZW5zb3IgcmVzaXN0YW5jZSBSeCBba86pXVwifVxuKVxuXG52aWV3b2YgVlQgPSBJbnB1dHMucmFuZ2UoXG4gIFswLjEsIDVdLFxuICB7c3RlcDogMC4xLCB2YWx1ZTogMS4wLCBsYWJlbDogXCJTZW5zb3Igb3Blbi1jaXJjdWl0IFZUIFtWXVwifVxuKVxuXG52aWV3b2YgZ2FpbiA9IElucHV0cy5yYW5nZShcbiAgWzEsIDIwXSxcbiAge3N0ZXA6IDEsIHZhbHVlOiAxMCwgbGFiZWw6IFwiQW1wbGlmaWVyIGdhaW5cIn1cbilcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMiIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBSMV9rX2RpdiA9IElucHV0cy5yYW5nZShcbiAgWzEsIDUwXSxcbiAge3N0ZXA6IDEsIHZhbHVlOiAxMCwgbGFiZWw6IFwiUjEgW2vOqV1cIn1cbilcblxudmlld29mIFZzX2RpdiA9IElucHV0cy5yYW5nZShcbiAgWzEsIDEwXSxcbiAge3N0ZXA6IDAuNSwgdmFsdWU6IDUuMCwgbGFiZWw6IFwiVnMgW1ZdXCJ9XG4pXG5cbnZpZXdvZiBSMl9taW5fayA9IElucHV0cy5yYW5nZShcbiAgWzEsIDIwXSxcbiAge3N0ZXA6IDEsIHZhbHVlOiA0LCBsYWJlbDogXCJTZW5zb3IgUjJfbWluIFtrzqldXCJ9XG4pXG5cbnZpZXdvZiBSMl9tYXhfayA9IElucHV0cy5yYW5nZShcbiAgWzIsIDUwXSxcbiAge3N0ZXA6IDEsIHZhbHVlOiAxMiwgbGFiZWw6IFwiU2Vuc29yIFIyX21heCBba86pXVwifVxuKVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0zIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoidmlld29mIFIxX2IgPSBJbnB1dHMucmFuZ2UoXG4gIFs1MCwgNTAwXSxcbiAge3N0ZXA6IDEwLCB2YWx1ZTogMTAwLCBsYWJlbDogXCJSMSBbzqldXCJ9XG4pXG5cbnZpZXdvZiBSMl9iID0gSW5wdXRzLnJhbmdlKFxuICBbNTAsIDUwMF0sXG4gIHtzdGVwOiAxMCwgdmFsdWU6IDEwMCwgbGFiZWw6IFwiUjIgW86pXVwifVxuKVxuXG52aWV3b2YgUjNfYiA9IElucHV0cy5yYW5nZShcbiAgWzUwLCA1MDBdLFxuICB7c3RlcDogMTAsIHZhbHVlOiAxMDAsIGxhYmVsOiBcIlIzIFvOqV1cIn1cbilcblxudmlld29mIFZiID0gSW5wdXRzLnJhbmdlKFxuICBbMSwgMjBdLFxuICB7c3RlcDogMSwgdmFsdWU6IDEwLCBsYWJlbDogXCJCcmlkZ2Ugc3VwcGx5IFYgW1ZdXCJ9XG4pXG5cbnZpZXdvZiBSNF9taW4gPSBJbnB1dHMucmFuZ2UoXG4gIFsxMCwgNTAwXSxcbiAge3N0ZXA6IDUsIHZhbHVlOiAwLCBsYWJlbDogXCJSNF9taW4gW86pXSAoc2Vuc29yKVwifVxuKVxuXG52aWV3b2YgUjRfbWF4ID0gSW5wdXRzLnJhbmdlKFxuICBbNTAsIDEwMDBdLFxuICB7c3RlcDogMTAsIHZhbHVlOiA1MDAsIGxhYmVsOiBcIlI0X21heCBbzqldIChzZW5zb3IpXCJ9XG4pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTQiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ2aWV3b2YgUl9scCA9IElucHV0cy5yYW5nZShcbiAgWzEwMCwgMTAwXzAwMF0sXG4gIHtzdGVwOiAxMDAsIHZhbHVlOiAxXzUwMCwgbGFiZWw6IFwiUiBbzqldIChsb3ctcGFzcylcIn1cbilcblxudmlld29mIENfbHBfbkYgPSBJbnB1dHMucmFuZ2UoXG4gIFswLjEsIDEwMDBdLFxuICB7c3RlcDogMC4xLCB2YWx1ZTogMTAuMCwgbGFiZWw6IFwiQyBbbkZdIChsb3ctcGFzcylcIn1cbilcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBSX2hwID0gSW5wdXRzLnJhbmdlKFxuICBbMTAwLCAxMDBfMDAwXSxcbiAge3N0ZXA6IDEwMCwgdmFsdWU6IDhfMDAwLCBsYWJlbDogXCJSIFvOqV0gKGhpZ2gtcGFzcylcIn1cbilcblxudmlld29mIENfaHBfbkYgPSBJbnB1dHMucmFuZ2UoXG4gIFswLjEsIDEwMDBdLFxuICB7c3RlcDogMC4xLCB2YWx1ZTogMTAuMCwgbGFiZWw6IFwiQyBbbkZdIChoaWdoLXBhc3MpXCJ9XG4pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTYiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ2aWV3b2YgZmNfbG93ID0gSW5wdXRzLnJhbmdlKFxuICBbMTAsIDEwMF8wMDBdLFxuICB7c3RlcDogMTAsIHZhbHVlOiAxXzIwMCwgbGFiZWw6IFwiSGlnaC1wYXNzIGN1dG9mZiBmTCBbSHpdXCJ9XG4pXG5cbnZpZXdvZiBmY19oaWdoID0gSW5wdXRzLnJhbmdlKFxuICBbMV8wMDAsIDUwMF8wMDBdLFxuICB7c3RlcDogMV8wMDAsIHZhbHVlOiAxMDBfMDAwLCBsYWJlbDogXCJMb3ctcGFzcyBjdXRvZmYgZkggW0h6XVwifVxuKVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdSTF9rJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ1J4X2snKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnVlQnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnZ2FpbicpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdSMV9rX2RpdicpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdWc19kaXYnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnUjJfbWluX2snKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnUjJfbWF4X2snKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnUjFfYicpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdSMl9iJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ1IzX2InKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnVmInKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnUjRfbWluJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ1I0X21heCcpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdSX2xwJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ0NfbHBfbkYnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnUl9ocCcpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdDX2hwX25GJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2ZjX2xvdycpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdmY19oaWdoJykifV19
     </script>
     <script type="module">
     if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }

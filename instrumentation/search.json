@@ -921,14 +921,14 @@
     "href": "ins_21.html#common-operations",
     "title": "Analog Signal Conditioning",
     "section": "Common Operations",
-    "text": "Common Operations\n\n\n1. Level & Bias Changes\nAdjusting the magnitude (gain) and zero-value (offset).\n\nAmplification: Gain \\(&gt; 1\\)\nAttenuation: Gain \\(&lt; 1\\)\n\n2. Linearization\nConverting nonlinear sensor outputs (like CdS cells) into linear representations via circuits or software.\n\n3. Conversions\n\nResistance to Voltage: Bridges.\nVoltage to Current: 4-20 mA standards for transmission.\n\n4. Filtering & Matching\n\nFiltering: Removing 60 Hz line noise.\nImpedance Matching: Preventing signal loss.\n\n\n\nThese four pillars define the engineer’s toolkit.\nLevel and bias adjustments are like the ‘zero’ and ‘span’ on an instrument.\nConversions are vital because while many sensors change resistance, most controllers expect voltage or current."
+    "text": "Common Operations\n\n\n1. Level & Bias Changes\nAdjusting the magnitude (gain) and zero-value (offset). Example: from 0.2 - 0.6V to 0 - 5V\n\nAmplification: Gain \\(&gt; 1\\)\nAttenuation: Gain \\(&lt; 1\\)\n\n2. Linearization\nConverting nonlinear sensor outputs (like CdS cells) into linear representations via circuits or software.\n\n3. Conversions\n\nResistance to Voltage: Bridge circuits.\nVoltage to Current: 4-20 mA standards for transmission.\nVoltage to Voltage: from 20-80 mV in sensor to 0-5V in ADC ### 4. Filtering & Matching\nFiltering: Removing 60 Hz line noise.\nImpedance Matching: Preventing signal loss.\n\n\n\nThese four pillars define the engineer’s toolkit.\nLevel and bias adjustments are like the ‘zero’ and ‘span’ on an instrument.\nConversions are vital because while many sensors change resistance, most controllers expect voltage or current."
   },
   {
     "objectID": "ins_21.html#the-concept-of-loading",
     "href": "ins_21.html#the-concept-of-loading",
     "title": "Analog Signal Conditioning",
     "section": "The Concept of Loading",
-    "text": "The Concept of Loading\nLoading occurs when connecting a measurement circuit to a sensor causes the sensor’s output voltage to drop.\nThévenin’s Theorem Model:\nA sensor can be modeled as a voltage source (\\(V_x\\)) in series with an internal resistance (\\(R_x\\)).\n\\[V_y = V_x \\left(1 - \\frac{R_x}{R_L + R_x}\\right)\\]\nTo minimize loading errors, we require \\(R_L \\gg R_x\\).\n\nThis is a critical concept for ECE students.\nIf you use a multimeter with low input impedance to measure a high-impedance source, your reading will be wrong.\nEquation 1 shows that if the load resistance RL is not significantly larger than the source resistance Rx, the measured voltage Vy will be lower than the actual source voltage Vx."
+    "text": "The Concept of Loading\nLoading occurs when connecting a measurement circuit to a sensor causes the sensor’s output voltage to drop.\n\nFIGURE 2 The Thévenin equivalent circuit of loading.Thévenin’s Theorem Model:\nA sensor can be modeled as a voltage source (\\(V_x\\)) in series with an internal resistance (\\(R_x\\)).\n\\[V_y = V_x \\left(1 - \\frac{R_x}{R_L + R_x}\\right)\\]\nTo minimize loading errors, we require \\(R_L \\gg R_x\\).\n\nThis is a critical concept for ECE students.\nIf you use a multimeter with low input impedance to measure a high-impedance source, your reading will be wrong.\nEquation 1 shows that if the load resistance RL is not significantly larger than the source resistance Rx, the measured voltage Vy will be lower than the actual source voltage Vx."
   },
   {
     "objectID": "ins_21.html#interactive-loading-simulation",
@@ -941,15 +941,15 @@
     "objectID": "ins_21.html#voltage-divider-circuits",
     "href": "ins_21.html#voltage-divider-circuits",
     "title": "Analog Signal Conditioning",
-    "section": "Voltage Divider Circuits",
-    "text": "Voltage Divider Circuits\nThe simplest way to convert resistance change to voltage change.\n\n\n\n\n\n\n\n\n\n\n\n\\[V_D = \\frac{R_2 V_s}{R_1 + R_2}\\]\nChallenges:\n\nNonlinear: \\(V_D\\) vs \\(R_2\\) is not a straight line.\nOutput Impedance: \\(Z_{out} = R_1 \\parallel R_2\\).\nSelf-Heating: Current through \\(R_2\\) may change its temperature.\n\n\nThe voltage divider is common but has flaws.\nThe relationship between R2 and VD is hyperbolic, not linear.\nAlso, the current required to generate a voltage drop might heat up the sensor, leading to measurement errors."
+    "section": "3.1 Voltage Divider Circuits",
+    "text": "3.1 Voltage Divider Circuits\n\n\n\nFigure 4: Simple voltage divider used to convert resistance change into voltage change.\n\n\n\nTwo resistors, \\(R_1\\) and \\(R_2\\), in series across supply \\(V_s\\).\nOutput is taken across \\(R_2\\).\n\nDivider equation:\n\\[\nV_D = \\frac{R_2}{R_1 + R_2} V_s\n\\tag{2}\n\\]\nOften, either \\(R_1\\) or \\(R_2\\) is the sensor whose resistance varies with the measured variable."
   },
   {
     "objectID": "ins_21.html#wheatstone-bridge",
     "href": "ins_21.html#wheatstone-bridge",
     "title": "Analog Signal Conditioning",
     "section": "Wheatstone Bridge",
-    "text": "Wheatstone Bridge\nUsed for high-precision measurement of small resistance changes.\n\n\n\n\n\n\n\n\n\n\n\nNull Condition (\\(V_a = V_b\\)): \\[R_3 R_2 = R_1 R_4\\]\n\nThe Wheatstone bridge is the gold standard for resistive sensors like strain gauges. Its greatest advantage is that it provides a differential output that is zero when the bridge is balanced. This allows us to amplify only the change in signal."
+    "text": "Wheatstone Bridge\nUsed for high-precision measurement of small resistance changes.\n\nFIGURE 5 The basic dc Wheatstone bridge.Null Condition (\\(V_a = V_b\\)): \\[R_3 R_2 = R_1 R_4\\]\n\nThe Wheatstone bridge is the gold standard for resistive sensors like strain gauges. Its greatest advantage is that it provides a differential output that is zero when the bridge is balanced. This allows us to amplify only the change in signal."
   },
   {
     "objectID": "ins_21.html#bridge-offset-voltage",
@@ -1096,7 +1096,7 @@
     "href": "ins_22.html#learning-objectives",
     "title": "Operational Amplifiers in Instrumentation",
     "section": "Learning Objectives",
-    "text": "Learning Objectives\nBy the end of this session, you should be able to:\n\nDescribe the ideal op amp model and use the two “golden rules” for circuit analysis.\nAnalyze and design basic op amp configurations:\n\nInverting and noninverting amplifiers\nSumming amplifiers and voltage followers\n\nExplain nonideal op amp parameters (offsets, slew rate, bandwidth) and when they matter.\nUnderstand and design basic instrumentation circuits:\n\nDifferential / instrumentation amplifiers\nVoltage‑to‑current and current‑to‑voltage converters\n\nImplement simple integrating and differentiating op amp circuits.\nApply a structured design process to real signal‑conditioning problems.\n\n\nExplicitly tie each objective to later slides: - Objectives 1–3: Sections 4.1–4.2. - Objective 4: Section 5.4 and example bridge instrumentation. - Objective 5: Sections 5.7–5.9. - Objective 6: Design guideline examples."
+    "text": "Learning Objectives\nBy the end of this session, you should be able to:\n\nDescribe the ideal op amp model and the two “golden rules.”\nAnalyze inverting and noninverting amplifiers and design their resistor values for a desired gain.\nExplain non‑ideal op amp parameters (offsets, slew rate, finite gain) and when they matter.\nUse op amp building blocks to implement:\n\nVoltage follower\nSumming amplifier\nDifferential and instrumentation amplifiers\nVoltage–current and current–voltage converters\nIntegrators and differentiators\n\nApply a structured design process to build signal‑conditioning circuits for sensors and bridges."
   },
   {
     "objectID": "ins_22.html#why-op-amps-in-instrumentation",
@@ -1130,8 +1130,8 @@
     "objectID": "ins_22.html#ideal-inverting-amplifier-circuit",
     "href": "ins_22.html#ideal-inverting-amplifier-circuit",
     "title": "Operational Amplifiers in Instrumentation",
-    "section": "Ideal Inverting Amplifier – Circuit",
-    "text": "Ideal Inverting Amplifier – Circuit\n\n\n\nInverting amplifier\n\n\n\nInput \\(V_{\\text{in}}\\) through \\(R_1\\) to the inverting (−) input\nFeedback resistor \\(R_2\\) from output to inverting node\nNoninverting (+) input connected to ground\nThe inverting node is called the summing point or virtual ground\n\n\nPoint out: the inverting input is at a virtual ground (0 V) because ideal feedback keeps \\(V_- = V_+ = 0\\) V, but no current flows into the input, so this point is not actually connected to physical ground. This distinction is important when considering input and feedback currents."
+    "section": "Ideal Inverting Amplifier Circuit",
+    "text": "Ideal Inverting Amplifier Circuit\n\n\n\nInverting amplifier\n\n\n\nInput \\(V_{\\text{in}}\\) goes through \\(R_1\\) to the summing node.\nFeedback resistor \\(R_2\\) from output back to inverting input.\nNoninverting input grounded: \\(V_{+} = 0\\)."
   },
   {
     "objectID": "ins_22.html#ideal-inverting-amplifier-derivation",
@@ -1193,8 +1193,8 @@
     "objectID": "ins_22.html#voltage-follower-buffer",
     "href": "ins_22.html#voltage-follower-buffer",
     "title": "Operational Amplifiers in Instrumentation",
-    "section": "5.1 Voltage Follower (Buffer)",
-    "text": "5.1 Voltage Follower (Buffer)\n\n\n\nVoltage follower\n\n\n\nOutput directly fed back to inverting input (−)\nInput applied to noninverting input (+)\n\nIdeal behavior:\n\n\\(V_{\\text{out}} = V_{\\text{in}}\\) (unity gain)\nVery high input impedance (often &gt; 100 MΩ)\nVery low output impedance (&lt; 100 Ω)\n\nUse case: Impedance transformer\n\nTake a high‑impedance signal source (e.g., sensor, divider)\nDeliver same voltage to a low‑impedance load without loading the sensor\n\n\nProvide a real example: buffer the output of a thermistor divider or a potentiometer before feeding into an ADC with modest input impedance, to avoid changing the divider ratio. Mention that many ICs integrate a dedicated unity‑gain buffer op amp inside."
+    "section": "Voltage Follower (Buffer)",
+    "text": "Voltage Follower (Buffer)\n\n\n\nVoltage follower\n\n\n\nOutput tied directly to inverting input.\nInput applied to noninverting input.\n\nUsing rules: \\(V_{+} = V_{-} = V_{\\text{in}}\\), and feedback enforces \\(V_{\\text{out}} = V_{-}\\).\nSo: \\[\nV_{\\text{out}} \\approx V_{\\text{in}}\n\\]\nProperties:\n\nGain = 1 (no inversion).\nVery high input impedance (often \\(&gt;100\\ \\text{M}\\Omega\\)).\nVery low output impedance (tens of ohms or less).\n\nUsed as an impedance transformer: - Same voltage, but from high‑Z sensor into low‑Z load or into the rest of the circuit."
   },
   {
     "objectID": "ins_22.html#inverting-amplifier-summing-amplifier",
@@ -1270,8 +1270,8 @@
     "objectID": "ins_22.html#voltagetocurrent-converter",
     "href": "ins_22.html#voltagetocurrent-converter",
     "title": "Operational Amplifiers in Instrumentation",
-    "section": "5.5 Voltage‑to‑Current Converter",
-    "text": "5.5 Voltage‑to‑Current Converter\n\n\n\nV-to-I converter\n\n\nUsed to drive 4–20 mA current loops from a voltage signal.\nTransfer function (Appendix 6):\n\\[\nI = -\\frac{R_2}{R_1 R_3} V_{\\text{in}} \\tag{42}\n\\]\nCondition on resistors:\n\\[\nR_1(R_3 + R_5) = R_2 R_4 \\tag{43}\n\\]\nMaximum load resistance \\(R_{ml}\\) before saturation:\n\\[\nR_{ml} = \\frac{(R_4 + R_5)\\left[\\dfrac{V_{\\text{sat}}}{I_m} - R_3\\right]}{R_3 + R_4 + R_5} \\tag{44}\n\\]\n\n\\(I_m\\) is maximum desired output current\n\\(V_{\\text{sat}}\\) is op amp saturation voltage\n\n\n\n\n\n\n\nNote\n\n\nIn instrumentation, current loops are robust to long cable runs and noise, so V–I converters are used at the transmitter end to convert local sensor voltage to a standardized current signal.\n\n\n\n\nEmphasize that Eq. (44) shows \\(R_{ml} &lt; V_{\\text{sat}}/I_m\\) always, due to internal voltage drops."
+    "section": "Voltage‑to‑Current Converter",
+    "text": "Voltage‑to‑Current Converter\n\n\n\nV–I converter\n\n\nWe want current \\(I\\) through a load to be a function of an input voltage \\(V_{\\text{in}}\\), roughly independent of the load."
   },
   {
     "objectID": "ins_22.html#example-22-01-v-to-010-ma-converter",
@@ -1284,15 +1284,15 @@
     "objectID": "ins_22.html#currenttovoltage-converter",
     "href": "ins_22.html#currenttovoltage-converter",
     "title": "Operational Amplifiers in Instrumentation",
-    "section": "5.6 Current‑to‑Voltage Converter",
-    "text": "5.6 Current‑to‑Voltage Converter\n\n\n\nI-to-V converter\n\n\nAt the receiving end of a current loop, convert current back to a voltage:\n\nSensor loop current \\(I\\) flows into the summing node through \\(R\\).\nOp amp adjusts \\(V_{\\text{out}}\\) to keep input node at virtual ground.\n\nTransfer function:\n\\[\nV_{\\text{out}} = -I R \\tag{45}\n\\]\n\nVery linear as long as op amp does not saturate\nChoose \\(R\\) so that max current yields desired output range\n\n\nGive a simple design: for 4–20 mA loop and required 1–5 V output, choose \\(R\\) such that: - 4 mA → 1 V, 20 mA → 5 V → \\(R = 5\\text{ V}/20\\text{ mA} = 250\\,\\Omega\\). Then 4 mA yields 1 V automatically."
+    "section": "Current‑to‑Voltage Converter",
+    "text": "Current‑to‑Voltage Converter\n\n\n\nI–V converter\n\n\nSimple configuration:\n\nUnknown current \\(I\\) is injected into inverting node through resistor \\(R\\).\nNoninverting input is at ground (or reference).\n\nUsing ideal rules:\n\nNode voltage ≈ 0 V (virtual ground).\nCurrent through \\(R\\) equals input current \\(I\\).\nOutput adjusts so that \\(I R + V_{\\text{out}}/0 = 0\\) ⇒ \\[\nV_{\\text{out}} = -IR\n\\]\n\nUsed heavily for receiving 4–20 mA process‑control signals: choose \\(R\\) so that 4–20 mA maps to the desired voltage (e.g., 1–5 V)."
   },
   {
     "objectID": "ins_22.html#integrator",
     "href": "ins_22.html#integrator",
     "title": "Operational Amplifiers in Instrumentation",
-    "section": "5.7 Integrator",
-    "text": "5.7 Integrator\n\n\n\nIntegrator\n\n\n\nInput resistor \\(R\\)\nFeedback capacitor \\(C\\)\n\nSumming node equation (ideal op amp):\n\\[\n\\frac{V_{\\text{in}}}{R} + C\\frac{dV_{\\text{out}}}{dt} = 0 \\tag{46}\n\\]\nIntegrate both sides:\n\\[\nV_{\\text{out}} = -\\frac{1}{RC} \\int V_{\\text{in}}\\,dt \\tag{47}\n\\]\nIf \\(V_{\\text{in}}\\) is a constant \\(K\\):\n\\[\nV_{\\text{out}} = -\\frac{K}{RC} t \\tag{48}\n\\]\n→ Ideal ramp generator with slope \\(-K/(RC)\\).\n\n\n\n\n\n\nCaution\n\n\nIn practice, integrators need reset/clamp circuits and often a resistor in parallel with \\(C\\) to prevent drift and saturation from DC offsets.\n\n\n\n\nMention uses: numerical integration of accelerometer signals to get velocity, implementing analog filters, ramp generators in timing circuits."
+    "section": "Integrator",
+    "text": "Integrator\n\n\n\nIntegrator\n\n\n\nInput resistor \\(R\\), feedback capacitor \\(C\\).\n\nNode equation:\n\\[\n\\frac{V_{\\text{in}}}{R} + C\\frac{dV_{\\text{out}}}{dt} = 0\n\\]\nIntegrate both sides:\n\\[\nV_{\\text{out}}(t) = -\\frac{1}{RC}\\int V_{\\text{in}}(t)\\,dt\n\\]\nSpecial case: constant input \\(V_{\\text{in}} = K\\):\n\\[\nV_{\\text{out}}(t) = -\\frac{K}{RC}t\n\\]\n⇒ linear ramp with slope \\(-\\frac{K}{RC}\\).\nPractical note: - Output will eventually hit saturation; need reset mechanism (e.g., switch to discharge capacitor)."
   },
   {
     "objectID": "ins_22.html#example-23-10-vms-ramp",
@@ -1305,8 +1305,8 @@
     "objectID": "ins_22.html#differentiator",
     "href": "ins_22.html#differentiator",
     "title": "Operational Amplifiers in Instrumentation",
-    "section": "5.8 Differentiator",
-    "text": "5.8 Differentiator\n\n\n\nDifferentiator\n\n\n\nCapacitor in series at input, resistor in feedback\n\nSumming node equation:\n\\[\nC\\frac{dV_{\\text{in}}}{dt} + \\frac{V_{\\text{out}}}{R} = 0 \\tag{49}\n\\]\nSolve for \\(V_{\\text{out}}\\):\n\\[\nV_{\\text{out}} = -RC\\frac{dV_{\\text{in}}}{dt} \\tag{50}\n\\]\nSo output is proportional to the time derivative of \\(V_{\\text{in}}\\).\n\n\n\n\n\n\nWarning\n\n\nReal differentiators tend to be noisy and unstable: they amplify high‑frequency noise and any fast transients. They are typically used only as part of more complex, bandwidth‑limited circuits.\n\n\n\n\nExplain that in practice we use “practical differentiator” circuits that add series/parallel resistors and capacitors to limit gain at high frequency, essentially implementing a band‑limited differentiator."
+    "section": "Differentiator",
+    "text": "Differentiator\n\n\n\nDifferentiator\n\n\n\nInput capacitor \\(C\\), feedback resistor \\(R\\).\n\nNode equation:\n\\[\nC\\frac{dV_{\\text{in}}}{dt} + \\frac{V_{\\text{out}}}{R} = 0\n\\]\nSolve for \\(V_{\\text{out}}\\):\n\\[\nV_{\\text{out}} = -RC\\frac{dV_{\\text{in}}}{dt}\n\\]\n\nIdeal differentiator boosts high‑frequency noise strongly, often unstable or noisy.\nIn real circuits, extra resistors/capacitors are added to band‑limit and stabilize the differentiator."
   },
   {
     "objectID": "ins_22.html#op-amp-linearization-nonlinear-circuits",
@@ -1369,14 +1369,14 @@
     "href": "ins_22.html#summary-key-points",
     "title": "Operational Amplifiers in Instrumentation",
     "section": "Summary / Key Points",
-    "text": "Summary / Key Points\n\nOp amps are universal analog building blocks widely used in instrumentation.\nIdeal op amp analysis relies on:\n\nNo input currents.\nEqual input voltages under negative feedback.\n\nBasic configurations:\n\nVoltage follower – buffer, unity gain, high input Z.\nInverting amplifier – gain \\(-R_2/R_1\\), input Z ≈ \\(R_1\\).\nNoninverting amplifier – gain \\(1 + R_2/R_1\\), high input Z.\nSumming amplifier – weighted sum and DC offset.\n\nReal op amps have finite:\n\nGain, bandwidth, slew rate, and nonzero offsets and bias currents.\n\nInstrumentation amplifiers provide:\n\nHigh input Z, adjustable gain, and high common‑mode rejection.\nIdeal for bridge and low‑level sensor signals.\n\nV–I and I–V converters implement standardized current loops.\nIntegrators and differentiators implement time‑domain operations (with practical stability considerations).\nGood design practice:\n\nWork from equations first.\nConsider loading, power limits, and noise.\n“Think mA and kΩ” for op amp resistor values.\n\n\n\nUse this slide to recap and connect back to the learning objectives. Ask students: which op amp configuration would you choose to (a) buffer a sensor, (b) amplify a bridge output with high common‑mode noise, (c) implement a 4–20 mA transmitter, and (d) generate a ramp voltage?"
+    "text": "Summary / Key Points\n\nOp amp basics: treat the op amp as a high‑gain differential amplifier; with feedback, we can assume \\(V_{+}=V_{-}\\) and no input current for ideal analysis.\nCore configurations:\n\nVoltage follower: unity gain, very high input Z, low output Z.\nInverting amplifier: gain \\(-R_2/R_1\\), input Z ≈ \\(R_1\\).\nNoninverting amplifier: gain \\(1+R_2/R_1\\), very high input Z.\nSumming amplifier: weighted sum of inputs.\n\nDifferential and instrumentation amplifiers:\n\nExtract small differences (\\(V_a - V_b\\)) in presence of large common‑mode voltage.\nCMR/CMRR key metrics; resistor matching critical.\n3‑op‑amp instrumentation amps provide high Z, adjustable gain via \\(R_G\\)."
   },
   {
     "objectID": "ins_22.html#formula-summary",
     "href": "ins_22.html#formula-summary",
     "title": "Operational Amplifiers in Instrumentation",
     "section": "Formula Summary",
-    "text": "Formula Summary\nIdeal Inverting Amplifier\n\\[\nV_{\\text{out}} = -\\frac{R_2}{R_1} V_{\\text{in}} \\tag{31}\n\\]\nNoninverting Amplifier\n\\[\nV_{\\text{out}} = \\left[1 + \\frac{R_2}{R_1}\\right] V_{\\text{in}} \\tag{35}\n\\]\nSumming Amplifier (two inputs)\n\\[\nV_{\\text{out}} = -\\left[ \\frac{R_2}{R_1} V_1 + \\frac{R_2}{R_3} V_2 \\right] \\tag{34}\n\\]\nDifferential Amplifier / Basic Instrumentation Amp\n\\[\nV_{\\text{out}} = \\frac{R_2}{R_1} (V_2 - V_1) \\tag{40}\n\\]\n3‑Op‑Amp Instrumentation Amplifier\n\\[\nV_{\\text{out}} = \\left(1 + \\frac{2R_1}{R_G}\\right)\\left(\\frac{R_3}{R_2}\\right)(V_2 - V_1) \\tag{41}\n\\]"
+    "text": "Formula Summary\nIdeal Op Amp Golden Rules (with negative feedback):\n\n\\(I_{+} = I_{-} = 0\\)\n\\(V_{+} = V_{-}\\)\n\nInverting Amplifier:\n\\[\nV_{\\text{out}} = -\\frac{R_2}{R_1}V_{\\text{in}}, \\quad Z_{\\text{in}} \\approx R_1\n\\]\nNoninverting Amplifier:\n\\[\nV_{\\text{out}} = \\left(1 + \\frac{R_2}{R_1}\\right)V_{\\text{in}}\n\\]\nSumming Amplifier (2‑input):\n\\[\nV_{\\text{out}} = -\\left(\\frac{R_2}{R_1}V_1 + \\frac{R_2}{R_3}V_2\\right)\n\\]"
   },
   {
     "objectID": "ins_22.html#formula-summary-cont.",
@@ -1993,5 +1993,677 @@
     "title": "Units, Standards, and Definitions",
     "section": "Example 19: Solution and Interpretation",
     "text": "Example 19: Solution and Interpretation\nInterpretation:\n\nTarget is 200 g.\nMean moved from 202 g → 199 g → closer to target overall.\nSpread (σ) reduced by about a factor of 2 (11 g → 5 g).\n\nIf we use the ±3σ rule:\n\nBefore: \\(99\\%\\) of bags ≈ \\(202 \\pm 33\\) g → 169 to 235 g.\nAfter: \\(99\\%\\) of bags ≈ \\(199 \\pm 15\\) g → 184 to 214 g.\n\nSo, the control system tightened the distribution and reduced systematic deviation from target.\n\n\n\n\n\n\nTip\n\n\nCombining mean and standard deviation gives a richer view of system performance than either alone.\n\n\n\n\nNote that even though the mean moved slightly below 200 g, the reduced spread is usually desirable (less giveaway, more consistency).\nThis example strongly parallels sensor calibration:\n\nAfter calibration or control redesign, we want outputs closer to target and less variable."
+  },
+  {
+    "objectID": "ins_21.html#linearization-1",
+    "href": "ins_21.html#linearization-1",
+    "title": "Analog Signal Conditioning",
+    "section": "Linearization",
+    "text": "Linearization"
+  },
+  {
+    "objectID": "ins_21.html#example-1",
+    "href": "ins_21.html#example-1",
+    "title": "Analog Signal Conditioning",
+    "section": "Example 1",
+    "text": "Example 1\nAn amplifier outputs a voltage that is 10 times the voltage on its input terminals. It has an input resistance of \\(10\\mathrm{k}\\Omega\\) . A sensor outputs a voltage proportional to temperature with a transfer function of \\(20\\mathrm{mV} / {}^{\\circ}\\mathrm{C}\\) . The sensor has an output resistance of \\(5.0\\mathrm{k}\\Omega\\) . If the temperature is \\(50^{\\circ}\\mathrm{C}\\) , find the amplifier output.\nWrong Solution\n\\(V_{T} = (20\\mathrm{mV / }^{\\circ}\\mathrm{C})50^{\\circ}\\mathrm{C} = 1.0\\mathrm{V}\\)\n\\(V_{\\mathrm{out}} = 10V_{\\mathrm{in}} = (10)1.0\\mathrm{V} = 10\\mathrm{V}\\)\nCorrect Solution\n\\[\nV _ {\\mathrm {i n}} = V _ {T} \\left(1 - \\frac {5 . 0 \\mathrm {k} \\Omega}{5 . 0 \\mathrm {k} \\Omega + 1 0 \\mathrm {k} \\Omega}\\right)\n\\] \\(V_{\\mathrm{in}} = 0.67 \\, \\mathrm{V}\\).\n\\(V_{\\mathrm{out}} = 10(0.67 \\, \\mathrm{V}) = 6.7 \\, \\mathrm{V}\\) ."
+  },
+  {
+    "objectID": "ins_21.html#learning-objectives",
+    "href": "ins_21.html#learning-objectives",
+    "title": "Analog Signal Conditioning",
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\nBy the end of this session, you should be able to:\n\nExplain the role of analog signal conditioning in a measurement / control system.\nDescribe and apply basic signal-level changes: biasing, amplification, attenuation.\nExplain loading using Thévenin models and compute its effect on measurements.\nUse voltage dividers and bridge circuits to convert resistance/impedance changes into voltages.\nAnalyze RC filters (low-pass, high-pass, band-pass, notch) and design simple filters for noise reduction.\nConnect these concepts to real ECE applications: sensors, ADC interfaces, and industrial 4–20 mA loops.\n\n\nEmphasize that this lecture is about the “plumbing” between sensors and the rest of the system. Students often jump to digital / microcontroller code and ignore the analog front end, which is where many real‑world problems show up."
+  },
+  {
+    "objectID": "ins_21.html#big-picture-where-does-signal-conditioning-live",
+    "href": "ins_21.html#big-picture-where-does-signal-conditioning-live",
+    "title": "Analog Signal Conditioning",
+    "section": "Big Picture: Where Does Signal Conditioning Live?",
+    "text": "Big Picture: Where Does Signal Conditioning Live?\n\n\nTypical Instrumentation / Control Chain\n\nPhysical quantity (temperature, pressure, light, force, …)\nSensor / transducer → electrical signal (V, I, R, f)\nAnalog signal conditioning\n\nLevel & bias changes\nLinearization\nConversions (R→V, V→I, etc.)\nFiltering & impedance matching\n\nADC / digital logic / microcontroller\nControl algorithm / data logging\nActuator / display / network interface\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nKey idea: Signal conditioning makes the raw sensor signal usable by the next block in the chain.\n\n\n\n\nMake this diagram concrete with one example: - Thermocouple measuring temperature, producing a few mV. - We amplify, filter 50/60 Hz, shift level to match 0–5 V ADC, then digitize. Ask: what goes wrong if we connect the thermocouple directly to the ADC? (Poor resolution, noise, incorrect range)."
+  },
+  {
+    "objectID": "ins_21.html#what-is-analog-signal-conditioning",
+    "href": "ins_21.html#what-is-analog-signal-conditioning",
+    "title": "Analog Signal Conditioning",
+    "section": "1. What Is Analog Signal Conditioning?",
+    "text": "1. What Is Analog Signal Conditioning?\n\nOperations on analog signals to convert them into a form suitable for:\n\nOther analog circuits (amplifiers, filters, actuators).\nADC inputs in mixed‑signal systems.\n\nIn this chapter, we focus on analog transformations (output still analog).\nEven if the final processing is digital, analog conditioning almost always happens first.\n\nReal ECE examples:\n\nECG front‑end: microvolt cardiac signals → 1–3 V, filtered, centered, then digitized.\nStrain gauge bridge on a load cell → mV → amplified / filtered → 4–20 mA transmitter.\nLight sensor (CdS cell) → resistance change → voltage via divider/bridge → linearized / scaled for an ADC.\n\n\nPoint out that students see this in lab whenever they need to scale a sensor to an Arduino’s 0–5 V analog input. Stress that this is not “extra stuff”—it’s what determines measurement accuracy and robustness."
+  },
+  {
+    "objectID": "ins_21.html#principles-of-analog-signal-conditioning",
+    "href": "ins_21.html#principles-of-analog-signal-conditioning",
+    "title": "Analog Signal Conditioning",
+    "section": "2. Principles of Analog Signal Conditioning",
+    "text": "2. Principles of Analog Signal Conditioning\n2.1 Sensors & Transfer Functions\n\nA sensor / transducer converts a physical variable into an electrical quantity:\n\nVoltage, current, resistance, capacitance, inductance, or frequency.\n\nThe relationship between input (physical) and output (electrical) is its transfer function.\n\nExample:\n\nCadmium sulfide (CdS) photoresistor:\n\nResistance \\(R_{\\text{CdS}}\\) varies nonlinearly and inversely with light intensity.\nWe don’t get to choose this curve; nature chose it.\n\nA signal conditioning block also has a transfer function, e.g.\n\nSimple voltage amplifier: \\(V_{\\text{out}} = K V_{\\text{in}}\\) (gain \\(K\\)).\n\n\n\n\n\n\n\n\nImportant\n\n\nWhen you design a measurement system, you are really designing the overall transfer function from physical variable → final electrical (or digital) output.\n\n\n\n\nStress the idea of transfer functions as “input–output relationships.” Students often see them only in Laplace / systems courses, but here it’s simpler: slope, linear vs. nonlinear, etc."
+  },
+  {
+    "objectID": "ins_21.html#signal-level-and-bias-changes",
+    "href": "ins_21.html#signal-level-and-bias-changes",
+    "title": "Analog Signal Conditioning",
+    "section": "2.1 Signal-Level and Bias Changes",
+    "text": "2.1 Signal-Level and Bias Changes\nScenario:\n\nSensor output: \\(0.2\\ \\text{V}\\) to \\(0.6\\ \\text{V}\\) over measurement range.\nADC or controller expects: \\(0\\) to \\(5\\ \\text{V}\\) for that same range.\n\nSteps:\n\nBias (zero shift): shift 0.2 V → 0 V.\n\nSubtract 0.2 V: \\(V' = V_{\\text{sensor}} - 0.2\\ \\text{V}\\).\nNow \\(V'\\) ranges 0 to 0.4 V.\n\nGain (amplification): scale 0–0.4 V → 0–5 V.\n\nGain \\(G = 5 / 0.4 = 12.5\\).\n\\(V_{\\text{out}} = 12.5\\,V'\\).\n\n\nIf \\(G &gt; 1\\) → amplification. If \\(G &lt; 1\\) → attenuation (still called an amplifier circuit).\nDesign concerns:\n\nFrequency response: bandwidth must cover the signal spectrum.\nInput impedance: high enough not to load previous stage.\nOutput impedance: low enough to drive next stage.\n\n\nRelate to op‑amp circuits they know: summing amplifier can do both level shift and gain in one block. Mention that “offset and gain calibration” is exactly this."
+  },
+  {
+    "objectID": "ins_21.html#linearization",
+    "href": "ins_21.html#linearization",
+    "title": "Analog Signal Conditioning",
+    "section": "2.2 Linearization",
+    "text": "2.2 Linearization\n  \nFigure 1: Linearization concept. (a) Nonlinear sensor output vs variable. (b) Block diagram of linearizer. (c) Resulting linear output vs variable.\n\nMany sensors are nonlinear: \\(V_{\\text{sensor}}(x)\\) vs \\(x\\) is curved.\nBut most ADCs / controllers assume a linear mapping between measured variable and digital value."
+  },
+  {
+    "objectID": "ins_21.html#conversions-rv-vi-analogdigital",
+    "href": "ins_21.html#conversions-rv-vi-analogdigital",
+    "title": "Analog Signal Conditioning",
+    "section": "2.3 Conversions (R→V, V→I, Analog→Digital)",
+    "text": "2.3 Conversions (R→V, V→I, Analog→Digital)\nCommon conversion tasks in instrumentation:\n\nResistance change → voltage\n\nUsing voltage dividers or bridges (covered later).\n\nVoltage → current (V‑to‑I converter) for transmission.\nCurrent → voltage (I‑to‑V converter) at receiver.\nAnalog → Digital (ADC input scaling)."
+  },
+  {
+    "objectID": "ins_21.html#filtering-and-impedance-matching",
+    "href": "ins_21.html#filtering-and-impedance-matching",
+    "title": "Analog Signal Conditioning",
+    "section": "2.4 Filtering and Impedance Matching",
+    "text": "2.4 Filtering and Impedance Matching\nFiltering\n\nReal environments have noise:\n\n50/60 Hz line interference.\nMotor start transients, switching spikes.\nHigh‑frequency EMI from radios, inverters, etc.\n\n\nUse filters to:\n\nPass desired band of frequencies.\nReject low / high / narrow‑band noise.\n\nTypes (passive or active):\n\nLow-pass: pass low f, block high f (e.g., DC sensor + 60 Hz noise).\nHigh-pass: pass high f, block low f (e.g., remove DC offset / drift).\nBand-pass: pass midband (e.g., audio channel).\nBand-reject / notch: reject narrow band (e.g., 60 Hz notch)."
+  },
+  {
+    "objectID": "ins_21.html#concept-of-loading",
+    "href": "ins_21.html#concept-of-loading",
+    "title": "Analog Signal Conditioning",
+    "section": "2.5 Concept of Loading",
+    "text": "2.5 Concept of Loading\n\n\n\nFigure 2: Thévenin model of a sensor and loading by a finite load resistance.\n\n\n\nAny two‑terminal source can be modeled (Thévenin) as:\n\nIdeal voltage source \\(V_x\\) in series with internal resistance \\(R_x\\).\n\nWhen open‑circuit (no load): output voltage = \\(V_x\\)."
+  },
+  {
+    "objectID": "ins_21.html#example-1-loading-between-sensor-and-amplifier",
+    "href": "ins_21.html#example-1-loading-between-sensor-and-amplifier",
+    "title": "Analog Signal Conditioning",
+    "section": "Example 1 — Loading Between Sensor and Amplifier",
+    "text": "Example 1 — Loading Between Sensor and Amplifier\n  Figure 3: (a) Naive model ignoring loading. (b) Correct model including sensor output resistance and amplifier input resistance.\nGiven:\n\nAmplifier gain \\(= 10\\), input resistance \\(R_L = 10\\ \\text{k}\\Omega\\).\nSensor transfer function: \\(20\\ \\text{mV}/^\\circ\\text{C}\\), output resistance \\(R_x = 5.0\\ \\text{k}\\Omega\\).\nTemperature \\(T = 50^\\circ\\text{C}\\)."
+  },
+  {
+    "objectID": "ins_21.html#passive-circuits-in-signal-conditioning",
+    "href": "ins_21.html#passive-circuits-in-signal-conditioning",
+    "title": "Analog Signal Conditioning",
+    "section": "3. Passive Circuits in Signal Conditioning",
+    "text": "3. Passive Circuits in Signal Conditioning\n\nTwo essential passive building blocks:\n\nVoltage dividers.\nBridge circuits (Wheatstone, AC bridges).\n\nRC networks used for filtering.\n\nEven though op‑amps are cheap, passive circuits still matter:\n\nHigh accuracy (e.g., precision bridges).\nSimple, low‑power, and often very low noise."
+  },
+  {
+    "objectID": "ins_21.html#example-2-divider-with-variable-sensor-resistance",
+    "href": "ins_21.html#example-2-divider-with-variable-sensor-resistance",
+    "title": "Analog Signal Conditioning",
+    "section": "Example 2 — Divider with Variable Sensor Resistance",
+    "text": "Example 2 — Divider with Variable Sensor Resistance\nGiven (Figure 4):\n\n\\(R_1 = 10.0\\ \\text{k}\\Omega\\), \\(V_s = 5.00\\ \\text{V}\\).\n\\(R_2\\) is a sensor varying from \\(4.00\\ \\text{k}\\Omega\\) to \\(12.0\\ \\text{k}\\Omega\\).\n\n(a) Range of \\(V_D\\)\nUse Equation (2).\nFor \\(R_2 = 4\\ \\text{k}\\Omega\\):\n\\[\nV_D = \\frac{(5\\ \\text{V})(4\\ \\text{k}\\Omega)}{10\\ \\text{k}\\Omega + 4\\ \\text{k}\\Omega} = 1.43\\ \\text{V}\n\\]\nFor \\(R_2 = 12\\ \\text{k}\\Omega\\):\n\\[\nV_D = \\frac{(5\\ \\text{V})(12\\ \\text{k}\\Omega)}{10\\ \\text{k}\\Omega + 12\\ \\text{k}\\Omega} = 2.73\\ \\text{V}\n\\]\nSo \\(V_D\\) ranges from 1.43 V to 2.73 V."
+  },
+  {
+    "objectID": "ins_21.html#wheatstone-bridge-circuits",
+    "href": "ins_21.html#wheatstone-bridge-circuits",
+    "title": "Analog Signal Conditioning",
+    "section": "3.2 Wheatstone Bridge Circuits",
+    "text": "3.2 Wheatstone Bridge Circuits\n\n\n\nFigure 5: Basic DC Wheatstone bridge.\n\n\n\nPurpose: convert small resistance changes into measurable voltage changes.\nVery commonly used with:\n\nStrain gauges, RTDs, pressure sensors, etc.\n\nArrangement: four resistors in a diamond, excited by a voltage \\(V\\).\nDetector \\(D\\) senses voltage difference between points \\(a\\) and \\(b\\)."
+  },
+  {
+    "objectID": "ins_21.html#example-3-finding-an-unknown-resistance-from-bridge-null",
+    "href": "ins_21.html#example-3-finding-an-unknown-resistance-from-bridge-null",
+    "title": "Analog Signal Conditioning",
+    "section": "Example 3 — Finding an Unknown Resistance from Bridge Null",
+    "text": "Example 3 — Finding an Unknown Resistance from Bridge Null\nGiven:\n\nBridge nulls (ΔV = 0) with \\(R_1 = 1000\\ \\Omega\\), \\(R_2 = 842\\ \\Omega\\), \\(R_3 = 500\\ \\Omega\\).\nFind \\(R_4\\).\n\nUse Equation (8):\n\\[\nR_1 R_4 = R_3 R_2\n\\Rightarrow\nR_4 = \\frac{R_3R_2}{R_1}\n= \\frac{(500\\ \\Omega)(842\\ \\Omega)}{1000\\ \\Omega}\n= 421\\ \\Omega\n\\]\nSo the unknown resistance is 421 Ω.\n\nThis is essentially how precise ohmmeters using bridges worked historically. Now replaced by more integrated circuitry but the principle is the same."
+  },
+  {
+    "objectID": "ins_21.html#example-4-small-offset-from-nearly-balanced-bridge",
+    "href": "ins_21.html#example-4-small-offset-from-nearly-balanced-bridge",
+    "title": "Analog Signal Conditioning",
+    "section": "Example 4 — Small Offset from Nearly Balanced Bridge",
+    "text": "Example 4 — Small Offset from Nearly Balanced Bridge\nGiven:\n\n\\(R_1 = R_2 = R_3 = 120\\ \\Omega\\), \\(R_4 = 121\\ \\Omega\\), \\(V = 10.0\\ \\text{V}\\).\nFind voltage offset ΔV.\n\nUsing Equation (7):\n\\[\n\\Delta V\n= 10\\ \\text{V}\\cdot\n\\frac{(120\\ \\Omega)(120\\ \\Omega) - (120\\ \\Omega)(121\\ \\Omega)}\n{(120\\ \\Omega + 120\\ \\Omega)(120\\ \\Omega + 121\\ \\Omega)}\n\\]\nResult:\n\\[\n\\Delta V = -20.7\\ \\text{mV}\n\\]\nNegative sign → \\(V_b &gt; V_a\\).\n\nHighlight sensitivity: 1 Ω change (out of 120 Ω) in one resistor yields ~20 mV offset. With an amplifier, we can detect very small resistance changes."
+  },
+  {
+    "objectID": "ins_21.html#bridges-with-galvanometer-detectors-finite-detector-resistance",
+    "href": "ins_21.html#bridges-with-galvanometer-detectors-finite-detector-resistance",
+    "title": "Analog Signal Conditioning",
+    "section": "Bridges with Galvanometer Detectors (Finite Detector Resistance)",
+    "text": "Bridges with Galvanometer Detectors (Finite Detector Resistance)\n\n\n\nFigure 6: Thévenin equivalent of a bridge seen by a galvanometer detector.\n\n\nIf the detector is a galvanometer or any finite resistance \\(R_G\\):\n\nWe replace bridge (between nodes \\(a\\) and \\(b\\)) by its Thévenin equivalent:\n\nThévenin voltage \\(V_{\\text{Th}}\\) (open‑circuit ΔV).\nThévenin resistance \\(R_{\\text{Th}}\\)."
+  },
+  {
+    "objectID": "ins_21.html#example-5-offset-current-with-galvanometer",
+    "href": "ins_21.html#example-5-offset-current-with-galvanometer",
+    "title": "Analog Signal Conditioning",
+    "section": "Example 5 — Offset Current with Galvanometer",
+    "text": "Example 5 — Offset Current with Galvanometer\nGiven:\n\nBridge: \\(R_1 = R_2 = R_3 = 2.00\\ \\text{k}\\Omega\\), \\(R_4 = 2.05\\ \\text{k}\\Omega\\), \\(V = 5.00\\ \\text{V}\\).\nGalvanometer internal resistance \\(R_G = 50.0\\ \\Omega\\).\nFind offset current \\(I_G\\).\n\n\nFind \\(V_{\\text{Th}}\\) from Equation (9):\n\\(V_{\\text{Th}} = -30.9\\ \\text{mV}\\).\nFind \\(R_{\\text{Th}}\\) from Equation (10):\n\\(R_{\\text{Th}} \\approx 2.01\\ \\text{k}\\Omega\\).\nDetector current (Equation 11):\n\n\\[\nI_G = \\frac{-30.9\\ \\text{mV}}{2.01\\ \\text{k}\\Omega + 50\\ \\Omega}\n\\approx -15.0\\ \\mu\\text{A}\n\\]\nNegative → current flows from \\(b\\) to \\(a\\)."
+  },
+  {
+    "objectID": "ins_21.html#bridge-resolution",
+    "href": "ins_21.html#bridge-resolution",
+    "title": "Analog Signal Conditioning",
+    "section": "Bridge Resolution",
+    "text": "Bridge Resolution\n\nDetector resolution (minimum measurable ΔV or ΔI) translates to minimum detectable resistance change in the bridge.\nFor high‑input‑impedance detector (e.g., DVM): use Equation (7) or (6) and solve for \\(\\Delta R\\) such that \\(\\Delta V\\) equals detector resolution."
+  },
+  {
+    "objectID": "ins_21.html#example-6-smallest-measurable-resistance-change",
+    "href": "ins_21.html#example-6-smallest-measurable-resistance-change",
+    "title": "Analog Signal Conditioning",
+    "section": "Example 6 — Smallest Measurable Resistance Change",
+    "text": "Example 6 — Smallest Measurable Resistance Change\nGiven:\n\nBridge: \\(R_1 = R_2 = R_3 = R_4 = 120.0\\ \\Omega\\), \\(V = 10.0\\ \\text{V}\\).\nDetector: 3½‑digit DVM on 200 mV range → resolution = \\(0.1\\ \\text{mV} = 100\\ \\mu\\text{V}\\).\nFind resolution (smallest \\(\\Delta R_4\\)) for measurement of \\(R_4\\).\n\nApproach:\n\nBridge is initially nulled (ΔV = 0) when all resistors are 120 Ω.\nNow assume \\(R_4\\) changes to some value giving ΔV = 100 μV.\nUse Equation (6) with unknown \\(R_4\\) and solve.\n\nResult:\n\n\\(R_4 = 119.9952\\ \\Omega\\).\n\\(\\Delta R_4 = 120.0000 - 119.9952 = 0.0048\\ \\Omega\\).\n\nSo resolution: about \\(4.8\\ \\text{m}\\Omega\\).\n\n\n\n\n\n\nTip\n\n\nResolution here also tells you the measurement uncertainty (best‑case) using this bridge and detector."
+  },
+  {
+    "objectID": "ins_21.html#lead-compensation-in-bridges",
+    "href": "ins_21.html#lead-compensation-in-bridges",
+    "title": "Analog Signal Conditioning",
+    "section": "Lead Compensation in Bridges",
+    "text": "Lead Compensation in Bridges\n\n\n\nFigure 7: Lead compensation in a remote bridge sensor.\n\n\nWhen sensor \\(R_4\\) is remotely located, long wires add resistance and can vary with:\n\nTemperature.\nMechanical stress.\nCorrosion / chemical vapors."
+  },
+  {
+    "objectID": "ins_21.html#current-balance-bridge",
+    "href": "ins_21.html#current-balance-bridge",
+    "title": "Analog Signal Conditioning",
+    "section": "Current-Balance Bridge",
+    "text": "Current-Balance Bridge\n\n\n\nFigure 8: Current balance bridge.\n\n\nMotivation:\n\nMechanical feedback (motors adjusting resistors) is slow and noisy.\nBetter to electronically null the bridge using a current source.\n\nConstruction:\n\nSplit one arm into \\(R_4\\) and \\(R_5\\).\nInject current \\(I\\) at their junction (into \\(R_5\\) mostly)."
+  },
+  {
+    "objectID": "ins_21.html#example-7-current-required-to-renull-a-current-balance-bridge",
+    "href": "ins_21.html#example-7-current-required-to-renull-a-current-balance-bridge",
+    "title": "Analog Signal Conditioning",
+    "section": "Example 7 — Current Required to Renull a Current-Balance Bridge",
+    "text": "Example 7 — Current Required to Renull a Current-Balance Bridge\nGiven (Figure 8):\n\n\\(R_1 = R_2 = 10\\ \\text{k}\\Omega\\), \\(R_3 = 1\\ \\text{k}\\Omega\\), \\(R_4 = 950\\ \\Omega\\), \\(R_5 = 50\\ \\Omega\\).\nHigh‑impedance detector, supply \\(V = 10\\ \\text{V}\\).\nInitially, with \\(R_3 = 1000\\ \\Omega\\), bridge is nulled at \\(I = 0\\).\nNow \\(R_3\\) increases by 1 Ω to 1001 Ω. Find \\(I\\) required to renull.\n\nSteps:\n\nCompute \\(V_a\\) with new \\(R_3\\):\n\\(V_a = \\dfrac{10\\ \\text{V}\\cdot 1001}{10000 + 1001} = 0.9099\\ \\text{V}\\).\nOriginally (with \\(I = 0\\)), \\(V_a = V_b = 0.9091\\ \\text{V}\\).\n\nSo now \\(V_b\\) must also be 0.9099 V to null.\nRequired increase: \\(0.8\\ \\text{mV}\\).\n\nUsing Equation (15) with \\(\\Delta V = 0\\) and only \\(IR_5\\) as adjustable term:\n\\(IR_5 = 0.8\\ \\text{mV} \\Rightarrow I = 0.8\\ \\text{mV} / 50\\ \\Omega = 16\\ \\mu\\text{A}\\)."
+  },
+  {
+    "objectID": "ins_21.html#bridges-for-potential-measurements",
+    "href": "ins_21.html#bridges-for-potential-measurements",
+    "title": "Analog Signal Conditioning",
+    "section": "Bridges for Potential Measurements",
+    "text": "Bridges for Potential Measurements\n\n\n\nFigure 9: Using a bridge to measure an unknown potential without drawing current from it.\n\n\n\nPlace unknown voltage \\(V_x\\) in series with the detector between \\(c\\) and \\(b\\).\nDetector measures \\(\\Delta V = V_c - V_b\\).\nAt null (\\(\\Delta V = 0\\)): no current flows through \\(V_x\\).\n\nFor conventional bridge:\n\n\\(V_c = V_x + V_a\\), and \\(V_b\\) from Equation (5).\nNull condition:\n\n\\[\nV_x + \\frac{R_3 V}{R_1 + R_3} - \\frac{V R_4}{R_2 + R_4} = 0\n\\tag{17}\n\\]\nSo \\(V_x\\) can be found by choosing resistors to null the detector."
+  },
+  {
+    "objectID": "ins_21.html#example-8-measuring-an-unknown-potential-with-a-bridge",
+    "href": "ins_21.html#example-8-measuring-an-unknown-potential-with-a-bridge",
+    "title": "Analog Signal Conditioning",
+    "section": "Example 8 — Measuring an Unknown Potential with a Bridge",
+    "text": "Example 8 — Measuring an Unknown Potential with a Bridge\nGiven:\n\n\\(R_1 = R_2 = 1\\ \\text{k}\\Omega\\), \\(R_3 = 605\\ \\Omega\\), \\(R_4 = 500\\ \\Omega\\), \\(V = 10\\ \\text{V}\\).\nBridge nulls when unknown potential \\(V_x\\) is inserted as in Figure 9.\nFind \\(V_x\\).\n\nUsing Equation (17):\n\\[\nV_x + \\frac{605\\cdot 10}{605 + 1000} - \\frac{500\\cdot 10}{1000 + 500} = 0\n\\]\nCompute:\n\n\\(\\frac{605\\cdot 10}{1605} \\approx 3.769\\ \\text{V}\\).\n\\(\\frac{500\\cdot 10}{1500} = 3.333\\ \\text{V}\\).\n\nSo\n\\[\nV_x + 3.769 - 3.333 = 0 \\Rightarrow V_x = -0.436\\ \\text{V}\n\\]\nNegative sign → polarity opposite to assumed orientation."
+  },
+  {
+    "objectID": "ins_21.html#example-9-potential-measurement-with-current-balance-bridge",
+    "href": "ins_21.html#example-9-potential-measurement-with-current-balance-bridge",
+    "title": "Analog Signal Conditioning",
+    "section": "Example 9 — Potential Measurement with Current Balance Bridge",
+    "text": "Example 9 — Potential Measurement with Current Balance Bridge\nFor current‑balance configuration (Figure 8) with \\(V_x\\) in series with detector:\n\nNull condition (Equation 18):\n\n\\[\nV_x + \\frac{R_3 V}{R_1 + R_3} - \\frac{V(R_4 + R_5)}{R_2 + R_4 + R_5} - I R_5 = 0\n\\tag{18}\n\\]\nIf fixed resistors are chosen so that bridge nulls with \\(I = 0\\), \\(V_x = 0\\), middle terms cancel:\n\\[\nV_x - I R_5 = 0\n\\tag{19}\n\\]\nGiven:\n\n\\(R_1 = R_2 = 5\\ \\text{k}\\Omega\\), \\(R_3 = 1\\ \\text{k}\\Omega\\), \\(R_4 = 990\\ \\Omega\\), \\(R_5 = 10\\ \\Omega\\), \\(V = 10\\ \\text{V}\\).\nFor \\(V_x = 12\\ \\text{mV}\\), find \\(I\\) to null.\n\nFrom Equation (19):\n\\[\n12\\ \\text{mV} - 10 I = 0 \\Rightarrow I = 1.2\\ \\text{mA}\n\\]"
+  },
+  {
+    "objectID": "ins_21.html#ac-bridges",
+    "href": "ins_21.html#ac-bridges",
+    "title": "Analog Signal Conditioning",
+    "section": "AC Bridges",
+    "text": "AC Bridges\n\n\n\nFigure 10: General AC bridge.\n\n\n\nSame idea as DC bridge, but impedances \\(Z_1, Z_2, Z_3, Z_4\\) and AC excitation \\(E\\).\nOffset (phasor) voltage:\n\n\\[\n\\Delta E = E\\frac{Z_3Z_2 - Z_1Z_4}{(Z_1 + Z_3)(Z_2 + Z_4)}\n\\tag{20}\n\\]\n\nNull condition:\n\n\\[\nZ_3 Z_2 = Z_1 Z_4\n\\tag{21}\n\\]\nSpecial note: if the detector is phase sensitive, both in‑phase and quadrature components must be nulled."
+  },
+  {
+    "objectID": "ins_21.html#example-10-finding-unknown-r-and-c-from-an-ac-bridge",
+    "href": "ins_21.html#example-10-finding-unknown-r-and-c-from-an-ac-bridge",
+    "title": "Analog Signal Conditioning",
+    "section": "Example 10 — Finding Unknown R and C from an AC Bridge",
+    "text": "Example 10 — Finding Unknown R and C from an AC Bridge\n\n\n\nFigure 11: AC bridge for Example 10.\n\n\nAssume:\n\n\\(Z_1 = R_1\\), \\(Z_2 = R_2\\), \\(Z_3 = R_3 - j/\\omega C\\), \\(Z_x = R_x - j/(\\omega C_x)\\).\n\nAt null: \\(Z_2 Z_3 = Z_1 Z_x\\)."
+  },
+  {
+    "objectID": "ins_21.html#nonlinearity-of-bridge-response",
+    "href": "ins_21.html#nonlinearity-of-bridge-response",
+    "title": "Analog Signal Conditioning",
+    "section": "Nonlinearity of Bridge Response",
+    "text": "Nonlinearity of Bridge Response\n\n\n\n\n\nFigure 12a: ΔV vs R4 for a wide range — clearly nonlinear.\n\n\n\n\n\n\nFigure 12b: ΔV vs R4 near the null — approximately linear.\n\n\n\n\n\nEquation (7) is nonlinear in any resistor.\nIf sensor resistance varies over a wide range, bridge voltage vs resistance is significantly curved (Figure 12a).\nIf resistance variation is small and centered on the null (e.g., 90–110 Ω around 100 Ω):\n\nThe curve is almost linear over that small range (Figure 12b).\nWe can amplify the small off‑null voltage to expand the scale.\n\n\nDesign tip: operate bridges close to null and limit sensor range to maintain approximate linearity, then do software calibration if needed."
+  },
+  {
+    "objectID": "ins_21.html#rc-filters-basics",
+    "href": "ins_21.html#rc-filters-basics",
+    "title": "Analog Signal Conditioning",
+    "section": "3.3 RC Filters — Basics",
+    "text": "3.3 RC Filters — Basics\n\n\n\nFigure 13: Low-pass RC filter.\n\n\nSimple first‑order filters built from one R and one C:\n\nLow-pass (Figure 13): passes DC/low frequencies, attenuates high frequencies.\nHigh-pass (Figure 15): passes high frequencies, attenuates low frequencies.\n\nCritical / cutoff frequency:\n\\[\nf_c = \\frac{1}{2\\pi RC}\n\\tag{22}\n\\]\nAt \\(f = f_c\\):\n\n\\(|V_{\\text{out}}/V_{\\text{in}}| = 1/\\sqrt{2} \\approx 0.707\\) → −3 dB point."
+  },
+  {
+    "objectID": "ins_21.html#low-pass-rc-filter",
+    "href": "ins_21.html#low-pass-rc-filter",
+    "title": "Analog Signal Conditioning",
+    "section": "Low-Pass RC Filter",
+    "text": "Low-Pass RC Filter\n\n\n\nFigure 14: Magnitude response of low-pass RC filter.\n\n\nTransfer magnitude:\n\\[\n\\left| \\frac{V_{\\text{out}}}{V_{\\text{in}}} \\right| =\n\\frac{1}{\\sqrt{1 + (f/f_c)^2}}\n\\tag{23}\n\\]\nApplications:\n\nMeasure DC or slowly varying signals while rejecting high‑frequency noise.\nAnti‑aliasing before an ADC (though often higher‑order filters are used)."
+  },
+  {
+    "objectID": "ins_21.html#example-11-low-pass-filter-for-1-mhz-noise",
+    "href": "ins_21.html#example-11-low-pass-filter-for-1-mhz-noise",
+    "title": "Analog Signal Conditioning",
+    "section": "Example 11 — Low-Pass Filter for 1 MHz Noise",
+    "text": "Example 11 — Low-Pass Filter for 1 MHz Noise\nGoal:\n\nMeasurement signal frequencies &lt; 1 kHz.\nUnwanted noise around 1 MHz.\nWant noise at 1 MHz attenuated to 1% (\\(|V_{\\text{out}}/V_{\\text{in}}| = 0.01\\)).\nWhat is effect on desired 1 kHz signal?\n\nUse Equation (23):\nSet \\(f = 1\\ \\text{MHz}\\), \\(|V_{\\text{out}}/V_{\\text{in}}| = 0.01\\):\n\\[\n0.01 = \\frac{1}{\\sqrt{1 + (10^6/f_c)^2}}\n\\Rightarrow (10^6/f_c)^2 \\approx 9999\n\\]\nSo \\(f_c \\approx 10\\ \\text{kHz}\\).\nPick \\(C = 0.01\\ \\mu\\text{F}\\) ⇒\n\\[\nR = \\frac{1}{2\\pi f_c C} \\approx 1591\\ \\Omega\n\\]\nUse standard \\(R = 1.5\\ \\text{k}\\Omega\\) ⇒ actual \\(f_c \\approx 10.6\\ \\text{kHz}\\).\nNoise attenuation at 1 MHz: very close to 0.01 (slightly better).\nEffect on 1 kHz signal:\n\\[\n\\left| \\frac{V_{\\text{out}}}{V_{\\text{in}}} \\right| =\n\\frac{1}{\\sqrt{1 + (1000/10610)^2}} \\approx 0.996\n\\]\nOnly about 0.4% loss in the desired band.\n\nHighlight the design trade‑off: place \\(f_c\\) comfortably above signal band yet far below noise frequency."
+  },
+  {
+    "objectID": "ins_21.html#high-pass-rc-filter",
+    "href": "ins_21.html#high-pass-rc-filter",
+    "title": "Analog Signal Conditioning",
+    "section": "High-Pass RC Filter",
+    "text": "High-Pass RC Filter\n\n\n\n\n\nFigure 15: High-pass RC filter.\n\n\n\n\n\n\nFigure 16: Magnitude response of high-pass RC filter.\n\n\n\n\nTransfer magnitude:\n\\[\n\\left| \\frac{V_{\\text{out}}}{V_{\\text{in}}} \\right| =\n\\frac{f/f_c}{\\sqrt{1 + (f/f_c)^2}}\n\\tag{24}\n\\]\nAt \\(f = f_c\\) → \\(|V_{\\text{out}}/V_{\\text{in}}| = 0.707\\) (−3 dB).\nApplications:\n\nRemove DC offsets or low‑frequency drift from signals.\nAC‑coupled amplifiers; pulse transmission."
+  },
+  {
+    "objectID": "ins_21.html#example-12-high-pass-filter-for-60-hz-noise",
+    "href": "ins_21.html#example-12-high-pass-filter-for-60-hz-noise",
+    "title": "Analog Signal Conditioning",
+    "section": "Example 12 — High-Pass Filter for 60 Hz Noise",
+    "text": "Example 12 — High-Pass Filter for 60 Hz Noise\nGoal:\n\nPulses for a stepper motor at 2000 Hz.\n60 Hz noise present.\nWant to reduce 60 Hz noise strongly, but allow pulse amplitude to be reduced by no more than 3 dB (≈0.707).\n\nSince 3 dB corresponds to \\(|V_{\\text{out}}/V_{\\text{in}}| = 0.707\\), we choose:\n\n\\(f_c = 2000\\ \\text{Hz}\\).\n\nNow effect on 60 Hz:\n\\[\n\\left| \\frac{V_{\\text{out}}}{V_{\\text{in}}} \\right|\n= \\frac{60/2000}{\\sqrt{1 + (60/2000)^2}} \\approx 0.03\n\\]\nSo 60 Hz noise is reduced to about 3% (97% attenuation).\nDesign: pick \\(C = 0.01\\ \\mu\\text{F}\\) →\n\\[\nR = \\frac{1}{2\\pi f_c C} \\approx 7.96\\ \\text{k}\\Omega\n\\]\nChoose standard 7.5 kΩ or 8.2 kΩ as close approximations."
+  },
+  {
+    "objectID": "ins_21.html#practical-considerations-for-rc-filters",
+    "href": "ins_21.html#practical-considerations-for-rc-filters",
+    "title": "Analog Signal Conditioning",
+    "section": "Practical Considerations for RC Filters",
+    "text": "Practical Considerations for RC Filters\n\nComponent range:\n\nAvoid too small \\(R\\) (large currents, loading).\nAvoid very large \\(C\\) (size, leakage).\n\nLoading:\n\nFinite source impedance + filter input impedance.\nFilter output impedance + load impedance.\nMay need buffer stages (op‑amp followers) to avoid loading.\n\nCascading filters:\n\nMagnitudes multiply.\nOverall transfer = (first‑order response)^N for N cascaded sections (if no loading).\nBe careful: second stage can load first stage → more attenuation than expected."
+  },
+  {
+    "objectID": "ins_21.html#example-13-1-vs-2-high-pass-stages",
+    "href": "ins_21.html#example-13-1-vs-2-high-pass-stages",
+    "title": "Analog Signal Conditioning",
+    "section": "Example 13 — 1 vs 2 High-Pass Stages",
+    "text": "Example 13 — 1 vs 2 High-Pass Stages\nGoal:\n\n2 kHz data signal contaminated by 60 Hz noise.\nWant 60 dB attenuation of 60 Hz (\\(|V_{\\text{out}}/V_{\\text{in}}| = 10^{-3}\\)).\n\nSingle-stage high-pass\nUse Equation (24):\n\\[\n0.001 = \\frac{60/f_c}{\\sqrt{1 + (60/f_c)^2}}\n\\]\nSolve → \\(f_c \\approx 60\\ \\text{kHz}\\).\nEffect on 2 kHz data:\n\\[\n\\left|\\frac{V_{\\text{out}}}{V_{\\text{in}}}\\right|\n= \\frac{2000/60000}{\\sqrt{1 + (2000/60000)^2}} \\approx 0.033\n\\]\nOnly 3.3% of data amplitude remains → too much attenuation."
+  },
+  {
+    "objectID": "ins_21.html#example-14-loading-between-cascaded-rc-stages",
+    "href": "ins_21.html#example-14-loading-between-cascaded-rc-stages",
+    "title": "Analog Signal Conditioning",
+    "section": "Example 14 — Loading Between Cascaded RC Stages",
+    "text": "Example 14 — Loading Between Cascaded RC Stages\n\n\n\nFigure 17: Cascaded high-pass RC filter.\n\n\nWe now consider loading for Example 13 with specific component choices.\nGiven:\n\nFirst stage: choose \\(C = 0.001\\ \\mu\\text{F}\\); need \\(f_c = 1896\\ \\text{Hz}\\).\nFrom \\(f_c = 1/(2\\pi RC)\\):\n\n\\[\nR = \\frac{1}{2\\pi f_c C} \\approx 83.9\\ \\text{k}\\Omega\n\\]\n\nSecond stage uses same \\(R\\) and \\(C\\).\nEvaluate loading effect at \\(f = 2\\ \\text{kHz}\\)."
+  },
+  {
+    "objectID": "ins_21.html#band-pass-rc-filters",
+    "href": "ins_21.html#band-pass-rc-filters",
+    "title": "Analog Signal Conditioning",
+    "section": "Band-Pass RC Filters",
+    "text": "Band-Pass RC Filters\n\n\n\n\n\nFigure 19: Generic band-pass filter response.\n\n\n\n\n\n\nFigure 20: RC band-pass filter = high-pass + low-pass in cascade.\n\n\n\n\n\nConstructed by cascading a high-pass and a low-pass filter.\nLower critical frequency \\(f_L\\) from high-pass; upper critical frequency \\(f_H\\) from low-pass.\nPassband is \\(f_L &lt; f &lt; f_H\\).\n\nFor the RC band‑pass in Figure 20 (including loading via ratio \\(r = R_H / R_L\\)):\n\\[\n\\left|\\frac{V_{\\text{out}}}{V_{\\text{in}}}\\right| =\n\\frac{f_H f}\n{\\sqrt{(f^2 - f_H f_L)^2 + [f_L + (1 + r)f_H]^2 f^2}}\n\\tag{25}\n\\]\nwith\n\\[\nf_H = \\frac{1}{2\\pi R_L C_L}, \\quad\nf_L = \\frac{1}{2\\pi R_H C_H}\n\\tag{26}\n\\]\nDesign tips:\n\nWant wide separation between \\(f_L\\) and \\(f_H\\).\nKeep \\(r = R_H / R_L \\le 0.01\\) to minimize loading effects."
+  },
+  {
+    "objectID": "ins_21.html#example-15-band-pass-for-660-khz-data",
+    "href": "ins_21.html#example-15-band-pass-for-660-khz-data",
+    "title": "Analog Signal Conditioning",
+    "section": "Example 15 — Band-Pass for 6–60 kHz Data",
+    "text": "Example 15 — Band-Pass for 6–60 kHz Data\nGoal:\n\nSignal frequencies: 6 kHz to 60 kHz.\nNoise at 120 Hz and 1 MHz.\nDesign RC band‑pass to reduce noise by 90% (|Vout/Vin| = 0.1).\n\nLower cutoff (high-pass part)\nAt 120 Hz, want |Vout/Vin| ≈ 0.1:\nUse Equation (24):\n\\[\n0.1 = \\frac{120/f_L}{\\sqrt{1 + (120/f_L)^2}} \\Rightarrow f_L \\approx 1200\\ \\text{Hz}\n\\]"
+  },
+  {
+    "objectID": "ins_21.html#band-reject-notch-filters",
+    "href": "ins_21.html#band-reject-notch-filters",
+    "title": "Analog Signal Conditioning",
+    "section": "Band-Reject (Notch) Filters",
+    "text": "Band-Reject (Notch) Filters\n\n\n\nFigure 22: Generic band-reject (notch) filter response.\n\n\n\nReject a range of frequencies (especially a narrow band).\nUseful when one particular frequency interferes, e.g., 50/60 Hz hum in audio or ECG.\n\nPassive RC implementation with good performance is hard; inductive or active filters usually better."
+  },
+  {
+    "objectID": "ins_21.html#example-16-400-hz-notch-filter-twin-t",
+    "href": "ins_21.html#example-16-400-hz-notch-filter-twin-t",
+    "title": "Analog Signal Conditioning",
+    "section": "Example 16 — 400 Hz Notch Filter (Twin-T)",
+    "text": "Example 16 — 400 Hz Notch Filter (Twin-T)\nGoal:\n\nOn an aircraft, 400 Hz is the power frequency.\nWant to reject 400 Hz.\nEvaluate effect on voice band (10–300 Hz) and find upper −3 dB frequency.\n\nWe want \\(f_n = 400\\ \\text{Hz}\\). From Equation (27):\n\\[\n400 = 0.785 f_c \\Rightarrow f_c \\approx 510\\ \\text{Hz}\n\\]\nPick \\(C = 0.01\\ \\mu\\text{F}\\) →\n\\[\nR = \\frac{1}{2\\pi f_c C} \\approx 31.2\\ \\text{k}\\Omega\n\\]\nGrounding components:\n\\[\nR_1 = \\frac{\\pi R}{10} \\approx 9800\\ \\Omega\n\\]\n\\[\nC_1 = \\frac{10C}{\\pi} \\approx 0.0318\\ \\mu\\text{F}\n\\]\nEffect on voice band:\n\nAt 10 Hz: \\(10/400 = 0.025\\) → from Figure 24, |Vout/Vin| ≈ 0.99 (little attenuation).\nAt 300 Hz: \\(300/400 = 0.75\\) → |Vout/Vin| ≈ 0.03 (significant attenuation).\n\nUpper −3 dB frequency:\n\nFrom Equation (28): \\(f_H = 4.57 f_c ≈ 2300\\ \\text{Hz}\\).\n\nSo: - Very good rejection at 400 Hz. - Low voice frequencies largely unaffected, higher low frequencies more attenuated.\n\nMention that in practice, active notch filters using op‑amps provide deeper notches and more controllable Q factor. Twin‑T is still useful conceptually and in simple analog designs."
+  },
+  {
+    "objectID": "ins_21.html#summary-key-points",
+    "href": "ins_21.html#summary-key-points",
+    "title": "Analog Signal Conditioning",
+    "section": "Summary / Key Points",
+    "text": "Summary / Key Points\n\nSignal conditioning bridges the gap between raw sensor outputs and the requirements of downstream electronics (amplifiers, ADCs, transmitters).\nKey tasks:\n\nSignal-level & bias changes: match sensor outputs to required voltage ranges.\nLinearization: historically analog, now often done in software.\nConversions: R→V, V↔︎I, analog→digital interface.\nFiltering: low-pass, high-pass, band-pass, band-reject/notch.\nImpedance matching & loading mitigation: maintain accuracy.\n\nLoading:\n\nReal sources have internal resistance.\nWhen load is not ≫ source resistance, measured voltage drops (Thévenin model)."
+  },
+  {
+    "objectID": "ins_21.html#formulas-summary",
+    "href": "ins_21.html#formulas-summary",
+    "title": "Analog Signal Conditioning",
+    "section": "Formulas Summary",
+    "text": "Formulas Summary\nTransfer function basics\n\nSimple voltage gain: \\(V_{\\text{out}} = K V_{\\text{in}}\\).\n\nLoading (Thévenin model)\n\nLoaded output:\n\n\\[\nV_y = V_x\\left(1 - \\frac{R_x}{R_L + R_x}\\right)\n\\]\nDivider circuit\n\nOutput voltage:\n\n\\[\nV_D = \\frac{R_2}{R_1 + R_2} V_s\n\\tag{2}\n\\]"
+  },
+  {
+    "objectID": "ins_21.html#using-this-interactive-deck",
+    "href": "ins_21.html#using-this-interactive-deck",
+    "title": "Analog Signal Conditioning",
+    "section": "Using This Interactive Deck",
+    "text": "Using This Interactive Deck\n\nSlides marked with Pyodide let you edit and run Python code in the browser.\nSlides marked with Reactive let you change sliders / inputs and see plots update live.\nFocus topics (from the main deck):\n\nLoading effects\nVoltage dividers\nWheatstone bridge behavior\nRC filter frequency response\n\n\n\nExplain to students that this deck is meant for experimentation. Encourage them to change numbers, rerun code, and answer “what if?” questions."
+  },
+  {
+    "objectID": "ins_21.html#loading-sensor-amplifier-as-a-divider-pyodide",
+    "href": "ins_21.html#loading-sensor-amplifier-as-a-divider-pyodide",
+    "title": "Analog Signal Conditioning",
+    "section": "1. Loading: Sensor + Amplifier as a Divider (Pyodide)",
+    "text": "1. Loading: Sensor + Amplifier as a Divider (Pyodide)\nExplore Example 1 numerically. The sensor has internal resistance \\(R_x\\) and the amplifier has input resistance \\(R_L\\). The loaded voltage is\n\\[\nV_{\\text{in}} = V_T \\left(1 - \\frac{R_x}{R_x + R_L}\\right)\n\\]\nTry changing \\(R_L\\) and \\(R_x\\) and see how the amplifier output changes.\n\n\n\n\n\n\n\nAsk students: - Set R_L = 10_000, then to 100_000, then 1_000. - Which case is “good instrumentation practice,” and why?"
+  },
+  {
+    "objectID": "ins_21.html#loading-error-vs.-load-resistance-reactive-plot",
+    "href": "ins_21.html#loading-error-vs.-load-resistance-reactive-plot",
+    "title": "Analog Signal Conditioning",
+    "section": "2. Loading Error vs. Load Resistance (Reactive Plot)",
+    "text": "2. Loading Error vs. Load Resistance (Reactive Plot)\nUse a slider to change \\(R_L\\) and see how the percentage error caused by loading changes.\n\nviewof RL_k = Inputs.range(\n  [1, 200], \n  {step: 1, value: 10, label: \"Amplifier input resistance RL [kΩ]\"}\n)\n\nviewof Rx_k = Inputs.range(\n  [0.1, 20],\n  {step: 0.1, value: 5, label: \"Sensor resistance Rx [kΩ]\"}\n)\n\nviewof VT = Inputs.range(\n  [0.1, 5],\n  {step: 0.1, value: 1.0, label: \"Sensor open-circuit VT [V]\"}\n)\n\nviewof gain = Inputs.range(\n  [1, 20],\n  {step: 1, value: 10, label: \"Amplifier gain\"}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGuide students: “Move the RL slider to match the curve to your chosen Rx and VT; notice that when RL ≫ Rx, error is small.” Also highlight the log scale on RL."
+  },
+  {
+    "objectID": "ins_21.html#voltage-divider-nonlinear-sensor-to-voltage-mapping-pyodide",
+    "href": "ins_21.html#voltage-divider-nonlinear-sensor-to-voltage-mapping-pyodide",
+    "title": "Analog Signal Conditioning",
+    "section": "3. Voltage Divider: Nonlinear Sensor-to-Voltage Mapping (Pyodide)",
+    "text": "3. Voltage Divider: Nonlinear Sensor-to-Voltage Mapping (Pyodide)\nRevisit the divider from Example 2:\n\\[\nV_D = \\frac{R_2}{R_1 + R_2} V_s\n\\]\nHere, \\(R_2\\) is a sensor that changes with the physical variable.\n\n\n\n\n\n\n\nAsk: Is V_D vs R_2 linear in R_2? If the physical variable is proportional to R_2, what does this do to linearity of measurement vs actual variable?"
+  },
+  {
+    "objectID": "ins_21.html#voltage-divider-transfer-curve-reactive-plot",
+    "href": "ins_21.html#voltage-divider-transfer-curve-reactive-plot",
+    "title": "Analog Signal Conditioning",
+    "section": "4. Voltage Divider Transfer Curve (Reactive Plot)",
+    "text": "4. Voltage Divider Transfer Curve (Reactive Plot)\nVisualize the full curve \\(V_D(R_2)\\) and relate it to nonlinearity.\n\nviewof R1_k_div = Inputs.range(\n  [1, 50],\n  {step: 1, value: 10, label: \"R1 [kΩ]\"}\n)\n\nviewof Vs_div = Inputs.range(\n  [1, 10],\n  {step: 0.5, value: 5.0, label: \"Vs [V]\"}\n)\n\nviewof R2_min_k = Inputs.range(\n  [1, 20],\n  {step: 1, value: 4, label: \"Sensor R2_min [kΩ]\"}\n)\n\nviewof R2_max_k = Inputs.range(\n  [2, 50],\n  {step: 1, value: 12, label: \"Sensor R2_max [kΩ]\"}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEncourage students to adjust R1 and see how the slope and curvature change. Point out that any straight line they “fit” will only be accurate over a small R2 range."
+  },
+  {
+    "objectID": "ins_21.html#wheatstone-bridge-offset-voltage-pyodide",
+    "href": "ins_21.html#wheatstone-bridge-offset-voltage-pyodide",
+    "title": "Analog Signal Conditioning",
+    "section": "5. Wheatstone Bridge Offset Voltage (Pyodide)",
+    "text": "5. Wheatstone Bridge Offset Voltage (Pyodide)\nLet’s compute the DC Wheatstone bridge offset:\n\\[\n\\Delta V = V\\frac{R_3R_2 - R_1R_4}{(R_1 + R_3)(R_2 + R_4)}\n\\]\n\n\n\n\n\n\n\nLink to Example 4: their calculated −20.7 mV should match what students obtain here."
+  },
+  {
+    "objectID": "ins_21.html#wheatstone-bridge-δv-vs-sensor-resistance-reactive-plot",
+    "href": "ins_21.html#wheatstone-bridge-δv-vs-sensor-resistance-reactive-plot",
+    "title": "Analog Signal Conditioning",
+    "section": "6. Wheatstone Bridge ΔV vs Sensor Resistance (Reactive Plot)",
+    "text": "6. Wheatstone Bridge ΔV vs Sensor Resistance (Reactive Plot)\nVisualize bridge nonlinearity: how ΔV changes with sensor resistance \\(R_4\\).\n\nviewof R1_b = Inputs.range(\n  [50, 500],\n  {step: 10, value: 100, label: \"R1 [Ω]\"}\n)\n\nviewof R2_b = Inputs.range(\n  [50, 500],\n  {step: 10, value: 100, label: \"R2 [Ω]\"}\n)\n\nviewof R3_b = Inputs.range(\n  [50, 500],\n  {step: 10, value: 100, label: \"R3 [Ω]\"}\n)\n\nviewof Vb = Inputs.range(\n  [1, 20],\n  {step: 1, value: 10, label: \"Bridge supply V [V]\"}\n)\n\nviewof R4_min = Inputs.range(\n  [10, 500],\n  {step: 5, value: 0, label: \"R4_min [Ω] (sensor)\"}\n)\n\nviewof R4_max = Inputs.range(\n  [50, 1000],\n  {step: 10, value: 500, label: \"R4_max [Ω] (sensor)\"}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAsk students to zoom into a small region around the null (where ΔV ≈ 0) and see that the curve looks almost linear there. This reinforces the “small‑signal linear” region concept."
+  },
+  {
+    "objectID": "ins_21.html#low-pass-rc-filter-magnitude-response-pyodide",
+    "href": "ins_21.html#low-pass-rc-filter-magnitude-response-pyodide",
+    "title": "Analog Signal Conditioning",
+    "section": "7. Low-Pass RC Filter Magnitude Response (Pyodide)",
+    "text": "7. Low-Pass RC Filter Magnitude Response (Pyodide)\nRecall:\n\nCutoff frequency: \\(f_c = \\dfrac{1}{2\\pi RC}\\).\nMagnitude response:\n\n\\[\n\\left|\\frac{V_{\\text{out}}}{V_{\\text{in}}}\\right| =\n\\frac{1}{\\sqrt{1 + (f/f_c)^2}}\n\\]\nExplore numerically.\n\n\n\n\n\n\n\nEncourage students to modify R and C so that fc moves below or above the test frequencies; observe how |Vout/Vin| changes."
+  },
+  {
+    "objectID": "ins_21.html#low-pass-rc-bode-magnitude-plot-reactive-plot",
+    "href": "ins_21.html#low-pass-rc-bode-magnitude-plot-reactive-plot",
+    "title": "Analog Signal Conditioning",
+    "section": "8. Low-Pass RC Bode Magnitude Plot (Reactive Plot)",
+    "text": "8. Low-Pass RC Bode Magnitude Plot (Reactive Plot)\nInteractive plot of \\(|V_{\\text{out}}/V_{\\text{in}}|\\) vs \\(f\\) (log scale), with adjustable R and C.\n\nviewof R_lp = Inputs.range(\n  [100, 100_000],\n  {step: 100, value: 1_500, label: \"R [Ω] (low-pass)\"}\n)\n\nviewof C_lp_nF = Inputs.range(\n  [0.1, 1000],\n  {step: 0.1, value: 10.0, label: \"C [nF] (low-pass)\"}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHighlight: - The −3 dB line is where f ≈ fc. - Slope approaches −20 dB/decade at high frequency."
+  },
+  {
+    "objectID": "ins_21.html#high-pass-rc-magnitude-response-reactive-plot",
+    "href": "ins_21.html#high-pass-rc-magnitude-response-reactive-plot",
+    "title": "Analog Signal Conditioning",
+    "section": "9. High-Pass RC Magnitude Response (Reactive Plot)",
+    "text": "9. High-Pass RC Magnitude Response (Reactive Plot)\nFor high-pass:\n\\[\n\\left|\\frac{V_{\\text{out}}}{V_{\\text{in}}}\\right| =\n\\frac{f/f_c}{\\sqrt{1 + (f/f_c)^2}}\n\\]\n\nviewof R_hp = Inputs.range(\n  [100, 100_000],\n  {step: 100, value: 8_000, label: \"R [Ω] (high-pass)\"}\n)\n\nviewof C_hp_nF = Inputs.range(\n  [0.1, 1000],\n  {step: 0.1, value: 10.0, label: \"C [nF] (high-pass)\"}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelate this to Example 12 and 13: e.g., set fc ≈ 2 kHz and observe attenuation at 60 Hz vs 2 kHz."
+  },
+  {
+    "objectID": "ins_21.html#band-pass-from-cascaded-high-pass-and-low-pass-reactive",
+    "href": "ins_21.html#band-pass-from-cascaded-high-pass-and-low-pass-reactive",
+    "title": "Analog Signal Conditioning",
+    "section": "10. Band-Pass from Cascaded High-Pass and Low-Pass (Reactive)",
+    "text": "10. Band-Pass from Cascaded High-Pass and Low-Pass (Reactive)\nModel a simple band-pass as:\n\\[\nH_{\\text{BP}}(f) = H_{\\text{HP}}(f) \\cdot H_{\\text{LP}}(f)\n\\]\nwith the first-order formulas for each.\n\nviewof fc_low = Inputs.range(\n  [10, 100_000],\n  {step: 10, value: 1_200, label: \"High-pass cutoff fL [Hz]\"}\n)\n\nviewof fc_high = Inputs.range(\n  [1_000, 500_000],\n  {step: 1_000, value: 100_000, label: \"Low-pass cutoff fH [Hz]\"}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nConnect to Example 15: - Try fL ≈ 1.2 kHz and fH ≈ 100 kHz. - Check attenuation at 120 Hz and 1 MHz; compare to ~0.1 (−20 dB)."
+  },
+  {
+    "objectID": "ins_21.html#twin-t-notch-frequency-mapping-pyodide",
+    "href": "ins_21.html#twin-t-notch-frequency-mapping-pyodide",
+    "title": "Analog Signal Conditioning",
+    "section": "11. Twin-T Notch: Frequency Mapping (Pyodide)",
+    "text": "11. Twin-T Notch: Frequency Mapping (Pyodide)\nFor a Twin‑T notch:\n\n\\(f_c = \\dfrac{1}{2\\pi RC}\\).\nNotch frequency: \\(f_n = 0.785 f_c\\).\n−3 dB frequencies: \\(f_L = 0.187 f_c\\), \\(f_H = 4.57 f_c\\).\n\nCompute these for given R and C.\n\n\n\n\n\n\n\nLet students set R and C so that fn ≈ 400 Hz as in Example 16, and check fL and fH."
+  },
+  {
+    "objectID": "ins_21.html#reflection-next-steps",
+    "href": "ins_21.html#reflection-next-steps",
+    "title": "Analog Signal Conditioning",
+    "section": "12. Reflection & Next Steps",
+    "text": "12. Reflection & Next Steps\n\nTry modifying code cells to:\n\nUse different sensors (e.g., different \\(R_x\\), \\(R_L\\)).\nChange bridge arm values and see how ΔV responds.\nSelect R and C to target specific cutoff frequencies for your own lab sensors.\n\nConsider extending these examples:\n\nAdd noise to signals in Python and see how filters change SNR.\nSimulate ADC quantization after signal conditioning.\n\n\n\nEncourage students to save their modified code for lab reports or to turn into small design tools (e.g., choosing R and C given desired fc and constraints on R range)."
+  },
+  {
+    "objectID": "ins_22.html#operational-amplifiers-in-instrumentation",
+    "href": "ins_22.html#operational-amplifiers-in-instrumentation",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "4. Operational Amplifiers in Instrumentation",
+    "text": "4. Operational Amplifiers in Instrumentation\n\nModern signal‑conditioning almost always uses op amps rather than discrete transistors.\nAdvantages for instrumentation:\n\nSmall, low‑power IC packages\nHigh reliability and repeatability\nFlexible building block: amplification, filtering, conversion, math operations\n\n\nIn this session we will:\n\nIntroduce op amp behavior (ideal vs non‑ideal).\nDerive and use basic configurations (inverting, noninverting, follower).\nBuild up to instrumentation amplifiers and current/voltage converters.\nSee how these circuits support real measurement systems (bridges, sensors, 4–20 mA loops).\n\n\nThis deck translates the textbook exposition into a visual, example‑driven lecture. You can move quickly through basic op amp symbol/behavior, then slow down at the inverting amplifier and instrumentation amplifier sections—these are key for process control/instrumentation. Encourage students to sketch circuits and write node equations along the way."
+  },
+  {
+    "objectID": "ins_22.html#big-picture-where-do-op-amps-fit",
+    "href": "ins_22.html#big-picture-where-do-op-amps-fit",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Big Picture: Where Do Op Amps Fit?",
+    "text": "Big Picture: Where Do Op Amps Fit?\n\n\nMeasurement Chain\n\nPhysical variable: temperature, pressure, flow, strain, etc.\nSensor: converts variable → electrical quantity (R, V, I).\nSignal conditioning:\n\nAmplify / attenuate\nShift offset\nFilter noise\nConvert V ↔︎ I\nLinearize non‑linear sensors\n\nADC / controller / display\n\nOp amps live in step 3 as the main “glue” between the sensor and digital world.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nIn instrumentation, “signal conditioning” usually means one or more op amp stages plus passive components and references."
+  },
+  {
+    "objectID": "ins_22.html#op-amp-symbol-io-concept",
+    "href": "ins_22.html#op-amp-symbol-io-concept",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Op Amp Symbol & I/O Concept",
+    "text": "Op Amp Symbol & I/O Concept\n\n\nSymbol (functional view)\n\nTwo inputs:\n\n+ noninverting\n− inverting\n\nOne output: voltage \\(V_{\\text{out}}\\)\nPower pins \\((+V_s,\\,-V_s)\\) are usually omitted when drawing signal‑level schematics.\n\n\n\n\n\nOp amp symbol\n\n\n\n\nWe view the op amp as a 3‑terminal device (two inputs + one output) for analysis.\nInternally, it’s made from transistors, resistors, capacitors, etc., but we abstract all that away.\n\n\nEmphasize that we almost never design the internals of a general‑purpose op amp in this course. We focus on using the op amp as a black box with known I/O behavior."
+  },
+  {
+    "objectID": "ins_22.html#differential-input-transfer-curve",
+    "href": "ins_22.html#differential-input-transfer-curve",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Differential Input & Transfer Curve",
+    "text": "Differential Input & Transfer Curve\n\n\n\nDefine the differential input voltage: \\[v_d = V_2 - V_1\\]\nThe op amp’s open‑loop behavior: \\[V_{\\text{out}} \\approx A v_d\\] where \\(A\\) is the open‑loop gain (very large, \\(\\sim 10^5\\)).\nBut \\(V_{\\text{out}}\\) cannot exceed saturation: \\(\\pm V_{\\text{sat}}\\) (a bit less than the supply rails).\n\n\n\n\n\nInput-output curve\n\n\n\n\nLinear region is extremely narrow: \\(\\Delta V \\lesssim 1\\ \\text{mV}\\) while \\(V_{\\text{sat}}\\sim 10\\ \\text{V}\\).\nEffective open‑loop gain: \\[A \\approx \\left|\\frac{2V_{\\text{sat}}}{\\Delta V}\\right| \\sim 200{,}000\\ \\text{V/V}\\]"
+  },
+  {
+    "objectID": "ins_22.html#why-inverting-and-noninverting",
+    "href": "ins_22.html#why-inverting-and-noninverting",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Why “Inverting” and “Noninverting”?",
+    "text": "Why “Inverting” and “Noninverting”?\n\nConnect \\(V_1\\) to the noninverting (+) input, \\(V_2\\) to inverting (−).\nIf \\(V_2\\) is more positive than \\(V_1\\) \\(\\Rightarrow v_d = V_2 - V_1 &gt; 0\\):\n\nOutput saturates at negative voltage \\(-V_{\\text{sat}}\\).\nMore positive at − ⇒ output goes negative ⇒ “inverting.”\n\nIf \\(V_1\\) is more positive than \\(V_2\\) \\(\\Rightarrow v_d &lt; 0\\):\n\nOutput saturates at positive voltage \\(+V_{\\text{sat}}\\).\nMore positive at + ⇒ output goes positive ⇒ “noninverting.”\n\n\n\n\n\n\n\n\nImportant\n\n\nThe labels + and − refer to how a positive input change affects the output sign, not to power supply polarity."
+  },
+  {
+    "objectID": "ins_22.html#ideal-op-amp-assumptions",
+    "href": "ins_22.html#ideal-op-amp-assumptions",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Ideal Op Amp Assumptions",
+    "text": "Ideal Op Amp Assumptions\nIn most feedback circuits, we use the ideal op amp model:\n\nInfinite open‑loop gain: \\(A \\to \\infty\\)\nInfinite input impedance: no current into + or − terminals\nZero output impedance: output behaves as an ideal voltage source\nWith negative feedback and not saturated:\n\nRule 1: \\(I_{+} = I_{-} = 0\\)\nRule 2: \\(V_{+} = V_{-}\\)\n\n\nThese two “golden rules” are enough to analyze almost every op amp circuit you’ll meet in this course."
+  },
+  {
+    "objectID": "ins_22.html#inverting-amplifier-input-impedance-attenuation",
+    "href": "ins_22.html#inverting-amplifier-input-impedance-attenuation",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Inverting Amplifier: Input Impedance & Attenuation",
+    "text": "Inverting Amplifier: Input Impedance & Attenuation\n\nInput impedance \\(Z_{\\text{in}}\\) “seen” by \\(V_{\\text{in}}\\):\n\n\\(V_{\\text{in}}\\) sees \\(R_1\\) directly.\nSumming node is at virtual ground.\nSo \\(Z_{\\text{in}} \\approx R_1\\).\n\nIf \\(R_2 &lt; R_1\\) ⇒ \\(|V_{\\text{out}}| &lt; |V_{\\text{in}}|\\): attenuator.\nIf \\(R_2 &gt; R_1\\) ⇒ gain \\(&gt; 1\\): amplifier.\n\n\n\n\n\n\n\nTip\n\n\nYou can control both gain and input impedance simply by picking \\(R_1\\) and \\(R_2\\)."
+  },
+  {
+    "objectID": "ins_22.html#nonideal-effects-when-does-ideal-break",
+    "href": "ins_22.html#nonideal-effects-when-does-ideal-break",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Non‑Ideal Effects: When Does “Ideal” Break?",
+    "text": "Non‑Ideal Effects: When Does “Ideal” Break?\n\n\n\nNonideal I/O and circuit\n\n\nNon‑ideal parameters:\n\nFinite open‑loop gain \\(A\\) (e.g. \\(A \\sim 2\\times10^5\\)).\nFinite input impedance \\(z_{\\text{in}}\\) (e.g. MΩ).\nNon‑zero output impedance \\(z_0\\) (few Ω)."
+  },
+  {
+    "objectID": "ins_22.html#op-amp-data-sheet-specifications",
+    "href": "ins_22.html#op-amp-data-sheet-specifications",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Op Amp Data Sheet Specifications",
+    "text": "Op Amp Data Sheet Specifications\nBeyond \\(A\\), \\(z_{\\text{in}}\\), \\(z_0\\), several key specs matter in practice:\n\nInput offset voltage \\(V_{\\text{ios}}\\)\n\nSmall input differential required to force \\(V_{\\text{out}}=0\\).\nResults in small DC error at output even when input is zero.\n\nInput bias currents \\(I_{B+}, I_{B-}\\)\n\nAverage current needed into each input to bias internal transistors.\n\nInput offset current\n\nDifference between the two input bias currents.\n\nSlew rate (SR)\n\nMaximum rate of change of output voltage (V/μs) for large‑signal steps.\nLimits how fast output can move ⇒ important for fast signals.\n\nUnity‑gain bandwidth (gain–bandwidth product)\n\nFrequency where open‑loop gain falls to 1.\nFor closed‑loop gain \\(G\\), approximate bandwidth \\(\\approx \\frac{f_T}{G}\\).\n\n\nThese can all show up as accuracy, drift, or speed limitations in instrumentation circuits."
+  },
+  {
+    "objectID": "ins_22.html#practical-power-offset-compensation",
+    "href": "ins_22.html#practical-power-offset-compensation",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Practical Power & Offset Compensation",
+    "text": "Practical Power & Offset Compensation\n\n\n\nInverting amplifier with power & offset trim\n\n\n\nOp amp powered by bipolar supplies: typically \\(\\pm 9\\) to \\(\\pm 15\\ \\text{V}\\) in classical designs.\nMany packages offer pins for offset‑null:\n\nUse a small trimmer pot between these pins and a supply.\nAdjust until output is 0 V when input is 0 V ⇒ cancel \\(V_{\\text{ios}}\\).\n\n\nOffset current compensation trick:\n\nMake the resistance seen by + input equal to the Thevenin resistance seen by − input.\nThat way, both bias currents produce similar drops → smaller output error."
+  },
+  {
+    "objectID": "ins_22.html#design-rule-of-thumb-think-ma-and-kω",
+    "href": "ins_22.html#design-rule-of-thumb-think-ma-and-kω",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Design Rule of Thumb: “Think mA and kΩ”",
+    "text": "Design Rule of Thumb: “Think mA and kΩ”\n\nMost general‑purpose op amps can source/sink only tens of mA.\nAvoid tiny resistors that force huge currents.\n\nExample (text Example 17):\n\nWant gain \\(-4.5\\).\nMathematically, you could pick \\(R_1=1\\Omega\\), \\(R_2=4.5\\Omega\\).\nIf \\(V_{\\text{in}}=2\\ \\text{V}\\) ⇒ \\(V_{\\text{out}}=-9\\ \\text{V}\\).\nFeedback current \\(I_2 = (-9\\text{V})/4.5\\Omega = -2\\ \\text{A}\\) ⇒ impossible.\n\nPractical choice:\n\n\\(R_1 = 1\\text{k}\\Omega\\), \\(R_2 = 4.5\\text{k}\\Omega\\).\nFor the same \\(V_{\\text{out}}\\), feedback current is \\(2\\ \\text{mA}\\), well within limits.\n\n\n\n\n\n\n\nImportant\n\n\nDefault to kΩ range for resistors and mA (or less) for currents when designing op amp circuits."
+  },
+  {
+    "objectID": "ins_22.html#inverting-summing-amplifier",
+    "href": "ins_22.html#inverting-summing-amplifier",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Inverting Summing Amplifier",
+    "text": "Inverting Summing Amplifier\n\n\n\nSumming amplifier\n\n\n\nMultiple inputs through resistors to the summing node.\nSingle feedback resistor \\(R_2\\).\n\nFor two inputs \\(V_1\\) and \\(V_2\\):\n\\[\nV_{\\text{out}} = -\\left[\\frac{R_2}{R_1}V_1 + \\frac{R_2}{R_3}V_2\\right]\n\\]\nSpecial choices:\n\nIf \\(R_1=R_2=R_3\\) ⇒ \\(V_{\\text{out}} = -(V_1 + V_2)\\).\nIf \\(R_1=R_3\\) and \\(R_2 = R_1/2\\) ⇒ \\(V_{\\text{out}} = -\\frac{1}{2}(V_1 + V_2)\\) ⇒ scaled average."
+  },
+  {
+    "objectID": "ins_22.html#design-example-affine-function-with-op-amps",
+    "href": "ins_22.html#design-example-affine-function-with-op-amps",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Design Example: Affine Function with Op Amps",
+    "text": "Design Example: Affine Function with Op Amps\nGoal: Implement \\[\nV_{\\text{out}} = 3.4V_{\\text{in}} + 5\n\\]\nStrategy:\n\nUse a summing amplifier that adds:\n\nA scaled version of \\(V_{\\text{in}}\\) with gain 3.4.\nA fixed \\(5\\ \\text{V}\\) reference with gain 1.0.\n\nBut summing amplifier inverts, so we cascade a gain \\(-1\\) inverter.\n\n\n\n\nExample 18 circuit\n\n\nResistor choices are made in kΩ so currents are in mA or less.\n\nWhen presenting, walk students through how to implement an expression of the form \\(V_{\\text{out}} = mV_{\\text{in}} + V_0\\) using: - Scaling with inverting/noninverting amplifier gains. - Summing amplifier to add a constant reference. Emphasize that the “math” dictates the block diagram."
+  },
+  {
+    "objectID": "ins_22.html#noninverting-amplifier-high-input-impedance-gain-block",
+    "href": "ins_22.html#noninverting-amplifier-high-input-impedance-gain-block",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Noninverting Amplifier: High Input Impedance Gain Block",
+    "text": "Noninverting Amplifier: High Input Impedance Gain Block\n\n\n\nNoninverting amplifier\n\n\n\nInput applied directly to + terminal (\\(V_{+} = V_{\\text{in}}\\)).\nFeedback network from output to − terminal.\n\nAt node \\(S\\) (summing node): \\(V_S = V_{-} = V_{+} = V_{\\text{in}}\\)."
+  },
+  {
+    "objectID": "ins_22.html#example-highimpedance-gain-stage",
+    "href": "ins_22.html#example-highimpedance-gain-stage",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Example: High‑Impedance Gain Stage",
+    "text": "Example: High‑Impedance Gain Stage\nDesign a high‑impedance amplifier with gain 42.\nWe use the noninverting amplifier:\n\\[\n42 = 1 + \\frac{R_2}{R_1}\n\\]\nSo\n\\[\n\\frac{R_2}{R_1} = 41 \\Rightarrow R_2 = 41R_1\n\\]\nPick \\(R_1 = 1\\text{k}\\Omega\\) ⇒ \\(R_2 = 41\\text{k}\\Omega\\).\nResult: - Input impedance: very high (op amp input). - Gain \\(\\approx 42\\)."
+  },
+  {
+    "objectID": "ins_22.html#differential-amplifier-concept",
+    "href": "ins_22.html#differential-amplifier-concept",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Differential Amplifier Concept",
+    "text": "Differential Amplifier Concept\nWe often care about difference of two voltages, not their absolute values:\n\\[\nV_{\\text{out}} = A(V_a - V_b)\n\\]\n\nIdeal differential amplifier responds only to \\(V_a - V_b\\), not to their common level.\nUseful example: Wheatstone bridge offset voltage \\(\\Delta V = V_a - V_b\\).\n\nDefine common‑mode voltage:\n\\[\nV_{cm} = \\frac{V_a + V_b}{2}\n\\]\n\nIdeal differential amplifier has zero gain to \\(V_{cm}\\), nonzero gain to \\(V_a - V_b\\)."
+  },
+  {
+    "objectID": "ins_22.html#commonmode-rejection",
+    "href": "ins_22.html#commonmode-rejection",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Common‑Mode Rejection",
+    "text": "Common‑Mode Rejection\nReal differential amplifiers have:\n\nDifferential gain \\(A\\).\nCommon‑mode gain \\(A_{cm}\\).\n\nDefine:\n\\[\n\\text{CMRR} = \\frac{A}{A_{cm}}, \\quad\n\\text{CMR} = 20\\log_{10}(\\text{CMRR})\\ \\text{dB}\n\\]\n\nLarger CMRR ⇒ better rejection of noise or interference that appears on both inputs.\nTypical CMR values: \\(60\\)–\\(100\\ \\text{dB}\\).\n\nInstrumentation use case: bridge outputs a few mV difference sitting on several volts of common‑mode bias. A good differential/instrumentation amplifier extracts the tiny difference accurately."
+  },
+  {
+    "objectID": "ins_22.html#basic-differential-amplifier-circuit",
+    "href": "ins_22.html#basic-differential-amplifier-circuit",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Basic Differential Amplifier Circuit",
+    "text": "Basic Differential Amplifier Circuit\n\n\n\nDifferential amplifier\n\n\nUsing carefully matched resistors (\\(R_1\\) pair, \\(R_2\\) pair):\n\\[\nV_{\\text{out}} = \\frac{R_2}{R_1}(V_2 - V_1)\n\\]\n\nSame gain for both inputs (but one inverted).\nCMR performance is very sensitive to resistor matching.\n\nLimitations:\n\nInput impedance is only on the order of \\(R_1\\) for each input.\nNot well suited to very high‑impedance sensors."
+  },
+  {
+    "objectID": "ins_22.html#instrumentation-amplifier-3opamp-version",
+    "href": "ins_22.html#instrumentation-amplifier-3opamp-version",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Instrumentation Amplifier (3‑Op‑Amp Version)",
+    "text": "Instrumentation Amplifier (3‑Op‑Amp Version)\n\n\n\nInstrumentation amplifier with followers\n\n\n\nAdd voltage followers (or gain‑blocks) in front of the differential stage.\nPros:\n\nVery high input impedance.\nLow output impedance.\n\nTransfer function stays: \\[\nV_{\\text{out}} = \\frac{R_2}{R_1}(V_2 - V_1)\n\\]\nGain adjustment may require changing two resistors in the differential stage.\n\nMany ICs integrate all three op amps plus trimmed resistors into a single instrumentation‑amplifier package."
+  },
+  {
+    "objectID": "ins_22.html#popular-3opamp-instrumentation-amplifier-topology",
+    "href": "ins_22.html#popular-3opamp-instrumentation-amplifier-topology",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Popular 3‑Op‑Amp Instrumentation Amplifier Topology",
+    "text": "Popular 3‑Op‑Amp Instrumentation Amplifier Topology\n\n\n\nAdjustable‑gain instrumentation amplifier\n\n\nTransfer function:\n\\[\nV_{\\text{out}} = \\left(1 + \\frac{2R_1}{R_G}\\right)\\left(\\frac{R_3}{R_2}\\right)(V_2 - V_1)\n\\]\n\nSingle resistor \\(R_G\\) sets front‑end gain.\nDifferential stage uses fixed \\(R_2, R_3\\) that can be laser‑trimmed for excellent CMRR.\n\nDesign workflow:\n\nChoose or given \\(R_1\\), \\(R_2\\), \\(R_3\\).\nCompute required differential gain \\(A_d\\).\nSolve for \\(R_G\\) using the formula above."
+  },
+  {
+    "objectID": "ins_22.html#example-bridge-instrumentation-amplifier-example-21",
+    "href": "ins_22.html#example-bridge-instrumentation-amplifier-example-21",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Example: Bridge + Instrumentation Amplifier (Example 21)",
+    "text": "Example: Bridge + Instrumentation Amplifier (Example 21)\n\n\n\nBridge for Example 21\n\n\nGiven:\n\nBridge powered by \\(5\\ \\text{V}\\).\n\\(R_4\\) varies from \\(100\\Omega\\) to \\(102\\Omega\\).\nWant instrumentation amp output \\(0\\) to \\(2.5\\ \\text{V}\\).\nUse topology of Figure 37 with \\(R_2=R_3=1\\text{k}\\Omega\\), \\(R_1=100\\text{k}\\Omega\\)."
+  },
+  {
+    "objectID": "ins_22.html#example-01-v-to-010-ma-example-22",
+    "href": "ins_22.html#example-01-v-to-010-ma-example-22",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Example: 0–1 V to 0–10 mA (Example 22)",
+    "text": "Example: 0–1 V to 0–10 mA (Example 22)\nGoal: 0–1 V input → 0–10 mA output, op amp saturates at ±10 V.\n\nV–I converter inverts (\\(I\\propto -V_{\\text{in}}\\)), so use a first‑stage inverting amplifier to produce \\(0\\) to \\(-1\\ \\text{V}\\) from the original \\(0\\)–\\(1\\ \\text{V}\\).\nIn V–I stage of Figure 39, choose \\(R_1=R_2\\) ⇒ \\[\nI = \\frac{V_{\\text{in}}}{R_3}\n\\]\nFor \\(I_{\\max}=10\\ \\text{mA}\\) at \\(|V_{\\text{in}}|=1\\ \\text{V}\\): \\[\nR_3 = \\frac{1\\ \\text{V}}{10\\ \\text{mA}} = 100\\ \\Omega\n\\]\nLet \\(R_5=0\\) ⇒ from \\(R_1(R_3 + R_5) = R_2 R_4\\) and \\(R_1=R_2\\): \\[\nR_4 = R_3 = 100\\ \\Omega\n\\]\nMaximum load \\(R_{ml}\\) from Equation (44):\n\n\\[\nR_{ml} = 100\\left[\\frac{10\\ \\text{V}}{10\\ \\text{mA}} - 100\\right]/200\n= 450\\ \\Omega\n\\]\nSo the system can drive 0–10 mA through up to ~450 Ω before saturating."
+  },
+  {
+    "objectID": "ins_22.html#example-ramp-10-vms-example-23",
+    "href": "ins_22.html#example-ramp-10-vms-example-23",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Example: Ramp 10 V/ms (Example 23)",
+    "text": "Example: Ramp 10 V/ms (Example 23)\nTarget: ramp rising at \\(10\\ \\text{V/ms}\\).\nFor the ideal integrator:\n\\[\nV_{\\text{out}}(t) = -\\frac{V_{\\text{in}}}{RC}t\n\\]\nWe want slope magnitude \\(\\left|\\frac{dV_{\\text{out}}}{dt}\\right| = 10\\ \\text{V/ms}\\).\nPick \\(RC = 1\\ \\text{ms}\\) and \\(V_{\\text{in}} = -10\\ \\text{V}\\) ⇒\n\\[\nV_{\\text{out}}(t) = +\\frac{10}{1\\ \\text{ms}}t = 10\\ \\text{V/ms} \\cdot t\n\\]\nOne convenient choice:\n\n\\(R = 1\\text{k}\\Omega\\)\n\\(C = 1\\ \\mu\\text{F}\\)\n\nsince \\(RC = 1\\ \\text{ms}\\)."
+  },
+  {
+    "objectID": "ins_22.html#nonlinear-feedback-for-linearization",
+    "href": "ins_22.html#nonlinear-feedback-for-linearization",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Nonlinear Feedback for Linearization",
+    "text": "Nonlinear Feedback for Linearization\n\n\n\nNonlinear amplifier concept\n\n\n\nPut a nonlinear device in the feedback path.\nNode equation: \\[\n\\frac{V_{\\text{in}}}{R} + I(V_{\\text{out}}) = 0\n\\]\n\nGiven known \\(I(V_{\\text{out}})\\), we can solve (in principle):\n\\[\nV_{\\text{out}} = G\\left(\\frac{V_{\\text{in}}}{R}\\right)\n\\]\nwhere \\(G(\\cdot)\\) is a nonlinear function (often the inverse of \\(I(\\cdot)\\)).\nExample: Diode feedback for log amplifier\n\n\n\nLog amplifier\n\n\n\nDiode current: \\[\nI(V_{\\text{out}}) = I_0 e^{\\alpha V_{\\text{out}}}\n\\]\nSolve for \\(V_{\\text{out}}\\): \\[\nV_{\\text{out}} = \\frac{1}{\\alpha}\\ln\\left(\\frac{V_{\\text{in}}}{RI_0}\\right)\n\\]\n\nThus the circuit approximates a logarithmic amplifier."
+  },
+  {
+    "objectID": "ins_22.html#design-guidelines-for-signal-conditioning",
+    "href": "ins_22.html#design-guidelines-for-signal-conditioning",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Design Guidelines for Signal Conditioning",
+    "text": "Design Guidelines for Signal Conditioning\nWe now take a systems view: given a sensor and required output, how do we design the op amp stages?\n1. Define the Measurement Objective\n\nParameter: temperature, pressure, strain, etc.\nRange: e.g., \\(100^\\circ\\)C–\\(200^\\circ\\)C, 45–85 psi, 2–4 V.\nAccuracy: e.g., ±5% FS, ±2 °C.\nLinearity: must the overall transfer be linear? If not, acceptable error?\nNoise: level and spectrum in the environment.\n\n2. Understand/Select the Sensor\n\nOutput type: R, V, I, frequency?\nTransfer function: graph, equation, sensitivity, linear vs nonlinear.\nTime response: time constant τ, resonance, bandwidth.\nRange: map of sensor output over measurement range.\nPower limits: maximum allowable dissipation or bias."
+  },
+  {
+    "objectID": "ins_22.html#design-guidelines-contd",
+    "href": "ins_22.html#design-guidelines-contd",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Design Guidelines (cont’d)",
+    "text": "Design Guidelines (cont’d)\n3. Design the Analog Signal Conditioning\n\nDesired output parameter: usually voltage; sometimes 4–20 mA or frequency.\nOutput range: e.g., 0–5 V, −5–+5 V, 4–20 mA.\nInput impedance requirement:\n\nTo avoid loading the sensor, especially if it’s a high‑impedance source.\n\nOutput impedance requirement:\n\nMust drive next stage without significant loading.\n\nOperations needed:\n\nGain / attenuation\nOffset (bias)\nFilter (low‑pass / anti‑alias)\nConversion (V–I, I–V)\nLinearization or function shaping"
+  },
+  {
+    "objectID": "ins_22.html#example-24-voltagetovoltage-conditioning",
+    "href": "ins_22.html#example-24-voltagetovoltage-conditioning",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Example 24: Voltage‑to‑Voltage Conditioning",
+    "text": "Example 24: Voltage‑to‑Voltage Conditioning\nGiven:\n\nSensor output \\(V_{\\text{in}}\\): −2.4 to −1.1 V.\nNeed \\(V_{\\text{out}}\\): 0 to 2.5 V.\nSensor impedance unknown ⇒ design for high input impedance.\n\n\nAssume linear mapping: \\[\nV_{\\text{out}} = m V_{\\text{in}} + V_0\n\\]\nUse end points:\n\nAt \\(V_{\\text{in}}=-2.4\\): \\(0 = m(-2.4) + V_0\\)\nAt \\(V_{\\text{in}}=-1.1\\): \\(2.5 = m(-1.1) + V_0\\)\n\nFrom the first: \\(V_0 = 2.4m\\). Substitute into second:\n\\[\n2.5 = -1.1m + 2.4m = 1.3m\n\\]\nSo \\(m = 2.5/1.3 \\approx 1.923\\), \\(V_0 = 2.4m \\approx 4.615\\)."
+  },
+  {
+    "objectID": "ins_22.html#example-25-full-design-with-power-constraint",
+    "href": "ins_22.html#example-25-full-design-with-power-constraint",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Example 25: Full Design with Power Constraint",
+    "text": "Example 25: Full Design with Power Constraint\nProblem summary:\n\nMeasure temperature 250–450 °C with ±2 °C accuracy.\nSensor: resistance \\(R_s\\) linearly from 280 Ω (250 °C) to 1060 Ω (450 °C).\nMax power in sensor: 5 mW.\nDesired output: −5 to +5 V, linear with temperature.\nLoad: high‑impedance recorder.\n\n\nLimit sensor current using \\(P = I^2R\\):\nAt \\(R=1060\\ \\Omega\\):\n\\[\nI_{\\max} = \\sqrt{\\frac{0.005}{1060}} \\approx 2.17\\ \\text{mA}\n\\]\nSo keep \\(I_s &lt; 2\\ \\text{mA}\\) for all Rs."
+  },
+  {
+    "objectID": "ins_22.html#checkpoint-practice-prompts",
+    "href": "ins_22.html#checkpoint-practice-prompts",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Checkpoint / Practice Prompts",
+    "text": "Checkpoint / Practice Prompts\nConsider trying these on your own:\n\nDesign an inverting amplifier with gain −10 and input impedance ≥ 20 kΩ. Specify \\(R_1, R_2\\).\nFor a 4–20 mA current loop, choose \\(R\\) in a current‑to‑voltage converter so that the output spans 1–5 V.\nYou have a strain‑gauge bridge producing −10 to +10 mV. Design a front‑end instrumentation amplifier to produce −5 to +5 V. Estimate required gain and discuss CMRR needs.\n\n\nUse these as in‑class quick exercises or homework warm‑ups. They reinforce mapping specifications into op amp topologies and equations."
+  },
+  {
+    "objectID": "ins_22.html#ideal-inverting-amplifier-gain-exploration",
+    "href": "ins_22.html#ideal-inverting-amplifier-gain-exploration",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "1. Ideal Inverting Amplifier – Gain Exploration",
+    "text": "1. Ideal Inverting Amplifier – Gain Exploration\nThe ideal inverting op amp has transfer function\n\\[\nV_{\\text{out}} = -\\frac{R_2}{R_1}V_{\\text{in}}\n\\]\nUse this sandbox to see how changing \\(R_1\\), \\(R_2\\), or \\(V_{\\text{in}}\\) alters the output.\n\n\n\n\n\n\nTry:\n\nMake \\(R_2 &lt; R_1\\). What happens to \\(|V_{\\text{out}}|\\) relative to \\(|V_{\\text{in}}|\\)?\nMake \\(R_2 \\gg R_1\\). How large can \\(V_{\\text{out}}\\) get before it would hit typical \\(V_{\\text{sat}}\\) (e.g., ±10 V)?"
+  },
+  {
+    "objectID": "ins_22.html#practical-design-rule-think-ma-and-kω",
+    "href": "ins_22.html#practical-design-rule-think-ma-and-kω",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "2. Practical Design Rule: “Think mA and kΩ”",
+    "text": "2. Practical Design Rule: “Think mA and kΩ”\nWe rarely want currents above tens of mA in op amp circuits. This cell computes the feedback current in an inverting amplifier and warns if it is too high.\n\n\n\n\n\n\nTry:\n\nFirst, use \\(R_1 = 1\\ \\Omega\\), \\(R_2 = 4.5\\ \\Omega\\) (unrealistic).\nThen, use \\(R_1 = 1\\text{k}\\Omega\\), \\(R_2 = 4.5\\text{k}\\Omega\\) and compare the currents."
+  },
+  {
+    "objectID": "ins_22.html#reactive-visualization-inverting-amplifier-gain-vs-resistors",
+    "href": "ins_22.html#reactive-visualization-inverting-amplifier-gain-vs-resistors",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "3. Reactive Visualization: Inverting Amplifier Gain vs Resistors",
+    "text": "3. Reactive Visualization: Inverting Amplifier Gain vs Resistors\nUse sliders to choose \\(R_1\\) and \\(R_2\\). The plot shows:\n\nGain magnitude \\(|R_2 / R_1|\\) vs \\(R_2\\) for a fixed \\(R_1\\).\nA marker at your selected \\((R_2, |R_2/R_1|)\\).\n\n\nviewof R1_ohms = Inputs.range([1e3, 100e3], {step: 1e3, label: \"R1 (Ω)\"})\nviewof R2_ohms = Inputs.range([1e3, 100e3], {step: 1e3, label: \"R2 (Ω)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nQuestions:\n\nFor \\(R_1\\) fixed, how does increasing \\(R_2\\) change the gain?\nWhat region of gains looks practical given typical \\(V_{\\text{sat}}\\) and \\(V_{\\text{in}}\\)?"
+  },
+  {
+    "objectID": "ins_22.html#instrumentation-amplifier-gain-single-resistor-control",
+    "href": "ins_22.html#instrumentation-amplifier-gain-single-resistor-control",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "4. Instrumentation Amplifier Gain – Single-Resistor Control",
+    "text": "4. Instrumentation Amplifier Gain – Single-Resistor Control\nFor the 3‑op‑amp instrumentation amplifier (Figure 37), the gain is\n\\[\nV_{\\text{out}} = \\left(1 + \\frac{2R_1}{R_G}\\right)\\left(\\frac{R_3}{R_2}\\right)(V_2 - V_1)\n\\]\nAssume \\(R_2 = R_3\\) so their ratio is 1. Then\n\\[\nA_d = 1 + \\frac{2R_1}{R_G}\n\\]\nExplore how changing \\(R_G\\) affects the gain.\n\n\n\n\n\n\nTry to reproduce the Example 21 result:\n\nUse \\(R_1 = 100\\text{k}\\Omega\\) and search for \\(R_G\\) that gives \\(A_d \\approx 101\\)."
+  },
+  {
+    "objectID": "ins_22.html#reactive-visualization-instrumentation-amplifier-gain-vs-rg",
+    "href": "ins_22.html#reactive-visualization-instrumentation-amplifier-gain-vs-rg",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "5. Reactive Visualization: Instrumentation Amplifier Gain vs RG",
+    "text": "5. Reactive Visualization: Instrumentation Amplifier Gain vs RG\nDrag the slider to change \\(R_G\\) and see how the differential gain \\(A_d\\) responds.\n\nviewof RG_ohms = Inputs.range([500, 20_000], {step: 100, label: \"RG (Ω)\"})\n\n\n\n\n\n\n\n\n\n\n\n\nQuestion:\n\nWhy is it convenient in practice that we can control \\(A_d\\) by adjusting only \\(R_G\\), while \\(R_2\\) and \\(R_3\\) remain precisely matched?"
+  },
+  {
+    "objectID": "ins_22.html#bridge-instrumentation-amplifier-end-to-end-simulation",
+    "href": "ins_22.html#bridge-instrumentation-amplifier-end-to-end-simulation",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "6. Bridge + Instrumentation Amplifier – End-to-End Simulation",
+    "text": "6. Bridge + Instrumentation Amplifier – End-to-End Simulation\nConsider the bridge of Example 21, with \\(R_4\\) varying from 100 to 102 Ω, and supply 5 V. An instrumentation amplifier with gain \\(A_d \\approx 101\\) converts the small \\(\\Delta V\\) into a 0–2.5 V signal.\nThis interactive cell lets you vary \\(R_4\\) and \\(R_G\\) and see the resulting \\(V_{\\text{out}}\\).\n\nviewof R4_ohms = Inputs.range([100, 102], {step: 0.01, label: \"R4 (Ω) in bridge\"})\nviewof RG_ohms_bridge = Inputs.range([1_000, 5_000], {step: 100, label: \"RG (Ω) in instrumentation amp\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTry:\n\nSet \\(R_4=100\\ \\Omega\\) (bridge balanced). What is \\(V_{\\text{out}}\\)?\nSet \\(R_4=102\\ \\Omega\\) and tune \\(R_G\\) so that \\(V_{\\text{out}} \\approx 2.5\\ \\text{V}\\)."
+  },
+  {
+    "objectID": "ins_22.html#integrator-visualizing-ramp-generation",
+    "href": "ins_22.html#integrator-visualizing-ramp-generation",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "7. Integrator: Visualizing Ramp Generation",
+    "text": "7. Integrator: Visualizing Ramp Generation\nThe integrator output is\n\\[\nV_{\\text{out}}(t) = -\\frac{1}{RC}\\int V_{\\text{in}}(t)\\,dt\n\\]\nFor constant \\(V_{\\text{in}} = K\\),\n\\[\nV_{\\text{out}}(t) = -\\frac{K}{RC}t\n\\]\nInteractively explore how \\(R\\), \\(C\\), and \\(K\\) affect the slope of the ramp.\n\nviewof R_int = Inputs.range([1e3, 100e3], {step: 1e3, label: \"R (Ω)\"})\nviewof C_int = Inputs.range([0.1e-6, 10e-6], {step: 0.1e-6, label: \"C (F)\"})\nviewof Vin_int = Inputs.range([-10, 10], {step: 0.5, label: \"Constant Vin (V)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nQuestions:\n\nFor a desired ramp rate of 10 V/ms, what \\(RC\\) and \\(V_{\\text{in}}\\) can you use?\nHow does doubling \\(R\\) affect the slope?"
+  },
+  {
+    "objectID": "ins_22.html#voltage-to-current-converter-checking-load-limits",
+    "href": "ins_22.html#voltage-to-current-converter-checking-load-limits",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "8. Voltage-to-Current Converter: Checking Load Limits",
+    "text": "8. Voltage-to-Current Converter: Checking Load Limits\nFor the converter in Figure 39, under design constraints\n\\[\nI = -\\frac{R_2}{R_1 R_3}V_{\\text{in}}\n\\]\nand the maximum load resistance before hitting saturation is\n\\[\nR_{ml} = \\frac{(R_4 + R_5)\\left(\\frac{V_{\\text{sat}}}{I_m} - R_3\\right)}{R_3 + R_4 + R_5}\n\\]\nUse this interactive block to experiment with component values and see \\(I_m\\) and \\(R_{ml}\\).\n\nviewof R1_v2i = Inputs.range([1e3, 100e3], {step: 1e3, label: \"R1 (Ω)\"})\nviewof R2_v2i = Inputs.range([1e3, 100e3], {step: 1e3, label: \"R2 (Ω)\"})\nviewof R3_v2i = Inputs.range([10, 1e3], {step: 10, label: \"R3 (Ω)\"})\nviewof R4_v2i = Inputs.range([10, 1e3], {step: 10, label: \"R4 (Ω)\"})\nviewof R5_v2i = Inputs.range([0, 1e3], {step: 10, label: \"R5 (Ω)\"})\nviewof Vin_max = Inputs.range([0.1, 5.0], {step: 0.1, label: \"Max |Vin| (V)\"})\nviewof Vsat_v2i = Inputs.range([5.0, 15.0], {step: 0.5, label: \"Op amp Vsat (V)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTry to reproduce Example 22:\n\nSet \\(R_1=R_2\\), \\(R_3=R_4=100\\ \\Omega\\), \\(R_5=0\\), \\(V_{\\text{in,max}}=1\\ \\text{V}\\), \\(V_{\\text{sat}}=10\\ \\text{V}\\).\nCompare your \\(I_{\\max}\\) and \\(R_{ml}\\) to the textbook values (10 mA and 450 Ω)."
+  },
+  {
+    "objectID": "ins_22.html#challenge-build-your-own-signal-conditioning-equation",
+    "href": "ins_22.html#challenge-build-your-own-signal-conditioning-equation",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "9. Challenge: Build Your Own Signal Conditioning Equation",
+    "text": "9. Challenge: Build Your Own Signal Conditioning Equation\nMany of the textbook examples start by writing\n\\[\nV_{\\text{out}} = mV_{\\text{in}} + V_0\n\\]\nthen realizing this using a combination of op amp blocks.\nThis cell lets you experiment with choices of \\(m\\) and \\(V_0\\) and see how \\(V_{\\text{out}}\\) maps a given input range.\n\nviewof m_gain = Inputs.range([-10, 10], {step: 0.1, label: \"Slope m\"})\nviewof V0_bias = Inputs.range([-10, 10], {step: 0.1, label: \"Bias V0 (V)\"})\nviewof Vin_min = Inputs.range([-5, 5], {step: 0.1, label: \"Vin min (V)\"})\nviewof Vin_max_user = Inputs.range([-5, 5], {step: 0.1, label: \"Vin max (V)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDesign exercise:\n\nPick an input range (e.g., −2.4 to −1.1 V) and desired output range (e.g., 0 to 2.5 V).\nUse this tool to find \\(m\\) and \\(V_0\\).\nSketch an op amp circuit (follower + inverting/noninverting + summing) that implements your mapping."
+  },
+  {
+    "objectID": "ins_22.html#design-guidelines-contd-1",
+    "href": "ins_22.html#design-guidelines-contd-1",
+    "title": "Operational Amplifiers in Instrumentation",
+    "section": "Design Guidelines (cont’d)",
+    "text": "Design Guidelines (cont’d)\n4. General Notes\n\nFor resistive sensors in bridges/dividers, consider:\n\nNonlinearity of bridge output vs resistance.\nSelf‑heating due to current/power.\n\nStart from a static transfer equation: \\[\nV_{\\text{out}} = mV_{\\text{in}} + V_0\n\\] or similar; then choose op amp blocks to implement it.\nAlways check for loading:\n\nDoes your op amp input significantly change the sensor output?\nDoes your output stage properly drive its load?"
   }
 ]
