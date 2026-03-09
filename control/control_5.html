@@ -217,7 +217,12 @@ Imron Rosyadi
 <h3 id="block-diagrams-signal-flow-graphs-and-masons-rule">Block Diagrams, Signal-Flow Graphs, and Mason’s Rule</h3>
 <p><strong>Chapter 5 focus:</strong> From many subsystems to one equivalent model</p>
 <aside class="notes">
-<p>Open the chapter by connecting to what students already know: - They’ve seen single-transfer-function systems and second-order step responses. - Now, realistic systems (space shuttles, UAV controllers, power converters, etc.) consist of many subsystems. - Our goal is to <em>compress</em> complex interconnections into a single transfer function, or into a compact state-space model, so that all the tools (pole locations, overshoot, settling time, etc.) still apply.</p>
+<p>Open the chapter by connecting to what students already know:</p>
+<ul>
+<li>They’ve seen single-transfer-function systems and second-order step responses.</li>
+<li>Now, realistic systems (space shuttles, UAV controllers, power converters, etc.) consist of many subsystems.</li>
+<li>Our goal is to <em>compress</em> complex interconnections into a single transfer function, or into a compact state-space model, so that all the tools (pole locations, overshoot, settling time, etc.) still apply.</li>
+</ul>
 <p>Highlight that this is a crucial “bridge” chapter: from simple textbook blocks to real multi-block systems.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -243,52 +248,14 @@ Imron Rosyadi
 <li>Analyze and design <strong>second‑order feedback systems</strong> built from multiple subsystems (overshoot, settling time, etc.).</li>
 </ul>
 <aside class="notes">
-<p>Clarify: This lecture will not cover <em>all</em> later subsections in full state-space detail (5.7–5.8), but we build the foundation: - Block diagrams (5.2) - Feedback analysis &amp; design (5.3) - Signal-flow graphs (5.4) - Mason’s Rule (5.5)</p>
-<p>Point out that these are heavily used in later state-space sections.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="case-studydriven-motivation" class="slide level2">
-<h2>Case Study–Driven Motivation</h2>
-<p>You will later apply these tools to:</p>
+<p>Clarify: This lecture will not cover <em>all</em> later subsections in full state-space detail (5.7–5.8), but we build the foundation:</p>
 <ul>
-<li><strong>Antenna azimuth position control system</strong>
-<ul>
-<li>Derive its <strong>closed-loop transfer function</strong>.</li>
-<li>Build a <strong>state-space model</strong> of the closed loop.</li>
-<li>Predict <strong>percent overshoot</strong>, <strong>settling time</strong>, <strong>peak time</strong> for a step.</li>
-<li><strong>Design the gain</strong> to meet transient specs.</li>
-</ul></li>
-<li><strong>Unmanned Free‑Swimming Submersible (UFSS)</strong>
-<ul>
-<li>Use <strong>block → state‑space</strong> conversion to model pitch and heading control systems.</li>
-</ul></li>
+<li>Block diagrams (5.2)</li>
+<li>Feedback analysis &amp; design (5.3)</li>
+<li>Signal-flow graphs (5.4)</li>
+<li>Mason’s Rule (5.5)</li>
 </ul>
-<div class="callout callout-tip callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Tip</strong></p>
-</div>
-<div class="callout-content">
-<p>Think of this chapter as your “compression tool”: Real system → many blocks → one transfer function or compact state-space model → use all your analysis and design tools.</p>
-</div>
-</div>
-</div>
-<aside class="notes">
-<p>Emphasize that the big-picture purpose is <em>design</em>: to meet specs like “&lt;10% overshoot” or “settling time &lt; 2s” using gain and structure.</p>
-<p>Tie to real ECE domains: - Motor drive systems - Communication AGC loops - Power converter voltage regulation - Robotics and UAV attitude/heading control</p>
+<p>Point out that these are heavily used in later state-space sections.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -308,7 +275,16 @@ Imron Rosyadi
 <li>Each subsystem: a block with input, output, and transfer function.</li>
 <li>Real systems: many subsystems <strong>interconnected</strong>.</li>
 </ul>
-<p>Goal: - Replace the <strong>whole interconnection</strong> by <strong>one equivalent transfer function</strong> from input to output. - Then we can: - Apply transient-analysis formulas. - Study stability (poles). - Design gains and compensators.</p>
+<p>Goal:</p>
+<ul>
+<li>Replace the <strong>whole interconnection</strong> by <strong>one equivalent transfer function</strong> from input to output.</li>
+<li>Then we can:
+<ul>
+<li>Apply transient-analysis formulas.</li>
+<li>Study stability (poles).</li>
+<li>Design gains and compensators.</li>
+</ul></li>
+</ul>
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><strong>Block diagrams vs.&nbsp;signal-flow graphs</strong></p>
@@ -329,15 +305,15 @@ Imron Rosyadi
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_5/c0e6e079efbd7b83af31fb36f5ada05f_MD5.jpg" height="250"></p>
-<figcaption>Space shuttle with many subsystems</figcaption>
+<figcaption>FIGURE 5.1 – The space shuttle: countless subsystems, many of them control systems.</figcaption>
 </figure>
-</div>
-<div style="text-align: center;">
-FIGURE 5.1 – The space shuttle: countless subsystems, many of them control systems.
 </div>
 </div></div>
 <aside class="notes">
-<p>Use the shuttle image to prompt a quick discussion: - Ask: “Which subsystems are control systems?” (examples: attitude control, engine thrust control, environmental control, power management, navigation, etc.)</p>
+<p>Use the shuttle image to prompt a quick discussion:</p>
+<ul>
+<li>Ask: “Which subsystems are control systems?” (examples: attitude control, engine thrust control, environmental control, power management, navigation, etc.)</li>
+</ul>
 <p>Then emphasize: each of those high-level control systems is itself formed from many smaller subsystems (sensors, filters, compensators, actuators). We need systematic ways to model their interconnections.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -351,17 +327,14 @@ FIGURE 5.1 – The space shuttle: countless subsystems, many of them control sys
           display:block!important;
       }</style></aside>
 </section>
-<section id="block-diagram-elements-lti-systems" class="slide level2">
+<section id="block-diagram-elements-lti-systems" class="slide level2 scrollable">
 <h2>Block Diagram Elements (LTI Systems)</h2>
 <p>All basic block diagram components:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/chapter_5/8e68863423cb6c7735ea5369f2790409_MD5.jpg" height="260"></p>
-<figcaption>Block diagram components</figcaption>
+<p><img data-src="images/chapter_5/8e68863423cb6c7735ea5369f2790409_MD5.jpg" height="300"></p>
+<figcaption>FIGURE 5.2 – Components of a block diagram for a linear, time‑invariant system.</figcaption>
 </figure>
-</div>
-<div style="text-align: center;">
-FIGURE 5.2 – Components of a block diagram for a linear, time‑invariant system.
 </div>
 <ul>
 <li><strong>Blocks:</strong> systems / subsystems with transfer function.</li>
@@ -369,7 +342,21 @@ FIGURE 5.2 – Components of a block diagram for a linear, time‑invariant syst
 <li><strong>Pickoff points:</strong> copy a signal undiminished to multiple locations.</li>
 </ul>
 <aside class="notes">
-<p>Walk through Figure 5.2: - (a) typical block: system with transfer function G(s). - (b) typical input/output labeling. - (c) summing junction: show that ( C(s) = R_1(s) R_2(s) R_3(s) ). Stress that signs matter. - (d) pickoff: signal <em>fan-out</em>, no attenuation.</p>
+<p>Walk through Figure 5.2:</p>
+<ul>
+<li><ol type="a">
+<li>typical block: system with transfer function G(s).</li>
+</ol></li>
+<li><ol start="2" type="a">
+<li>typical input/output labeling.</li>
+</ol></li>
+<li><ol start="3" type="a">
+<li>summing junction: show that ( C(s) = R_1(s) R_2(s) R_3(s) ). Stress that signs matter.</li>
+</ol></li>
+<li><ol start="4" type="a">
+<li>pickoff: signal <em>fan-out</em>, no attenuation.</li>
+</ol></li>
+</ul>
 <p>Highlight assumption: signals are <em>unloaded</em> unless we explicitly include loading through transfer functions. This is important in the cascade loading example later.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -432,11 +419,8 @@ FIGURE 5.2 – Components of a block diagram for a linear, time‑invariant syst
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_5/67d0bc3d4ec4f7f913e02df8ad237d0b_MD5.jpg" height="220"></p>
-<figcaption>Cascade blocks</figcaption>
+<figcaption>FIGURE 5.3 – (a) Cascaded subsystems; (b) equivalent transfer function.</figcaption>
 </figure>
-</div>
-<div style="text-align: center;">
-FIGURE 5.3 – (a) Cascaded subsystems; (b) equivalent transfer function.
 </div>
 </div><div class="column" style="width:45%;">
 <p>Given:</p>
@@ -455,7 +439,14 @@ G_e(s) = G_3(s)\,G_2(s)\,G_1(s)
 <li>A digital filter realized as cascaded biquad sections.</li>
 </ul>
 <aside class="notes">
-<p>Derive quickly: - Let input be ( R(s) ). - After ( G_1 ): ( X_1(s) = G_1(s)R(s) ). - After ( G_2 ): ( X_2(s) = G_2(s)X_1(s) = G_2(s)G_1(s)R(s) ). - After ( G_3 ): ( C(s) = G_3(s)X_2(s) = G_3(s)G_2(s)G_1(s)R(s) ). - So ( C/R = G_3 G_2 G_1 ).</p>
+<p>Derive quickly:</p>
+<ul>
+<li>Let input be ( R(s) ).</li>
+<li>After ( G_1 ): ( X_1(s) = G_1(s)R(s) ).</li>
+<li>After ( G_2 ): ( X_2(s) = G_2(s)X_1(s) = G_2(s)G_1(s)R(s) ).</li>
+<li>After ( G_3 ): ( C(s) = G_3(s)X_2(s) = G_3(s)G_2(s)G_1(s)R(s) ).</li>
+<li>So ( C/R = G_3 G_2 G_1 ).</li>
+</ul>
 <p>Stress that this is correct if stages don’t “electrically load” each other (i.e., the representation as independent transfer functions is valid).</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -475,18 +466,18 @@ G_e(s) = G_3(s)\,G_2(s)\,G_1(s)
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_5/bd870a6f30c6f98b468adb880fb78500_MD5.jpg" height="240"></p>
-<figcaption>Loading examples</figcaption>
+<figcaption>FIGURE 5.4 – Loading in cascaded systems.</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_5/8babf87665bae84e7867e8a89bad40ff_MD5.jpg" height="240"></p>
-<figcaption>Cascade with loading</figcaption>
+<figcaption>FIGURE 5.4 – Loading in cascaded systems.</figcaption>
 </figure>
 </div>
-<div style="text-align: center;">
-FIGURE 5.4 – Loading in cascaded systems.
-</div>
+</section>
+<section class="slide level2">
+
 <p>For each isolated network:</p>
 <ul>
 <li><p>First RC: <span class="math display">\[
@@ -521,7 +512,11 @@ G(s) = \frac{V_2(s)}{V_i(s)} =
 </div>
 </div>
 <aside class="notes">
-<p>Explain physically: - The first RC’s output sees the input impedance of the second RC, altering its dynamics. - The independent transfer-function model for each block is only valid if their connection doesn’t change their behavior (e.g., buffered interfaces).</p>
+<p>Explain physically:</p>
+<ul>
+<li>The first RC’s output sees the input impedance of the second RC, altering its dynamics.</li>
+<li>The independent transfer-function model for each block is only valid if their connection doesn’t change their behavior (e.g., buffered interfaces).</li>
+</ul>
 <p>Then point to Figure 5.4(d): show that adding an amplifier/buffer isolates the stages.</p>
 <p>Conclusion: in control block diagrams, we <em>assume</em> signals are ideal, so cascade multiplication is valid. But as hardware designers, we must check that assumption.</p>
 <style type="text/css">
@@ -557,7 +552,10 @@ G_{\text{eq}}(s) = K\,G_2(s)G_1(s)
 \]</span></p>
 <p>where ( K ) is the amplifier gain.</p>
 <aside class="notes">
-<p>Connect to op-amp circuits: - A voltage follower (unity-gain buffer) prevents loading and preserves the cascade product.</p>
+<p>Connect to op-amp circuits:</p>
+<ul>
+<li>A voltage follower (unity-gain buffer) prevents loading and preserves the cascade product.</li>
+</ul>
 <p>Tie back to block diagrams: when we draw multiple blocks in cascade, we <em>implicitly</em> assume we have such ideal buffering (or non-interacting signals).</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -578,21 +576,15 @@ G_{\text{eq}}(s) = K\,G_2(s)G_1(s)
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_5/e4ce887f6f8270cceec79e1fa3b24e8d_MD5.jpg" height="220"></p>
-<figcaption>Parallel subsystems</figcaption>
+<figcaption>FIGURE 5.5(a) – Parallel subsystems.</figcaption>
 </figure>
-</div>
-<div style="text-align: center;">
-FIGURE 5.5(a) – Parallel subsystems.
 </div>
 </div><div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/chapter_5/da4cf3244b8dbb0829c8c585b3a60748_MD5.jpg" height="220"></p>
-<figcaption>Equivalent parallel block</figcaption>
+<p><img data-src="images/chapter_5/da4cf3244b8dbb0829c8c585b3a60748_MD5.jpg" height="100"></p>
+<figcaption>FIGURE 5.5(b) – Equivalent transfer function.</figcaption>
 </figure>
-</div>
-<div style="text-align: center;">
-FIGURE 5.5(b) – Equivalent transfer function.
 </div>
 </div></div>
 <p>Parallel subsystems:</p>
@@ -610,7 +602,12 @@ G_e(s) = \pm G_1(s) \pm G_2(s) \pm G_3(s)
 <li>Two sensor paths (e.g., high‑frequency and low‑frequency channels) summed to form one control input.</li>
 </ul>
 <aside class="notes">
-<p>Demonstrate quickly: Suppose input is ( R(s) ). Then: - ( C_1 = G_1 R ) - ( C_2 = G_2 R ) - ( C_3 = G_3 R ) Total output ( C = C_1 C_2 C_3 = (G_1 G_2 G_3)R ). So ( C/R = G_e(s) ).</p>
+<p>Demonstrate quickly: Suppose input is ( R(s) ). Then:</p>
+<ul>
+<li>( C_1 = G_1 R )</li>
+<li>( C_2 = G_2 R )</li>
+<li>( C_3 = G_3 R ) Total output ( C = C_1 C_2 C_3 = (G_1 G_2 G_3)R ). So ( C/R = G_e(s) ).</li>
+</ul>
 <p>Point out that parallel is often used for implementing <strong>sums/differences of dynamics</strong>, e.g., PD = sK_d + K_p = sK_d in parallel with K_p.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -627,10 +624,8 @@ G_e(s) = \pm G_1(s) \pm G_2(s) \pm G_3(s)
 <section id="feedback-form-the-core-control-topology" class="slide level2">
 <h2>Feedback Form – The Core Control Topology</h2>
 <p>Typical feedback control system:</p>
-<p><img data-src="images/chapter_5/e8422b8076078d83b1ce905e246d9ba6_MD5.jpg" height="210" alt="Feedback system and simplified model"> <img data-src="images/chapter_5/3d0c795a46720cc447a5e7ab953d2c14_MD5.jpg" height="210" alt="Simplified feedback model"> <img data-src="images/chapter_5/c69dcd545bc7d1b736698d595e2957c7_MD5.jpg" height="210" alt="Equivalent feedback transfer function"></p>
-<div style="text-align: center;">
-FIGURE 5.6 – (a) Complete feedback system, (b) simplified, (c) equivalent transfer function.
-</div>
+<p><img data-src="images/chapter_5/e8422b8076078d83b1ce905e246d9ba6_MD5.jpg" height="210" alt="Feedback system and simplified model"> <img data-src="images/chapter_5/3d0c795a46720cc447a5e7ab953d2c14_MD5.jpg" height="210" alt="Simplified feedback model"> <img data-src="images/chapter_5/c69dcd545bc7d1b736698d595e2957c7_MD5.jpg" height="100" alt="Equivalent feedback transfer function"></p>
+<p><em>FIGURE 5.6 – (a) Complete feedback system, (b) simplified, (c) equivalent transfer function.</em></p>
 <p>From simplified model:</p>
 <ul>
 <li><p>Error: <span class="math display">\[
@@ -655,8 +650,16 @@ G_e(s) = \frac{C(s)}{R(s)} = \frac{G(s)}{1 \pm G(s)H(s)}
 <p>The product ( G(s)H(s) ) is the <strong>open-loop transfer function</strong> or <strong>loop gain</strong>.</p>
 <aside class="notes">
 <p>Derive this algebra carefully on the board so students can follow each step.</p>
-<p>Stress sign convention: - Minus in the denominator for <strong>negative</strong> feedback: ( G/(1+GH) ). - Plus for <strong>positive</strong> feedback: ( G/(1-GH) ).</p>
-<p>Real-world example: position control: - ( G(s) ) = motor + gears + amplifier. - ( H(s) ) = sensor scale (e.g., potentiometer).</p>
+<p>Stress sign convention:</p>
+<ul>
+<li>Minus in the denominator for <strong>negative</strong> feedback: ( G/(1+GH) ).</li>
+<li>Plus for <strong>positive</strong> feedback: ( G/(1-GH) ).</li>
+</ul>
+<p>Real-world example: position control:</p>
+<ul>
+<li>( G(s) ) = motor + gears + amplifier.</li>
+<li>( H(s) ) = sensor scale (e.g., potentiometer).</li>
+</ul>
 <p>Negative feedback drives error to zero (tracking, disturbance rejection).</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -721,18 +724,18 @@ G_e(s) = \frac{C(s)}{R(s)} = \frac{G(s)}{1 \pm G(s)H(s)}
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_5/15eb48f9a68a72e3992ff9873b09029e_MD5.jpg" height="230"></p>
-<figcaption>Block moves at summing junctions</figcaption>
+<figcaption>FIGURE 5.7 – Equivalent forms for moving a block across a summing junction.</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_5/56450785c0d3ab9e2faadef695a100c0_MD5.jpg" height="230"></p>
-<figcaption>Block moves at summing junctions</figcaption>
+<figcaption>FIGURE 5.7 – Equivalent forms for moving a block across a summing junction.</figcaption>
 </figure>
 </div>
-<div style="text-align: center;">
-FIGURE 5.7 – Equivalent forms for moving a block across a summing junction.
-</div>
+</section>
+<section class="slide level2">
+
 <ul>
 <li>Figure 5.7(a): moving <strong>G(s)</strong> left across a summing junction that feeds it.</li>
 <li>Figure 5.7(b): moving <strong>G(s)</strong> right across a summing junction.</li>
@@ -747,7 +750,11 @@ C(s) = [R(s) \mp X(s)]\,G(s) = R(s)G(s) \mp X(s)G(s)
 \]</span></p>
 <p>Same result for the rearranged diagram.</p>
 <aside class="notes">
-<p>Spend a minute explicitly tracing one of them: - Start with original: ( C = G(R X) ). - After move: ( C = GR GX ).</p>
+<p>Spend a minute explicitly tracing one of them:</p>
+<ul>
+<li>Start with original: ( C = G(R X) ).</li>
+<li>After move: ( C = GR GX ).</li>
+</ul>
 <p>They’re equal; hence diagrams are equivalent.</p>
 <p>Emphasize: This property is what lets us “pull” gain into or out of a feedback loop, or re-attach blocks to new nodes.</p>
 <style type="text/css">
@@ -767,18 +774,18 @@ C(s) = [R(s) \mp X(s)]\,G(s) = R(s)G(s) \mp X(s)G(s)
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_5/a99404695bb2aa5e0e3a60500e6b882e_MD5.jpg" height="230"></p>
-<figcaption>Block moves at pickoff points</figcaption>
+<figcaption>FIGURE 5.8 – Equivalent forms for moving a block across a pickoff point.</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_5/59509d2d559d9774f58b4f968dc705c8_MD5.jpg" height="230"></p>
-<figcaption>Block moves at pickoff points</figcaption>
+<figcaption>FIGURE 5.8 – Equivalent forms for moving a block across a pickoff point.</figcaption>
 </figure>
 </div>
-<div style="text-align: center;">
-FIGURE 5.8 – Equivalent forms for moving a block across a pickoff point.
-</div>
+</section>
+<section class="slide level2">
+
 <ul>
 <li>Move block <strong>before</strong> or <strong>after</strong> the pickoff, if:
 <ul>
@@ -812,11 +819,8 @@ FIGURE 5.8 – Equivalent forms for moving a block across a pickoff point.
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_5/0767b8f684c68f681e7063e632b04fa0_MD5.jpg" height="230"></p>
-<figcaption>Original block diagram</figcaption>
+<figcaption>FIGURE 5.9 – Block diagram for Example 5.1.</figcaption>
 </figure>
-</div>
-<div style="text-align: center;">
-FIGURE 5.9 – Block diagram for Example 5.1.
 </div>
 </section>
 <section id="example-5.1-step-1-collapse-summing-junctions" class="slide level2">
@@ -824,11 +828,8 @@ FIGURE 5.9 – Block diagram for Example 5.1.
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_5/e3b7da5229d298b070cb8fa6f537d0e2_MD5.jpg" height="230"></p>
-<figcaption>Step 1 – collapsed sums</figcaption>
+<figcaption>FIGURE 5.10(a) – Collapsing three summing junctions into one.</figcaption>
 </figure>
-</div>
-<div style="text-align: center;">
-FIGURE 5.10(a) – Collapsing three summing junctions into one.
 </div>
 <ul>
 <li>Multiple summing junctions in series can be combined into <strong>one junction</strong> whose inputs are the algebraic sum of all original inputs.</li>
@@ -852,12 +853,9 @@ FIGURE 5.10(a) – Collapsing three summing junctions into one.
 <h2>Example 5.1 – Step 2: Cascade and Parallel Recognition</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/chapter_5/c927a420c15c21fcd32951f65467c02e_MD5.jpg" height="230"></p>
-<figcaption>Step 2 – simplified forward and feedback paths</figcaption>
+<p><img data-src="images/chapter_5/c927a420c15c21fcd32951f65467c02e_MD5.jpg" height="150"></p>
+<figcaption>FIGURE 5.10(b) – Cascade in forward path, parallel in feedback path.</figcaption>
 </figure>
-</div>
-<div style="text-align: center;">
-FIGURE 5.10(b) – Cascade in forward path, parallel in feedback path.
 </div>
 <p>Recognize:</p>
 <ul>
@@ -887,12 +885,9 @@ H_{\text{eq}}(s) = H_1(s) - H_2(s) + H_3(s)
 <h2>Example 5.1 – Step 3: Final Reduction</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/chapter_5/e0851106c73883f2b95141a40a0f146e_MD5.jpg" height="230"></p>
-<figcaption>Step 3 – final equivalent block</figcaption>
+<p><img data-src="images/chapter_5/e0851106c73883f2b95141a40a0f146e_MD5.jpg" height="150"></p>
+<figcaption>FIGURE 5.10(c) – Equivalent feedback system with cascaded (G_1(s)).</figcaption>
 </figure>
-</div>
-<div style="text-align: center;">
-FIGURE 5.10(c) – Equivalent feedback system with cascaded (G_1(s)).
 </div>
 <ul>
 <li>Overall <strong>feedback</strong> loop: forward path ( G_3 G_2 ), feedback ( H_{} ).</li>
@@ -928,11 +923,8 @@ T(s) = \frac{C(s)}{R(s)} = G_1(s) \cdot G_{\text{CL}}(s)
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_5/61b5ba01f8aecf9ad3efefba510ae1a2_MD5.jpg" height="260"></p>
-<figcaption>Original complex diagram</figcaption>
+<figcaption>FIGURE 5.11 – Block diagram for Example 5.2.</figcaption>
 </figure>
-</div>
-<div style="text-align: center;">
-FIGURE 5.11 – Block diagram for Example 5.2.
 </div>
 <p>This diagram is too tangled to reduce directly. We will:</p>
 <ol type="1">
@@ -967,6 +959,9 @@ FIGURE 5.11 – Block diagram for Example 5.2.
 <figcaption>Step (a)</figcaption>
 </figure>
 </div>
+</section>
+<section class="slide level2 scrollable">
+
 <ol start="2" type="1">
 <li><strong>Reduce parallel</strong> pair ( 1/G_2(s) ) and unity; <strong>move ( G_1(s) ) right</strong> past summing junction.</li>
 </ol>
@@ -976,6 +971,9 @@ FIGURE 5.11 – Block diagram for Example 5.2.
 <figcaption>Step (b)</figcaption>
 </figure>
 </div>
+</section>
+<section class="slide level2 scrollable">
+
 <ol start="3" type="1">
 <li><strong>Collapse summing junctions</strong>, combine cascaded blocks, and sum feedback paths.</li>
 </ol>
@@ -985,12 +983,15 @@ FIGURE 5.11 – Block diagram for Example 5.2.
 <figcaption>Step (c)</figcaption>
 </figure>
 </div>
+</section>
+<section class="slide level2 scrollable">
+
 <ol start="4" type="1">
 <li>Apply feedback formula to get:</li>
 </ol>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/chapter_5/aaf85de23a48830ea5a0c17709827bc5_MD5.jpg" height="220"></p>
+<p><img data-src="images/chapter_5/aaf85de23a48830ea5a0c17709827bc5_MD5.jpg" height="150"></p>
 <figcaption>Step (d)</figcaption>
 </figure>
 </div>
@@ -999,15 +1000,17 @@ FIGURE 5.11 – Block diagram for Example 5.2.
 </ol>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/chapter_5/00d2ea694875385bda98d83cbfba5d5f_MD5.jpg" height="220"></p>
+<p><img data-src="images/chapter_5/00d2ea694875385bda98d83cbfba5d5f_MD5.jpg" height="120"></p>
 <figcaption>Step (e)</figcaption>
 </figure>
 </div>
-<div style="text-align: center;">
-FIGURE 5.12 – Steps in the block diagram reduction for Example 5.2.
-</div>
+<p><em>FIGURE 5.12 – Steps in the block diagram reduction for Example 5.2.</em></p>
 <aside class="notes">
-<p>As you show each figure: - Briefly describe which rule was used (move across pickoff, reduce parallel, collapse sums, etc.). - Encourage students to mark up their book as they follow the transformation.</p>
+<p>As you show each figure:</p>
+<ul>
+<li>Briefly describe which rule was used (move across pickoff, reduce parallel, collapse sums, etc.).</li>
+<li>Encourage students to mark up their book as they follow the transformation.</li>
+</ul>
 <p>If time allows, ask them to identify where negative signs would appear if any blocks were subtracted instead of added in feedback.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1027,11 +1030,8 @@ FIGURE 5.12 – Steps in the block diagram reduction for Example 5.2.
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_5/fadb62dcddbd6af678ebcb19c11cbdda_MD5.jpg" height="240"></p>
-<figcaption>Block diagram for exercise</figcaption>
+<figcaption>FIGURE 5.13 – Block diagram for Skill-Assessment Exercise 5.1.</figcaption>
 </figure>
-</div>
-<div style="text-align: center;">
-FIGURE 5.13 – Block diagram for Skill-Assessment Exercise 5.1.
 </div>
 <p><strong>Given answer:</strong></p>
 <p><span class="math display">\[
@@ -1046,12 +1046,20 @@ T(s) = \frac{s^{3} + 1}{2s^{4} + s^{2} + 2s}
 <p><strong>Tip</strong></p>
 </div>
 <div class="callout-content">
-<p>Use this as a self-check: - Try to re-derive ( T(s) ) by systematically using cascade, parallel, and feedback reductions. - Compare your expression with the given result.</p>
+<p>Use this as a self-check:</p>
+<ul>
+<li>Try to re-derive ( T(s) ) by systematically using cascade, parallel, and feedback reductions.</li>
+<li>Compare your expression with the given result.</li>
+</ul>
 </div>
 </div>
 </div>
 <aside class="notes">
-<p>You don’t need to derive it fully in class (time-consuming), but you can ask: - “What’s the first reduction step you would take?” - “Where is the main feedback loop?”</p>
+<p>You don’t need to derive it fully in class (time-consuming), but you can ask:</p>
+<ul>
+<li>“What’s the first reduction step you would take?”</li>
+<li>“Where is the main feedback loop?”</li>
+</ul>
 <p>Point them to the online full solution for practice.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1067,7 +1075,11 @@ T(s) = \frac{s^{3} + 1}{2s^{4} + s^{2} + 2s}
 </section>
 <section id="matlab-try-it-5.1-automation-of-block-reduction" class="slide level2">
 <h2>MATLAB Try-It 5.1 – Automation of Block Reduction</h2>
-<p>Using MATLAB/Control System Toolbox to find closed-loop transfer function of Example 5.2, with: - All ( G_i(s) = ) - All ( H_i(s) = )</p>
+<p>Using MATLAB/Control System Toolbox to find closed-loop transfer function of Example 5.2, with:</p>
+<ul>
+<li>All ( G_i(s) = )</li>
+<li>All ( H_i(s) = )</li>
+</ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource matlab number-lines code-with-copy"><code class="sourceCode matlab"><span id="cb1-1"><a></a><span class="va">G1</span><span class="op">=</span><span class="va">tf</span>(<span class="fl">1</span><span class="op">,</span>[<span class="fl">1</span> <span class="fl">1</span>])<span class="op">;</span> </span>
 <span id="cb1-2"><a></a><span class="va">G2</span><span class="op">=</span><span class="va">G1</span><span class="op">;</span> <span class="va">G3</span><span class="op">=</span><span class="va">G1</span><span class="op">;</span> </span>
 <span id="cb1-3"><a></a><span class="va">H1</span><span class="op">=</span><span class="va">tf</span>(<span class="fl">1</span><span class="op">,</span>[<span class="fl">1</span> <span class="fl">0</span>])<span class="op">;</span> </span>
@@ -1100,7 +1112,11 @@ T(s) = \frac{s^{3} + 1}{2s^{4} + s^{2} + 2s}
 </div>
 </div>
 <aside class="notes">
-<p>If you run this in a lab or demo: - Show how <code>append</code> collects subsystems and <code>connect</code> wires them using the interconnection matrix <code>Q</code>. - Explain the role of <code>minreal</code> (cancels pole-zero pairs).</p>
+<p>If you run this in a lab or demo:</p>
+<ul>
+<li>Show how <code>append</code> collects subsystems and <code>connect</code> wires them using the interconnection matrix <code>Q</code>.</li>
+<li>Explain the role of <code>minreal</code> (cancels pole-zero pairs).</li>
+</ul>
 <p>Emphasize: good to validate hand reduction with MATLAB.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1130,12 +1146,9 @@ T(s) = \frac{s^{3} + 1}{2s^{4} + s^{2} + 2s}
 <p>Consider system:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/chapter_5/9a0bebdd16dca75aed1977aa40e1eb71_MD5.jpg" height="230"></p>
-<figcaption>Second-order feedback system</figcaption>
+<p><img data-src="images/chapter_5/9a0bebdd16dca75aed1977aa40e1eb71_MD5.jpg" height="150"></p>
+<figcaption>FIGURE 5.14 – Second-order feedback control system.</figcaption>
 </figure>
-</div>
-<div style="text-align: center;">
-FIGURE 5.14 – Second-order feedback control system.
 </div>
 <p>Closed-loop transfer function:</p>
 <p><span class="math display">\[
@@ -1147,7 +1160,12 @@ T(s) = \frac{K}{s^{2} + a s + K}
 <li>( a ): coefficient related to damping (e.g., friction, resistance).</li>
 </ul>
 <aside class="notes">
-<p>Show how Eq. (5.9) gives this: - Forward path: ( G(s) = ). - Feedback: unity. - Then ( T(s) = = ).</p>
+<p>Show how Eq. (5.9) gives this:</p>
+<ul>
+<li>Forward path: ( G(s) = ).</li>
+<li>Feedback: unity.</li>
+<li>Then ( T(s) = = ).</li>
+</ul>
 <p>Highlight: This looks exactly like the standard second-order denominator: ( s^2 + 2_n s + _n^2 ).</p>
 <p>So we can identify: ( _n^2 = K ), ( 2_n = a ).</p>
 <style type="text/css">
@@ -1218,7 +1236,7 @@ s_{1,2} = -\frac{a}{2} \pm j\frac{\sqrt{4K - a^{2}}}{2}
 <p><strong>Problem:</strong> For system in Figure 5.15, find ( T_p ), %OS, and ( T_s ).</p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/chapter_5/11cf26cc030b0861fe611545dd68fe2d_MD5.jpg" height="230"></p>
+<p><img data-src="images/chapter_5/11cf26cc030b0861fe611545dd68fe2d_MD5.jpg" height="150"></p>
 <figcaption>Feedback system Example 5.3</figcaption>
 </figure>
 </div>
@@ -1233,6 +1251,9 @@ T(s) = \frac{25}{s^{2} + 5s + 25}
 <p><span class="math display">\[
 T(s) = \frac{\omega_n^{2}}{s^{2} + 2\zeta\omega_n s + \omega_n^{2}}
 \]</span></p>
+</section>
+<section class="slide level2">
+
 <p>Identify:</p>
 <ul>
 <li>( _n^2 = 25 _n = 5 ).</li>
@@ -1251,7 +1272,11 @@ T_s = \frac{4}{\zeta\omega_n} = 1.6 \text{ s}
 \]</span></p></li>
 </ul>
 <aside class="notes">
-<p>Reinforce the mapping: - Denominator coefficients give ( , _n ). - Those give transient specs.</p>
+<p>Reinforce the mapping:</p>
+<ul>
+<li>Denominator coefficients give ( , _n ).</li>
+<li>Those give transient specs.</li>
+</ul>
 <p>Mention that MATLAB can compute these automatically (e.g., with <code>stepinfo</code>), but understanding the formulas gives physical intuition.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1270,12 +1295,9 @@ T_s = \frac{4}{\zeta\omega_n} = 1.6 \text{ s}
 <p><strong>Problem:</strong> For system in Figure 5.16, choose gain ( K ) so that <strong>step response has 10% overshoot</strong>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/chapter_5/cbd8d9ac5d959afd98e7ec5b9c2659f6_MD5.jpg" height="230"></p>
-<figcaption>Feedback system for design</figcaption>
+<p><img data-src="images/chapter_5/cbd8d9ac5d959afd98e7ec5b9c2659f6_MD5.jpg" height="150"></p>
+<figcaption>FIGURE 5.16 – Feedback system for Example 5.4.</figcaption>
 </figure>
-</div>
-<div style="text-align: center;">
-FIGURE 5.16 – Feedback system for Example 5.4.
 </div>
 <p>Closed-loop transfer function:</p>
 <p><span class="math display">\[
@@ -1286,6 +1308,9 @@ T(s) = \frac{K}{s^{2} + 5s + K}
 <li>( _n^2 = K _n = )</li>
 <li>( 2_n = 5 = 5 = )</li>
 </ul>
+</section>
+<section class="slide level2">
+
 <p>Percent overshoot depends only on ( ):</p>
 <p><span class="math display">\[
 \%OS = e^{-\zeta\pi/\sqrt{1-\zeta^{2}}}\times 100
@@ -1346,18 +1371,15 @@ K \approx 2.667^2 \approx 17.9
 </ul>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/chapter_5/2039a9c4f63f950b0099c7890b3a180a_MD5.jpg" height="150"></p>
-<figcaption>Signal-flow graph elements</figcaption>
+<p><img data-src="images/chapter_5/2039a9c4f63f950b0099c7890b3a180a_MD5.jpg" height="50"></p>
+<figcaption>FIGURE 5.17 – (a) Branch representing a system, (b) node representing a signal, (c) interconnection example.</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_5/b136e150f239aa3157cf709a37766280_MD5.jpg" height="220"></p>
-<figcaption>Interconnection example</figcaption>
+<figcaption>FIGURE 5.17 – (a) Branch representing a system, (b) node representing a signal, (c) interconnection example.</figcaption>
 </figure>
-</div>
-<div style="text-align: center;">
-FIGURE 5.17 – (a) Branch representing a system, (b) node representing a signal, (c) interconnection example.
 </div>
 <p>Example node equation from Figure 5.17(c):</p>
 <p><span class="math display">\[
@@ -1373,12 +1395,20 @@ V(s) = R_1(s)G_1(s) - R_2(s)G_2(s) + R_3(s)G_3(s)
 <p><strong>Note</strong></p>
 </div>
 <div class="callout-content">
-<p>Signal-flow graphs are especially convenient: - For <strong>state‑space</strong> (each state is a node). - For using <strong>Mason’s Rule</strong> to find transfer functions.</p>
+<p>Signal-flow graphs are especially convenient:</p>
+<ul>
+<li>For <strong>state‑space</strong> (each state is a node).</li>
+<li>For using <strong>Mason’s Rule</strong> to find transfer functions.</li>
+</ul>
 </div>
 </div>
 </div>
 <aside class="notes">
-<p>Explain why signal-flow graphs can be more compact than block diagrams: - No explicit summing junctions or pickoffs. - Direct representation of equations.</p>
+<p>Explain why signal-flow graphs can be more compact than block diagrams:</p>
+<ul>
+<li>No explicit summing junctions or pickoffs.</li>
+<li>Direct representation of equations.</li>
+</ul>
 <p>Connect to state-space: each state variable x_i(t) becomes a node; its derivative equation determines incoming branches.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1403,7 +1433,7 @@ V(s) = R_1(s)G_1(s) - R_2(s)G_2(s) + R_3(s)G_3(s)
 </ol>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/chapter_5/ce7d62d74cfa2b66882b39f02aeae29c_MD5.jpg" height="200"></p>
+<p><img data-src="images/chapter_5/ce7d62d74cfa2b66882b39f02aeae29c_MD5.jpg" height="50"></p>
 <figcaption>Cascade nodes and graph</figcaption>
 </figure>
 </div>
@@ -1415,21 +1445,24 @@ V(s) = R_1(s)G_1(s) - R_2(s)G_2(s) + R_3(s)G_3(s)
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/chapter_5/1e38be515e0f35c3fbeabe7b64c7595c_MD5.jpg" height="200"></p>
+<p><img data-src="images/chapter_5/1e38be515e0f35c3fbeabe7b64c7595c_MD5.jpg" height="50"></p>
 <figcaption>Feedback nodes and graph</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/chapter_5/0c9aeeb4e32e5c08a783c6b13779f90e_MD5.jpg" height="200"></p>
+<p><img data-src="images/chapter_5/0c9aeeb4e32e5c08a783c6b13779f90e_MD5.jpg" height="150"></p>
 <figcaption>Feedback signal-flow graph</figcaption>
 </figure>
 </div>
-<div style="text-align: center;">
-FIGURE 5.18 – Building signal-flow graphs for cascade, parallel, and feedback forms.
-</div>
+<p><em>FIGURE 5.18 – Building signal-flow graphs for cascade, parallel, and feedback forms.</em></p>
 <aside class="notes">
-<p>For each configuration: - Draw R, intermediate nodes, C. - Add arrows with G’s and H’s. - Show how negative feedback loop is a branch from C back to the error node with gain (-H).</p>
+<p>For each configuration:</p>
+<ul>
+<li>Draw R, intermediate nodes, C.</li>
+<li>Add arrows with G’s and H’s.</li>
+<li>Show how negative feedback loop is a branch from C back to the error node with gain (-H).</li>
+</ul>
 <p>Emphasize that once you’re comfortable switching representations, you can choose whichever is more convenient for analysis.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1451,10 +1484,13 @@ FIGURE 5.18 – Building signal-flow graphs for cascade, parallel, and feedback 
 </ol>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/chapter_5/923478549617631a6c57c7a5100c69dd_MD5.jpg" height="220"></p>
+<p><img data-src="images/chapter_5/923478549617631a6c57c7a5100c69dd_MD5.jpg" height="150"></p>
 <figcaption>Signal nodes</figcaption>
 </figure>
 </div>
+</section>
+<section class="slide level2 scrollable">
+
 <ol start="2" type="1">
 <li><strong>Connect</strong> them with branch gains ( G_i(s), H_i(s) ), including negative gains where appropriate.</li>
 </ol>
@@ -1464,6 +1500,9 @@ FIGURE 5.18 – Building signal-flow graphs for cascade, parallel, and feedback 
 <figcaption>Full signal-flow graph</figcaption>
 </figure>
 </div>
+</section>
+<section class="slide level2 scrollable">
+
 <ol start="3" type="1">
 <li>Optionally, <strong>simplify</strong> by removing nodes that only have one incoming and one outgoing branch (series combination).</li>
 </ol>
@@ -1473,9 +1512,7 @@ FIGURE 5.18 – Building signal-flow graphs for cascade, parallel, and feedback 
 <figcaption>Simplified signal-flow graph</figcaption>
 </figure>
 </div>
-<div style="text-align: center;">
-FIGURE 5.19 – Signal-flow graph development from Figure 5.11.
-</div>
+<p><em>FIGURE 5.19 – Signal-flow graph development from Figure 5.11.</em></p>
 <aside class="notes">
 <p>Explain that nodes like ( V_2, V_6, V_7, V_8 ) with single in and single out can be merged by multiplying branch gains. This is akin to series combination of transfer functions.</p>
 <p>This simplification is often done <strong>before</strong> applying Mason’s Rule to keep the bookkeeping manageable.</p>
@@ -1491,7 +1528,7 @@ FIGURE 5.19 – Signal-flow graph development from Figure 5.11.
           display:block!important;
       }</style></aside>
 </section>
-<section id="masons-rule-transfer-function-from-a-signal-flow-graph" class="slide level2">
+<section id="masons-rule-transfer-function-from-a-signal-flow-graph" class="slide level2 scrollable">
 <h2>5.5 Mason’s Rule – Transfer Function from a Signal-Flow Graph</h2>
 <p>Mason’s Rule gives the transfer function ( C(s)/R(s) ) directly from a signal-flow graph:</p>
 <p><span class="math display">\[
@@ -1525,12 +1562,20 @@ G(s) = \frac{C(s)}{R(s)} = \frac{\displaystyle\sum_{k} T_k \Delta_k}{\Delta}
 <p><strong>Caution</strong></p>
 </div>
 <div class="callout-content">
-<p>The hardest parts of Mason’s Rule are: 1. Enumerating <strong>all loops</strong>. 2. Correctly identifying <strong>nontouching</strong> loop combinations.</p>
+<p>The hardest parts of Mason’s Rule are:</p>
+<ol type="1">
+<li>Enumerating <strong>all loops</strong>.</li>
+<li>Correctly identifying <strong>nontouching</strong> loop combinations.</li>
+</ol>
 </div>
 </div>
 </div>
 <aside class="notes">
-<p>Reassure students: Mason’s Rule looks intimidating, but in many practical systems: - There are few loops. - Often <strong>no</strong> nontouching loops.</p>
+<p>Reassure students: Mason’s Rule looks intimidating, but in many practical systems:</p>
+<ul>
+<li>There are few loops.</li>
+<li>Often <strong>no</strong> nontouching loops.</li>
+</ul>
 <p>In such cases, ( = 1 - () ) and ( _k = 1 ) or something simple.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1544,14 +1589,14 @@ G(s) = \frac{C(s)}{R(s)} = \frac{\displaystyle\sum_{k} T_k \Delta_k}{\Delta}
           display:block!important;
       }</style></aside>
 </section>
-<section id="visualizing-loops-and-forward-paths-mermaid-diagram" class="slide level2">
-<h2>Visualizing Loops and Forward Paths (Mermaid Diagram)</h2>
+<section id="visualizing-loops-and-forward-paths" class="slide level2">
+<h2>Visualizing Loops and Forward Paths</h2>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class=""><p></p>
 <div>
-<p><img data-src="control_5_files\figure-revealjs\mermaid-figure-1.png" style="width:25.13in;height:5.33in"></p>
+<p><img data-src="control_5_files\figure-revealjs\mermaid-figure-1.png" style="width:9.98in;height:1.34in"></p>
 </div>
 <p></p></figure><p></p>
 </div>
@@ -1567,7 +1612,12 @@ G(s) = \frac{C(s)}{R(s)} = \frac{\displaystyle\sum_{k} T_k \Delta_k}{\Delta}
 </ul>
 <p>Use this simple structure to practice identifying loops and nontouching loops.</p>
 <aside class="notes">
-<p>This is just a self-made example for teaching. Use it to: - Ask students: identify the forward path gain. - Identify loop gains. - Check if any loops are nontouching.</p>
+<p>This is just a self-made example for teaching. Use it to:</p>
+<ul>
+<li>Ask students: identify the forward path gain.</li>
+<li>Identify loop gains.</li>
+<li>Check if any loops are nontouching.</li>
+</ul>
 <p>Use it as a warm-up before tackling the textbook example.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1587,11 +1637,8 @@ G(s) = \frac{C(s)}{R(s)} = \frac{\displaystyle\sum_{k} T_k \Delta_k}{\Delta}
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_5/f42eac3038aa9e459a9b40378dda0431_MD5.jpg" height="260"></p>
-<figcaption>Signal-flow graph for Example 5.7</figcaption>
+<figcaption>FIGURE 5.21 – Signal-flow graph for Example 5.7.</figcaption>
 </figure>
-</div>
-<div style="text-align: center;">
-FIGURE 5.21 – Signal-flow graph for Example 5.7.
 </div>
 </section>
 <section id="example-5.7-step-1-forward-path" class="slide level2">
@@ -1727,12 +1774,20 @@ T(s) = \frac{G_{1}(s)G_{3}(s)\big[1 + G_{2}(s)\big]}%
 <p><strong>Note</strong></p>
 </div>
 <div class="callout-content">
-<p>This demonstrates that: - Block diagram reduction and Mason’s Rule are <strong>equivalent</strong> ways to get the same transfer function. - You can pick whichever is more convenient for a given problem.</p>
+<p>This demonstrates that:</p>
+<ul>
+<li>Block diagram reduction and Mason’s Rule are <strong>equivalent</strong> ways to get the same transfer function.</li>
+<li>You can pick whichever is more convenient for a given problem.</li>
+</ul>
 </div>
 </div>
 </div>
 <aside class="notes">
-<p>In class, you might not derive this fully step-by-step, but you can: - Show loop and forward-path identification quickly. - Emphasize that the exact same expression appears whether you use block algebra or Mason’s Rule.</p>
+<p>In class, you might not derive this fully step-by-step, but you can:</p>
+<ul>
+<li>Show loop and forward-path identification quickly.</li>
+<li>Emphasize that the exact same expression appears whether you use block algebra or Mason’s Rule.</li>
+</ul>
 <p>Encourage students to do this derivation on their own for mastery.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1766,6 +1821,11 @@ T(s) = \frac{G_{1}(s)G_{3}(s)\big[1 + G_{2}(s)\big]}%
 <li>Step response specs (%OS, ( T_s ), ( T_p ), etc.) are set by ( , _n ).</li>
 <li>We can <strong>design gain ( K )</strong> to meet transient performance requirements.</li>
 </ul></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
 <li><strong>Signal-flow graphs</strong>:
 <ul>
 <li>Nodes = signals, branches = transfer functions.</li>
@@ -1779,7 +1839,11 @@ T(s) = \frac{G_{1}(s)G_{3}(s)\big[1 + G_{2}(s)\big]}%
 <li>Both <strong>block diagram reduction</strong> and <strong>Mason’s Rule</strong> ultimately yield the same transfer function.</li>
 </ul>
 <aside class="notes">
-<p>Wrap up by connecting back to the chapter learning outcomes: - We now know how to go from many blocks to one transfer function, both in block-diagram and signal-flow form. - Next steps (not fully covered today) include mapping to state-space and manipulating similar systems via transformations.</p>
+<p>Wrap up by connecting back to the chapter learning outcomes:</p>
+<ul>
+<li>We now know how to go from many blocks to one transfer function, both in block-diagram and signal-flow form.</li>
+<li>Next steps (not fully covered today) include mapping to state-space and manipulating similar systems via transformations.</li>
+</ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1818,6 +1882,9 @@ G_e(s) = \frac{G(s)}{1 \pm G(s)H(s)}
 <li>Use ( + ) in denominator for <strong>negative</strong> feedback.</li>
 </ul></li>
 </ul>
+</section>
+<section class="slide level2">
+
 <h3 id="second-order-standard-form">Second-Order Standard Form</h3>
 <ul>
 <li><p>Transfer function:</p>
@@ -1842,6 +1909,9 @@ T_s = \frac{4}{\zeta\omega_n}
 \]</span></p></li>
 </ul></li>
 </ul>
+</section>
+<section class="slide level2">
+
 <h3 id="masons-rule">Mason’s Rule</h3>
 <ul>
 <li><p>Overall transfer function:</p>
