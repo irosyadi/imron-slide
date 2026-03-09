@@ -1,0 +1,2690 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-html/tabby.min.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.27">
+
+  <meta name="author" content="Imron Rosyadi">
+  <title>Control System – Transfer Functions with Gears, DC Motors, and Electric Analogs</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-b0356e9119c1bdfd0db189d130feb51c.css">
+  <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+  <link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Transfer Functions with Gears, DC Motors, and Electric Analogs</h1>
+  <p class="subtitle">Control 2.4</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Imron Rosyadi 
+</div>
+</div>
+</div>
+
+</section>
+<section id="learning-objectives" class="slide level2 scrollable">
+<h2>Learning Objectives</h2>
+<p>By the end of this session, you should be able to:</p>
+<ol type="1">
+<li>Relate gear tooth ratios to angular displacement and torque ratios.</li>
+<li>Reflect mechanical impedances (inertia, damping, stiffness) through gears and gear trains.</li>
+<li>Derive transfer functions for rotational mechanical systems with gears.</li>
+<li>Derive the transfer function of an armature-controlled DC motor and include a mechanical load.</li>
+<li>Use torque–speed curves to obtain electrical motor constants.</li>
+<li>Build electric circuit analogs (series and parallel) for mechanical systems.</li>
+</ol>
+<aside class="notes">
+<p>This slide sets the roadmap. Make clear that students are moving from “bare” mechanical systems into more realistic mechatronic systems: gears + motors. Emphasize that today mixes conceptual understanding (gear ratios, analogies) with procedural skills (deriving transfer functions).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="why-gears-matter-in-control-systems" class="slide level2">
+<h2>Why Gears Matter in Control Systems</h2>
+<ul>
+<li>Electric motors often do not directly match the desired load speed/torque.</li>
+<li>Gears trade speed for torque:
+<ul>
+<li>Low gear (bike uphill): more torque, less speed.</li>
+<li>High gear (flat road): more speed, less torque.</li>
+</ul></li>
+<li>In control systems (robot joints, drives, antenna pointing, disk drives), gears help:
+<ul>
+<li>Increase torque to move heavy loads.</li>
+<li>Reduce sensitivity to disturbances.</li>
+<li>Achieve desired speed and resolution.</li>
+</ul></li>
+</ul>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Gears are a <em>mechanical transformer</em>: they transform angular displacement and torque between shafts.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Use the bicycle analogy: most students have intuitive experience with it. Connect to robotics: servo motors with gearboxes, industrial robot arms. Point out that modeling gears correctly is critical when predicting speed response or required motor torque.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="ideal-gear-pair-geometry-and-displacement" class="slide level2">
+<h2>Ideal Gear Pair – Geometry and Displacement</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>Consider two meshed spur gears:</p>
+<ul>
+<li>Gear 1: radius <span class="math inline">\(r_1\)</span>, <span class="math inline">\(N_1\)</span> teeth, angle <span class="math inline">\(\theta_1(t)\)</span>, torque <span class="math inline">\(T_1(t)\)</span></li>
+<li>Gear 2: radius <span class="math inline">\(r_2\)</span>, <span class="math inline">\(N_2\)</span> teeth, angle <span class="math inline">\(\theta_2(t)\)</span>, torque <span class="math inline">\(T_2(t)\)</span></li>
+</ul>
+<p>At the contact point, the tangential displacement must match:</p>
+<p><span class="math display">\[
+r_1 \theta_1 = r_2 \theta_2
+\]</span></p>
+<p>So the angular displacements are related by</p>
+<p><span class="math display">\[
+\frac{\theta_2}{\theta_1} = \frac{r_1}{r_2} = \frac{N_1}{N_2}
+\]</span></p>
+</div><div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/d14881fc86b4e5de679b49ed5bbfb524_MD5.jpg" height="260"></p>
+<figcaption>Figure 2.27: A gear system</figcaption>
+</figure>
+</div>
+</div></div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Output angle is <strong>inversely proportional</strong> to gear radius / teeth. Larger output gear → smaller output angle for the same input angle.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Clarify that we are assuming no slip and ideal gear teeth. Backlash is ignored here: mention it but emphasize we are modeling the linearized, ideal relationship. Walk through why distances along circumferences must match for meshed gears. Point out that <span class="math inline">\(N\)</span> is proportional to circumference, hence to radius.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="ideal-gear-pair-torque-relationship" class="slide level2">
+<h2>Ideal Gear Pair – Torque Relationship</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>Assume <strong>lossless gears</strong> (no energy stored or lost in the teeth). Power in = power out.</p>
+<p>Rotational work (energy) = torque × angular displacement:</p>
+<p><span class="math display">\[
+T_1 \theta_1 = T_2 \theta_2
+\]</span></p>
+<p>Using the displacement ratio</p>
+<p><span class="math display">\[
+\frac{\theta_2}{\theta_1} = \frac{N_1}{N_2}
+\]</span></p>
+<p>we get</p>
+<p><span class="math display">\[
+\frac{T_2}{T_1} = \frac{\theta_1}{\theta_2} = \frac{N_2}{N_1}
+\]</span></p>
+</div><div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/adb6079d58c501545313c4158db18bda_MD5.jpg" height="230"></p>
+<figcaption>Figure 2.28: Transfer functions for lossless gears</figcaption>
+</figure>
+</div>
+</div></div>
+<ul>
+<li><p>Angle ratio (from Gear 1 to Gear 2):</p>
+<p><span class="math display">\[
+\dfrac{\theta_2}{\theta_1} = \dfrac{N_1}{N_2}
+\]</span></p></li>
+<li><p>Torque ratio (from Gear 1 to Gear 2):</p>
+<p><span class="math display">\[
+\dfrac{T_2}{T_1} = \dfrac{N_2}{N_1}
+\]</span></p></li>
+</ul>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>Gears invert the ratio: - <strong>Smaller angle</strong> → <strong>larger torque</strong>, - <strong>Larger angle</strong> → <strong>smaller torque</strong>.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Stress that this is like an ideal transformer: displacement and torque trade. Make sure students can interpret: a small pinion driving a large gear increases torque but reduces speed/angle. Point out that this is <em>static</em> relationship; dynamic effects involve inertia and damping behind each gear.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reflecting-mechanical-impedances-through-gears" class="slide level2">
+<h2>Reflecting Mechanical Impedances Through Gears</h2>
+<p>We often want to “remove” the gears from the diagram and reflect the load back to one shaft.</p>
+<p>Consider a load inertia–damper–spring at Gear 2:</p>
+<ul>
+<li>Inertia: <span class="math inline">\(J\)</span></li>
+<li>Damping: <span class="math inline">\(D\)</span></li>
+<li>Stiffness: <span class="math inline">\(K\)</span></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/deb2bd26352e2758c87aef66ea0e429c_MD5.jpg" height="220"></p>
+<figcaption>Figure 2.29: Rotational system driven by gears</figcaption>
+</figure>
+</div>
+<p>From the gear relations and equations of motion, the <strong>equivalent system at <span class="math inline">\(\theta_1\)</span></strong> (input shaft) becomes</p>
+<p><span class="math display">\[
+\left[ J\left(\frac{N_1}{N_2}\right)^2 s^2
++ D\left(\frac{N_1}{N_2}\right)^2 s
++ K\left(\frac{N_1}{N_2}\right)^2 \right] \theta_1(s) = T_1(s)
+\]</span></p>
+<p>So each mechanical impedance term (inertia, damping, stiffness) is multiplied by <span class="math inline">\(\left(\dfrac{N_1}{N_2}\right)^2\)</span> when reflected from Gear 2 back to Gear 1.</p>
+<aside class="notes">
+<p>Walk through Figure 2.29(a) → (b) → (c): 1. Reflect input torque <span class="math inline">\(T_1\)</span> to output using <span class="math inline">\(N_2/N_1\)</span>. 2. Write equation at the output shaft. 3. Use the angle relation <span class="math inline">\(\theta_2 = (N_1/N_2)\theta_1\)</span> to express in terms of <span class="math inline">\(\theta_1\)</span>. Point out that all mechanical terms pick up the square of the gear ratio.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="general-reflection-rule-for-gears" class="slide level2">
+<h2>General Reflection Rule for Gears</h2>
+<p><strong>General Rule:</strong> A rotational mechanical impedance (inertia, damping, stiffness) attached to a <strong>source shaft</strong> and reflected to a <strong>destination shaft</strong> is scaled by</p>
+<p><span class="math display">\[
+\left(
+\frac{\text{Number of teeth of gear on destination shaft}}
+     {\text{Number of teeth of gear on source shaft}}
+\right)^2
+\]</span></p>
+<p>Equivalently, using radii <span class="math inline">\(r\)</span>:</p>
+<p><span class="math display">\[
+Z_\text{dest} = Z_\text{source} \left( \frac{r_\text{dest}}{r_\text{source}} \right)^2
+\]</span></p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Think of gears as a <strong>mechanical impedance transformer</strong>: impedances scale with <strong>square</strong> of gear ratio, torques with <strong>first power</strong> of ratio, angles with <strong>inverse ratio</strong>.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Reinforce that “impedance” here means the coefficient that multiplies <span class="math inline">\(\theta\)</span>, <span class="math inline">\(\dot{\theta}\)</span>, or <span class="math inline">\(\ddot{\theta}\)</span> in the Laplace domain: <span class="math inline">\(Js^2\)</span>, <span class="math inline">\(Ds\)</span>, <span class="math inline">\(K\)</span>. Give a quick numeric check (e.g., <span class="math inline">\(N_1 = 20\)</span>, <span class="math inline">\(N_2 = 40\)</span>) so students see magnitudes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-2.21-lossless-gears-concept" class="slide level2">
+<h2>Example 2.21 – Lossless Gears: Concept</h2>
+<p><strong>Problem:</strong> Find the transfer function <span class="math inline">\(G(s) = \dfrac{\theta_2(s)}{T_1(s)}\)</span> for the rotational system with gears in Figure 2.30(a).</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/c5c7c3d56145cf7e8ae8840b175c0f6d_MD5.jpg" height="250"></p>
+<figcaption>Figure 2.30: Rotational mechanical system with gears</figcaption>
+</figure>
+</div>
+<p>Key ideas:</p>
+<ul>
+<li>Shafts are gear-coupled → <strong>motions are not independent</strong> → only one degree of freedom.</li>
+<li>We reflect all input-side elements (<span class="math inline">\(J_1, D_1, T_1\)</span>) to the <strong>output shaft</strong> (Gear 2) to write a single equation.</li>
+</ul>
+<aside class="notes">
+<p>Before showing equations, ask: “How many independent coordinates?” Students might initially think 2 (one for each inertia), but gears constrain motion → 1 DOF.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-2.21-lossless-gears-reflection-and-transfer-function" class="slide level2 scrollable">
+<h2>Example 2.21 – Lossless Gears: Reflection and Transfer Function</h2>
+<ol type="1">
+<li><p><strong>Reflect</strong> input torque and impedances to the output:</p>
+<ul>
+<li><span class="math inline">\(J_1\)</span> and <span class="math inline">\(D_1\)</span> scaled by <span class="math inline">\(\left(\dfrac{N_2}{N_1}\right)^2\)</span></li>
+<li><span class="math inline">\(T_1\)</span> scaled by <span class="math inline">\(\left(\dfrac{N_2}{N_1}\right)\)</span></li>
+</ul>
+<p>Resulting equivalent system at <span class="math inline">\(\theta_2\)</span>:</p>
+<p><span class="math display">\[
+(J_e s^2 + D_e s + K_e)\theta_2(s)
+= T_1(s)\frac{N_2}{N_1}
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+J_e = J_1\left(\frac{N_2}{N_1}\right)^2 + J_2, \quad
+D_e = D_1\left(\frac{N_2}{N_1}\right)^2 + D_2, \quad
+K_e = K_2
+\]</span></p></li>
+<li><p>Solve for the transfer function:</p>
+<p><span class="math display">\[
+G(s) = \frac{\theta_2(s)}{T_1(s)}
+= \frac{N_2/N_1}{J_e s^2 + D_e s + K_e}
+\]</span></p>
+<p>which is represented as a standard second-order system in Figure 2.30(c).</p></li>
+</ol>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>The <em>structure</em> (second order) is familiar; the <strong>effective parameters</strong> <span class="math inline">\(J_e, D_e, K_e\)</span> embed the gear effects.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Emphasize that the reflection step simplifies dynamics: we end up with a single inertia–damper–spring branch. Ask students: “Where does the factor <span class="math inline">\(N_2/N_1\)</span> end up in the final transfer function?”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="gear-trains-cascaded-gear-ratios" class="slide level2">
+<h2>Gear Trains – Cascaded Gear Ratios</h2>
+<p>For large gear ratios, we use <strong>gear trains</strong>: multiple gear pairs in series.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/712108cbb2f31b726483113cc63d9ef6_MD5.jpg" height="220"></p>
+<figcaption>Figure 2.31: Gear train</figcaption>
+</figure>
+</div>
+<p>From Figure 2.31,</p>
+<p><span class="math display">\[
+\theta_4 = \frac{N_1 N_3 N_5}{N_2 N_4 N_6}\, \theta_1
+\]</span></p>
+<p>So the <strong>equivalent gear ratio</strong> from <span class="math inline">\(\theta_1\)</span> to <span class="math inline">\(\theta_4\)</span> is</p>
+<p><span class="math display">\[
+\frac{\theta_4}{\theta_1} = \prod_{k} \left( \frac{N_{\text{driver},k}}{N_{\text{driven},k}} \right)
+\]</span></p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>For cascaded gear trains: - <strong>Overall displacement ratio</strong> = product of individual displacement ratios. - <strong>Impedance reflection factors</strong> use the corresponding overall ratio (squared).</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Point out the analogy to cascaded electrical transformers (turns ratios multiply). Remind students to keep track of which gear is driving and which is driven at each stage.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-2.22-gear-train-with-losses-concept" class="slide level2">
+<h2>Example 2.22 – Gear Train with Losses: Concept</h2>
+<p><strong>Problem:</strong> Find <span class="math inline">\(G(s) = \dfrac{\theta_1(s)}{T_1(s)}\)</span> for the multi-stage gear system in Figure 2.32(a).</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/ef69440a2bca5a4fd0cf6597deef5cf6_MD5.jpg" height="230"></p>
+<figcaption>Figure 2.32: System using a gear train</figcaption>
+</figure>
+</div>
+<p>This time:</p>
+<ul>
+<li>Gears are <strong>not lossless</strong>:
+<ul>
+<li>Gear inertias <span class="math inline">\(J_2, J_3, J_4, J_5\)</span></li>
+<li>Damping <span class="math inline">\(D_2\)</span> about intermediate shafts</li>
+</ul></li>
+<li>We want a single equation at <span class="math inline">\(\theta_1\)</span> (input shaft).</li>
+</ul>
+<p>Strategy:</p>
+<ul>
+<li>Reflect each inertia and damper to <span class="math inline">\(\theta_1\)</span> using the appropriate <strong>gear ratios</strong>.</li>
+<li>Ratios are <strong>different</strong> for each element, depending on how many gear stages they cross.</li>
+</ul>
+<aside class="notes">
+<p>Highlight that the previous example was simpler (lossless gears). Here we explicitly model inertia in the gears and friction on shafts. Key idea: each element has its own effective gear ratio relative to the reference shaft.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-2.22-gear-train-with-losses-reflection" class="slide level2">
+<h2>Example 2.22 – Gear Train with Losses: Reflection</h2>
+<p>After reflecting all impedances to <span class="math inline">\(\theta_1\)</span>:</p>
+<ul>
+<li><p>Equivalent inertia at input:</p>
+<p><span class="math display">\[
+J_e = J_1
++ (J_2 + J_3)\left(\frac{N_1}{N_2}\right)^2
++ (J_4 + J_5)\left(\frac{N_1 N_3}{N_2 N_4}\right)^2
+\]</span></p></li>
+<li><p>Equivalent damping at input:</p>
+<p><span class="math display">\[
+D_e = D_1 + D_2\left(\frac{N_1}{N_2}\right)^2
+\]</span></p></li>
+</ul>
+<p>Resulting equation of motion:</p>
+<p><span class="math display">\[
+(J_e s^2 + D_e s)\theta_1(s) = T_1(s)
+\]</span></p>
+<p>So the transfer function is</p>
+<p><span class="math display">\[
+G(s) = \frac{\theta_1(s)}{T_1(s)} = \frac{1}{J_e s^2 + D_e s}
+\]</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/ef69440a2bca5a4fd0cf6597deef5cf6_MD5.jpg" height="180"></p>
+<figcaption>Figure 2.32(b,c): Equivalent system and block diagram</figcaption>
+</figure>
+</div>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Warning</strong></p>
+</div>
+<div class="callout-content">
+<p>Be meticulous: Each <span class="math inline">\(J\)</span> and <span class="math inline">\(D\)</span> may see <strong>zero, one, or two</strong> gear ratios. Compute the exact overall ratio from each element’s shaft to the reference shaft.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Walk students through one term explicitly: - E.g., why <span class="math inline">\((J_4 + J_5)\left(\dfrac{N_1 N_3}{N_2 N_4}\right)^2\)</span>? Because these inertias sit after two gear stages relative to <span class="math inline">\(\theta_1\)</span>. Stress that once everything is at one shaft, writing the equation is straightforward.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="skill-assessment-2.10-check-your-understanding" class="slide level2 scrollable">
+<h2>Skill-Assessment 2.10 – Check Your Understanding</h2>
+<p><strong>Problem:</strong> Find the transfer function <span class="math inline">\(G(s) = \theta_2(s)/T(s)\)</span> for the rotational mechanical system with gears shown in Figure 2.33.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/bbe26e86c58c088d0190a2186f8a6dca_MD5.jpg" height="220"></p>
+<figcaption>Figure 2.33: Rotational mechanical system with gears</figcaption>
+</figure>
+</div>
+<p><strong>Book Answer:</strong></p>
+<p><span class="math display">\[
+G(s) = \frac{1/2}{s^2 + s + 1}
+\]</span></p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Try to reproduce the answer by:</p>
+<ol type="1">
+<li>Finding the appropriate gear ratio(s).</li>
+<li>Reflecting impedances to a single shaft.</li>
+<li>Writing the equation of motion.</li>
+<li>Solving for <span class="math inline">\(\theta_2(s)/T(s)\)</span>.</li>
+</ol>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Encourage students to work this offline and then check online solutions. Remind them that pattern recognition (reflect → sum → divide) will become routine with practice.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="from-mechanical-to-electromechanical" class="slide level2">
+<h2>From Mechanical to Electromechanical</h2>
+<p>So far we modeled:</p>
+<ul>
+<li>Purely mechanical rotational systems (with gears).</li>
+</ul>
+<p>Now we extend to <strong>electromechanical systems</strong>:</p>
+<ul>
+<li>Electrical input (voltage, current)</li>
+<li>Mechanical output (shaft rotation, speed, torque)</li>
+</ul>
+<p>Applications in ECE:</p>
+<ul>
+<li>Robot arm joints</li>
+<li>Antenna pointing systems</li>
+<li>Disk and tape drive actuators</li>
+<li>Flight simulators and haptic devices</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/f64f86d827d7093c3652e9bf9debd9f7_MD5.jpg" height="220"></p>
+<figcaption>Figure 2.34: NASA flight simulator robot arm</figcaption>
+</figure>
+</div>
+<aside class="notes">
+<p>Emphasize that once we get a transfer function for the motor+load, we can design controllers in exactly the same way as for previous mechanical systems. Use Figure 2.34 to illustrate a sophisticated real system built up from the same building blocks.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="armature-controlled-dc-motor-structure" class="slide level2 scrollable">
+<h2>Armature-Controlled DC Motor – Structure</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>Fixed field (permanent magnet or field winding) → provides <span class="math inline">\(B\)</span>, the magnetic field.</li>
+<li>Armature: rotating conductor with current <span class="math inline">\(i_a(t)\)</span> → experiences force <span class="math inline">\(F = B l i_a\)</span>.</li>
+<li>Torque produced turns the rotor with angle <span class="math inline">\(\theta_m(t)\)</span> and angular speed <span class="math inline">\(\omega_m(t)\)</span>.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/7572e2672026a7955423acb2b0850135_MD5.jpg" height="220"></p>
+<figcaption>Figure 2.35(a): DC motor schematic</figcaption>
+</figure>
+</div>
+</div></div>
+<p>Two key electromagnetic relationships:</p>
+<ol type="1">
+<li><p><strong>Torque from current:</strong></p>
+<p><span class="math display">\[
+T_m(s) = K_t I_a(s)
+\]</span></p></li>
+<li><p><strong>Back EMF from speed:</strong></p>
+<p><span class="math display">\[
+v_b(t) = K_b \frac{d\theta_m(t)}{dt} = K_b \omega_m(t)
+\Rightarrow V_b(s) = K_b s \theta_m(s)
+\]</span></p></li>
+</ol>
+<aside class="notes">
+<p>Be explicit about the physical picture: moving conductor in magnetic field → both force (motor action) and induced voltage (generator action). Mention that with consistent units, <span class="math inline">\(K_t = K_b\)</span> numerically.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="motor-armature-circuit-and-back-emf" class="slide level2">
+<h2>Motor Armature Circuit and Back EMF</h2>
+<p>Electrical loop around the armature:</p>
+<ul>
+<li>Armature resistance: <span class="math inline">\(R_a\)</span></li>
+<li>Armature inductance: <span class="math inline">\(L_a\)</span></li>
+<li>Back EMF: <span class="math inline">\(V_b(s)\)</span></li>
+<li>Applied voltage: <span class="math inline">\(E_a(s)\)</span></li>
+</ul>
+<p>Kirchhoff’s voltage law:</p>
+<p><span class="math display">\[
+R_a I_a(s) + L_a s I_a(s) + V_b(s) = E_a(s)
+\]</span></p>
+<p>Substitute <span class="math inline">\(V_b(s) = K_b s \theta_m(s)\)</span> and <span class="math inline">\(I_a(s) = \dfrac{1}{K_t} T_m(s)\)</span> to couple the electrical and mechanical domains.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>The back EMF <span class="math inline">\(V_b\)</span> acts like a <strong>negative feedback</strong> in the motor: - Faster rotation → larger <span class="math inline">\(V_b\)</span> → reduces armature current → limits torque.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Explain that this is why DC motors naturally resist sudden load changes to some extent: the back EMF changes current. Prepare students to plug in the mechanical dynamics next.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="mechanical-loading-of-the-motor" class="slide level2">
+<h2>Mechanical Loading of the Motor</h2>
+<p>Mechanical side (shaft dynamics):</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/03746dad3e8d8498f6cccd5d89f36bb0_MD5.jpg" height="200"></p>
+<figcaption>Figure 2.36: Typical equivalent mechanical loading</figcaption>
+</figure>
+</div>
+<ul>
+<li>Equivalent inertia at armature: <span class="math inline">\(J_m\)</span></li>
+<li>Equivalent viscous damping: <span class="math inline">\(D_m\)</span></li>
+</ul>
+<p>Equation in Laplace domain:</p>
+<p><span class="math display">\[
+T_m(s) = (J_m s^2 + D_m s)\, \theta_m(s)
+\]</span></p>
+<p>This <span class="math inline">\(J_m\)</span> and <span class="math inline">\(D_m\)</span> include both:</p>
+<ul>
+<li>Motor’s own inertia and damping.</li>
+<li>Load inertia and damping <strong>reflected</strong> through gear(s) to the armature shaft.</li>
+</ul>
+<aside class="notes">
+<p>Connect back to earlier gear reflection: <span class="math inline">\(J_m\)</span> and <span class="math inline">\(D_m\)</span> are computed using those formulas. This unifies mechanical modeling with the electrical motor model.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="dc-motor-transfer-function-neglecting-armature-inductance" class="slide level2 scrollable">
+<h2>DC Motor Transfer Function (Neglecting Armature Inductance)</h2>
+<p>Substitute <span class="math inline">\(T_m(s)\)</span> and <span class="math inline">\(V_b(s)\)</span> into the armature KVL, assuming <span class="math inline">\(L_a\)</span> is small:</p>
+<ol type="1">
+<li><p>Start with</p>
+<p><span class="math display">\[
+\frac{(R_a + L_a s)T_m(s)}{K_t} + K_b s \theta_m(s) = E_a(s)
+\]</span></p></li>
+<li><p>With <span class="math inline">\(L_a \approx 0\)</span>:</p>
+<p><span class="math display">\[
+\frac{R_a}{K_t} T_m(s) + K_b s \theta_m(s) = E_a(s)
+\]</span></p></li>
+<li><p>Use <span class="math inline">\(T_m(s) = (J_m s^2 + D_m s)\theta_m(s)\)</span>:</p>
+<p><span class="math display">\[
+\left[\frac{R_a}{K_t} (J_m s^2 + D_m s) + K_b s \right]\theta_m(s) = E_a(s)
+\]</span></p></li>
+</ol>
+<p>Rearrange:</p>
+<p><span class="math display">\[
+\left[\frac{R_a}{K_t} (J_m s + D_m) + K_b \right] s \theta_m(s) = E_a(s)
+\]</span></p>
+<p>So the transfer function is</p>
+<p><span class="math display">\[
+\frac{\theta_m(s)}{E_a(s)}
+= \frac{K_t/(R_a J_m)}{s\left[s + \frac{1}{J_m}
+\left(D_m + \frac{K_t K_b}{R_a}\right)\right]}
+\]</span></p>
+<p>or in simplified form</p>
+<p><span class="math display">\[
+\frac{\theta_m(s)}{E_a(s)} = \frac{K}{s(s + \alpha)}
+\]</span></p>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>A DC motor (with this approximation) behaves like: - <strong>One integrator</strong> (from speed to position), and - <strong>One stable first-order pole</strong> (electromechanical time constant).</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Interpret <span class="math inline">\(K\)</span> as the static gain from voltage to position velocity integrated. Interpret <span class="math inline">\(\alpha\)</span> as related to the effective damping: larger <span class="math inline">\(D_m\)</span> or stronger electrical damping (large <span class="math inline">\(K_t K_b/R_a\)</span>) → faster <span class="math inline">\(\alpha\)</span> (shorter time constant).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="including-the-gear-and-load-effective-j_m-and-d_m" class="slide level2">
+<h2>Including the Gear and Load – Effective <span class="math inline">\(J_m\)</span> and <span class="math inline">\(D_m\)</span></h2>
+<p>Consider a motor with armature inertia <span class="math inline">\(J_a\)</span> and damping <span class="math inline">\(D_a\)</span>, driving a load of inertia <span class="math inline">\(J_L\)</span> and damping <span class="math inline">\(D_L\)</span> through a gear pair with ratio <span class="math inline">\(N_1:N_2\)</span> (armature:load):</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/f644745f10e4b81a262f02f6ea35913d_MD5.jpg" height="200"></p>
+<figcaption>Figure 2.37: DC motor driving a rotational mechanical load</figcaption>
+</figure>
+</div>
+<p>Reflect <span class="math inline">\(J_L\)</span> and <span class="math inline">\(D_L\)</span> to the armature:</p>
+<p><span class="math display">\[
+J_m = J_a + J_L\left(\frac{N_1}{N_2}\right)^2
+\]</span></p>
+<p><span class="math display">\[
+D_m = D_a + D_L\left(\frac{N_1}{N_2}\right)^2
+\]</span></p>
+<p>Use these <span class="math inline">\(J_m\)</span> and <span class="math inline">\(D_m\)</span> in the DC motor transfer function</p>
+<p><span class="math display">\[
+\frac{\theta_m(s)}{E_a(s)}
+= \frac{K_t/(R_a J_m)}{s\left[s + \frac{1}{J_m}
+\left(D_m + \frac{K_t K_b}{R_a}\right)\right]}
+\]</span></p>
+<aside class="notes">
+<p>Ask: “What happens to <span class="math inline">\(J_m\)</span> if we use a large gear reduction (<span class="math inline">\(N_1 \ll N_2\)</span>)?” → The reflected load inertia shrinks significantly, which is one reason high gear ratios are helpful when driving heavy loads.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="determining-electrical-constants-via-torquespeed-curves" class="slide level2">
+<h2>Determining Electrical Constants via Torque–Speed Curves</h2>
+<p>Start from the DC motor steady-state equation (with <span class="math inline">\(L_a=0\)</span>):</p>
+<p><span class="math display">\[
+\frac{R_a}{K_t}T_m(s) + K_b s \theta_m(s) = E_a(s)
+\]</span></p>
+<p>Inverse Laplace and assume DC (steady-state) operation:</p>
+<p><span class="math display">\[
+\frac{R_a}{K_t}T_m + K_b \omega_m = e_a
+\]</span></p>
+<p>Solve for torque:</p>
+<p><span class="math display">\[
+T_m = -\frac{K_b K_t}{R_a}\omega_m
+      + \frac{K_t}{R_a} e_a
+\]</span></p>
+<p>This is a straight line in the torque–speed plane:</p>
+<ul>
+<li><p>Intercept at <span class="math inline">\(\omega_m = 0\)</span>: <strong>stall torque</strong></p>
+<p><span class="math display">\[
+T_{\text{stall}} = \frac{K_t}{R_a}e_a
+\]</span></p></li>
+<li><p>Intercept at <span class="math inline">\(T_m = 0\)</span>: <strong>no-load speed</strong></p>
+<p><span class="math display">\[
+\omega_{\text{no-load}} = \frac{e_a}{K_b}
+\]</span></p></li>
+</ul>
+<p>Thus</p>
+<p><span class="math display">\[
+\frac{K_t}{R_a} = \frac{T_{\text{stall}}}{e_a},
+\quad
+K_b = \frac{e_a}{\omega_{\text{no-load}}}
+\]</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/7ec88fb863c9014c4b461742336a547a_MD5.jpg" height="200"></p>
+<figcaption>Figure 2.38: Torque–speed curves</figcaption>
+</figure>
+</div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>A <strong>dynamometer test</strong> (measuring stall torque and no-load speed for a given <span class="math inline">\(e_a\)</span>) gives the motor constants needed in the transfer function.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Emphasize that this is practical: in lab or data sheets, motors are often specified by stall torque and no-load speed. Relate to Virtual Experiment 2.2.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="virtual-experiment-2.2-open-loop-servo-motor" class="slide level2">
+<h2>Virtual Experiment 2.2 – Open-Loop Servo Motor</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/8101e3be0f1df1456f686268741d221a_MD5.jpg" height="220"></p>
+<figcaption>Virtual experiment: Quanser Rotary Servo System</figcaption>
+</figure>
+</div>
+<p>You can:</p>
+<ul>
+<li>Apply step voltages to a Quanser rotary servo motor model.</li>
+<li>Measure resulting angles, speeds, and possibly torques.</li>
+<li>Compare measured responses to predictions from the motor transfer function.</li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Use this virtual lab to: - Estimate <span class="math inline">\(K\)</span>, <span class="math inline">\(\alpha\)</span>, and compare to theory. - Observe how gear ratio affects speed and torque.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Encourage students to treat this as a “black box” system identification exercise: fit a second-order model to measured data and map back to physical parameters.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-2.23-dc-motor-and-load-using-all-the-tools" class="slide level2">
+<h2>Example 2.23 – DC Motor and Load: Using All the Tools</h2>
+<p><strong>Problem:</strong> Given the DC motor, load, gear ratio, and torque–speed curve in Figure 2.39, find <span class="math inline">\(G(s) = \dfrac{\theta_L(s)}{E_a(s)}\)</span>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/88376fa414815a17d1a09d9967a76f06_MD5.jpg" height="220"></p>
+<figcaption>Figure 2.39: DC motor and load</figcaption>
+</figure>
+</div>
+<h3 id="step-1-mechanical-constants">Step 1: Mechanical Constants</h3>
+<p>From the data:</p>
+<p><span class="math display">\[
+J_m = J_a + J_L\left(\frac{N_1}{N_2}\right)^2
+= 5 + 700\left(\frac{1}{10}\right)^2 = 12
+\]</span></p>
+<p><span class="math display">\[
+D_m = D_a + D_L\left(\frac{N_1}{N_2}\right)^2
+= 2 + 800\left(\frac{1}{10}\right)^2 = 10
+\]</span></p>
+<aside class="notes">
+<p>Pause to check units (e.g., N·m·s/rad for damping, kg·m² for inertia). Emphasize again the square of the gear ratio.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-2.23-dc-motor-and-load-electrical-constants-and-result" class="slide level2">
+<h2>Example 2.23 – DC Motor and Load: Electrical Constants and Result</h2>
+<p>From the torque–speed curve:</p>
+<ul>
+<li>Stall torque: <span class="math inline">\(T_{\text{stall}} = 500\)</span></li>
+<li>No-load speed: <span class="math inline">\(\omega_{\text{no-load}} = 50\)</span></li>
+<li>Input voltage: <span class="math inline">\(e_a = 100\)</span></li>
+</ul>
+<p>Then</p>
+<p><span class="math display">\[
+\frac{K_t}{R_a} = \frac{T_{\text{stall}}}{e_a}
+= \frac{500}{100} = 5
+\]</span></p>
+<p><span class="math display">\[
+K_b = \frac{e_a}{\omega_{\text{no-load}}}
+= \frac{100}{50} = 2
+\]</span></p>
+<p>Plug into the motor transfer function:</p>
+<p><span class="math display">\[
+\frac{\theta_m(s)}{E_a(s)}
+= \frac{5/12}{s\left\{s + \frac{1}{12}[10 + (5)(2)]\right\}}
+= \frac{0.417}{s(s + 1.667)}
+\]</span></p>
+<p>Use gear ratio <span class="math inline">\(\dfrac{N_1}{N_2} = \dfrac{1}{10}\)</span> to get load angle:</p>
+<p><span class="math display">\[
+\frac{\theta_L(s)}{E_a(s)}
+= \frac{0.0417}{s(s + 1.667)}
+\]</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/eedf37070c9db80a9e1192062d47148d_MD5.jpg" height="180"></p>
+<figcaption>Figure 2.39(c): Block diagram</figcaption>
+</figure>
+</div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Notice: The poles (dynamics) do not change with this simple gear scaling; the gear changes only the <strong>output gain</strong> between <span class="math inline">\(\theta_m\)</span> and <span class="math inline">\(\theta_L\)</span>.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Clarify that, strictly, changing gear ratio would change <span class="math inline">\(J_m\)</span> and <span class="math inline">\(D_m\)</span>, thus affecting poles. Here, the ratio used in reflecting load and the ratio used for angle appear separately, but we’re using the specific given data, so the final dynamics come out as shown.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="skill-assessment-2.11-motor-gear-load" class="slide level2 scrollable">
+<h2>Skill-Assessment 2.11 – Motor + Gear + Load</h2>
+<p><strong>Problem:</strong> For the electromechanical system shown in Figure 2.40, with torque–speed curve</p>
+<p><span class="math display">\[
+T_m = -8\omega_m + 200
+\]</span></p>
+<p>at <span class="math inline">\(e_a = 100\ \text{V}\)</span>, find</p>
+<p><span class="math display">\[
+G(s) = \frac{\theta_L(s)}{E_a(s)}
+\]</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/e74bd86aa4e6cb463608a75493277f76_MD5.jpg" height="230"></p>
+<figcaption>Figure 2.40: Electromechanical system</figcaption>
+</figure>
+</div>
+<p><strong>Book Answer:</strong></p>
+<p><span class="math display">\[
+G(s) = \frac{1/20}{s\left[s + \dfrac{15}{2}\right]}
+\]</span></p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>To solve:</p>
+<ol type="1">
+<li>Extract <span class="math inline">\(K_t/R_a\)</span> and <span class="math inline">\(K_b\)</span> from the torque–speed relation.</li>
+<li>Reflect load inertia/damping through gears to find <span class="math inline">\(J_m\)</span> and <span class="math inline">\(D_m\)</span>.</li>
+<li>Use the DC motor transfer function formula.</li>
+<li>Include gear ratio between motor and load angles.</li>
+</ol>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Point out that this is essentially the same workflow as Example 2.23, but as a self-check. Encourage students to verify each step symbolically before plugging numbers.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="electric-circuit-analogs-why-bother" class="slide level2 scrollable">
+<h2>Electric Circuit Analogs – Why Bother?</h2>
+<p>Mechanical → Electrical analogs:</p>
+<ul>
+<li>Let us reuse circuit intuition and tools (nodal/mesh analysis, SPICE simulation).</li>
+<li>Reveal deep similarities between energy-storage systems across domains.</li>
+<li>Provide alternative ways to derive equations of motion.</li>
+</ul>
+<p>Two main types:</p>
+<ol type="1">
+<li><strong>Series analog</strong> (mesh equations ↔︎ equations of motion in velocity).</li>
+<li><strong>Parallel analog</strong> (nodal equations ↔︎ equations of motion in velocity).</li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/58e4e975b1ce8772dda442496f0f05c4_MD5.jpg" height="200"></p>
+<figcaption>Figure 2.41 and 2.43: Mechanical system and analogs</figcaption>
+</figure>
+</div>
+<aside class="notes">
+<p>Motivate by saying: If you are stronger in circuits than in mechanics, analogs can make mechanical modeling easier. Also, analogs appear historically in early analog computers, which solved differential equations using electrical networks.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="series-analog-single-massspringdamper" class="slide level2">
+<h2>Series Analog – Single Mass–Spring–Damper</h2>
+<p>Mechanical system:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/58e4e975b1ce8772dda442496f0f05c4_MD5.jpg" height="200"></p>
+<figcaption>Figure 2.41(a): Mechanical system</figcaption>
+</figure>
+</div>
+<p>Equation of motion (Laplace, displacement):</p>
+<p><span class="math display">\[
+(M s^2 + f_v s + K) X(s) = F(s)
+\]</span></p>
+<p>To match with current-based mesh equations, rewrite in terms of <strong>velocity</strong> <span class="math inline">\(V(s) = s X(s)\)</span>:</p>
+<p><span class="math display">\[
+\left(M s + f_v + \frac{K}{s}\right) V(s) = F(s)
+\]</span></p>
+<p>Electrical series RLC mesh:</p>
+<p><span class="math display">\[
+(L s + R + \frac{1}{C s}) I(s) = E(s)
+\]</span></p>
+<p><strong>Analog mapping (series type):</strong></p>
+<ul>
+<li>Velocity <span class="math inline">\(V(s)\)</span> ↔︎ Current <span class="math inline">\(I(s)\)</span></li>
+<li>Force <span class="math inline">\(F(s)\)</span> ↔︎ Voltage <span class="math inline">\(E(s)\)</span></li>
+<li>Mass <span class="math inline">\(M\)</span> ↔︎ Inductance <span class="math inline">\(L\)</span></li>
+<li>Viscous damping <span class="math inline">\(f_v\)</span> ↔︎ Resistance <span class="math inline">\(R\)</span></li>
+<li>Spring constant <span class="math inline">\(K\)</span> ↔︎ Inverse of capacitance <span class="math inline">\(1/C\)</span></li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>In a <strong>series analog</strong>, mechanical impedances map onto series electrical impedances.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Students often confuse which quantity maps to current vs.&nbsp;voltage. Stress: here, <em>velocity ↔︎ current</em> because both appear multiplied by total impedance in the equations.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="series-analog-multi-mass-system-example-2.24" class="slide level2">
+<h2>Series Analog – Multi-Mass System (Example 2.24)</h2>
+<p><strong>Problem:</strong> Draw a series analog for the mechanical system of Figure 2.17(a).</p>
+<p>Mechanical equations (after converting to velocity):</p>
+<p><span class="math display">\[
+\left[M_1 s + (f_{v_1}+f_{v_3}) + \frac{K_1+K_2}{s}\right]V_1(s)
+- \left(f_{v_3}+\frac{K_2}{s}\right)V_2(s) = F(s)
+\]</span></p>
+<p><span class="math display">\[
+-\left(f_{v_3}+\frac{K_2}{s}\right)V_1(s)
++ \left[M_2 s+(f_{v_2}+f_{v_3})+\frac{K_2+K_3}{s}\right]V_2(s) = 0
+\]</span></p>
+<p>Coefficients correspond to sums of series impedances:</p>
+<ul>
+<li>Impedances tied to motion of <span class="math inline">\(M_1\)</span> → first mesh.</li>
+<li>Impedances between <span class="math inline">\(M_1\)</span> and <span class="math inline">\(M_2\)</span> → shared between both meshes.</li>
+<li>Impedances tied to <span class="math inline">\(M_2\)</span> → second mesh.</li>
+</ul>
+<p>Result:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/cd677aad9fa66e43fb761f5e4db1ebbe_MD5.jpg" height="220"></p>
+<figcaption>Figure 2.42: Series analog</figcaption>
+</figure>
+</div>
+<aside class="notes">
+<p>Point out which inductor, resistor, capacitor corresponds to each mechanical element. This reinforces the mapping in a more complex context.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="parallel-analog-single-massspringdamper" class="slide level2">
+<h2>Parallel Analog – Single Mass–Spring–Damper</h2>
+<p>Now we match with <strong>nodal equations</strong> instead of mesh equations.</p>
+<p>Electrical parallel RLC node:</p>
+<p><span class="math display">\[
+\left(C s + \frac{1}{R} + \frac{1}{L s}\right) E(s) = I(s)
+\]</span></p>
+<p>Mechanical equation in velocity form:</p>
+<p><span class="math display">\[
+\left(M s + f_v + \frac{K}{s}\right) V(s) = F(s)
+\]</span></p>
+<p>If we identify - Velocity <span class="math inline">\(V(s)\)</span> ↔︎ Voltage <span class="math inline">\(E(s)\)</span> - Force <span class="math inline">\(F(s)\)</span> ↔︎ Current <span class="math inline">\(I(s)\)</span> then</p>
+<ul>
+<li><span class="math inline">\(M\)</span> ↔︎ <span class="math inline">\(1/L\)</span> (since <span class="math inline">\(1/(L s)\)</span> term aligns with mass term when seen as admittance)</li>
+<li><span class="math inline">\(f_v\)</span> ↔︎ <span class="math inline">\(1/R\)</span></li>
+<li><span class="math inline">\(K\)</span> ↔︎ <span class="math inline">\(C\)</span></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/8a9eabe9bc8c22783a7398426ab0a3f4_MD5.jpg" height="200"></p>
+<figcaption>Figure 2.43: Parallel analog</figcaption>
+</figure>
+</div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>In a <strong>parallel analog</strong>, - <strong>Velocity ↔︎ voltage</strong>, - <strong>Force ↔︎ current</strong>, - Mechanical <em>admittances</em> map onto electrical admittances.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Clarify that the mapping is different from the series analog, but both are valid. Choice depends on whether you prefer mesh or nodal methods, or on the type of circuit simulator used.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="parallel-analog-multi-mass-system-example-2.25" class="slide level2">
+<h2>Parallel Analog – Multi-Mass System (Example 2.25)</h2>
+<p><strong>Problem:</strong> Draw a parallel analog for the mechanical system of Figure 2.17(a).</p>
+<p>Starting from the same mechanical equations (in velocity form), interpret each coefficient as a <strong>sum of admittances</strong>:</p>
+<ul>
+<li>Admittances associated with <span class="math inline">\(M_1\)</span> connect to <strong>node 1</strong>.</li>
+<li>Admittances between <span class="math inline">\(M_1\)</span> and <span class="math inline">\(M_2\)</span> connect <strong>between</strong> node 1 and node 2.</li>
+<li>Admittances associated with <span class="math inline">\(M_2\)</span> connect to <strong>node 2</strong>.</li>
+</ul>
+<p>Resulting parallel analog:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_2/259f66fb345a549b29f484d3d0ebd1f8_MD5.jpg" height="220"></p>
+<figcaption>Figure 2.44: Parallel analog</figcaption>
+</figure>
+</div>
+<aside class="notes">
+<p>Highlight that the graph structure (two nodes plus interconnection admittance) closely mirrors the mechanical layout of two masses and a coupling spring/damper.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="skill-assessment-2.12-rotational-analogs" class="slide level2 scrollable">
+<h2>Skill-Assessment 2.12 – Rotational Analogs</h2>
+<p><strong>Problem:</strong> Draw a <strong>series</strong> and <strong>parallel</strong> analog for the <strong>rotational</strong> mechanical system of Figure 2.22.</p>
+<p>(Hint: use rotational analogs of mass, damping, spring: inertia <span class="math inline">\(J\)</span>, viscous damping <span class="math inline">\(D\)</span>, torsional stiffness <span class="math inline">\(K\)</span>.)</p>
+<p>Answer available online.</p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Workflow:</p>
+<ol type="1">
+<li>Write equations of motion in Laplace domain.</li>
+<li>Convert to angular velocity (if needed).</li>
+<li>Match with either mesh (series analog) or nodal (parallel analog) equations.</li>
+<li>Map each rotational element to an R, L, or C appropriately.</li>
+</ol>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Encourage students to note symmetry with translational analogs: equations look the same with <span class="math inline">\(\theta\)</span> instead of <span class="math inline">\(x\)</span>, <span class="math inline">\(T\)</span> instead of <span class="math inline">\(F\)</span>, <span class="math inline">\(J\)</span> instead of <span class="math inline">\(M\)</span>, etc.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="summary-key-points" class="slide level2">
+<h2>Summary / Key Points</h2>
+<ul>
+<li><strong>Gears</strong>:
+<ul>
+<li><span class="math inline">\(\dfrac{\theta_2}{\theta_1} = \dfrac{N_1}{N_2}\)</span>, <span class="math inline">\(\dfrac{T_2}{T_1} = \dfrac{N_2}{N_1}\)</span>.</li>
+<li>Mechanical impedances reflect through gears with the <strong>square</strong> of gear ratio.</li>
+<li>Gear trains multiply individual ratios to get an overall ratio.</li>
+</ul></li>
+<li><strong>Rotational systems with gears</strong>:
+<ul>
+<li>Reflect all load impedances to a single shaft; then write one equation of motion.</li>
+<li>Transfer functions look like standard 1st or 2nd order forms with effective <span class="math inline">\(J\)</span>, <span class="math inline">\(D\)</span>, <span class="math inline">\(K\)</span>.</li>
+</ul></li>
+<li><strong>DC motor modeling</strong>:
+<ul>
+<li>Electrical: <span class="math inline">\(R_a I_a + L_a s I_a + K_b s \theta_m = E_a\)</span>.</li>
+<li>Mechanical: <span class="math inline">\(T_m = (J_m s^2 + D_m s)\theta_m\)</span>, <span class="math inline">\(T_m = K_t I_a\)</span>.</li>
+<li>Combined TF (ignoring <span class="math inline">\(L_a\)</span>): <span class="math inline">\(\dfrac{\theta_m}{E_a} = \dfrac{K_t/(R_a J_m)}{s\left[s + \dfrac{1}{J_m}\left(D_m + \dfrac{K_t K_b}{R_a}\right)\right]}\)</span>.</li>
+</ul></li>
+<li><strong>Torque–speed curves</strong>:
+<ul>
+<li>Provide <span class="math inline">\(K_t/R_a\)</span> and <span class="math inline">\(K_b\)</span> via stall torque and no-load speed.</li>
+</ul></li>
+<li><strong>Electric circuit analogs</strong>:
+<ul>
+<li><strong>Series analog</strong>: velocity ↔︎ current, force ↔︎ voltage; impedances in series.</li>
+<li><strong>Parallel analog</strong>: velocity ↔︎ voltage, force ↔︎ current; admittances in parallel.</li>
+</ul></li>
+</ul>
+<aside class="notes">
+<p>Use this slide to connect all topics: gears → reflected impedances → DC motor with load → circuit analogs. Highlight how transfer function derivation is systematic: 1. Write physics-based equations. 2. Reflect through gears if needed. 3. Solve for output over input in Laplace domain.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="formula-summary" class="slide level2">
+<h2>Formula Summary</h2>
+<p><strong>Gear relationships (ideal, lossless):</strong></p>
+<ul>
+<li><p>Displacement ratio:</p>
+<p><span class="math display">\[
+\frac{\theta_2}{\theta_1} = \frac{r_1}{r_2} = \frac{N_1}{N_2}
+\]</span></p></li>
+<li><p>Torque ratio:</p>
+<p><span class="math display">\[
+\frac{T_2}{T_1} = \frac{\theta_1}{\theta_2} = \frac{N_2}{N_1}
+\]</span></p></li>
+<li><p>Impedance reflection (source → destination):</p>
+<p><span class="math display">\[
+Z_\text{dest} = Z_\text{source}
+\left(
+\frac{\text{teeth at destination shaft}}
+     {\text{teeth at source shaft}}
+\right)^2
+\]</span></p></li>
+</ul>
+<p><strong>Gear train overall ratio:</strong></p>
+<p><span class="math display">\[
+\theta_\text{out} = \left(\prod_k \frac{N_{\text{driver},k}}{N_{\text{driven},k}}\right)\theta_\text{in}
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p><strong>DC motor relationships:</strong></p>
+<ul>
+<li><p>Back EMF:</p>
+<p><span class="math display">\[
+v_b(t) = K_b \omega_m(t), \quad V_b(s) = K_b s \theta_m(s)
+\]</span></p></li>
+<li><p>Torque–current:</p>
+<p><span class="math display">\[
+T_m(s) = K_t I_a(s)
+\]</span></p></li>
+<li><p>Armature circuit (Laplace):</p>
+<p><span class="math display">\[
+R_a I_a(s) + L_a s I_a(s) + K_b s \theta_m(s) = E_a(s)
+\]</span></p></li>
+<li><p>Mechanical load at armature:</p>
+<p><span class="math display">\[
+T_m(s) = (J_m s^2 + D_m s)\theta_m(s)
+\]</span></p></li>
+<li><p>Effective inertia/damping (with gear ratio <span class="math inline">\(N_1:N_2\)</span>):</p>
+<p><span class="math display">\[
+J_m = J_a + J_L\left(\frac{N_1}{N_2}\right)^2, \quad
+D_m = D_a + D_L\left(\frac{N_1}{N_2}\right)^2
+\]</span></p></li>
+<li><p>Transfer function (neglect <span class="math inline">\(L_a\)</span>):</p>
+<p><span class="math display">\[
+\frac{\theta_m(s)}{E_a(s)}
+= \frac{K_t/(R_a J_m)}{s\left[s + \frac{1}{J_m}
+\left(D_m + \frac{K_t K_b}{R_a}\right)\right]}
+\]</span></p></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p><strong>Torque–speed curve quantities:</strong></p>
+<ul>
+<li><p>Stall torque:</p>
+<p><span class="math display">\[
+T_{\text{stall}} = \frac{K_t}{R_a} e_a
+\]</span></p></li>
+<li><p>No-load speed:</p>
+<p><span class="math display">\[
+\omega_{\text{no-load}} = \frac{e_a}{K_b}
+\]</span></p></li>
+<li><p>Electrical constants:</p>
+<p><span class="math display">\[
+\frac{K_t}{R_a} = \frac{T_{\text{stall}}}{e_a}, \quad
+K_b = \frac{e_a}{\omega_{\text{no-load}}}
+\]</span></p></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p><strong>Electric analog mappings (summary):</strong></p>
+<ul>
+<li><p><strong>Series analog (mesh):</strong></p>
+<ul>
+<li>Velocity <span class="math inline">\(V\)</span> ↔︎ Current <span class="math inline">\(I\)</span></li>
+<li>Force <span class="math inline">\(F\)</span> ↔︎ Voltage <span class="math inline">\(E\)</span></li>
+<li><span class="math inline">\(M\)</span> ↔︎ <span class="math inline">\(L\)</span>, <span class="math inline">\(f_v\)</span> ↔︎ <span class="math inline">\(R\)</span>, <span class="math inline">\(K\)</span> ↔︎ <span class="math inline">\(1/C\)</span></li>
+</ul></li>
+<li><p><strong>Parallel analog (node):</strong></p>
+<ul>
+<li>Velocity <span class="math inline">\(V\)</span> ↔︎ Voltage <span class="math inline">\(E\)</span></li>
+<li>Force <span class="math inline">\(F\)</span> ↔︎ Current <span class="math inline">\(I\)</span></li>
+<li><span class="math inline">\(M\)</span> ↔︎ <span class="math inline">\(1/L\)</span>, <span class="math inline">\(f_v\)</span> ↔︎ <span class="math inline">\(1/R\)</span>, <span class="math inline">\(K\)</span> ↔︎ <span class="math inline">\(C\)</span></li>
+</ul></li>
+</ul>
+<aside class="notes">
+<p>Encourage students to keep this formula sheet handy while working on problem sets involving gears and DC motors.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section>
+<section>
+<section id="interactive-addendum" class="title-slide slide level1 center">
+<h1>Interactive Addendum</h1>
+
+</section>
+<section id="using-this-interactive-deck" class="slide level2">
+<h2>Using This Interactive Deck</h2>
+<ul>
+<li>This addendum lets you <strong>experiment</strong> with gears, DC motors, and analogs using <strong>live Python (Pyodide)</strong> and <strong>Observable JS (OJS)</strong> directly in the browser.</li>
+<li>You can:
+<ul>
+<li>Change gear tooth counts and see how angles and torques change.</li>
+<li>Explore how reflected inertia changes with gear ratio.</li>
+<li>Visualize DC motor step responses as you vary parameters.</li>
+<li>See how motor torque–speed lines depend on motor constants.</li>
+</ul></li>
+</ul>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Change the sliders and code, then click <strong>Run Code</strong> in the Python cells to see how the system behavior changes in real time.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Explain to students that this deck is meant for experimentation, not just passive viewing. Emphasize that they don’t need a local Python installation; everything runs in the browser via Pyodide.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-code-gear-ratios-static-relationships" class="slide level2">
+<h2>1. Interactive Code – Gear Ratios (Static Relationships)</h2>
+<p>Play with the basic gear formulas:</p>
+<ul>
+<li><span class="math inline">\(\displaystyle \frac{\theta_2}{\theta_1} = \frac{N_1}{N_2}\)</span></li>
+<li><span class="math inline">\(\displaystyle \frac{T_2}{T_1} = \frac{N_2}{N_1}\)</span></li>
+</ul>
+<div>
+<div id="pyodide-1" class="exercise-cell">
+
+</div>
+<script type="pyodide-1-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiIyBCYXNpYyBnZWFyIGNhbGN1bGF0b3I6IGNoYW5nZSBOMSwgTjIsIHRoZXRhMSwgYW5kIFQxXG5OMSA9IDIwICAgICAjIHRlZXRoIG9uIGlucHV0IGdlYXJcbk4yID0gNDAgICAgICMgdGVldGggb24gb3V0cHV0IGdlYXJcbnRoZXRhMSA9IDEgICMgaW5wdXQgYW5nbGUgaW4gcmFkaWFuc1xuVDEgPSAxLjAgICAgIyBpbnB1dCB0b3JxdWUgaW4gTsK3bVxuXG50aGV0YTIgPSAoTjEgLyBOMikgKiB0aGV0YTFcblQyID0gKE4yIC8gTjEpICogVDFcblxucHJpbnQoZlwiTjEgPSB7TjF9LCBOMiA9IHtOMn1cIilcbnByaW50KGZcInRoZXRhMi90aGV0YTEgPSB7dGhldGEyL3RoZXRhMTouMmZ9XCIpXG5wcmludChmXCJUMi9UMSAgICAgICAgID0ge1QyL1QxOi4yZn1cIilcbnByaW50KGZcIkZvciB0aGV0YTEgPSB7dGhldGExfSByYWQsIHRoZXRhMiA9IHt0aGV0YTI6LjNmfSByYWRcIilcbnByaW50KGZcIkZvciBUMSA9IHtUMTouMmZ9IE7Ct20sIFQyID0ge1QyOi4zZn0gTsK3bVwiKSJ9
+</script>
+</div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Try: - Make <span class="math inline">\(N_1 &lt; N_2\)</span> (gear reduction). - Make <span class="math inline">\(N_1 &gt; N_2\)</span> (gear up). Observe how angle and torque ratios swap.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Encourage students to interpret the printed ratios physically. Ask: what does it mean if <span class="math inline">\(T_2/T_1 = 2\)</span> but <span class="math inline">\(\theta_2/\theta_1 = 0.5\)</span>?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reactive-visualization-gear-impedance-reflection" class="slide level2">
+<h2>2. Reactive Visualization – Gear Impedance Reflection</h2>
+<p>We know that when reflecting a load inertia <span class="math inline">\(J_L\)</span> through a gear ratio,</p>
+<p><span class="math display">\[
+J_\text{reflected} = J_L \left(\frac{N_\text{dest}}{N_\text{source}}\right)^2
+\]</span></p>
+<p>Use the sliders to see how reflected inertia changes with gear ratio.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="1233" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1232;"><span id="cb1-1233"><a></a>viewof N_source <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">5</span><span class="op">,</span> <span class="dv">100</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"N_source (source shaft teeth)"</span>})</span>
+<span id="cb1-1234"><a></a>viewof N_dest   <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">5</span><span class="op">,</span> <span class="dv">100</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"N_dest (destination shaft teeth)"</span>})</span>
+<span id="cb1-1235"><a></a>viewof J_L      <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.01</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Load inertia J_L (kg·m²)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-2" class="exercise-cell">
+
+</div>
+<script type="pyodide-2-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiTl9zb3VyY2UiLCJOX2Rlc3QiLCJKX0wiXX0sImNvZGUiOiJpbXBvcnQgcGxvdGx5LmV4cHJlc3MgYXMgcHhcbmltcG9ydCBudW1weSBhcyBucFxuXG4jIENvbXB1dGUgcmVmbGVjdGVkIGluZXJ0aWEgb3ZlciBhIHJhbmdlIG9mIGRlc3RpbmF0aW9uIHRlZXRoIGNvdW50cyBmb3IgY29udGV4dFxuTl9kZXN0X3ZhbHVlcyA9IG5wLmxpbnNwYWNlKDUsIDEwMCwgNTApXG5KX3JlZl92YWx1ZXMgPSBKX0wgKiAoTl9kZXN0X3ZhbHVlcyAvIE5fc291cmNlKSoqMlxuXG5maWcgPSBweC5saW5lKFxuICAgIHg9Tl9kZXN0X3ZhbHVlcyxcbiAgICB5PUpfcmVmX3ZhbHVlcyxcbiAgICBsYWJlbHM9e1wieFwiOiBcIk5fZGVzdCAoZGVzdGluYXRpb24gdGVldGgpXCIsIFwieVwiOiBcIlJlZmxlY3RlZCBpbmVydGlhIGF0IHNvdXJjZSBKX3JlZiAoa2fCt23CsilcIn0sXG4gICAgdGl0bGU9XCJSZWZsZWN0ZWQgSW5lcnRpYSB2cy4gRGVzdGluYXRpb24gR2VhciBUZWV0aFwiXG4pXG5cbiMgSGlnaGxpZ2h0IHRoZSBjdXJyZW50IG9wZXJhdGluZyBwb2ludFxuSl9yZWZfY3VycmVudCA9IEpfTCAqIChOX2Rlc3QgLyBOX3NvdXJjZSkqKjJcbmZpZy5hZGRfc2NhdHRlcihcbiAgICB4PVtOX2Rlc3RdLFxuICAgIHk9W0pfcmVmX2N1cnJlbnRdLFxuICAgIG1vZGU9XCJtYXJrZXJzK3RleHRcIixcbiAgICB0ZXh0PVtmXCJDdXJyZW50OiB7Sl9yZWZfY3VycmVudDouM2Z9XCJdLFxuICAgIHRleHRwb3NpdGlvbj1cInRvcCBjZW50ZXJcIixcbiAgICBuYW1lPVwiQ3VycmVudCBzZWxlY3Rpb25cIlxuKVxuXG5maWcifQ==
+</script>
+</div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Interpretation:</p>
+<ul>
+<li>Fix <span class="math inline">\(J_L\)</span> and <span class="math inline">\(N_\text{source}\)</span>, vary <span class="math inline">\(N_\text{dest}\)</span>.</li>
+<li>Larger <span class="math inline">\(N_\text{dest}\)</span> (bigger gear at destination) → <strong>larger</strong> reflected inertia at the source.</li>
+</ul>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Point out that this explains why high reductions can make the motor “feel” a lighter or heavier load depending on direction of reflection.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-code-gear-train-overall-ratio" class="slide level2">
+<h2>3. Interactive Code – Gear Train Overall Ratio</h2>
+<p>Experiment with a 3-stage gear train like in Figure 2.31.</p>
+<p>We use</p>
+<p><span class="math display">\[
+\theta_4 = \frac{N_1 N_3 N_5}{N_2 N_4 N_6} \theta_1
+\]</span></p>
+<div>
+<div id="pyodide-3" class="exercise-cell">
+
+</div>
+<script type="pyodide-3-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiIyBHZWFyIHRyYWluIGNhbGN1bGF0b3I6IG92ZXJhbGwgYW5ndWxhciBkaXNwbGFjZW1lbnQgcmF0aW9cbk4xLCBOMiA9IDIwLCA0MCAgIyBzdGFnZSAxXG5OMywgTjQgPSAzMCwgNjAgICMgc3RhZ2UgMlxuTjUsIE42ID0gMjUsIDUwICAjIHN0YWdlIDNcblxudGhldGExID0gMS4wICAjIGlucHV0IGFuZ2xlIChyYWQpXG5cbnJhdGlvID0gKE4xICogTjMgKiBONSkgLyAoTjIgKiBONCAqIE42KVxudGhldGE0ID0gcmF0aW8gKiB0aGV0YTFcblxucHJpbnQoXCJTdGFnZSAxOiBOMS9OMiA9XCIsIE4xLCBcIi9cIiwgTjIpXG5wcmludChcIlN0YWdlIDI6IE4zL040ID1cIiwgTjMsIFwiL1wiLCBONClcbnByaW50KFwiU3RhZ2UgMzogTjUvTjYgPVwiLCBONSwgXCIvXCIsIE42KVxucHJpbnQoZlwiT3ZlcmFsbCByYXRpbyB0aGV0YTQvdGhldGExID0ge3JhdGlvOi40Zn1cIilcbnByaW50KGZcIkZvciB0aGV0YTEgPSB7dGhldGExfSByYWQsIHRoZXRhNCA9IHt0aGV0YTQ6LjRmfSByYWRcIikifQ==
+</script>
+</div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Modify the <span class="math inline">\(N\)</span> values to see how cascading several modest ratios can create a large overall reduction.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>You can ask students: what combination of modest stage ratios gives about 100:1 total reduction? This ties to practical gear train design in robotics.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reactive-dc-motor-step-response-vs.-parameters" class="slide level2">
+<h2>4. Reactive DC Motor – Step Response vs.&nbsp;Parameters</h2>
+<p>We model the DC motor (position output) as</p>
+<p><span class="math display">\[
+\frac{\theta_m(s)}{E_a(s)} = \frac{K}{s(s + \alpha)}
+\]</span></p>
+<p>where</p>
+<ul>
+<li><span class="math inline">\(K = \dfrac{K_t}{R_a J_m}\)</span></li>
+<li><span class="math inline">\(\alpha = \dfrac{1}{J_m}\left(D_m + \dfrac{K_t K_b}{R_a}\right)\)</span></li>
+</ul>
+<p>Use sliders to vary <span class="math inline">\(K\)</span> and <span class="math inline">\(\alpha\)</span> and see the step response.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="1341" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1340;"><span id="cb2-1341"><a></a>viewof K_gain   <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.01</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"K (position gain)"</span>})</span>
+<span id="cb2-1342"><a></a>viewof alpha    <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.1</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"α (1/s)"</span>})</span>
+<span id="cb2-1343"><a></a>viewof t_final  <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Simulation time (s)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-4" class="exercise-cell">
+
+</div>
+<script type="pyodide-4-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiS19nYWluIiwiYWxwaGEiLCJ0X2ZpbmFsIl19LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5pbXBvcnQgcGxvdGx5LmV4cHJlc3MgYXMgcHhcblxuIyBTdGVwIGlucHV0IEVhID0gMSBWXG5FYSA9IDEuMFxuXG4jIFRpbWUgdmVjdG9yXG50ID0gbnAubGluc3BhY2UoMCwgdF9maW5hbCwgMzAwKVxuXG4jIEFuYWx5dGljYWwgc3RlcCByZXNwb25zZSBvZiBLIC8gKHMgKHMgKyBhbHBoYSkpIHRvIHVuaXQgc3RlcCAoRWEgPSAxKVxuIyDOuCh0KSA9IEsvYWxwaGEgKiAodCAtICgxIC0gZV57LWFscGhhIHR9KS9hbHBoYSlcbnRoZXRhID0gKEtfZ2FpbiAvIGFscGhhKSAqICh0IC0gKDEgLSBucC5leHAoLWFscGhhICogdCkpIC8gYWxwaGEpICogRWFcblxuZmlnID0gcHgubGluZShcbiAgICB4PXQsXG4gICAgeT10aGV0YSxcbiAgICBsYWJlbHM9e1wieFwiOiBcIlRpbWUgdCAocylcIiwgXCJ5XCI6IFwizrhfbSh0KSAocmFkKVwifSxcbiAgICB0aXRsZT1cIkRDIE1vdG9yIFBvc2l0aW9uIFN0ZXAgUmVzcG9uc2U6IEcocykgPSBLIC8gW3MgKHMgKyDOsSldXCJcbilcbmZpZyJ9
+</script>
+</div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Observations:</p>
+<ul>
+<li>Larger <span class="math inline">\(\alpha\)</span> → <strong>faster</strong> response (more damping/electrical braking).</li>
+<li>Larger <span class="math inline">\(K\)</span> → greater <strong>steady-state slope</strong> (more motion per volt).</li>
+</ul>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Relate <span class="math inline">\(\alpha\)</span> changes to increasing <span class="math inline">\(D_m\)</span> or electrical damping <span class="math inline">\(\frac{K_t K_b}{R_a}\)</span>. Ask students to find parameter pairs that yield an overshoot-free, “fast enough” response.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reactive-dc-motor-torquespeed-line-explorer" class="slide level2">
+<h2>5. Reactive DC Motor – Torque–Speed Line Explorer</h2>
+<p>We derived the steady-state torque–speed relationship:</p>
+<p><span class="math display">\[
+T_m = -\frac{K_b K_t}{R_a}\,\omega_m + \frac{K_t}{R_a} e_a
+\]</span></p>
+<p>Use sliders to vary <span class="math inline">\(K_t/R_a\)</span>, <span class="math inline">\(K_b\)</span>, and <span class="math inline">\(e_a\)</span> and see the line.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="1399" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1398;"><span id="cb3-1399"><a></a>viewof Kt_over_Ra <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.1</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"K_t / R_a"</span>})</span>
+<span id="cb3-1400"><a></a>viewof Kb         <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.1</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"K_b"</span>})</span>
+<span id="cb3-1401"><a></a>viewof Ea_dc      <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">10</span><span class="op">,</span> <span class="dv">200</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Applied voltage e_a (V)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-5" class="exercise-cell">
+
+</div>
+<script type="pyodide-5-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiS3Rfb3Zlcl9SYSIsIktiIiwiRWFfZGMiXX0sImNvZGUiOiJpbXBvcnQgbnVtcHkgYXMgbnBcbmltcG9ydCBwbG90bHkuZXhwcmVzcyBhcyBweFxuXG4jIERlZmluZSBzcGVlZCByYW5nZVxub21lZ2EgPSBucC5saW5zcGFjZSgwLCBFYV9kYyAvIEtiICogMS4yLCAyMDApICAjIGV4dGVuZCBiZXlvbmQgbm8tbG9hZCBzcGVlZCBmb3IgY29udGV4dFxuXG4jIFRvcnF1ZS1zcGVlZCBsaW5lXG5UID0gLUtiICogS3Rfb3Zlcl9SYSAqIG9tZWdhICsgS3Rfb3Zlcl9SYSAqIEVhX2RjXG5cbiMgU3RhbGwgdG9ycXVlIGFuZCBuby1sb2FkIHNwZWVkXG5UX3N0YWxsID0gS3Rfb3Zlcl9SYSAqIEVhX2RjXG5vbWVnYV9ub2xvYWQgPSBFYV9kYyAvIEtiXG5cbmZpZyA9IHB4LmxpbmUoXG4gICAgeD1vbWVnYSxcbiAgICB5PVQsXG4gICAgbGFiZWxzPXtcInhcIjogXCLPiV9tIChyYWQvcylcIiwgXCJ5XCI6IFwiVF9tIChOwrdtKVwifSxcbiAgICB0aXRsZT1cIkRDIE1vdG9yIFRvcnF1ZeKAk1NwZWVkIEN1cnZlXCJcbilcblxuIyBNYXJrIGludGVyY2VwdHNcbmZpZy5hZGRfc2NhdHRlcih4PVswXSwgeT1bVF9zdGFsbF0sIG1vZGU9XCJtYXJrZXJzK3RleHRcIixcbiAgICAgICAgICAgICAgICB0ZXh0PVtmXCJUX3N0YWxsID0ge1Rfc3RhbGw6LjFmfSBOwrdtXCJdLCB0ZXh0cG9zaXRpb249XCJ0b3AgbGVmdFwiLFxuICAgICAgICAgICAgICAgIG5hbWU9XCJTdGFsbCB0b3JxdWVcIilcbmZpZy5hZGRfc2NhdHRlcih4PVtvbWVnYV9ub2xvYWRdLCB5PVswXSwgbW9kZT1cIm1hcmtlcnMrdGV4dFwiLFxuICAgICAgICAgICAgICAgIHRleHQ9W2ZcIs+JX25vLWxvYWQgPSB7b21lZ2Ffbm9sb2FkOi4xZn0gcmFkL3NcIl0sIHRleHRwb3NpdGlvbj1cInRvcCByaWdodFwiLFxuICAgICAgICAgICAgICAgIG5hbWU9XCJOby1sb2FkIHNwZWVkXCIpXG5cbmZpZyJ9
+</script>
+</div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Questions to explore:</p>
+<ul>
+<li>What happens to the line if you <strong>double</strong> <span class="math inline">\(e_a\)</span>?</li>
+<li>How does increasing <span class="math inline">\(K_b\)</span> (stronger back EMF) change no-load speed and slope?</li>
+<li>How does increasing <span class="math inline">\(K_t/R_a\)</span> change stall torque?</li>
+</ul>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Connect this back to Example 2.23: identify <span class="math inline">\(T_{\text{stall}}\)</span> and <span class="math inline">\(\omega_{\text{no-load}}\)</span> from a given line and recover <span class="math inline">\(K_t/R_a\)</span> and <span class="math inline">\(K_b\)</span>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-code-compute-j_m-and-d_m-with-gears" class="slide level2">
+<h2>6. Interactive Code – Compute <span class="math inline">\(J_m\)</span> and <span class="math inline">\(D_m\)</span> with Gears</h2>
+<p>Given</p>
+<p><span class="math display">\[
+J_m = J_a + J_L\left(\frac{N_1}{N_2}\right)^2, \quad
+D_m = D_a + D_L\left(\frac{N_1}{N_2}\right)^2
+\]</span></p>
+<p>experiment with different gear ratios and load values.</p>
+<div>
+<div id="pyodide-6" class="exercise-cell">
+
+</div>
+<script type="pyodide-6-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiIyBDb21wdXRlIGVmZmVjdGl2ZSBtb3Rvci1zaWRlIGluZXJ0aWEgYW5kIGRhbXBpbmcgZm9yIGdpdmVuIHBhcmFtZXRlcnNcbkpfYSA9IDUuMCAgICMgYXJtYXR1cmUgaW5lcnRpYVxuRF9hID0gMi4wICAgIyBhcm1hdHVyZSBkYW1waW5nXG5KX0wgPSA3MDAuMCAjIGxvYWQgaW5lcnRpYVxuRF9MID0gODAwLjAgIyBsb2FkIGRhbXBpbmdcblxuTjEgPSAxICAgICAgIyBtb3RvciBnZWFyIHRlZXRoXG5OMiA9IDEwICAgICAjIGxvYWQgZ2VhciB0ZWV0aFxuXG5KX20gPSBKX2EgKyBKX0wgKiAoTjEgLyBOMikqKjJcbkRfbSA9IERfYSArIERfTCAqIChOMSAvIE4yKSoqMlxuXG5wcmludChmXCJHZWFyIHJhdGlvIE4xL04yID0ge04xfS97TjJ9ID0ge04xL04yOi4yZn1cIilcbnByaW50KGZcIkVxdWl2YWxlbnQgaW5lcnRpYSBhdCBhcm1hdHVyZSBKX20gPSB7Sl9tOi4yZn1cIilcbnByaW50KGZcIkVxdWl2YWxlbnQgZGFtcGluZyBhdCBhcm1hdHVyZSBEX20gPSB7RF9tOi4yZn1cIikifQ==
+</script>
+</div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Try changing <span class="math inline">\(N_1/N_2\)</span> to 1/5, 1/10, 1/20, etc. Observe how <span class="math inline">\(J_m\)</span> and <span class="math inline">\(D_m\)</span> scale with the <strong>square</strong> of the gear ratio.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Encourage students to reflect: a higher reduction (smaller <span class="math inline">\(N_1/N_2\)</span>) “lightens” the load as seen by the motor. This is crucial when selecting a motor for a heavy robotic joint.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reactive-first-order-mechanical-load-via-gear-ratio" class="slide level2">
+<h2>7. Reactive – First-Order Mechanical Load via Gear Ratio</h2>
+<p>We can visualize how gear ratio affects a <strong>first-order</strong> load dynamics in angle:</p>
+<p><span class="math display">\[
+G(s) = \frac{\theta(s)}{T(s)} = \frac{1}{J_\text{eff} s^2 + D_\text{eff} s}
+\]</span></p>
+<p>where <span class="math inline">\(J_\text{eff}, D_\text{eff}\)</span> depend on gear ratio.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="1508" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1507;"><span id="cb4-1508"><a></a>viewof N1_slider <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"N1 (motor gear teeth)"</span>})</span>
+<span id="cb4-1509"><a></a>viewof N2_slider <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">50</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"N2 (load gear teeth)"</span>})</span>
+<span id="cb4-1510"><a></a>viewof JL_slider <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">10</span><span class="op">,</span> <span class="dv">1000</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Load inertia J_L"</span>})</span>
+<span id="cb4-1511"><a></a>viewof DL_slider <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">10</span><span class="op">,</span> <span class="dv">1000</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Load damping D_L"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-7" class="exercise-cell">
+
+</div>
+<script type="pyodide-7-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiTjFfc2xpZGVyIiwiTjJfc2xpZGVyIiwiSkxfc2xpZGVyIiwiRExfc2xpZGVyIl19LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5pbXBvcnQgcGxvdGx5LmV4cHJlc3MgYXMgcHhcblxuIyBNb3Rvci1zaWRlIGluZXJ0aWEvZGFtcGluZ1xuSl9hLCBEX2EgPSA1LjAsIDIuMFxuXG5yYXRpbyA9IE4xX3NsaWRlciAvIE4yX3NsaWRlclxuSl9tID0gSl9hICsgSkxfc2xpZGVyICogcmF0aW8qKjJcbkRfbSA9IERfYSArIERMX3NsaWRlciAqIHJhdGlvKioyXG5cbiMgVW5pdCBzdGVwIGluIHRvcnF1ZSBUKHMpID0gMS9zOiBzb2x2ZSBmb3IgzrgodClcbiMgRm9yIHNpbXBsaWNpdHksIHdlIGFwcHJveGltYXRlIHRoZSBkb21pbmFudCBiZWhhdmlvciBhcyBmaXJzdCBvcmRlciBpbiDPiSh0KSA9IFQgLyBEX21cbnQgPSBucC5saW5zcGFjZSgwLCA1LCAyMDApXG5vbWVnYV90ID0gKDEgLyBEX20pICogKDEgLSBucC5leHAoLURfbSAvIEpfbSAqIHQpKSAgICMgYXBwcm94aW1hdGVcbnRoZXRhX3QgPSBucC5jdW1zdW0ob21lZ2FfdCkgKiAodFsxXSAtIHRbMF0pICAgICAgICAgIyBudW1lcmljYWwgaW50ZWdyYXRpb25cblxuZmlnID0gcHgubGluZShcbiAgICB4PXQsXG4gICAgeT10aGV0YV90LFxuICAgIGxhYmVscz17XCJ4XCI6IFwiVGltZSB0IChzKVwiLCBcInlcIjogXCLOuCh0KSAocmFkLCBhcHByb3gpXCJ9LFxuICAgIHRpdGxlPWZcIkFwcHJveC4gQW5nbGUgUmVzcG9uc2UgdG8gU3RlcCBUb3JxdWUgKHJhdGlvIE4xL04yPXtyYXRpbzouMmZ9KVwiXG4pXG5maWcifQ==
+</script>
+</div>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Warning</strong></p>
+</div>
+<div class="callout-content">
+<p>This is a <strong>rough approximation</strong>, but it illustrates: - Larger reflected <span class="math inline">\(J_m\)</span> → slower angle response. - Larger reflected <span class="math inline">\(D_m\)</span> → more damping, shorter transient.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Make it clear that the model here is simplified for pedagogy. The key point is qualitative: gear ratio shapes the effective inertia/damping and thus the time response.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-series-analog-parameter-mapping" class="slide level2">
+<h2>8. Interactive – Series Analog Parameter Mapping</h2>
+<p>Recall series analog mapping (single-DOF translational):</p>
+<ul>
+<li><span class="math inline">\(M\)</span> ↔︎ <span class="math inline">\(L\)</span>, <span class="math inline">\(f_v\)</span> ↔︎ <span class="math inline">\(R\)</span>, <span class="math inline">\(K\)</span> ↔︎ <span class="math inline">\(1/C\)</span></li>
+</ul>
+<p>Try mapping a given mechanical system to RLC values.</p>
+<div>
+<div id="pyodide-8" class="exercise-cell">
+
+</div>
+<script type="pyodide-8-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiIyBNYXAgbWVjaGFuaWNhbCBwYXJhbWV0ZXJzIHRvIHNlcmllcyBSTEMgYW5hbG9nXG5NID0gMi4wICAgICAgICMgbWFzc1xuZnYgPSAzLjAgICAgICAjIHZpc2NvdXMgZGFtcGluZ1xuSyA9IDUwLjAgICAgICAjIHNwcmluZyBjb25zdGFudFxuXG5MX2VxdWl2ID0gTVxuUl9lcXVpdiA9IGZ2XG5DX2VxdWl2ID0gMS4wIC8gS1xuXG5wcmludChcIk1lY2hhbmljYWwgc3lzdGVtOlwiKVxucHJpbnQoZlwiICBNID0ge019LCBmX3YgPSB7ZnZ9LCBLID0ge0t9XCIpXG5wcmludChcIlNlcmllcyBSTEMgYW5hbG9nOlwiKVxucHJpbnQoZlwiICBMID0ge0xfZXF1aXZ9LCBSID0ge1JfZXF1aXZ9LCBDID0ge0NfZXF1aXY6LjRmfVwiKSJ9
+</script>
+</div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Modify <span class="math inline">\(M\)</span>, <span class="math inline">\(f_v\)</span>, and <span class="math inline">\(K\)</span>. Think about how a <strong>heavier</strong> mass translates to <strong>larger inductance</strong>, and <strong>stiffer</strong> spring to a <strong>smaller</strong> capacitance.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>You can ask students: if you double the mass, which electrical parameter doubles? If you want to simulate a very stiff spring, what happens to <span class="math inline">\(C\)</span>?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reactive-parallel-analog-admittance-matching" class="slide level2">
+<h2>9. Reactive – Parallel Analog Admittance Matching</h2>
+<p>For the parallel analog, the mapping is (single-DOF):</p>
+<ul>
+<li><span class="math inline">\(M\)</span> ↔︎ <span class="math inline">\(1/L\)</span>, <span class="math inline">\(f_v\)</span> ↔︎ <span class="math inline">\(1/R\)</span>, <span class="math inline">\(K\)</span> ↔︎ <span class="math inline">\(C\)</span></li>
+</ul>
+<p>Use sliders to see electrical parameters for a given mechanical system.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb5" data-startfrom="1605" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1604;"><span id="cb5-1605"><a></a>viewof M_mech   <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.5</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Mass M"</span>})</span>
+<span id="cb5-1606"><a></a>viewof fv_mech  <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.5</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Damping f_v"</span>})</span>
+<span id="cb5-1607"><a></a>viewof K_mech   <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">5</span><span class="op">,</span> <span class="dv">200</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Stiffness K"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-5-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-5-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-5-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-9" class="exercise-cell">
+
+</div>
+<script type="pyodide-9-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiTV9tZWNoIiwiZnZfbWVjaCIsIktfbWVjaCJdfSwiY29kZSI6ImltcG9ydCBwbG90bHkuZXhwcmVzcyBhcyBweFxuaW1wb3J0IHBhbmRhcyBhcyBwZFxuXG4jIFBhcmFsbGVsIGFuYWxvZyBtYXBwaW5nXG5MX3BhciA9IDEuMCAvIE1fbWVjaFxuUl9wYXIgPSAxLjAgLyBmdl9tZWNoXG5DX3BhciA9IEtfbWVjaFxuXG5kZiA9IHBkLkRhdGFGcmFtZSh7XG4gICAgXCJQYXJhbWV0ZXJcIjogW1wiTCAoSClcIiwgXCJSICjOqSlcIiwgXCJDIChGKVwiXSxcbiAgICBcIlZhbHVlXCI6IFtMX3BhciwgUl9wYXIsIENfcGFyXVxufSlcblxuZmlnID0gcHguYmFyKGRmLCB4PVwiUGFyYW1ldGVyXCIsIHk9XCJWYWx1ZVwiLCB0aXRsZT1cIlBhcmFsbGVsIEFuYWxvZyBQYXJhbWV0ZXJzIGZvciBHaXZlbiBNZWNoYW5pY2FsIFN5c3RlbVwiKVxuZmlnIn0=
+</script>
+</div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Compare this to the series analog mapping: - Here, <strong>mass</strong> → <strong>inverse inductance</strong>; in series analog, mass → inductance. This is why we call this an <strong>admittance-based</strong> (parallel) analog.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Highlight that both analogs are mathematically valid; the choice is driven by convenience and the desired circuit topology.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="wrap-up-what-to-try-next" class="slide level2 scrollable">
+<h2>10. Wrap-Up – What to Try Next</h2>
+<p>To deepen your understanding, try these mini-challenges in this deck:</p>
+<ol type="1">
+<li><strong>Gear design exercise:</strong>
+<ul>
+<li>Choose a target overall ratio (e.g., 50:1) and find a 3-stage gear train with modest ratios whose product is near 50.</li>
+<li>Use the gear train code to confirm <span class="math inline">\(\theta_\text{out}/\theta_\text{in}\)</span>.</li>
+</ul></li>
+<li><strong>Motor selection exercise:</strong>
+<ul>
+<li>Use the torque–speed explorer: pick <span class="math inline">\(K_t/R_a\)</span>, <span class="math inline">\(K_b\)</span>, <span class="math inline">\(e_a\)</span> to achieve a desired stall torque and no-load speed.</li>
+</ul></li>
+<li><strong>Load matching exercise:</strong>
+<ul>
+<li>For a heavy load (<span class="math inline">\(J_L\)</span> large), adjust <span class="math inline">\(N_1/N_2\)</span> to make <span class="math inline">\(J_m\)</span> small enough that the motor response is “fast,” but not so small that back-driving becomes impossible.</li>
+</ul></li>
+<li><strong>Analog modeling exercise:</strong>
+<ul>
+<li>Map a two-mass mechanical system to both series and parallel analogs (on paper), then use the mapping code to check individual parameter conversions.</li>
+</ul></li>
+</ol>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>Use these interactive tools as a <strong>sandbox</strong>: change parameters, observe results, and connect them back to the equations in the main lecture. This is how theory becomes engineering intuition.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Encourage students to save or screenshot parameter settings that produce interesting behaviors (e.g., critically damped, underdamped). Suggest they re-derive the associated time-domain or frequency-domain behavior analytically as practice.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+
+<script type="pyodide-data">
+eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yOC4xL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIiwibnVtcHkiLCJwbG90bHkiLCJuYmZvcm1hdCJdfX0=
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTkiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoiX3B5b2RpZGVfdmFsdWVfOSA9IHtcbiAgY29uc3QgeyBoaWdobGlnaHRQeXRob24sIGI2NERlY29kZX0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS05LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgLy8gRGVmYXVsdCBldmFsdWF0aW9uIGNvbmZpZ3VyYXRpb25cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oe1xuICAgIGlkOiBcInB5b2RpZGUtOS1jb250ZW50c1wiLFxuICAgIGVjaG86IHRydWUsXG4gICAgb3V0cHV0OiB0cnVlXG4gIH0sIGJsb2NrLmF0dHIpO1xuXG4gIC8vIEV2YWx1YXRlIHRoZSBwcm92aWRlZCBQeXRob24gY29kZVxuICBjb25zdCByZXN1bHQgPSBweW9kaWRlT2pzLnByb2Nlc3Moe2NvZGU6IGJsb2NrLmNvZGUsIG9wdGlvbnN9LCB7TV9tZWNoLCBmdl9tZWNoLCBLX21lY2h9KTtcblxuICAvLyBFYXJseSB5aWVsZCB3aGlsZSB3ZSB3YWl0IGZvciB0aGUgZmlyc3QgZXZhbHVhdGlvbiBhbmQgcmVuZGVyXG4gIGlmIChvcHRpb25zLm91dHB1dCAmJiAhKFwiOVwiIGluIHB5b2RpZGVPanMucmVuZGVyZWRPanMpKSB7XG4gICAgY29uc3QgY29udGFpbmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcbiAgICBjb25zdCBzcGlubmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcblxuICAgIGlmIChvcHRpb25zLmVjaG8pIHtcbiAgICAgIC8vIFNob3cgb3V0cHV0IGFzIGhpZ2hsaWdodGVkIHNvdXJjZVxuICAgICAgY29uc3QgcHJlRWxlbSA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJwcmVcIik7XG4gICAgICBjb250YWluZXIuY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlXCI7XG4gICAgICBwcmVFbGVtLmNsYXNzTmFtZSA9IFwic291cmNlQ29kZSBweXRob25cIjtcbiAgICAgIHByZUVsZW0uYXBwZW5kQ2hpbGQoaGlnaGxpZ2h0UHl0aG9uKGJsb2NrLmNvZGUpKTtcbiAgICAgIHNwaW5uZXIuY2xhc3NOYW1lID0gXCJzcGlubmVyLWdyb3cgc3Bpbm5lci1ncm93LXNtIG0tMiBwb3NpdGlvbi1hYnNvbHV0ZSB0b3AtMCBlbmQtMFwiO1xuICAgICAgcHJlRWxlbS5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChwcmVFbGVtKTtcbiAgICB9IGVsc2Uge1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItYm9yZGVyIHNwaW5uZXItYm9yZGVyLXNtXCI7XG4gICAgICBjb250YWluZXIuYXBwZW5kQ2hpbGQoc3Bpbm5lcik7XG4gICAgfVxuXG4gICAgeWllbGQgY29udGFpbmVyO1xuICB9XG5cbiAgcHlvZGlkZU9qcy5yZW5kZXJlZE9qc1tcIjlcIl0gPSB0cnVlO1xuICB5aWVsZCBhd2FpdCByZXN1bHQ7XG59XG4ifSx7ImNlbGxOYW1lIjoicHlvZGlkZS04IiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6InZpZXdvZiBfcHlvZGlkZV9lZGl0b3JfOCA9IHtcbiAgY29uc3QgeyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IsIGI2NERlY29kZSB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInB5b2RpZGUtOC1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHsgaWQ6IGBweW9kaWRlLTgtY29udGVudHNgIH0sIGJsb2NrLmF0dHIpO1xuICBjb25zdCBlZGl0b3IgPSBuZXcgUHlvZGlkZUV4ZXJjaXNlRWRpdG9yKFxuICAgIHB5b2RpZGVPanMucHlvZGlkZVByb21pc2UsXG4gICAgYmxvY2suY29kZSxcbiAgICBvcHRpb25zXG4gICk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fcHlvZGlkZV92YWx1ZV84ID0gcHlvZGlkZU9qcy5wcm9jZXNzKF9weW9kaWRlX2VkaXRvcl84LCB7fSk7XG4ifSx7ImNlbGxOYW1lIjoicHlvZGlkZS03IiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6Il9weW9kaWRlX3ZhbHVlXzcgPSB7XG4gIGNvbnN0IHsgaGlnaGxpZ2h0UHl0aG9uLCBiNjREZWNvZGV9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInB5b2RpZGUtNy1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIC8vIERlZmF1bHQgZXZhbHVhdGlvbiBjb25maWd1cmF0aW9uXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHtcbiAgICBpZDogXCJweW9kaWRlLTctY29udGVudHNcIixcbiAgICBlY2hvOiB0cnVlLFxuICAgIG91dHB1dDogdHJ1ZVxuICB9LCBibG9jay5hdHRyKTtcblxuICAvLyBFdmFsdWF0ZSB0aGUgcHJvdmlkZWQgUHl0aG9uIGNvZGVcbiAgY29uc3QgcmVzdWx0ID0gcHlvZGlkZU9qcy5wcm9jZXNzKHtjb2RlOiBibG9jay5jb2RlLCBvcHRpb25zfSwge04xX3NsaWRlciwgTjJfc2xpZGVyLCBKTF9zbGlkZXIsIERMX3NsaWRlcn0pO1xuXG4gIC8vIEVhcmx5IHlpZWxkIHdoaWxlIHdlIHdhaXQgZm9yIHRoZSBmaXJzdCBldmFsdWF0aW9uIGFuZCByZW5kZXJcbiAgaWYgKG9wdGlvbnMub3V0cHV0ICYmICEoXCI3XCIgaW4gcHlvZGlkZU9qcy5yZW5kZXJlZE9qcykpIHtcbiAgICBjb25zdCBjb250YWluZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpO1xuICAgIGNvbnN0IHNwaW5uZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpO1xuXG4gICAgaWYgKG9wdGlvbnMuZWNobykge1xuICAgICAgLy8gU2hvdyBvdXRwdXQgYXMgaGlnaGxpZ2h0ZWQgc291cmNlXG4gICAgICBjb25zdCBwcmVFbGVtID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcInByZVwiKTtcbiAgICAgIGNvbnRhaW5lci5jbGFzc05hbWUgPSBcInNvdXJjZUNvZGVcIjtcbiAgICAgIHByZUVsZW0uY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlIHB5dGhvblwiO1xuICAgICAgcHJlRWxlbS5hcHBlbmRDaGlsZChoaWdobGlnaHRQeXRob24oYmxvY2suY29kZSkpO1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItZ3JvdyBzcGlubmVyLWdyb3ctc20gbS0yIHBvc2l0aW9uLWFic29sdXRlIHRvcC0wIGVuZC0wXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKHNwaW5uZXIpO1xuICAgICAgY29udGFpbmVyLmFwcGVuZENoaWxkKHByZUVsZW0pO1xuICAgIH0gZWxzZSB7XG4gICAgICBzcGlubmVyLmNsYXNzTmFtZSA9IFwic3Bpbm5lci1ib3JkZXIgc3Bpbm5lci1ib3JkZXItc21cIjtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICB9XG5cbiAgICB5aWVsZCBjb250YWluZXI7XG4gIH1cblxuICBweW9kaWRlT2pzLnJlbmRlcmVkT2pzW1wiN1wiXSA9IHRydWU7XG4gIHlpZWxkIGF3YWl0IHJlc3VsdDtcbn1cbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTYiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl82ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS02LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzYgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzYsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoiX3B5b2RpZGVfdmFsdWVfNSA9IHtcbiAgY29uc3QgeyBoaWdobGlnaHRQeXRob24sIGI2NERlY29kZX0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS01LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgLy8gRGVmYXVsdCBldmFsdWF0aW9uIGNvbmZpZ3VyYXRpb25cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oe1xuICAgIGlkOiBcInB5b2RpZGUtNS1jb250ZW50c1wiLFxuICAgIGVjaG86IHRydWUsXG4gICAgb3V0cHV0OiB0cnVlXG4gIH0sIGJsb2NrLmF0dHIpO1xuXG4gIC8vIEV2YWx1YXRlIHRoZSBwcm92aWRlZCBQeXRob24gY29kZVxuICBjb25zdCByZXN1bHQgPSBweW9kaWRlT2pzLnByb2Nlc3Moe2NvZGU6IGJsb2NrLmNvZGUsIG9wdGlvbnN9LCB7S3Rfb3Zlcl9SYSwgS2IsIEVhX2RjfSk7XG5cbiAgLy8gRWFybHkgeWllbGQgd2hpbGUgd2Ugd2FpdCBmb3IgdGhlIGZpcnN0IGV2YWx1YXRpb24gYW5kIHJlbmRlclxuICBpZiAob3B0aW9ucy5vdXRwdXQgJiYgIShcIjVcIiBpbiBweW9kaWRlT2pzLnJlbmRlcmVkT2pzKSkge1xuICAgIGNvbnN0IGNvbnRhaW5lciA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIik7XG4gICAgY29uc3Qgc3Bpbm5lciA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIik7XG5cbiAgICBpZiAob3B0aW9ucy5lY2hvKSB7XG4gICAgICAvLyBTaG93IG91dHB1dCBhcyBoaWdobGlnaHRlZCBzb3VyY2VcbiAgICAgIGNvbnN0IHByZUVsZW0gPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwicHJlXCIpO1xuICAgICAgY29udGFpbmVyLmNsYXNzTmFtZSA9IFwic291cmNlQ29kZVwiO1xuICAgICAgcHJlRWxlbS5jbGFzc05hbWUgPSBcInNvdXJjZUNvZGUgcHl0aG9uXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKGhpZ2hsaWdodFB5dGhvbihibG9jay5jb2RlKSk7XG4gICAgICBzcGlubmVyLmNsYXNzTmFtZSA9IFwic3Bpbm5lci1ncm93IHNwaW5uZXItZ3Jvdy1zbSBtLTIgcG9zaXRpb24tYWJzb2x1dGUgdG9wLTAgZW5kLTBcIjtcbiAgICAgIHByZUVsZW0uYXBwZW5kQ2hpbGQoc3Bpbm5lcik7XG4gICAgICBjb250YWluZXIuYXBwZW5kQ2hpbGQocHJlRWxlbSk7XG4gICAgfSBlbHNlIHtcbiAgICAgIHNwaW5uZXIuY2xhc3NOYW1lID0gXCJzcGlubmVyLWJvcmRlciBzcGlubmVyLWJvcmRlci1zbVwiO1xuICAgICAgY29udGFpbmVyLmFwcGVuZENoaWxkKHNwaW5uZXIpO1xuICAgIH1cblxuICAgIHlpZWxkIGNvbnRhaW5lcjtcbiAgfVxuXG4gIHB5b2RpZGVPanMucmVuZGVyZWRPanNbXCI1XCJdID0gdHJ1ZTtcbiAgeWllbGQgYXdhaXQgcmVzdWx0O1xufVxuIn0seyJjZWxsTmFtZSI6InB5b2RpZGUtNCIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJfcHlvZGlkZV92YWx1ZV80ID0ge1xuICBjb25zdCB7IGhpZ2hsaWdodFB5dGhvbiwgYjY0RGVjb2RlfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLTQtY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICAvLyBEZWZhdWx0IGV2YWx1YXRpb24gY29uZmlndXJhdGlvblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7XG4gICAgaWQ6IFwicHlvZGlkZS00LWNvbnRlbnRzXCIsXG4gICAgZWNobzogdHJ1ZSxcbiAgICBvdXRwdXQ6IHRydWVcbiAgfSwgYmxvY2suYXR0cik7XG5cbiAgLy8gRXZhbHVhdGUgdGhlIHByb3ZpZGVkIFB5dGhvbiBjb2RlXG4gIGNvbnN0IHJlc3VsdCA9IHB5b2RpZGVPanMucHJvY2Vzcyh7Y29kZTogYmxvY2suY29kZSwgb3B0aW9uc30sIHtLX2dhaW4sIGFscGhhLCB0X2ZpbmFsfSk7XG5cbiAgLy8gRWFybHkgeWllbGQgd2hpbGUgd2Ugd2FpdCBmb3IgdGhlIGZpcnN0IGV2YWx1YXRpb24gYW5kIHJlbmRlclxuICBpZiAob3B0aW9ucy5vdXRwdXQgJiYgIShcIjRcIiBpbiBweW9kaWRlT2pzLnJlbmRlcmVkT2pzKSkge1xuICAgIGNvbnN0IGNvbnRhaW5lciA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIik7XG4gICAgY29uc3Qgc3Bpbm5lciA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIik7XG5cbiAgICBpZiAob3B0aW9ucy5lY2hvKSB7XG4gICAgICAvLyBTaG93IG91dHB1dCBhcyBoaWdobGlnaHRlZCBzb3VyY2VcbiAgICAgIGNvbnN0IHByZUVsZW0gPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwicHJlXCIpO1xuICAgICAgY29udGFpbmVyLmNsYXNzTmFtZSA9IFwic291cmNlQ29kZVwiO1xuICAgICAgcHJlRWxlbS5jbGFzc05hbWUgPSBcInNvdXJjZUNvZGUgcHl0aG9uXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKGhpZ2hsaWdodFB5dGhvbihibG9jay5jb2RlKSk7XG4gICAgICBzcGlubmVyLmNsYXNzTmFtZSA9IFwic3Bpbm5lci1ncm93IHNwaW5uZXItZ3Jvdy1zbSBtLTIgcG9zaXRpb24tYWJzb2x1dGUgdG9wLTAgZW5kLTBcIjtcbiAgICAgIHByZUVsZW0uYXBwZW5kQ2hpbGQoc3Bpbm5lcik7XG4gICAgICBjb250YWluZXIuYXBwZW5kQ2hpbGQocHJlRWxlbSk7XG4gICAgfSBlbHNlIHtcbiAgICAgIHNwaW5uZXIuY2xhc3NOYW1lID0gXCJzcGlubmVyLWJvcmRlciBzcGlubmVyLWJvcmRlci1zbVwiO1xuICAgICAgY29udGFpbmVyLmFwcGVuZENoaWxkKHNwaW5uZXIpO1xuICAgIH1cblxuICAgIHlpZWxkIGNvbnRhaW5lcjtcbiAgfVxuXG4gIHB5b2RpZGVPanMucmVuZGVyZWRPanNbXCI0XCJdID0gdHJ1ZTtcbiAgeWllbGQgYXdhaXQgcmVzdWx0O1xufVxuIn0seyJjZWxsTmFtZSI6InB5b2RpZGUtMyIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3B5b2RpZGVfZWRpdG9yXzMgPSB7XG4gIGNvbnN0IHsgUHlvZGlkZUV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLTMtY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgcHlvZGlkZS0zLWNvbnRlbnRzYCB9LCBibG9jay5hdHRyKTtcbiAgY29uc3QgZWRpdG9yID0gbmV3IFB5b2RpZGVFeGVyY2lzZUVkaXRvcihcbiAgICBweW9kaWRlT2pzLnB5b2RpZGVQcm9taXNlLFxuICAgIGJsb2NrLmNvZGUsXG4gICAgb3B0aW9uc1xuICApO1xuXG4gIHJldHVybiBlZGl0b3IuY29udGFpbmVyO1xufVxuX3B5b2RpZGVfdmFsdWVfMyA9IHB5b2RpZGVPanMucHJvY2VzcyhfcHlvZGlkZV9lZGl0b3JfMywge30pO1xuIn0seyJjZWxsTmFtZSI6InB5b2RpZGUtMiIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJfcHlvZGlkZV92YWx1ZV8yID0ge1xuICBjb25zdCB7IGhpZ2hsaWdodFB5dGhvbiwgYjY0RGVjb2RlfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLTItY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICAvLyBEZWZhdWx0IGV2YWx1YXRpb24gY29uZmlndXJhdGlvblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7XG4gICAgaWQ6IFwicHlvZGlkZS0yLWNvbnRlbnRzXCIsXG4gICAgZWNobzogdHJ1ZSxcbiAgICBvdXRwdXQ6IHRydWVcbiAgfSwgYmxvY2suYXR0cik7XG5cbiAgLy8gRXZhbHVhdGUgdGhlIHByb3ZpZGVkIFB5dGhvbiBjb2RlXG4gIGNvbnN0IHJlc3VsdCA9IHB5b2RpZGVPanMucHJvY2Vzcyh7Y29kZTogYmxvY2suY29kZSwgb3B0aW9uc30sIHtOX3NvdXJjZSwgTl9kZXN0LCBKX0x9KTtcblxuICAvLyBFYXJseSB5aWVsZCB3aGlsZSB3ZSB3YWl0IGZvciB0aGUgZmlyc3QgZXZhbHVhdGlvbiBhbmQgcmVuZGVyXG4gIGlmIChvcHRpb25zLm91dHB1dCAmJiAhKFwiMlwiIGluIHB5b2RpZGVPanMucmVuZGVyZWRPanMpKSB7XG4gICAgY29uc3QgY29udGFpbmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcbiAgICBjb25zdCBzcGlubmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcblxuICAgIGlmIChvcHRpb25zLmVjaG8pIHtcbiAgICAgIC8vIFNob3cgb3V0cHV0IGFzIGhpZ2hsaWdodGVkIHNvdXJjZVxuICAgICAgY29uc3QgcHJlRWxlbSA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJwcmVcIik7XG4gICAgICBjb250YWluZXIuY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlXCI7XG4gICAgICBwcmVFbGVtLmNsYXNzTmFtZSA9IFwic291cmNlQ29kZSBweXRob25cIjtcbiAgICAgIHByZUVsZW0uYXBwZW5kQ2hpbGQoaGlnaGxpZ2h0UHl0aG9uKGJsb2NrLmNvZGUpKTtcbiAgICAgIHNwaW5uZXIuY2xhc3NOYW1lID0gXCJzcGlubmVyLWdyb3cgc3Bpbm5lci1ncm93LXNtIG0tMiBwb3NpdGlvbi1hYnNvbHV0ZSB0b3AtMCBlbmQtMFwiO1xuICAgICAgcHJlRWxlbS5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChwcmVFbGVtKTtcbiAgICB9IGVsc2Uge1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItYm9yZGVyIHNwaW5uZXItYm9yZGVyLXNtXCI7XG4gICAgICBjb250YWluZXIuYXBwZW5kQ2hpbGQoc3Bpbm5lcik7XG4gICAgfVxuXG4gICAgeWllbGQgY29udGFpbmVyO1xuICB9XG5cbiAgcHlvZGlkZU9qcy5yZW5kZXJlZE9qc1tcIjJcIl0gPSB0cnVlO1xuICB5aWVsZCBhd2FpdCByZXN1bHQ7XG59XG4ifSx7ImNlbGxOYW1lIjoicHlvZGlkZS0xIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6InZpZXdvZiBfcHlvZGlkZV9lZGl0b3JfMSA9IHtcbiAgY29uc3QgeyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IsIGI2NERlY29kZSB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInB5b2RpZGUtMS1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHsgaWQ6IGBweW9kaWRlLTEtY29udGVudHNgIH0sIGJsb2NrLmF0dHIpO1xuICBjb25zdCBlZGl0b3IgPSBuZXcgUHlvZGlkZUV4ZXJjaXNlRWRpdG9yKFxuICAgIHB5b2RpZGVPanMucHlvZGlkZVByb21pc2UsXG4gICAgYmxvY2suY29kZSxcbiAgICBvcHRpb25zXG4gICk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fcHlvZGlkZV92YWx1ZV8xID0gcHlvZGlkZU9qcy5wcm9jZXNzKF9weW9kaWRlX2VkaXRvcl8xLCB7fSk7XG4ifSx7ImNlbGxOYW1lIjoicHlvZGlkZS1wcmVsdWRlIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoicHlvZGlkZU9qcyA9IHtcbiAgY29uc3Qge1xuICAgIFB5b2RpZGVFdmFsdWF0b3IsXG4gICAgUHlvZGlkZUVudmlyb25tZW50TWFuYWdlcixcbiAgICBzZXR1cFB5dGhvbixcbiAgICBzdGFydFB5b2RpZGVXb3JrZXIsXG4gICAgYjY0RGVjb2RlLFxuICAgIGNvbGxhcHNlUGF0aCxcbiAgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc3RhdHVzQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJleGVyY2lzZS1sb2FkaW5nLXN0YXR1c1wiKTtcbiAgY29uc3QgaW5kaWNhdG9yQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJleGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaW5kaWNhdG9yQ29udGFpbmVyLmNsYXNzTGlzdC5yZW1vdmUoXCJkLW5vbmVcIik7XG5cbiAgbGV0IHN0YXR1c1RleHQgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpXG4gIHN0YXR1c1RleHQuY2xhc3NMaXN0ID0gXCJleGVyY2lzZS1sb2FkaW5nLWRldGFpbHNcIjtcbiAgc3RhdHVzVGV4dCA9IHN0YXR1c0NvbnRhaW5lci5hcHBlbmRDaGlsZChzdGF0dXNUZXh0KTtcbiAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBJbml0aWFsaXNlYDtcblxuICAvLyBIb2lzdCBpbmRpY2F0b3Igb3V0IGZyb20gZmluYWwgc2xpZGUgd2hlbiBydW5uaW5nIHVuZGVyIHJldmVhbFxuICBjb25zdCByZXZlYWxTdGF0dXMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCAuZXhlcmNpc2UtbG9hZGluZy1pbmRpY2F0b3JcIik7XG4gIGlmIChyZXZlYWxTdGF0dXMpIHtcbiAgICByZXZlYWxTdGF0dXMucmVtb3ZlKCk7XG4gICAgZG9jdW1lbnQucXVlcnlTZWxlY3RvcihcIi5yZXZlYWwgPiAuc2xpZGVzXCIpLmFwcGVuZENoaWxkKHJldmVhbFN0YXR1cyk7XG4gIH1cblxuICAvLyBNYWtlIGFueSByZXZlYWwgc2xpZGVzIHdpdGggbGl2ZSBjZWxscyBzY3JvbGxhYmxlXG4gIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoXCIucmV2ZWFsIC5leGVyY2lzZS1jZWxsXCIpLmZvckVhY2goKGVsKSA9PiB7XG4gICAgZWwuY2xvc2VzdCgnc2VjdGlvbi5zbGlkZScpLmNsYXNzTGlzdC5hZGQoXCJzY3JvbGxhYmxlXCIpO1xuICB9KVxuXG4gIC8vIFB5b2RpZGUgc3VwcGxlbWVudGFsIGRhdGEgYW5kIG9wdGlvbnNcbiAgY29uc3QgZGF0YUNvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS1kYXRhXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZGF0YSA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKGRhdGFDb250ZW50KSk7XG5cbiAgLy8gR3JhYiBsaXN0IG9mIHJlc291cmNlcyB0byBiZSBkb3dubG9hZGVkXG4gIGNvbnN0IGZpbGVzQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJ2ZnMtZmlsZVxcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGZpbGVzID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZmlsZXNDb250ZW50KSk7XG5cbiAgbGV0IHB5b2RpZGVQcm9taXNlID0gKGFzeW5jICgpID0+IHtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIFB5b2RpZGVgO1xuICAgIGNvbnN0IHB5b2RpZGUgPSBhd2FpdCBzdGFydFB5b2RpZGVXb3JrZXIoZGF0YS5vcHRpb25zKTtcblxuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcGFja2FnZTogbWljcm9waXBgO1xuICAgIGF3YWl0IHB5b2RpZGUubG9hZFBhY2thZ2UoXCJtaWNyb3BpcFwiKTtcbiAgICBjb25zdCBtaWNyb3BpcCA9IGF3YWl0IHB5b2RpZGUucHlpbXBvcnQoXCJtaWNyb3BpcFwiKTtcbiAgICBhd2FpdCBkYXRhLnBhY2thZ2VzLnBrZ3MubWFwKChwa2cpID0+ICgpID0+IHtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcGFja2FnZTogJHtwa2d9YDtcbiAgICAgIHJldHVybiBtaWNyb3BpcC5pbnN0YWxsKHBrZyk7XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG4gICAgYXdhaXQgbWljcm9waXAuZGVzdHJveSgpO1xuXG4gICAgLy8gRG93bmxvYWQgYW5kIGluc3RhbGwgcmVzb3VyY2VzXG4gICAgYXdhaXQgZmlsZXMubWFwKChmaWxlKSA9PiBhc3luYyAoKSA9PiB7XG4gICAgICBjb25zdCBuYW1lID0gZmlsZS5zdWJzdHJpbmcoZmlsZS5sYXN0SW5kZXhPZignLycpICsgMSk7XG4gICAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHJlc291cmNlOiAke25hbWV9YDtcbiAgICAgIGNvbnN0IHJlc3BvbnNlID0gYXdhaXQgZmV0Y2goZmlsZSk7XG4gICAgICBpZiAoIXJlc3BvbnNlLm9rKSB7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgQ2FuJ3QgZG93bmxvYWQgXFxgJHtmaWxlfVxcYC4gRXJyb3IgJHtyZXNwb25zZS5zdGF0dXN9OiBcIiR7cmVzcG9uc2Uuc3RhdHVzVGV4dH1cIi5gKTtcbiAgICAgIH1cbiAgICAgIGNvbnN0IGRhdGEgPSBhd2FpdCByZXNwb25zZS5hcnJheUJ1ZmZlcigpO1xuXG4gICAgICAvLyBTdG9yZSBVUkxzIGluIHRoZSBjd2Qgd2l0aG91dCBhbnkgc3ViZGlyZWN0b3J5IHN0cnVjdHVyZVxuICAgICAgaWYgKGZpbGUuaW5jbHVkZXMoXCI6Ly9cIikpIHtcbiAgICAgICAgZmlsZSA9IG5hbWU7XG4gICAgICB9XG5cbiAgICAgIC8vIENvbGxhcHNlIGhpZ2hlciBkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBmaWxlID0gY29sbGFwc2VQYXRoKGZpbGUpO1xuXG4gICAgICAvLyBDcmVhdGUgZGlyZWN0b3J5IHRyZWUsIGlnbm9yaW5nIFwiZGlyZWN0b3J5IGV4aXN0c1wiIFZGUyBlcnJvcnNcbiAgICAgIGNvbnN0IHBhcnRzID0gZmlsZS5zcGxpdCgnLycpLnNsaWNlKDAsIC0xKTtcbiAgICAgIGxldCBwYXRoID0gJyc7XG4gICAgICB3aGlsZSAocGFydHMubGVuZ3RoID4gMCkge1xuICAgICAgICBwYXRoICs9IHBhcnRzLnNoaWZ0KCkgKyAnLyc7XG4gICAgICAgIHRyeSB7XG4gICAgICAgICAgYXdhaXQgcHlvZGlkZS5GUy5ta2RpcihwYXRoKTtcbiAgICAgICAgfSBjYXRjaCAoZSkge1xuICAgICAgICAgIGlmIChlLm5hbWUgIT09IFwiRXJybm9FcnJvclwiKSB0aHJvdyBlO1xuICAgICAgICAgIGlmIChlLmVycm5vICE9PSAyMCkge1xuICAgICAgICAgICAgY29uc3QgZXJyb3JUZXh0UHRyID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLl9zdHJlcnJvcihlLmVycm5vKTtcbiAgICAgICAgICAgIGNvbnN0IGVycm9yVGV4dCA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5VVEY4VG9TdHJpbmcoZXJyb3JUZXh0UHRyKTtcbiAgICAgICAgICAgIHRocm93IG5ldyBFcnJvcihgRmlsZXN5c3RlbSBFcnJvciAke2UuZXJybm99IFwiJHtlcnJvclRleHR9XCIuYCk7XG4gICAgICAgICAgfVxuICAgICAgICB9XG4gICAgICB9XG5cbiAgICAgIC8vIFdyaXRlIHRoaXMgZmlsZSB0byB0aGUgVkZTXG4gICAgICB0cnkge1xuICAgICAgICByZXR1cm4gYXdhaXQgcHlvZGlkZS5GUy53cml0ZUZpbGUoZmlsZSwgbmV3IFVpbnQ4QXJyYXkoZGF0YSkpO1xuICAgICAgfSBjYXRjaCAoZSkge1xuICAgICAgICBpZiAoZS5uYW1lICE9PSBcIkVycm5vRXJyb3JcIikgdGhyb3cgZTtcbiAgICAgICAgY29uc3QgZXJyb3JUZXh0UHRyID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLl9zdHJlcnJvcihlLmVycm5vKTtcbiAgICAgICAgY29uc3QgZXJyb3JUZXh0ID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLlVURjhUb1N0cmluZyhlcnJvclRleHRQdHIpO1xuICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYEZpbGVzeXN0ZW0gRXJyb3IgJHtlLmVycm5vfSBcIiR7ZXJyb3JUZXh0fVwiLmApO1xuICAgICAgfVxuICAgIH0pLnJlZHVjZSgoY3VyLCBuZXh0KSA9PiBjdXIudGhlbihuZXh0KSwgUHJvbWlzZS5yZXNvbHZlKCkpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBQeW9kaWRlIGVudmlyb25tZW50IHNldHVwYDtcbiAgICBhd2FpdCBzZXR1cFB5dGhvbihweW9kaWRlKTtcblxuICAgIHN0YXR1c1RleHQucmVtb3ZlKCk7XG4gICAgaWYgKHN0YXR1c0NvbnRhaW5lci5jaGlsZHJlbi5sZW5ndGggPT0gMCkge1xuICAgICAgc3RhdHVzQ29udGFpbmVyLnBhcmVudE5vZGUucmVtb3ZlKCk7XG4gICAgfVxuICAgIHJldHVybiBweW9kaWRlO1xuICB9KSgpLmNhdGNoKChlcnIpID0+IHtcbiAgICBzdGF0dXNUZXh0LnN0eWxlLmNvbG9yID0gXCJ2YXIoLS1leGVyY2lzZS1lZGl0b3ItaGwtZXIsICNBRDAwMDApXCI7XG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGVyci5tZXNzYWdlO1xuICAgIC8vaW5kaWNhdG9yQ29udGFpbmVyLnF1ZXJ5U2VsZWN0b3IoXCIuc3Bpbm5lci1ncm93XCIpLmNsYXNzTGlzdC5hZGQoXCJkLW5vbmVcIik7XG4gICAgdGhyb3cgZXJyO1xuICB9KTtcblxuICAvLyBLZWVwIHRyYWNrIG9mIGluaXRpYWwgT0pTIGJsb2NrIHJlbmRlclxuICBjb25zdCByZW5kZXJlZE9qcyA9IHt9O1xuXG4gIGNvbnN0IHByb2Nlc3MgPSBhc3luYyAoY29udGV4dCwgaW5wdXRzKSA9PiB7XG4gICAgY29uc3QgcHlvZGlkZSA9IGF3YWl0IHB5b2RpZGVQcm9taXNlO1xuICAgIGNvbnN0IGV2YWx1YXRvciA9IG5ldyBQeW9kaWRlRXZhbHVhdG9yKHB5b2RpZGUsIGNvbnRleHQpO1xuICAgIGF3YWl0IGV2YWx1YXRvci5wcm9jZXNzKGlucHV0cyk7XG4gICAgcmV0dXJuIGV2YWx1YXRvci5jb250YWluZXI7XG4gIH1cblxuICByZXR1cm4ge1xuICAgIHB5b2RpZGVQcm9taXNlLFxuICAgIHJlbmRlcmVkT2pzLFxuICAgIHByb2Nlc3MsXG4gIH07XG59XG4ifV19
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="qrjs_pics/unsoed_logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="https://imron-slide.vercel.app">irosyadi-2025</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script type="ojs-module-contents">
+    eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBOX3NvdXJjZSA9IElucHV0cy5yYW5nZShbNSwgMTAwXSwge3N0ZXA6IDEsIGxhYmVsOiBcIk5fc291cmNlIChzb3VyY2Ugc2hhZnQgdGVldGgpXCJ9KVxudmlld29mIE5fZGVzdCAgID0gSW5wdXRzLnJhbmdlKFs1LCAxMDBdLCB7c3RlcDogMSwgbGFiZWw6IFwiTl9kZXN0IChkZXN0aW5hdGlvbiBzaGFmdCB0ZWV0aClcIn0pXG52aWV3b2YgSl9MICAgICAgPSBJbnB1dHMucmFuZ2UoWzAuMDEsIDEwXSwge3N0ZXA6IDAuMDEsIGxhYmVsOiBcIkxvYWQgaW5lcnRpYSBKX0wgKGtnwrdtwrIpXCJ9KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0yIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoidmlld29mIEtfZ2FpbiAgID0gSW5wdXRzLnJhbmdlKFswLjAxLCAxXSwge3N0ZXA6IDAuMDEsIGxhYmVsOiBcIksgKHBvc2l0aW9uIGdhaW4pXCJ9KVxudmlld29mIGFscGhhICAgID0gSW5wdXRzLnJhbmdlKFswLjEsIDEwXSwge3N0ZXA6IDAuMSwgbGFiZWw6IFwizrEgKDEvcylcIn0pXG52aWV3b2YgdF9maW5hbCAgPSBJbnB1dHMucmFuZ2UoWzEsIDEwXSwge3N0ZXA6IDAuNSwgbGFiZWw6IFwiU2ltdWxhdGlvbiB0aW1lIChzKVwifSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMyIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBLdF9vdmVyX1JhID0gSW5wdXRzLnJhbmdlKFswLjEsIDEwXSwge3N0ZXA6IDAuMSwgbGFiZWw6IFwiS190IC8gUl9hXCJ9KVxudmlld29mIEtiICAgICAgICAgPSBJbnB1dHMucmFuZ2UoWzAuMSwgMTBdLCB7c3RlcDogMC4xLCBsYWJlbDogXCJLX2JcIn0pXG52aWV3b2YgRWFfZGMgICAgICA9IElucHV0cy5yYW5nZShbMTAsIDIwMF0sIHtzdGVwOiAxMCwgbGFiZWw6IFwiQXBwbGllZCB2b2x0YWdlIGVfYSAoVilcIn0pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTQiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ2aWV3b2YgTjFfc2xpZGVyID0gSW5wdXRzLnJhbmdlKFsxLCAyMF0sIHtzdGVwOiAxLCBsYWJlbDogXCJOMSAobW90b3IgZ2VhciB0ZWV0aClcIn0pXG52aWV3b2YgTjJfc2xpZGVyID0gSW5wdXRzLnJhbmdlKFsxLCA1MF0sIHtzdGVwOiAxLCBsYWJlbDogXCJOMiAobG9hZCBnZWFyIHRlZXRoKVwifSlcbnZpZXdvZiBKTF9zbGlkZXIgPSBJbnB1dHMucmFuZ2UoWzEwLCAxMDAwXSwge3N0ZXA6IDEwLCBsYWJlbDogXCJMb2FkIGluZXJ0aWEgSl9MXCJ9KVxudmlld29mIERMX3NsaWRlciA9IElucHV0cy5yYW5nZShbMTAsIDEwMDBdLCB7c3RlcDogMTAsIGxhYmVsOiBcIkxvYWQgZGFtcGluZyBEX0xcIn0pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTUiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ2aWV3b2YgTV9tZWNoICAgPSBJbnB1dHMucmFuZ2UoWzAuNSwgMTBdLCB7c3RlcDogMC41LCBsYWJlbDogXCJNYXNzIE1cIn0pXG52aWV3b2YgZnZfbWVjaCAgPSBJbnB1dHMucmFuZ2UoWzAuNSwgMTBdLCB7c3RlcDogMC41LCBsYWJlbDogXCJEYW1waW5nIGZfdlwifSlcbnZpZXdvZiBLX21lY2ggICA9IElucHV0cy5yYW5nZShbNSwgMjAwXSwge3N0ZXA6IDUsIGxhYmVsOiBcIlN0aWZmbmVzcyBLXCJ9KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdOX3NvdXJjZScpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdOX2Rlc3QnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnSl9MJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ0tfZ2FpbicpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdhbHBoYScpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCd0X2ZpbmFsJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ0t0X292ZXJfUmEnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnS2InKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnRWFfZGMnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnTjFfc2xpZGVyJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ04yX3NsaWRlcicpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdKTF9zbGlkZXInKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnRExfc2xpZGVyJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ01fbWVjaCcpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdmdl9tZWNoJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ0tfbWVjaCcpIn1dfQ==
+    </script>
+    <script type="module">
+    if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+    window._ojs.paths.runtimeToDoc = "../..";
+    window._ojs.paths.runtimeToRoot = "../..";
+    window._ojs.paths.docToRoot = "";
+    window._ojs.selfContained = false;
+    window._ojs.runtime.interpretFromScriptTags();
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

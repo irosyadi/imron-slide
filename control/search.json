@@ -2679,5 +2679,299 @@
     "title": "Translational & Rotational Mechanical System Transfer Functions",
     "section": "Wrap-Up: What You Should Take Away",
     "text": "Wrap-Up: What You Should Take Away\nUsing these interactive blocks, you have:\n\nManipulated mass–spring–damper and rotational system parameters and seen their impact on transfer functions and time responses.\nObserved how mechanical impedance shapes frequency response.\nSeen how multi‑DOF systems lead to mesh-like impedance matrices, just like in circuits.\nPracticed using symbolic and numerical tools (via Pyodide) to reinforce the theory from Sections 2.5–2.6.\n\nUse this deck as a sandbox: modify code, change parameters, and relate every change you see back to the underlying physics + Laplace-domain algebra."
+  },
+  {
+    "objectID": "control_24.html#learning-objectives",
+    "href": "control_24.html#learning-objectives",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\nBy the end of this session, you should be able to:\n\nRelate gear tooth ratios to angular displacement and torque ratios.\nReflect mechanical impedances (inertia, damping, stiffness) through gears and gear trains.\nDerive transfer functions for rotational mechanical systems with gears.\nDerive the transfer function of an armature-controlled DC motor and include a mechanical load.\nUse torque–speed curves to obtain electrical motor constants.\nBuild electric circuit analogs (series and parallel) for mechanical systems.\n\n\nThis slide sets the roadmap. Make clear that students are moving from “bare” mechanical systems into more realistic mechatronic systems: gears + motors. Emphasize that today mixes conceptual understanding (gear ratios, analogies) with procedural skills (deriving transfer functions)."
+  },
+  {
+    "objectID": "control_24.html#why-gears-matter-in-control-systems",
+    "href": "control_24.html#why-gears-matter-in-control-systems",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Why Gears Matter in Control Systems",
+    "text": "Why Gears Matter in Control Systems\n\nElectric motors often do not directly match the desired load speed/torque.\nGears trade speed for torque:\n\nLow gear (bike uphill): more torque, less speed.\nHigh gear (flat road): more speed, less torque.\n\nIn control systems (robot joints, drives, antenna pointing, disk drives), gears help:\n\nIncrease torque to move heavy loads.\nReduce sensitivity to disturbances.\nAchieve desired speed and resolution.\n\n\n\n\n\n\n\n\nTip\n\n\nGears are a mechanical transformer: they transform angular displacement and torque between shafts.\n\n\n\n\nUse the bicycle analogy: most students have intuitive experience with it. Connect to robotics: servo motors with gearboxes, industrial robot arms. Point out that modeling gears correctly is critical when predicting speed response or required motor torque."
+  },
+  {
+    "objectID": "control_24.html#ideal-gear-pair-geometry-and-displacement",
+    "href": "control_24.html#ideal-gear-pair-geometry-and-displacement",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Ideal Gear Pair – Geometry and Displacement",
+    "text": "Ideal Gear Pair – Geometry and Displacement\n\n\nConsider two meshed spur gears:\n\nGear 1: radius \\(r_1\\), \\(N_1\\) teeth, angle \\(\\theta_1(t)\\), torque \\(T_1(t)\\)\nGear 2: radius \\(r_2\\), \\(N_2\\) teeth, angle \\(\\theta_2(t)\\), torque \\(T_2(t)\\)\n\nAt the contact point, the tangential displacement must match:\n\\[\nr_1 \\theta_1 = r_2 \\theta_2\n\\]\nSo the angular displacements are related by\n\\[\n\\frac{\\theta_2}{\\theta_1} = \\frac{r_1}{r_2} = \\frac{N_1}{N_2}\n\\]\n\n\n\n\nFigure 2.27: A gear system\n\n\n\n\n\n\n\n\n\nNote\n\n\nOutput angle is inversely proportional to gear radius / teeth. Larger output gear → smaller output angle for the same input angle.\n\n\n\n\nClarify that we are assuming no slip and ideal gear teeth. Backlash is ignored here: mention it but emphasize we are modeling the linearized, ideal relationship. Walk through why distances along circumferences must match for meshed gears. Point out that \\(N\\) is proportional to circumference, hence to radius."
+  },
+  {
+    "objectID": "control_24.html#ideal-gear-pair-torque-relationship",
+    "href": "control_24.html#ideal-gear-pair-torque-relationship",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Ideal Gear Pair – Torque Relationship",
+    "text": "Ideal Gear Pair – Torque Relationship\n\n\nAssume lossless gears (no energy stored or lost in the teeth). Power in = power out.\nRotational work (energy) = torque × angular displacement:\n\\[\nT_1 \\theta_1 = T_2 \\theta_2\n\\]\nUsing the displacement ratio\n\\[\n\\frac{\\theta_2}{\\theta_1} = \\frac{N_1}{N_2}\n\\]\nwe get\n\\[\n\\frac{T_2}{T_1} = \\frac{\\theta_1}{\\theta_2} = \\frac{N_2}{N_1}\n\\]\n\n\n\n\nFigure 2.28: Transfer functions for lossless gears\n\n\n\n\nAngle ratio (from Gear 1 to Gear 2):\n\\[\n\\dfrac{\\theta_2}{\\theta_1} = \\dfrac{N_1}{N_2}\n\\]\nTorque ratio (from Gear 1 to Gear 2):\n\\[\n\\dfrac{T_2}{T_1} = \\dfrac{N_2}{N_1}\n\\]\n\n\n\n\n\n\n\nImportant\n\n\nGears invert the ratio: - Smaller angle → larger torque, - Larger angle → smaller torque.\n\n\n\n\nStress that this is like an ideal transformer: displacement and torque trade. Make sure students can interpret: a small pinion driving a large gear increases torque but reduces speed/angle. Point out that this is static relationship; dynamic effects involve inertia and damping behind each gear."
+  },
+  {
+    "objectID": "control_24.html#reflecting-mechanical-impedances-through-gears",
+    "href": "control_24.html#reflecting-mechanical-impedances-through-gears",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Reflecting Mechanical Impedances Through Gears",
+    "text": "Reflecting Mechanical Impedances Through Gears\nWe often want to “remove” the gears from the diagram and reflect the load back to one shaft.\nConsider a load inertia–damper–spring at Gear 2:\n\nInertia: \\(J\\)\nDamping: \\(D\\)\nStiffness: \\(K\\)\n\n\n\n\nFigure 2.29: Rotational system driven by gears\n\n\nFrom the gear relations and equations of motion, the equivalent system at \\(\\theta_1\\) (input shaft) becomes\n\\[\n\\left[ J\\left(\\frac{N_1}{N_2}\\right)^2 s^2\n+ D\\left(\\frac{N_1}{N_2}\\right)^2 s\n+ K\\left(\\frac{N_1}{N_2}\\right)^2 \\right] \\theta_1(s) = T_1(s)\n\\]\nSo each mechanical impedance term (inertia, damping, stiffness) is multiplied by \\(\\left(\\dfrac{N_1}{N_2}\\right)^2\\) when reflected from Gear 2 back to Gear 1.\n\nWalk through Figure 2.29(a) → (b) → (c): 1. Reflect input torque \\(T_1\\) to output using \\(N_2/N_1\\). 2. Write equation at the output shaft. 3. Use the angle relation \\(\\theta_2 = (N_1/N_2)\\theta_1\\) to express in terms of \\(\\theta_1\\). Point out that all mechanical terms pick up the square of the gear ratio."
+  },
+  {
+    "objectID": "control_24.html#general-reflection-rule-for-gears",
+    "href": "control_24.html#general-reflection-rule-for-gears",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "General Reflection Rule for Gears",
+    "text": "General Reflection Rule for Gears\nGeneral Rule: A rotational mechanical impedance (inertia, damping, stiffness) attached to a source shaft and reflected to a destination shaft is scaled by\n\\[\n\\left(\n\\frac{\\text{Number of teeth of gear on destination shaft}}\n     {\\text{Number of teeth of gear on source shaft}}\n\\right)^2\n\\]\nEquivalently, using radii \\(r\\):\n\\[\nZ_\\text{dest} = Z_\\text{source} \\left( \\frac{r_\\text{dest}}{r_\\text{source}} \\right)^2\n\\]\n\n\n\n\n\n\nTip\n\n\nThink of gears as a mechanical impedance transformer: impedances scale with square of gear ratio, torques with first power of ratio, angles with inverse ratio.\n\n\n\n\nReinforce that “impedance” here means the coefficient that multiplies \\(\\theta\\), \\(\\dot{\\theta}\\), or \\(\\ddot{\\theta}\\) in the Laplace domain: \\(Js^2\\), \\(Ds\\), \\(K\\). Give a quick numeric check (e.g., \\(N_1 = 20\\), \\(N_2 = 40\\)) so students see magnitudes."
+  },
+  {
+    "objectID": "control_24.html#example-2.21-lossless-gears-concept",
+    "href": "control_24.html#example-2.21-lossless-gears-concept",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Example 2.21 – Lossless Gears: Concept",
+    "text": "Example 2.21 – Lossless Gears: Concept\nProblem: Find the transfer function \\(G(s) = \\dfrac{\\theta_2(s)}{T_1(s)}\\) for the rotational system with gears in Figure 2.30(a).\n\n\n\nFigure 2.30: Rotational mechanical system with gears\n\n\nKey ideas:\n\nShafts are gear-coupled → motions are not independent → only one degree of freedom.\nWe reflect all input-side elements (\\(J_1, D_1, T_1\\)) to the output shaft (Gear 2) to write a single equation.\n\n\nBefore showing equations, ask: “How many independent coordinates?” Students might initially think 2 (one for each inertia), but gears constrain motion → 1 DOF."
+  },
+  {
+    "objectID": "control_24.html#example-2.21-lossless-gears-reflection-and-transfer-function",
+    "href": "control_24.html#example-2.21-lossless-gears-reflection-and-transfer-function",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Example 2.21 – Lossless Gears: Reflection and Transfer Function",
+    "text": "Example 2.21 – Lossless Gears: Reflection and Transfer Function\n\nReflect input torque and impedances to the output:\n\n\\(J_1\\) and \\(D_1\\) scaled by \\(\\left(\\dfrac{N_2}{N_1}\\right)^2\\)\n\\(T_1\\) scaled by \\(\\left(\\dfrac{N_2}{N_1}\\right)\\)\n\nResulting equivalent system at \\(\\theta_2\\):\n\\[\n(J_e s^2 + D_e s + K_e)\\theta_2(s)\n= T_1(s)\\frac{N_2}{N_1}\n\\]\nwhere\n\\[\nJ_e = J_1\\left(\\frac{N_2}{N_1}\\right)^2 + J_2, \\quad\nD_e = D_1\\left(\\frac{N_2}{N_1}\\right)^2 + D_2, \\quad\nK_e = K_2\n\\]\nSolve for the transfer function:\n\\[\nG(s) = \\frac{\\theta_2(s)}{T_1(s)}\n= \\frac{N_2/N_1}{J_e s^2 + D_e s + K_e}\n\\]\nwhich is represented as a standard second-order system in Figure 2.30(c).\n\n\n\n\n\n\n\nNote\n\n\nThe structure (second order) is familiar; the effective parameters \\(J_e, D_e, K_e\\) embed the gear effects.\n\n\n\n\nEmphasize that the reflection step simplifies dynamics: we end up with a single inertia–damper–spring branch. Ask students: “Where does the factor \\(N_2/N_1\\) end up in the final transfer function?”"
+  },
+  {
+    "objectID": "control_24.html#gear-trains-cascaded-gear-ratios",
+    "href": "control_24.html#gear-trains-cascaded-gear-ratios",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Gear Trains – Cascaded Gear Ratios",
+    "text": "Gear Trains – Cascaded Gear Ratios\nFor large gear ratios, we use gear trains: multiple gear pairs in series.\n\n\n\nFigure 2.31: Gear train\n\n\nFrom Figure 2.31,\n\\[\n\\theta_4 = \\frac{N_1 N_3 N_5}{N_2 N_4 N_6}\\, \\theta_1\n\\]\nSo the equivalent gear ratio from \\(\\theta_1\\) to \\(\\theta_4\\) is\n\\[\n\\frac{\\theta_4}{\\theta_1} = \\prod_{k} \\left( \\frac{N_{\\text{driver},k}}{N_{\\text{driven},k}} \\right)\n\\]\n\n\n\n\n\n\nTip\n\n\nFor cascaded gear trains: - Overall displacement ratio = product of individual displacement ratios. - Impedance reflection factors use the corresponding overall ratio (squared).\n\n\n\n\nPoint out the analogy to cascaded electrical transformers (turns ratios multiply). Remind students to keep track of which gear is driving and which is driven at each stage."
+  },
+  {
+    "objectID": "control_24.html#example-2.22-gear-train-with-losses-concept",
+    "href": "control_24.html#example-2.22-gear-train-with-losses-concept",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Example 2.22 – Gear Train with Losses: Concept",
+    "text": "Example 2.22 – Gear Train with Losses: Concept\nProblem: Find \\(G(s) = \\dfrac{\\theta_1(s)}{T_1(s)}\\) for the multi-stage gear system in Figure 2.32(a).\n\n\n\nFigure 2.32: System using a gear train\n\n\nThis time:\n\nGears are not lossless:\n\nGear inertias \\(J_2, J_3, J_4, J_5\\)\nDamping \\(D_2\\) about intermediate shafts\n\nWe want a single equation at \\(\\theta_1\\) (input shaft).\n\nStrategy:\n\nReflect each inertia and damper to \\(\\theta_1\\) using the appropriate gear ratios.\nRatios are different for each element, depending on how many gear stages they cross.\n\n\nHighlight that the previous example was simpler (lossless gears). Here we explicitly model inertia in the gears and friction on shafts. Key idea: each element has its own effective gear ratio relative to the reference shaft."
+  },
+  {
+    "objectID": "control_24.html#example-2.22-gear-train-with-losses-reflection",
+    "href": "control_24.html#example-2.22-gear-train-with-losses-reflection",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Example 2.22 – Gear Train with Losses: Reflection",
+    "text": "Example 2.22 – Gear Train with Losses: Reflection\nAfter reflecting all impedances to \\(\\theta_1\\):\n\nEquivalent inertia at input:\n\\[\nJ_e = J_1\n+ (J_2 + J_3)\\left(\\frac{N_1}{N_2}\\right)^2\n+ (J_4 + J_5)\\left(\\frac{N_1 N_3}{N_2 N_4}\\right)^2\n\\]\nEquivalent damping at input:\n\\[\nD_e = D_1 + D_2\\left(\\frac{N_1}{N_2}\\right)^2\n\\]\n\nResulting equation of motion:\n\\[\n(J_e s^2 + D_e s)\\theta_1(s) = T_1(s)\n\\]\nSo the transfer function is\n\\[\nG(s) = \\frac{\\theta_1(s)}{T_1(s)} = \\frac{1}{J_e s^2 + D_e s}\n\\]\n\n\n\nFigure 2.32(b,c): Equivalent system and block diagram\n\n\n\n\n\n\n\n\nWarning\n\n\nBe meticulous: Each \\(J\\) and \\(D\\) may see zero, one, or two gear ratios. Compute the exact overall ratio from each element’s shaft to the reference shaft.\n\n\n\n\nWalk students through one term explicitly: - E.g., why \\((J_4 + J_5)\\left(\\dfrac{N_1 N_3}{N_2 N_4}\\right)^2\\)? Because these inertias sit after two gear stages relative to \\(\\theta_1\\). Stress that once everything is at one shaft, writing the equation is straightforward."
+  },
+  {
+    "objectID": "control_24.html#skill-assessment-2.10-check-your-understanding",
+    "href": "control_24.html#skill-assessment-2.10-check-your-understanding",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Skill-Assessment 2.10 – Check Your Understanding",
+    "text": "Skill-Assessment 2.10 – Check Your Understanding\nProblem: Find the transfer function \\(G(s) = \\theta_2(s)/T(s)\\) for the rotational mechanical system with gears shown in Figure 2.33.\n\n\n\nFigure 2.33: Rotational mechanical system with gears\n\n\nBook Answer:\n\\[\nG(s) = \\frac{1/2}{s^2 + s + 1}\n\\]\n\n\n\n\n\n\nTip\n\n\nTry to reproduce the answer by:\n\nFinding the appropriate gear ratio(s).\nReflecting impedances to a single shaft.\nWriting the equation of motion.\nSolving for \\(\\theta_2(s)/T(s)\\).\n\n\n\n\n\nEncourage students to work this offline and then check online solutions. Remind them that pattern recognition (reflect → sum → divide) will become routine with practice."
+  },
+  {
+    "objectID": "control_24.html#from-mechanical-to-electromechanical",
+    "href": "control_24.html#from-mechanical-to-electromechanical",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "From Mechanical to Electromechanical",
+    "text": "From Mechanical to Electromechanical\nSo far we modeled:\n\nPurely mechanical rotational systems (with gears).\n\nNow we extend to electromechanical systems:\n\nElectrical input (voltage, current)\nMechanical output (shaft rotation, speed, torque)\n\nApplications in ECE:\n\nRobot arm joints\nAntenna pointing systems\nDisk and tape drive actuators\nFlight simulators and haptic devices\n\n\n\n\nFigure 2.34: NASA flight simulator robot arm\n\n\n\nEmphasize that once we get a transfer function for the motor+load, we can design controllers in exactly the same way as for previous mechanical systems. Use Figure 2.34 to illustrate a sophisticated real system built up from the same building blocks."
+  },
+  {
+    "objectID": "control_24.html#armature-controlled-dc-motor-structure",
+    "href": "control_24.html#armature-controlled-dc-motor-structure",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Armature-Controlled DC Motor – Structure",
+    "text": "Armature-Controlled DC Motor – Structure\n\n\n\nFixed field (permanent magnet or field winding) → provides \\(B\\), the magnetic field.\nArmature: rotating conductor with current \\(i_a(t)\\) → experiences force \\(F = B l i_a\\).\nTorque produced turns the rotor with angle \\(\\theta_m(t)\\) and angular speed \\(\\omega_m(t)\\).\n\n\n\n\n\nFigure 2.35(a): DC motor schematic\n\n\n\nTwo key electromagnetic relationships:\n\nTorque from current:\n\\[\nT_m(s) = K_t I_a(s)\n\\]\nBack EMF from speed:\n\\[\nv_b(t) = K_b \\frac{d\\theta_m(t)}{dt} = K_b \\omega_m(t)\n\\Rightarrow V_b(s) = K_b s \\theta_m(s)\n\\]\n\n\nBe explicit about the physical picture: moving conductor in magnetic field → both force (motor action) and induced voltage (generator action). Mention that with consistent units, \\(K_t = K_b\\) numerically."
+  },
+  {
+    "objectID": "control_24.html#motor-armature-circuit-and-back-emf",
+    "href": "control_24.html#motor-armature-circuit-and-back-emf",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Motor Armature Circuit and Back EMF",
+    "text": "Motor Armature Circuit and Back EMF\nElectrical loop around the armature:\n\nArmature resistance: \\(R_a\\)\nArmature inductance: \\(L_a\\)\nBack EMF: \\(V_b(s)\\)\nApplied voltage: \\(E_a(s)\\)\n\nKirchhoff’s voltage law:\n\\[\nR_a I_a(s) + L_a s I_a(s) + V_b(s) = E_a(s)\n\\]\nSubstitute \\(V_b(s) = K_b s \\theta_m(s)\\) and \\(I_a(s) = \\dfrac{1}{K_t} T_m(s)\\) to couple the electrical and mechanical domains.\n\n\n\n\n\n\nNote\n\n\nThe back EMF \\(V_b\\) acts like a negative feedback in the motor: - Faster rotation → larger \\(V_b\\) → reduces armature current → limits torque.\n\n\n\n\nExplain that this is why DC motors naturally resist sudden load changes to some extent: the back EMF changes current. Prepare students to plug in the mechanical dynamics next."
+  },
+  {
+    "objectID": "control_24.html#mechanical-loading-of-the-motor",
+    "href": "control_24.html#mechanical-loading-of-the-motor",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Mechanical Loading of the Motor",
+    "text": "Mechanical Loading of the Motor\nMechanical side (shaft dynamics):\n\n\n\nFigure 2.36: Typical equivalent mechanical loading\n\n\n\nEquivalent inertia at armature: \\(J_m\\)\nEquivalent viscous damping: \\(D_m\\)\n\nEquation in Laplace domain:\n\\[\nT_m(s) = (J_m s^2 + D_m s)\\, \\theta_m(s)\n\\]\nThis \\(J_m\\) and \\(D_m\\) include both:\n\nMotor’s own inertia and damping.\nLoad inertia and damping reflected through gear(s) to the armature shaft.\n\n\nConnect back to earlier gear reflection: \\(J_m\\) and \\(D_m\\) are computed using those formulas. This unifies mechanical modeling with the electrical motor model."
+  },
+  {
+    "objectID": "control_24.html#dc-motor-transfer-function-neglecting-armature-inductance",
+    "href": "control_24.html#dc-motor-transfer-function-neglecting-armature-inductance",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "DC Motor Transfer Function (Neglecting Armature Inductance)",
+    "text": "DC Motor Transfer Function (Neglecting Armature Inductance)\nSubstitute \\(T_m(s)\\) and \\(V_b(s)\\) into the armature KVL, assuming \\(L_a\\) is small:\n\nStart with\n\\[\n\\frac{(R_a + L_a s)T_m(s)}{K_t} + K_b s \\theta_m(s) = E_a(s)\n\\]\nWith \\(L_a \\approx 0\\):\n\\[\n\\frac{R_a}{K_t} T_m(s) + K_b s \\theta_m(s) = E_a(s)\n\\]\nUse \\(T_m(s) = (J_m s^2 + D_m s)\\theta_m(s)\\):\n\\[\n\\left[\\frac{R_a}{K_t} (J_m s^2 + D_m s) + K_b s \\right]\\theta_m(s) = E_a(s)\n\\]\n\nRearrange:\n\\[\n\\left[\\frac{R_a}{K_t} (J_m s + D_m) + K_b \\right] s \\theta_m(s) = E_a(s)\n\\]\nSo the transfer function is\n\\[\n\\frac{\\theta_m(s)}{E_a(s)}\n= \\frac{K_t/(R_a J_m)}{s\\left[s + \\frac{1}{J_m}\n\\left(D_m + \\frac{K_t K_b}{R_a}\\right)\\right]}\n\\]\nor in simplified form\n\\[\n\\frac{\\theta_m(s)}{E_a(s)} = \\frac{K}{s(s + \\alpha)}\n\\]\n\n\n\n\n\n\nImportant\n\n\nA DC motor (with this approximation) behaves like: - One integrator (from speed to position), and - One stable first-order pole (electromechanical time constant).\n\n\n\n\nInterpret \\(K\\) as the static gain from voltage to position velocity integrated. Interpret \\(\\alpha\\) as related to the effective damping: larger \\(D_m\\) or stronger electrical damping (large \\(K_t K_b/R_a\\)) → faster \\(\\alpha\\) (shorter time constant)."
+  },
+  {
+    "objectID": "control_24.html#including-the-gear-and-load-effective-j_m-and-d_m",
+    "href": "control_24.html#including-the-gear-and-load-effective-j_m-and-d_m",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Including the Gear and Load – Effective \\(J_m\\) and \\(D_m\\)",
+    "text": "Including the Gear and Load – Effective \\(J_m\\) and \\(D_m\\)\nConsider a motor with armature inertia \\(J_a\\) and damping \\(D_a\\), driving a load of inertia \\(J_L\\) and damping \\(D_L\\) through a gear pair with ratio \\(N_1:N_2\\) (armature:load):\n\n\n\nFigure 2.37: DC motor driving a rotational mechanical load\n\n\nReflect \\(J_L\\) and \\(D_L\\) to the armature:\n\\[\nJ_m = J_a + J_L\\left(\\frac{N_1}{N_2}\\right)^2\n\\]\n\\[\nD_m = D_a + D_L\\left(\\frac{N_1}{N_2}\\right)^2\n\\]\nUse these \\(J_m\\) and \\(D_m\\) in the DC motor transfer function\n\\[\n\\frac{\\theta_m(s)}{E_a(s)}\n= \\frac{K_t/(R_a J_m)}{s\\left[s + \\frac{1}{J_m}\n\\left(D_m + \\frac{K_t K_b}{R_a}\\right)\\right]}\n\\]\n\nAsk: “What happens to \\(J_m\\) if we use a large gear reduction (\\(N_1 \\ll N_2\\))?” → The reflected load inertia shrinks significantly, which is one reason high gear ratios are helpful when driving heavy loads."
+  },
+  {
+    "objectID": "control_24.html#determining-electrical-constants-via-torquespeed-curves",
+    "href": "control_24.html#determining-electrical-constants-via-torquespeed-curves",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Determining Electrical Constants via Torque–Speed Curves",
+    "text": "Determining Electrical Constants via Torque–Speed Curves\nStart from the DC motor steady-state equation (with \\(L_a=0\\)):\n\\[\n\\frac{R_a}{K_t}T_m(s) + K_b s \\theta_m(s) = E_a(s)\n\\]\nInverse Laplace and assume DC (steady-state) operation:\n\\[\n\\frac{R_a}{K_t}T_m + K_b \\omega_m = e_a\n\\]\nSolve for torque:\n\\[\nT_m = -\\frac{K_b K_t}{R_a}\\omega_m\n      + \\frac{K_t}{R_a} e_a\n\\]\nThis is a straight line in the torque–speed plane:\n\nIntercept at \\(\\omega_m = 0\\): stall torque\n\\[\nT_{\\text{stall}} = \\frac{K_t}{R_a}e_a\n\\]\nIntercept at \\(T_m = 0\\): no-load speed\n\\[\n\\omega_{\\text{no-load}} = \\frac{e_a}{K_b}\n\\]\n\nThus\n\\[\n\\frac{K_t}{R_a} = \\frac{T_{\\text{stall}}}{e_a},\n\\quad\nK_b = \\frac{e_a}{\\omega_{\\text{no-load}}}\n\\]\n\n\n\nFigure 2.38: Torque–speed curves\n\n\n\n\n\n\n\n\nTip\n\n\nA dynamometer test (measuring stall torque and no-load speed for a given \\(e_a\\)) gives the motor constants needed in the transfer function.\n\n\n\n\nEmphasize that this is practical: in lab or data sheets, motors are often specified by stall torque and no-load speed. Relate to Virtual Experiment 2.2."
+  },
+  {
+    "objectID": "control_24.html#virtual-experiment-2.2-open-loop-servo-motor",
+    "href": "control_24.html#virtual-experiment-2.2-open-loop-servo-motor",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Virtual Experiment 2.2 – Open-Loop Servo Motor",
+    "text": "Virtual Experiment 2.2 – Open-Loop Servo Motor\n\n\n\nVirtual experiment: Quanser Rotary Servo System\n\n\nYou can:\n\nApply step voltages to a Quanser rotary servo motor model.\nMeasure resulting angles, speeds, and possibly torques.\nCompare measured responses to predictions from the motor transfer function.\n\n\n\n\n\n\n\nNote\n\n\nUse this virtual lab to: - Estimate \\(K\\), \\(\\alpha\\), and compare to theory. - Observe how gear ratio affects speed and torque.\n\n\n\n\nEncourage students to treat this as a “black box” system identification exercise: fit a second-order model to measured data and map back to physical parameters."
+  },
+  {
+    "objectID": "control_24.html#example-2.23-dc-motor-and-load-using-all-the-tools",
+    "href": "control_24.html#example-2.23-dc-motor-and-load-using-all-the-tools",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Example 2.23 – DC Motor and Load: Using All the Tools",
+    "text": "Example 2.23 – DC Motor and Load: Using All the Tools\nProblem: Given the DC motor, load, gear ratio, and torque–speed curve in Figure 2.39, find \\(G(s) = \\dfrac{\\theta_L(s)}{E_a(s)}\\).\n\n\n\nFigure 2.39: DC motor and load\n\n\nStep 1: Mechanical Constants\nFrom the data:\n\\[\nJ_m = J_a + J_L\\left(\\frac{N_1}{N_2}\\right)^2\n= 5 + 700\\left(\\frac{1}{10}\\right)^2 = 12\n\\]\n\\[\nD_m = D_a + D_L\\left(\\frac{N_1}{N_2}\\right)^2\n= 2 + 800\\left(\\frac{1}{10}\\right)^2 = 10\n\\]\n\nPause to check units (e.g., N·m·s/rad for damping, kg·m² for inertia). Emphasize again the square of the gear ratio."
+  },
+  {
+    "objectID": "control_24.html#example-2.23-dc-motor-and-load-electrical-constants-and-result",
+    "href": "control_24.html#example-2.23-dc-motor-and-load-electrical-constants-and-result",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Example 2.23 – DC Motor and Load: Electrical Constants and Result",
+    "text": "Example 2.23 – DC Motor and Load: Electrical Constants and Result\nFrom the torque–speed curve:\n\nStall torque: \\(T_{\\text{stall}} = 500\\)\nNo-load speed: \\(\\omega_{\\text{no-load}} = 50\\)\nInput voltage: \\(e_a = 100\\)\n\nThen\n\\[\n\\frac{K_t}{R_a} = \\frac{T_{\\text{stall}}}{e_a}\n= \\frac{500}{100} = 5\n\\]\n\\[\nK_b = \\frac{e_a}{\\omega_{\\text{no-load}}}\n= \\frac{100}{50} = 2\n\\]\nPlug into the motor transfer function:\n\\[\n\\frac{\\theta_m(s)}{E_a(s)}\n= \\frac{5/12}{s\\left\\{s + \\frac{1}{12}[10 + (5)(2)]\\right\\}}\n= \\frac{0.417}{s(s + 1.667)}\n\\]\nUse gear ratio \\(\\dfrac{N_1}{N_2} = \\dfrac{1}{10}\\) to get load angle:\n\\[\n\\frac{\\theta_L(s)}{E_a(s)}\n= \\frac{0.0417}{s(s + 1.667)}\n\\]\n\n\n\nFigure 2.39(c): Block diagram\n\n\n\n\n\n\n\n\nNote\n\n\nNotice: The poles (dynamics) do not change with this simple gear scaling; the gear changes only the output gain between \\(\\theta_m\\) and \\(\\theta_L\\).\n\n\n\n\nClarify that, strictly, changing gear ratio would change \\(J_m\\) and \\(D_m\\), thus affecting poles. Here, the ratio used in reflecting load and the ratio used for angle appear separately, but we’re using the specific given data, so the final dynamics come out as shown."
+  },
+  {
+    "objectID": "control_24.html#skill-assessment-2.11-motor-gear-load",
+    "href": "control_24.html#skill-assessment-2.11-motor-gear-load",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Skill-Assessment 2.11 – Motor + Gear + Load",
+    "text": "Skill-Assessment 2.11 – Motor + Gear + Load\nProblem: For the electromechanical system shown in Figure 2.40, with torque–speed curve\n\\[\nT_m = -8\\omega_m + 200\n\\]\nat \\(e_a = 100\\ \\text{V}\\), find\n\\[\nG(s) = \\frac{\\theta_L(s)}{E_a(s)}\n\\]\n\n\n\nFigure 2.40: Electromechanical system\n\n\nBook Answer:\n\\[\nG(s) = \\frac{1/20}{s\\left[s + \\dfrac{15}{2}\\right]}\n\\]\n\n\n\n\n\n\nTip\n\n\nTo solve:\n\nExtract \\(K_t/R_a\\) and \\(K_b\\) from the torque–speed relation.\nReflect load inertia/damping through gears to find \\(J_m\\) and \\(D_m\\).\nUse the DC motor transfer function formula.\nInclude gear ratio between motor and load angles.\n\n\n\n\n\nPoint out that this is essentially the same workflow as Example 2.23, but as a self-check. Encourage students to verify each step symbolically before plugging numbers."
+  },
+  {
+    "objectID": "control_24.html#electric-circuit-analogs-why-bother",
+    "href": "control_24.html#electric-circuit-analogs-why-bother",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Electric Circuit Analogs – Why Bother?",
+    "text": "Electric Circuit Analogs – Why Bother?\nMechanical → Electrical analogs:\n\nLet us reuse circuit intuition and tools (nodal/mesh analysis, SPICE simulation).\nReveal deep similarities between energy-storage systems across domains.\nProvide alternative ways to derive equations of motion.\n\nTwo main types:\n\nSeries analog (mesh equations ↔︎ equations of motion in velocity).\nParallel analog (nodal equations ↔︎ equations of motion in velocity).\n\n\n\n\nFigure 2.41 and 2.43: Mechanical system and analogs\n\n\n\nMotivate by saying: If you are stronger in circuits than in mechanics, analogs can make mechanical modeling easier. Also, analogs appear historically in early analog computers, which solved differential equations using electrical networks."
+  },
+  {
+    "objectID": "control_24.html#series-analog-single-massspringdamper",
+    "href": "control_24.html#series-analog-single-massspringdamper",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Series Analog – Single Mass–Spring–Damper",
+    "text": "Series Analog – Single Mass–Spring–Damper\nMechanical system:\n\n\n\nFigure 2.41(a): Mechanical system\n\n\nEquation of motion (Laplace, displacement):\n\\[\n(M s^2 + f_v s + K) X(s) = F(s)\n\\]\nTo match with current-based mesh equations, rewrite in terms of velocity \\(V(s) = s X(s)\\):\n\\[\n\\left(M s + f_v + \\frac{K}{s}\\right) V(s) = F(s)\n\\]\nElectrical series RLC mesh:\n\\[\n(L s + R + \\frac{1}{C s}) I(s) = E(s)\n\\]\nAnalog mapping (series type):\n\nVelocity \\(V(s)\\) ↔︎ Current \\(I(s)\\)\nForce \\(F(s)\\) ↔︎ Voltage \\(E(s)\\)\nMass \\(M\\) ↔︎ Inductance \\(L\\)\nViscous damping \\(f_v\\) ↔︎ Resistance \\(R\\)\nSpring constant \\(K\\) ↔︎ Inverse of capacitance \\(1/C\\)\n\n\n\n\n\n\n\nNote\n\n\nIn a series analog, mechanical impedances map onto series electrical impedances.\n\n\n\n\nStudents often confuse which quantity maps to current vs. voltage. Stress: here, velocity ↔︎ current because both appear multiplied by total impedance in the equations."
+  },
+  {
+    "objectID": "control_24.html#series-analog-multi-mass-system-example-2.24",
+    "href": "control_24.html#series-analog-multi-mass-system-example-2.24",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Series Analog – Multi-Mass System (Example 2.24)",
+    "text": "Series Analog – Multi-Mass System (Example 2.24)\nProblem: Draw a series analog for the mechanical system of Figure 2.17(a).\nMechanical equations (after converting to velocity):\n\\[\n\\left[M_1 s + (f_{v_1}+f_{v_3}) + \\frac{K_1+K_2}{s}\\right]V_1(s)\n- \\left(f_{v_3}+\\frac{K_2}{s}\\right)V_2(s) = F(s)\n\\]\n\\[\n-\\left(f_{v_3}+\\frac{K_2}{s}\\right)V_1(s)\n+ \\left[M_2 s+(f_{v_2}+f_{v_3})+\\frac{K_2+K_3}{s}\\right]V_2(s) = 0\n\\]\nCoefficients correspond to sums of series impedances:\n\nImpedances tied to motion of \\(M_1\\) → first mesh.\nImpedances between \\(M_1\\) and \\(M_2\\) → shared between both meshes.\nImpedances tied to \\(M_2\\) → second mesh.\n\nResult:\n\n\n\nFigure 2.42: Series analog\n\n\n\nPoint out which inductor, resistor, capacitor corresponds to each mechanical element. This reinforces the mapping in a more complex context."
+  },
+  {
+    "objectID": "control_24.html#parallel-analog-single-massspringdamper",
+    "href": "control_24.html#parallel-analog-single-massspringdamper",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Parallel Analog – Single Mass–Spring–Damper",
+    "text": "Parallel Analog – Single Mass–Spring–Damper\nNow we match with nodal equations instead of mesh equations.\nElectrical parallel RLC node:\n\\[\n\\left(C s + \\frac{1}{R} + \\frac{1}{L s}\\right) E(s) = I(s)\n\\]\nMechanical equation in velocity form:\n\\[\n\\left(M s + f_v + \\frac{K}{s}\\right) V(s) = F(s)\n\\]\nIf we identify - Velocity \\(V(s)\\) ↔︎ Voltage \\(E(s)\\) - Force \\(F(s)\\) ↔︎ Current \\(I(s)\\) then\n\n\\(M\\) ↔︎ \\(1/L\\) (since \\(1/(L s)\\) term aligns with mass term when seen as admittance)\n\\(f_v\\) ↔︎ \\(1/R\\)\n\\(K\\) ↔︎ \\(C\\)\n\n\n\n\nFigure 2.43: Parallel analog\n\n\n\n\n\n\n\n\nNote\n\n\nIn a parallel analog, - Velocity ↔︎ voltage, - Force ↔︎ current, - Mechanical admittances map onto electrical admittances.\n\n\n\n\nClarify that the mapping is different from the series analog, but both are valid. Choice depends on whether you prefer mesh or nodal methods, or on the type of circuit simulator used."
+  },
+  {
+    "objectID": "control_24.html#parallel-analog-multi-mass-system-example-2.25",
+    "href": "control_24.html#parallel-analog-multi-mass-system-example-2.25",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Parallel Analog – Multi-Mass System (Example 2.25)",
+    "text": "Parallel Analog – Multi-Mass System (Example 2.25)\nProblem: Draw a parallel analog for the mechanical system of Figure 2.17(a).\nStarting from the same mechanical equations (in velocity form), interpret each coefficient as a sum of admittances:\n\nAdmittances associated with \\(M_1\\) connect to node 1.\nAdmittances between \\(M_1\\) and \\(M_2\\) connect between node 1 and node 2.\nAdmittances associated with \\(M_2\\) connect to node 2.\n\nResulting parallel analog:\n\n\n\nFigure 2.44: Parallel analog\n\n\n\nHighlight that the graph structure (two nodes plus interconnection admittance) closely mirrors the mechanical layout of two masses and a coupling spring/damper."
+  },
+  {
+    "objectID": "control_24.html#skill-assessment-2.12-rotational-analogs",
+    "href": "control_24.html#skill-assessment-2.12-rotational-analogs",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Skill-Assessment 2.12 – Rotational Analogs",
+    "text": "Skill-Assessment 2.12 – Rotational Analogs\nProblem: Draw a series and parallel analog for the rotational mechanical system of Figure 2.22.\n(Hint: use rotational analogs of mass, damping, spring: inertia \\(J\\), viscous damping \\(D\\), torsional stiffness \\(K\\).)\nAnswer available online.\n\n\n\n\n\n\nTip\n\n\nWorkflow:\n\nWrite equations of motion in Laplace domain.\nConvert to angular velocity (if needed).\nMatch with either mesh (series analog) or nodal (parallel analog) equations.\nMap each rotational element to an R, L, or C appropriately.\n\n\n\n\n\nEncourage students to note symmetry with translational analogs: equations look the same with \\(\\theta\\) instead of \\(x\\), \\(T\\) instead of \\(F\\), \\(J\\) instead of \\(M\\), etc."
+  },
+  {
+    "objectID": "control_24.html#summary-key-points",
+    "href": "control_24.html#summary-key-points",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Summary / Key Points",
+    "text": "Summary / Key Points\n\nGears:\n\n\\(\\dfrac{\\theta_2}{\\theta_1} = \\dfrac{N_1}{N_2}\\), \\(\\dfrac{T_2}{T_1} = \\dfrac{N_2}{N_1}\\).\nMechanical impedances reflect through gears with the square of gear ratio.\nGear trains multiply individual ratios to get an overall ratio.\n\nRotational systems with gears:\n\nReflect all load impedances to a single shaft; then write one equation of motion.\nTransfer functions look like standard 1st or 2nd order forms with effective \\(J\\), \\(D\\), \\(K\\).\n\nDC motor modeling:\n\nElectrical: \\(R_a I_a + L_a s I_a + K_b s \\theta_m = E_a\\).\nMechanical: \\(T_m = (J_m s^2 + D_m s)\\theta_m\\), \\(T_m = K_t I_a\\).\nCombined TF (ignoring \\(L_a\\)): \\(\\dfrac{\\theta_m}{E_a} = \\dfrac{K_t/(R_a J_m)}{s\\left[s + \\dfrac{1}{J_m}\\left(D_m + \\dfrac{K_t K_b}{R_a}\\right)\\right]}\\).\n\nTorque–speed curves:\n\nProvide \\(K_t/R_a\\) and \\(K_b\\) via stall torque and no-load speed.\n\nElectric circuit analogs:\n\nSeries analog: velocity ↔︎ current, force ↔︎ voltage; impedances in series.\nParallel analog: velocity ↔︎ voltage, force ↔︎ current; admittances in parallel.\n\n\n\nUse this slide to connect all topics: gears → reflected impedances → DC motor with load → circuit analogs. Highlight how transfer function derivation is systematic: 1. Write physics-based equations. 2. Reflect through gears if needed. 3. Solve for output over input in Laplace domain."
+  },
+  {
+    "objectID": "control_24.html#formula-summary",
+    "href": "control_24.html#formula-summary",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Formula Summary",
+    "text": "Formula Summary\nGear relationships (ideal, lossless):\n\nDisplacement ratio:\n\\[\n\\frac{\\theta_2}{\\theta_1} = \\frac{r_1}{r_2} = \\frac{N_1}{N_2}\n\\]\nTorque ratio:\n\\[\n\\frac{T_2}{T_1} = \\frac{\\theta_1}{\\theta_2} = \\frac{N_2}{N_1}\n\\]\nImpedance reflection (source → destination):\n\\[\nZ_\\text{dest} = Z_\\text{source}\n\\left(\n\\frac{\\text{teeth at destination shaft}}\n     {\\text{teeth at source shaft}}\n\\right)^2\n\\]\n\nGear train overall ratio:\n\\[\n\\theta_\\text{out} = \\left(\\prod_k \\frac{N_{\\text{driver},k}}{N_{\\text{driven},k}}\\right)\\theta_\\text{in}\n\\]"
+  },
+  {
+    "objectID": "control_24.html#using-this-interactive-deck",
+    "href": "control_24.html#using-this-interactive-deck",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "Using This Interactive Deck",
+    "text": "Using This Interactive Deck\n\nThis addendum lets you experiment with gears, DC motors, and analogs using live Python (Pyodide) and Observable JS (OJS) directly in the browser.\nYou can:\n\nChange gear tooth counts and see how angles and torques change.\nExplore how reflected inertia changes with gear ratio.\nVisualize DC motor step responses as you vary parameters.\nSee how motor torque–speed lines depend on motor constants.\n\n\n\n\n\n\n\n\nTip\n\n\nChange the sliders and code, then click Run Code in the Python cells to see how the system behavior changes in real time.\n\n\n\n\nExplain to students that this deck is meant for experimentation, not just passive viewing. Emphasize that they don’t need a local Python installation; everything runs in the browser via Pyodide."
+  },
+  {
+    "objectID": "control_24.html#interactive-code-gear-ratios-static-relationships",
+    "href": "control_24.html#interactive-code-gear-ratios-static-relationships",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "1. Interactive Code – Gear Ratios (Static Relationships)",
+    "text": "1. Interactive Code – Gear Ratios (Static Relationships)\nPlay with the basic gear formulas:\n\n\\(\\displaystyle \\frac{\\theta_2}{\\theta_1} = \\frac{N_1}{N_2}\\)\n\\(\\displaystyle \\frac{T_2}{T_1} = \\frac{N_2}{N_1}\\)\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nTry: - Make \\(N_1 &lt; N_2\\) (gear reduction). - Make \\(N_1 &gt; N_2\\) (gear up). Observe how angle and torque ratios swap.\n\n\n\n\nEncourage students to interpret the printed ratios physically. Ask: what does it mean if \\(T_2/T_1 = 2\\) but \\(\\theta_2/\\theta_1 = 0.5\\)?"
+  },
+  {
+    "objectID": "control_24.html#reactive-visualization-gear-impedance-reflection",
+    "href": "control_24.html#reactive-visualization-gear-impedance-reflection",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "2. Reactive Visualization – Gear Impedance Reflection",
+    "text": "2. Reactive Visualization – Gear Impedance Reflection\nWe know that when reflecting a load inertia \\(J_L\\) through a gear ratio,\n\\[\nJ_\\text{reflected} = J_L \\left(\\frac{N_\\text{dest}}{N_\\text{source}}\\right)^2\n\\]\nUse the sliders to see how reflected inertia changes with gear ratio.\n\nviewof N_source = Inputs.range([5, 100], {step: 1, label: \"N_source (source shaft teeth)\"})\nviewof N_dest   = Inputs.range([5, 100], {step: 1, label: \"N_dest (destination shaft teeth)\"})\nviewof J_L      = Inputs.range([0.01, 10], {step: 0.01, label: \"Load inertia J_L (kg·m²)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTip\n\n\nInterpretation:\n\nFix \\(J_L\\) and \\(N_\\text{source}\\), vary \\(N_\\text{dest}\\).\nLarger \\(N_\\text{dest}\\) (bigger gear at destination) → larger reflected inertia at the source.\n\n\n\n\n\nPoint out that this explains why high reductions can make the motor “feel” a lighter or heavier load depending on direction of reflection."
+  },
+  {
+    "objectID": "control_24.html#interactive-code-gear-train-overall-ratio",
+    "href": "control_24.html#interactive-code-gear-train-overall-ratio",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "3. Interactive Code – Gear Train Overall Ratio",
+    "text": "3. Interactive Code – Gear Train Overall Ratio\nExperiment with a 3-stage gear train like in Figure 2.31.\nWe use\n\\[\n\\theta_4 = \\frac{N_1 N_3 N_5}{N_2 N_4 N_6} \\theta_1\n\\]\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nModify the \\(N\\) values to see how cascading several modest ratios can create a large overall reduction.\n\n\n\n\nYou can ask students: what combination of modest stage ratios gives about 100:1 total reduction? This ties to practical gear train design in robotics."
+  },
+  {
+    "objectID": "control_24.html#reactive-dc-motor-step-response-vs.-parameters",
+    "href": "control_24.html#reactive-dc-motor-step-response-vs.-parameters",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "4. Reactive DC Motor – Step Response vs. Parameters",
+    "text": "4. Reactive DC Motor – Step Response vs. Parameters\nWe model the DC motor (position output) as\n\\[\n\\frac{\\theta_m(s)}{E_a(s)} = \\frac{K}{s(s + \\alpha)}\n\\]\nwhere\n\n\\(K = \\dfrac{K_t}{R_a J_m}\\)\n\\(\\alpha = \\dfrac{1}{J_m}\\left(D_m + \\dfrac{K_t K_b}{R_a}\\right)\\)\n\nUse sliders to vary \\(K\\) and \\(\\alpha\\) and see the step response.\n\nviewof K_gain   = Inputs.range([0.01, 1], {step: 0.01, label: \"K (position gain)\"})\nviewof alpha    = Inputs.range([0.1, 10], {step: 0.1, label: \"α (1/s)\"})\nviewof t_final  = Inputs.range([1, 10], {step: 0.5, label: \"Simulation time (s)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTip\n\n\nObservations:\n\nLarger \\(\\alpha\\) → faster response (more damping/electrical braking).\nLarger \\(K\\) → greater steady-state slope (more motion per volt).\n\n\n\n\n\nRelate \\(\\alpha\\) changes to increasing \\(D_m\\) or electrical damping \\(\\frac{K_t K_b}{R_a}\\). Ask students to find parameter pairs that yield an overshoot-free, “fast enough” response."
+  },
+  {
+    "objectID": "control_24.html#reactive-dc-motor-torquespeed-line-explorer",
+    "href": "control_24.html#reactive-dc-motor-torquespeed-line-explorer",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "5. Reactive DC Motor – Torque–Speed Line Explorer",
+    "text": "5. Reactive DC Motor – Torque–Speed Line Explorer\nWe derived the steady-state torque–speed relationship:\n\\[\nT_m = -\\frac{K_b K_t}{R_a}\\,\\omega_m + \\frac{K_t}{R_a} e_a\n\\]\nUse sliders to vary \\(K_t/R_a\\), \\(K_b\\), and \\(e_a\\) and see the line.\n\nviewof Kt_over_Ra = Inputs.range([0.1, 10], {step: 0.1, label: \"K_t / R_a\"})\nviewof Kb         = Inputs.range([0.1, 10], {step: 0.1, label: \"K_b\"})\nviewof Ea_dc      = Inputs.range([10, 200], {step: 10, label: \"Applied voltage e_a (V)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nQuestions to explore:\n\nWhat happens to the line if you double \\(e_a\\)?\nHow does increasing \\(K_b\\) (stronger back EMF) change no-load speed and slope?\nHow does increasing \\(K_t/R_a\\) change stall torque?\n\n\n\n\n\nConnect this back to Example 2.23: identify \\(T_{\\text{stall}}\\) and \\(\\omega_{\\text{no-load}}\\) from a given line and recover \\(K_t/R_a\\) and \\(K_b\\)."
+  },
+  {
+    "objectID": "control_24.html#interactive-code-compute-j_m-and-d_m-with-gears",
+    "href": "control_24.html#interactive-code-compute-j_m-and-d_m-with-gears",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "6. Interactive Code – Compute \\(J_m\\) and \\(D_m\\) with Gears",
+    "text": "6. Interactive Code – Compute \\(J_m\\) and \\(D_m\\) with Gears\nGiven\n\\[\nJ_m = J_a + J_L\\left(\\frac{N_1}{N_2}\\right)^2, \\quad\nD_m = D_a + D_L\\left(\\frac{N_1}{N_2}\\right)^2\n\\]\nexperiment with different gear ratios and load values.\n\n\n\n\n\n\n\n\n\n\n\n\nTip\n\n\nTry changing \\(N_1/N_2\\) to 1/5, 1/10, 1/20, etc. Observe how \\(J_m\\) and \\(D_m\\) scale with the square of the gear ratio.\n\n\n\n\nEncourage students to reflect: a higher reduction (smaller \\(N_1/N_2\\)) “lightens” the load as seen by the motor. This is crucial when selecting a motor for a heavy robotic joint."
+  },
+  {
+    "objectID": "control_24.html#reactive-first-order-mechanical-load-via-gear-ratio",
+    "href": "control_24.html#reactive-first-order-mechanical-load-via-gear-ratio",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "7. Reactive – First-Order Mechanical Load via Gear Ratio",
+    "text": "7. Reactive – First-Order Mechanical Load via Gear Ratio\nWe can visualize how gear ratio affects a first-order load dynamics in angle:\n\\[\nG(s) = \\frac{\\theta(s)}{T(s)} = \\frac{1}{J_\\text{eff} s^2 + D_\\text{eff} s}\n\\]\nwhere \\(J_\\text{eff}, D_\\text{eff}\\) depend on gear ratio.\n\nviewof N1_slider = Inputs.range([1, 20], {step: 1, label: \"N1 (motor gear teeth)\"})\nviewof N2_slider = Inputs.range([1, 50], {step: 1, label: \"N2 (load gear teeth)\"})\nviewof JL_slider = Inputs.range([10, 1000], {step: 10, label: \"Load inertia J_L\"})\nviewof DL_slider = Inputs.range([10, 1000], {step: 10, label: \"Load damping D_L\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWarning\n\n\nThis is a rough approximation, but it illustrates: - Larger reflected \\(J_m\\) → slower angle response. - Larger reflected \\(D_m\\) → more damping, shorter transient.\n\n\n\n\nMake it clear that the model here is simplified for pedagogy. The key point is qualitative: gear ratio shapes the effective inertia/damping and thus the time response."
+  },
+  {
+    "objectID": "control_24.html#interactive-series-analog-parameter-mapping",
+    "href": "control_24.html#interactive-series-analog-parameter-mapping",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "8. Interactive – Series Analog Parameter Mapping",
+    "text": "8. Interactive – Series Analog Parameter Mapping\nRecall series analog mapping (single-DOF translational):\n\n\\(M\\) ↔︎ \\(L\\), \\(f_v\\) ↔︎ \\(R\\), \\(K\\) ↔︎ \\(1/C\\)\n\nTry mapping a given mechanical system to RLC values.\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nModify \\(M\\), \\(f_v\\), and \\(K\\). Think about how a heavier mass translates to larger inductance, and stiffer spring to a smaller capacitance.\n\n\n\n\nYou can ask students: if you double the mass, which electrical parameter doubles? If you want to simulate a very stiff spring, what happens to \\(C\\)?"
+  },
+  {
+    "objectID": "control_24.html#reactive-parallel-analog-admittance-matching",
+    "href": "control_24.html#reactive-parallel-analog-admittance-matching",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "9. Reactive – Parallel Analog Admittance Matching",
+    "text": "9. Reactive – Parallel Analog Admittance Matching\nFor the parallel analog, the mapping is (single-DOF):\n\n\\(M\\) ↔︎ \\(1/L\\), \\(f_v\\) ↔︎ \\(1/R\\), \\(K\\) ↔︎ \\(C\\)\n\nUse sliders to see electrical parameters for a given mechanical system.\n\nviewof M_mech   = Inputs.range([0.5, 10], {step: 0.5, label: \"Mass M\"})\nviewof fv_mech  = Inputs.range([0.5, 10], {step: 0.5, label: \"Damping f_v\"})\nviewof K_mech   = Inputs.range([5, 200], {step: 5, label: \"Stiffness K\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTip\n\n\nCompare this to the series analog mapping: - Here, mass → inverse inductance; in series analog, mass → inductance. This is why we call this an admittance-based (parallel) analog.\n\n\n\n\nHighlight that both analogs are mathematically valid; the choice is driven by convenience and the desired circuit topology."
+  },
+  {
+    "objectID": "control_24.html#wrap-up-what-to-try-next",
+    "href": "control_24.html#wrap-up-what-to-try-next",
+    "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
+    "section": "10. Wrap-Up – What to Try Next",
+    "text": "10. Wrap-Up – What to Try Next\nTo deepen your understanding, try these mini-challenges in this deck:\n\nGear design exercise:\n\nChoose a target overall ratio (e.g., 50:1) and find a 3-stage gear train with modest ratios whose product is near 50.\nUse the gear train code to confirm \\(\\theta_\\text{out}/\\theta_\\text{in}\\).\n\nMotor selection exercise:\n\nUse the torque–speed explorer: pick \\(K_t/R_a\\), \\(K_b\\), \\(e_a\\) to achieve a desired stall torque and no-load speed.\n\nLoad matching exercise:\n\nFor a heavy load (\\(J_L\\) large), adjust \\(N_1/N_2\\) to make \\(J_m\\) small enough that the motor response is “fast,” but not so small that back-driving becomes impossible.\n\nAnalog modeling exercise:\n\nMap a two-mass mechanical system to both series and parallel analogs (on paper), then use the mapping code to check individual parameter conversions.\n\n\n\n\n\n\n\n\nImportant\n\n\nUse these interactive tools as a sandbox: change parameters, observe results, and connect them back to the equations in the main lecture. This is how theory becomes engineering intuition.\n\n\n\n\nEncourage students to save or screenshot parameter settings that produce interesting behaviors (e.g., critically damped, underdamped). Suggest they re-derive the associated time-domain or frequency-domain behavior analytically as practice."
   }
 ]
