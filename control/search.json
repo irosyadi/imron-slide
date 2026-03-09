@@ -2973,5 +2973,285 @@
     "title": "Transfer Functions with Gears, DC Motors, and Electric Analogs",
     "section": "10. Wrap-Up – What to Try Next",
     "text": "10. Wrap-Up – What to Try Next\nTo deepen your understanding, try these mini-challenges in this deck:\n\nGear design exercise:\n\nChoose a target overall ratio (e.g., 50:1) and find a 3-stage gear train with modest ratios whose product is near 50.\nUse the gear train code to confirm \\(\\theta_\\text{out}/\\theta_\\text{in}\\).\n\nMotor selection exercise:\n\nUse the torque–speed explorer: pick \\(K_t/R_a\\), \\(K_b\\), \\(e_a\\) to achieve a desired stall torque and no-load speed.\n\nLoad matching exercise:\n\nFor a heavy load (\\(J_L\\) large), adjust \\(N_1/N_2\\) to make \\(J_m\\) small enough that the motor response is “fast,” but not so small that back-driving becomes impossible.\n\nAnalog modeling exercise:\n\nMap a two-mass mechanical system to both series and parallel analogs (on paper), then use the mapping code to check individual parameter conversions.\n\n\n\n\n\n\n\n\nImportant\n\n\nUse these interactive tools as a sandbox: change parameters, observe results, and connect them back to the equations in the main lecture. This is how theory becomes engineering intuition.\n\n\n\n\nEncourage students to save or screenshot parameter settings that produce interesting behaviors (e.g., critically damped, underdamped). Suggest they re-derive the associated time-domain or frequency-domain behavior analytically as practice."
+  },
+  {
+    "objectID": "control_5.html#reduction-of-multiple-subsystems",
+    "href": "control_5.html#reduction-of-multiple-subsystems",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Reduction of Multiple Subsystems",
+    "text": "Reduction of Multiple Subsystems\nBlock Diagrams, Signal-Flow Graphs, and Mason’s Rule\nChapter 5 focus: From many subsystems to one equivalent model\n\nOpen the chapter by connecting to what students already know: - They’ve seen single-transfer-function systems and second-order step responses. - Now, realistic systems (space shuttles, UAV controllers, power converters, etc.) consist of many subsystems. - Our goal is to compress complex interconnections into a single transfer function, or into a compact state-space model, so that all the tools (pole locations, overshoot, settling time, etc.) still apply.\nHighlight that this is a crucial “bridge” chapter: from simple textbook blocks to real multi-block systems."
+  },
+  {
+    "objectID": "control_5.html#learning-objectives",
+    "href": "control_5.html#learning-objectives",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\nAfter this session, you will be able to:\n\nReduce a multi-block diagram into a single transfer function using block diagram algebra.\nRecognize and use the cascade, parallel, and feedback interconnection forms.\nUse block moves (across summing junctions and pickoff points) to reveal familiar forms.\nConvert block diagrams ↔︎ signal‑flow graphs.\nCompute a system transfer function using Mason’s Rule.\nAnalyze and design second‑order feedback systems built from multiple subsystems (overshoot, settling time, etc.).\n\n\nClarify: This lecture will not cover all later subsections in full state-space detail (5.7–5.8), but we build the foundation: - Block diagrams (5.2) - Feedback analysis & design (5.3) - Signal-flow graphs (5.4) - Mason’s Rule (5.5)\nPoint out that these are heavily used in later state-space sections."
+  },
+  {
+    "objectID": "control_5.html#case-studydriven-motivation",
+    "href": "control_5.html#case-studydriven-motivation",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Case Study–Driven Motivation",
+    "text": "Case Study–Driven Motivation\nYou will later apply these tools to:\n\nAntenna azimuth position control system\n\nDerive its closed-loop transfer function.\nBuild a state-space model of the closed loop.\nPredict percent overshoot, settling time, peak time for a step.\nDesign the gain to meet transient specs.\n\nUnmanned Free‑Swimming Submersible (UFSS)\n\nUse block → state‑space conversion to model pitch and heading control systems.\n\n\n\n\n\n\n\n\nTip\n\n\nThink of this chapter as your “compression tool”: Real system → many blocks → one transfer function or compact state-space model → use all your analysis and design tools.\n\n\n\n\nEmphasize that the big-picture purpose is design: to meet specs like “&lt;10% overshoot” or “settling time &lt; 2s” using gain and structure.\nTie to real ECE domains: - Motor drive systems - Communication AGC loops - Power converter voltage regulation - Robotics and UAV attitude/heading control"
+  },
+  {
+    "objectID": "control_5.html#why-reduce-multiple-subsystems",
+    "href": "control_5.html#why-reduce-multiple-subsystems",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "5.1 Why Reduce Multiple Subsystems?",
+    "text": "5.1 Why Reduce Multiple Subsystems?\nWe start with subsystems:\n\nEach subsystem: a block with input, output, and transfer function.\nReal systems: many subsystems interconnected.\n\nGoal: - Replace the whole interconnection by one equivalent transfer function from input to output. - Then we can: - Apply transient-analysis formulas. - Study stability (poles). - Design gains and compensators.\n\n\nBlock diagrams vs. signal-flow graphs\n\nBlock diagrams\n\nBlocks + summing junctions + pickoff points.\nCommon in frequency-domain analysis & design.\n\nSignal‑flow graphs\n\nNodes = signals.\nDirected branches = transfer functions.\nVery convenient for state‑space and for using Mason’s Rule.\n\n\n\n\n\n\nSpace shuttle with many subsystems\n\n\n\nFIGURE 5.1 – The space shuttle: countless subsystems, many of them control systems.\n\n\n\nUse the shuttle image to prompt a quick discussion: - Ask: “Which subsystems are control systems?” (examples: attitude control, engine thrust control, environmental control, power management, navigation, etc.)\nThen emphasize: each of those high-level control systems is itself formed from many smaller subsystems (sensors, filters, compensators, actuators). We need systematic ways to model their interconnections."
+  },
+  {
+    "objectID": "control_5.html#block-diagram-elements-lti-systems",
+    "href": "control_5.html#block-diagram-elements-lti-systems",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Block Diagram Elements (LTI Systems)",
+    "text": "Block Diagram Elements (LTI Systems)\nAll basic block diagram components:\n\n\n\nBlock diagram components\n\n\n\nFIGURE 5.2 – Components of a block diagram for a linear, time‑invariant system.\n\n\nBlocks: systems / subsystems with transfer function.\nSumming junctions: algebraic sum of inputs.\nPickoff points: copy a signal undiminished to multiple locations.\n\n\nWalk through Figure 5.2: - (a) typical block: system with transfer function G(s). - (b) typical input/output labeling. - (c) summing junction: show that ( C(s) = R_1(s) R_2(s) R_3(s) ). Stress that signs matter. - (d) pickoff: signal fan-out, no attenuation.\nHighlight assumption: signals are unloaded unless we explicitly include loading through transfer functions. This is important in the cascade loading example later."
+  },
+  {
+    "objectID": "control_5.html#basic-interconnection-forms",
+    "href": "control_5.html#basic-interconnection-forms",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "5.2 Basic Interconnection Forms",
+    "text": "5.2 Basic Interconnection Forms\nWe focus on three fundamental interconnections:\n\nCascade (series)\nParallel\nFeedback\n\nEvery complicated block diagram can be reduced by repeatedly:\n\nRecognizing pieces in one of these forms.\nReplacing that piece with its equivalent single block.\n\n\n\n\n\n\n\nNote\n\n\nIf you can reduce cascade, parallel, and feedback, and you know how to move blocks, you can handle almost any linear block diagram.\n\n\n\n\nRemind students that these are the “algebra rules” of block diagrams. Just like simplifying algebraic expressions, you apply patterns repeatedly.\nTell them they will use these patterns constantly in exam problems and in design work."
+  },
+  {
+    "objectID": "control_5.html#cascade-form-concept",
+    "href": "control_5.html#cascade-form-concept",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Cascade Form – Concept",
+    "text": "Cascade Form – Concept\n\n\nCascaded subsystems:\n\n\n\nCascade blocks\n\n\n\nFIGURE 5.3 – (a) Cascaded subsystems; (b) equivalent transfer function.\n\n\nGiven:\n\nSubsystems ( G_1(s), G_2(s), G_3(s) ) in series.\n\nEquivalent transfer function:\n\\[\nG_e(s) = G_3(s)\\,G_2(s)\\,G_1(s)\n\\]\n(assuming no loading between stages).\n\nAnalogy (ECE hardware):\n\nSeries of gain stages in an amplifier chain.\nA digital filter realized as cascaded biquad sections.\n\n\nDerive quickly: - Let input be ( R(s) ). - After ( G_1 ): ( X_1(s) = G_1(s)R(s) ). - After ( G_2 ): ( X_2(s) = G_2(s)X_1(s) = G_2(s)G_1(s)R(s) ). - After ( G_3 ): ( C(s) = G_3(s)X_2(s) = G_3(s)G_2(s)G_1(s)R(s) ). - So ( C/R = G_3 G_2 G_1 ).\nStress that this is correct if stages don’t “electrically load” each other (i.e., the representation as independent transfer functions is valid)."
+  },
+  {
+    "objectID": "control_5.html#cascade-form-when-loading-breaks-it",
+    "href": "control_5.html#cascade-form-when-loading-breaks-it",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Cascade Form – When Loading Breaks It",
+    "text": "Cascade Form – When Loading Breaks It\nRC networks illustrate loading:\n\n\n\nLoading examples\n\n\n\n\n\nCascade with loading\n\n\n\nFIGURE 5.4 – Loading in cascaded systems.\n\nFor each isolated network:\n\nFirst RC: \\[\nG_1(s) = \\frac{V_1(s)}{V_i(s)} = \\frac{\\frac{1}{R_1 C_1}}{s + \\frac{1}{R_1 C_1}}\n\\]\nSecond RC: \\[\nG_2(s) = \\frac{V_2(s)}{V_1(s)} = \\frac{\\frac{1}{R_2 C_2}}{s + \\frac{1}{R_2 C_2}}\n\\]\n\nIf we naively cascade:\n\\[\nG_{\\text{naive}}(s) = G_2(s)G_1(s) =\n\\frac{\\frac{1}{R_1 C_1 R_2 C_2}}{s^2 + \\left(\\frac{1}{R_1 C_1} + \\frac{1}{R_2 C_2}\\right)s + \\frac{1}{R_1 C_1 R_2 C_2}}\n\\]\nBut the true transfer function (from circuit analysis) is:\n\\[\nG(s) = \\frac{V_2(s)}{V_i(s)} =\n\\frac{\\frac{1}{R_1 C_1 R_2 C_2}}{s^2 + \\left(\\frac{1}{R_1 C_1} + \\frac{1}{R_2 C_2} + \\frac{1}{R_2 C_1}\\right)s + \\frac{1}{R_1 C_1 R_2 C_2}}\n\\]\nThey are not equal: extra term ( ) appears due to loading.\n\n\n\n\n\n\nImportant\n\n\nBlock diagram algebra assumes no loading between blocks. If electrical loading exists, you must include it in the model.\n\n\n\n\nExplain physically: - The first RC’s output sees the input impedance of the second RC, altering its dynamics. - The independent transfer-function model for each block is only valid if their connection doesn’t change their behavior (e.g., buffered interfaces).\nThen point to Figure 5.4(d): show that adding an amplifier/buffer isolates the stages.\nConclusion: in control block diagrams, we assume signals are ideal, so cascade multiplication is valid. But as hardware designers, we must check that assumption."
+  },
+  {
+    "objectID": "control_5.html#preventing-loading-buffering",
+    "href": "control_5.html#preventing-loading-buffering",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Preventing Loading – Buffering",
+    "text": "Preventing Loading – Buffering\n\n\n\nRC networks with amplifier buffer\n\n\n\nAmplifier/buffer between RC networks:\n\nHigh input impedance ⇒ does not load previous stage.\nLow output impedance ⇒ drives next stage like an ideal source.\n\n\nThen:\n\\[\nG_{\\text{eq}}(s) = K\\,G_2(s)G_1(s)\n\\]\nwhere ( K ) is the amplifier gain.\n\nConnect to op-amp circuits: - A voltage follower (unity-gain buffer) prevents loading and preserves the cascade product.\nTie back to block diagrams: when we draw multiple blocks in cascade, we implicitly assume we have such ideal buffering (or non-interacting signals)."
+  },
+  {
+    "objectID": "control_5.html#parallel-form",
+    "href": "control_5.html#parallel-form",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Parallel Form",
+    "text": "Parallel Form\n\n\n\n\n\nParallel subsystems\n\n\n\nFIGURE 5.5(a) – Parallel subsystems.\n\n\n\n\n\nEquivalent parallel block\n\n\n\nFIGURE 5.5(b) – Equivalent transfer function.\n\n\nParallel subsystems:\n\nSame input goes to each block.\nOutputs are algebraically summed.\n\nEquivalent transfer function:\n\\[\nG_e(s) = \\pm G_1(s) \\pm G_2(s) \\pm G_3(s)\n\\]\n(plus/minus depending on summing junction signs).\nReal ECE example:\n\nTwo sensor paths (e.g., high‑frequency and low‑frequency channels) summed to form one control input.\n\n\nDemonstrate quickly: Suppose input is ( R(s) ). Then: - ( C_1 = G_1 R ) - ( C_2 = G_2 R ) - ( C_3 = G_3 R ) Total output ( C = C_1 C_2 C_3 = (G_1 G_2 G_3)R ). So ( C/R = G_e(s) ).\nPoint out that parallel is often used for implementing sums/differences of dynamics, e.g., PD = sK_d + K_p = sK_d in parallel with K_p."
+  },
+  {
+    "objectID": "control_5.html#feedback-form-the-core-control-topology",
+    "href": "control_5.html#feedback-form-the-core-control-topology",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Feedback Form – The Core Control Topology",
+    "text": "Feedback Form – The Core Control Topology\nTypical feedback control system:\n  \n\nFIGURE 5.6 – (a) Complete feedback system, (b) simplified, (c) equivalent transfer function.\n\nFrom simplified model:\n\nError: \\[\nE(s) = R(s) \\mp C(s)H(s)\n\\]\nOutput: \\[\nC(s) = G(s)E(s)\n\\]\n\nEliminate ( E(s) ):\n\\[\nE(s) = \\frac{C(s)}{G(s)}\n\\]\nSubstitute:\n\\[\n\\frac{C(s)}{G(s)} = R(s) \\mp C(s)H(s)\n\\]\nSolve for ( C(s)/R(s) ):\n\\[\nG_e(s) = \\frac{C(s)}{R(s)} = \\frac{G(s)}{1 \\pm G(s)H(s)}\n\\]\nThe product ( G(s)H(s) ) is the open-loop transfer function or loop gain.\n\nDerive this algebra carefully on the board so students can follow each step.\nStress sign convention: - Minus in the denominator for negative feedback: ( G/(1+GH) ). - Plus for positive feedback: ( G/(1-GH) ).\nReal-world example: position control: - ( G(s) ) = motor + gears + amplifier. - ( H(s) ) = sensor scale (e.g., potentiometer).\nNegative feedback drives error to zero (tracking, disturbance rejection)."
+  },
+  {
+    "objectID": "control_5.html#moving-blocks-why-it-matters",
+    "href": "control_5.html#moving-blocks-why-it-matters",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Moving Blocks – Why It Matters",
+    "text": "Moving Blocks – Why It Matters\nComplex diagrams rarely show clean cascade/parallel/feedback chunks.\nWe must move blocks across:\n\nSumming junctions\nPickoff points\n\n…to expose:\n\nPure cascade segments\nPure parallel segments\nStandard feedback loops\n\nKey idea:\n\nYou may rearrange a block diagram as long as the input–output relationship remains identical.\n\n\n\n\n\n\n\nWarning\n\n\nIf you move a block incorrectly, you change the system. Always verify equivalence by writing expressions for intermediate signals.\n\n\n\n\nThis is like algebraic manipulation: ( (a+b)c = ac+bc ). You can move c across the sum; same value, different representation.\nIn block diagrams: we shift transfer functions across summing junctions or pickoffs while maintaining the equality of all node signals."
+  },
+  {
+    "objectID": "control_5.html#moving-blocks-across-summing-junctions",
+    "href": "control_5.html#moving-blocks-across-summing-junctions",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Moving Blocks Across Summing Junctions",
+    "text": "Moving Blocks Across Summing Junctions\n\n\n\nBlock moves at summing junctions\n\n\n\n\n\nBlock moves at summing junctions\n\n\n\nFIGURE 5.7 – Equivalent forms for moving a block across a summing junction.\n\n\nFigure 5.7(a): moving G(s) left across a summing junction that feeds it.\nFigure 5.7(b): moving G(s) right across a summing junction.\n\nIn both cases, verify:\n\nIf both ( R(s) ) and ( X(s) ) are multiplied by ( G(s) ) before contributing to the output, the two diagrams are equivalent.\n\nMathematically, for 5.7(a):\n\\[\nC(s) = [R(s) \\mp X(s)]\\,G(s) = R(s)G(s) \\mp X(s)G(s)\n\\]\nSame result for the rearranged diagram.\n\nSpend a minute explicitly tracing one of them: - Start with original: ( C = G(R X) ). - After move: ( C = GR GX ).\nThey’re equal; hence diagrams are equivalent.\nEmphasize: This property is what lets us “pull” gain into or out of a feedback loop, or re-attach blocks to new nodes."
+  },
+  {
+    "objectID": "control_5.html#moving-blocks-across-pickoff-points",
+    "href": "control_5.html#moving-blocks-across-pickoff-points",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Moving Blocks Across Pickoff Points",
+    "text": "Moving Blocks Across Pickoff Points\n\n\n\nBlock moves at pickoff points\n\n\n\n\n\nBlock moves at pickoff points\n\n\n\nFIGURE 5.8 – Equivalent forms for moving a block across a pickoff point.\n\n\nMove block before or after the pickoff, if:\n\nAll branches from the pickoff see the appropriate transformation.\n\n\nExample reasoning:\n\nIf output branches need the same scaled signal ( G(s)R(s) ), you can move ( G(s) ) before the pickoff.\nIf only one branch needs scaling, ( G(s) ) must stay on that branch.\n\n\nPoint out a common student mistake: moving a transfer function in a way that changes which paths it affects.\nEncourage them to: 1. Label key signals before and after the move. 2. Write equations to confirm equivalence.\nThese block-move rules are extremely useful in multi-loop diagrams."
+  },
+  {
+    "objectID": "control_5.html#example-5.1-block-diagram-reduction-via-familiar-forms",
+    "href": "control_5.html#example-5.1-block-diagram-reduction-via-familiar-forms",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Example 5.1 – Block Diagram Reduction via Familiar Forms",
+    "text": "Example 5.1 – Block Diagram Reduction via Familiar Forms\nProblem: Reduce the block diagram in Figure 5.9 to a single transfer function.\n\n\n\nOriginal block diagram\n\n\n\nFIGURE 5.9 – Block diagram for Example 5.1."
+  },
+  {
+    "objectID": "control_5.html#example-5.1-step-1-collapse-summing-junctions",
+    "href": "control_5.html#example-5.1-step-1-collapse-summing-junctions",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Example 5.1 – Step 1: Collapse Summing Junctions",
+    "text": "Example 5.1 – Step 1: Collapse Summing Junctions\n\n\n\nStep 1 – collapsed sums\n\n\n\nFIGURE 5.10(a) – Collapsing three summing junctions into one.\n\n\nMultiple summing junctions in series can be combined into one junction whose inputs are the algebraic sum of all original inputs.\n\n\nExplain that summing junctions are associative and commutative (like normal addition). Collapsing them does not alter the system as long as signs are preserved.\nThis simplifies the picture so you can more easily spot parallel/feedback relationships."
+  },
+  {
+    "objectID": "control_5.html#example-5.1-step-2-cascade-and-parallel-recognition",
+    "href": "control_5.html#example-5.1-step-2-cascade-and-parallel-recognition",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Example 5.1 – Step 2: Cascade and Parallel Recognition",
+    "text": "Example 5.1 – Step 2: Cascade and Parallel Recognition\n\n\n\nStep 2 – simplified forward and feedback paths\n\n\n\nFIGURE 5.10(b) – Cascade in forward path, parallel in feedback path.\n\nRecognize:\n\nForward path: ( G_2(s) ) and ( G_3(s) ) in cascade: \\[\nG_{\\text{forward}}(s) = G_3(s)G_2(s)\n\\]\nFeedback path: ( H_1(s), H_2(s), H_3(s) ) in parallel: \\[\nH_{\\text{eq}}(s) = H_1(s) - H_2(s) + H_3(s)\n\\]\n\n\nStress the skill: recognizing forms. Students often get stuck simply because they don’t see that three blocks are in parallel or cascade.\nOnce recognized, you quickly replace them by their equivalents, drastically simplifying the diagram."
+  },
+  {
+    "objectID": "control_5.html#example-5.1-step-3-final-reduction",
+    "href": "control_5.html#example-5.1-step-3-final-reduction",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Example 5.1 – Step 3: Final Reduction",
+    "text": "Example 5.1 – Step 3: Final Reduction\n\n\n\nStep 3 – final equivalent block\n\n\n\nFIGURE 5.10(c) – Equivalent feedback system with cascaded (G_1(s)).\n\n\nOverall feedback loop: forward path ( G_3 G_2 ), feedback ( H_{} ).\n\nClosed-loop equivalent:\n\\[\n\\text{Inner loop:}\\quad\nG_{\\text{CL}}(s) =\n\\frac{G_3(s)G_2(s)}{1 + G_3(s)G_2(s)\\,H_{\\text{eq}}(s)}\n\\]\nThen cascade with ( G_1(s) ):\n\\[\nT(s) = \\frac{C(s)}{R(s)} = G_1(s) \\cdot G_{\\text{CL}}(s)\n\\]\n\nWalk through the logic: 1. Reduce parallel feedback path to one (H_{}). 2. Apply feedback formula for inner loop. 3. Multiply by (G_1) in cascade.\nEncourage students to write the final explicit expression if time permits."
+  },
+  {
+    "objectID": "control_5.html#example-5.2-block-diagram-reduction-by-moving-blocks",
+    "href": "control_5.html#example-5.2-block-diagram-reduction-by-moving-blocks",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Example 5.2 – Block Diagram Reduction by Moving Blocks",
+    "text": "Example 5.2 – Block Diagram Reduction by Moving Blocks\nProblem: Reduce the system in Figure 5.11 to a single transfer function.\n\n\n\nOriginal complex diagram\n\n\n\nFIGURE 5.11 – Block diagram for Example 5.2.\n\nThis diagram is too tangled to reduce directly. We will:\n\nMove blocks across pickoffs.\nCreate parallel pairs and simpler feedback loops.\nSuccessively apply cascade/parallel/feedback reductions.\n\n\nMention that this example is intentionally more complicated to illustrate the power of block moves.\nRemind students not to memorize these particular steps, but to understand the strategy: make the diagram look like known forms."
+  },
+  {
+    "objectID": "control_5.html#example-5.2-reduction-steps-visual-walkthrough",
+    "href": "control_5.html#example-5.2-reduction-steps-visual-walkthrough",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Example 5.2 – Reduction Steps (Visual Walkthrough)",
+    "text": "Example 5.2 – Reduction Steps (Visual Walkthrough)\nWe only sketch the key steps; the textbook has full details.\n\nMove ( G_2(s) ) left past the pickoff; reduce the feedback loop with ( G_3(s) ) and ( H_3(s) ).\n\n\n\n\nStep (a)\n\n\n\nReduce parallel pair ( 1/G_2(s) ) and unity; move ( G_1(s) ) right past summing junction.\n\n\n\n\nStep (b)\n\n\n\nCollapse summing junctions, combine cascaded blocks, and sum feedback paths.\n\n\n\n\nStep (c)\n\n\n\nApply feedback formula to get:\n\n\n\n\nStep (d)\n\n\n\nFinal cascade multiplication yields the single equivalent transfer function:\n\n\n\n\nStep (e)\n\n\n\nFIGURE 5.12 – Steps in the block diagram reduction for Example 5.2.\n\n\nAs you show each figure: - Briefly describe which rule was used (move across pickoff, reduce parallel, collapse sums, etc.). - Encourage students to mark up their book as they follow the transformation.\nIf time allows, ask them to identify where negative signs would appear if any blocks were subtracted instead of added in feedback."
+  },
+  {
+    "objectID": "control_5.html#skill-assessment-exercise-5.1-concept-check",
+    "href": "control_5.html#skill-assessment-exercise-5.1-concept-check",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Skill-Assessment Exercise 5.1 (Concept Check)",
+    "text": "Skill-Assessment Exercise 5.1 (Concept Check)\nProblem: Find equivalent transfer function ( T(s) = C(s)/R(s) ) for the system in Figure 5.13.\n\n\n\nBlock diagram for exercise\n\n\n\nFIGURE 5.13 – Block diagram for Skill-Assessment Exercise 5.1.\n\nGiven answer:\n\\[\nT(s) = \\frac{s^{3} + 1}{2s^{4} + s^{2} + 2s}\n\\]\n\n\n\n\n\n\nTip\n\n\nUse this as a self-check: - Try to re-derive ( T(s) ) by systematically using cascade, parallel, and feedback reductions. - Compare your expression with the given result.\n\n\n\n\nYou don’t need to derive it fully in class (time-consuming), but you can ask: - “What’s the first reduction step you would take?” - “Where is the main feedback loop?”\nPoint them to the online full solution for practice."
+  },
+  {
+    "objectID": "control_5.html#matlab-try-it-5.1-automation-of-block-reduction",
+    "href": "control_5.html#matlab-try-it-5.1-automation-of-block-reduction",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "MATLAB Try-It 5.1 – Automation of Block Reduction",
+    "text": "MATLAB Try-It 5.1 – Automation of Block Reduction\nUsing MATLAB/Control System Toolbox to find closed-loop transfer function of Example 5.2, with: - All ( G_i(s) = ) - All ( H_i(s) = )\nG1=tf(1,[1 1]); \nG2=G1; G3=G1; \nH1=tf(1,[1 0]); \nH2=H1; H3=H1; \n\nSystem = append(G1,G2,G3,H1,H2,H3); \ninput  = 1; \noutput = 3;\n\nQ = [1 2  4 0 0 0 \n     3 2  5 0 0 0\n     4 2  0 5 6 0\n     5 2  0 0 0 0\n     6 3  0 0 0 0];\n\nT = connect(System, Q, input, output); \nT = tf(T); \nT = minreal(T)\n\n\n\n\n\n\nNote\n\n\nSoftware can do block diagram reduction for you, but you must understand the structure, especially when debugging or designing.\n\n\n\n\nIf you run this in a lab or demo: - Show how append collects subsystems and connect wires them using the interconnection matrix Q. - Explain the role of minreal (cancels pole-zero pairs).\nEmphasize: good to validate hand reduction with MATLAB."
+  },
+  {
+    "objectID": "control_5.html#feedback-systems-from-structure-to-transient-specs",
+    "href": "control_5.html#feedback-systems-from-structure-to-transient-specs",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "5.3 Feedback Systems – From Structure to Transient Specs",
+    "text": "5.3 Feedback Systems – From Structure to Transient Specs\nImmediate application:\n\nSystems that reduce to second-order closed-loop forms.\nUse classic formulas for:\n\nPercent overshoot (%OS)\nSettling time ( T_s )\nPeak time ( T_p )\nRise time ( T_r )\n\n\nConsider system:\n\n\n\nSecond-order feedback system\n\n\n\nFIGURE 5.14 – Second-order feedback control system.\n\nClosed-loop transfer function:\n\\[\nT(s) = \\frac{K}{s^{2} + a s + K}\n\\]\nHere:\n\n( K ): overall gain (e.g., amplifier gain).\n( a ): coefficient related to damping (e.g., friction, resistance).\n\n\nShow how Eq. (5.9) gives this: - Forward path: ( G(s) = ). - Feedback: unity. - Then ( T(s) = = ).\nHighlight: This looks exactly like the standard second-order denominator: ( s^2 + 2_n s + _n^2 ).\nSo we can identify: ( _n^2 = K ), ( 2_n = a )."
+  },
+  {
+    "objectID": "control_5.html#pole-locations-vs.-gain-k",
+    "href": "control_5.html#pole-locations-vs.-gain-k",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Pole Locations vs. Gain K",
+    "text": "Pole Locations vs. Gain K\nPoles of closed-loop system:\n\nFor ( 0 &lt; K &lt; a^2/4 ): real, distinct (overdamped). \\[\ns_{1,2} = -\\frac{a}{2} \\pm \\frac{\\sqrt{a^{2} - 4K}}{2}\n\\]\nFor ( K = a^2/4 ): real, equal (critically damped).\nFor ( K &gt; a^2/4 ): complex conjugate (underdamped). \\[\ns_{1,2} = -\\frac{a}{2} \\pm j\\frac{\\sqrt{4K - a^{2}}}{2}\n\\]\n\nFor underdamped case:\n\nReal part fixed at ( -a/2 ).\nImaginary part increases with ( K ).\nImplications:\n\nPeak time ( T_p ) decreases (faster oscillations).\nPercent overshoot increases (more oscillatory).\nSettling time roughly constant (since real part fixed).\n\n\n\n\n\n\n\n\nImportant\n\n\nGain ( K ) trades off speed vs. overshoot. Design is about choosing ( K ) to satisfy both.\n\n\n\n\nRelate to root locus intuition: as ( K ) increases, the closed-loop poles move along a locus; their real and imaginary parts control transient response.\nMention this is a simple “family” of systems parameterized by K—ideal for introducing design."
+  },
+  {
+    "objectID": "control_5.html#example-5.3-finding-transient-response",
+    "href": "control_5.html#example-5.3-finding-transient-response",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Example 5.3 – Finding Transient Response",
+    "text": "Example 5.3 – Finding Transient Response\nProblem: For system in Figure 5.15, find ( T_p ), %OS, and ( T_s ).\n\n\n\nFeedback system Example 5.3\n\n\n\nFIGURE 5.15 – Feedback system for Example 5.3.\n\nClosed-loop transfer function:\n\\[\nT(s) = \\frac{25}{s^{2} + 5s + 25}\n\\]\nCompare with standard 2nd-order form:\n\\[\nT(s) = \\frac{\\omega_n^{2}}{s^{2} + 2\\zeta\\omega_n s + \\omega_n^{2}}\n\\]\nIdentify:\n\n( _n^2 = 25 _n = 5 ).\n( 2_n = 5 (5) = 5 = 0.5 ).\n\nNow apply standard formulas:\n\nPeak time \\[\nT_p = \\frac{\\pi}{\\omega_n \\sqrt{1-\\zeta^{2}}} = 0.726 \\text{ s}\n\\]\nPercent overshoot \\[\n\\%OS = e^{-\\zeta\\pi/\\sqrt{1-\\zeta^{2}}} \\times 100 = 16.3\\%\n\\]\nSettling time (2% criterion) \\[\nT_s = \\frac{4}{\\zeta\\omega_n} = 1.6 \\text{ s}\n\\]\n\n\nReinforce the mapping: - Denominator coefficients give ( , _n ). - Those give transient specs.\nMention that MATLAB can compute these automatically (e.g., with stepinfo), but understanding the formulas gives physical intuition."
+  },
+  {
+    "objectID": "control_5.html#example-5.4-gain-design-for-transient-response",
+    "href": "control_5.html#example-5.4-gain-design-for-transient-response",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Example 5.4 – Gain Design for Transient Response",
+    "text": "Example 5.4 – Gain Design for Transient Response\nProblem: For system in Figure 5.16, choose gain ( K ) so that step response has 10% overshoot.\n\n\n\nFeedback system for design\n\n\n\nFIGURE 5.16 – Feedback system for Example 5.4.\n\nClosed-loop transfer function:\n\\[\nT(s) = \\frac{K}{s^{2} + 5s + K}\n\\]\nIdentify standard form:\n\n( _n^2 = K _n = )\n( 2_n = 5 = 5 = )\n\nPercent overshoot depends only on ( ):\n\\[\n\\%OS = e^{-\\zeta\\pi/\\sqrt{1-\\zeta^{2}}}\\times 100\n\\]\nFor ( %OS = 10% ), from standard tables or solving numerically: ( ).\nSet ( = 5/(2) = 0.591 ):\n\\[\n\\sqrt{K} = \\frac{5}{2\\zeta} \\approx \\frac{5}{2 \\times 0.591} \\approx 2.667\n\\]\n\\[\nK \\approx 2.667^2 \\approx 17.9\n\\]\nSo design result:\n\nGain ( K ) gives 10% overshoot.\n\n\n\n\n\n\n\nTip\n\n\nThis is a typical design workflow: Desired %OS → ( ) → ( K ) from the denominator coefficients.\n\n\n\n\nHighlight that this is design not just analysis: we solved backwards from a performance specification.\nMention that in more complex systems (higher order, zeros), the mapping isn’t so direct, and we need root locus, Bode, etc., but this gives a powerful intuition."
+  },
+  {
+    "objectID": "control_5.html#signal-flow-graphs-another-representation",
+    "href": "control_5.html#signal-flow-graphs-another-representation",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "5.4 Signal-Flow Graphs – Another Representation",
+    "text": "5.4 Signal-Flow Graphs – Another Representation\nKey differences from block diagrams:\n\nOnly nodes and directed branches:\n\nNode = signal.\nBranch = system/transfer function.\n\nSummation is implicit at each node:\n\nNode value = algebraic sum of incoming signals.\n\n\n\n\n\nSignal-flow graph elements\n\n\n\n\n\nInterconnection example\n\n\n\nFIGURE 5.17 – (a) Branch representing a system, (b) node representing a signal, (c) interconnection example.\n\nExample node equation from Figure 5.17(c):\n\\[\nV(s) = R_1(s)G_1(s) - R_2(s)G_2(s) + R_3(s)G_3(s)\n\\]\nNote: negative input is modeled by negative branch gain (e.g., (-G_2(s))), not by a separate summing junction.\n\n\n\n\n\n\nNote\n\n\nSignal-flow graphs are especially convenient: - For state‑space (each state is a node). - For using Mason’s Rule to find transfer functions.\n\n\n\n\nExplain why signal-flow graphs can be more compact than block diagrams: - No explicit summing junctions or pickoffs. - Direct representation of equations.\nConnect to state-space: each state variable x_i(t) becomes a node; its derivative equation determines incoming branches."
+  },
+  {
+    "objectID": "control_5.html#from-block-diagrams-to-signal-flow-graphs",
+    "href": "control_5.html#from-block-diagrams-to-signal-flow-graphs",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "From Block Diagrams to Signal-Flow Graphs",
+    "text": "From Block Diagrams to Signal-Flow Graphs\nExample 5.5: Convert basic block forms (cascade, parallel, feedback) into signal-flow graphs.\nStrategy:\n\nDraw signal nodes for each intermediate signal.\nConnect nodes with directed branches labeled by transfer functions.\nUse negative gains for negative feedback or subtraction.\n\n\n\n\nCascade nodes and graph\n\n\n\n\n\nParallel nodes and graph\n\n\n\n\n\nFeedback nodes and graph\n\n\n\n\n\nFeedback signal-flow graph\n\n\n\nFIGURE 5.18 – Building signal-flow graphs for cascade, parallel, and feedback forms.\n\n\nFor each configuration: - Draw R, intermediate nodes, C. - Add arrows with G’s and H’s. - Show how negative feedback loop is a branch from C back to the error node with gain (-H).\nEmphasize that once you’re comfortable switching representations, you can choose whichever is more convenient for analysis."
+  },
+  {
+    "objectID": "control_5.html#example-5.6-complex-block-diagram-signal-flow-graph",
+    "href": "control_5.html#example-5.6-complex-block-diagram-signal-flow-graph",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Example 5.6 – Complex Block Diagram → Signal-Flow Graph",
+    "text": "Example 5.6 – Complex Block Diagram → Signal-Flow Graph\nConvert Figure 5.11 (from Example 5.2) into a signal-flow graph.\n\nDraw all signal nodes ( V_1(s), V_2(s), ) etc.\n\n\n\n\nSignal nodes\n\n\n\nConnect them with branch gains ( G_i(s), H_i(s) ), including negative gains where appropriate.\n\n\n\n\nFull signal-flow graph\n\n\n\nOptionally, simplify by removing nodes that only have one incoming and one outgoing branch (series combination).\n\n\n\n\nSimplified signal-flow graph\n\n\n\nFIGURE 5.19 – Signal-flow graph development from Figure 5.11.\n\n\nExplain that nodes like ( V_2, V_6, V_7, V_8 ) with single in and single out can be merged by multiplying branch gains. This is akin to series combination of transfer functions.\nThis simplification is often done before applying Mason’s Rule to keep the bookkeeping manageable."
+  },
+  {
+    "objectID": "control_5.html#masons-rule-transfer-function-from-a-signal-flow-graph",
+    "href": "control_5.html#masons-rule-transfer-function-from-a-signal-flow-graph",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "5.5 Mason’s Rule – Transfer Function from a Signal-Flow Graph",
+    "text": "5.5 Mason’s Rule – Transfer Function from a Signal-Flow Graph\nMason’s Rule gives the transfer function ( C(s)/R(s) ) directly from a signal-flow graph:\n\\[\nG(s) = \\frac{C(s)}{R(s)} = \\frac{\\displaystyle\\sum_{k} T_k \\Delta_k}{\\Delta}\n\\]\nWhere:\n\n( T_k ): the k‑th forward-path gain from input node to output node.\n( ): the overall determinant of the graph, defined by:\n\\[\n\\Delta = 1\n- \\sum (\\text{individual loop gains})\n+ \\sum (\\text{products of loop gains in all nontouching loop pairs})\n- \\sum (\\text{products of loop gains in all nontouching triplets})\n+ \\dots\n\\]\n( _k ): same as ( ), but excluding all loops that touch the k-th forward path.\n\nKey definitions:\n\nLoop: a path that starts and ends at the same node without visiting any node more than once.\nLoop gain: product of branch gains around a loop.\nNontouching loops: loops that share no nodes in common.\n\n\n\n\n\n\n\nCaution\n\n\nThe hardest parts of Mason’s Rule are: 1. Enumerating all loops. 2. Correctly identifying nontouching loop combinations.\n\n\n\n\nReassure students: Mason’s Rule looks intimidating, but in many practical systems: - There are few loops. - Often no nontouching loops.\nIn such cases, ( = 1 - () ) and ( _k = 1 ) or something simple."
+  },
+  {
+    "objectID": "control_5.html#visualizing-loops-and-forward-paths-mermaid-diagram",
+    "href": "control_5.html#visualizing-loops-and-forward-paths-mermaid-diagram",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Visualizing Loops and Forward Paths (Mermaid Diagram)",
+    "text": "Visualizing Loops and Forward Paths (Mermaid Diagram)\n\n\n\n\n\n\n\n\n\n\n\n\nForward path: ( R G_1 G_2 G_3 C ).\nLoops:\n\nAround ( X ) and ( Y ) via ( H_1(s) ).\nAround ( Y ) and ( C ) via ( H_2(s) ).\n\n\nUse this simple structure to practice identifying loops and nontouching loops.\n\nThis is just a self-made example for teaching. Use it to: - Ask students: identify the forward path gain. - Identify loop gains. - Check if any loops are nontouching.\nUse it as a warm-up before tackling the textbook example."
+  },
+  {
+    "objectID": "control_5.html#example-5.7-masons-rule-in-action",
+    "href": "control_5.html#example-5.7-masons-rule-in-action",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Example 5.7 – Mason’s Rule in Action",
+    "text": "Example 5.7 – Mason’s Rule in Action\nProblem: Find ( C(s)/R(s) ) for the signal-flow graph in Figure 5.21.\n\n\n\nSignal-flow graph for Example 5.7\n\n\n\nFIGURE 5.21 – Signal-flow graph for Example 5.7."
+  },
+  {
+    "objectID": "control_5.html#example-5.7-step-1-forward-path",
+    "href": "control_5.html#example-5.7-step-1-forward-path",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Example 5.7 – Step 1: Forward Path",
+    "text": "Example 5.7 – Step 1: Forward Path\nThere is one forward path:\n\nFrom input ( R(s) ) to output ( C(s) ).\n\nForward-path gain:\n\\[\nT_1 = G_1(s) G_2(s) G_3(s) G_4(s) G_5(s)\n\\]"
+  },
+  {
+    "objectID": "control_5.html#example-5.7-step-2-identify-loop-gains",
+    "href": "control_5.html#example-5.7-step-2-identify-loop-gains",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Example 5.7 – Step 2: Identify Loop Gains",
+    "text": "Example 5.7 – Step 2: Identify Loop Gains\nFrom the graph, four loops:\n\n\\[\nL_1 = G_2(s) H_1(s)\n\\]\n\\[\nL_2 = G_4(s) H_2(s)\n\\]\n\\[\nL_3 = G_7(s) H_4(s)\n\\]\nLarge loop through many branches: \\[\nL_4 = G_2(s)G_3(s)G_4(s)G_5(s)G_6(s)G_7(s)G_8(s)\n\\]"
+  },
+  {
+    "objectID": "control_5.html#example-5.7-step-3-nontouching-loops",
+    "href": "control_5.html#example-5.7-step-3-nontouching-loops",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Example 5.7 – Step 3: Nontouching Loops",
+    "text": "Example 5.7 – Step 3: Nontouching Loops\nCheck which loops do not share nodes:\n\nLoop 1 (through ( G_2,H_1 )) does not touch loop 2 (through ( G_4,H_2 )).\nLoop 1 does not touch loop 3 (through ( G_7,H_4 )).\nLoop 2 does not touch loop 3.\nAll of 1,2,3 touch loop 4.\n\nThus, nontouching loop products taken two at a time:\n\n\\[\nL_1 L_2 = G_2H_1G_4H_2\n\\]\n\\[\nL_1 L_3 = G_2H_1G_7H_4\n\\]\n\\[\nL_2 L_3 = G_4H_2G_7H_4\n\\]\n\nAnd one triple of nontouching loops:\n\nLoops 1, 2, and 3: \\[\nL_1 L_2 L_3 = G_2H_1G_4H_2G_7H_4\n\\]\n\nNo higher-order combinations."
+  },
+  {
+    "objectID": "control_5.html#example-5.7-step-4-compute-δ-and-δ₁",
+    "href": "control_5.html#example-5.7-step-4-compute-δ-and-δ₁",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Example 5.7 – Step 4: Compute Δ and Δ₁",
+    "text": "Example 5.7 – Step 4: Compute Δ and Δ₁\nOverall ( ):\n[\n\\[\\begin{aligned}\n\\Delta = & \\;1\n- \\big[ L_1 + L_2 + L_3 + L_4 \\big] \\\\\n& + \\big[ L_1L_2 + L_1L_3 + L_2L_3 \\big] \\\\\n& - \\big[ L_1L_2L_3 \\big]\n\\end{aligned}\\]\n]\nExplicitly:\n[\n\\[\\begin{aligned}\n\\Delta = & \\;1\n- \\big[ G_2H_1 + G_4H_2 + G_7H_4 \\\\\n& \\quad + G_2G_3G_4G_5G_6G_7G_8 \\big] \\\\\n& + \\big[ G_2H_1G_4H_2 + G_2H_1G_7H_4 + G_4H_2G_7H_4 \\big] \\\\\n& - \\big[ G_2H_1G_4H_2G_7H_4 \\big]\n\\end{aligned}\\]\n]\nNext, ( _1 ) for the only forward path.\n\nRemove from ( ) any loops that touch the forward path nodes.\nFrom the figure, only loop 3 (with ( G_7H_4 )) does not touch the forward path.\n\nSo:\n\\[\n\\Delta_1 = 1 - G_7(s)H_4(s)\n\\]"
+  },
+  {
+    "objectID": "control_5.html#example-5.7-step-5-final-transfer-function",
+    "href": "control_5.html#example-5.7-step-5-final-transfer-function",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Example 5.7 – Step 5: Final Transfer Function",
+    "text": "Example 5.7 – Step 5: Final Transfer Function\nApply Mason’s formula:\n\\[\nG(s) = \\frac{C(s)}{R(s)}\n= \\frac{T_1 \\Delta_1}{\\Delta}\n= \\frac{[G_1G_2G_3G_4G_5]\\,[1 - G_7H_4]}{\\Delta}\n\\]\n\nHighlight that because there is only one forward path, the numerator is just a single term.\nIn problems with multiple forward paths, we’d have a sum: ( G(s) = (T_1_1 + T_2_2 + )/).\nEncourage students to compare this result with what they’d obtain via block-diagram reduction (for a simpler graph) to see that Mason’s Rule is equivalent but often more systematic."
+  },
+  {
+    "objectID": "control_5.html#skill-assessment-exercise-5.4-mason-vs.-block-reduction",
+    "href": "control_5.html#skill-assessment-exercise-5.4-mason-vs.-block-reduction",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Skill-Assessment Exercise 5.4 – Mason vs. Block Reduction",
+    "text": "Skill-Assessment Exercise 5.4 – Mason vs. Block Reduction\nProblem: Use Mason’s Rule to find the transfer function of the signal-flow graph of Figure 5.19(c).\n\nThis is the same system as Example 5.2, reduced by block diagram algebra.\n\nAnswer:\n\\[\nT(s) = \\frac{G_{1}(s)G_{3}(s)\\big[1 + G_{2}(s)\\big]}%\n{\\big[1 + G_{2}(s)H_{2}(s) + G_{1}(s)G_{2}(s)H_{1}(s)\\big]\\big[1 + G_{3}(s)H_{3}(s)\\big]}\n\\]\n\n\n\n\n\n\nNote\n\n\nThis demonstrates that: - Block diagram reduction and Mason’s Rule are equivalent ways to get the same transfer function. - You can pick whichever is more convenient for a given problem.\n\n\n\n\nIn class, you might not derive this fully step-by-step, but you can: - Show loop and forward-path identification quickly. - Emphasize that the exact same expression appears whether you use block algebra or Mason’s Rule.\nEncourage students to do this derivation on their own for mastery."
+  },
+  {
+    "objectID": "control_5.html#summary-key-points",
+    "href": "control_5.html#summary-key-points",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Summary / Key Points",
+    "text": "Summary / Key Points\n\nBlock diagrams model interconnections of subsystems via blocks, summing junctions, and pickoffs.\nThree key interconnection types:\n\nCascade: multiply transfer functions (if no loading).\nParallel: sum transfer functions.\nFeedback: ( G_{}(s) = ).\n\nBlock moves (across summing junctions and pickoffs) are essential to:\n\nExpose familiar forms.\nSystematically reduce complex diagrams.\n\nFeedback systems often reduce to second-order forms; then:\n\nStep response specs (%OS, ( T_s ), ( T_p ), etc.) are set by ( , _n ).\nWe can design gain ( K ) to meet transient performance requirements.\n\nSignal-flow graphs:\n\nNodes = signals, branches = transfer functions.\nMake summing implicit, fit naturally with state-space.\n\nMason’s Rule:\n\nProvides ( C/R ) in one formula from a signal-flow graph.\nRequires careful identification of loops and nontouching loops.\n\nBoth block diagram reduction and Mason’s Rule ultimately yield the same transfer function.\n\n\nWrap up by connecting back to the chapter learning outcomes: - We now know how to go from many blocks to one transfer function, both in block-diagram and signal-flow form. - Next steps (not fully covered today) include mapping to state-space and manipulating similar systems via transformations."
+  },
+  {
+    "objectID": "control_5.html#summary-of-key-formulas",
+    "href": "control_5.html#summary-of-key-formulas",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Summary of Key Formulas",
+    "text": "Summary of Key Formulas\nCascade\n\nFor cascade of independent subsystems (no loading):\n\\[\nG_e(s) = G_n(s) G_{n-1}(s)\\dots G_2(s)G_1(s)\n\\]\n\nParallel\n\nFor parallel subsystems with same input and algebraically summed outputs:\n\\[\nG_e(s) = \\pm G_1(s) \\pm G_2(s) \\pm \\dots \\pm G_n(s)\n\\]\n\nFeedback\n\nClosed-loop transfer function (general feedback):\n\\[\nG_e(s) = \\frac{G(s)}{1 \\pm G(s)H(s)}\n\\]\n\nUse ( + ) in denominator for negative feedback.\n\n\nSecond-Order Standard Form\n\nTransfer function:\n\\[\nT(s) = \\frac{\\omega_n^{2}}{s^{2} + 2\\zeta\\omega_n s + \\omega_n^{2}}\n\\]\nRelationships:\n\n( _n = ).\n( 2_n = s ).\n\nKey transient formulas (for underdamped, ( 0&lt;&lt;1 )):\n\nPercent overshoot: \\[\n\\%OS = e^{-\\zeta\\pi / \\sqrt{1-\\zeta^{2}}} \\times 100\n\\]\nPeak time: \\[\nT_p = \\frac{\\pi}{\\omega_n\\sqrt{1-\\zeta^{2}}}\n\\]\nSettling time (2% criterion): \\[\nT_s = \\frac{4}{\\zeta\\omega_n}\n\\]\n\n\nMason’s Rule\n\nOverall transfer function:\n\\[\nG(s) = \\frac{C(s)}{R(s)} = \\frac{\\displaystyle\\sum_{k} T_k \\Delta_k}{\\Delta}\n\\]\nWhere:\n\n( T_k ) = k-th forward-path gain.\n( = 1 - L_i + L_iL_j - L_iL_jL_k + )\n\n( L_i ) = individual loop gains.\nTerms are products of nontouching loop gains with alternating signs.\n\n( _k = ) with all loops touching the k-th forward path removed from the expression.\n\n\n\nAdvise students to keep this “formula page” handy while working homework and labs, especially for Mason’s Rule and the second-order transient formulas.\nSuggest a short exercise: take a simple feedback block diagram, write its signal-flow graph, and apply Mason’s Rule to confirm the familiar ( G/(1+GH) ) result."
   }
 ]
