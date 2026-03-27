@@ -1390,7 +1390,7 @@
     "href": "ins_32.html#learning-objectives",
     "title": "Converters: Comparators, DACs, and ADCs",
     "section": "Learning Objectives",
-    "text": "Learning Objectives\nBy the end of this session, you should be able to:\n\nExplain how comparators connect the analog world (sensors) to digital logic.\nDesign simple alarm circuits using comparators (including open‑collector and hysteresis types).\nCompute outputs of digital‑to‑analog converters (DACs), both unipolar and bipolar, and select word length from resolution specs.\nCompute codes and errors for analog‑to‑digital converters (ADCs); distinguish unipolar vs bipolar operation.\nCompare successive‑approximation and dual‑slope ADC architectures and their conversion times.\nAnalyze conversion‑time limits, and explain why we need sample‑and‑hold circuits.\nDescribe and design basic frequency‑based conversion using counters and V‑to‑F converters / timers.\n\n\nI will move back and forth between the math and “what this means in real hardware.” Encourage students to pause me whenever a formula appears; every formula here maps to a circuit behavior they’ll see in the lab or industry."
+    "text": "Learning Objectives\nBy the end of this session, you should be able to:\n\nExplain how comparators form the “front end” between analog sensors and digital logic.\nDesign simple alarm and hysteresis (Schmitt trigger) circuits with comparators.\nCompute the output of unipolar and bipolar DACs and select resolution (number of bits).\nCompute the digital output of an ADC for a given analog input and reference.\nCompare successive‑approximation and dual‑slope ADCs and predict their conversion time.\nAnalyze how conversion time limits the maximum signal frequency and why sample‑and‑hold is needed.\nDescribe frequency‑based A/D conversion using counters and V‑to‑F converters.\n\n\nThese objectives map to practical instrumentation tasks: alarm design, driving actuators from a microcontroller, choosing ADC/DAC resolutions, and understanding the constraints of data acquisition hardware. Emphasize that every measurement or actuator they use in embedded systems ultimately passes through these building blocks."
   },
   {
     "objectID": "ins_32.html#big-picture-why-converters",
@@ -1439,7 +1439,7 @@
     "href": "ins_32.html#opencollector-comparator-outputs",
     "title": "Converters: Comparators, DACs, and ADCs",
     "section": "Open‑Collector Comparator Outputs",
-    "text": "Open‑Collector Comparator Outputs\nMany comparator ICs use an open‑collector output transistor.\n\n\n\n\n\nFigure 8a: Internal open-collector transistor.\n\n\n\nThe comparator’s output pin is the collector of an internal transistor.\nNo internal pull‑up resistor.\n\n\n\n\n\nFigure 8b: External pull-up on open-collector output.\n\n\n\nYou add an external pull‑up resistor to a supply \\(V_s\\).\nOutput behavior:\n\nInternal transistor ON → output ≈ 0 V (logic 0).\nTransistor OFF → resistor pulls output up to \\(V_s\\) (logic 1).\n\n\n\nAdvantages:\n\nCan use a different voltage for logic output than comparator’s internal Vcc (e.g., drive 12 V relay with 5 V comparator).\nCan wire‑OR multiple outputs: tie open collectors together + one pull‑up → any output pulling low dominates.\n\n\n\n\n\n\n\nNote\n\n\nOpen‑collector outputs behave like “can pull down, but not up”. Always check that you added the pull‑up if you see a “stuck” output."
+    "text": "Open‑Collector Comparator Outputs\n\n\n\n\n\nFigure 8a: Comparator with open-collector output.\n\n\n\n\n\nFigure 8b: Pull-up resistor provides logic levels.\n\n\n\n\nSome comparators expose only the collector of an internal NPN transistor at the output.\nNeed an external pull‑up resistor \\(R_{\\text{pull}}\\) to a supply \\(V_s\\).\n\nBehavior:\n\nTransistor ON → output pulled ≈ 0 V → logic 0.\nTransistor OFF → output pulled up to \\(V_s\\) → logic 1.\n\nAdvantages:\n\nCan use different logic supply than comparator’s internal supply\n\ne.g., comparator powered at 5 V, but output pulls up to 12 V to drive a relay.\n\nCan wire‑OR several outputs by tying open collectors together with one pull‑up.\n\n\n\n\n\n\n\n\nTip\n\n\nOpen‑collector outputs are very common on comparators and some logic ICs used for interrupt lines, wired‑OR flags, and relays/LED drivers.\n\n\n\n\nDiscuss how this is effectively a low‑side switch. Stress that without a pull‑up resistor, you will not see any valid logic level at the pin. Also mention you must size the resistor to limit current when the transistor saturates."
   },
   {
     "objectID": "ins_32.html#comparator-jiggle-problem-noise-around-threshold",
@@ -1670,7 +1670,7 @@
     "href": "ins_32.html#example-20-triangular-wave-limit",
     "title": "Converters: Comparators, DACs, and ADCs",
     "section": "Example 20: Triangular Wave Limit",
-    "text": "Example 20: Triangular Wave Limit\n8‑bit, bipolar ADC, \\(V_R = 5\\ \\mathrm{V}\\), \\(\\tau_c = 12\\ \\mu\\mathrm{s}\\).\nInput: triangular wave from −1 V to +1 V (peak‑to‑peak 2 V).\nSlope of triangle:\n\nPeriod \\(T\\), frequency \\(f\\).\nChange 2 V over \\(T/4\\):\n\n\\[\n\\frac{dV_{\\text{in}}}{dt} = \\frac{2}{T/4} = \\frac{8}{T} = 8f\n\\]\nUse Equation (18):\n\\[\n8f \\le \\frac{V_R}{2^n \\tau_c} = \\frac{5}{2^8 \\cdot 12\\times10^{-6}} = 1627.6\n\\]\nSo\n\\[\nf \\le 203.5\\ \\mathrm{Hz}\n\\]"
+    "text": "Example 20: Triangular Wave Limit\n\n\n\nFigure 19: Triangular input waveform.\n\n\n8‑bit bipolar ADC, \\(V_R = 5\\ \\mathrm{V}\\), \\(τ_c = 12\\ \\mu\\mathrm{s}\\).\nInput: triangular wave from −1 V to +1 V with period \\(T\\) (see Figure 19).\nSlope of each edge:\n\nChange = 2 V (from −1 V to +1 V) in \\(T/4\\): \\[\n\\frac{dV_{\\text{in}}}{dt} = \\frac{2}{T/4} = \\frac{8}{T} = 8f\n\\]"
   },
   {
     "objectID": "ins_32.html#sampleandhold-sh-freezing-the-input",
@@ -1712,7 +1712,7 @@
     "href": "ins_32.html#microprocessorcompatible-adcs",
     "title": "Converters: Comparators, DACs, and ADCs",
     "section": "Microprocessor‑Compatible ADCs",
-    "text": "Microprocessor‑Compatible ADCs\n\n\n\nFigure 24: ADC directly interfaced to microprocessor bus.\n\n\n\nADC lines connect to data bus via tri‑state outputs.\nAddress decoding logic:\n\nGenerates SC and RD.\nReceives EOC.\n\nTo CPU, ADC looks like a memory‑mapped I/O device.\n\nSoftware flow:\n\nWrite to control register → SC.\nPoll or wait for EOC.\nRead from ADC’s data address."
+    "text": "Microprocessor‑Compatible ADCs\n\n\n\n\n\nFigure 24: ADC interfaced to microprocessor bus.\n\n\n\nModern ADCs commonly provide:\n\nTri‑state digital outputs → connect directly to CPU data bus.\nControl lines mapped into I/O or memory address space.\nMicroprocessor issues:\n\nStart‑convert by writing to control register/address.\nPolls or interrupts on EOC.\nReads data via memory or I/O read.\n\n\nAddress decoder logic determines which addresses correspond to ADC controls/data.\n\n\nRelate to lab experience: e.g., using SPI ADC where chip‑select and command bytes play similar roles to SC/RD/EOC. The block diagram abstracts bus‑based interfacing."
   },
   {
     "objectID": "ins_32.html#frequencybased-converters-counting-pulses",
@@ -1726,14 +1726,14 @@
     "href": "ins_32.html#example-23-8bit-frequencybased-adc",
     "title": "Converters: Comparators, DACs, and ADCs",
     "section": "Example 23: 8‑bit Frequency‑Based ADC",
-    "text": "Example 23: 8‑bit Frequency‑Based ADC\nSensor frequency range: 2.0 kHz to 20 kHz. Use 8‑bit counter.\n\nCompute \\(T_c\\) so that \\(f_{\\max}\\) → full count (255):\n\n\\[\nT_c = \\frac{2^8 - 1}{20\\,000} = \\frac{255}{20,000} \\approx 12.75\\ \\mathrm{ms}\n\\]\n\nFor \\(f = 2.0\\ \\mathrm{kHz}\\):\n\n\\[\nN = f T_c = 2000 \\cdot 0.01275 \\approx 25.5 \\Rightarrow 25_{10} = 00011001_2\n\\]"
+    "text": "Example 23: 8‑bit Frequency‑Based ADC\nSensor: frequency varies from 2.0 to 20 kHz; use 8‑bit counter.\nMax count: \\(2^8 - 1 = 255\\).\nDesign \\(T_c\\) so that \\(f_{\\max} = 20\\) kHz → N = 255:\n\\[\nT_c = \\frac{255}{20,000} = 0.01275\\ \\mathrm{s} = 12.75\\ \\mathrm{ms}\n\\]\nAt \\(f_{\\min} = 2.0\\) kHz:\n\\[\nN = f_{\\min} T_c = 2000 \\cdot 0.01275 = 25.5 \\Rightarrow 25_{10} = 00011001_2\n\\]\nSo digital output ranges from about 25 to 255 over sensor’s frequency range.\n\nShow that resolution is effectively \\((255-25)\\) counts over the actual signal range—slightly less than full 8‑bit resolution because the sensor never outputs less than 2 kHz."
   },
   {
     "objectID": "ins_32.html#voltagetofrequency-conversion-lm331",
     "href": "ins_32.html#voltagetofrequency-conversion-lm331",
     "title": "Converters: Comparators, DACs, and ADCs",
-    "section": "Voltage‑to‑Frequency Conversion – LM331",
-    "text": "Voltage‑to‑Frequency Conversion – LM331\n\n\n\nFigure 26: LM331 voltage-to-frequency converter.\n\n\nApproximate formula:\n\\[\nf_{\\text{out}} = \\frac{R_S}{R_L} \\cdot \\frac{1}{R_t C_t} \\cdot \\frac{V_{\\text{in}}}{2.09}\n\\tag{27}\n\\]\n\n\\(R_S\\): scaling resistor (10–20 kΩ, often trimmable).\n\\(R_L\\): load resistor (~100 kΩ).\n\\(R_t, C_t\\): timing resistor and capacitor.\n\\(V_{\\text{in}}\\): control voltage (0–5 V typical).\n\nDesign example: 0–5 V → 0–10 kHz.\nSet \\(R_S = 15\\ \\mathrm{k\\Omega}\\), \\(R_L = 100\\ \\mathrm{k\\Omega}\\).\n\\[\n10,000 = \\frac{15k}{100k} \\cdot \\frac{5}{2.09} \\cdot \\frac{1}{R_t C_t}\n\\Rightarrow R_t C_t \\approx 3.59\\times 10^{-5}\\ \\mathrm{s}\n\\]\nPick \\(C_t = 0.01\\ \\mu\\mathrm{F}\\) → \\(R_t \\approx 3.59\\ \\mathrm{k\\Omega}\\)."
+    "section": "Voltage‑to‑Frequency Conversion: LM331",
+    "text": "Voltage‑to‑Frequency Conversion: LM331\n\n\n\n\n\nFigure 26: LM331 voltage-to-frequency converter.\n\n\n\nLM331 output frequency:\n\\[\nf_{\\text{out}} = \\frac{R_S}{R_L} \\frac{1}{R_t C_t} \\frac{V_{\\text{in}}}{2.09} \\tag{27}\n\\]\n\n\\(R_S \\approx 10\\)–\\(20\\ \\mathrm{k}\\Omega\\) (adjust scaling).\n\\(R_L \\approx 100\\ \\mathrm{k}\\Omega\\) (defines discharge path).\n\\(R_t, C_t\\) set nominal frequency range.\nOutput is open‑collector → need pull‑up resistor."
   },
   {
     "objectID": "ins_32.html#frequency-from-r-or-c-555-timer",
@@ -1761,14 +1761,14 @@
     "href": "ins_32.html#summary-key-points",
     "title": "Converters: Comparators, DACs, and ADCs",
     "section": "Summary / Key Points",
-    "text": "Summary / Key Points\n\nComparators convert analog comparisons into digital alarms; hysteresis prevents noise‑induced chatter.\nOpen‑collector outputs need pull‑up resistors and allow level shifting and wired‑OR logic.\nDACs:\n\nUnipolar: \\(V_{\\text{out}} = (N/2^n)V_R\\).\nBipolar: \\(V_{\\text{out}} = (N/2^n)V_R - V_R/2\\).\nResolution: \\(\\Delta V = V_R 2^{-n}\\).\n\nADCs:\n\nUnipolar: \\(N = \\mathrm{INT}((V_{\\text{in}}/V_R)2^n)\\).\nBipolar (offset binary): \\(N = \\mathrm{INT}((V_{\\text{in}}/V_R + 1/2)2^n)\\).\nQuantization error ±½ LSB; codes cover ranges, not single values.\n\nSuccessive‑approximation ADCs are fast with predictable conversion time; dual‑slope ADCs are slower but precise and good for DMMs.\nConversion‑time limits constrain how fast input can change; sample‑and‑hold circuits freeze the value during conversion, but add bandwidth and droop constraints.\nFrequency‑based converters (V‑to‑F + counter, 555) are simple and robust for many process‑control applications, though generally slower than SAR ADCs."
+    "text": "Summary / Key Points\n\nComparators\n\n1‑bit A/Ds that output high/low based on input vs reference.\nUsed for alarms, zero‑crossing detection, and inside ADC/DACs.\nNoise near threshold causes chattering → fix with hysteresis (Schmitt triggers).\nOpen‑collector outputs require pull‑ups and allow wired‑OR and level flexibility.\n\nDACs\n\nUnipolar: \\(V_{\\text{out}} = \\frac{N}{2^n} V_R\\).\nBipolar (offset‑binary): \\(V_{\\text{out}} = \\frac{N}{2^n} V_R - V_R/2\\).\nResolution: \\(\\Delta V = V_R 2^{-n}\\) sets smallest output step.\nImplemented with R–2R ladders and op‑amps."
   },
   {
     "objectID": "ins_32.html#formula-summary",
     "href": "ins_32.html#formula-summary",
     "title": "Converters: Comparators, DACs, and ADCs",
     "section": "Formula Summary",
-    "text": "Formula Summary\nComparators with Hysteresis\n\nUpper threshold: \\(V_H = V_{\\text{ref}}\\).\nLower threshold:\n\n\\[\nV_L = V_{\\text{ref}} - \\frac{R}{R_f} V_0\n\\]\n\nHysteresis width:\n\n\\[\n\\Delta V_{\\text{hyst}} = \\frac{R}{R_f} V_0\n\\]"
+    "text": "Formula Summary\nComparators & Hysteresis\n\nNoise‑free switching: \\[V_{\\text{in}} \\ge V_{\\text{ref}} \\Rightarrow \\text{output high}\\]\nHysteresis comparator thresholds (generic form): \\[V_H = V_{\\text{ref}}\\] \\[V_L = V_{\\text{ref}} - \\frac{R}{R_f} V_0\\]\nHysteresis width: \\[\\Delta V = V_H - V_L = \\frac{R}{R_f} V_0\\]"
   },
   {
     "objectID": "ins_11.html#summary-key-points-1",
@@ -2665,5 +2665,1356 @@
     "title": "Operational Amplifiers in Instrumentation",
     "section": "Design Guidelines (cont’d)",
     "text": "Design Guidelines (cont’d)\n4. General Notes\n\nFor resistive sensors in bridges/dividers, consider:\n\nNonlinearity of bridge output vs resistance.\nSelf‑heating due to current/power.\n\nStart from a static transfer equation: \\[\nV_{\\text{out}} = mV_{\\text{in}} + V_0\n\\] or similar; then choose op amp blocks to implement it.\nAlways check for loading:\n\nDoes your op amp input significantly change the sensor output?\nDoes your output stage properly drive its load?"
+  },
+  {
+    "objectID": "ins_31.html#digital-signal-conditioning-digital-fundamentals",
+    "href": "ins_31.html#digital-signal-conditioning-digital-fundamentals",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Digital Signal Conditioning & Digital Fundamentals",
+    "text": "Digital Signal Conditioning & Digital Fundamentals\nInstrumentation and Process Control (ECE Undergraduate)"
+  },
+  {
+    "objectID": "ins_31.html#learning-objectives",
+    "href": "ins_31.html#learning-objectives",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\nBy the end of this session, you should be able to:\n\nExplain what digital signal conditioning is and why it is needed in modern instrumentation and control.\nDescribe how analog process variables (e.g., temperature, level) are represented using digital words.\nConvert between binary, decimal, octal, and hexadecimal representations (including fractional numbers).\nInterpret and construct simple Boolean algebra expressions for control logic.\nMap Boolean expressions into digital gate circuits (AND/OR and NAND/NOR).\nDescribe the basic role of PLCs and computer interfaces (buses and tri‑state buffers) in control systems.\n\n\nEmphasize that this lecture is about the “digital side” of instrumentation: once we’ve measured some physical quantity as an analog signal, we often want to process, transmit, or use it in digital logic or a computer.\nWe are not trying to turn them into digital design experts in one lecture; we’re giving just enough digital background so that later we can talk sensibly about A/D, D/A, and computer‑based control."
+  },
+  {
+    "objectID": "ins_31.html#why-digital-signal-conditioning",
+    "href": "ins_31.html#why-digital-signal-conditioning",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Why Digital Signal Conditioning?",
+    "text": "Why Digital Signal Conditioning?\n\n\n\nModern systems are dominated by digital electronics and computers.\nCommon ECE/control examples:\n\nAutomotive ECUs (engine, ABS, airbags)\nHome appliances (washing machines, microwave ovens)\nBuilding automation (HVAC, security, lighting)\nIndustrial process control (chemical plants, refineries)\n\nAll these systems sense analog variables (temperature, pressure, motion, etc.) but internally use digital data.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nUse this slide to motivate the topic. Point out that almost every “smart” device they know has a microcontroller or microprocessor inside, but the world around it is analog.\nDigital signal conditioning is the bridge between analog signals coming from sensors and the digital domain where computers and digital logic operate.\nDifferentiate: - “Signal conditioning” in a narrow sense usually means analog conditioning (amplifiers, filters, isolation). - “Digital signal conditioning” is about representing and handling the information in a digital format after A/D conversion, and designing the digital logic structures that use that data."
+  },
+  {
+    "objectID": "ins_31.html#what-is-digital-signal-conditioning",
+    "href": "ins_31.html#what-is-digital-signal-conditioning",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "What Is Digital Signal Conditioning?",
+    "text": "What Is Digital Signal Conditioning?\n\nIn process control, digital signal conditioning means:\n\nRepresenting analog process information in a digital format.\nEnsuring the digital representation is compatible with:\n\nDigital logic families and voltage levels\nMicrocontrollers, PLCs, and computers\nCommunication buses and networks\n\n\nTypically involves:\n\nA/D conversion (analog to digital)\nScaling, encoding, or formatting digital data\nError detection/correction, filtering in the digital domain\n\n\n\n\n\n\n\n\nNote\n\n\nDigital representation rarely increases raw accuracy; in fact, quantization and finite word length usually reduce it slightly. But the big win is robustness to noise, drift, and long‑distance transmission.\n\n\n\n\nEmphasize: we are not magically improving measurement accuracy just by going digital.\nAccuracy can even get worse because: - We quantize the signal to a finite number of bits. - The A/D converter has its own errors (offset, gain, INL, DNL, etc.).\nHowever, once the signal is digital: - Noise added on a digital line is much easier to tolerate (as long as it doesn’t cross the logic thresholds). - Digital data can be copied, stored, transmitted, and processed with very little additional error."
+  },
+  {
+    "objectID": "ins_31.html#why-use-digital-techniques-in-control",
+    "href": "ins_31.html#why-use-digital-techniques-in-control",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Why Use Digital Techniques in Control?",
+    "text": "Why Use Digital Techniques in Control?\nBeyond noise immunity, digital control offers:\n\nMultivariable control\n\nOne computer can coordinate many variables and loops.\n\nLinearization of sensor outputs\n\nNonlinear sensor curves (e.g., thermocouples) can be corrected in software.\n\nComplex control algorithms\n\nPID with scheduling, model predictive control, adaptive control, etc.\n\nEasy modification and upgrades\n\nChange control laws or tuning by updating software rather than rewiring.\n\nNetworking and integration\n\nMultiple controllers, HMIs, and databases share data over a plant network.\n\n\n\nRelate to a simple example: - A chemical reactor controlled by a PLC: it might monitor temperature, pressure, and level, compute flows, implement PID loops, manage interlocks, and log data.\nAll of this is much easier, cheaper, and more maintainable in digital form than with analog controllers and relays."
+  },
+  {
+    "objectID": "ins_31.html#digital-fundamentals-big-picture",
+    "href": "ins_31.html#digital-fundamentals-big-picture",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Digital Fundamentals – Big Picture",
+    "text": "Digital Fundamentals – Big Picture\nTo use digital techniques in process control we need a basic toolkit:\n\nDigital information and words\n\nBits, binary representation of numbers.\n\nNumber systems\n\nDecimal, binary, octal, hexadecimal; integer and fractional forms.\n\nBoolean algebra\n\nRepresent logic conditions as equations.\n\nDigital electronics\n\nLogic gates implementing Boolean operations.\n\nProgrammable Logic Controllers (PLCs)\n\nIndustrial digital controllers for logic‑heavy tasks.\n\nComputer interfaces and tri‑state buffers\n\nHow digital devices share a bus.\n\n\n\nExplain that this is a “review” or “crash course” in digital for those who have already taken basic digital logic or computer engineering courses.\nThe goal isn’t to teach them logic design from scratch, but to refresh the concepts in the specific context of process control and instrumentation."
+  },
+  {
+    "objectID": "ins_31.html#digital-information-bits-and-logic-levels",
+    "href": "ins_31.html#digital-information-bits-and-logic-levels",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Digital Information: Bits and Logic Levels",
+    "text": "Digital Information: Bits and Logic Levels\n\n\n\nDigital signals are binary (two‑state) levels.\nPhysical implementations can be:\n\nTwo voltages (e.g., 0 V and 5 V)\nTwo currents\nTwo frequencies\nTwo phases\n\nWe label the states:\n\nLogic high: H or 1\nLogic low: L or 0\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nConnect to physical reality: a wire doesn’t “contain a 1” in an abstract sense; it has some voltage, current, or waveform that we interpret as logic 0 or 1 based on thresholds.\nPoint out that in industrial environments, digital levels and isolation (e.g., opto‑isolators) are chosen to survive noise and harsh conditions."
+  },
+  {
+    "objectID": "ins_31.html#from-bits-to-words",
+    "href": "ins_31.html#from-bits-to-words",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "From Bits to Words",
+    "text": "From Bits to Words\n\nA single binary signal (one wire) can carry only 1 bit of information.\nTo represent richer information (e.g., a measured temperature), we use multiple bits together as a binary word.\nExample: a 6‑bit word\n\nPattern: 101011₂\nThat’s a 6‑digit base‑2 number, with each digit a bit.\n\nGeneral binary whole number:\n\nFor bits \\(a_n a_{n-1} \\dots a_1 a_0\\):\n\\[N_{10} = a_n 2^n + a_{n-1} 2^{n-1} + \\dots + a_1 2^1 + a_0 2^0\\]\n\n\n\n\n\n\n\n\nTip\n\n\nIn instrumentation, the number of bits (word length) determines the resolution of your measurement.\n\n\n\n\nTie this directly to A/D converters: an N‑bit A/D can output 2^N different digital codes, mapping some analog range (e.g., 0–10 V) into discrete steps.\nThey will see later why 8, 12, 16, or 24 bits are common in instrumentation."
+  },
+  {
+    "objectID": "ins_31.html#example-1-binary-to-decimal-whole-number",
+    "href": "ins_31.html#example-1-binary-to-decimal-whole-number",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Example 1 – Binary to Decimal (Whole Number)",
+    "text": "Example 1 – Binary to Decimal (Whole Number)\nProblem: Find the base‑10 equivalent of the binary whole number \\(\\mathbf{00100111_2}\\).\nStep 1 – Remove leading zeros: \\[\n00100111_2 = 100111_2\n\\]\nStep 2 – Write positional expansion: \\[\nN_{10} = (1)2^5 + (0)2^4 + (0)2^3 + (1)2^2 + (1)2^1 + (1)2^0\n\\]\nStep 3 – Evaluate: \\[\nN_{10} = 32 + 0 + 0 + 4 + 2 + 1 = 39\n\\]\nAnswer: \\[\n\\mathbf{00100111_2 = 39_{10}}\n\\]\n\nWalk students through how each bit corresponds to a power of 2, exactly as decimal digits correspond to powers of 10.\nAsk a quick check question: “What is the decimal value of 00010000₂?” to make sure they see that leading zeros don’t matter."
+  },
+  {
+    "objectID": "ins_31.html#example-2-decimal-to-binary-whole-number",
+    "href": "ins_31.html#example-2-decimal-to-binary-whole-number",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Example 2 – Decimal to Binary (Whole Number)",
+    "text": "Example 2 – Decimal to Binary (Whole Number)\nProblem: Find the binary equivalent of the base‑10 number \\(47\\).\nWe use successive division by 2, tracking the remainders.\n\\[\n\\frac{47}{2} = 23 \\text{ with remainder } 1 \\Rightarrow a_0 = 1\n\\]\n\\[\n\\frac{23}{2} = 11 \\text{ with remainder } 1 \\Rightarrow a_1 = 1\n\\]\n\\[\n\\frac{11}{2} = 5 \\text{ with remainder } 1 \\Rightarrow a_2 = 1\n\\]\n\\[\n\\frac{5}{2} = 2 \\text{ with remainder } 1 \\Rightarrow a_3 = 1\n\\]\n\\[\n\\frac{2}{2} = 1 \\text{ with remainder } 0 \\Rightarrow a_4 = 0\n\\]\n\\[\n\\frac{1}{2} = 0 \\text{ with remainder } 1 \\Rightarrow a_5 = 1\n\\]"
+  },
+  {
+    "objectID": "ins_31.html#octal-and-hexadecimal-why-bother",
+    "href": "ins_31.html#octal-and-hexadecimal-why-bother",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Octal and Hexadecimal – Why Bother?",
+    "text": "Octal and Hexadecimal – Why Bother?\n\nLong binary strings are hard for humans to read.\nOctal (base 8) and hexadecimal (base 16) are convenient shorthand because:\n\n1 octal digit = 3 binary bits.\n1 hex digit = 4 binary bits.\n\nOctal digits: 0–7.\nHex digits: 0–9, A, B, C, D, E, F.\n\n\n\nBinary → Octal\n\nGroup bits in 3s from the right.\nExample:\n\n\\(101011_2 = 101\\ 011_2\\)\n\\(101_2 = 5_8,\\ 011_2 = 3_8\\)\nSo \\(101011_2 = 53_8\\).\n\n\n\nBinary → Hex\n\nGroup bits in 4s from the right.\nExample:\n\n\\(10110110_2 = 1011\\ 0110_2\\)\n\\(1011_2 = B_{16},\\ 0110_2 = 6_{16}\\)\nSo \\(10110110_2 = \\text{B6H}\\).\n\n\n\n\nEmphasize that hex is extremely common in microcontrollers, PLCs, and communication protocols (e.g., Modbus frames, CAN IDs).\nAlso remind them of notation: - Subscript 8, 10, 16 for octal, decimal, hex. - “H” appended is common for hex (e.g., B6H)."
+  },
+  {
+    "objectID": "ins_31.html#fractional-binary-numbers",
+    "href": "ins_31.html#fractional-binary-numbers",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Fractional Binary Numbers",
+    "text": "Fractional Binary Numbers\nSo far, we’ve handled whole numbers. What about fractions?\nDecimal fractional numbers use negative powers of 10: \\[\n0.473_{10} = 4 \\cdot 10^{-1} + 7 \\cdot 10^{-2} + 3 \\cdot 10^{-3}\n\\]\nBinary fractional numbers use negative powers of 2: \\[\nN_{10} = b_1 2^{-1} + b_2 2^{-2} + \\dots + b_m 2^{-m}\n\\]\nwhere:\n\n\\(b_1 b_2 \\dots b_m\\) is the binary fraction (bits to the right of the “binary point”).\n\\(m\\) is the number of fractional bits.\n\n\n\n\n\n\n\nNote\n\n\nConceptually, it’s exactly like decimal fractions, but every step to the right halves the weight (divide by 2) instead of dividing by 10.\n\n\n\n\nConnect to fixed‑point representation: many embedded controllers use fixed‑point arithmetic where a certain number of bits is reserved for the fractional part.\nThis is also related to the resolution of an A/D converter: the LSB often corresponds to a fraction of the full‑scale analog range."
+  },
+  {
+    "objectID": "ins_31.html#example-3-binary-fraction-to-decimal",
+    "href": "ins_31.html#example-3-binary-fraction-to-decimal",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Example 3 – Binary Fraction to Decimal",
+    "text": "Example 3 – Binary Fraction to Decimal\nProblem: Find the base‑10 equivalent of the binary number \\(\\mathbf{0.11010_2}\\).\nWe use: \\[\nN_{10} = b_1 2^{-1} + b_2 2^{-2} + \\dots + b_m 2^{-m}\n\\]\nHere, \\(m = 5\\), and the bits are: \\[\nb_1 b_2 b_3 b_4 b_5 = 1\\ 1\\ 0\\ 1\\ 0\n\\]\nSo: \\[\nN_{10} = (1)2^{-1} + (1)2^{-2} + (0)2^{-3} + (1)2^{-4} + (0)2^{-5}\n\\]\n\\[\nN_{10} = \\frac{1}{2} + \\frac{1}{4} + 0 + \\frac{1}{16} + 0\n\\]\n\\[\nN_{10} = 0.5 + 0.25 + 0.0625 = 0.8125_{10}\n\\]\nAnswer: \\[\n\\mathbf{0.11010_2 = 0.8125_{10}}\n\\]\n\nPoint out how the first bit after the binary point is 1/2, the next is 1/4, then 1/8, etc.\nYou can check quickly by converting 0.5₁₀, 0.25₁₀, 0.75₁₀ to binary as mini‑exercises."
+  },
+  {
+    "objectID": "ins_31.html#example-4-decimal-fraction-to-binary-octal-hex",
+    "href": "ins_31.html#example-4-decimal-fraction-to-binary-octal-hex",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Example 4 – Decimal Fraction to Binary / Octal / Hex",
+    "text": "Example 4 – Decimal Fraction to Binary / Octal / Hex\nProblem: Find the binary, octal, and hex equivalents of \\(0.3125_{10}\\).\nStep 1 – Decimal fraction to binary (successive multiplication by 2)\n\\[\n2(0.3125) = 0.6250 \\Rightarrow b_1 = 0\n\\]\n\\[\n2(0.6250) = 1.250 \\Rightarrow b_2 = 1\n\\]\n\\[\n2(0.250) = 0.500 \\Rightarrow b_3 = 0\n\\]\n\\[\n2(0.500) = 1.000 \\Rightarrow b_4 = 1\n\\]\nThe whole parts (0, 1, 0, 1) give bits: \\[\n0.3125_{10} = 0.0101_2\n\\]\nWe can also write this as \\(0.010100_2\\) (trailing zeros do not change the value)."
+  },
+  {
+    "objectID": "ins_31.html#boolean-algebra-logic-with-truefalse",
+    "href": "ins_31.html#boolean-algebra-logic-with-truefalse",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Boolean Algebra – Logic with True/False",
+    "text": "Boolean Algebra – Logic with True/False\n\nIn control systems, many decisions are yes/no or true/false:\n\nIs the tank level high?\nIs pressure above its limit?\nHas the emergency stop button been pressed?\n\nBoolean algebra lets us:\n\nRepresent such conditions as variables (1 = true, 0 = false).\nCombine them using logical operations:\n\nAND (·), OR (+), NOT (overbar).\n\n\n\n\n\n\n\n\n\nNote\n\n\nBoolean algebra is the language for specifying logic‑based control (interlocks, alarms, safety systems).\n\n\n\n\nClarify the mapping of true/false to 1/0: - 1 usually means condition is true (e.g., level is high, switch is closed). - 0 means false (e.g., level is not high).\nThis is logical truth, not necessarily voltage 1 or 0, although they are related."
+  },
+  {
+    "objectID": "ins_31.html#example-alarm-logic-in-a-mixing-tank",
+    "href": "ins_31.html#example-alarm-logic-in-a-mixing-tank",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Example – Alarm Logic in a Mixing Tank",
+    "text": "Example – Alarm Logic in a Mixing Tank\nConsider a mixing tank with three monitored variables:\n\n\\(A\\): Level (1 = high, 0 = low)\n\\(B\\): Pressure (1 = high, 0 = low)\n\\(C\\): Temperature (1 = high, 0 = low)\n\nWe want an alarm output \\(D\\) (1 = alarm ON) with these conditions:\n\nLow level with high pressure.\nHigh level with high temperature.\nHigh level with low temperature and high pressure."
+  },
+  {
+    "objectID": "ins_31.html#constructing-the-boolean-expression",
+    "href": "ins_31.html#constructing-the-boolean-expression",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Constructing the Boolean Expression",
+    "text": "Constructing the Boolean Expression\nFor each condition, write a Boolean term:\n\nLow level with high pressure\n\nLow level means \\(A = 0 \\Rightarrow \\bar{A} = 1\\).\nHigh pressure means \\(B = 1\\).\nCondition 1 term: \\(\\bar{A} \\cdot B\\).\n\nHigh level with high temperature\n\nHigh level: \\(A = 1\\).\nHigh temperature: \\(C = 1\\).\nCondition 2 term: \\(A \\cdot C\\).\n\nHigh level with low temperature and high pressure\n\nHigh level: \\(A = 1\\).\nLow temperature: \\(C = 0 \\Rightarrow \\bar{C} = 1\\).\nHigh pressure: \\(B = 1\\).\nCondition 3 term: \\(A \\cdot \\bar{C} \\cdot B\\)."
+  },
+  {
+    "objectID": "ins_31.html#digital-electronics-logic-gates",
+    "href": "ins_31.html#digital-electronics-logic-gates",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Digital Electronics – Logic Gates",
+    "text": "Digital Electronics – Logic Gates\n\nBoolean operations are implemented in hardware using logic gates:\n\nAND gate → multiplication (·).\nOR gate → addition (+).\nNOT gate (inverter) → overbar.\n\nGates are built from transistors and belong to families (TTL, CMOS, etc.) with specific voltage levels.\nComplex logic functions can be composed from:\n\nBasic AND, OR, NOT, or\nUniversal gates: NAND and NOR.\n\n\n\nMention that in integrated circuits, NAND and NOR are often preferred because they are easier to implement and pack densely in silicon.\nIn industrial PCBs for instrumentation, students may see both discrete logic and “system on chip” microcontrollers."
+  },
+  {
+    "objectID": "ins_31.html#example-5-implementing-equation-2-with-andor-gates",
+    "href": "ins_31.html#example-5-implementing-equation-2-with-andor-gates",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Example 5 – Implementing Equation (2) with AND/OR Gates",
+    "text": "Example 5 – Implementing Equation (2) with AND/OR Gates\nWe want to implement: \\[\nD = \\bar{A} \\cdot B + A \\cdot C + A \\cdot \\bar{C} \\cdot B\n\\tag{2}\n\\]\nThe gate‑level realization uses:\n\nInverters to generate \\(\\bar{A}\\) and \\(\\bar{C}\\).\nAND gates for each product term.\nAn OR gate to combine the term outputs."
+  },
+  {
+    "objectID": "ins_31.html#simplifying-the-logic",
+    "href": "ins_31.html#simplifying-the-logic",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Simplifying the Logic",
+    "text": "Simplifying the Logic\nThe original expression: \\[\nD = \\bar{A} \\cdot B + A \\cdot C + A \\cdot \\bar{C} \\cdot B\n\\]\ncan be simplified (using Boolean algebra) to: \\[\nD = A \\cdot C + B\n\\]\nInterpretation:\n\nIf pressure is high (\\(B = 1\\)), the alarm is ON regardless of level or temperature.\nOtherwise (\\(B = 0\\)), the alarm is ON if both level and temperature are high (\\(A = 1, C = 1\\)).\n\n\n\n\n\n\n\nImportant\n\n\nSimplifying logic reduces cost, power, and failure points in physical implementations.\n\n\n\n\nYou do not need to fully derive the simplification on this slide, but it’s worth sketching:\n\nGroup terms with \\(B\\) and factor, then apply absorption rules.\n\nStress that simplification is especially valuable in relay logic and PLC ladder logic, where too many contacts or rungs can be confusing and error‑prone."
+  },
+  {
+    "objectID": "ins_31.html#example-6-implementing-with-nandnor",
+    "href": "ins_31.html#example-6-implementing-with-nandnor",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Example 6 – Implementing with NAND/NOR",
+    "text": "Example 6 – Implementing with NAND/NOR\nWe can also implement the logic using NAND and NOR gates.\nOne direct but inefficient way:\n\nBuild the AND/OR implementation.\nThen replace each AND and OR with NAND/NOR gates plus inverters.\n\nA more efficient approach:\n\nFirst simplify the expression.\nThen use Boolean theorems (e.g., DeMorgan’s) to match NAND/NOR structures.\n\nFor the simplified expression: \\[\nD = A \\cdot C + B\n\\]\nWe can rewrite using DeMorgan’s theorem: \\[\nD = A \\cdot C + B = \\overline{(A \\cdot C)} \\cdot \\bar{B}\n\\]"
+  },
+  {
+    "objectID": "ins_31.html#programmable-logic-controllers-plcs",
+    "href": "ins_31.html#programmable-logic-controllers-plcs",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Programmable Logic Controllers (PLCs)",
+    "text": "Programmable Logic Controllers (PLCs)\n\nPLCs are industrial computers designed for:\n\nDigital logic control (replacement for relay panels).\nHarsh environments (temperature, vibration, electrical noise).\n\nKey characteristics:\n\nRugged I/O modules for analog and digital signals.\nProgrammable using ladder logic, function block diagrams, etc.\nReal‑time operation with deterministic scan cycles.\n\n\n\n\n\n\n\n\nNote\n\n\nIn practice, Boolean equations and gate diagrams for process control are often implemented as PLC ladder logic, not discrete gates.\n\n\n\n\nMake the historical link: PLCs evolved from relay‑based sequence control.\nMention common vendors (Allen‑Bradley, Siemens, Schneider) without going into marketing.\nStress that understanding Boolean algebra and digital representations helps interpret and design PLC programs."
+  },
+  {
+    "objectID": "ins_31.html#computer-interface-the-bus",
+    "href": "ins_31.html#computer-interface-the-bus",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Computer Interface: The Bus",
+    "text": "Computer Interface: The Bus\n\n\n\nA typical computer (or microcontroller) connects to external devices through a bus:\n\nData lines: carry data values.\nAddress lines: select specific devices/locations.\nControl lines: indicate read/write, interrupts, etc.\n\nAll attached devices share these lines.\n\n\n\n\n\nGeneric model of a computer bus system\n\n\n\n\n\n\n\n\n\nWarning\n\n\nSharing the bus safely requires that only one device drive a line at a time. Otherwise, you get bus contention and possibly hardware damage.\n\n\n\n\nExplain that in instrumentation, external A/D and D/A converters, digital I/O modules, and memory‑mapped registers are often connected via busses like:\n\nParallel data busses in older systems.\nSerial busses (SPI, I²C, CAN) in modern embedded systems (conceptually similar).\n\nThe key idea: multiple devices share physical lines, so we must control when each device is allowed to drive a line."
+  },
+  {
+    "objectID": "ins_31.html#tristate-buffers-sharing-a-bus-line",
+    "href": "ins_31.html#tristate-buffers-sharing-a-bus-line",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Tri‑State Buffers – Sharing a Bus Line",
+    "text": "Tri‑State Buffers – Sharing a Bus Line\nTo prevent devices from fighting on a shared line, we use tri‑state buffers.\nA tri‑state buffer has:\n\nAn input (logic 0 or 1).\nAn output.\nAn enable control signal.\n\nIt can put the output into three states:\n\nLogic 0\nLogic 1\nHigh‑impedance (effectively disconnected)"
+  },
+  {
+    "objectID": "ins_31.html#worked-problem-1-encoding-a-sensor-reading",
+    "href": "ins_31.html#worked-problem-1-encoding-a-sensor-reading",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Worked Problem 1 – Encoding a Sensor Reading",
+    "text": "Worked Problem 1 – Encoding a Sensor Reading\nScenario: You have a temperature sensor whose output after analog conditioning is mapped to a digital word between 0 and 63 (6 bits). At a given moment, the reading is \\(101011_2\\).\n\nWhat is the decimal value of this reading?\nIf 0 corresponds to 0 °C and 63 corresponds to 63 °C, what temperature does this code represent?\nWhat is the hex equivalent of this binary code?"
+  },
+  {
+    "objectID": "ins_31.html#worked-problem-2-designing-a-simple-interlock",
+    "href": "ins_31.html#worked-problem-2-designing-a-simple-interlock",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Worked Problem 2 – Designing a Simple Interlock",
+    "text": "Worked Problem 2 – Designing a Simple Interlock\nProblem: A motor should run only if:\n\nThe start button \\(S\\) is pressed (1 = pressed).\nThe over‑temperature switch \\(T\\) is NOT tripped (1 = tripped).\nThe emergency stop \\(E\\) is NOT engaged (1 = pressed).\n\nDefine a Boolean expression for the motor run signal \\(M\\), and show a simple gate‑level implementation."
+  },
+  {
+    "objectID": "ins_31.html#summary-key-points",
+    "href": "ins_31.html#summary-key-points",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Summary / Key Points",
+    "text": "Summary / Key Points\n\nDigital signal conditioning: representing analog process variables in digital form suitable for digital logic, PLCs, and computers.\nBinary words encode measured values; word length (number of bits) impacts resolution.\nNumber systems (binary, octal, hex) are crucial for interpreting and manipulating digital data.\n\nConversions between bases can be done systematically (division for integers, multiplication for fractions).\n\nBoolean algebra provides a compact way to express logical control conditions.\nLogic gates (AND, OR, NOT, NAND, NOR) are physical realizations of Boolean operations.\nPLCs implement digital logic for industrial control, often replacing relay panels.\nComputer interfaces use shared buses; tri‑state buffers ensure only one device drives a line at a time.\n\n\nReinforce that everything in modern digital control systems, from the simplest interlock to a complex multivariable controller, is built on these foundations: digital representation, Boolean logic, and structured interfaces.\nEncourage students to practice basic conversions and Boolean expressions so that later lectures on A/D, D/A, and digital filtering are easier to follow."
+  },
+  {
+    "objectID": "ins_31.html#formulas-summary",
+    "href": "ins_31.html#formulas-summary",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Formulas Summary",
+    "text": "Formulas Summary\n\nBinary whole number (to decimal) \\[\nN_{10} = a_n 2^n + a_{n-1} 2^{n-1} + \\dots + a_1 2^1 + a_0 2^0\n\\]\nBinary fraction (to decimal) \\[\nN_{10} = b_1 2^{-1} + b_2 2^{-2} + \\dots + b_m 2^{-m}\n\\]\nSuccessive division by 2 (decimal → binary integer)\n\nRepeatedly divide the decimal number by 2.\nRecord remainders; read them in reverse order as bits.\n\nSuccessive multiplication by 2 (decimal fraction → binary)\n\nRepeatedly multiply the fractional part by 2.\nThe integer parts of each result form the bits in order."
+  },
+  {
+    "objectID": "ins_31.html#warmup-binary-to-decimal",
+    "href": "ins_31.html#warmup-binary-to-decimal",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Warmup: Binary to Decimal",
+    "text": "Warmup: Binary to Decimal\nUse this code cell to convert a binary string to decimal. Change the binary_str variable and click Run Code.\n\n\n\n\n\n\n\nAsk students to try binary strings from the text:\n\n00100111 → they should see 39.\n101011 → they should see 43.\n\nEncourage them to observe the effect of adding/removing leading zeros."
+  },
+  {
+    "objectID": "ins_31.html#decimal-to-binary",
+    "href": "ins_31.html#decimal-to-binary",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Decimal to Binary",
+    "text": "Decimal to Binary\nNow convert a non‑negative integer to binary using the successive division by 2 method. Modify n and re‑run.\n\n\n\n\n\n\n\nRelate this directly to the worked example where 47₁₀ → 101111₂.\nHave students test several values and check their answers against a calculator or mental math."
+  },
+  {
+    "objectID": "ins_31.html#explore-binary-fractions-manual-conversion",
+    "href": "ins_31.html#explore-binary-fractions-manual-conversion",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Explore Binary Fractions – Manual Conversion",
+    "text": "Explore Binary Fractions – Manual Conversion\nUse the binary fraction formula from the main deck: \\[\nN_{10} = b_1 2^{-1} + b_2 2^{-2} + \\dots + b_m 2^{-m}\n\\]\nEdit binary_fraction (just bits after the point) and run the cell.\n\n\n\n\n\n\n\nStudents should confirm:\n\nbinary_fraction = \"1\" → 0.5\n\"01\" → 0.25\n\"11010\" → 0.8125 (from the text).\n\nPoint out how adding more bits refines the value in smaller steps of 1/2, 1/4, 1/8, etc."
+  },
+  {
+    "objectID": "ins_31.html#decimal-fraction-to-binary-successive-multiplication",
+    "href": "ins_31.html#decimal-fraction-to-binary-successive-multiplication",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Decimal Fraction to Binary – Successive Multiplication",
+    "text": "Decimal Fraction to Binary – Successive Multiplication\nThis implements the “repeated multiply by 2” algorithm from the text. Change x and max_bits to see more/less precision.\n\n\n\n\n\n\n\nHave students set x = 0.3125 and max_bits = 4 to match the example 0.0101₂.\nAsk them to try x = 0.1 and observe that the bits keep changing (no finite representation), similar to 1/3 in decimal."
+  },
+  {
+    "objectID": "ins_31.html#converting-between-binary-octal-and-hex",
+    "href": "ins_31.html#converting-between-binary-octal-and-hex",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Converting Between Binary, Octal, and Hex",
+    "text": "Converting Between Binary, Octal, and Hex\nThis code groups bits in 3s (octal) and 4s (hex) to convert a binary string.\n\n\n\n\n\n\n\nCheck against the examples:\n\nbinary_str = \"101011\" → expect 53₈.\nbinary_str = \"10110110\" → expect B6H.\n\nEncourage students to mentally group bits to see the octal/hex digits."
+  },
+  {
+    "objectID": "ins_31.html#reactive-demo-word-length-and-resolution-sliders-plotly",
+    "href": "ins_31.html#reactive-demo-word-length-and-resolution-sliders-plotly",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Reactive Demo: Word Length and Resolution (Sliders + Plotly)",
+    "text": "Reactive Demo: Word Length and Resolution (Sliders + Plotly)\nUse the sliders to change the number of bits and the full‑scale range of an A/D converter. We’ll compute and plot the quantization staircase.\n\nviewof n_bits = Inputs.range([2, 12], {step: 1, value: 6, label: \"Number of bits (N)\"})\nviewof full_scale = Inputs.range([1, 20], {step: 1, value: 10, label: \"Full-scale range (V)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEncourage students to:\n\nIncrease n_bits and observe the staircase becoming smoother (higher resolution).\nChange full_scale and notice how the voltage per step (LSB) changes.\n\nConnect this to the idea that more bits in a digital word allow finer representation of an analog variable."
+  },
+  {
+    "objectID": "ins_31.html#reactive-demo-binary-fraction-explorer",
+    "href": "ins_31.html#reactive-demo-binary-fraction-explorer",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Reactive Demo: Binary Fraction Explorer",
+    "text": "Reactive Demo: Binary Fraction Explorer\nUse the slider to select how many fractional bits to keep. We’ll display the approximate value of a fixed target number (e.g., 0.7) as a binary fraction.\n\nviewof target = Inputs.range([0, 1], {step: 0.05, value: 0.7, label: \"Target decimal value\"})\nviewof bits_frac = Inputs.range([1, 12], {step: 1, value: 4, label: \"Number of fractional bits (m)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThis shows how fixed‑point representation introduces quantization error for fractional values.\nAsk students to:\n\nFix target at 0.7 and increase bits_frac.\nObserve how the error magnitude decreases as more bits are used."
+  },
+  {
+    "objectID": "ins_31.html#reactive-boolean-logic-truth-table-generator",
+    "href": "ins_31.html#reactive-boolean-logic-truth-table-generator",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Reactive Boolean Logic: Truth Table Generator",
+    "text": "Reactive Boolean Logic: Truth Table Generator\nControl three Boolean inputs with buttons, and let Python compute the alarm condition from the mixing tank example: \\[\nD = \\bar{A} \\cdot B + A \\cdot C + A \\cdot \\bar{C} \\cdot B\n\\]\n\nviewof A = Inputs.toggle({label: \"A (Level high?)\", value: false})\nviewof B = Inputs.toggle({label: \"B (Pressure high?)\", value: false})\nviewof C = Inputs.toggle({label: \"C (Temperature high?)\", value: false})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nShow students that toggling A, B, C visually matches the conditions in the problem statement:\n\nLow level ((A = 0)), high pressure ((B = 1)) → D = 1.\nHigh level ((A = 1)), high temp ((C = 1)) → D = 1.\nHigh level, low temp, high pressure → (A=1, C=0, B=1) → D = 1.\n\nThe full truth table helps them verify the logic."
+  },
+  {
+    "objectID": "ins_31.html#interactive-exercise-design-your-own-logic",
+    "href": "ins_31.html#interactive-exercise-design-your-own-logic",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Interactive Exercise: Design Your Own Logic",
+    "text": "Interactive Exercise: Design Your Own Logic\nNow define your own Boolean logic for a motor enable signal (M).\nConditions (suggestion):\n\n(S): Start command (1 = requested).\n(P): Pressure OK (1 = within safe range).\n(T): Temperature OK (1 = within safe range).\n\nYou can propose your own rule, e.g.: \\[\nM = S \\cdot P \\cdot T\n\\]\nUse the toggles and modify the expression inside the code.\n\nviewof S = Inputs.toggle({label: \"S (Start command)\", value: false})\nviewof P = Inputs.toggle({label: \"P (Pressure OK)\", value: true})\nviewof T = Inputs.toggle({label: \"T (Temperature OK)\", value: true})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInvite students to change the logic expression, e.g.:\n\nRequire either pressure OR temperature OK: M_int = S_int * (P_int or T_int) (converted appropriately to integers).\nAdd a “maintenance override” variable if they wish (extend the code).\n\nThis lets them explore Boolean algebra in a concrete context."
+  },
+  {
+    "objectID": "ins_31.html#summary-what-you-just-explored",
+    "href": "ins_31.html#summary-what-you-just-explored",
+    "title": "Digital Signal Conditioning & Digital Fundamentals",
+    "section": "Summary – What You Just Explored",
+    "text": "Summary – What You Just Explored\n\nBinary/decimal conversions for whole numbers and fractions, using algorithms from the main text.\nGrouping bits into 3s and 4s to get octal and hex.\nHow word length (number of bits) affects resolution and quantization error.\nHow Boolean expressions like \\[\nD = \\bar{A} \\cdot B + A \\cdot C + A \\cdot \\bar{C} \\cdot B\n\\] map to real conditions (alarms, interlocks).\nHow to use sliders and toggles to experiment with digital concepts interactively.\n\n\nEncourage students to download or copy the code cells into their own Quarto notebooks or Jupyter environments.\nRemind them that these small tools are prototypes of what real instrumentation engineers do when they test and visualize digital signal processing and control algorithms."
+  },
+  {
+    "objectID": "ins_32.html#big-picture-why-converters-matter-in-ece",
+    "href": "ins_32.html#big-picture-why-converters-matter-in-ece",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Big Picture: Why Converters Matter in ECE",
+    "text": "Big Picture: Why Converters Matter in ECE\n\n\n\nSensors mostly give analog outputs (voltages/currents).\nMicrocontrollers, FPGAs, PLCs work with digital words.\nActuators often need analog drives (valves, motors, heaters, etc.).\n\nSo we need:\n\nADC: analog → digital (measurement path)\nDAC: digital → analog (actuation path)\nComparator: simplest analog/digital boundary (1‑bit ADC)\n\nIn process control:\n\nA temperature/pressure sensor → ADC → controller → DAC → valve / heater.\nCorrect converter selection and design determines accuracy, speed, and stability.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWalk through a typical control loop: temperature sensor in a chemical reactor, analog signal to ADC, digital control, DAC output to a valve. Point out that comparators are like 1‑bit ADCs used for alarms or simple threshold logic, while full ADCs/DACs handle multi‑bit precision."
+  },
+  {
+    "objectID": "ins_32.html#comparators-concept",
+    "href": "ins_32.html#comparators-concept",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "3.1 Comparators: Concept",
+    "text": "3.1 Comparators: Concept\n\n\n\nA comparator outputs a digital 1 or 0 depending on which input voltage is larger.\nThink of it as a one‑bit ADC with a fixed threshold.\n\nGiven inputs \\(V_a\\) and \\(V_b\\):\n\nIf \\(V_a &gt; V_b\\) → output = logic 1 (high).\nIf \\(V_a &lt; V_b\\) → output = logic 0 (low).\n\nCommon uses:\n\nAlarm and interlock circuits.\nZero‑crossing detection (e.g., AC line).\nBuilding blocks inside ADCs and DACs.\n\n\n\n\n\nFigure 6: A basic comparator compares voltages and produces a digital output.\n\n\n\n\nEmphasize: unlike an op‑amp used with feedback, a comparator is intended to saturate to rails and switch quickly. It’s not for linear amplification, but for making decisions: above or below threshold."
+  },
+  {
+    "objectID": "ins_32.html#comparator-alarm-example-process-control",
+    "href": "ins_32.html#comparator-alarm-example-process-control",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Comparator Alarm Example (Process Control)",
+    "text": "Comparator Alarm Example (Process Control)\nSpec: Trigger an alarm if - Temperature \\(T &gt; 160^\\circ\\mathrm{C}\\) - AND pressure \\(P &gt; 10\\ \\mathrm{kPa}\\)\nTransducers:\n\nTemperature: \\(V_T = 2.2\\ \\mathrm{mV}/^\\circ\\mathrm{C} \\cdot T\\)\nPressure: \\(V_P = 0.2\\ \\mathrm{V}/\\mathrm{kPa} \\cdot P\\)\n\nCompute trip voltages:\n\n\\(V_{T,\\text{trip}} = 2.2\\ \\mathrm{mV}/^\\circ\\mathrm{C} \\times 160^\\circ\\mathrm{C} = 0.352\\ \\mathrm{V}\\)\n\\(V_{P,\\text{trip}} = 0.2\\ \\mathrm{V}/\\mathrm{kPa} \\times 10\\ \\mathrm{kPa} = 2.0\\ \\mathrm{V}\\)"
+  },
+  {
+    "objectID": "ins_32.html#exercise-design-your-own-alarm-inclass",
+    "href": "ins_32.html#exercise-design-your-own-alarm-inclass",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Exercise: Design Your Own Alarm (In‑Class)",
+    "text": "Exercise: Design Your Own Alarm (In‑Class)\nYou have a level sensor: \\(V_L = 40\\ \\mathrm{mV/cm} \\cdot h\\), where \\(h\\) is level in cm.\nRequirement:\n\nAlarm when \\(h &gt; 120\\ \\mathrm{cm}\\).\n\nTasks (think‑pair‑share):\n\nCompute the trip voltage \\(V_{\\text{ref}}\\).\nSketch a comparator circuit:\n\nWhat goes to + input?\nWhat goes to − input?\n\nHow would you invert the condition (alarm when \\(h &lt; 120\\ \\mathrm{cm}\\)) without changing the comparator IC?\n\n\nGive students 2–3 minutes and then walk through:\n\n\\(V_{\\text{ref}} = 40\\ \\mathrm{mV/cm} \\times 120\\ \\mathrm{cm} = 4.8\\ \\mathrm{V}\\).\nTo alarm on high level: usually put sensor to +, reference to −. Output high when sensor &gt; ref.\nTo alarm on low: swap inputs or invert output using a logic inverter."
+  },
+  {
+    "objectID": "ins_32.html#comparator-noise-problem-jiggling-output",
+    "href": "ins_32.html#comparator-noise-problem-jiggling-output",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Comparator Noise Problem: “Jiggling” Output",
+    "text": "Comparator Noise Problem: “Jiggling” Output\n\n\nNoisy signal near the threshold:\n\n\n\nFigure 9: A noisy input near reference causes rapid toggling.\n\n\nResult:\n\n\n\nFigure 9: Output “jiggle” between 0 and 1.\n\n\n\n\nIf the input crosses the reference slowly or has noise, the comparator may rapidly switch between high and low.\nIn real systems this can:\n\nChatter relays/valves.\nCreate multiple interrupts to a microcontroller.\nGenerate spurious alarms.\n\n\nSolution: Hysteresis (Deadband) → The comparator must cross a higher threshold to turn on than to turn off.\n\n\nRelate this to a thermostat that doesn’t turn the heater on/off every second as the temperature jitters around the setpoint. Hysteresis introduces a small band where no switching occurs."
+  },
+  {
+    "objectID": "ins_32.html#hysteresis-comparator-schmitt-trigger",
+    "href": "ins_32.html#hysteresis-comparator-schmitt-trigger",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Hysteresis Comparator (Schmitt Trigger)",
+    "text": "Hysteresis Comparator (Schmitt Trigger)\n\n\n\n\n\nFigure 10a: Hysteresis comparator circuit.\n\n\n\n\n\nFigure 10b: Hysteresis comparator input-output relationship.\n\n\n\nFor \\(R_f \\gg R\\):\n\nOutput goes high when: \\[V_{\\text{in}} \\ge V_{\\text{ref}} = V_H\\]\nOnce high, output will stay high until input falls below: \\[V_{\\text{in}} \\le V_{\\text{ref}} - \\frac{R}{R_f} V_0 = V_L\\]\nHysteresis width (deadband): \\[\\Delta V = V_H - V_L = \\frac{R}{R_f} V_0\\]\n\n\n\nWalk through the feedback intuition: when output goes high, the feedback slightly raises or lowers the effective threshold at the input (depending on topology), producing two distinct switching levels. Highlight that by choosing \\(R/R_f\\) we tune how large a band of noise we can tolerate."
+  },
+  {
+    "objectID": "ins_32.html#hysteresis-design-example-splashing-tank",
+    "href": "ins_32.html#hysteresis-design-example-splashing-tank",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Hysteresis Design Example (Splashing Tank)",
+    "text": "Hysteresis Design Example (Splashing Tank)\nSpec:\n\nLevel sensor: \\(V = 20\\ \\mathrm{mV/cm} \\cdot h\\)\nComparator output: high (5 V) whenever level \\(h \\ge 50\\ \\mathrm{cm}\\)\nSplashing causes \\(\\pm 3\\ \\mathrm{cm}\\) fluctuation (noise).\n\nCompute:\n\nNominal reference at 50 cm: \\[V_{\\text{ref}} = 20\\ \\mathrm{mV/cm} \\times 50\\ \\mathrm{cm} = 1.0\\ \\mathrm{V}\\]\nSplashing amplitude: \\[\\Delta V_{\\text{noise}} = 20\\ \\mathrm{mV/cm} \\times 3\\ \\mathrm{cm} = \\pm 60\\ \\mathrm{mV}\\] Total “noise range” = 120 mV."
+  },
+  {
+    "objectID": "ins_32.html#digitaltoanalog-converters-dacs-overview",
+    "href": "ins_32.html#digitaltoanalog-converters-dacs-overview",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "3.2 Digital‑to‑Analog Converters (DACs): Overview",
+    "text": "3.2 Digital‑to‑Analog Converters (DACs): Overview\nA DAC converts a digital code (binary word) into an analog voltage or current.\n\nInput: \\(n\\)‑bit binary word \\(b_1 b_2 \\dots b_n\\) (MSB to LSB).\nOutput: a staircase analog voltage (or current) over a defined range.\n\nTwo main types in this section:\n\nUnipolar DAC: output range \\(\\approx 0\\) to \\(+V_R\\) (or some fraction).\nBipolar DAC: output range \\(\\approx -V_R/2\\) to \\(+V_R/2\\).\n\nUses in ECE:\n\nDriving actuators (valves, motors, VCOs, etc.) from microcontrollers.\nSetting analog reference levels under software control.\nGenerating waveforms, test signals (e.g., arbitrary waveform generators).\n\n\nRelate to a typical microcontroller board with an external SPI DAC: students may have used it to set an analog control voltage. Here we’re deriving the math behind that black box and resolution limits."
+  },
+  {
+    "objectID": "ins_32.html#unipolar-dac-transfer-function",
+    "href": "ins_32.html#unipolar-dac-transfer-function",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Unipolar DAC Transfer Function",
+    "text": "Unipolar DAC Transfer Function\nFor a unipolar \\(n\\)‑bit DAC with reference voltage \\(V_R\\):\nBinary word \\(b_1 b_2 \\dots b_n\\) with \\(b_i \\in \\{0,1\\}\\):\n\\[\nV_{\\text{out}} = V_R \\left[ b_1 2^{-1} + b_2 2^{-2} + \\dots + b_n 2^{-n} \\right] \\tag{5}\n\\]\nInterpretation:\n\nThe DAC treats the binary input as a fraction in [0,1).\nEach bit contributes a weighted fraction of \\(V_R\\)."
+  },
+  {
+    "objectID": "ins_32.html#example-8bit-dac-output",
+    "href": "ins_32.html#example-8bit-dac-output",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Example: 8‑bit DAC Output",
+    "text": "Example: 8‑bit DAC Output\nGiven:\n\n8‑bit DAC, \\(V_R = 5.0\\ \\mathrm{V}\\)\nInput code: \\(\\mathbf{10100111}_2\\) = A7H\n\nConvert input to decimal:\n\n\\(N = 167_{10}\\), and \\(2^8 = 256\\).\n\nUse Equation (6):\n\\[\nV_{\\text{out}} = \\frac{167}{256} \\cdot 5.0 = 3.2617\\ \\mathrm{V}\n\\]\nSo the digital word A7H produces ≈ 3.26 V at the DAC output.\n\n\n\n\n\n\nTip\n\n\nPractice: compute \\(V_{\\text{out}}\\) for input 80H (10000000₂).\n\n\\(N = 128\\), \\(V_{\\text{out}} = (128/256)5 = 2.5\\) V.\n\n\n\n\n\nEncourage students to internalize the idea that the MSB roughly halves the range, so 10000000₂ gives about half of \\(V_R\\)."
+  },
+  {
+    "objectID": "ins_32.html#example-9-10bit-dac-calculations",
+    "href": "ins_32.html#example-9-10bit-dac-calculations",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Example 9: 10‑bit DAC Calculations",
+    "text": "Example 9: 10‑bit DAC Calculations\nGiven: 10‑bit DAC, \\(V_R = 10.0\\ \\mathrm{V}\\).\n\nInput: \\(\\mathbf{0010110101}_2 = \\text{0B5H}\\)\n\nUse Equation (5): bits at positions 3, 5, 6, 8, 10 are 1:\n\\[\nV_{\\text{out}} = 10.0 \\left[2^{-3} + 2^{-5} + 2^{-6} + 2^{-8} + 2^{-10}\\right]\n= 10.0 [0.1767578] = 1.767578\\ \\mathrm{V}\n\\]\n\nInput: 20FH (hex)\n\n\nConvert: \\(20\\mathrm{F}_\\mathrm{H} = 527_{10}\\), \\(2^{10} = 1024\\).\nFrom Equation (6):\n\\[\nV_{\\text{out}} = \\frac{527}{1024} \\cdot 10.0 = 5.14648\\ \\mathrm{V}\n\\]\n\n\nWhat input to get \\(6.5\\ \\mathrm{V}\\)?"
+  },
+  {
+    "objectID": "ins_32.html#bipolar-dac-offsetbinary",
+    "href": "ins_32.html#bipolar-dac-offsetbinary",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Bipolar DAC: Offset‑Binary",
+    "text": "Bipolar DAC: Offset‑Binary\nSome DACs output from negative to positive voltage (bipolar).\nA common representation is offset‑binary:\n\\[\nV_{\\text{out}} = \\frac{N}{2^n} V_R - \\frac{1}{2} V_R \\tag{7}\n\\]\n\n\\(N\\) ranges from \\(0\\) to \\((2^n - 1)\\).\nWhen \\(N = 0\\): \\[V_{\\text{out}}(\\min) = -\\frac{V_R}{2}\\]\nWhen \\(N = 2^n - 1\\): \\[V_{\\text{out}}(\\max) = \\frac{1}{2}V_R - \\frac{V_R}{2^n}\\]\n\nSo the output is nearly symmetric about 0 V but slightly less than \\(+V_R/2\\) at the max code."
+  },
+  {
+    "objectID": "ins_32.html#dac-resolution",
+    "href": "ins_32.html#dac-resolution",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "DAC Resolution",
+    "text": "DAC Resolution\nThe smallest change in output for a 1‑LSB change in input is:\n\\[\n\\Delta V_{\\text{out}} = V_R 2^{-n} \\tag{8}\n\\]\nThis is the voltage resolution of the DAC.\nExample:\n\n5‑bit DAC, \\(V_R = 10\\ \\mathrm{V}\\) → \\[\\Delta V_{\\text{out}} = 10 \\cdot 2^{-5} = 0.3125\\ \\mathrm{V}\\]\n\nDesign question: How many bits to get \\(\\Delta V \\le 0.04\\ \\mathrm{V}\\) with \\(V_R = 10\\ \\mathrm{V}\\)?\nSolve:\n\\[\n0.04 = 10 \\cdot 2^{-n} \\Rightarrow 2^{-n} = 0.004 \\Rightarrow n \\approx 7.966\n\\]\nSo \\(n = 8\\) bits is sufficient.\nCheck:\n\\[\n\\Delta V_{\\text{out}} = 10 \\cdot 2^{-8} = 0.03906\\ \\mathrm{V} &lt; 0.04\\ \\mathrm{V}\n\\]\n\nStudents should be comfortable doing back‑of‑the‑envelope calculations: “I want steps of about X volts; with V_R = Y, how many bits?” This is essential for sizing data converters in real designs."
+  },
+  {
+    "objectID": "ins_32.html#dac-block-diagram-characteristics",
+    "href": "ins_32.html#dac-block-diagram-characteristics",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "DAC Block Diagram & Characteristics",
+    "text": "DAC Block Diagram & Characteristics\n\n\n\n\n\nFigure 11: Generic DAC diagram with typical input and output signals.\n\n\n\nKey characteristics:\n\nDigital input: typically parallel TTL/CMOS bits.\nPower supply: often ±12..±18 V for internal op‑amps (some single‑supply).\nReference: defines range and resolution; must be stable & low ripple.\nOutput: analog voltage (or current) with step size \\(\\Delta V_{\\text{out}}\\).\nOffset & trimming: small non‑zero output at zero code → trim pins.\nData latch: many DACs latch input on a control signal, holding output constant.\nConversion time: typically a few µs or less (mostly just amplifier settling).\n\n\n\nMention that in embedded boards, DACs often use serial interfaces (SPI/I²C) but internally they still implement the same ladder or current‑steering structure and require a reference. The latch is critical when sharing a bus or updating outputs synchronously."
+  },
+  {
+    "objectID": "ins_32.html#dac-internal-structure-r2r-ladder",
+    "href": "ins_32.html#dac-internal-structure-r2r-ladder",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "DAC Internal Structure: R–2R Ladder",
+    "text": "DAC Internal Structure: R–2R Ladder\n\n\n\n\n\nFigure 12: Typical DAC implemented with an R-2R resistor ladder.\n\n\n\n\nUses only two resistor values: \\(R\\) and \\(2R\\).\nEach bit controls a switch feeding either reference or ground into the ladder.\nNetwork analysis shows output matches Equation (5) / (6).\n\nBenefits:\n\nEasy to fabricate in IC processes (only two precision resistor ratios).\nGood matching → good linearity.\nScales easily with number of bits.\n\n\n\nYou don’t need to derive the ladder math fully in class, but emphasize the idea: each branch contributes half the weight of the previous, summed via the op‑amp to form the analog output."
+  },
+  {
+    "objectID": "ins_32.html#example-12-dac-driving-a-control-valve",
+    "href": "ins_32.html#example-12-dac-driving-a-control-valve",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Example 12: DAC Driving a Control Valve",
+    "text": "Example 12: DAC Driving a Control Valve\nA valve opens linearly with 0–10 V input. An 8‑bit DAC controls it.\n\nFind \\(V_R\\) to get full valve opening at maximum DAC code.\n\nWe want:\n\nFor input code 11111111₂ (255₁₀), \\(V_{\\text{out}} = 10\\ \\mathrm{V}\\).\n\nBut with reference \\(V_R\\), maximum DAC output is:\n\\[\nV_{\\max} = V_R \\left( \\frac{1}{2} + \\frac{1}{4} + \\dots + \\frac{1}{256} \\right) = 0.9961 V_R\n\\]\nSet equal to 10 V:\n\\[\n10 = 0.9961 V_R \\Rightarrow V_R = \\frac{10}{0.9961} \\approx 10.039\\ \\mathrm{V}\n\\]"
+  },
+  {
+    "objectID": "ins_32.html#analogtodigital-converters-adcs-transfer-function",
+    "href": "ins_32.html#analogtodigital-converters-adcs-transfer-function",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "3.3 Analog‑to‑Digital Converters (ADCs): Transfer Function",
+    "text": "3.3 Analog‑to‑Digital Converters (ADCs): Transfer Function\nADC is the inverse of DAC:\n\nInput: analog voltage \\(V_{\\text{in}}\\).\nOutput: \\(n\\)‑bit binary word \\(b_1 b_2 \\dots b_n\\).\n\nUnipolar ADC relationship (reverse of Equation 5):\n\\[\nb_1 2^{-1} + b_2 2^{-2} + \\dots + b_n 2^{-n} \\;\\le\\; \\frac{V_{\\text{in}}}{V_R} \\tag{9}\n\\]"
+  },
+  {
+    "objectID": "ins_32.html#designing-adc-resolution-example-13",
+    "href": "ins_32.html#designing-adc-resolution-example-13",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Designing ADC Resolution: Example 13",
+    "text": "Designing ADC Resolution: Example 13\nSensor: temperature with \\(V = 0.02\\ \\mathrm{V}/^\\circ\\mathrm{C} \\cdot T\\).\nNeed to measure from \\(0^\\circ\\mathrm{C}\\) to \\(100^\\circ\\mathrm{C}\\) with resolution \\(0.1^\\circ\\mathrm{C}\\).\nMax sensor output at 100°C:\n\\[\nV_{\\max} = 0.02 \\cdot 100 = 2\\ \\mathrm{V}\n\\]\nSo choose \\(V_R = 2\\ \\mathrm{V}\\).\nChange in sensor voltage for \\(0.1^\\circ\\mathrm{C}\\):\n\\[\n\\Delta V_{\\text{req}} = 0.1^\\circ\\mathrm{C} \\cdot 0.02\\ \\mathrm{V}/^\\circ\\mathrm{C} = 2\\ \\mathrm{mV}\n\\]\nWe need ADC LSB \\(\\le 2\\ \\mathrm{mV}\\):\n\\[\n0.002 = 2 \\cdot 2^{-n} \\Rightarrow 2^{-n} = 0.001 \\Rightarrow n \\approx 9.996\n\\]\nSo 10 bits are required."
+  },
+  {
+    "objectID": "ins_32.html#direct-formula-for-adc-output-code",
+    "href": "ins_32.html#direct-formula-for-adc-output-code",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Direct Formula for ADC Output Code",
+    "text": "Direct Formula for ADC Output Code\nInstead of Equation (9), we often use:\n\\[\nN = \\operatorname{INT}\\left(\\frac{V_{\\text{in}}}{V_R} 2^n\\right) \\tag{11}\n\\]\n\n\\(N\\) = decimal value of digital output.\n\\(\\operatorname{INT}()\\) = truncate fractional part (not rounding).\n\nThen convert \\(N\\) to hex or binary."
+  },
+  {
+    "objectID": "ins_32.html#example-15-adc-code-backconversion",
+    "href": "ins_32.html#example-15-adc-code-backconversion",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Example 15: ADC Code & Back‑Conversion",
+    "text": "Example 15: ADC Code & Back‑Conversion\n10‑bit ADC, \\(V_R = 2.500\\ \\mathrm{V}\\).\n(a) Given \\(V_{\\text{in}} = 1.45\\ \\mathrm{V}\\), find hex output.\n\\[\nN = \\operatorname{INT}\\left(\\frac{1.45}{2.5} 2^{10}\\right)\n= \\operatorname{INT}(593.92) = 593_{10}\n\\]\n593₁₀ = 251H.\n(b) If output is 1B4H, what \\(V_{\\text{in}}\\)?\n1B4H = 436₁₀. Invert Equation (11):\n\\[\nV_{\\text{in}} = \\frac{N}{2^n} V_R = \\frac{436}{1024} \\cdot 2.5 = 1.06445\\ \\mathrm{V}\n\\]\nBut any input in:\n\\[\n[1.06445\\ \\mathrm{V},\\; 1.06445 + \\frac{2.5}{1024} = 1.06689\\ \\mathrm{V})\n\\]\nwill quantize to the same code 1B4H.\n\n\n\n\n\n\nNote\n\n\nEvery ADC code corresponds to a range of input voltages, not a single unique value.\n\n\n\n\nHighlight that this is why we speak of measurement uncertainty or ±0.5 LSB error even with a perfect (noiseless, linear) ADC."
+  },
+  {
+    "objectID": "ins_32.html#bipolar-adc-offsetbinary",
+    "href": "ins_32.html#bipolar-adc-offsetbinary",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Bipolar ADC: Offset‑Binary",
+    "text": "Bipolar ADC: Offset‑Binary\nFor bipolar input (e.g., from \\(-V_R/2\\) to \\(+V_R/2\\)), offset‑binary ADC uses:\n\\[\nN = \\operatorname{INT}\\left[ \\left(\\frac{V_{\\text{in}}}{V_R} + \\frac{1}{2} \\right) 2^n \\right] \\tag{12}\n\\]\nCheck key points (example: 8‑bit, \\(V_R = 10\\ \\mathrm{V}\\)):\n\n\\(V_{\\text{in}} = -5.00\\ \\mathrm{V}\\) → \\(N = 0\\) (00000000₂).\n\\(V_{\\text{in}} = 0\\) → \\(N = 2^{n-1} = 128\\) (10000000₂).\n\\(V_{\\text{in}} = +5.00\\ \\mathrm{V}\\) not fully representable; max code at ~4.961 V."
+  },
+  {
+    "objectID": "ins_32.html#adc-block-diagram-handshaking",
+    "href": "ins_32.html#adc-block-diagram-handshaking",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "ADC Block Diagram & Handshaking",
+    "text": "ADC Block Diagram & Handshaking\n\n\n\n\n\nFigure 13: Generic ADC diagram with conversion timing.\n\n\n\n\n\nFigure 14: Typical ADC timing diagram.\n\n\n\nInputs/outputs:\n\nAnalog input \\(V_{\\text{in}}\\): must be constant during conversion.\nPower supplies: often ± for analog, +5 V for digital.\nReference \\(V_R\\): stable, low noise.\nDigital outputs: \\(n\\) bits, often tri‑state for bus connection.\nControl lines:\n\nSC (Start‑Convert): input; falling edge starts conversion.\nEOC (End‑Of‑Convert): output; asserts when conversion complete.\nRD (Read): input; enables tri‑state outputs so data appears on bus.\n\nConversion time \\(τ_c\\): finite; microseconds to milliseconds depending on ADC type.\n\n\n\nExplain that the microcontroller must obey this timing: start conversion, wait for EOC, then issue RD. This is classic “handshaking” between CPU and ADC."
+  },
+  {
+    "objectID": "ins_32.html#adc-architectures-big-picture",
+    "href": "ins_32.html#adc-architectures-big-picture",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "ADC Architectures: Big Picture",
+    "text": "ADC Architectures: Big Picture\nTwo common internal architectures covered here:\n\nParallel‑feedback / Successive Approximation (SAR)\n\nUses an internal DAC + comparator.\nSets bits one by one, MSB → LSB, to approximate \\(V_{\\text{in}}\\).\nConversion time ~ constant and proportional to number of bits (e.g., 12–20 clock cycles).\n\nDual‑Slope (Ramp) ADC\n\nIntegrates input for fixed time, then integrates reference in opposite direction.\nConversion time longer (tens–hundreds of ms) but very accurate and immune to some noise and component tolerances.\n\n\nWe’ll look at both in more detail.\n\nMention that modern high‑speed ADCs (e.g., pipeline, sigma‑delta) exist but are beyond this section. Here we focus on SAR and dual‑slope since they are widely used in instrumentation and DMMs."
+  },
+  {
+    "objectID": "ins_32.html#successive-approximation-sar-adc",
+    "href": "ins_32.html#successive-approximation-sar-adc",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Successive Approximation (SAR) ADC",
+    "text": "Successive Approximation (SAR) ADC\n\n\n\n\n\nFigure 15: SAR ADC uses internal DAC and comparator in feedback.\n\n\n\nAlgorithm (for each conversion):\n\nSet all bits to 0.\nSet MSB (\\(b_1\\)) to 1, form trial voltage \\(V_F\\) via DAC.\nCompare \\(V_F\\) to \\(V_x\\) (input).\n\nIf \\(V_F \\le V_x\\), keep MSB = 1.\nElse, reset MSB = 0.\n\nMove to next bit (\\(b_2\\)), set to 1, test again.\nRepeat until LSB.\n\nAfter \\(n\\) steps, the output word is the converted result.\n\n\nStress that this is basically a clever binary search in the range of voltages, cutting error in half each step. Time to convert is fixed: e.g., 12 bits may require about 12 comparison steps."
+  },
+  {
+    "objectID": "ins_32.html#example-17-4bit-sar-with-5-v-reference",
+    "href": "ins_32.html#example-17-4bit-sar-with-5-v-reference",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Example 17: 4‑bit SAR with 5 V Reference",
+    "text": "Example 17: 4‑bit SAR with 5 V Reference\nInput: \\(V_x = 3.217\\ \\mathrm{V}\\), \\(V_R = 5\\ \\mathrm{V}\\).\nSteps:\n\nTrial \\(b_1 = 1\\) → \\(V_F = 5(2^{-1}) = 2.5\\ \\mathrm{V}\\)\n\n\\(V_x &gt; 2.5\\) → keep \\(b_1 = 1\\).\n\nTrial \\(b_2 = 1\\) → \\(V_F = 5(2^{-1} + 2^{-2}) = 5(0.75) = 3.75\\ \\mathrm{V}\\)\n\n\\(V_x &lt; 3.75\\) → reset \\(b_2 = 0\\).\n\nTrial \\(b_3 = 1\\) → \\(V_F = 5(2^{-1} + 2^{-3}) = 5(0.625) = 3.125\\ \\mathrm{V}\\)\n\n\\(V_x &gt; 3.125\\) → keep \\(b_3 = 1\\).\n\nTrial \\(b_4 = 1\\) → \\(V_F = 5(2^{-1} + 2^{-3} + 2^{-4}) = 3.4375\\ \\mathrm{V}\\)\n\n\\(V_x &lt; 3.4375\\) → reset \\(b_4 = 0\\).\n\n\nFinal result: \\(b_1 b_2 b_3 b_4 = 1010_2\\).\n\nNotice that 3.217 V is closer to 3.125 V than 3.4375 V, so truncation gives 3.125 V equivalent. That’s consistent with SAR ADC behavior."
+  },
+  {
+    "objectID": "ins_32.html#dualslope-adc",
+    "href": "ins_32.html#dualslope-adc",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Dual‑Slope ADC",
+    "text": "Dual‑Slope ADC\n\n\n\n\n\nFigure 16: Dual-slope ADC block diagram.\n\n\n\n\n\nFigure 17: Dual-slope timing.\n\n\n\nKey idea: integrate input, then integrate reference in opposite direction.\n\nIntegrate \\(V_x\\) for fixed time \\(T_1\\):\n\\[\nV_1 = \\frac{1}{RC} \\int_0^{T_1} V_x dt = \\frac{T_1}{RC} V_x \\tag{14}\n\\]\nSwitch input to constant reference \\(V_R\\) (opposite polarity), integrate down:\n\\[\nV_2 = V_1 - \\frac{1}{RC}\\int_0^{t_x} V_R dt\n     = \\frac{T_1}{RC} V_x - \\frac{t_x}{RC} V_R \\tag{16}\n\\]\nStop when comparator detects \\(V_2 = 0\\): solve for \\(t_x\\):\n\\[\nV_x = \\frac{t_x}{T_1} V_R \\tag{17}\n\\]\n\nA counter counts clock pulses during \\(t_x\\) → directly proportional to \\(V_x\\).\n\n\n\n\n\n\n\nImportant\n\n\nNote that \\(R\\) and \\(C\\) cancel out in Equation (17). Dual‑slope ADC accuracy depends mainly on reference voltage and timing, not precision of \\(R\\) and \\(C\\).\n\n\n\n\nThis is why dual‑slope ADCs are preferred in digital multimeters: excellent rejection of noise and component variation, at the cost of speed."
+  },
+  {
+    "objectID": "ins_32.html#example-18-dualslope-conversion-time",
+    "href": "ins_32.html#example-18-dualslope-conversion-time",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Example 18: Dual‑Slope Conversion Time",
+    "text": "Example 18: Dual‑Slope Conversion Time\nGiven:\n\nDual‑slope ADC as in Figure 16.\n\\(R = 100\\ \\mathrm{k}\\Omega\\), \\(C = 0.01\\ \\mu \\mathrm{F}\\)\n\\(V_R = 10\\ \\mathrm{V}\\), \\(T_1 = 10\\ \\mathrm{ms}\\)\nInput \\(V_x = 6.8\\ \\mathrm{V}\\).\n\nStep 1: Compute \\(V_1\\):\n\\[\nV_1 = \\frac{T_1}{RC} V_x\n    = \\frac{10\\ \\mathrm{ms}}{(100\\ \\mathrm{k}\\Omega)(0.01\\ \\mu \\mathrm{F})} \\cdot 6.8\n    = 6.8\\ \\mathrm{V}\n\\]\n(Here, the RC values make the integrator output equal to \\(V_x\\) after 10 ms.)\nStep 2: Compute \\(t_x\\) using Equation (17):\n\\[\nt_x = \\frac{T_1 V_x}{V_R} = \\frac{10\\ \\mathrm{ms} \\cdot 6.8}{10} = 6.8\\ \\mathrm{ms}\n\\]\nTotal conversion time:\n\\[\nT_{\\text{conv}} = T_1 + t_x = 10\\ \\mathrm{ms} + 6.8\\ \\mathrm{ms} = 16.8\\ \\mathrm{ms}\n\\]\n\nPoint out that this is much slower than SAR but acceptable for many process‑control and DMM applications where signals change slowly."
+  },
+  {
+    "objectID": "ins_32.html#interfacing-sensors-to-adcs-example-19",
+    "href": "ins_32.html#interfacing-sensors-to-adcs-example-19",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Interfacing Sensors to ADCs: Example 19",
+    "text": "Interfacing Sensors to ADCs: Example 19\nSensor: \\(V_T = 6.5\\ \\mathrm{mV}/^\\circ\\mathrm{C} \\cdot T\\) up to 100°C.\n6‑bit ADC, \\(V_R = 10\\ \\mathrm{V}\\).\n(a) Design amplifier gain so max code at 100°C.\nSensor output at 100°C:\n\\[\nV_{\\text{sensor,max}} = 6.5\\ \\mathrm{mV/^\\circ C} \\cdot 100^\\circ\\mathrm{C} = 0.65\\ \\mathrm{V}\n\\]\nADC input code 111111₂ → \\(V_x\\) from Equation (5):\n\\[\nV_x = V_R \\left( \\frac{1}{2} + \\dots + \\frac{1}{64} \\right)\n    = 10 \\cdot 0.984375 = 9.84375\\ \\mathrm{V}\n\\]\nRequired amplifier gain:\n\\[\n\\text{gain} = \\frac{9.84375}{0.65} \\approx 15.14\n\\]\nUse op‑amp configuration (Figure 18) to implement this gain."
+  },
+  {
+    "objectID": "ins_32.html#conversion-time-vs-input-slew-rate-limitation",
+    "href": "ins_32.html#conversion-time-vs-input-slew-rate-limitation",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Conversion Time vs Input Slew Rate: Limitation",
+    "text": "Conversion Time vs Input Slew Rate: Limitation\nDuring conversion, ADC repeatedly samples \\(V_{\\text{in}}\\). If \\(V_{\\text{in}}\\) changes too much during this time, the result is invalid.\nCondition for no more than 1 LSB change during conversion time \\(τ_c\\):\n\\[\n\\frac{dV_{\\text{in}}}{dt} \\le \\frac{\\Delta V}{\\tau_c} = \\frac{V_R}{2^n \\tau_c} \\tag{18}\n\\]\nExample: 10‑bit ADC, \\(V_R = 5\\ \\mathrm{V}\\), \\(τ_c = 20\\ \\mu\\mathrm{s}\\).\n\\[\n\\frac{dV_{\\text{in}}}{dt} \\le \\frac{5}{2^{10} \\cdot 20\\times 10^{-6}} \\approx 244\\ \\mathrm{V/s}\n\\]\nFor a sinusoidal input \\(V_{\\text{in}} = V_0 \\sin(\\omega t)\\),\nMax derivative: \\(|dV_{\\text{in}}/dt|_{\\max} = \\omega V_0\\)."
+  },
+  {
+    "objectID": "ins_32.html#sampleandhold-sh-concept",
+    "href": "ins_32.html#sampleandhold-sh-concept",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Sample‑and‑Hold (S/H): Concept",
+    "text": "Sample‑and‑Hold (S/H): Concept\n\n\n\n\n\nFigure 20: Concept of sample-and-hold feeding ADC.\n\n\n\n\n\nFigure 21: Sampled and held waveform.\n\n\n\nSolution to slew‑rate problem: hold the input constant during conversion.\nOperation:\n\nSample mode: switch closed, capacitor \\(C\\) tracks \\(V_{\\text{in}}(t)\\) → \\(V_C \\approx V_{\\text{in}}(t)\\).\nAt sampling instant \\(t_s\\): switch opens → Hold mode.\n\n\\(V_C\\) “freezes” near \\(V_{\\text{in}}(t_s)\\).\n\nBuffer (voltage follower) drives ADC input with \\(V_C\\) while ADC converts.\n\n\n\nShow how \\(V_C\\) becomes a staircase approximation to \\(V_{\\text{in}}\\). After conversion completes, S/H returns to sample mode, updating the held value at the next sample instant."
+  },
+  {
+    "objectID": "ins_32.html#practical-sh-circuits-and-nonidealities",
+    "href": "ins_32.html#practical-sh-circuits-and-nonidealities",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Practical S/H Circuits and Nonidealities",
+    "text": "Practical S/H Circuits and Nonidealities\n\n\n\nFigure 22: S/H using FET switch.\n\n\nFET used as an electronic switch. Nonideal aspects:"
+  },
+  {
+    "objectID": "ins_32.html#example-21-choosing-sh-capacitor",
+    "href": "ins_32.html#example-21-choosing-sh-capacitor",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Example 21: Choosing S/H Capacitor",
+    "text": "Example 21: Choosing S/H Capacitor\nGiven:\n\nUnipolar 12‑bit ADC, \\(τ_c = 30\\ \\mu\\mathrm{s}\\)\nS/H parameters: \\(R_{\\text{ON}} = 10\\ \\Omega\\), \\(R_{\\text{OFF}} = 10\\ \\mathrm{M}\\Omega\\)\nBuffer input resistance \\(R_{VF} = 10\\ \\mathrm{M}\\Omega\\)\nSource resistance \\(R_s = 50\\ \\Omega\\)"
+  },
+  {
+    "objectID": "ins_32.html#sh-timing-acquisition-aperture",
+    "href": "ins_32.html#sh-timing-acquisition-aperture",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "S/H Timing: Acquisition & Aperture",
+    "text": "S/H Timing: Acquisition & Aperture\nImportant dynamic parameters:\n\nAcquisition time, \\(\\tau_{\\text{acq}}\\): time to charge \\(C\\) to within 1 LSB of new input when returning to sample mode. Limits how fast we can sample.\nAperture time, \\(\\tau_{\\text{ap}}\\): delay between the “hold” command and the actual instant when input is isolated and held. Causes a timing error in effective sampling instant.\n\nTotal time between valid samples (throughput):\n\\[\nT = \\tau_c + \\tau_{\\text{acq}} + \\tau_{\\text{ap}} \\tag{25}\n\\]\nMaximum sampling frequency:\n\\[\nf_{\\max} = \\frac{1}{T}\n\\]"
+  },
+  {
+    "objectID": "ins_32.html#frequencybased-converters",
+    "href": "ins_32.html#frequencybased-converters",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "3.4 Frequency‑Based Converters",
+    "text": "3.4 Frequency‑Based Converters\n\n\n\n\n\nFigure 25: Frequency-based ADC using counter and timing.\n\n\n\nAnother A/D strategy: convert sensor signal into frequency, then count pulses.\nComponents:\n\nSensor → V‑to‑F converter: output square wave frequency \\(f_s \\propto\\) sensor signal.\nCounter counts pulses over fixed time \\(T_c\\).\nOne‑shot (monostable) sets \\(T_c\\) and then latches count; falling edge = EOC.\nComputer reads counter value as digital representation of analog input.\n\nFor \\(n\\)‑bit counter, to use full range at \\(f_{\\max}\\):\n\\[\nT_c = \\frac{2^n - 1}{f_{\\max}} \\tag{26}\n\\]\nFor intermediate frequency \\(f\\), count:\n\\[\nN = f T_c\n\\]\n\n\nEmphasize advantages: good noise immunity (counting pulses), simple digital hardware. Disadvantage: usually slower than SAR ADCs."
+  },
+  {
+    "objectID": "ins_32.html#timer-as-frequency-sensor-interface",
+    "href": "ins_32.html#timer-as-frequency-sensor-interface",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "555 Timer as Frequency Sensor Interface",
+    "text": "555 Timer as Frequency Sensor Interface\n\n\n\nFigure 27: 555 timer in astable mode.\n\n\nStandard astable frequency:\n\\[\nf = \\frac{1}{0.693 (R_A + 2 R_B) C} \\tag{28}\n\\]\nIf \\(R_A\\) or \\(C\\) is a sensor (e.g., light‑dependent resistor, capacitive level sensor), then frequency changes with the measured variable.\nUse this frequency with the counter‑based ADC approach from Figure 25.\n\nThe 555 is cheap and everywhere. This method is common in low‑cost instrumentation (e.g., light sensors, RC humidity sensors) where precision is moderate and cost/simplicity is important."
+  },
+  {
+    "objectID": "ins_32.html#example-24-lightdependent-resistor-to-10bit-frequencyadc",
+    "href": "ins_32.html#example-24-lightdependent-resistor-to-10bit-frequencyadc",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Example 24: Light‑Dependent Resistor to 10‑bit Frequency‑ADC",
+    "text": "Example 24: Light‑Dependent Resistor to 10‑bit Frequency‑ADC\nSensor: \\(R_A\\) varies from 36 kΩ at 1.5 W/m² to 4 kΩ at 10 W/m².\nUse 555 timer with:\n\n\\(R_B = 2\\ \\mathrm{k}\\Omega\\)\nChoose \\(C\\) and count time \\(T_c\\) for 10‑bit counter (max 1023).\n\nLet’s choose \\(T_c = 10\\ \\mathrm{ms}\\). Then:\n\nMaximum frequency at \\(R_A = 4\\ \\mathrm{k}\\Omega\\) should give N ≈ 1023:\n\\[\nf_{\\max} = \\frac{1023}{T_c} = 102,300\\ \\mathrm{Hz}\n\\]"
+  },
+  {
+    "objectID": "ins_32.html#how-many-bits-do-you-need-dacadc-resolution-explorer",
+    "href": "ins_32.html#how-many-bits-do-you-need-dacadc-resolution-explorer",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "How Many Bits Do You Need? (DAC/ADC Resolution Explorer)",
+    "text": "How Many Bits Do You Need? (DAC/ADC Resolution Explorer)\nUse this interactive cell to explore how reference voltage and number of bits affect the LSB size (resolution) for DACs and ADCs using\n\\[\\Delta V = V_R 2^{-n}\\]\n\n\n\n\n\n\n\nAsk students to: - Double \\(n\\) (e.g., from 8 to 16) and see what happens to \\(\\Delta V\\). - Change \\(V_R\\) and see how the same number of bits yields different absolute resolutions. Connect results to the examples in the main slides (e.g., 10‑bit, 10 V reference)."
+  },
+  {
+    "objectID": "ins_32.html#dac-output-calculator-unipolar",
+    "href": "ins_32.html#dac-output-calculator-unipolar",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "DAC Output Calculator (Unipolar)",
+    "text": "DAC Output Calculator (Unipolar)\nExperiment with converting a digital code to an analog voltage using\n\\[V_{\\text{out}} = \\dfrac{N}{2^n} V_R\\]\n\n\n\n\n\n\n\nPrompt students to: - Try \\(N = 0\\), \\(N = 2^n - 1\\), and some mid‑range codes. - Relate \\(N = 255\\) and \\(V_R = 5\\) to the example that produced 3.2617 V for A7H. - Notice that \\(V_{\\max}\\) is slightly less than \\(V_R\\) because \\(N \\le 2^n-1\\)."
+  },
+  {
+    "objectID": "ins_32.html#adc-output-code-calculator-unipolar",
+    "href": "ins_32.html#adc-output-code-calculator-unipolar",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "ADC Output Code Calculator (Unipolar)",
+    "text": "ADC Output Code Calculator (Unipolar)\nNow convert analog voltage to digital code using\n\\[\nN = \\operatorname{INT}\\left(\\frac{V_{\\text{in}}}{V_R} 2^n\\right)\n\\]\n\n\n\n\n\n\n\nAsk: - What happens if \\(V_{\\text{in}} &gt; V_R\\) or \\(V_{\\text{in}} &lt; 0\\)? - Compare with Example 15: note that 1.45 V gives 251H for \\(V_R = 2.5\\), \\(n = 10\\). - Discuss why INT (truncate) is used rather than rounding."
+  },
+  {
+    "objectID": "ins_32.html#bipolar-dac-explorer-offsetbinary",
+    "href": "ins_32.html#bipolar-dac-explorer-offsetbinary",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Bipolar DAC Explorer (Offset‑Binary)",
+    "text": "Bipolar DAC Explorer (Offset‑Binary)\nExplore a bipolar DAC:\n\\[\nV_{\\text{out}} = \\frac{N}{2^n} V_R - \\frac{1}{2} V_R\n\\]\n\n\n\n\n\n\n\nStudents can try: - \\(N = 0\\) → near \\(-V_R/2\\). - \\(N = 2^{n-1}\\) → near 0 V. - Large \\(N\\) near \\(2^n-1\\) → just below \\(+V_R/2\\). Connect back to Example 10 and the bipolar DAC discussion."
+  },
+  {
+    "objectID": "ins_32.html#comparator-with-hysteresis-threshold-explorer",
+    "href": "ins_32.html#comparator-with-hysteresis-threshold-explorer",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Comparator with Hysteresis – Threshold Explorer",
+    "text": "Comparator with Hysteresis – Threshold Explorer\nUse this cell to experiment with hysteresis width \\(\\Delta V\\) for a comparator:\n\\[\n\\Delta V = \\frac{R}{R_f} V_0\n\\]\n\n\n\n\n\n\n\nRelate values to the tank splashing example (R_f = 100 kΩ, R = 3 kΩ). Encourage students to answer: - How large must R/R_f be to tolerate ±60 mV noise? - What happens to ΔV when they halve/double R?"
+  },
+  {
+    "objectID": "ins_32.html#reactive-demo-1-interactive-dac-transfer-ojs-pyodide-plotly",
+    "href": "ins_32.html#reactive-demo-1-interactive-dac-transfer-ojs-pyodide-plotly",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Reactive Demo 1 – Interactive DAC Transfer (OJS + Pyodide + Plotly)",
+    "text": "Reactive Demo 1 – Interactive DAC Transfer (OJS + Pyodide + Plotly)\nUse the sliders to control number of bits and reference voltage. The DAC transfer curve updates in real time.\n\nviewof bits = Inputs.range([2, 12], {step: 1, label: \"Number of bits (n)\"})\nviewof Vref = Inputs.range([1, 10], {step: 0.5, label: \"Reference voltage V_R (V)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGuide students to: - Observe how increasing bits increases the number of steps and decreases step height. - Compare LSB visually as \\(n\\) changes. - Relate to physical actuator control (e.g., how “smooth” a valve position looks)."
+  },
+  {
+    "objectID": "ins_32.html#reactive-demo-2-adc-quantization-of-a-ramp-signal",
+    "href": "ins_32.html#reactive-demo-2-adc-quantization-of-a-ramp-signal",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Reactive Demo 2 – ADC Quantization of a Ramp Signal",
+    "text": "Reactive Demo 2 – ADC Quantization of a Ramp Signal\nVisualize how an ADC with given n and V_R quantizes a linearly increasing input.\n\nviewof adc_bits = Inputs.range([3, 12], {step: 1, label: \"ADC bits (n)\"})\nviewof adc_Vref = Inputs.range([1, 10], {step: 0.5, label: \"ADC reference V_R (V)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDiscussion prompts: - Identify the step size from the plot and compare to \\(\\Delta V = V_R 2^{-n}\\). - Look at what happens to low vs high resolution (3 bits vs 12 bits). - Relate the stepped curve to codes like those computed in Examples 14–15."
+  },
+  {
+    "objectID": "ins_32.html#reactive-demo-3-successive-approximation-4bit",
+    "href": "ins_32.html#reactive-demo-3-successive-approximation-4bit",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Reactive Demo 3 – Successive Approximation (4‑bit)",
+    "text": "Reactive Demo 3 – Successive Approximation (4‑bit)\nSimulate the successive approximation process for a 4‑bit ADC with \\(V_R = 5\\ \\mathrm{V}\\), as in Example 17.\n\nviewof sar_Vin = Inputs.range([0, 5], {step: 0.05, label: \"Input voltage V_x (V)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\nStudents can adjust \\(V_x\\) and observe how the algorithm sets/reset bits. Relate directly to Example 17 with \\(V_x = 3.217\\ \\mathrm{V}\\). Emphasize binary search nature and constant conversion time in steps of \\(n\\)."
+  },
+  {
+    "objectID": "ins_32.html#reactive-demo-4-slew-rate-limit-vs-conversion-time",
+    "href": "ins_32.html#reactive-demo-4-slew-rate-limit-vs-conversion-time",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Reactive Demo 4 – Slew Rate Limit vs Conversion Time",
+    "text": "Reactive Demo 4 – Slew Rate Limit vs Conversion Time\nExplore Equation (18):\n\\[\n\\frac{dV_{\\text{in}}}{dt} \\le \\frac{V_R}{2^n \\tau_c}\n\\]\n\nviewof slew_bits = Inputs.range([4, 16], {step: 1, label: \"ADC bits n\"})\nviewof slew_Vref = Inputs.range([1, 10], {step: 0.5, label: \"Reference V_R (V)\"})\nviewof slew_tau = Inputs.range([1, 100], {step: 1, label: \"Conversion time τ_c (µs)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHave students see how: - Increasing bits or conversion time tightens the allowable dV/dt. - This motivates sample‑and‑hold circuits to freeze the input during conversion."
+  },
+  {
+    "objectID": "ins_32.html#reactive-demo-5-frequencybased-adc-counter-method",
+    "href": "ins_32.html#reactive-demo-5-frequencybased-adc-counter-method",
+    "title": "Converters: Comparators, DACs, and ADCs",
+    "section": "Reactive Demo 5 – Frequency‑Based ADC (Counter Method)",
+    "text": "Reactive Demo 5 – Frequency‑Based ADC (Counter Method)\nExplore the counter‑based A/D relationship for an \\(n\\)‑bit counter and a signal frequency \\(f\\).\nGiven\n\\[T_c = \\frac{2^n - 1}{f_{\\max}}, \\quad N = f T_c\\]\n\nviewof f_bits  = Inputs.range([4, 12], {step: 1, label: \"Counter bits n\"})\nviewof f_fmax  = Inputs.range([1, 100], {step: 1, label: \"Max sensor frequency f_max (kHz)\"})\nviewof f_fsig  = Inputs.range([0.1, 100], {step: 0.1, label: \"Current sensor frequency f (kHz)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nConnect this to Example 23 and Example 24: - See how count saturates at \\(2^n - 1\\) when \\(f = f_{\\max}\\). - Encourage students to pick realistic ranges (e.g., 2–20 kHz) and relate to the text."
+  },
+  {
+    "objectID": "ins_33.html#learning-objectives",
+    "href": "ins_33.html#learning-objectives",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\nBy the end of this session, you should be able to:\n\nDescribe the hardware blocks on a PC data-acquisition board (DAS) and their roles.\nExplain how a PC communicates with a DAS through I/O ports and bus lines.\nTrace the software flow to acquire a sample, including EOC polling and time-out handling.\nCompute ADC resolution and relate digital codes to physical values (and vice versa).\nDetermine appropriate sampling rates and interpret aliasing and under‑sampling.\nExplain and apply linearization techniques (equation‑based and table look‑up) for sensors.\n\n\nUse this slide to set expectations and link to prior content:\n\nPreviously: sensors, conditioning, basic ADC/DAC.\nToday: integrating all that into a PC/embedded system, plus thinking carefully about what we lose in digitizing (resolution, sampling, non-linearity).\n\nAsk students: - “Who has used a USB DAQ, Arduino, or an oscilloscope with digital storage? That’s exactly the hardware-software chain we’ll formalize today.”"
+  },
+  {
+    "objectID": "ins_33.html#big-picture-from-plant-to-pc",
+    "href": "ins_33.html#big-picture-from-plant-to-pc",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Big Picture: From Plant to PC",
+    "text": "Big Picture: From Plant to PC\n\n\nControl Loop Context\n\nPhysical process (plant): temperature, pressure, flow, etc.\nTransducers + conditioning: produce an analog voltage or current.\nDAS (Data-Acquisition System):\n\nConverts analog signals to digital for the PC.\nConverts digital outputs from PC to analog actuators.\n\nPC / controller software: computes control action.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nThe DAS is the bridge between the continuous analog world and the discrete digital world of the PC.\n\n\n\n\nEmphasize that this is not just about desktop PCs: the same architecture appears in PLCs, microcontrollers, data loggers, and embedded systems.\nKey idea: - Everything the controller knows about the process comes through this chain. Any limitations here (resolution, sampling, non-linearity) limit control performance, no matter how “smart” the algorithm is."
+  },
+  {
+    "objectID": "ins_33.html#pc-architecture-expansion-slots",
+    "href": "ins_33.html#pc-architecture-expansion-slots",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "PC Architecture & Expansion Slots",
+    "text": "PC Architecture & Expansion Slots\n\n\n\nA typical PC uses a system bus with:\n\nAddress lines\nData lines\nControl lines\n\nThe CPU communicates with:\n\nRAM, ROM, disks, etc.\nExpansion slots for plug-in boards.\n\nDAS boards are PCBs that plug into expansion slots:\n\nUse an industry-standard bus interface.\nAppear as I/O ports or memory locations to the CPU.\n\n\n\n\n\n\nFigure 29: Typical layout of a data-acquisition board for use in a personal computer expansion slot.\n\n\n\n\nPoint to Figure 29:\n\nHighlight the bus connector edge going into a PCI/ISA slot.\nShow students that the DAS is “just another peripheral” to the CPU, similar to a network card or graphics card.\n\nExplain that from software’s point of view, DAS is visible through: - A set of I/O port addresses (e.g., 300H) or - Memory-mapped registers.\nWe will focus on the I/O port model here because that is what the example uses."
+  },
+  {
+    "objectID": "ins_33.html#das-hardware-block-diagram",
+    "href": "ins_33.html#das-hardware-block-diagram",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "4.1 DAS Hardware – Block Diagram",
+    "text": "4.1 DAS Hardware – Block Diagram\n\n\nMain Hardware Blocks\n\nAnalog Inputs Side\n\nAnalog multiplexer (MUX)\nSample-and-hold (S/H)\nADC (successive approximation)\n\nDigital Interface\n\nAddress decoder / command processor\nStatus register (EOC, etc.)\nData register(s)\n\nAnalog Outputs Side\n\nLatch\nDAC\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWalk through the data path:\n\nMany sensors → MUX → S/H → ADC → digital data register.\nPC selects channel and starts conversion through the address decoder / command processor.\nPC checks EOC via status register.\nDigital outputs: PC writes a value → latch → DAC → analog output to actuator.\n\nReinforce that the S/H is essential when using a multi-channel MUX and a relatively slow ADC: it “freezes” the input long enough for conversion."
+  },
+  {
+    "objectID": "ins_33.html#adc-sample-and-hold-sh",
+    "href": "ins_33.html#adc-sample-and-hold-sh",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "ADC & Sample-and-Hold (S/H)",
+    "text": "ADC & Sample-and-Hold (S/H)\n\nADC (Analog-to-Digital Converter)\n\nTypically successive-approximation type in DAS boards.\nKey spec: conversion time (e.g., 25 µs).\n\nSample-and-Hold (S/H)\n\nSamples the input voltage and holds it constant while ADC converts.\nKey spec: acquisition time (e.g., 10 µs to settle to within ½ LSB).\n\n\nTotal acquisition time per sample\n\\[\nt_{\\text{sample}} \\approx t_{\\text{acq}} + t_{\\text{conv}}\n\\]\n\n\n\n\n\n\nTip\n\n\nTo maximize throughput, you must account for both S/H acquisition time and ADC conversion time.\n\n\n\n\nClarify terminology:\n\nAcquisition time: time for S/H capacitor + circuitry to settle to within a specified error of the new input.\nConversion time: time for the successive-approximation routine (or other ADC type) to produce a valid digital code.\n\nIf students have seen SAR ADC internals, relate that here; otherwise keep it intuitive: “the ADC needs a bit of time to ‘guess’ the code.”"
+  },
+  {
+    "objectID": "ins_33.html#analog-multiplexer-mux",
+    "href": "ins_33.html#analog-multiplexer-mux",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Analog Multiplexer (MUX)",
+    "text": "Analog Multiplexer (MUX)\n\n\n\nA DAS can select among multiple analog input channels.\nThe analog MUX is like an electronic multi-position switch:\n\nOnly one input is connected to the S/H/ADC at a time.\nChannels can often be scanned sequentially by software.\n\nControlled by the address decoder / command processor on the board.\n\n\n\n\n\nFigure 30: An analog multiplexer acts as a multiposition switch for selecting particular inputs to the ADC.\n\n\n\n\nUse a simple analogy:\n\nThink of the MUX as a “rotary selector knob” driven by digital logic. The PC tells it, “Connect channel 3 now.”\n\nReal-world application:\n\nMultichannel temperature monitoring: 8 thermocouples → 1 ADC via MUX to save cost and board space.\n\nMention that high-speed systems might use multiple ADCs in parallel to avoid the delay of sequential multiplexing."
+  },
+  {
+    "objectID": "ins_33.html#address-decoder-command-processor",
+    "href": "ins_33.html#address-decoder-command-processor",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Address Decoder / Command Processor",
+    "text": "Address Decoder / Command Processor\n\nThe DAS is mapped to I/O port addresses (e.g., base port = 300H).\nThe address decoder:\n\nWatches the address bus and control lines.\nRecognizes when the CPU is accessing its ports.\nRoutes read and write operations to:\n\nChannel select register (for MUX).\nControl register (to start conversion, initialize, etc.).\nStatus register (EOC bit, error bits).\nDAC output latch.\n\n\n\n\n\n\n\n\n\nImportant\n\n\nSoftware must use the correct base + offset addresses and bit patterns to control the DAS hardware.\n\n\n\n\nStress this is where “hardware meets software”:\n\nFrom the CPU point of view: “I just write a byte to 300H; magic happens.”\nOn the board: that write is decoded, interpreted as “select channel 3 + start conversion,” etc.\n\nTie this to memory-mapped I/O vs. port-based I/O, but keep depth modest unless students already know OS/architecture details."
+  },
+  {
+    "objectID": "ins_33.html#dac-and-output-latch",
+    "href": "ins_33.html#dac-and-output-latch",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "DAC and Output Latch",
+    "text": "DAC and Output Latch\n\nMany DAS boards also provide analog outputs via DAC(s):\n\nUsed to control valves, motors, heaters, etc.\n\nLatch: holds the last value written by the CPU.\n\nPrevents outputs from “glitching” during bus transactions.\n\nDAC: converts that latched digital value into a continuous analog output (unipolar or bipolar).\n\nExample spec (from Example 25):\n\n8-bit unipolar DAC\n10.0‑V reference\nOutput range: 0 V to just under 10 V (in 256 steps).\n\n\nRemind students:\n\nDAC resolution, reference, and output type (unipolar/bipolar) determine what control signals we can generate.\nIn many industrial systems, DAC output is then converted to 4–20 mA, 0–10 V field signals, etc.\n\nYou can quickly compute resolution: - For 8-bit DAC, 10 V range: - Step = 10 V / 256 ≈ 0.039 V per LSB."
+  },
+  {
+    "objectID": "ins_33.html#das-software-basic-flow",
+    "href": "ins_33.html#das-software-basic-flow",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "4.2 DAS Software – Basic Flow",
+    "text": "4.2 DAS Software – Basic Flow\n\n\n\nFigure 31: Software for data acquisition involves operations to start the ADC, test the EOC, and input the data.\n\n\n\nGo through Figure 31 step by step, mapping each block to real instructions:\n\nSelect channel – write to channel selection register via I/O port.\nStart conversion (SC) – write to control register.\nWait for EOC – typically polling a status bit in a loop.\nRead data – read the data register when EOC is set.\n\nThen highlight the problem: if EOC never comes (board failure, bus issue), the CPU can get stuck in the waiting loop. That motivates the need for a time-out."
+  },
+  {
+    "objectID": "ins_33.html#das-software-port-status-details",
+    "href": "ins_33.html#das-software-port-status-details",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "DAS Software – Port & Status Details",
+    "text": "DAS Software – Port & Status Details\n\nDAS is mapped to a base port address in hex: from 000H to FFFH; e.g., 300H.\nOften uses base + offset scheme:\n\nBASE + 0 – data register.\nBASE + 1 – control/status register (EOC bit, SC bit, etc.).\nBASE + 2 – DAC register.\n\n\nTypical software sequence to get one sample:\n\nWrite channel code to channel-select / control register.\nIssue Start Convert (SC) command.\nRepeatedly read status register until End Of Convert (EOC) bit signals done.\nRead the data register to get the sample.\n\n\n\n\n\n\n\nWarning\n\n\nIf the DAS fails and never sets EOC, a busy-wait loop can hang the entire system. Always include a time-out or use an interrupt.\n\n\n\n\nMap this to the actual example that uses port 300H as base address.\nMention that in performance-critical systems, polling is inefficient; interrupts or DMA can free the CPU to do other work while the conversion runs.\nBut for many simple applications and labs, polling is fine and easier to understand."
+  },
+  {
+    "objectID": "ins_33.html#example-25-problem-setup",
+    "href": "ins_33.html#example-25-problem-setup",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Example 25 – Problem Setup",
+    "text": "Example 25 – Problem Setup\nGiven DAS specifications:\n\n8 input channels.\n8-bit bipolar ADC, 5.0-V reference, 25 µs conversion time.\nS/H with 10 µs acquisition time.\n8-bit unipolar DAC with 10.0-V reference.\n\nTask:\n\nPrepare a flowchart to take a sample from channel 3.\nInclude a time-out that jumps to ERROR if EOC not issued after 100 µs.\n\n\nClarify:\n\nChannel 3 selection implies writing a byte where bit 3 = 1, bits others = 0 → 0000 1000b = 08H.\nBase port is 300H, so:\n\nChannel select/data: 300H.\nStatus/control: 301H.\nDAC: 302H.\n\n\nThe time-out must be implemented as a software loop whose total duration &gt; 100 µs. Students will not compute the exact loop count here; they just represent it as a counter N."
+  },
+  {
+    "objectID": "ins_33.html#example-25-flowchart-conceptual",
+    "href": "ins_33.html#example-25-flowchart-conceptual",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Example 25 – Flowchart (Conceptual)",
+    "text": "Example 25 – Flowchart (Conceptual)\n\n\nAddress mapping (base is 000H to FFFH via switches; use BASE = 300H):\n\nBASE + 0\n\nREAD: inputs data sample from ADC.\nWRITE: selects input channel (bit pattern).\n\n\\(b_0\\) set → channel 0, …, \\(b_7\\) set → channel 7.\n\n\nBASE + 1\n\nREAD: inputs ADC status; EOC indicated by \\(b_7\\) going low.\nWRITE:\n\nIf \\(b_7\\) high → initializes DAS.\nWhen \\(b_7\\) low → taking \\(b_0\\) low issues SC.\n\n\nBASE + 2\n\nREAD: no action.\nWRITE: sends data to DAC.\n\n\n\n\n\n\nFigure 32: Solution to Example 25.\n\n\n\n\nTalk through Figure 32:\n\nInitialize: load port addresses (300H, 301H, 302H) into registers.\nSelect channel 3: write 08H to 300H.\nIssue SC: write appropriate value to 301H to start conversion.\nWait for EOC:\n\nInitialize counter N.\nLoop: read 301H, check bit 7.\nIf EOC not set, decrement N.\nIf N = 0 before EOC, go to ERROR.\n\nIf EOC detected, read data from 300H.\n\nEmphasize that the exact pattern written to 301H depends on the board’s control logic; the figure abstractly indicates what needs to happen.\nThis structure—poll with a counter for time-out—is very common in embedded firmware."
+  },
+  {
+    "objectID": "ins_33.html#from-hardware-to-information-loss",
+    "href": "ins_33.html#from-hardware-to-information-loss",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "From Hardware to Information Loss",
+    "text": "From Hardware to Information Loss\nWe now move from “how to get the data” to “what the digital data really means.”\nTwo key limitations:\n\nFinite amplitude resolution\n\nADC outputs only one of \\(2^n\\) possible codes.\nWe lose knowledge of the exact analog value between codes.\n\nFinite time resolution (sampling)\n\nController only knows signal value at discrete sampling instants.\nWe are ignorant of behavior between samples.\n\n\n\n\n\n\n\n\nNote\n\n\nEven with a perfect controller algorithm, these two limitations can prevent meeting tight control specifications.\n\n\n\n\nTransition slide: connect back to previous analog instrumentation coverage—where we often imagined continuous voltages being “known” exactly.\nHere we quantify what we lose by digitizing, and how that affects control."
+  },
+  {
+    "objectID": "ins_33.html#digitized-value-adc-mapping",
+    "href": "ins_33.html#digitized-value-adc-mapping",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "5.1 Digitized Value – ADC Mapping",
+    "text": "5.1 Digitized Value – ADC Mapping\nThe ADC output is an \\(n\\)‑bit binary representation of voltage \\(V\\) between \\(V_{\\min}\\) and \\(V_{\\max}\\).\nQuantization relation:\n\\[\nN = \\frac{V - V_{\\min}}{V_{\\max} - V_{\\min}} \\, 2^n\n\\tag{29}\n\\]\n\n\\(N\\) = base-10 equivalent of output code (integer).\nOnly the integer part is used.\nAssumes the ADC transitions from code \\(2^n - 1\\) to \\(2^n\\) exactly at \\(V_{\\max}\\) (ideal behavior).\n\nResolution (LSB size) in volts:\n\\[\n\\Delta V = \\frac{V_{\\max} - V_{\\min}}{2^n}\n\\tag{30}\n\\]\n\n\n\n\n\n\nTip\n\n\nResolution is the smallest change in input that produces a one-code change in output.\n\n\n\n\nEmphasize:\n\nIn practice, ADC outputs codes from 0 to \\(2^n - 1\\). The formula uses \\(2^n\\) to define code step size; the top code (all ones) corresponds to just below \\(V_{\\max}\\).\n\nInterpretation:\n\nAfter conversion, we only know \\(V\\) lies in an interval of width \\(\\Delta V\\) around each code’s nominal value → this is the quantization uncertainty."
+  },
+  {
+    "objectID": "ins_33.html#example-26-setup",
+    "href": "ins_33.html#example-26-setup",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Example 26 – Setup",
+    "text": "Example 26 – Setup\nA temperature between \\(100^\\circ \\mathrm{C}\\) and \\(300^\\circ \\mathrm{C}\\) is converted to a 0–5.0 V signal. That signal feeds an 8‑bit ADC with a 5.0‑V reference.\nQuestions:\n\nWhat is the actual measurement range of the system?\nWhat is the resolution in °C?\nWhat hex output results from \\(169^\\circ \\mathrm{C}\\)?\nWhat temperature does a hex output of C5H represent?\n\n\nClarify analog chain:\n\nSensor → conditioning → 0–5 V representing 100–300°C.\nADC range: nominally 0–5 V → 8 bits.\n\nThe subtlety: the ADC saturates before 5.0 V, at (5 − 5/256) V, corresponding to ~299.22°C, so any higher temperature up to and beyond 300°C maps to FFH.\nThus, the actual representable range is slightly narrower than 100–300°C."
+  },
+  {
+    "objectID": "ins_33.html#example-26-a-actual-measurement-range",
+    "href": "ins_33.html#example-26-a-actual-measurement-range",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Example 26 – (a) Actual Measurement Range",
+    "text": "Example 26 – (a) Actual Measurement Range\nADC behavior at extremes:\n\nTop code FFH (255\\(_{10}\\)) occurs at \\[\nV = 5.0 \\text{ V} - \\frac{5.0}{256} = 4.98 \\text{ V}\n\\]\nThat voltage corresponds to \\[\nT = 100^\\circ \\mathrm{C} +\n    \\frac{4.98}{5.0} (300^\\circ \\mathrm{C} - 100^\\circ \\mathrm{C})\n    = 299.22^\\circ \\mathrm{C}\n\\]"
+  },
+  {
+    "objectID": "ins_33.html#example-26-b-resolution",
+    "href": "ins_33.html#example-26-b-resolution",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Example 26 – (b) Resolution",
+    "text": "Example 26 – (b) Resolution\nTemperature span:\n\\[\n300^\\circ \\mathrm{C} - 100^\\circ \\mathrm{C} = 200^\\circ \\mathrm{C}\n\\]\nADC levels:\n\\[\n2^8 = 256\n\\]\nUsing Equation (30):\n\\[\n\\Delta T = \\frac{200^\\circ \\mathrm{C}}{256}\n         = 0.78^\\circ \\mathrm{C / bit}\n\\]\nInterpretation:\n\nIf temperature is \\(100^\\circ \\mathrm{C}\\), output is 00H.\nIt remains 00H until temperature reaches about \\(100.78^\\circ \\mathrm{C}\\), then jumps to 01H.\nFor any reading, we are ignorant of the exact temperature within roughly ±0.39°C (half an LSB), often summarized as ±0.5 LSB.\n\n\nRemind students:\n\nQuantization error is typically modeled as a uniform random variable in [−½ LSB, +½ LSB], assuming no other sources of error.\n\nConnect to control requirement:\n\nIf you need ±0.2°C control, but resolution is 0.78°C/bit, then you simply cannot meet that requirement with this measurement system."
+  },
+  {
+    "objectID": "ins_33.html#example-26-c-code-for-169c",
+    "href": "ins_33.html#example-26-c-code-for-169c",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Example 26 – (c) Code for 169°C",
+    "text": "Example 26 – (c) Code for 169°C\nUse Equation (29):\n\\[\nN = \\frac{169 - 100}{300 - 100} 2^8\n  = \\frac{69}{200} \\times 256\n  \\approx 88.32\n\\]\nTake only integer part:\n\\[\nN = 88_{10}\n\\]\nConvert 88\\(_{10}\\) to hex:\n\\[\n88_{10} = 58_{\\text{H}}\n\\]\nSo,\n\\[\n169^\\circ \\mathrm{C} \\rightarrow \\text{ADC output } 58\\text{H}\n\\]\nAlternate method:\n\nDivide \\((169 - 100)\\) by resolution 0.78°C/bit: \\[\n\\frac{69}{0.78} \\approx 88.46 \\Rightarrow 88_{10} \\Rightarrow 58\\text{H}\n\\]\n\nDifference between 88.32 and 88.46 is due to rounding in intermediate steps.\n\nHighlight that any temperature between roughly 168.6°C and 169.4°C (about ±0.39°C) will map to the same code 58H.\nThis shows why digital temperature display may “jump” in discrete increments of ~0.8°C."
+  },
+  {
+    "objectID": "ins_33.html#example-26-d-temperature-for-c5h",
+    "href": "ins_33.html#example-26-d-temperature-for-c5h",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Example 26 – (d) Temperature for C5H",
+    "text": "Example 26 – (d) Temperature for C5H\nGiven code C5H:\n\nC5H in decimal: \\[\n\\text{C5H} = 12 \\times 16 + 5 = 192 + 5 = 197_{10}\n\\]\n\nUse Equation (29) solved for \\(T\\):\nOriginal: \\[\nN = \\frac{T - 100}{300 - 100} 2^8\n\\]\nSolve for \\(T\\):\n\\[\nT = \\frac{N}{2^8} (300 - 100) + 100\n  = \\frac{197}{256} \\times 200 + 100\n\\]\nCompute:\n\\[\nT = \\frac{197 \\times 200}{256} + 100\n  \\approx 153.9 + 100\n  = 253.9^\\circ \\mathrm{C}\n\\]\nSo,\n\\[\n\\text{C5H} \\Rightarrow T \\approx 253.9^\\circ \\mathrm{C}\n\\]\n\n\n\n\n\n\nWarning\n\n\nNotice how much information loss there is: many distinct temperatures near 254°C all map to the same digital code C5H.\n\n\n\n\nReinforce:\n\nFor a given ADC code, the true temperature lies in an interval of width ≈ 0.78°C.\nIf the sensor and conditioning add more error, total measurement uncertainty is larger.\n\nAsk: If we upgrade from 8-bit to 16-bit with same range, what is \\(\\Delta T\\)?\n\n\\(200^\\circ \\mathrm{C} / 65536 \\approx 0.00305^\\circ \\mathrm{C}\\)—now noise and other errors dominate."
+  },
+  {
+    "objectID": "ins_33.html#resolution-vs.-noise-trade-off",
+    "href": "ins_33.html#resolution-vs.-noise-trade-off",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Resolution vs. Noise Trade-off",
+    "text": "Resolution vs. Noise Trade-off\nWith 16 bits and 5.0 V reference:\n\\[\n\\Delta V = \\frac{5.0 \\text{ V}}{65536} \\approx 76.3 \\,\\mu\\text{V}\n\\]\n\nExtremely fine resolution.\nBut in an industrial environment, noise from motors, switching, EMI, etc. is often much larger than tens of µV.\n\n\n\n\n\n\n\nImportant\n\n\nUsing more bits does not help once noise amplitude is larger than the LSB size. At that point, shielding, filtering, and grounding become critical.\n\n\n\n\nEncourage students not to fix everything with “more bits.” There is a system-level trade-off:\n\nToo few bits → coarse resolution.\nToo many bits → not useful if the system is too noisy, and may even slow conversion or increase cost.\n\nThis sets up the next content on sampling in time."
+  },
+  {
+    "objectID": "ins_33.html#sampled-data-systems-time-discretization",
+    "href": "ins_33.html#sampled-data-systems-time-discretization",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "5.2 Sampled Data Systems – Time Discretization",
+    "text": "5.2 Sampled Data Systems – Time Discretization\nIn addition to amplitude quantization, PC-based control systems also:\n\nMeasure variables at discrete time instants only.\nController acts based on samples separated by \\(t_s\\) seconds.\n\nDefinitions:\n\nSampling period: \\(t_s\\) (time between consecutive samples).\nSampling frequency: \\[\nf_s = \\frac{1}{t_s}\n\\]"
+  },
+  {
+    "objectID": "ins_33.html#sampling-rate-signal-reconstruction",
+    "href": "ins_33.html#sampling-rate-signal-reconstruction",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Sampling Rate & Signal Reconstruction",
+    "text": "Sampling Rate & Signal Reconstruction\n\n\n\nFigure 33: The sampling rate can disguise actual signal details.\n\n\n\nActual analog signal\nToo slow sampling: severe information loss\nAliasing: sampled data appears to have a false lower frequency\nAdequate sampling: main features preserved\n\n\nExplain each sub-figure qualitatively:\n\n\nSampling so slow that you miss most of the oscillations. Reconstructed signal (dashed) is a gross oversimplification.\n\n\nAliasing: the samples line up in such a way that you infer a slower oscillation than actually exists. This can completely mislead control design.\n\n\nFaster sampling: the reconstructed signal approximates the original fairly well.\n\n\nConnect to students’ experience: digital audio, video frame rate, oscilloscope sampling."
+  },
+  {
+    "objectID": "ins_33.html#practical-sampling-rule",
+    "href": "ins_33.html#practical-sampling-rule",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Practical Sampling Rule",
+    "text": "Practical Sampling Rule\nBased on maximum signal frequency \\(f_{\\max}\\):\n\\[\nf_s \\approx 10 f_{\\max}\n\\tag{31}\n\\]\n\nThat is, take about 10 samples per shortest signal period.\nProvides enough information for practical reconstruction and control.\n\nCompare with Nyquist Theorem:\n\nTheoretically, a bandlimited signal with max frequency \\(f_{\\max}\\) can be perfectly reconstructed if \\[\nf_s \\ge 2 f_{\\max}\n\\]\nBut:\n\nReal industrial signals are not strictly bandlimited.\nPerfect reconstruction at 2\\(f_{\\max}\\) requires ideal conditions and often infinitely long reconstruction filters.\n\n\n\n\n\n\n\n\nNote\n\n\nEquation (31) is a practical engineering guideline, not a theorem. It gives a safety margin against aliasing and provides enough samples for control algorithms.\n\n\n\n\nResolve the apparent contradiction:\n\nNyquist = minimum theoretical rate for perfect reconstruction of bandlimited signals.\nIn practice: non-bandlimited, noise, system dynamics, and control design considerations → we choose a significantly higher sampling rate.\n\nAsk students: “In audio, CD sampling is 44.1 kHz for ~20 kHz hearing range. That’s ~2.2 ×, not 10×—because continuous playback is the goal, not control of a physical process under uncertainty.”"
+  },
+  {
+    "objectID": "ins_33.html#example-27-determining-sampling-period",
+    "href": "ins_33.html#example-27-determining-sampling-period",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Example 27 – Determining Sampling Period",
+    "text": "Example 27 – Determining Sampling Period\n\n\n\nFigure 34: Pressure data for Example 27.\n\n\nProblem:\n\nPressure variations in a reaction vessel given as in Figure 34.\nDetermine the maximum time between samples for a computer control system."
+  },
+  {
+    "objectID": "ins_33.html#network-fieldbus-delays-example-28",
+    "href": "ins_33.html#network-fieldbus-delays-example-28",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Network & Fieldbus Delays – Example 28",
+    "text": "Network & Fieldbus Delays – Example 28\nScenario:\n\nControl system uses a network (fieldbus) with heavy traffic.\nBus limits cycle time to 450 ms to:\n\nRequest sample from sensor.\nReceive sensor data at controller.\n\nAssume computer processing time negligible.\n\nQuestion:\n\nWhat is the maximum controllable frequency of temperature variations in a reaction chamber?\n\n\nClarify “cycle time” here:\n\nThere is delay for measurement request and response.\nWe also need time to send control output back to final control element, often via the same bus.\n\nSo total time from “measure” to “actuate” is longer than the nominal bus cycle."
+  },
+  {
+    "objectID": "ins_33.html#example-28-solution",
+    "href": "ins_33.html#example-28-solution",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Example 28 – Solution",
+    "text": "Example 28 – Solution\n\nMeasurement request + response: 450 ms.\nAdd output actuation delay (assumed 225 ms): \\[\nt_{\\text{total}} = 0.45 \\text{ s} + 0.225 \\text{ s} = 0.675 \\text{ s}\n\\]\nEffective sampling frequency: \\[\nf_s = \\frac{1}{t_{\\text{total}}} \\approx \\frac{1}{0.675} \\approx 1.48 \\text{ Hz}\n\\]\nFrom Equation (31): \\[\nf_{\\max} = \\frac{f_s}{10} \\approx 0.148 \\text{ Hz}\n\\]\nCorresponding period of maximum controllable variation: \\[\nT_{\\min} = \\frac{1}{f_{\\max}} \\approx 6.8 \\text{ s}\n\\]\n\nSo, the system can reasonably control temperature variations with periods ≥ 6.8 s. Faster variations will be under-sampled and poorly controlled.\n\n\n\n\n\n\nWarning\n\n\nNetwork delays effectively lower the sampling rate and limit how fast a process you can control. This is crucial in networked and distributed control systems.\n\n\n\n\nRelate to real-world ECE:\n\nFieldbus (PROFIBUS, Foundation Fieldbus), industrial Ethernet, wireless sensor networks.\nHeavy bus usage or congestion can degrade control performance, even if local controllers and ADCs are fast.\n\nGood exam question: ask students to compute \\(f_{\\max}\\) given bus cycle and processing time budgets."
+  },
+  {
+    "objectID": "ins_33.html#linearization-why-we-need-it",
+    "href": "ins_33.html#linearization-why-we-need-it",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "5.3 Linearization – Why We Need It",
+    "text": "5.3 Linearization – Why We Need It\nMany sensors have nonlinear input-output relations.\nExamples:\n\nThermocouples: voltage vs. temperature is nonlinear.\nSome pressure sensors: \\(V \\propto \\sqrt{p}\\), etc.\n\nAfter ADC, we get a digital value \\(DV\\) that reflects these nonlinearities:\n\n\\(DV\\) is often not directly proportional to the physical variable.\nController design and human interpretation are much easier if we have a digital value linearly related to the variable.\n\nTwo common software techniques:\n\nEquation inversion (analytic linearization)\nTable look-up (numeric linearization)\n\n\nPosition this as a pure software advantage of digital instrumentation:\n\nWith analog-only systems, linearization would require complicated analog circuits.\nWith digital systems, we can correct nonlinearities in software using any complexity we like."
+  },
+  {
+    "objectID": "ins_33.html#linearization-by-equation-concept",
+    "href": "ins_33.html#linearization-by-equation-concept",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Linearization by Equation – Concept",
+    "text": "Linearization by Equation – Concept\nSuppose a transducer outputs voltage related to pressure \\(p\\) by\n\\[\nV = K \\sqrt{p}\n\\tag{32}\n\\]\nThe ADC converts \\(V\\) to a digital value \\(DV\\):\n\\[\nDV \\propto V \\propto \\sqrt{p}\n\\tag{33}\n\\]\nWe want a digital variable linearly related to \\(p\\).\nIdea: square the measured quantity:\n\\[\nDP = DV \\times DV \\propto p\n\\tag{34}\n\\]\nThen, with appropriate scaling and offsets, \\(DP\\) can be made numerically equal to the actual pressure.\n\n\n\n\n\n\nTip\n\n\nIf the sensor relation is known and invertible, implement the inverse function in software to get a linearized variable.\n\n\n\n\nEmphasize:\n\nOften the sensor manufacturer provides a calibration equation.\nIn software, we can solve that equation for the physical variable in terms of \\(DV\\).\n\nWe will now see a concrete example where we explicitly invert the equation and include the ADC mapping."
+  },
+  {
+    "objectID": "ins_33.html#example-29-setup",
+    "href": "ins_33.html#example-29-setup",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Example 29 – Setup",
+    "text": "Example 29 – Setup\nPressure \\(p\\) (50 to 400 psi) → measured by a transducer with output:\n\\[\nV = 0.385 \\sqrt{p} - 2.722\n\\]\nThis \\(V\\) feeds an ADC:\n\nReference \\(V_{\\text{ref}} = 5.0\\) V.\nOutput codes 00H to FFH over the pressure range.\n\nIn software, DV = UDF(1) reads ADC result as decimal \\(DV\\) (0–255).\nGoal: derive a linearization equation to compute \\(p\\) from \\(DV\\), such that \\(p\\) equals actual pressure (50–400 psi).\n\nKey steps:\n\nExpress \\(DV\\) in terms of \\(V\\) using ADC scaling.\nSubstitute transducer relation for \\(V\\).\nSolve resulting equation for \\(p\\) in terms of \\(DV\\).\n\nStudents should recognize that this is working backwards through the ADC and transducer."
+  },
+  {
+    "objectID": "ins_33.html#example-29-solution-steps",
+    "href": "ins_33.html#example-29-solution-steps",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Example 29 – Solution Steps",
+    "text": "Example 29 – Solution Steps\n\nADC relation:\n\\[\nDV = \\frac{V}{V_{\\text{ref}}} 2^8\n   = \\frac{V}{5} \\times 256\n\\]\nSo \\[\nV = \\frac{5}{256} DV\n\\]\nSensor relation:\n\\[\nV = 0.385 \\sqrt{p} - 2.722\n\\]\nSubstitute \\(V\\) from ADC into sensor equation:\n\\[\n0.385 \\sqrt{p} - 2.722 = \\frac{5}{256} DV\n\\]"
+  },
+  {
+    "objectID": "ins_33.html#linearization-by-table-look-up-concept",
+    "href": "ins_33.html#linearization-by-table-look-up-concept",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Linearization by Table Look-up – Concept",
+    "text": "Linearization by Table Look-up – Concept\nSometimes:\n\nNo simple closed-form equation relates \\(DV\\) to the physical variable.\nOr equation is too complex / expensive to evaluate in embedded code.\n\nInstead, use a table of calibration points:\n\nMemory holds a sequence of input codes and corresponding physical values.\nAfter each measurement:\n\nSearch table for the nearest code(s) to the measured \\(DV\\).\nUse the corresponding physical value, possibly with interpolation between entries.\n\n\nAnalogy:\n\nHuman uses thermocouple table: measure voltage, look up temperature row in table, maybe interpolate.\n\n\n\n\n\n\n\nNote\n\n\nTable look-up trades memory space for computational simplicity.\n\n\n\n\nMention embedded constraints:\n\nOn small microcontrollers, multiplication and division can be relatively slow, whereas table look-up and addition, subtraction, etc. may be cheaper.\n\nAlso, sensors might provide only empirical calibration data, not neat formulas."
+  },
+  {
+    "objectID": "ins_33.html#table-look-up-flowchart",
+    "href": "ins_33.html#table-look-up-flowchart",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Table Look-up Flowchart",
+    "text": "Table Look-up Flowchart\n\n\n\n\n\nFigure 35: Linearization by table look-up can be accomplished by the operations in this flowchart.\n\n\n\nAssumed table structure:\n\nInputs \\(DV\\) stored in ascending order in \\(N\\) memory locations.\nCorresponding physical values (e.g., temperature) stored in next \\(N\\) locations.\n\nLookup process:\n\nStart at beginning of \\(DV\\) table.\nCompare measured \\(DV\\) to table entries.\nWhen a match or bracket is found:\n\nIf exact match: use corresponding physical value.\nIf bracketed between two entries: interpolate if desired.\n\nOutput the linearized value.\n\n\n\nExplain indexing:\n\nSuppose DV table is at addresses TABLE to TABLE+N-1.\nPhysical values are at TABLE+N to TABLE+2N-1.\nIf input matches the \\(I\\)‑th DV entry, the physical value is found at address TABLE + N + I.\n\nYou can mention alternative searches (binary search for speed) and more elaborate interpolation (linear, spline) for high accuracy."
+  },
+  {
+    "objectID": "ins_33.html#problem-solution-quick-practice",
+    "href": "ins_33.html#problem-solution-quick-practice",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Problem & Solution Quick Practice",
+    "text": "Problem & Solution Quick Practice\nProblem 1 (Resolution):\nA 12-bit ADC measures a 0–10 V signal.\n\nWhat is the voltage resolution \\(\\Delta V\\)?\nIf the measured code is 2048\\(_{10}\\), what is the nominal input voltage?\n\nSolution:\n\n\n\n\\[\n\\Delta V = \\frac{10 \\text{ V}}{2^{12}}\n         = \\frac{10}{4096} \\approx 2.44 \\text{ mV}\n\\]\n\nFor a code \\(N\\):\n\n\\[\nV \\approx N \\cdot \\Delta V\n   = 2048 \\times 2.44 \\text{ mV}\n   \\approx 5.0 \\text{ V}\n\\]"
+  },
+  {
+    "objectID": "ins_33.html#summary-key-points",
+    "href": "ins_33.html#summary-key-points",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Summary / Key Points",
+    "text": "Summary / Key Points\n\nDAS hardware on a PC board typically includes:\n\nAnalog MUX, S/H, ADC, output latch, DAC, and address decoder / command processor.\n\nPC–DAS communication uses bus lines and I/O port addresses (base + offset).\n\nSoftware selects channels, starts conversions, checks EOC, and reads data.\n\nRobust software must avoid infinite EOC-wait loops by using time-outs or interrupts.\nDigital representation of analog values is limited by:\n\nResolution (quantization): \\(\\Delta V = (V_{\\max} - V_{\\min}) / 2^n\\).\nSampling in time: sampling period \\(t_s\\) and frequency \\(f_s=1/t_s\\).\n\nPractical sampling guideline:\n\nTake about 10 samples per shortest signal period: \\(f_s \\approx 10 f_{\\max}\\).\n\nLinearization compensates sensor + conditioning nonlinearities:\n\nBy equation inversion when analytic formulas exist.\nBy table lookup when relations are empirical or complex.\n\n\n\nInvite questions that tie back to labs or projects:\n\n“In your Arduino/DAQ lab, where is the MUX? Where is the S/H? How do you start conversions?”\n“Have you seen aliasing on a digital oscilloscope—strange low-frequency patterns?”\n\nEncourage them to think of each measurement system they encounter as an instantiation of these principles."
+  },
+  {
+    "objectID": "ins_33.html#formulas-summary",
+    "href": "ins_33.html#formulas-summary",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Formulas Summary",
+    "text": "Formulas Summary\nADC mapping (ideal):\n\\[\nN = \\frac{V - V_{\\min}}{V_{\\max} - V_{\\min}} \\, 2^n\n\\]\nResolution (quantization step):\n\\[\n\\Delta V = \\frac{V_{\\max} - V_{\\min}}{2^n}\n\\]\nSampling frequency and period:\n\\[\nf_s = \\frac{1}{t_s}\n\\]\nPractical sampling rule:\n\\[\nf_s \\approx 10 f_{\\max}\n\\]"
+  },
+  {
+    "objectID": "ins_33.html#interactive-adc-resolution-calculator",
+    "href": "ins_33.html#interactive-adc-resolution-calculator",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Interactive: ADC Resolution Calculator",
+    "text": "Interactive: ADC Resolution Calculator\nUse this live code block to compute ADC resolution and explore how bit depth and voltage range affect it.\n\n\n\n\n\n\n\n\n\n\n\n\nTip\n\n\nTry different values for bits and V_max. - What happens to ΔV when you double the number of bits? - What if you keep bits fixed but halve the voltage range?\n\n\n\n\nRemind students: ΔV is given by Equation (30): \\[\n\\Delta V = (V_{\\max} - V_{\\min}) / 2^n\n\\] Have them confirm numerically that each additional bit halves the resolution step size."
+  },
+  {
+    "objectID": "ins_33.html#interactive-code-voltage-temperature-example-26",
+    "href": "ins_33.html#interactive-code-voltage-temperature-example-26",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Interactive: Code ↔︎ Voltage ↔︎ Temperature (Example 26)",
+    "text": "Interactive: Code ↔︎ Voltage ↔︎ Temperature (Example 26)\nWe’ll model the temperature measurement system from Example 26:\n\nTemperature 100–300 °C → 0–5 V.\n8-bit ADC with 5.0 V reference.\n\nUse this interactive cell to convert between temperature, voltage, and ADC code.\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nSet T_input = 169.0 and confirm you get about 58H as in the text.\nSet code_input = 0xC5 and see that it maps to about 253.9 °C.\n\n\n\n\n\nPoint out that multiple temperatures map to the same code; students can see this by tweaking T_input slightly around 169 °C and confirming the integer code does not change until roughly ±0.39 °C (half an LSB)."
+  },
+  {
+    "objectID": "ins_33.html#reactive-visualizing-quantization-ojs-pyodide-plotly",
+    "href": "ins_33.html#reactive-visualizing-quantization-ojs-pyodide-plotly",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Reactive: Visualizing Quantization (OJS + Pyodide + Plotly)",
+    "text": "Reactive: Visualizing Quantization (OJS + Pyodide + Plotly)\nUse the sliders to choose bit depth and input voltage range. We’ll plot how the analog input is quantized by the ADC.\n\nviewof bits = Inputs.range([2, 12], {step: 1, value: 8, label: \"ADC bits (n)\"})\nviewof Vmax = Inputs.range([1, 10], {step: 0.5, value: 5, label: \"V_max (volts)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTip\n\n\nMove the bits slider: - Watch the “staircase” get finer or coarser. - Notice how ΔV in the title changes as (1/2^n).\n\n\n\n\nExplain that this is a mid-tread quantizer visualization: code intervals are roughly centered around each staircase level. Relate the shape of the staircase to the quantization error (vertical distance from gray line to blue line)."
+  },
+  {
+    "objectID": "ins_33.html#interactive-sampling-frequency-nyquist-vs.-practical-rule",
+    "href": "ins_33.html#interactive-sampling-frequency-nyquist-vs.-practical-rule",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Interactive: Sampling Frequency & Nyquist vs. Practical Rule",
+    "text": "Interactive: Sampling Frequency & Nyquist vs. Practical Rule\nUse this block to compare Nyquist rate and the practical 10× rule for a given maximum signal frequency.\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nTry f_max = 6.7 Hz (as in Example 27) and compare the 15 ms practical period with the much larger Nyquist period (~75 ms).\n\n\n\n\nUse this to reinforce why the control textbook recommends 10× as a “safe” rule: more samples per cycle give better tracking, robustness to noise, and tolerance for non-ideal signals."
+  },
+  {
+    "objectID": "ins_33.html#reactive-sampling-a-sine-wave-aliasing-demo",
+    "href": "ins_33.html#reactive-sampling-a-sine-wave-aliasing-demo",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Reactive: Sampling a Sine Wave – Aliasing Demo",
+    "text": "Reactive: Sampling a Sine Wave – Aliasing Demo\nNow you can see under-sampling and aliasing. Choose a signal frequency and sampling frequency.\n\nviewof f_signal = Inputs.range([0.1, 10], {step: 0.1, value: 2.0, label: \"Signal frequency f_signal (Hz)\"})\nviewof fs = Inputs.range([2, 50], {step: 1, value: 10, label: \"Sampling frequency f_s (Hz)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWarning\n\n\n\nTry f_s just above 2 f_signal and then reduce f_s.\nNotice when the plotted samples mislead you about the real frequency (aliasing).\n\n\n\n\n\nAsk students to locate conditions where f_s &lt; 2 f_signal and they clearly see an aliased, slower apparent oscillation. Relate this visually to Figure 33(c) from the main deck."
+  },
+  {
+    "objectID": "ins_33.html#reactive-sampling-rule-of-thumb-visualization",
+    "href": "ins_33.html#reactive-sampling-rule-of-thumb-visualization",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Reactive: Sampling Rule of Thumb Visualization",
+    "text": "Reactive: Sampling Rule of Thumb Visualization\nLet’s visualize the 10× sampling guideline against Nyquist for a chosen ( f_{} ).\n\nviewof fmax_slider = Inputs.range([0.5, 20], {step: 0.5, value: 5, label: \"Max signal frequency f_max (Hz)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nThis plot emphasizes that practical control often needs substantially more than the theoretical minimum sampling rate.\n\n\n\n\nEncourage discussion: in what applications (e.g., audio recording) do we operate close to Nyquist, and in what applications (feedback control) do we prefer large oversampling factors?"
+  },
+  {
+    "objectID": "ins_33.html#interactive-simple-sensor-nonlinearity-square-root-pressure",
+    "href": "ins_33.html#interactive-simple-sensor-nonlinearity-square-root-pressure",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Interactive: Simple Sensor Nonlinearity (Square-Root Pressure)",
+    "text": "Interactive: Simple Sensor Nonlinearity (Square-Root Pressure)\nPlay with a square-root sensor like the one used in the linearization examples:\n\\[\nV = K \\sqrt{p}\n\\]\n\n\n\n\n\n\n\n\n\n\n\n\nTip\n\n\nTry values for p_input and see that doubling pressure does not double the voltage. This nonlinearity must be corrected in software if we want a signal proportional to pressure.\n\n\n\n\nTie this back to the idea of equation-based linearization: software can square the ADC output (or apply a calibrated inverse equation) to obtain a value proportional to pressure."
+  },
+  {
+    "objectID": "ins_33.html#reactive-linearization-by-equation-from-dv-to-p",
+    "href": "ins_33.html#reactive-linearization-by-equation-from-dv-to-p",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Reactive: Linearization by Equation – From DV to p",
+    "text": "Reactive: Linearization by Equation – From DV to p\nWe now implement a simplified version of Example 29 in a reactive way.\n\nYou specify the raw ADC count DV.\nWe compute the corresponding pressure p using the derived linearization formula.\n\n\nviewof DV_input = Inputs.range([0, 255], {step: 1, value: 128, label: \"ADC code DV (0–255)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nDrag the DV slider and watch how pressure changes nonlinearly with the raw ADC count.\n\n\n\n\nExplain that although DV increments linearly, the mapping to p is quadratic here, undoing the original square-root relationship of the sensor. This demonstrates how software can “straighten” sensor nonlinearity."
+  },
+  {
+    "objectID": "ins_33.html#interactive-table-based-linearization-skeleton",
+    "href": "ins_33.html#interactive-table-based-linearization-skeleton",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Interactive: Table-Based Linearization Skeleton",
+    "text": "Interactive: Table-Based Linearization Skeleton\nAlthough we will not fully implement a table search here, you can experiment with a small lookup table by hand.\n\n\n\n\n\n\n\n\n\n\n\n\nTip\n\n\nChange DV_meas and see which table entry it snaps to. More advanced implementations would interpolate between table points.\n\n\n\n\nConnect this to Figure 35’s flowchart: our snippet corresponds to a very simple nearest-neighbor search; a more complete algorithm would include bounds checks and interpolation."
+  },
+  {
+    "objectID": "ins_33.html#wrap-up-what-did-you-see",
+    "href": "ins_33.html#wrap-up-what-did-you-see",
+    "title": "Data‑Acquisition Systems and Digital Data",
+    "section": "Wrap-Up: What Did You See?",
+    "text": "Wrap-Up: What Did You See?\nThrough these interactive blocks, you:\n\nComputed and visualized ADC resolution vs. bits and voltage range.\nObserved quantization as a staircase and associated uncertainty.\nCompared sampling frequencies under Nyquist vs. the practical 10× rule.\nSaw aliasing when sampling sinusoidal signals too slowly.\nExperimented with nonlinearity in sensor models and software-based linearization.\nSketched table look-up behavior as an alternative linearization scheme.\n\n\nEncourage students to copy and modify the code for their own experiments: - Try other sensor models (e.g., quadratic, exponential). - Add noise to the signals and see how it interacts with resolution and sampling. - Integrate this with microcontroller/DAQ experiments in the lab."
+  },
+  {
+    "objectID": "ins_51.html#learning-objectives",
+    "href": "ins_51.html#learning-objectives",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\nBy the end of this session, you should be able to:\n\nExplain what mechanical variables (displacement, level, strain) are and why industry cares about them.\nDescribe the operating principles of:\n\nPotentiometric displacement sensors\nCapacitive and inductive displacement sensors\nLVDTs (linear variable differential transformers)\nLevel sensors (float, capacitive, ultrasonic, pressure-based)\n\nApply basic formulas for capacitors, stress–strain, and strain gauges.\nAnalyze and design simple signal‑conditioning circuits:\n\nPotentiometer + op amp\nCapacitive/inductive bridge circuits (conceptually)\nStrain gauge bridges (1‑arm, 2‑arm, 4‑arm)\n\nWork through quantitative examples involving displacement, level, and strain/load cell measurements.\n\n\nEmphasize that this is a “toolbox” lecture: students will see these elements again in labs and in later courses (controls, mechatronics, biomedical, robotics)."
+  },
+  {
+    "objectID": "ins_51.html#why-mechanical-sensors-matter-in-ece",
+    "href": "ins_51.html#why-mechanical-sensors-matter-in-ece",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Why Mechanical Sensors Matter in ECE",
+    "text": "Why Mechanical Sensors Matter in ECE\nMechanical phenomena are everywhere in process control and automation:\n\nPositions of valves, robot arms, and conveyor items\nLevels of liquids/solids in tanks and silos\nStresses in beams, bridges, machine parts\nForces and weights in hoppers, scales, and presses\n\nKey idea: We rarely measure these variables directly in volts or amps. Instead, we use a sensor to convert a mechanical quantity → electrical signal.\n\n\n\n\n\n\nTip\n\n\nThink of sensors as “translators” between the physical world and your electronics.\n\n\n\n\nLink to students’ prior knowledge: they’ve seen temperature sensors (RTDs, thermistors) that convert temperature to resistance. Today’s sensors do something similar for mechanical quantities."
+  },
+  {
+    "objectID": "ins_51.html#mechanical-variables-in-this-session",
+    "href": "ins_51.html#mechanical-variables-in-this-session",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Mechanical Variables in this Session",
+    "text": "Mechanical Variables in this Session\nWe will focus on three broad classes:\n\nDisplacement, Location, Position\n\nLinear/rotational position\nUsed in: CNC machines, robotic joints, valve stems, pressure gauges\n\nLevel\n\nHeight of a liquid or solid in a container\nUsed in: tanks, silos, chemical reactors, fuel gauges\n\nStrain (and related stress)\n\nMicroscopic deformation of solids under load\nHidden inside: pressure sensors, load cells, accelerometers, flow meters"
+  },
+  {
+    "objectID": "ins_51.html#displacement-location-or-position-sensors",
+    "href": "ins_51.html#displacement-location-or-position-sensors",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "2. Displacement, Location, or Position Sensors",
+    "text": "2. Displacement, Location, or Position Sensors\nIndustrial needs to measure “where things are”:\n\nObject position on a conveyor\nOrientation of heavy steel plates in a rolling mill\nLiquid/solid level (a special kind of displacement)\nPosition of a workpiece in an automatic milling machine\nPressure → diaphragm deflection → displacement\n\nWe’ll look at three major electrical transduction mechanisms:\n\nResistive (potentiometric)\nCapacitive / inductive\nVariable‑reluctance (LVDT)"
+  },
+  {
+    "objectID": "ins_51.html#potentiometric-displacement-sensors-concept",
+    "href": "ins_51.html#potentiometric-displacement-sensors-concept",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "2.1 Potentiometric Displacement Sensors – Concept",
+    "text": "2.1 Potentiometric Displacement Sensors – Concept\n\n\nA potentiometric displacement sensor uses a movable wiper on a resistor.\n\nA resistive element with total resistance \\(R\\) between terminals 1 and 2\nA wiper connected to an arm (mechanical linkage) at terminal 3\nAs the arm moves, the wiper slides along the resistor\nThe resistance between 3 and either end changes with position\n\nSchematic view: a three‑terminal variable resistor (a “pot”).\n\n\n\n\nFigure 1 Potentiometric displacement sensor.\n\n\n\nLimitations:\n\nMechanical wear and friction of the wiper\nLimited resolution in wire‑wound types (step size = spacing between turns)\nElectrical noise from sliding contact\n\n\nHighlight that the electrical principle is trivial (a variable resistor), but real engineering issues are wear, lifetime, noise, and resolution. Compare to optical encoders as non‑contact alternatives (for context)."
+  },
+  {
+    "objectID": "ins_51.html#potentiometer-resolution",
+    "href": "ins_51.html#potentiometer-resolution",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Potentiometer Resolution",
+    "text": "Potentiometer Resolution\nIn a wire‑wound potentiometer:\n\nDistance between turns: \\(\\Delta x\\)\nChange in resistance between adjacent positions: \\(\\Delta R\\)\n\nThe smallest resolvable displacement is roughly \\(\\Delta x\\), assuming electronics can detect the resistance step \\(\\Delta R\\).\n\nMore turns → smaller \\(\\Delta x\\) → better resolution\nBut: more turns = higher resistance or longer device"
+  },
+  {
+    "objectID": "ins_51.html#example-1-problem",
+    "href": "ins_51.html#example-1-problem",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Example 1 – Problem",
+    "text": "Example 1 – Problem\nProblem:\nA potentiometric displacement sensor measures workpiece motion from 0 to \\(10\\ \\mathrm{cm}\\). The resistance changes linearly from 0 to \\(1\\ \\mathrm{k}\\Omega\\) over this range.\nDesign signal conditioning that provides a linear 0–10 V output proportional to displacement.\nConstraints:\n\nDo not destroy the linearity between resistance and displacement.\nAllowed tools: op‑amp circuits, DC references."
+  },
+  {
+    "objectID": "ins_51.html#example-1-why-not-a-simple-divider",
+    "href": "ins_51.html#example-1-why-not-a-simple-divider",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Example 1 – Why Not a Simple Divider?",
+    "text": "Example 1 – Why Not a Simple Divider?\nIf we put the variable resistor directly in a divider like this:\nVs --- R_fixed --- R_sensor --- GND\n               |\n             Vout\nThen \\[\nV_\\text{out} = V_s \\frac{R_\\text{sensor}}{R_\\text{fixed} + R_\\text{sensor}}\n\\]\nThis is nonlinear in \\(R_\\text{sensor}\\) because of the denominator. So even if \\(R_\\text{sensor} \\propto x\\), you’ll get a nonlinear \\(V_\\text{out}(x)\\).\nWe need a configuration where \\(V_\\text{out}\\) is directly proportional to \\(R_\\text{sensor}\\)."
+  },
+  {
+    "objectID": "ins_51.html#example-1-solution-strategy-opamp",
+    "href": "ins_51.html#example-1-solution-strategy-opamp",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Example 1 – Solution Strategy (Op‑Amp)",
+    "text": "Example 1 – Solution Strategy (Op‑Amp)\nUse the fact that for an inverting amplifier:\n\\[\nV_\\text{out} = -\\frac{R_2}{R_1} V_\\text{in}\n\\]\nIf we put the sensor as \\(R_2\\) (feedback resistor), then \\(V_\\text{out} \\propto R_\\text{sensor}\\) (linearly).\nWe can:\n\nUse a constant input voltage \\(V_\\text{in} =\\) constant\nFeed back through the variable resistance \\(R_2 = R_\\text{sensor}\\)\nChoose \\(R_1\\) to scale the output to 0–10 V over \\(R_\\text{sensor} = 0\\)–\\(1\\ \\mathrm{k}\\Omega\\)"
+  },
+  {
+    "objectID": "ins_51.html#example-1-detailed-solution",
+    "href": "ins_51.html#example-1-detailed-solution",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Example 1 – Detailed Solution",
+    "text": "Example 1 – Detailed Solution\nUse an inverting amplifier with:\n\n\\(R_2 = R_\\text{sensor}\\) (0 to \\(1\\ \\text{k}\\Omega\\))\n\\(R_1\\) fixed\n\\(V_\\text{in} = -5.1\\ \\text{V}\\) from a Zener diode reference\n\nThen \\[\nV_\\text{out} = -\\frac{R_2}{R_1} V_\\text{in}\n\\]\nWe want \\(V_\\text{out} = +10\\ \\text{V}\\) at \\(R_2 = 1000\\ \\Omega\\):\n\\[\n10 = -\\frac{1000}{R_1}(-5.1) \\Rightarrow R_1 = 510\\ \\Omega\n\\]"
+  },
+  {
+    "objectID": "ins_51.html#capacitive-and-inductive-displacement-sensors",
+    "href": "ins_51.html#capacitive-and-inductive-displacement-sensors",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "2.2 Capacitive and Inductive Displacement Sensors",
+    "text": "2.2 Capacitive and Inductive Displacement Sensors\nThese sensors use changes in:\n\nCapacitance \\(C\\) (for capacitive sensors)\nInductance \\(L\\) (for inductive and variable‑reluctance sensors)\n\nas a function of displacement.\nCommon features:\n\nNo sliding contacts → less wear than potentiometers\nOften higher resolution and better repeatability\nUsually require AC excitation and more complex signal conditioning"
+  },
+  {
+    "objectID": "ins_51.html#capacitive-displacement-sensors-basic-formula",
+    "href": "ins_51.html#capacitive-displacement-sensors-basic-formula",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Capacitive Displacement Sensors – Basic Formula",
+    "text": "Capacitive Displacement Sensors – Basic Formula\nFor a parallel‑plate capacitor:\n\\[\nC = K \\varepsilon_0 \\frac{A}{d}\n\\]\nwhere:\n\n\\(K\\) = relative dielectric constant (air ≈ 1, many liquids ≫ 1)\n\\(\\varepsilon_0 = 8.85\\ \\mathrm{pF/m}\\) (permittivity of free space)\n\\(A\\) = overlapping plate area\n\\(d\\) = separation between plates\n\nSo we can sense displacement by changing:\n\nDistance \\(d\\) between plates\nArea \\(A\\) that overlaps\nDielectric constant \\(K\\) (e.g., changing fluid level)"
+  },
+  {
+    "objectID": "ins_51.html#example-2-cylindrical-capacitive-sensor-setup",
+    "href": "ins_51.html#example-2-cylindrical-capacitive-sensor-setup",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Example 2 – Cylindrical Capacitive Sensor (Setup)",
+    "text": "Example 2 – Cylindrical Capacitive Sensor (Setup)\n\n\nA capacitive displacement sensor monitors small workpiece motion:\n\nTwo metal cylinders, separated by plastic (thickness \\(d = 1\\ \\mathrm{mm}\\))\nDielectric constant of plastic at \\(1\\ \\text{kHz}\\): \\(K = 2.5\\)\nRadius of cylinders: \\(r = 2.5\\ \\text{cm}\\)\nOverlap height (insertion depth) \\(h\\) changes with position\n\nTasks:\n\nFind sensitivity \\(\\dfrac{dC}{dh}\\) in \\(\\mathrm{pF/m}\\).\nFind capacity range if \\(h\\) varies from \\(1.0\\) to \\(2.0\\ \\mathrm{cm}\\).\n\n\n\n\n\nFigure 4 Capacitive-displacement sensor for Example 2."
+  },
+  {
+    "objectID": "ins_51.html#example-2-solution",
+    "href": "ins_51.html#example-2-solution",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Example 2 – Solution",
+    "text": "Example 2 – Solution\nThe overlapping cylindrical surface area is:\n\\[\nA = 2\\pi r h\n\\]\nSo\n\\[\nC = K\\varepsilon_0 \\frac{A}{d} = 2\\pi K\\varepsilon_0 \\frac{rh}{d}\n\\]\nSensitivity to \\(h\\):\n\\[\n\\frac{dC}{dh} = 2\\pi K\\varepsilon_0 \\frac{r}{d}\n\\]"
+  },
+  {
+    "objectID": "ins_51.html#where-are-capacitive-sensors-used-in-ece",
+    "href": "ins_51.html#where-are-capacitive-sensors-used-in-ece",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Where Are Capacitive Sensors Used in ECE?",
+    "text": "Where Are Capacitive Sensors Used in ECE?\n\nPrecision displacement measurement (micrometers to millimeters)\nMicro‑machined accelerometers and MEMS devices\nTouch screens and proximity sensors\nLevel sensing in process tanks (using change in dielectric)\n\nThey usually feed into:\n\nAC bridges\nOscillator frequency‑shift circuits\nCapacitance‑to‑digital converters"
+  },
+  {
+    "objectID": "ins_51.html#inductive-displacement-sensors",
+    "href": "ins_51.html#inductive-displacement-sensors",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Inductive Displacement Sensors",
+    "text": "Inductive Displacement Sensors\n\n\nIf we slide a permeable core into a coil:\n\nInductance \\(L\\) increases because magnetic path permeability increases\nEach core position gives a different inductance\n\nUsed as displacement sensors by:\n\nExciting the coil with AC\nMeasuring changes in:\n\nCoil impedance\nBridge balance\nOscillator frequency\n\n\n\n\n\n\nFigure 5 Variable-reluctance displacement sensor.\n\n\n\nDifferences vs. capacitive:\n\nBased on magnetic rather than electric fields\nOften less sensitive to contamination or humidity\nNeed ferromagnetic cores and careful shielding"
+  },
+  {
+    "objectID": "ins_51.html#variablereluctance-lvdt-principle",
+    "href": "ins_51.html#variablereluctance-lvdt-principle",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "2.3 Variable‑Reluctance & LVDT – Principle",
+    "text": "2.3 Variable‑Reluctance & LVDT – Principle\nA variable‑reluctance sensor uses moving ferromagnetic parts to change magnetic flux linking two or more coils.\nMost important type: LVDT – Linear Variable Differential Transformer.\n\n\nStructure:\n\nOne primary coil (center)\nTwo secondary coils (symmetric, series‑opposed)\nMovable ferromagnetic core slides inside\n\nPrimary excited by AC → flux couples into secondaries.\n\n\n\n\nFigure 6 LVDT structure.\n\n\n\nKey effect:\n\nCore centered → both secondary voltages equal → differential = 0\nCore displaced → one secondary &gt; other → nonzero differential AC voltage\nThe amplitude is proportional to displacement; phase indicates direction"
+  },
+  {
+    "objectID": "ins_51.html#lvdt-transfer-characteristic",
+    "href": "ins_51.html#lvdt-transfer-characteristic",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "LVDT Transfer Characteristic",
+    "text": "LVDT Transfer Characteristic\n\n\n\nFigure 7 LVDT secondary voltage amplitude vs displacement.\n\n\nProperties:\n\nAround the center position, \\(V_\\text{diff} \\approx kx\\) (highly linear)\nTypical linearity: within \\(\\pm 0.25\\%\\) over specified range\nPolarity (phase) tells you which side of center the core is on\nResolution limited mainly by your ability to measure small voltages"
+  },
+  {
+    "objectID": "ins_51.html#lvdt-signal-conditioning-simple-and-practical",
+    "href": "ins_51.html#lvdt-signal-conditioning-simple-and-practical",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "LVDT Signal Conditioning – Simple and Practical",
+    "text": "LVDT Signal Conditioning – Simple and Practical\n\n\nSimple rectifier scheme\n\nDifferential secondary → rectifier → low‑pass filter\nProduces a bipolar DC output vs. core displacement\n\n\n\n\nFigure 8 Simple LVDT detection circuit.\n\n\nLimitation:\n\nNeeds differential amplitude above diode drops → not as sensitive.\n\n\nPractical IC‑based scheme\n\nOn‑chip AC source for LVDT primary\nPhase‑sensitive detector (PSD)\nFilters and amplifier to yield clean bipolar DC\n\n\n\n\nFigure 9 Practical LVDT signal-conditioning IC."
+  },
+  {
+    "objectID": "ins_51.html#example-3-lvdt-output-nonlinearity",
+    "href": "ins_51.html#example-3-lvdt-output-nonlinearity",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Example 3 – LVDT Output & Nonlinearity",
+    "text": "Example 3 – LVDT Output & Nonlinearity\nGiven:\n\nMaximum core motion: \\(\\pm 1.5\\ \\text{cm}\\)\nLinearity: \\(\\pm 0.3\\%\\) over that range\nTransfer function: \\(23.8\\ \\mathrm{mV/mm}\\)\n\nUsed to track motion from \\(x = -1.2\\) to \\(+1.4\\ \\text{cm}\\).\n\nFind expected output voltages.\nFind uncertainty in position due to nonlinearity."
+  },
+  {
+    "objectID": "ins_51.html#example-3-solution",
+    "href": "ins_51.html#example-3-solution",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Example 3 – Solution",
+    "text": "Example 3 – Solution\n\nVoltage at \\(-1.2\\ \\text{cm}\\) (i.e., \\(-12\\ \\text{mm}\\)):\n\n\\[\nV(-1.2\\ \\text{cm}) = 23.8\\ \\mathrm{mV/mm} \\times (-12\\ \\text{mm}) = -285.6\\ \\text{mV}\n\\]\n\nVoltage at \\(+1.4\\ \\text{cm}\\) (\\(+14\\ \\text{mm}\\)):\n\n\\[\nV(1.4\\ \\text{cm}) = 23.8\\ \\mathrm{mV/mm} \\times (14\\ \\text{mm}) = 333\\ \\text{mV}\n\\]\n\nLinearity uncertainty\n\nGiven linearity \\(\\pm 0.3\\%\\), the effective transfer function varies by:\n\\[\n\\Delta k = \\pm 0.003 \\times 23.8\\ \\mathrm{mV/mm} = \\pm 0.0714\\ \\mathrm{mV/mm}\n\\]"
+  },
+  {
+    "objectID": "ins_51.html#level-sensors-overview",
+    "href": "ins_51.html#level-sensors-overview",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "2.4 Level Sensors – Overview",
+    "text": "2.4 Level Sensors – Overview\nLevel measurement is essentially displacement measurement of a fluid or solid surface.\nCommon methods:\n\nMechanical float + linkage → potentiometer, LVDT, etc.\nElectrical contact / resistance probes\nCapacitive (concentric cylinders as a capacitor)\nUltrasonic (time of flight)\nPressure‑based (hydrostatic pressure at bottom → level)"
+  },
+  {
+    "objectID": "ins_51.html#level-sensing-mechanical-vs-electrical",
+    "href": "ins_51.html#level-sensing-mechanical-vs-electrical",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Level Sensing – Mechanical vs Electrical",
+    "text": "Level Sensing – Mechanical vs Electrical\n\n\nMechanical float\n\nFloat rides on fluid level\nLinked to:\n\nPotentiometer\nLVDT core\n\nSimple and robust\n\n\n\n\nFigure 10a Float‑based level measurement.\n\n\n\nCapacitive concentric cylinder\n\nTwo cylinders form a capacitor\nSpace between partly filled with liquid, partly air\nActs like two capacitors in parallel:\n\nLiquid with \\(K_\\text{liquid}\\)\nAir with \\(K \\approx 1\\)\n\n\n\n\n\nFigure 10b Capacitive level measurement."
+  },
+  {
+    "objectID": "ins_51.html#ultrasonic-level-measurement",
+    "href": "ins_51.html#ultrasonic-level-measurement",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Ultrasonic Level Measurement",
+    "text": "Ultrasonic Level Measurement\nNon‑contact level measurement using ultrasonic pulses:\n\nTransmitter \\(T\\) emits burst of ultrasound\nWave reflects from material surface\nReceiver \\(R\\) detects echo\nTime of flight \\(\\Delta t\\) → distance \\(d\\) using \\(d = v_\\text{sound}\\Delta t/2\\)\n\nTwo configurations:\n\n\n\n\n\nFigure 11a Above‑surface ultrasonic level measurement.\n\n\nSolid or liquid, above surface.\n\n\n\n\nFigure 11b Below‑surface ultrasonic level measurement.\n\n\nBelow surface mounting for liquids.\n\nAlso widely used in ranging (parking sensors, drones)."
+  },
+  {
+    "objectID": "ins_51.html#example-4-capacitive-level-sensing-with-ethyl-alcohol",
+    "href": "ins_51.html#example-4-capacitive-level-sensing-with-ethyl-alcohol",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Example 4 – Capacitive Level Sensing with Ethyl Alcohol",
+    "text": "Example 4 – Capacitive Level Sensing with Ethyl Alcohol\nWe measure ethanol level 0–5 m using the concentric cylinder capacitor:\n\nDielectric constants:\n\nAir: \\(K = 1\\)\nEthyl alcohol: \\(K = 26\\)\n\nCylinder separation: \\(d = 0.5\\ \\text{cm} = 0.005\\ \\text{m}\\)\nAverage radius: \\(R = 5.75\\ \\text{cm} = 0.0575\\ \\text{m}\\)\nMaximum level (length): \\(L = 5\\ \\text{m}\\)\n\nArea of full cylinder wall:\n\\[\nA = 2\\pi R L\n\\]\nTasks: Find capacitance range from empty (air only) to full (alcohol only)."
+  },
+  {
+    "objectID": "ins_51.html#example-4-solution",
+    "href": "ins_51.html#example-4-solution",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Example 4 – Solution",
+    "text": "Example 4 – Solution\nCompute area:\n\\[\nA = 2\\pi (0.0575\\ \\text{m})(5\\ \\text{m}) = 1.806\\ \\text{m}^2\n\\]\nCapacitance in air:\n\\[\nC_\\text{air} = K \\varepsilon_0 \\frac{A}{d} = (1)(8.85\\ \\mathrm{pF/m})\\frac{1.806}{0.005}\n\\]\n\\[\nC_\\text{air} \\approx 3196\\ \\text{pF} \\approx 0.0032\\ \\mu\\text{F}\n\\]\nWith ethyl alcohol (full):\n\\[\nC_\\text{EtOH} = 26 \\times C_\\text{air} \\approx 26 \\times 0.0032\\ \\mu\\text{F} = 0.0832\\ \\mu\\text{F}\n\\]\nRange: \\(0.0032\\) to \\(0.0832\\ \\mu\\text{F}\\) as level goes from 0 to 5 m."
+  },
+  {
+    "objectID": "ins_51.html#strain-stress-why-ece-cares",
+    "href": "ins_51.html#strain-stress-why-ece-cares",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "3. Strain & Stress – Why ECE Cares",
+    "text": "3. Strain & Stress – Why ECE Cares\nStrain sensors show up inside many secondary devices:\n\nPressure sensors: diaphragm strain under pressure\nLoad cells: strain in beams due to weight or force\nFlow sensors: deflection of elements exposed to fluid flow\nAccelerometers: proof mass bending a beam\n\nIf you understand stress → strain → resistance change, you can interpret many transducers."
+  },
+  {
+    "objectID": "ins_51.html#stress-and-strain-definitions",
+    "href": "ins_51.html#stress-and-strain-definitions",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "3.1 Stress and Strain – Definitions",
+    "text": "3.1 Stress and Strain – Definitions\n\n\nStress: internal “force per area” in a material\n\\[\n\\text{Stress} = \\frac{F}{A} \\quad [\\mathrm{N/m^2}]\n\\]\n\nStrain: normalized deformation (dimensionless)\n\nTensile/compressive strain: \\[\\text{Strain} = \\frac{\\Delta l}{l}\\]\nShear strain: \\[\\text{Shear strain} = \\frac{\\Delta x}{l}\\]\n\n\nTypes:\n\nTensile (pulling)\nCompressive (pushing)\nShear (sliding layers)"
+  },
+  {
+    "objectID": "ins_51.html#tensile-and-compressive-stressstrain",
+    "href": "ins_51.html#tensile-and-compressive-stressstrain",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Tensile and Compressive Stress/Strain",
+    "text": "Tensile and Compressive Stress/Strain\n\n\nTensile:\n\nForces pull the rod apart\nStress: \\[\\sigma = \\frac{F}{A}\\]\nStrain: \\[\\epsilon = \\frac{\\Delta l}{l}\\]\n\n\n\n\nFigure 12a Tensile stress on a rod.\n\n\n\nCompressive:\n\nForces push inward\nSame formulas, but \\(\\Delta l\\) is negative\nOften written as compressive stress, compressive strain\n\n\n\n\nFigure 12b Compressional stress on a rod.\n\n\n\nStress units: \\(\\mathrm{N/m^2}\\) (also called Pa, Pascal)."
+  },
+  {
+    "objectID": "ins_51.html#shear-stress-and-strain",
+    "href": "ins_51.html#shear-stress-and-strain",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Shear Stress and Strain",
+    "text": "Shear Stress and Strain\n\n\nShear stress comes from a force couple that tries to slide one face relative to the other.\nStress:\n\\[\n\\tau = \\frac{F}{A}\n\\]\n\n\n\nFigure 13a Shear stress from a couple.\n\n\n\nShear strain is the lateral displacement normalized by thickness:\n\\[\n\\gamma = \\frac{\\Delta x}{l}\n\\]\n\n\n\nFigure 13b Shear deformation."
+  },
+  {
+    "objectID": "ins_51.html#stressstrain-curves-youngs-modulus",
+    "href": "ins_51.html#stressstrain-curves-youngs-modulus",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Stress–Strain Curves & Young’s Modulus",
+    "text": "Stress–Strain Curves & Young’s Modulus\n\n\n\n\n\nFigure 14 Typical stress–strain curve.\n\n\n\nKey regions:\n\nLinear (elastic) region: stress ∝ strain\nElastic limit: beyond which permanent deformation occurs\nNecking → eventual fracture\n\nIn the linear region, we define:\n\\[\nE = \\frac{\\text{stress}}{\\text{strain}} = \\frac{F/A}{\\Delta l / l} \\quad [\\mathrm{N/m^2}]\n\\]\n\\(E\\) is Young’s modulus (tensile/compressive).\nSimilarly for shear:\n\\[\nM = \\frac{\\text{shear stress}}{\\text{shear strain}} = \\frac{F/A}{\\Delta x/l}\n\\]"
+  },
+  {
+    "objectID": "ins_51.html#modulus-of-elasticity-typical-values",
+    "href": "ins_51.html#modulus-of-elasticity-typical-values",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Modulus of Elasticity – Typical Values",
+    "text": "Modulus of Elasticity – Typical Values\nTable 1: Young’s modulus \\(E\\)\n\n\n\nMaterial\nModulus (\\(\\mathrm{N/m^2}\\))\n\n\n\n\nAluminum\n\\(6.89 \\times 10^{10}\\)\n\n\nCopper\n\\(11.73 \\times 10^{10}\\)\n\n\nSteel\n\\(20.70 \\times 10^{10}\\)\n\n\nPolyethylene plastic\n\\(3.45 \\times 10^{8}\\)\n\n\n\nSoft materials (plastics) have much lower \\(E\\) → large strain for small stress."
+  },
+  {
+    "objectID": "ins_51.html#example-strain-in-an-aluminum-beam",
+    "href": "ins_51.html#example-strain-in-an-aluminum-beam",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Example – Strain in an Aluminum Beam",
+    "text": "Example – Strain in an Aluminum Beam\nProblem:\nFind the strain resulting from a tensile force of \\(1000\\ \\mathrm{N}\\) applied to a 10‑m aluminum beam with cross‑sectional area \\(A = 4\\times10^{-4}\\ \\mathrm{m^2}\\).\nSolution:\nFrom table: \\(E = 6.89\\times10^{10}\\ \\mathrm{N/m^2}\\).\nUsing\n\\[\nE = \\frac{F/A}{\\Delta l / l} \\Rightarrow \\epsilon = \\frac{\\Delta l}{l} = \\frac{F}{EA}\n\\]\nCompute:\n\\[\n\\epsilon = \\frac{10^3}{(6.89\\times10^{10})(4\\times10^{-4})} \\approx 3.63\\times10^{-5}\n\\]\nIn “micros”:\n\n\\(3.63\\times10^{-5} = 36.3\\times10^{-6}\\) → \\(36.3\\ \\mu\\mathrm{m/m}\\)"
+  },
+  {
+    "objectID": "ins_51.html#strain-units-in-practice",
+    "href": "ins_51.html#strain-units-in-practice",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Strain Units in Practice",
+    "text": "Strain Units in Practice\nStrain is dimensionless, but we usually express as:\n\n\\(\\mu\\mathrm{m/m}\\) (“microstrain”)\n\\(\\mu\\mathrm{in/in}\\)\n\nConversion:\n\n\\(1\\ \\mu\\text{strain} = 1\\times10^{-6}\\) strain\nTypical engineering strains: 1–2000 \\(\\mu\\text{strain}\\)\n\nEngineers often say simply “micros”, e.g., “1450 micros” meaning \\(1450\\ \\mu\\mathrm{m/m}\\)."
+  },
+  {
+    "objectID": "ins_51.html#strain-gauge-principle-resistance-vs-strain",
+    "href": "ins_51.html#strain-gauge-principle-resistance-vs-strain",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "3.2 Strain Gauge Principle – Resistance vs Strain",
+    "text": "3.2 Strain Gauge Principle – Resistance vs Strain\nFor a metal wire:\n\\[\nR_0 = \\rho \\frac{l_0}{A_0}\n\\]\nUnder tensile stress:\n\nLength increases: \\(l = l_0 + \\Delta l\\)\nCross‑sectional area decreases: \\(A = A_0 - \\Delta A\\)\n\nAssuming volume is approximately constant:\n\\[\nV = l_0 A_0 = (l_0 + \\Delta l)(A_0 - \\Delta A)\n\\]"
+  },
+  {
+    "objectID": "ins_51.html#example-resistance-change-for-given-strain",
+    "href": "ins_51.html#example-resistance-change-for-given-strain",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Example – Resistance Change for Given Strain",
+    "text": "Example – Resistance Change for Given Strain\nProblem:\nFind the approximate change in resistance of a metal wire with \\(R_0 = 120\\ \\Omega\\) that experiences a strain of \\(1000\\ \\mu\\mathrm{m/m} = 10^{-3}\\).\nSolution:\nUsing\n\\[\n\\Delta R \\approx 2R_0\\frac{\\Delta l}{l_0}\n\\]\n\\[\n\\Delta R \\approx 2 \\times 120\\ \\Omega \\times 10^{-3} = 0.24\\ \\Omega\n\\]\nSo a 0.24 Ω change on top of 120 Ω – about 0.2%."
+  },
+  {
+    "objectID": "ins_51.html#temperature-effects-on-strain-gauges",
+    "href": "ins_51.html#temperature-effects-on-strain-gauges",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Temperature Effects on Strain Gauges",
+    "text": "Temperature Effects on Strain Gauges\nProblem: metals have significant temperature coefficients of resistance:\n\n\\(\\alpha \\approx 0.004/^\\circ\\mathrm{C}\\)\n\nTemperature effect on resistance:\n\\[\nR(T) = R(T_0)[1 + \\alpha \\Delta T] \\Rightarrow \\Delta R_T = R_0 \\alpha \\Delta T\n\\]\nExample:\n\n\\(R_0 = 120\\ \\Omega\\)\n\\(\\Delta T = 1^\\circ\\mathrm{C}\\)\n\\(\\alpha = 0.004/^\\circ\\mathrm{C}\\)\n\nThen\n\\[\n\\Delta R_T = 120\\times 0.004 \\times 1 = 0.48\\ \\Omega\n\\]\nCompare with 0.24 Ω due to strain in previous example → temperature effect is actually bigger than strain effect!\nHence: we need temperature compensation in our strain gauge circuits."
+  },
+  {
+    "objectID": "ins_51.html#metal-strain-gauges-gauge-factor",
+    "href": "ins_51.html#metal-strain-gauges-gauge-factor",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "3.3 Metal Strain Gauges – Gauge Factor",
+    "text": "3.3 Metal Strain Gauges – Gauge Factor\nThe approximate relation \\(\\Delta R \\approx 2R_0\\epsilon\\) is not exact, so we define:\n\\[\n\\mathrm{GF} = \\frac{\\Delta R / R}{\\text{strain}} = \\frac{\\Delta R / R}{\\Delta l / l}\n\\]\nFor metal strain gauges:\n\nGF ≈ 2 (slightly above or below depending on alloy)\n\nHigher GF → larger \\(\\Delta R\\) for same strain → easier measurement.\nExample: If GF = 2.03 and strain = \\(1450\\ \\mu\\mathrm{m/m}\\):\n\\[\n\\frac{\\Delta R}{R} = \\mathrm{GF}\\cdot\\epsilon = 2.03 \\times 1450\\times10^{-6}\n\\]"
+  },
+  {
+    "objectID": "ins_51.html#metal-strain-gauge-construction",
+    "href": "ins_51.html#metal-strain-gauge-construction",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Metal Strain Gauge Construction",
+    "text": "Metal Strain Gauge Construction\n\n\n\nFigure 15 Metal foil strain gauge.\n\n\nFeatures:\n\nThin metal foil (or wire) patterned into a meander to:\n\nIncrease effective length (higher resistance)\nMake gauge sensitive in one direction (along the pattern)\n\nBonded to a backing (carrier) that is glued to the test object\nAvailable nominal resistances: 60, 120, 240, 350, 500, 1000 Ω (120 Ω common)\n\nStrain along the gauge axis changes resistance; strain perpendicular tends to “unfold” pattern → little effect."
+  },
+  {
+    "objectID": "ins_51.html#strain-gauge-signal-conditioning-the-wheatstone-bridge",
+    "href": "ins_51.html#strain-gauge-signal-conditioning-the-wheatstone-bridge",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Strain Gauge Signal Conditioning – The Wheatstone Bridge",
+    "text": "Strain Gauge Signal Conditioning – The Wheatstone Bridge\n\n\nTwo main challenges:\n\nVery small fractional resistance changes (e.g., \\(2\\times10^{-6}\\))\nTemperature‑induced resistance changes must be canceled\n\nSolution: Wheatstone bridge circuits with:\n\nOne or more “active” gauges (sense strain)\n“Dummy” gauges for temperature compensation\n\n\n\n\n\nFigure 16a One‑arm bridge with dummy gauge.\n\n\n\n\n\nFigure 16b Dummy gauge bonded in insensitive orientation."
+  },
+  {
+    "objectID": "ins_51.html#onearm-bridge-sensitivity-derivation",
+    "href": "ins_51.html#onearm-bridge-sensitivity-derivation",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "One‑Arm Bridge – Sensitivity Derivation",
+    "text": "One‑Arm Bridge – Sensitivity Derivation\nAssume:\n\nAll bridge resistors \\(R_1, R_2, R_D\\) (dummy) are \\(R\\)\nActive gauge resistance: \\(R_A = R(1 + \\Delta R/R)\\)\n\nBridge offset voltage:\n\\[\n\\Delta V = V_s\\left[\\frac{R_D}{R_D + R_1} - \\frac{R_A}{R_A + R_2}\\right]\n\\]\nWith algebra and assuming \\(\\Delta R/R \\ll 1\\):\n\\[\n\\Delta V \\approx -\\frac{V_s}{4}\\frac{\\Delta R}{R}\n\\]\nUsing GF definition:\n\\[\n\\Delta V = -\\frac{V_s}{4}\\,\\mathrm{GF}\\,\\frac{\\Delta l}{l}\n\\tag{14}\n\\]\nSo bridge output is linear in strain."
+  },
+  {
+    "objectID": "ins_51.html#example-7-onearm-bridge-with-temperature-compensation",
+    "href": "ins_51.html#example-7-onearm-bridge-with-temperature-compensation",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Example 7 – One‑Arm Bridge with Temperature Compensation",
+    "text": "Example 7 – One‑Arm Bridge with Temperature Compensation\nGiven:\n\nGF = 2.03, \\(R_A = R_D = R_1 = R_2 = 350\\ \\Omega\\)\nStrain = \\(1450\\ \\mu\\mathrm{m/m} = 1.45\\times10^{-3}\\) (tensile)\n\\(V_s = 10.0\\ \\text{V}\\)\n\nTasks:\n\nFind change in \\(R_A\\).\nFind bridge offset voltage.\nSensitivity in \\(\\mu\\text{V}\\) per microstrain."
+  },
+  {
+    "objectID": "ins_51.html#twoarm-and-fourarm-bridges",
+    "href": "ins_51.html#twoarm-and-fourarm-bridges",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Two‑Arm and Four‑Arm Bridges",
+    "text": "Two‑Arm and Four‑Arm Bridges\n\n\n\nTwo‑arm bridge: two active gauges in bridge, two dummies.\n\nSensitivity doubles:\n\n\\[\n\\Delta V = \\frac{V_s}{2}\\mathrm{GF}\\,\\frac{\\Delta l}{l}\n\\tag{15}\n\\]\nFour‑arm bridge: all four resistors are active gauges, arranged so that two are in tension, two in compression.\n\nTemperature compensation and further sensitivity gain.\n\n\n\nApplication example: cantilever beam with four gauges:\n\n\n\nFigure 17 Strain gauges on a cantilever beam.\n\n\n\nTop surface: tension when beam deflects downward\nBottom surface: compression\nDummies placed so they see same temperature but no strain"
+  },
+  {
+    "objectID": "ins_51.html#example-bridge-wiring-for-beam-bending",
+    "href": "ins_51.html#example-bridge-wiring-for-beam-bending",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Example – Bridge Wiring for Beam Bending",
+    "text": "Example – Bridge Wiring for Beam Bending\nWe want bridge output to increase with downward deflection.\nConnect gauges so that:\n\nTension gauge increases resistance (top active)\nCompression gauge decreases resistance (bottom active)\nTheir effects add in the bridge output.\n\nResulting connection (conceptually):\n\n\n\nFigure 18 Bridge wiring for cantilever beam gauges.\n\n\nTypical implementation uses:\n\n2 active gauges in positions where strain is highest\n2 dummies oriented for temperature compensation only"
+  },
+  {
+    "objectID": "ins_51.html#semiconductor-strain-gauges",
+    "href": "ins_51.html#semiconductor-strain-gauges",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "3.4 Semiconductor Strain Gauges",
+    "text": "3.4 Semiconductor Strain Gauges\nSemiconductor (e.g., silicon) gauges:\n\nOperate on piezoresistive effect: strain changes carrier mobility and resistivity\nBoth geometry and resistivity change with strain\nTypically much higher GF:\n\nGF can be −50 to −200 (magnitude)\n\nOften negative GF: resistance decreases under tensile strain\nStrongly nonlinear GF vs. strain\n\nAppearance:\n\n\n\nFigure 19 Semiconductor strain gauge.\n\n\nNeed calibration curves or lookup tables: GF is not constant over strain range."
+  },
+  {
+    "objectID": "ins_51.html#example-9-metal-vs-semiconductor-gf",
+    "href": "ins_51.html#example-9-metal-vs-semiconductor-gf",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Example 9 – Metal vs Semiconductor GF",
+    "text": "Example 9 – Metal vs Semiconductor GF\nCompare resistance change for strain \\(\\epsilon = 150\\ \\mu\\mathrm{m/m} = 0.15\\times10^{-3}\\), both with \\(R_0 = 120\\ \\Omega\\).\nGF definition:\n\\[\n\\mathrm{GF} = \\frac{\\Delta R / R}{\\epsilon} \\Rightarrow \\Delta R = \\mathrm{GF} \\cdot \\epsilon \\cdot R\n\\]\n\nMetal gauge, GF = 2.13:\n\n\\[\n\\Delta R = 2.13\\times 0.15\\times10^{-3}\\times 120 = 0.038\\ \\Omega\n\\]\n\nSemiconductor gauge, GF = −151:\n\n\\[\n\\Delta R = -151\\times 0.15\\times10^{-3}\\times 120 = -2.72\\ \\Omega\n\\]\nTakeaway: semiconductor gauge response is ~70× larger (and opposite sign)."
+  },
+  {
+    "objectID": "ins_51.html#load-cells-from-strain-to-forceweight",
+    "href": "ins_51.html#load-cells-from-strain-to-forceweight",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "3.5 Load Cells – From Strain to Force/Weight",
+    "text": "3.5 Load Cells – From Strain to Force/Weight\nLoad cell: a transducer that measures force or weight via strain.\n\nOften an elastic element (beam, column, yoke) with multiple strain gauges bonded.\nGauges connected in a bridge: measure deformation due to applied load.\nFactory calibration maps bridge output voltage → force/weight.\nCan measure forces up to several mega‑newtons.\n\nCommon use:\n\nHopper and silo weight measurement\nIndustrial scales\nTest rigs measuring tensile/compressive loads"
+  },
+  {
+    "objectID": "ins_51.html#example-10-simple-load-cell-analysis",
+    "href": "ins_51.html#example-10-simple-load-cell-analysis",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Example 10 – Simple Load Cell Analysis",
+    "text": "Example 10 – Simple Load Cell Analysis\nWe have:\n\nAluminum post, radius \\(r = 2.500\\ \\text{cm} = 0.0250\\ \\text{m}\\)\nLoad: 0 to \\(5000\\ \\text{lb}\\)\nStrain gauges: \\(R = 120\\ \\Omega\\), GF = 2.13\nBridge: one active, one dummy (Figure 16 type)\n\\(R_1 = R_2 = R_D = 120\\ \\Omega\\)\nSupply \\(V_s = 2\\ \\text{V}\\)\n\nFind \\(\\Delta V\\) vs load from 0 to \\(5000\\ \\text{lb}\\)."
+  },
+  {
+    "objectID": "ins_51.html#example-10-solution-steps",
+    "href": "ins_51.html#example-10-solution-steps",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Example 10 – Solution Steps",
+    "text": "Example 10 – Solution Steps\n\nConvert load to SI:\n\n\\[\nF = \\frac{5000\\ \\text{lb}}{0.2248\\ \\text{lb/N}} \\approx 22240\\ \\text{N}\n\\]\n\nCross‑section area of post:\n\n\\[\nA = \\pi r^2 = \\pi (0.025)^2 \\approx 1.963\\times10^{-3}\\ \\mathrm{m^2}\n\\]\n\nFrom table: \\(E_\\text{Al} = 6.89\\times10^{10}\\ \\mathrm{N/m^2}\\)\nStrain at 5000 lb:\n\n\\[\n\\epsilon = \\frac{\\Delta l}{l} = \\frac{F}{EA}\n= \\frac{22240}{(6.89\\times10^{10})(1.963\\times10^{-3})}\n\\approx 1.644\\times10^{-4} = 164.4\\ \\mu\\mathrm{m/m}\n\\]"
+  },
+  {
+    "objectID": "ins_51.html#load-cell-practical-considerations",
+    "href": "ins_51.html#load-cell-practical-considerations",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Load Cell Practical Considerations",
+    "text": "Load Cell Practical Considerations\nThe simple post in Example 10 has issues:\n\nReal loads may cause bending or off‑axis forces → different strain on each side.\nUneven loading causes measurement errors.\n\nPractical load cells use shaped flexures or yoke assemblies to:\n\nConcentrate strain where gauges are mounted\nMake strain field more uniform and predictable\nMinimize sensitivity to side loads and bending moments\n\nResult: more accurate, robust force measurement."
+  },
+  {
+    "objectID": "ins_51.html#key-formulas-summary",
+    "href": "ins_51.html#key-formulas-summary",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Key Formulas Summary",
+    "text": "Key Formulas Summary\nCapacitive sensors\n\nParallel plate: \\[C = K\\varepsilon_0\\frac{A}{d}\\]\n\nStrain gauges\n\nApproximate metal gauge relation: \\[\\Delta R \\approx 2R_0\\epsilon\\]\nGauge factor: \\[\\mathrm{GF} = \\frac{\\Delta R / R}{\\epsilon}\\]\nOne‑arm bridge output (small strain): \\[\\Delta V \\approx -\\frac{V_s}{4}\\,\\mathrm{GF}\\,\\epsilon\\]\nTwo‑arm bridge: \\[\\Delta V \\approx \\frac{V_s}{2}\\,\\mathrm{GF}\\,\\epsilon\\]"
+  },
+  {
+    "objectID": "ins_51.html#summary-key-points",
+    "href": "ins_51.html#summary-key-points",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Summary / Key Points",
+    "text": "Summary / Key Points\n\nDisplacement sensors\n\nPotentiometric sensors are simple but suffer from wear and limited resolution.\nCapacitive and inductive sensors provide non‑contact measurements with better durability and sensitivity.\nLVDTs are industry‑standard for linear displacement with excellent linearity and resolution.\n\nLevel sensors\n\nMany physical principles can be used: floats, capacitance, ultrasonics, and pressure.\nCapacitive and ultrasonic methods allow non‑contact or non‑intrusive level measurement.\n\nStrain and stress\n\nStress (force/area) and strain (relative deformation) are fundamental to many transducers.\nYoung’s modulus links stress and strain in the elastic region."
+  },
+  {
+    "objectID": "ins_51.html#suggested-practice-problems",
+    "href": "ins_51.html#suggested-practice-problems",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "Suggested Practice Problems",
+    "text": "Suggested Practice Problems\n\nDesign a capacitive position sensor where changing overlap area gives a 0–100 pF range over 0–5 mm displacement.\nGiven an LVDT with 10 mV/mm and ±50 mm range, find output span and position resolution if you can resolve 1 mV.\nFor a metal strain gauge with GF=2, \\(R=120\\ \\Omega\\), calculate \\(\\Delta V\\) of a one‑arm bridge with \\(V_s=5\\ \\text{V}\\) at 500 microstrain.\nDesign a two‑arm bridge with 4 gauges on a bending beam such that temperature compensation is achieved and signal is maximized.\n\n\nEncourage students to work through these with MATLAB/Python or a calculator and bring their results to the next class. Consider a demo with an actual load cell and instrumentation amplifier."
+  },
+  {
+    "objectID": "ins_51.html#potentiometric-displacement-sensor-direct-computation",
+    "href": "ins_51.html#potentiometric-displacement-sensor-direct-computation",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "1. Potentiometric Displacement Sensor – Direct Computation",
+    "text": "1. Potentiometric Displacement Sensor – Direct Computation\nUse this block to explore how a linear potentiometric sensor maps displacement → resistance → output voltage using the Example 1 circuit (inverting amplifier).\nAssumptions:\n\nDisplacement range: 0 to 10 cm\nResistance range: 0 to 1000 Ω (linear)\n\\(V_\\text{in} = -5.1\\ \\mathrm{V}\\), \\(R_1 = 510\\ \\Omega\\), \\(R_2 = R_\\text{sensor}\\)\n\n\n\n\n\n\n\nTry different x_cm values and observe the linearity in \\(V_\\text{out}\\)."
+  },
+  {
+    "objectID": "ins_51.html#potentiometer-interactive-transfer-curve-ojs-pyodide-plotly",
+    "href": "ins_51.html#potentiometer-interactive-transfer-curve-ojs-pyodide-plotly",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "2. Potentiometer – Interactive Transfer Curve (OJS + Pyodide + Plotly)",
+    "text": "2. Potentiometer – Interactive Transfer Curve (OJS + Pyodide + Plotly)\nUse the sliders to explore how the potentiometric sensor behaves over its range.\n\nviewof R_max = Inputs.range([100, 5000], {step: 100, value: 1000, label: \"Max resistance R_max (ohms)\"})\nviewof V_in_pot = Inputs.range([-10, 0], {step: 0.1, value: -5.1, label: \"Input voltage V_in (V, negative for inverting)\"})\nviewof R1_pot = Inputs.range([100, 2000], {step: 50, value: 510, label: \"R1 (feedback input resistor, ohms)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nUse this to see how changing \\(R_\\text{max}\\), \\(V_\\text{in}\\), or \\(R_1\\) changes the slope of the transfer function."
+  },
+  {
+    "objectID": "ins_51.html#capacitive-sensor-cylinder-overlap-example-2",
+    "href": "ins_51.html#capacitive-sensor-cylinder-overlap-example-2",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "3. Capacitive Sensor – Cylinder Overlap (Example 2)",
+    "text": "3. Capacitive Sensor – Cylinder Overlap (Example 2)\nCompute capacitance for the cylindrical sensor of Example 2 as a function of overlap height \\(h\\).\nParameters (fixed from the example):\n\n\\(K = 2.5\\)\n\\(\\varepsilon_0 = 8.85\\ \\mathrm{pF/m}\\)\n\\(r = 2.5\\ \\mathrm{cm}\\)\n\\(d = 1\\ \\mathrm{mm}\\)\n\n\n\n\n\n\n\nChange h_cm and verify the linear relation between \\(h\\) and \\(C\\)."
+  },
+  {
+    "objectID": "ins_51.html#capacitive-sensor-interactive-sensitivity-plot",
+    "href": "ins_51.html#capacitive-sensor-interactive-sensitivity-plot",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "4. Capacitive Sensor – Interactive Sensitivity Plot",
+    "text": "4. Capacitive Sensor – Interactive Sensitivity Plot\nUse sliders to explore sensitivity \\(\\dfrac{dC}{dh}\\) and the capacitance vs. overlap height.\n\nviewof K_cap = Inputs.range([1, 10], {step: 0.5, value: 2.5, label: \"Dielectric constant K\"})\nviewof r_cm_cap = Inputs.range([0.5, 5], {step: 0.1, value: 2.5, label: \"Cylinder radius r (cm)\"})\nviewof d_mm_cap = Inputs.range([0.1, 5], {step: 0.1, value: 1.0, label: \"Dielectric thickness d (mm)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExperiment with \\(K\\), \\(r\\), and \\(d\\) to see how they affect sensor sensitivity."
+  },
+  {
+    "objectID": "ins_51.html#stressstrain-calculator-for-a-rod",
+    "href": "ins_51.html#stressstrain-calculator-for-a-rod",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "5. Stress–Strain Calculator for a Rod",
+    "text": "5. Stress–Strain Calculator for a Rod\nCompute tensile strain for a rod given force, cross‑section area, and Young’s modulus.\n\n\n\n\n\n\nModify F_N, A_m2, or E to see how the strain changes."
+  },
+  {
+    "objectID": "ins_51.html#stressstrain-interactive-plot-material-comparison",
+    "href": "ins_51.html#stressstrain-interactive-plot-material-comparison",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "6. Stress–Strain Interactive Plot (Material Comparison)",
+    "text": "6. Stress–Strain Interactive Plot (Material Comparison)\nPick a material and force, and see the resulting strain for a given geometry.\n\nviewof mat_choice = Inputs.select(\n  [\"Aluminum\", \"Copper\", \"Steel\", \"Polyethylene\"],\n  {label: \"Material\", value: \"Aluminum\"}\n)\n\nviewof F_N_stress = Inputs.range([0, 5000], {step: 100, value: 1000, label: \"Applied force F (N)\"})\nviewof A_mm2 = Inputs.range([10, 1000], {step: 10, value: 400, label: \"Cross-sectional area (mm^2)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCompare different materials to see which deforms more under the same load."
+  },
+  {
+    "objectID": "ins_51.html#metal-strain-gauge-δr-from-strain",
+    "href": "ins_51.html#metal-strain-gauge-δr-from-strain",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "7. Metal Strain Gauge – ΔR from Strain",
+    "text": "7. Metal Strain Gauge – ΔR from Strain\nUse this block to compute the resistance change of a metal gauge given strain and GF.\n\n\n\n\n\n\nChange strain_micro or GF to see sensitivity."
+  },
+  {
+    "objectID": "ins_51.html#strain-gauge-bridge-onearm-output-vs-strain",
+    "href": "ins_51.html#strain-gauge-bridge-onearm-output-vs-strain",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "8. Strain Gauge Bridge – One‑Arm Output vs Strain",
+    "text": "8. Strain Gauge Bridge – One‑Arm Output vs Strain\nNow visualize how the one‑arm Wheatstone bridge output depends on strain.\nWe use:\n\\[\n\\Delta V \\approx -\\frac{V_s}{4}\\,\\mathrm{GF}\\,\\epsilon\n\\]\n\nviewof V_sg = Inputs.range([1, 15], {step: 1, value: 10, label: \"Bridge supply Vs (V)\"})\nviewof GF_sg = Inputs.range([1.5, 3.5], {step: 0.05, value: 2.03, label: \"Gauge factor GF\"})\nviewof eps_max_micro = Inputs.range([500, 5000], {step: 250, value: 2000, label: \"Max strain (microstrain)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nObserve how increasing \\(V_s\\) or GF increases the signal."
+  },
+  {
+    "objectID": "ins_51.html#semiconductor-vs-metal-strain-gauge-δr-comparison",
+    "href": "ins_51.html#semiconductor-vs-metal-strain-gauge-δr-comparison",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "9. Semiconductor vs Metal Strain Gauge – ΔR Comparison",
+    "text": "9. Semiconductor vs Metal Strain Gauge – ΔR Comparison\nInteractively compare resistance changes for metal vs semiconductor gauges.\n\nviewof R0_g = Inputs.range([60, 500], {step: 10, value: 120, label: \"Gauge nominal resistance R0 (ohms)\"})\nviewof GF_metal = Inputs.range([1.8, 3.0], {step: 0.05, value: 2.13, label: \"Metal gauge GF\"})\nviewof GF_semi = Inputs.range([-300, -20], {step: 5, value: -151, label: \"Semiconductor gauge GF\"})\nviewof strain_micro_g = Inputs.range([10, 2000], {step: 10, value: 150, label: \"Strain (microstrain)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNotice how the semiconductor gauge produces a much larger (and often negative) ΔR."
+  },
+  {
+    "objectID": "ins_51.html#load-cell-strain-and-bridge-output-vs-load-example-10style",
+    "href": "ins_51.html#load-cell-strain-and-bridge-output-vs-load-example-10style",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "10. Load Cell – Strain and Bridge Output vs Load (Example 10‑Style)",
+    "text": "10. Load Cell – Strain and Bridge Output vs Load (Example 10‑Style)\nExplore how a simple compressive load cell responds to load up to 5000 lb.\n\nviewof F_lb_max = Inputs.range([1000, 10000], {step: 500, value: 5000, label: \"Max load (lb)\"})\nviewof r_cm_load = Inputs.range([1, 5], {step: 0.1, value: 2.5, label: \"Post radius (cm)\"})\nviewof GF_load = Inputs.range([1.8, 3.0], {step: 0.05, value: 2.13, label: \"Gauge factor GF\"})\nviewof Vs_load = Inputs.range([1, 10], {step: 0.5, value: 2.0, label: \"Bridge supply Vs (V)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExplore how changing radius, GF, or supply voltage affects sensitivity."
+  },
+  {
+    "objectID": "ins_51.html#summary-interactive-reflection",
+    "href": "ins_51.html#summary-interactive-reflection",
+    "title": "Mechanical and Strain Sensors in Instrumentation",
+    "section": "11. Summary Interactive Reflection",
+    "text": "11. Summary Interactive Reflection\nUse this quick computation to connect multiple ideas:\n\nChoose a material (for Young’s modulus)\nChoose force and dimensions\nCompute strain, then ΔR of a gauge, then bridge output.\n\n\nviewof mat_sum = Inputs.select(\n  [\"Aluminum\", \"Copper\", \"Steel\"],\n  {label: \"Material (for Young's modulus)\", value: \"Steel\"}\n)\nviewof F_N_sum = Inputs.range([0, 20000], {step: 500, value: 5000, label: \"Force F (N)\"})\nviewof A_mm2_sum = Inputs.range([50, 2000], {step: 50, value: 500, label: \"Cross-sectional area (mm^2)\"})\nviewof GF_sum = Inputs.range([1.8, 3.0], {step: 0.05, value: 2.0, label: \"Gauge Factor GF\"})\nviewof R0_sum = Inputs.range([60, 500], {step: 10, value: 120, label: \"Gauge Resistance R0 (ohms)\"})\nviewof Vs_sum = Inputs.range([1, 15], {step: 0.5, value: 5.0, label: \"Bridge Supply Vs (V)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTry different combinations until you can mentally predict the trend before running the code. This is the core of building engineering intuition."
   }
 ]
