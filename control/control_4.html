@@ -1,0 +1,2827 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-html/tabby.min.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.36">
+
+  <meta name="author" content="Imron Rosyadi">
+  <title>Control System – Time Response: Analysis of Control Systems</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-364db60e29fb914c6c58c0372f1cec08.css">
+  <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+  <link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Time Response: Analysis of Control Systems</h1>
+  <p class="subtitle">Control 4</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Imron Rosyadi 
+</div>
+</div>
+</div>
+
+</section>
+<section id="learning-objectives" class="slide level2">
+<h2>Learning Objectives</h2>
+<p>After this session, you will be able to:</p>
+<ul>
+<li>Use poles and zeros of transfer functions to determine the time response of a control system.</li>
+<li>Describe quantitatively the transient response of first-order systems.</li>
+<li>Write the general response of second-order systems from pole locations.</li>
+<li>Compute damping ratio <span class="math inline">\(\zeta\)</span> and natural frequency <span class="math inline">\(\omega_n\)</span> from a transfer function.</li>
+<li>Find <span class="math inline">\(T_s\)</span>, <span class="math inline">\(T_p\)</span>, %OS, and <span class="math inline">\(T_r\)</span> for underdamped second-order systems.</li>
+<li>Relate real-world ECE systems (RC/RL, RLC, mechanical) to first- and second-order models.</li>
+</ul>
+<aside class="notes">
+<p>This list is a subset of the full chapter outcomes, focusing on transient behavior of 1st and 2nd order systems and how pole locations map to time-domain specs.</p>
+<p>We will not yet go deep into approximation of higher-order systems or nonlinearities, but we will mention the idea that “dominant poles” often determine behavior.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="motivation-why-time-response-matters" class="slide level2">
+<h2>Motivation: Why Time Response Matters</h2>
+<ul>
+<li>Control systems are designed to make <strong>outputs follow desired inputs</strong> over time.</li>
+<li>Two key aspects:
+<ul>
+<li><strong>Steady-state behavior</strong> (accuracy).</li>
+<li><strong>Transient behavior</strong> (speed, overshoot, oscillation).</li>
+</ul></li>
+<li>Time response answers questions like:
+<ul>
+<li>How fast does a motor reach the commanded speed?</li>
+<li>Does a robot arm overshoot and oscillate?</li>
+<li>How “snappy” or “sluggish” is an amplifier or filter?</li>
+</ul></li>
+</ul>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Think of flicking a light switch vs.&nbsp;motion of an elevator. Both reach a “final value,” but with very different transient behavior.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Emphasize that in many ECE applications—servo drives, power electronics, communication filters—the transient response is often a design constraint: overshoot limits, settling-time requirements, etc.</p>
+<p>Students should see time response as something they can specify (requirements) and later meet via controller design.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="system-representations-frequency-vs-time" class="slide level2">
+<h2>System Representations: Frequency vs Time</h2>
+<p>Recall from earlier chapters:</p>
+<ul>
+<li><strong>Transfer functions</strong> in the <span class="math inline">\(s\)</span>-domain (Laplace):
+<ul>
+<li>Derived from differential equations.</li>
+<li>Convenient for algebraic manipulation and block diagrams.</li>
+</ul></li>
+<li><strong>State-space</strong> in the time domain:
+<ul>
+<li><span class="math inline">\(\dot{x} = Ax + Bu\)</span></li>
+<li><span class="math inline">\(y = Cx + Du\)</span></li>
+</ul></li>
+</ul>
+<p>In this chapter, we:</p>
+<ul>
+<li>Start with a mathematical model (usually a transfer function).</li>
+<li>Use <strong>poles and zeros</strong> to predict <strong>time response</strong>.</li>
+</ul>
+<aside class="notes">
+<p>Remind students they’ve already seen: - How to derive transfer functions from circuits or mechanical systems (Chapter 2). - How to represent systems in state-space (Chapter 3).</p>
+<p>Now we’ll exploit these models to understand transient behavior without solving differential equations from scratch each time.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="forced-vs-natural-response" class="slide level2">
+<h2>Forced vs Natural Response</h2>
+<p>Any linear time-invariant (LTI) system output can be decomposed as:</p>
+<p><span class="math display">\[
+y(t) = y_f(t) + y_n(t)
+\]</span></p>
+<ul>
+<li><strong>Forced response</strong> <span class="math inline">\(y_f(t)\)</span>:
+<ul>
+<li>Caused directly by the input.</li>
+<li>Also called particular solution.</li>
+</ul></li>
+<li><strong>Natural response</strong> <span class="math inline">\(y_n(t)\)</span>:
+<ul>
+<li>System’s own modes; how it behaves when “left alone.”</li>
+<li>Decays (or not) based on system poles.</li>
+</ul></li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Key idea:</p>
+<ul>
+<li><strong>Input poles</strong> <span class="math inline">\(\Rightarrow\)</span> shape of the forced response.</li>
+<li><strong>System poles</strong> <span class="math inline">\(\Rightarrow\)</span> shape of the natural response.</li>
+</ul>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Stress that “forced” and “natural” correspond to solutions of the non-homogeneous and homogeneous differential equations, respectively.</p>
+<p>In practice: - Forced response tells us what type of steady-state we get (step, ramp, sinusoid, etc.). - Natural response tells us about transients: exponentials, oscillations, decay rate.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="poles-and-zeros-definitions" class="slide level2">
+<h2>Poles and Zeros – Definitions</h2>
+<p><strong>Transfer function</strong>: <span class="math display">\[
+G(s) = \frac{N(s)}{D(s)}
+\]</span></p>
+<ul>
+<li><strong>Poles</strong>: values of <span class="math inline">\(s\)</span> where <span class="math inline">\(G(s)\)</span> becomes infinite.
+<ul>
+<li>Roots of <span class="math inline">\(D(s) = 0\)</span>.</li>
+<li>In control we also treat <strong>canceled denominator roots</strong> as “poles” because they still reflect system dynamics.</li>
+</ul></li>
+<li><strong>Zeros</strong>: values of <span class="math inline">\(s\)</span> where <span class="math inline">\(G(s)\)</span> becomes zero.
+<ul>
+<li>Roots of <span class="math inline">\(N(s) = 0\)</span>.</li>
+<li>Likewise, canceled numerator roots are still called “zeros” in control.</li>
+</ul></li>
+</ul>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>Even if a pole-zero pair cancels algebraically, the <strong>physical mode</strong> may still exist. We keep track of them conceptually for design and robustness.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Clarify the subtlety: strictly speaking, only non-canceled denominator roots are mathematical poles. But in control design we often talk about “hidden” or “canceled” poles/zeros because they can reappear with parameter changes or nonlinearities.</p>
+<p>Make sure students can define poles and zeros clearly and distinguish numerator vs denominator roles.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="first-example-simple-polezero-system" class="slide level2">
+<h2>First Example: Simple Pole–Zero System</h2>
+<p>Given the transfer function (from Fig. 4.1a):</p>
+<p><span class="math display">\[
+G(s) = \frac{s+2}{s+5}
+\]</span></p>
+<p>With a unit step input <span class="math inline">\(R(s) = \frac{1}{s}\)</span>,</p>
+<p><span class="math display">\[
+C(s) = G(s)R(s) = \frac{s+2}{s(s+5)}
+= \frac{\frac{2}{5}}{s} + \frac{\frac{3}{5}}{s+5}
+\]</span></p>
+<p>Inverse Laplace transform:</p>
+<p><span class="math display">\[
+c(t) = \frac{2}{5} + \frac{3}{5} e^{-5t}
+\]</span></p>
+<ul>
+<li>Forced response: <span class="math inline">\(\frac{2}{5}\)</span> (constant step).</li>
+<li>Natural response: <span class="math inline">\(\frac{3}{5} e^{-5t}\)</span>.</li>
+</ul>
+<aside class="notes">
+<p>Walk through: - The pole at the origin in <span class="math inline">\(R(s)\)</span> (step input) generated a constant forced component. - The pole at <span class="math inline">\(s=-5\)</span> in <span class="math inline">\(G(s)\)</span> generated the <span class="math inline">\(e^{-5t}\)</span> natural response. - The zero at <span class="math inline">\(s=-2\)</span> contributed to the <strong>coefficients</strong> (2/5 and 3/5) but not the basic functional forms.</p>
+<p>Highlight that we didn’t need to do heavy algebra to guess the form: - One input pole at 0 → constant term. - One real system pole at -5 → single exponential.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="visualizing-poles-and-zeros-in-the-s-plane" class="slide level2">
+<h2>Visualizing Poles and Zeros in the <span class="math inline">\(s\)</span>-Plane</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<ul>
+<li>Real-axis pole at <span class="math inline">\(s=-5\)</span>.</li>
+<li>Real-axis zero at <span class="math inline">\(s=-2\)</span>.</li>
+<li>Input pole at <span class="math inline">\(s=0\)</span> (from <span class="math inline">\(1/s\)</span>).</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_4/304eaad78bb7d44c74fd4f0e6c9763b0_MD5.jpg" height="220"></p>
+<figcaption>System and pole-zero plot (Fig. 4.1a,b)</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:55%;">
+<ul>
+<li>Real-axis pole <span class="math inline">\(\Rightarrow\)</span> response term of form <span class="math inline">\(e^{-\alpha t}\)</span>.</li>
+<li>Pole at <span class="math inline">\(-5\)</span> <span class="math inline">\(\Rightarrow e^{-5t}\)</span> term.</li>
+<li>The farther left the pole (more negative real part), the <strong>faster</strong> the exponential decays.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_4/c83fc6b535f28835f4e9dd4050fa9ec4_MD5.jpg" height="220"></p>
+<figcaption>Evolution of response components (Fig. 4.1c)</figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>Ask students: - What happens if the pole is at <span class="math inline">\(-1\)</span> instead of <span class="math inline">\(-5\)</span>? → Slower decay (<span class="math inline">\(e^{-t}\)</span>).</p>
+<p>Emphasize: x’s for poles, o’s for zeros. This visual becomes extremely important later for root locus, Bode design, etc.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="takeaways-from-the-example" class="slide level2 scrollable">
+<h2>Takeaways from the Example</h2>
+<p>From <span class="math inline">\(C(s) = \frac{s+2}{s(s+5)}\)</span> → <span class="math inline">\(c(t) = \frac{2}{5} + \frac{3}{5}e^{-5t}\)</span>:</p>
+<ol type="1">
+<li>A <strong>pole of the input</strong> (at <span class="math inline">\(s=0\)</span>) generated the <strong>forced response</strong> (step).</li>
+<li>A <strong>pole of the transfer function</strong> (at <span class="math inline">\(s=-5\)</span>) generated the <strong>natural response</strong> <span class="math inline">\(e^{-5t}\)</span>.</li>
+<li>A <strong>real-axis pole at <span class="math inline">\(s=-\alpha\)</span></strong> always generates a term <span class="math inline">\(e^{-\alpha t}\)</span>.
+<ul>
+<li>More negative <span class="math inline">\(\alpha\)</span> → faster decay.</li>
+</ul></li>
+<li>Zeros and poles together determine the <strong>amplitudes</strong> of these components (the coefficients 2/5 and 3/5).</li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_4/d7d1b560a42f3c5d189b0cc8686ab974_MD5.jpg" height="200"></p>
+<figcaption>Effect of a real-axis pole on transient response (Fig. 4.2)</figcaption>
+</figure>
+</div>
+<aside class="notes">
+<p>Stress point (3): this is the first bridge between the s-plane and time response speed. Students should start seeing the left half-plane as a “fast-decay zone” and the right half-plane as unstable.</p>
+<p>Link to real systems: RC discharge, current decay in RL circuits, etc., all have real poles.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-response-form-by-inspection-real-poles" class="slide level2">
+<h2>Example: Response Form by Inspection (Real Poles)</h2>
+<p>Given (Example 4.1):</p>
+<p><span class="math display">\[
+R(s) = \frac{1}{s}, \quad
+G(s) = \frac{s+3}{(s+2)(s+4)(s+5)}
+\]</span></p>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>By inspection,</p>
+<p><span class="math display">\[
+C(s) = \frac{K_1}{s}
++ \frac{K_2}{s+2}
++ \frac{K_3}{s+4}
++ \frac{K_4}{s+5}
+\]</span></p>
+<p>Inverse Laplace:</p>
+<p><span class="math display">\[
+c(t) = K_1
++ K_2 e^{-2t}
++ K_3 e^{-4t}
++ K_4 e^{-5t}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(K_1\)</span> → <strong>forced</strong> response (step).</li>
+<li>exponentials → <strong>natural</strong> response.</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_4/73eba1eaeb5583740980fe2c530549dd_MD5.jpg" height="120"></p>
+<figcaption>System with multiple real poles (Fig. 4.3)</figcaption>
+</figure>
+</div>
+</div></div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Pattern: each real pole at <span class="math inline">\(s = -a_i\)</span> adds a term <span class="math inline">\(e^{-a_i t}\)</span> to the natural response.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Key teaching point: students do not need to compute <span class="math inline">\(K_i\)</span> to describe the <strong>structure</strong> of <span class="math inline">\(c(t)\)</span>: - One constant term from input pole at 0. - One exponential per real pole of <span class="math inline">\(G(s)\)</span>.</p>
+<p>This “by inspection” capability becomes extremely valuable when reasoning about higher-order systems.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="skill-check-real-poles" class="slide level2">
+<h2>Skill Check – Real Poles</h2>
+<p><strong>Given:</strong> <span class="math display">\[
+G(s)=\frac{10(s+4)(s+6)}{(s+1)(s+7)(s+8)(s+10)},\quad R(s)=\frac{1}{s}
+\]</span></p>
+<p><strong>Question:</strong> Write the general form of the step response <span class="math inline">\(c(t)\)</span> by inspection.</p>
+<p><strong>Answer:</strong></p>
+<p><span class="math display">\[
+c(t)\equiv A
++ B e^{-t}
++ C e^{-7t}
++ D e^{-8t}
++ E e^{-10t}
+\]</span></p>
+<aside class="notes">
+<p>Discuss: - One input pole at <span class="math inline">\(0\)</span> → constant <span class="math inline">\(A\)</span>. - Four real system poles → four distinct exponentials. - Zeros only affect the coefficients, not the time-function forms.</p>
+<p>Encourage students to quickly map: “<span class="math inline">\(n\)</span> real poles → sum of <span class="math inline">\(n\)</span> exponentials.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="first-order-systems-no-zeros" class="slide level2">
+<h2>First-Order Systems (No Zeros)</h2>
+<p>Consider a first-order system (Fig. 4.4a):</p>
+<p><span class="math display">\[
+G(s) = \frac{a}{s + a},\quad a &gt; 0
+\]</span></p>
+<p>With unit step input <span class="math inline">\(R(s) = \frac{1}{s}\)</span>:</p>
+<p><span class="math display">\[
+C(s)=\frac{a}{s(s+a)}
+\Rightarrow c(t) = 1 - e^{-at}
+\]</span></p>
+<ul>
+<li>Forced response: <span class="math inline">\(1\)</span> (steady-state).</li>
+<li>Natural response: <span class="math inline">\(-e^{-at}\)</span> from pole at <span class="math inline">\(s=-a\)</span> (Fig. 4.4b).</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_4/40c07aa5ce8d00d205b4cfd14a1a7468_MD5.jpg" height="200"></p>
+<figcaption>First-order system and pole (Fig. 4.4)</figcaption>
+</figure>
+</div>
+<aside class="notes">
+<p>Use a simple RC circuit as analogy: - Input: step voltage source. - Output: capacitor voltage. Transfer function has a single real pole, giving exponential charging.</p>
+<p>Emphasize that <span class="math inline">\(a\)</span> completely characterizes the transient shape here.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="time-constant-of-a-first-order-system" class="slide level2">
+<h2>Time Constant of a First-Order System</h2>
+<p>From <span class="math inline">\(c(t) = 1 - e^{-at}\)</span>:</p>
+<p>At <span class="math inline">\(t = 1/a\)</span>:</p>
+<p><span class="math display">\[
+e^{-at}\big|_{t=1/a} = e^{-1} \approx 0.37
+\]</span></p>
+<p>So</p>
+<p><span class="math display">\[
+c(1/a) = 1 - 0.37 = 0.63
+\]</span></p>
+<p><strong>Time constant:</strong></p>
+<ul>
+<li><span class="math inline">\(\tau = \dfrac{1}{a}\)</span></li>
+<li>Time for the step response to reach 63% of its final value.</li>
+<li>Also: time for the exponential <span class="math inline">\(e^{-at}\)</span> to decay to 37% of its initial value.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_4/53bef6686fb61b10f29d765ebc4f969f_MD5.jpg" height="300"></p>
+<figcaption>First-order step response and time constant (Fig. 4.5)</figcaption>
+</figure>
+</div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Pole at <span class="math inline">\(s=-a\)</span> ↔︎ time constant <span class="math inline">\(\tau = 1/a\)</span>. Farther left pole → smaller <span class="math inline">\(\tau\)</span> → faster response.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Connect to practical ECE examples: - RC low-pass filter time constant <span class="math inline">\(RC\)</span>. - In op-amp circuits, first-order responses are common when one pole dominates.</p>
+<p>Make sure students can translate between time constant and pole location.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="first-order-rise-time-and-settling-time" class="slide level2 scrollable">
+<h2>First-Order: Rise Time and Settling Time</h2>
+<p>For <span class="math inline">\(c(t) = 1 - e^{-at}\)</span>:</p>
+<ol type="1">
+<li><p><strong>Rise time <span class="math inline">\(T_r\)</span></strong></p>
+<ul>
+<li>Time for <span class="math inline">\(c(t)\)</span> to go from 10% to 90% of final value:</li>
+<li>Solve <span class="math inline">\(1 - e^{-at} = 0.1\)</span> and 0.9, subtract:</li>
+</ul>
+<p><span class="math display">\[
+T_r = \frac{2.2}{a}
+\]</span></p></li>
+<li><p><strong>Settling time <span class="math inline">\(T_s\)</span></strong> (2% criterion)</p>
+<ul>
+<li>Time to reach and stay within 2% of final value.</li>
+<li>Solve <span class="math inline">\(1 - e^{-at} = 0.98\)</span>:</li>
+</ul>
+<p><span class="math display">\[
+T_s = \frac{4}{a}
+\]</span></p></li>
+</ol>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>For a first-order system with pole at <span class="math inline">\(s=-a\)</span>:</p>
+<ul>
+<li><span class="math inline">\(\tau = 1/a\)</span></li>
+<li><span class="math inline">\(T_r \approx 2.2\tau\)</span></li>
+<li><span class="math inline">\(T_s \approx 4\tau\)</span></li>
+</ul>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Point out that these definitions (10–90% rise time, ±2% settling time) are conventional but widely used.</p>
+<p>Connect to design: - If you want <span class="math inline">\(T_s &lt; 0.1\)</span> s, you need <span class="math inline">\(a &gt; 40\)</span> rad/s.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="identifying-a-first-order-transfer-function-from-test-data" class="slide level2">
+<h2>Identifying a First-Order Transfer Function from Test Data</h2>
+<p>Real-world scenario:</p>
+<ul>
+<li>You can step the input and measure the output, but <strong>do not know</strong> internal details.</li>
+<li>If the response looks like a first-order curve (no overshoot, single exponential), you can estimate <span class="math inline">\(G(s)\)</span> from the step response.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_4/6aeecb64f0f210da8791b49622a13fe4_MD5.jpg" height="240"></p>
+<figcaption>Measured step response (Fig. 4.6)</figcaption>
+</figure>
+</div>
+</section>
+<section class="slide level2 scrollable">
+
+<p>Procedure:</p>
+<ol type="1">
+<li>Measure <strong>final value</strong> <span class="math inline">\(c_{\infty}\)</span> → equals <span class="math inline">\(K/a\)</span> for <span class="math inline">\(G(s) = \dfrac{K}{s+a}\)</span>.</li>
+<li>Measure <strong>time constant</strong> <span class="math inline">\(\tau = 1/a\)</span>:
+<ul>
+<li>Time at which <span class="math inline">\(c(t) \approx 0.63\,c_{\infty}\)</span>.</li>
+</ul></li>
+<li>Compute <span class="math inline">\(a = 1/\tau\)</span>, then <span class="math inline">\(K = a\,c_{\infty}\)</span>.</li>
+</ol>
+<p>In Fig. 4.6:</p>
+<ul>
+<li><span class="math inline">\(c_{\infty} \approx 0.72\)</span>.</li>
+<li><span class="math inline">\(0.63 c_{\infty} \approx 0.45\)</span> at <span class="math inline">\(t \approx 0.13\)</span> s → <span class="math inline">\(a \approx 7.7\)</span>.</li>
+<li><span class="math inline">\(K/a = 0.72 \Rightarrow K \approx 5.54\)</span>.</li>
+<li>So <span class="math inline">\(G(s) \approx \dfrac{5.54}{s+7.7}\)</span>.</li>
+</ul>
+<aside class="notes">
+<p>Highlight that the actual system used <span class="math inline">\(G(s) = \frac{5}{s+7}\)</span>—our experimental identification is close.</p>
+<p>This technique is foundational for system identification and model-based design.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="skill-check-first-order-specs" class="slide level2">
+<h2>Skill Check – First-Order Specs</h2>
+<p><strong>Given:</strong> <span class="math inline">\(G(s) = \dfrac{50}{s+50}\)</span></p>
+<ul>
+<li>Pole at <span class="math inline">\(s = -50\)</span> → <span class="math inline">\(a = 50\)</span></li>
+<li>Time constant: <span class="math inline">\(\tau = 1/a = 0.02\)</span> s</li>
+<li>Settling time: <span class="math inline">\(T_s = 4/a = 0.08\)</span> s</li>
+<li>Rise time: <span class="math inline">\(T_r = 2.2/a \approx 0.044\)</span> s</li>
+</ul>
+<p><strong>Answer:</strong> <span class="math inline">\(T_c = 0.02\,\)</span>s, <span class="math inline">\(T_s = 0.08\,\)</span>s, <span class="math inline">\(T_r = 0.044\,\)</span>s.</p>
+<aside class="notes">
+<p>Clarify notation: here <span class="math inline">\(T_c\)</span> is being used for time constant; earlier we used <span class="math inline">\(\tau\)</span>.</p>
+<p>Ask students: - If we double the pole magnitude to 100, how do the times change? → All times halve.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="second-order-systems-richer-dynamics" class="slide level2">
+<h2>Second-Order Systems – Richer Dynamics</h2>
+<p>General second-order transfer function (no zeros):</p>
+<p><span class="math display">\[
+G(s) = \frac{b}{s^{2} + a s + b}
+\]</span></p>
+<p>Depending on <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>, the poles may be:</p>
+<ul>
+<li><strong>Two distinct real poles</strong> → overdamped.</li>
+<li><strong>Complex conjugate with negative real part</strong> → underdamped.</li>
+<li><strong>Repeated real pole</strong> → critically damped.</li>
+<li><strong>Purely imaginary</strong> → undamped oscillation.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_4/c3e444c086d15161927432294b800e91_MD5.jpg" height="120"></p>
+<figcaption>Second-order cases: pole-zero plots and step responses (Fig. 4.7a–e)</figcaption>
+</figure>
+</div>
+<aside class="notes">
+<p>Use Fig. 4.7 set to visually walk through each case: - Overdamped: slow, no overshoot, combination of exponentials. - Underdamped: oscillatory with decaying amplitude. - Undamped: pure oscillation, never settles. - Critically damped: fastest non-overshooting response.</p>
+<p>Connect each to typical ECE systems: servo motors, RLC circuits, etc.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="overdamped-second-order-response" class="slide level2">
+<h2>Overdamped Second-Order Response</h2>
+<p>Example (Fig. 4.7b):</p>
+<p><span class="math display">\[
+C(s)=\frac{9}{s(s^{2}+9s+9)}
+=\frac{9}{s(s+7.854)(s+1.146)}
+\]</span></p>
+<ul>
+<li>Poles at <span class="math inline">\(0\)</span>, <span class="math inline">\(-7.854\)</span>, <span class="math inline">\(-1.146\)</span>.</li>
+<li>Input pole at 0 → constant forced response.</li>
+<li>Two real system poles → two exponentials in natural response.</li>
+</ul>
+<p>Form:</p>
+<p><span class="math display">\[
+c(t) = K_1 + K_2 e^{-7.854 t} + K_3 e^{-1.146 t}
+\]</span></p>
+<p>This is an <strong>overdamped</strong> response: - No oscillation. - Response is sluggish compared to critically damped.</p>
+<aside class="notes">
+<p>Explain that overdamping often occurs with very high damping (e.g., extremely viscous mechanical systems, heavy smoothing filters).</p>
+<p>We can still read off the <strong>form</strong> directly from the poles, even before computing coefficients.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="underdamped-second-order-response" class="slide level2">
+<h2>Underdamped Second-Order Response</h2>
+<p>Example (Fig. 4.7c):</p>
+<p><span class="math display">\[
+C(s) = \frac{9}{s(s^{2}+2s+9)}
+\]</span></p>
+<p>System poles at:</p>
+<p><span class="math display">\[
+s = -1 \pm j\sqrt{8}
+\]</span></p>
+<ul>
+<li>Real part <span class="math inline">\(-1\)</span> → exponential decay rate.</li>
+<li>Imag part <span class="math inline">\(\sqrt{8}\)</span> → oscillation frequency.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_4/30ec2e619d6a8e891bd678b87a022b91_MD5.jpg" height="220"></p>
+<figcaption>Components of underdamped response (Fig. 4.8)</figcaption>
+</figure>
+</div>
+<p>Form:</p>
+<p><span class="math display">\[
+c(t) = K_1 + A e^{-t} \cos(\sqrt{8}\,t - \phi)
+\]</span></p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Complex poles <span class="math inline">\(s = -\sigma_d \pm j\omega_d\)</span> → Natural response <span class="math inline">\(e^{-\sigma_d t}\cos(\omega_d t - \phi)\)</span>.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Explain “damped sinusoid”: - Envelope decays with time constant <span class="math inline">\(1/\sigma_d\)</span>. - Carrier oscillates with radian frequency <span class="math inline">\(\omega_d\)</span>.</p>
+<p>Link to RLC circuits: voltage/current ringing after a step.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-form-of-an-underdamped-response-by-inspection" class="slide level2">
+<h2>Example: Form of an Underdamped Response (By Inspection)</h2>
+<p>Given (Example 4.2, Fig. 4.9):</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_4/83da8cddde2d448234fcb554620c4641_MD5.jpg" height="120"></p>
+<figcaption>System with complex poles (Fig. 4.9)</figcaption>
+</figure>
+</div>
+<ul>
+<li>Transfer function has poles at <span class="math inline">\(s = -5 \pm j13.23\)</span>.
+<ul>
+<li>Real part <span class="math inline">\(\sigma_d = 5\)</span> → decay rate <span class="math inline">\(e^{-5t}\)</span>.</li>
+<li>Imag part <span class="math inline">\(\omega_d = 13.23\)</span> → oscillation frequency.</li>
+</ul></li>
+</ul>
+<p>Form of step response:</p>
+<p><span class="math display">\[
+c(t) = K_1 + e^{-5t}\left(K_2\cos 13.23 t + K_3\sin 13.23 t\right)
+\]</span></p>
+<p>or</p>
+<p><span class="math display">\[
+c(t) = K_1 + K_4 e^{-5t}\cos(13.23 t - \phi)
+\]</span></p>
+<aside class="notes">
+<p>Highlight the structure: - Constant + damped sinusoid. - You can always combine <span class="math inline">\(K_2\cos + K_3\sin\)</span> into a shifted cosine with amplitude <span class="math inline">\(K_4\)</span> and phase <span class="math inline">\(\phi\)</span>.</p>
+<p>Students should practice going from complex poles to this form without solving partial fractions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="undamped-and-critically-damped-cases" class="slide level2 scrollable">
+<h2>Undamped and Critically Damped Cases</h2>
+<ol type="1">
+<li><p><strong>Undamped</strong> (Fig. 4.7d):</p>
+<p><span class="math display">\[
+C(s) = \frac{9}{s(s^2+9)}
+\]</span></p>
+<ul>
+<li>Poles at <span class="math inline">\(0\)</span>, <span class="math inline">\(\pm j3\)</span>.</li>
+<li>Form: <span class="math inline">\(c(t) = K_1 + K_4 \cos(3t - \phi)\)</span>.</li>
+<li>No decay; pure oscillation.</li>
+</ul></li>
+<li><p><strong>Critically damped</strong> (Fig. 4.7e):</p>
+<p><span class="math display">\[
+C(s) = \frac{9}{s(s^2+6s+9)} = \frac{9}{s(s+3)^2}
+\]</span></p>
+<ul>
+<li>Poles at <span class="math inline">\(0\)</span>, <span class="math inline">\(-3\)</span> (double).</li>
+<li>Form: <span class="math inline">\(c(t) = K_1 + K_2 e^{-3t} + K_3 t e^{-3t}\)</span>.</li>
+<li>Fastest response possible <strong>without overshoot</strong>.</li>
+</ul></li>
+</ol>
+</section>
+<section class="slide level2">
+
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_4/cc9777a9e64b5cb426716bf42761b17a_MD5.jpg" height="250"></p>
+<figcaption>Second-order step responses for different damping cases (Fig. 4.10)</figcaption>
+</figure>
+</div>
+<aside class="notes">
+<p>Make clear: - Multiple real poles (critical damping) lead to terms like <span class="math inline">\(t e^{-\sigma t}\)</span>. - Undamped case (pure imaginary poles) is often an idealization; in reality, there is almost always some damping.</p>
+<p>Use Fig. 4.10 to compare all four damping cases on the same axes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="summary-natural-responses-for-second-order-systems" class="slide level2 scrollable">
+<h2>Summary: Natural Responses for Second-Order Systems</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ol type="1">
+<li><strong>Overdamped</strong> (<span class="math inline">\(\zeta &gt; 1\)</span>):
+<ul>
+<li>Poles: <span class="math inline">\(-\sigma_1\)</span>, <span class="math inline">\(-\sigma_2\)</span> real, distinct.</li>
+<li>Natural response: <span class="math display">\[
+c_n(t) = K_1 e^{-\sigma_1 t} + K_2 e^{-\sigma_2 t}
+\]</span></li>
+</ul></li>
+<li><strong>Underdamped</strong> (<span class="math inline">\(0 &lt; \zeta &lt; 1\)</span>):
+<ul>
+<li>Poles: <span class="math inline">\(-\sigma_d \pm j\omega_d\)</span>.</li>
+<li>Natural response: <span class="math display">\[
+c_n(t) = A e^{-\sigma_d t}\cos(\omega_d t - \phi)
+\]</span></li>
+</ul></li>
+</ol>
+</div><div class="column" style="width:50%;">
+<ol start="3" type="1">
+<li><strong>Undamped</strong> (<span class="math inline">\(\zeta = 0\)</span>):
+<ul>
+<li>Poles: <span class="math inline">\(\pm j\omega_1\)</span>.</li>
+<li>Natural response: <span class="math display">\[
+c_n(t) = A\cos(\omega_1 t - \phi)
+\]</span></li>
+</ul></li>
+<li><strong>Critically damped</strong> (<span class="math inline">\(\zeta = 1\)</span>):
+<ul>
+<li>Poles: repeated real <span class="math inline">\(-\sigma_1\)</span>.</li>
+<li>Natural response: <span class="math display">\[
+c_n(t) = K_1 e^{-\sigma_1 t} + K_2 t e^{-\sigma_1 t}
+\]</span></li>
+</ul></li>
+</ol>
+</div></div>
+<aside class="notes">
+<p>At this point, ensure students can classify a given second-order denominator into one of these cases by checking discriminant or computing <span class="math inline">\(\zeta\)</span>.</p>
+<p>Soon we’ll formalize <span class="math inline">\(\zeta\)</span> and <span class="math inline">\(\omega_n\)</span> and link them to these behaviors.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="skill-check-classify-second-order-responses" class="slide level2 scrollable">
+<h2>Skill Check – Classify Second-Order Responses</h2>
+<p>Given the transfer functions:</p>
+<ol type="a">
+<li><p><span class="math inline">\(G(s) = \dfrac{400}{s^{2}+12s+400}\)</span></p></li>
+<li><p><span class="math inline">\(G(s) = \dfrac{900}{s^{2}+90s+900}\)</span></p></li>
+<li><p><span class="math inline">\(G(s) = \dfrac{225}{s^{2}+30s+225}\)</span></p></li>
+<li><p><span class="math inline">\(G(s) = \dfrac{625}{s^{2}+625}\)</span></p></li>
+</ol>
+<p><strong>By inspection, the step responses are:</strong></p>
+<ol type="a">
+<li><p><span class="math inline">\(c(t)=A+B e^{-6t}\cos(19.08t+\phi)\)</span> (underdamped)</p></li>
+<li><p><span class="math inline">\(c(t)=A+B e^{-78.54t}+C e^{-11.46t}\)</span> (overdamped)</p></li>
+<li><p><span class="math inline">\(c(t)=A+B e^{-15t}+C t e^{-15t}\)</span> (critically damped)</p></li>
+<li><p><span class="math inline">\(c(t)=A+B\cos(25t+\phi)\)</span> (undamped)</p></li>
+</ol>
+<aside class="notes">
+<p>Encourage students to:</p>
+<ul>
+<li>Factor or complete the square.</li>
+<li>Recognize complex vs real roots quickly.</li>
+<li>Map roots to the patterns from the summary slide.</li>
+</ul>
+<p>This will prepare them for computing <span class="math inline">\(\zeta\)</span> and <span class="math inline">\(\omega_n\)</span> next.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="general-second-order-system-in-standard-form" class="slide level2 scrollable">
+<h2>General Second-Order System in Standard Form</h2>
+<p>We rewrite</p>
+<p><span class="math display">\[
+G(s) = \frac{b}{s^{2} + a s + b}
+\]</span></p>
+<p>in terms of <strong>natural frequency</strong> <span class="math inline">\(\omega_n\)</span> and <strong>damping ratio</strong> <span class="math inline">\(\zeta\)</span>:</p>
+<ol type="1">
+<li><p>Set <span class="math inline">\(b = \omega_n^2\)</span> → undamped poles at <span class="math inline">\(\pm j\omega_n\)</span>.</p></li>
+<li><p>Use definition of damping ratio:</p>
+<p><span class="math display">\[
+\zeta = \frac{\text{decay frequency}}{\text{natural frequency}}
+= \frac{|\sigma|}{\omega_n}
+\]</span></p>
+<p>For underdamped case, poles: <span class="math inline">\(s = -\frac{a}{2} \pm j\cdots\)</span> → <span class="math inline">\(|\sigma| = a/2\)</span>.</p>
+<p>So</p>
+<p><span class="math display">\[
+\zeta = \frac{a/2}{\omega_n}
+\Rightarrow a = 2\zeta \omega_n
+\]</span></p></li>
+</ol>
+</section>
+<section class="slide level2">
+
+<p>Thus the <strong>standard form</strong> is:</p>
+<p><span class="math display">\[
+G(s) = \frac{\omega_n^{2}}{s^{2} + 2\zeta\omega_n s + \omega_n^{2}}
+\]</span></p>
+<aside class="notes">
+<p>Emphasize that <strong>every</strong> second-order system (no zeros) can be rewritten in this standard form.</p>
+<p>This form: - Makes <span class="math inline">\(\omega_n\)</span> and <span class="math inline">\(\zeta\)</span> explicit. - Lets us use tables/plots that relate these parameters to transient specs.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-find-zeta-and-omega_n-from-gs" class="slide level2">
+<h2>Example: Find <span class="math inline">\(\zeta\)</span> and <span class="math inline">\(\omega_n\)</span> from <span class="math inline">\(G(s)\)</span></h2>
+<p>(Example 4.3)</p>
+<p>Given:</p>
+<p><span class="math display">\[
+G(s) = \frac{36}{s^2 + 4.2s + 36}
+\]</span></p>
+<p>Compare with</p>
+<p><span class="math display">\[
+\frac{\omega_n^2}{s^2 + 2\zeta\omega_n s + \omega_n^2}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\omega_n^2 = 36\)</span> → <span class="math inline">\(\omega_n = 6\)</span>.</li>
+<li><span class="math inline">\(2\zeta\omega_n = 4.2 \Rightarrow 2\zeta(6) = 4.2 \Rightarrow \zeta = 0.35\)</span>.</li>
+</ul>
+<p>So:</p>
+<ul>
+<li><span class="math inline">\(\omega_n = 6\)</span> rad/s.</li>
+<li><span class="math inline">\(\zeta = 0.35\)</span> → underdamped.</li>
+</ul>
+<aside class="notes">
+<p>Have students quickly check: - <span class="math inline">\(\zeta &lt; 1\)</span> → underdamped, consistent with expectation of oscillatory response.</p>
+<p>This pattern (compare numerator to <span class="math inline">\(\omega_n^2\)</span>, denominator to <span class="math inline">\(s^2 + 2\zeta\omega_n s + \omega_n^2\)</span>) will be used repeatedly.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="poles-of-the-standard-second-order-system" class="slide level2">
+<h2>Poles of the Standard Second-Order System</h2>
+<p>For</p>
+<p><span class="math display">\[
+G(s) = \frac{\omega_n^{2}}{s^{2} + 2\zeta\omega_n s + \omega_n^{2}},
+\]</span></p>
+<p>the poles are:</p>
+<p><span class="math display">\[
+s_{1,2} = -\zeta\omega_n \pm \omega_n\sqrt{\zeta^{2} - 1}
+\]</span></p>
+<ul>
+<li>If <span class="math inline">\(0 &lt; \zeta &lt; 1\)</span> → complex conjugate pair (underdamped).</li>
+<li>If <span class="math inline">\(\zeta = 1\)</span> → repeated real pole (critical).</li>
+<li>If <span class="math inline">\(\zeta &gt; 1\)</span> → two real distinct poles (overdamped).</li>
+<li>If <span class="math inline">\(\zeta = 0\)</span> → purely imaginary poles (undamped).</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_4/c39221e1cc378c0390467c9223e9d57c_MD5.jpg" height="550"></p>
+<figcaption>Second-order response as a function of <span class="math inline">\(\zeta\)</span> (Fig. 4.11)</figcaption>
+</figure>
+</div>
+<aside class="notes">
+<p>Show Fig. 4.11 to illustrate how shifting <span class="math inline">\(\zeta\)</span> sweeps through all damping cases.</p>
+<p>Students should memorize: - <span class="math inline">\(\zeta\)</span> near 0 → highly oscillatory. - <span class="math inline">\(\zeta\)</span> near 1 → critically damped, no overshoot. - <span class="math inline">\(\zeta &gt; 1\)</span> → more sluggish than critical.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-classifying-response-from-zeta" class="slide level2">
+<h2>Example: Classifying Response from <span class="math inline">\(\zeta\)</span></h2>
+<p>(Example 4.4, Fig. 4.12)</p>
+<p>Given several systems of form:</p>
+<p><span class="math display">\[
+G(s) = \frac{b}{s^2 + a s + b}
+\]</span></p>
+<p>We use:</p>
+<p><span class="math display">\[
+\zeta = \frac{a}{2\sqrt{b}}
+\]</span></p>
+<p>to compute <span class="math inline">\(\zeta\)</span> and classify:</p>
+<ul>
+<li>If <span class="math inline">\(\zeta &gt; 1\)</span> → overdamped.</li>
+<li>If <span class="math inline">\(\zeta = 1\)</span> → critically damped.</li>
+<li>If <span class="math inline">\(0 &lt; \zeta &lt; 1\)</span> → underdamped.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>For the three systems in Fig. 4.12:</p>
+<ul>
+<li>System (a): <span class="math inline">\(\zeta = 1.155\)</span> → overdamped.</li>
+<li>System (b): <span class="math inline">\(\zeta = 1\)</span> → critically damped.</li>
+<li>System (c): <span class="math inline">\(\zeta = 0.894\)</span> → underdamped.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_4/cc94a612135212e72f258c80d6205a4b_MD5.jpg" height="220"></p>
+<figcaption>Systems for Example 4.4</figcaption>
+</figure>
+</div>
+<aside class="notes">
+<p>Work through one numerically on the board.</p>
+<p>For example, if <span class="math inline">\(G(s) = \frac{16}{s^2+8s+16}\)</span>: - <span class="math inline">\(a=8\)</span>, <span class="math inline">\(b=16\)</span>, so <span class="math inline">\(\zeta = 8/(2*4) = 1\)</span> → critically damped.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="underdamped-second-order-step-response" class="slide level2">
+<h2>Underdamped Second-Order Step Response</h2>
+<p>For underdamped <span class="math inline">\(0 &lt; \zeta &lt; 1\)</span>:</p>
+<p><span class="math display">\[
+G(s) = \frac{\omega_n^{2}}{s^{2} + 2\zeta\omega_n s + \omega_n^{2}}
+\]</span></p>
+<p>With unit step input <span class="math inline">\(R(s) = \frac{1}{s}\)</span>:</p>
+<p><span class="math display">\[
+C(s)
+= \frac{\omega_n^{2}}{s(s^{2} + 2\zeta\omega_n s + \omega_n^{2})}
+\]</span></p>
+<p>After partial fractions and inverse Laplace (derivation omitted):</p>
+<p><span class="math display">\[
+\begin{aligned}
+c(t) &amp;= 1 - e^{-\zeta\omega_n t}\Bigg(
+\cos\omega_n\sqrt{1-\zeta^{2}}\, t +
+\frac{\zeta}{\sqrt{1-\zeta^{2}}}\sin\omega_n\sqrt{1-\zeta^{2}}\, t
+\Bigg) \\
+&amp;= 1 - \frac{1}{\sqrt{1-\zeta^{2}}}
+e^{-\zeta\omega_n t}
+\cos\big(\omega_n\sqrt{1-\zeta^{2}}\, t - \phi\big)
+\end{aligned}
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\phi = \tan^{-1}\left(\frac{\zeta}{\sqrt{1 - \zeta^2}}\right)
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_4/efb85064212cb239e79e101c4fdef586_MD5.jpg" height="300"></p>
+<figcaption>Underdamped responses for different <span class="math inline">\(\zeta\)</span> (Fig. 4.13)</figcaption>
+</figure>
+</div>
+<aside class="notes">
+<p>Clarify:</p>
+<ul>
+<li>As <span class="math inline">\(\zeta\)</span> decreases, oscillations become more prominent and last longer.</li>
+<li><span class="math inline">\(\omega_n\)</span> mainly scales the time axis; <span class="math inline">\(\zeta\)</span> controls the shape.</li>
+</ul>
+<p>We will extract <span class="math inline">\(T_p\)</span>, %OS, <span class="math inline">\(T_s\)</span>, and <span class="math inline">\(T_r\)</span> from this expression.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="under-damped-specs-definitions" class="slide level2 scrollable">
+<h2>Under-damped Specs: Definitions</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>For the underdamped step response (Fig. 4.14):</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_4/48ee5edd033cf1dae6d92dbb680e06a3_MD5.jpg" height="300"></p>
+<figcaption>Underdamped response specs (Fig. 4.14)</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<p>Definitions:</p>
+<ol type="1">
+<li><strong>Rise time</strong> <span class="math inline">\(T_r\)</span> — time to go from 10% to 90% of final value.</li>
+<li><strong>Peak time</strong> <span class="math inline">\(T_p\)</span> — time to the first (maximum) peak.</li>
+<li><strong>Percent overshoot</strong> %OS — <span class="math display">\[
+\%OS = \frac{c_{\max} - c_{\text{final}}}{c_{\text{final}}} \times 100\%
+\]</span></li>
+<li><strong>Settling time</strong> <span class="math inline">\(T_s\)</span> — time to enter and stay within <span class="math inline">\(\pm 2\%\)</span> of final value.</li>
+</ol>
+</div></div>
+<aside class="notes">
+<p>Reinforce that these definitions generalize beyond second-order systems but are <strong>exactly computable</strong> only for the standard second-order case.</p>
+<p>Later, for higher-order systems, we often approximate them as dominated by a pair of complex conjugate poles.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="deriving-peak-time-t_p" class="slide level2">
+<h2>Deriving Peak Time <span class="math inline">\(T_p\)</span></h2>
+<p>For <span class="math inline">\(c(t)\)</span> given earlier:</p>
+<ul>
+<li>Differentiate <span class="math inline">\(c(t)\)</span>, set <span class="math inline">\(\dot{c}(t)=0\)</span> to find extrema.</li>
+<li>Using Laplace differentiation property,</li>
+</ul>
+<p><span class="math display">\[
+\mathcal{L}[\dot{c}(t)] = sC(s) = \frac{\omega_n^2}{s^{2}+2\zeta\omega_ns+\omega_n^{2}}
+\]</span></p>
+<p>Inverse Laplace gives:</p>
+<p><span class="math display">\[
+\dot{c}(t)
+= \frac{\omega_n}{\sqrt{1-\zeta^2}}
+e^{-\zeta\omega_n t}
+\sin\left(\omega_n\sqrt{1-\zeta^2}\,t\right)
+\]</span></p>
+<p>Set <span class="math inline">\(\dot{c}(t)=0\)</span>:</p>
+<p><span class="math display">\[
+\omega_n\sqrt{1-\zeta^2}\,t = n\pi
+\Rightarrow t = \frac{n\pi}{\omega_n\sqrt{1-\zeta^2}}
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p>First nonzero peak: <span class="math inline">\(n = 1\)</span> →</p>
+<p><span class="math display">\[
+T_p = \frac{\pi}{\omega_n\sqrt{1-\zeta^2}}
+\]</span></p>
+<aside class="notes">
+<p>Interpretation: - <span class="math inline">\(\omega_d = \omega_n\sqrt{1-\zeta^2}\)</span> is the <strong>damped natural frequency</strong>. - So <span class="math inline">\(T_p = \pi/\omega_d\)</span>.</p>
+<p>Students should memorize this formula; it will be heavily used in design problems.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="deriving-percent-overshoot-os" class="slide level2">
+<h2>Deriving Percent Overshoot %OS</h2>
+<p>From the definition:</p>
+<p><span class="math display">\[
+\%OS = \frac{c_{\max} - c_{\text{final}}}{c_{\text{final}}}\times100
+\]</span></p>
+<p>For a unit step, <span class="math inline">\(c_{\text{final}} = 1\)</span>.</p>
+<p>Evaluate <span class="math inline">\(c(t)\)</span> at <span class="math inline">\(t = T_p\)</span>:</p>
+<p><span class="math display">\[
+c_{\max} = c(T_p)
+= 1 + e^{-\frac{\zeta\pi}{\sqrt{1-\zeta^2}}}
+\]</span></p>
+<p>So</p>
+<p><span class="math display">\[
+\%OS = e^{-\frac{\zeta\pi}{\sqrt{1-\zeta^2}}}\times100
+\]</span></p>
+<p>This depends only on <span class="math inline">\(\zeta\)</span>.</p>
+</section>
+<section class="slide level2">
+
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_4/5fda2c69aad83e8d7b01376640699b8d_MD5.jpg" height="250"></p>
+<figcaption>Percent overshoot vs damping ratio (Fig. 4.15)</figcaption>
+</figure>
+</div>
+<p>Inverse relationship:</p>
+<p><span class="math display">\[
+\zeta = \frac{-\ln(\%OS/100)}{\sqrt{\pi^2 + \ln^2(\%OS/100)}}
+\]</span></p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Design trick: If the specs give you <strong>maximum %OS</strong>, use this formula to compute <span class="math inline">\(\zeta\)</span>.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Walk through a quick example: - For 20% overshoot: <span class="math inline">\(\%OS=20\)</span> → <span class="math inline">\(\zeta\approx 0.456\)</span>.</p>
+<p>This will be used again in the design example with the mechanical system.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="deriving-settling-time-t_s" class="slide level2">
+<h2>Deriving Settling Time <span class="math inline">\(T_s\)</span></h2>
+<p>We want <span class="math inline">\(|c(t) - 1| \le 0.02\)</span> for all <span class="math inline">\(t \ge T_s\)</span>.</p>
+<p>Approximate envelope of oscillation from <span class="math inline">\(c(t)\)</span>:</p>
+<p><span class="math display">\[
+\left|\frac{1}{\sqrt{1-\zeta^2}}e^{-\zeta\omega_n t}\right| \le 0.02
+\]</span></p>
+<p>Solve</p>
+<p><span class="math display">\[
+\frac{1}{\sqrt{1-\zeta^2}}e^{-\zeta\omega_n t} = 0.02
+\]</span></p>
+<p><span class="math display">\[
+T_s = \frac{-\ln(0.02\sqrt{1-\zeta^2})}{\zeta\omega_n}
+\]</span></p>
+<p>Numerator changes slowly with <span class="math inline">\(\zeta\)</span>; we often approximate:</p>
+<p><span class="math display">\[
+T_s \approx \frac{4}{\zeta\omega_n}
+\]</span></p>
+<aside class="notes">
+<p>Explain: - Numerator ranges roughly 3.9–4.7 over typical <span class="math inline">\(\zeta\)</span> values. - Using 4 is a convenient engineering approximation (“4 time constants”).</p>
+<p>Reinforce that <span class="math inline">\(T_s\)</span> is dominated by the <strong>real part</strong> of the poles: larger <span class="math inline">\(\zeta\omega_n\)</span> → faster decay.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="rise-time-t_r-for-underdamped-systems" class="slide level2">
+<h2>Rise Time <span class="math inline">\(T_r\)</span> for Underdamped Systems</h2>
+<p>There is no simple closed-form formula like for <span class="math inline">\(T_p\)</span> or <span class="math inline">\(T_s\)</span>.</p>
+<p>Approach:</p>
+<ul>
+<li>Normalize time by <span class="math inline">\(\omega_n\)</span> (use variable <span class="math inline">\(\omega_n t\)</span>).</li>
+<li>For a given <span class="math inline">\(\zeta\)</span>, numerically solve
+<ul>
+<li><span class="math inline">\(c(t) = 0.1\)</span> and <span class="math inline">\(c(t) = 0.9\)</span>,</li>
+<li>Then <span class="math inline">\(T_r = t_{0.9} - t_{0.1}\)</span>.</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>Result (computed values) plotted as normalized rise time:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_4/ef9f70c4eae04d7a74c9621219caeb70_MD5.jpg" height="250"></p>
+<figcaption>Normalized rise time vs <span class="math inline">\(\zeta\)</span> (Fig. 4.16)</figcaption>
+</figure>
+</div>
+<p>Given <span class="math inline">\(\zeta\)</span> and <span class="math inline">\(\omega_n\)</span>:</p>
+<ul>
+<li>Find <span class="math inline">\(\omega_n T_r\)</span> from the plot/table.</li>
+<li>Then <span class="math inline">\(T_r = (\omega_n T_r)/\omega_n\)</span>.</li>
+</ul>
+<aside class="notes">
+<p>For design work, you will often: - Use the plot (or a lookup table) for normalized <span class="math inline">\(T_r\)</span> vs <span class="math inline">\(\zeta\)</span>. - Combine with <span class="math inline">\(T_p\)</span>, <span class="math inline">\(T_s\)</span>, and %OS to choose acceptable <span class="math inline">\(\zeta\)</span> and <span class="math inline">\(\omega_n\)</span>.</p>
+<p>Point out the trend: smaller <span class="math inline">\(\zeta\)</span> usually means smaller <span class="math inline">\(T_r\)</span> but more overshoot.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-compute-t_p-os-t_s-t_r" class="slide level2 scrollable">
+<h2>Example: Compute <span class="math inline">\(T_p\)</span>, %OS, <span class="math inline">\(T_s\)</span>, <span class="math inline">\(T_r\)</span></h2>
+<p>(Example 4.5)</p>
+<p>Given</p>
+<p><span class="math display">\[
+G(s) = \frac{100}{s^2 + 15s + 100}
+\]</span></p>
+<ol type="1">
+<li><p>Put in standard form:</p>
+<ul>
+<li><span class="math inline">\(\omega_n^2 = 100\)</span> → <span class="math inline">\(\omega_n = 10\)</span>.</li>
+<li><span class="math inline">\(2\zeta\omega_n = 15\)</span> → <span class="math inline">\(\zeta = \frac{15}{2\cdot10} = 0.75\)</span>.</li>
+</ul></li>
+<li><p>Use formulas:</p>
+<ul>
+<li><p><span class="math inline">\(T_p = \dfrac{\pi}{\omega_n\sqrt{1-\zeta^{2}}}
+       = \dfrac{\pi}{10\sqrt{1-0.75^2}} \approx 0.475\,\)</span>s.</p></li>
+<li><p><span class="math inline">\(\%OS = e^{-\zeta\pi/\sqrt{1-\zeta^2}}\times100
+      \approx 2.84\%\)</span>.</p></li>
+<li><p><span class="math inline">\(T_s \approx \dfrac{4}{\zeta\omega_n}
+          = \dfrac{4}{0.75\cdot10} \approx 0.533\,\)</span>s.</p></li>
+<li><p>From Fig. 4.16, for <span class="math inline">\(\zeta=0.75\)</span>, <span class="math inline">\(\omega_n T_r \approx 2.3\)</span> → <span class="math inline">\(T_r = 2.3/10 = 0.23\,\)</span>s.</p></li>
+</ul></li>
+</ol>
+<aside class="notes">
+<p>Key lesson: we obtained all major time-domain specs <strong>without</strong> ever computing <span class="math inline">\(c(t)\)</span> explicitly.</p>
+<p>Students should recognize this as a powerful shortcut that will be used repeatedly in later chapters (root locus, PID tuning, etc.).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="geometric-interpretation-in-the-s-plane" class="slide level2">
+<h2>Geometric Interpretation in the <span class="math inline">\(s\)</span>-Plane</h2>
+<p>For underdamped poles:</p>
+<p><span class="math display">\[
+s_{1,2} = -\zeta\omega_n \pm j\omega_n\sqrt{1-\zeta^2}
+\]</span></p>
+<p>In the <span class="math inline">\(s\)</span>-plane (Fig. 4.17):</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_4/45a4954657aca3f34cf76f83ea26e5bb_MD5.jpg" height="260"></p>
+<figcaption>Pole plot for underdamped second-order system (Fig. 4.17)</figcaption>
+</figure>
+</div>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>Radial distance from origin: <span class="math inline">\(\omega_n\)</span>.</li>
+<li>Angle <span class="math inline">\(\theta\)</span> from negative real axis: <span class="math inline">\(\cos\theta = \zeta\)</span>.</li>
+<li>Real part magnitude: <span class="math inline">\(\sigma_d = \zeta\omega_n\)</span>.</li>
+<li>Imag part: <span class="math inline">\(\omega_d = \omega_n\sqrt{1-\zeta^2}\)</span>.</li>
+</ul>
+<p>Time-domain specs in terms of pole coordinates:</p>
+<ul>
+<li><span class="math inline">\(T_p = \dfrac{\pi}{\omega_d}\)</span>.</li>
+<li><span class="math inline">\(T_s \approx \dfrac{4}{\sigma_d}\)</span>.</li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Lines of: - constant <span class="math inline">\(\zeta\)</span> → rays from origin (constant angle). - constant <span class="math inline">\(T_p\)</span> → horizontal lines (constant imaginary part). - constant <span class="math inline">\(T_s\)</span> → vertical lines (constant real part).</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>This geometric picture is central for design: - Moving poles left → smaller <span class="math inline">\(T_s\)</span>. - Moving poles up/down → changes oscillation period and <span class="math inline">\(T_p\)</span>. - Moving poles along a ray from origin → keep %OS constant but scale time.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="lines-of-constant-t_p-t_s-and-os" class="slide level2">
+<h2>Lines of Constant <span class="math inline">\(T_p\)</span>, <span class="math inline">\(T_s\)</span>, and %OS</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_4/d443700bb64c948804863d463322fb4f_MD5.jpg" height="280"></p>
+<figcaption>Lines of constant <span class="math inline">\(T_p\)</span>, <span class="math inline">\(T_s\)</span>, and %OS (Fig. 4.18)</figcaption>
+</figure>
+</div>
+<p>Interpretation:</p>
+<ul>
+<li><strong>Vertical lines</strong>: same real part → same exponential damping → approximate same <span class="math inline">\(T_s\)</span>.</li>
+<li><strong>Horizontal lines</strong>: same imaginary part → same oscillation frequency → same <span class="math inline">\(T_p\)</span>.</li>
+<li><strong>Radial lines</strong>: same <span class="math inline">\(\zeta\)</span> → same %OS.</li>
+</ul>
+<aside class="notes">
+<p>Use this picture to preview control design: - In root locus design, controller gains “slide” poles along trajectories in the <span class="math inline">\(s\)</span>-plane. - Designers choose a target region in the <span class="math inline">\(s\)</span>-plane satisfying constraints on overshoot and speed.</p>
+<p>Show that as you move outwards along a constant <span class="math inline">\(\zeta\)</span> ray, the time response looks similar but scaled in time.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="how-pole-movement-affects-response" class="slide level2">
+<h2>How Pole Movement Affects Response</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_4/616f55d1b78f7a536b9a664e58025cf0_MD5.jpg" height="280"></p>
+<figcaption>Step responses as poles move (Fig. 4.19a–c)</figcaption>
+</figure>
+</div>
+</section>
+<section class="slide level2 scrollable">
+
+<ol type="1">
+<li><strong>Move poles vertically (constant real part)</strong> → Fig. 4.19(a):
+<ul>
+<li>Same decay envelope (same <span class="math inline">\(\sigma_d\)</span> → same <span class="math inline">\(T_s\)</span>).</li>
+<li>Higher imaginary part → faster oscillation, smaller <span class="math inline">\(T_p\)</span>, higher overshoot.</li>
+</ul></li>
+<li><strong>Move poles horizontally (constant imaginary part)</strong> → Fig. 4.19(b):
+<ul>
+<li>Same oscillation frequency, same <span class="math inline">\(T_p\)</span>.</li>
+<li>Larger real part (farther left) → faster decay, smaller <span class="math inline">\(T_s\)</span>, smaller overshoot.</li>
+</ul></li>
+<li><strong>Move radially (constant <span class="math inline">\(\zeta\)</span>)</strong> → Fig. 4.19(c):
+<ul>
+<li>Same %OS.</li>
+<li>Larger distance from origin → faster response overall (both <span class="math inline">\(T_p\)</span> and <span class="math inline">\(T_s\)</span> smaller).</li>
+</ul></li>
+</ol>
+<aside class="notes">
+<p>Encourage students to relate these observations to Eq. (4.44) and (4.45).</p>
+<p>This intuition is key for closed-loop design: we will eventually “aim” closed-loop poles into a desired region for acceptable transient response.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-time-specs-from-pole-location" class="slide level2">
+<h2>Example: Time Specs from Pole Location</h2>
+<p>(Example 4.6)</p>
+<p>Given poles at (Fig. 4.20):</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_4/b8783aa0b91b15edecac25f1d40bad0f_MD5.jpg" height="280"></p>
+<figcaption>Pole plot for Example 4.6</figcaption>
+</figure>
+</div>
+<ul>
+<li>Real part: <span class="math inline">\(-3\)</span> → <span class="math inline">\(\sigma_d = 3\)</span>.</li>
+<li>Imag part: <span class="math inline">\(7\)</span> → <span class="math inline">\(\omega_d = 7\)</span>.</li>
+<li>Radial distance: <span class="math inline">\(\omega_n = \sqrt{3^2 + 7^2} = 7.616\)</span>.</li>
+<li>Angle: <span class="math inline">\(\theta = \tan^{-1}(7/3)\)</span> → <span class="math inline">\(\zeta = \cos\theta = 0.394\)</span>.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>Now compute:</p>
+<ul>
+<li><p><span class="math inline">\(T_p = \dfrac{\pi}{\omega_d} = \dfrac{\pi}{7} \approx 0.449\,\)</span>s.</p></li>
+<li><p><span class="math inline">\(\%OS = e^{-\zeta\pi/\sqrt{1-\zeta^2}}\times100 \approx 26\%\)</span>.</p></li>
+<li><p><span class="math inline">\(T_s \approx \dfrac{4}{\sigma_d} = \dfrac{4}{3} \approx 1.33\,\)</span>s.</p></li>
+</ul>
+<aside class="notes">
+<p>We never used the actual transfer function, only the pole locations.</p>
+<p>This is often how design specs are enforced: given allowed <span class="math inline">\(T_s\)</span> and %OS, determine acceptable regions for poles.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="design-example-mechanical-system-specs-component-values" class="slide level2">
+<h2>Design Example: Mechanical System Specs → Component Values</h2>
+<p>(Example 4.7)</p>
+<p>Rotational mechanical system (Fig. 4.21):</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_4/369eaf424e6677945153cc107e8bead8_MD5.jpg" height="120"></p>
+<figcaption>Rotational system for Example 4.7</figcaption>
+</figure>
+</div>
+<p>Transfer function:</p>
+<p><span class="math display">\[
+G(s) = \frac{\Theta(s)}{T(s)} = \frac{1/J}{s^2 + (D/J)s + (K/J)}
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p>Put in standard form:</p>
+<ul>
+<li><span class="math inline">\(\omega_n^2 = K/J \Rightarrow \omega_n = \sqrt{K/J}\)</span>.</li>
+<li><span class="math inline">\(2\zeta\omega_n = D/J\)</span>.</li>
+</ul>
+<p>Specifications:</p>
+<ul>
+<li><p>%OS = 20% → from Eq. (4.39), <span class="math inline">\(\zeta \approx 0.456\)</span>.</p></li>
+<li><p><span class="math inline">\(T_s = 2\)</span> s → from <span class="math inline">\(T_s = 4/(\zeta\omega_n)\)</span>:</p>
+<p><span class="math display">\[
+2 = \frac{4}{\zeta\omega_n} \Rightarrow \zeta\omega_n = 2
+\]</span></p></li>
+</ul>
+<p>Thus:</p>
+<ul>
+<li><p><span class="math inline">\(2\zeta\omega_n = 4 = D/J\)</span>.</p></li>
+<li><p>From <span class="math inline">\(\zeta = 2\sqrt{J/K}\)</span> (algebra), and <span class="math inline">\(\zeta = 0.456\)</span>,</p>
+<p><span class="math display">\[
+2\sqrt{\frac{J}{K}} = 0.456 \Rightarrow \frac{J}{K} \approx 0.052
+\]</span></p></li>
+</ul>
+<p>Given <span class="math inline">\(K = 5\,\mathrm{N\cdot m/rad}\)</span>:</p>
+<ul>
+<li><span class="math inline">\(J = 0.052 K = 0.26\,\mathrm{kg\cdot m^2}\)</span>.</li>
+<li>From <span class="math inline">\(D/J = 4\)</span>, <span class="math inline">\(D = 4J = 1.04\,\mathrm{N\cdot m\cdot s/rad}\)</span>.</li>
+</ul>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>We translated <strong>time-domain specs</strong> (overshoot and settling time) into <strong>physical design parameters</strong> <span class="math inline">\(J\)</span> and <span class="math inline">\(D\)</span>.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>This example closes the loop between:</p>
+<ul>
+<li>Desired behavior (20% overshoot, 2 s settling).</li>
+<li>Abstract parameters (<span class="math inline">\(\zeta\)</span>, <span class="math inline">\(\omega_n\)</span>).</li>
+<li>Concrete hardware values (<span class="math inline">\(J\)</span>, <span class="math inline">\(D\)</span>, <span class="math inline">\(K\)</span>).</li>
+</ul>
+<p>It anticipates later chapters where we do the same via controller gains instead of just plant parameters.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="skill-check-complete-spec-from-gs" class="slide level2 scrollable">
+<h2>Skill Check – Complete Spec from <span class="math inline">\(G(s)\)</span></h2>
+<p>(Exercise 4.5)</p>
+<p>Given:</p>
+<p><span class="math display">\[
+G(s) = \frac{361}{s^{2}+16s+361}
+\]</span></p>
+<ol type="1">
+<li><span class="math inline">\(\omega_n^{2} = 361 \Rightarrow \omega_n = 19\)</span>.</li>
+<li><span class="math inline">\(2\zeta\omega_n = 16 \Rightarrow \zeta = \frac{16}{2\cdot 19} = 0.421\)</span>.</li>
+<li><span class="math inline">\(T_s \approx \frac{4}{\zeta\omega_n} = \frac{4}{0.421\cdot19} \approx 0.5\)</span> s.</li>
+<li><span class="math inline">\(T_p = \frac{\pi}{\omega_n\sqrt{1-\zeta^{2}}} \approx 0.182\)</span> s.</li>
+<li>From Fig. 4.16: <span class="math inline">\(\omega_n T_r \approx 1.5\)</span> (for <span class="math inline">\(\zeta\approx 0.42\)</span>) → <span class="math inline">\(T_r \approx 0.079\)</span> s.</li>
+<li><span class="math inline">\(\%OS = e^{-\zeta\pi/\sqrt{1-\zeta^2}}\times100 \approx 23.3\%\)</span>.</li>
+</ol>
+<aside class="notes">
+<p>Encourage students to check each computation carefully, especially %OS.</p>
+<p>This exercise ties together all main formulas and shows the power of the standard second-order form.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="summary-key-points" class="slide level2">
+<h2>Summary / Key Points</h2>
+<ul>
+<li><strong>Poles and zeros</strong> give a powerful, often qualitative way to predict time response:
+<ul>
+<li>Input poles → forced response shape.</li>
+<li>System poles → natural response shape.</li>
+<li>Zeros and poles determine amplitudes.</li>
+</ul></li>
+<li><strong>First-order systems</strong>:
+<ul>
+<li>Step response: <span class="math inline">\(1 - e^{-at}\)</span>.</li>
+<li>Time constant <span class="math inline">\(\tau = 1/a\)</span> fully characterizes transient speed.</li>
+<li><span class="math inline">\(T_r \approx 2.2\tau\)</span>, <span class="math inline">\(T_s \approx 4\tau\)</span>.</li>
+</ul></li>
+<li><strong>Second-order systems</strong>:
+<ul>
+<li>Standard form: <span class="math inline">\(\dfrac{\omega_n^2}{s^2+2\zeta\omega_n s+\omega_n^2}\)</span>.</li>
+<li><span class="math inline">\(\omega_n\)</span> sets time scale; <span class="math inline">\(\zeta\)</span> sets damping/shape.</li>
+<li>Behavior classification: overdamped, critically damped, underdamped, undamped.</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
+<li><strong>Underdamped second-order step response</strong>:
+<ul>
+<li><span class="math inline">\(T_p = \dfrac{\pi}{\omega_n\sqrt{1-\zeta^2}}\)</span>.</li>
+<li><span class="math inline">\(\%OS = e^{-\zeta\pi/\sqrt{1-\zeta^2}}\times100\)</span>.</li>
+<li><span class="math inline">\(T_s \approx \dfrac{4}{\zeta\omega_n}\)</span>.</li>
+<li><span class="math inline">\(T_r\)</span> from normalized curves vs <span class="math inline">\(\zeta\)</span>.</li>
+</ul></li>
+<li><strong>s-plane geometry</strong>:
+<ul>
+<li>Lines of constant <span class="math inline">\(\zeta\)</span>, <span class="math inline">\(T_p\)</span>, <span class="math inline">\(T_s\)</span>, and %OS provide an intuitive design map.</li>
+</ul></li>
+</ul>
+<aside class="notes">
+<p>Encourage students to: - Memorize the standard 2nd-order form and the core formulas (for <span class="math inline">\(T_p\)</span>, %OS, <span class="math inline">\(T_s\)</span>). - Practice reading pole locations as “coordinates of transient behavior.” - Start thinking about how changing system or controller parameters moves poles in the s-plane.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="formulas-summary-first--second-order-time-response" class="slide level2">
+<h2>Formulas Summary – First- &amp; Second-Order Time Response</h2>
+<p><strong>First-order system</strong></p>
+<ul>
+<li><p>Transfer function: <span class="math display">\[
+G(s) = \frac{K}{s+a},\quad a&gt;0
+\]</span></p></li>
+<li><p>Unit step response: <span class="math display">\[
+c(t) = \frac{K}{a}\left(1-e^{-at}\right)
+\]</span></p></li>
+<li><p>Time constant: <span class="math inline">\(\tau = 1/a\)</span>.</p></li>
+<li><p>Rise time (10–90%): <span class="math inline">\(T_r \approx 2.2/a = 2.2\tau\)</span>.</p></li>
+<li><p>Settling time (2%): <span class="math inline">\(T_s \approx 4/a = 4\tau\)</span>.</p></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p><strong>Second-order standard form</strong></p>
+<ul>
+<li><p>Transfer function: <span class="math display">\[
+G(s) = \frac{\omega_n^{2}}{s^{2}+2\zeta\omega_n s+\omega_n^{2}}
+\]</span></p></li>
+<li><p>Poles: <span class="math display">\[
+s_{1,2} = -\zeta\omega_n \pm j\omega_n\sqrt{1-\zeta^{2}}
+\]</span></p></li>
+<li><p>Damped natural frequency: <span class="math display">\[
+\omega_d = \omega_n\sqrt{1-\zeta^{2}}
+\]</span></p></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p><strong>Underdamped second-order (unit step)</strong></p>
+<ul>
+<li><p>Response: <span class="math display">\[
+c(t) = 1 - \frac{1}{\sqrt{1-\zeta^{2}}}e^{-\zeta\omega_n t}
+\cos(\omega_n\sqrt{1-\zeta^{2}}\, t - \phi)
+\]</span></p></li>
+<li><p>Peak time: <span class="math display">\[
+T_p = \frac{\pi}{\omega_n\sqrt{1-\zeta^{2}}}
+    = \frac{\pi}{\omega_d}
+\]</span></p></li>
+<li><p>Percent overshoot: <span class="math display">\[
+\%OS =
+e^{-\frac{\zeta\pi}{\sqrt{1-\zeta^{2}}}}\times100
+\]</span></p></li>
+<li><p>Inverse relation: <span class="math display">\[
+\zeta =
+\frac{-\ln(\%OS/100)}{\sqrt{\pi^{2}+\ln^{2}(\%OS/100)}}
+\]</span></p></li>
+<li><p>Settling time (2%): <span class="math display">\[
+T_s \approx \frac{4}{\zeta\omega_n}
+\]</span></p></li>
+<li><p>Rise time: <span class="math display">\[
+\omega_n T_r \text{ from lookup vs. } \zeta,\quad
+T_r = \frac{\omega_n T_r}{\omega_n}
+\]</span></p></li>
+</ul>
+<aside class="notes">
+<p>This slide can serve as a quick reference sheet for homework and exams.</p>
+<p>Suggest to students: - Keep this summary handy when solving problems. - Practice deriving selected formulas once to understand them, then memorize for speed.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="optional-concept-map-mermaid-diagram" class="slide level2">
+<h2>Optional Concept Map (Mermaid Diagram)</h2>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<p><img data-src="control_4_files\figure-revealjs\mermaid-figure-1.png" style="width:15.23in;height:3.27in"></p>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Use this concept map to reinforce how: - <span class="math inline">\(G(s)\)</span> determines poles and <span class="math inline">\((\zeta,\omega_n)\)</span>. - Poles determine geometry in <span class="math inline">\(s\)</span>-plane. - Geometry and <span class="math inline">\((\zeta,\omega_n)\)</span> determine time-domain specs and the qualitative shape of the response.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section>
+<section>
+<section id="time-response-interactive-deck" class="title-slide slide level1 center">
+<h1>Time Response – Interactive Deck</h1>
+
+</section>
+<section id="getting-started-live-python-in-the-browser" class="slide level2">
+<h2>Getting Started: Live Python in the Browser</h2>
+<p>You can run Python code directly in this slide using <strong>Pyodide</strong>.</p>
+<p>Try modifying the parameters and re-running.</p>
+<div>
+<div id="pyodide-1" class="exercise-cell">
+
+</div>
+<script type="pyodide-1-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiIyBTaW1wbGUgY2hlY2s6IGNoYW5nZSAnYScgYW5kIHNlZSBob3cgdGhlIGZpcnN0LW9yZGVyIHRpbWUgY29uc3RhbnQgY2hhbmdlc1xuYSA9IDUuMCAgICMgdHJ5IDEsIDIsIDEwLCA1MCAuLi5cblxudGF1ID0gMS9hXG5wcmludChmXCJQb2xlIGF0IHMgPSAte2F9XCIpXG5wcmludChmXCJUaW1lIGNvbnN0YW50IHRhdSA9IHt0YXU6LjNmfSBzZWNvbmRzXCIpXG5wcmludChmXCJBcHByb3guIHNldHRsaW5nIHRpbWUgVHMg4omIIDQqdGF1ID0gezQqdGF1Oi4zZn0gc2Vjb25kc1wiKSJ9
+</script>
+</div>
+<aside class="notes">
+<p>Have students: - Change <code>a</code> to several values (e.g., 1, 2, 5, 10, 50). - Observe how the time constant and settling time scale.</p>
+<p>This introduces them to the idea that pole location determines response speed.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-first-order-step-response-shape" class="slide level2">
+<h2>Interactive: First-Order Step Response Shape</h2>
+<p>Explore how the first-order step response</p>
+<p><span class="math display">\[
+c(t) = 1 - e^{-a t}
+\]</span></p>
+<p>changes as the pole location <span class="math inline">\(s=-a\)</span> moves.</p>
+<div>
+<div id="pyodide-2" class="exercise-cell">
+
+</div>
+<script type="pyodide-2-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5pbXBvcnQgcGxvdGx5LmdyYXBoX29iamVjdHMgYXMgZ29cblxuYSA9IDUuMCAgIyB0cnkgZGlmZmVyZW50IHZhbHVlczogMSwgMiwgNSwgMTBcblxudCA9IG5wLmxpbnNwYWNlKDAsIDIsIDIwMClcbmMgPSAxIC0gbnAuZXhwKC1hKnQpXG5cbmZpZyA9IGdvLkZpZ3VyZSgpXG5maWcuYWRkX3RyYWNlKGdvLlNjYXR0ZXIoeD10LCB5PWMsIG1vZGU9XCJsaW5lc1wiLCBuYW1lPWZcImEgPSB7YX1cIikpXG5maWcudXBkYXRlX2xheW91dChcbiAgICB0aXRsZT1mXCJGaXJzdC1PcmRlciBTdGVwIFJlc3BvbnNlOiBjKHQpID0gMSAtIGVeKC1hIHQpLCAgYSA9IHthfVwiLFxuICAgIHhheGlzX3RpdGxlPVwidCAocylcIixcbiAgICB5YXhpc190aXRsZT1cImModClcIixcbiAgICB5YXhpc19yYW5nZT1bMCwgMS4yXSxcbilcbmZpZy5zaG93KCkifQ==
+</script>
+</div>
+<aside class="notes">
+<p>Ask: - Increase <code>a</code> — what happens to the response speed? - How does this relate to the pole moving farther left on the real axis?</p>
+<p>Students should see that larger <code>a</code> → faster rise and settling.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reactive-controls-first-order-system-explorer" class="slide level2">
+<h2>Reactive Controls: First-Order System Explorer</h2>
+<p>Use the slider to change the pole location <span class="math inline">\(s=-a\)</span> and see how the step response changes.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="1601" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1600;"><span id="cb1-1601"><a></a>viewof a_fo <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb1-1602"><a></a>  [<span class="fl">0.5</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span></span>
+<span id="cb1-1603"><a></a>  {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"First-order pole magnitude a (pole at s = -a)"</span>}</span>
+<span id="cb1-1604"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-3" class="exercise-cell">
+
+</div>
+<script type="pyodide-3-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiYV9mbyJdLCJtYXgtbGluZXMiOjEwfSwiY29kZSI6ImltcG9ydCBudW1weSBhcyBucFxuaW1wb3J0IHBsb3RseS5ncmFwaF9vYmplY3RzIGFzIGdvXG5cbmEgPSBmbG9hdChhX2ZvKVxudCA9IG5wLmxpbnNwYWNlKDAsIDIuMCwgNDAwKVxuYyA9IDEgLSBucC5leHAoLWEqdClcblxudGF1ID0gMS9hXG5UcyA9IDQvYVxuVHIgPSAyLjIvYVxuXG5maWcgPSBnby5GaWd1cmUoKVxuZmlnLmFkZF90cmFjZShnby5TY2F0dGVyKHg9dCwgeT1jLCBtb2RlPVwibGluZXNcIiwgbmFtZT1cIlN0ZXAgcmVzcG9uc2VcIikpXG5maWcudXBkYXRlX2xheW91dChcbiAgICB0aXRsZT1mXCJGaXJzdC1PcmRlciBTdGVwIFJlc3BvbnNlIChhID0ge2E6LjJmfSwgdGF1ID0ge3RhdTouM2Z9IHMpXCIsXG4gICAgeGF4aXNfdGl0bGU9XCJ0IChzKVwiLFxuICAgIHlheGlzX3RpdGxlPVwiYyh0KVwiLFxuICAgIHlheGlzX3JhbmdlPVswLCAxLjJdLFxuICAgIGFubm90YXRpb25zPVtcbiAgICAgICAgZGljdCh4PVRzLCB5PTEuMCwgeHJlZj1cInhcIiwgeXJlZj1cInlcIixcbiAgICAgICAgICAgICB0ZXh0PWZcIlRzIOKJiCB7VHM6LjJmfSBzXCIsXG4gICAgICAgICAgICAgc2hvd2Fycm93PVRydWUsIGFycm93aGVhZD0yLCBheD00MCwgYXk9LTQwKSxcbiAgICBdXG4pXG5maWcuc2hvdygpIn0=
+</script>
+</div>
+<aside class="notes">
+<p>Guide questions: - Move the slider to small <code>a</code> (near 0.5). What happens to <span class="math inline">\(T_s\)</span>? - Move to large <code>a</code> (near 20). How does the response change?</p>
+<p>Students should connect: - <span class="math inline">\(T_s \approx 4/a\)</span>. - The graphical interpretation: how long until the curve stays close to 1.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-second-order-parameters-from-coefficients" class="slide level2">
+<h2>Interactive: Second-Order Parameters from Coefficients</h2>
+<p>Given</p>
+<p><span class="math display">\[
+G(s) = \frac{b}{s^2 + a s + b}
+\]</span></p>
+<p>we have</p>
+<p><span class="math display">\[
+\omega_n = \sqrt{b}, \quad \zeta = \frac{a}{2\sqrt{b}}
+\]</span></p>
+<p>Try changing <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> and see how <span class="math inline">\(\zeta\)</span> and <span class="math inline">\(\omega_n\)</span> change.</p>
+<div>
+<div id="pyodide-4" class="exercise-cell">
+
+</div>
+<script type="pyodide-4-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1wb3J0IG1hdGhcblxuYSA9IDQuMiAgICMgdHJ5IDEsIDQuMiwgMTIsIDkwIC4uLlxuYiA9IDM2LjAgICMgdHJ5IDEsIDQsIDM2LCAxMDAgLi4uXG5cbm9tZWdhX24gPSBtYXRoLnNxcnQoYilcbnpldGEgPSBhIC8gKDIqb21lZ2FfbilcblxucHJpbnQoZlwiRyhzKSA9IHtiOi4xZn0gLyAoc14yICsge2E6LjFmfSBzICsge2I6LjFmfSlcIilcbnByaW50KGZcIk5hdHVyYWwgZnJlcXVlbmN5ICDPiV9uID0ge29tZWdhX246LjNmfSByYWQvc1wiKVxucHJpbnQoZlwiRGFtcGluZyByYXRpbyAgICAgIM62ICAgID0ge3pldGE6LjNmfVwiKVxuXG5pZiB6ZXRhIDwgMDpcbiAgICBjbHMgPSBcIm5vbi1waHlzaWNhbCAobmVnYXRpdmUgZGFtcGluZylcIlxuZWxpZiB6ZXRhID09IDA6XG4gICAgY2xzID0gXCJ1bmRhbXBlZCAocHVyZSBvc2NpbGxhdGlvbilcIlxuZWxpZiAwIDwgemV0YSA8IDE6XG4gICAgY2xzID0gXCJ1bmRlcmRhbXBlZCAob3NjaWxsYXRvcnksIGRlY2F5aW5nKVwiXG5lbGlmIHpldGEgPT0gMTpcbiAgICBjbHMgPSBcImNyaXRpY2FsbHkgZGFtcGVkIChmYXN0ZXN0IG5vbi1vdmVyc2hvb3RpbmcpXCJcbmVsc2U6XG4gICAgY2xzID0gXCJvdmVyZGFtcGVkIChubyBvc2NpbGxhdGlvbiwgc2x1Z2dpc2gpXCJcblxucHJpbnQoZlwiUmVzcG9uc2UgY2xhc3M6IHtjbHN9XCIpIn0=
+</script>
+</div>
+<aside class="notes">
+<p>Have students: - Try a combination that yields <span class="math inline">\(\zeta &lt; 1\)</span> (e.g., <span class="math inline">\(a=4.2\)</span>, <span class="math inline">\(b=36\)</span>). - Try a large <span class="math inline">\(a\)</span> to get <span class="math inline">\(\zeta &gt; 1\)</span>. - Observe how the classification changes.</p>
+<p>This builds intuition on how numerator/denominator coefficients relate to damping.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reactive-second-order-zeta-omega_n-time-specs" class="slide level2">
+<h2>Reactive: Second-Order <span class="math inline">\((\zeta, \omega_n)\)</span> → Time Specs</h2>
+<p>Use sliders to pick <span class="math inline">\(\zeta\)</span> and <span class="math inline">\(\omega_n\)</span>, then see <span class="math inline">\(T_p\)</span>, <span class="math inline">\(T_s\)</span>, and %OS.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="1712" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1711;"><span id="cb2-1712"><a></a>viewof zeta <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb2-1713"><a></a>  [<span class="fl">0.0</span><span class="op">,</span> <span class="fl">1.0</span>]<span class="op">,</span></span>
+<span id="cb2-1714"><a></a>  {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.02</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Damping ratio ζ (0 ≤ ζ ≤ 1)"</span>}</span>
+<span id="cb2-1715"><a></a>)</span>
+<span id="cb2-1716"><a></a>viewof omega_n <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb2-1717"><a></a>  [<span class="dv">1</span><span class="op">,</span> <span class="dv">30</span>]<span class="op">,</span></span>
+<span id="cb2-1718"><a></a>  {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Natural frequency ω_n (rad/s)"</span>}</span>
+<span id="cb2-1719"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-5" class="exercise-cell">
+
+</div>
+<script type="pyodide-5-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiemV0YSIsIm9tZWdhX24iXSwibWF4LWxpbmVzIjoxMH0sImNvZGUiOiJpbXBvcnQgbWF0aFxuXG7OtiA9IGZsb2F0KHpldGEpXG7PiW4gPSBmbG9hdChvbWVnYV9uKVxuXG5pZiDOtiA+PSAxLjAgb3IgzrYgPD0gMC4wOlxuICAgIHByaW50KFwiVGhpcyBwYW5lbCBpcyBmb2N1c2VkIG9uIDAgPCDOtiA8IDEgKHVuZGVyZGFtcGVkIGNhc2UpLlwiKVxuZWxzZTpcbiAgICDPiWQgPSDPiW4qbWF0aC5zcXJ0KDEtzrYqKjIpXG4gICAgVHAgPSBtYXRoLnBpL8+JZFxuICAgIFRzID0gNC8ozrYqz4luKVxuICAgIE9TID0gbWF0aC5leHAoLc62Km1hdGgucGkvbWF0aC5zcXJ0KDEtzrYqKjIpKSoxMDBcblxuICAgIHByaW50KGZcIs62ID0ge862Oi4zZn0sIM+JX24gPSB7z4luOi4yZn0gcmFkL3NcIilcbiAgICBwcmludChmXCJEYW1wZWQgbmF0dXJhbCBmcmVxLiDPiV9kID0ge8+JZDouM2Z9IHJhZC9zXCIpXG4gICAgcHJpbnQoZlwiUGVhayB0aW1lICAgICAgICAgICBUX3AgPSB7VHA6LjNmfSBzXCIpXG4gICAgcHJpbnQoZlwiU2V0dGxpbmcgdGltZSAgICAgICBUX3Mg4omIIHtUczouM2Z9IHNcIilcbiAgICBwcmludChmXCJQZXJjZW50IG92ZXJzaG9vdCAgICVPUyDiiYgge09TOi4xZn0lXCIpIn0=
+</script>
+</div>
+<aside class="notes">
+<p>Ask: - For fixed <span class="math inline">\(\zeta\)</span>, increase <span class="math inline">\(\omega_n\)</span>. What happens to <span class="math inline">\(T_p\)</span> and <span class="math inline">\(T_s\)</span>? - For fixed <span class="math inline">\(\omega_n\)</span>, change <span class="math inline">\(\zeta\)</span>. How do <span class="math inline">\(T_p\)</span>, <span class="math inline">\(T_s\)</span>, and %OS change?</p>
+<p>They should see that: - Larger <span class="math inline">\(\omega_n\)</span> scales time faster (shorter <span class="math inline">\(T_p\)</span>, <span class="math inline">\(T_s\)</span>). - Larger <span class="math inline">\(\zeta\)</span> reduces overshoot and also changes <span class="math inline">\(T_p\)</span>, <span class="math inline">\(T_s\)</span>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reactive-plot-underdamped-second-order-step-response" class="slide level2">
+<h2>Reactive Plot: Underdamped Second-Order Step Response</h2>
+<p>Now visualize the full step response for your chosen <span class="math inline">\((\zeta, \omega_n)\)</span>.</p>
+<div>
+<div id="pyodide-6" class="exercise-cell">
+
+</div>
+<script type="pyodide-6-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiemV0YSIsIm9tZWdhX24iXSwibWF4LWxpbmVzIjoxMH0sImNvZGUiOiJpbXBvcnQgbnVtcHkgYXMgbnBcbmltcG9ydCBwbG90bHkuZ3JhcGhfb2JqZWN0cyBhcyBnb1xuaW1wb3J0IG1hdGhcblxuzrYgPSBmbG9hdCh6ZXRhKVxuz4luID0gZmxvYXQob21lZ2FfbilcblxudF9lbmQgPSA1LjAgLyBtYXgoMC4xLCDOtirPiW4pICAjIGFkYXB0IHRpbWUgd2luZG93IHRvIFRfcyBzY2FsZVxudCA9IG5wLmxpbnNwYWNlKDAsIHRfZW5kLCA4MDApXG5cbmlmIDAgPCDOtiA8IDE6XG4gICAgz4lkID0gz4luKm1hdGguc3FydCgxLc62KioyKVxuICAgIHBoaSA9IG1hdGguYXRhbjIozrYsIG1hdGguc3FydCgxLc62KioyKSlcblxuICAgICMgU3RlcCByZXNwb25zZSAodW5pdCBzdGVwKVxuICAgIGMgPSAxIC0gKDEvbnAuc3FydCgxLc62KioyKSkqbnAuZXhwKC3OtirPiW4qdCkqbnAuY29zKM+JZCp0IC0gcGhpKVxuXG4gICAgIyBTcGVjc1xuICAgIFRwID0gbWF0aC5waS/PiWRcbiAgICBUcyA9IDQvKM62Ks+JbilcbiAgICBPUyA9IG1hdGguZXhwKC3OtiptYXRoLnBpL21hdGguc3FydCgxLc62KioyKSkqMTAwXG5cbiAgICBmaWcgPSBnby5GaWd1cmUoKVxuICAgIGZpZy5hZGRfdHJhY2UoZ28uU2NhdHRlcih4PXQsIHk9YywgbW9kZT1cImxpbmVzXCIsIG5hbWU9XCJjKHQpXCIpKVxuICAgIGZpZy5hZGRfaGxpbmUoeT0xLjAsIGxpbmVfZGFzaD1cImRvdFwiLCBhbm5vdGF0aW9uX3RleHQ9XCJGaW5hbCB2YWx1ZVwiLCBhbm5vdGF0aW9uX3Bvc2l0aW9uPVwiYm90dG9tIHJpZ2h0XCIpXG4gICAgZmlnLmFkZF9obGluZSh5PTEuMDIsIGxpbmVfZGFzaD1cImRhc2hcIiwgbGluZV9jb2xvcj1cImdyYXlcIilcbiAgICBmaWcuYWRkX2hsaW5lKHk9MC45OCwgbGluZV9kYXNoPVwiZGFzaFwiLCBsaW5lX2NvbG9yPVwiZ3JheVwiKVxuXG4gICAgZmlnLmFkZF92bGluZSh4PVRwLCBsaW5lX2Rhc2g9XCJkYXNoXCIsIGxpbmVfY29sb3I9XCJyZWRcIixcbiAgICAgICAgICAgICAgICAgIGFubm90YXRpb25fdGV4dD1mXCJUX3Ag4omIIHtUcDouMmZ9c1wiLCBhbm5vdGF0aW9uX3Bvc2l0aW9uPVwidG9wIHJpZ2h0XCIpXG4gICAgZmlnLmFkZF92bGluZSh4PVRzLCBsaW5lX2Rhc2g9XCJkYXNoXCIsIGxpbmVfY29sb3I9XCJncmVlblwiLFxuICAgICAgICAgICAgICAgICAgYW5ub3RhdGlvbl90ZXh0PWZcIlRfcyDiiYgge1RzOi4yZn1zXCIsIGFubm90YXRpb25fcG9zaXRpb249XCJib3R0b20gcmlnaHRcIilcblxuICAgIGZpZy51cGRhdGVfbGF5b3V0KFxuICAgICAgICB0aXRsZT1mXCJVbmRlcmRhbXBlZCBTZWNvbmQtT3JkZXIgU3RlcCBSZXNwb25zZSAozrY9e862Oi4yZn0sIM+JX249e8+JbjouMWZ9IHJhZC9zLCAlT1PiiYh7T1M6LjFmfSUpXCIsXG4gICAgICAgIHhheGlzX3RpdGxlPVwidCAocylcIixcbiAgICAgICAgeWF4aXNfdGl0bGU9XCJjKHQpXCIsXG4gICAgICAgIHlheGlzX3JhbmdlPVswLCBtYXgoMS4zLCAxK09TLzEwMCowLjUpXVxuICAgIClcbiAgICBmaWcuc2hvdygpXG5lbHNlOlxuICAgIHByaW50KFwiU2VsZWN0IDAgPCDOtiA8IDEgdG8gdmlldyBhbiB1bmRlcmRhbXBlZCBzdGVwIHJlc3BvbnNlLlwiKSJ9
+</script>
+</div>
+<aside class="notes">
+<p>Have students: - Choose <span class="math inline">\(\zeta\)</span> near 0.2: see large overshoot and long ringing. - Choose <span class="math inline">\(\zeta\)</span> near 0.7–0.8: small overshoot, fast settling. - Compare with earlier formulas for %OS and <span class="math inline">\(T_s\)</span>.</p>
+<p>This integrates formulas with direct visual intuition.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reactive-from-poles-in-the-s-plane-to-time-specs" class="slide level2">
+<h2>Reactive: From Poles in the <span class="math inline">\(s\)</span>-Plane to Time Specs</h2>
+<p>Use sliders to set the real and imaginary parts of a complex pole pair <span class="math inline">\(s = -\sigma_d \pm j\omega_d\)</span> (under-damped case only, <span class="math inline">\(\sigma_d&gt;0\)</span>, <span class="math inline">\(\omega_d&gt;0\)</span>).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="1831" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1830;"><span id="cb3-1831"><a></a>viewof sigma_d <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb3-1832"><a></a>  [<span class="fl">0.5</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span></span>
+<span id="cb3-1833"><a></a>  {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Real part σ_d (&gt;0) (damping rate)"</span>}</span>
+<span id="cb3-1834"><a></a>)</span>
+<span id="cb3-1835"><a></a>viewof omega_d <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb3-1836"><a></a>  [<span class="fl">0.5</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span></span>
+<span id="cb3-1837"><a></a>  {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Imag part ω_d (&gt;0) (oscillation frequency)"</span>}</span>
+<span id="cb3-1838"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-7" class="exercise-cell">
+
+</div>
+<script type="pyodide-7-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsic2lnbWFfZCIsIm9tZWdhX2QiXSwibWF4LWxpbmVzIjoxMH0sImNvZGUiOiJpbXBvcnQgbWF0aFxuXG7Pg2QgPSBmbG9hdChzaWdtYV9kKVxuz4lkID0gZmxvYXQob21lZ2FfZClcblxuz4luID0gbWF0aC5zcXJ0KM+DZCoqMiArIM+JZCoqMilcbs62ID0gz4NkL8+JblxuXG5UcCA9IG1hdGgucGkvz4lkXG5UcyA9IDQvz4NkXG5pZiAwIDwgzrYgPCAxOlxuICAgIE9TID0gbWF0aC5leHAoLc62Km1hdGgucGkvbWF0aC5zcXJ0KDEtzrYqKjIpKSoxMDBcbmVsc2U6XG4gICAgT1MgPSAwLjBcblxucHJpbnQoZlwiUG9sZXMgYXQgcyA9IC17z4NkOi4yZn0gwrEganvPiWQ6LjJmfVwiKVxucHJpbnQoZlwiz4lfbiA9IHNxcnQoz4NfZF4yICsgz4lfZF4yKSA9IHvPiW46LjNmfVwiKVxucHJpbnQoZlwizrYgICA9IM+DX2QgLyDPiV9uICAgICAgICAgID0ge862Oi4zZn1cIilcbnByaW50KGZcIlBlYWsgdGltZSAgICAgIFRfcCDiiYggz4Avz4lfZCA9IHtUcDouM2Z9IHNcIilcbnByaW50KGZcIlNldHRsaW5nIHRpbWUgIFRfcyDiiYggNC/Pg19kID0ge1RzOi4zZn0gc1wiKVxucHJpbnQoZlwiUGVyY2VudCBvdmVyc2hvb3QgKGlmIDA8zrY8MSkg4omIIHtPUzouMWZ9JVwiKSJ9
+</script>
+</div>
+<aside class="notes">
+<p>Questions to explore: - For fixed <span class="math inline">\(\sigma_d\)</span>, increase <span class="math inline">\(\omega_d\)</span>: how does <span class="math inline">\(T_p\)</span> change? - For fixed <span class="math inline">\(\omega_d\)</span>, increase <span class="math inline">\(\sigma_d\)</span>: how does <span class="math inline">\(T_s\)</span> and %OS change?</p>
+<p>Connect back to the “lines of constant <span class="math inline">\(T_p\)</span>, <span class="math inline">\(T_s\)</span>, and %OS” slide in the main deck.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reactive-plot-pole-location-and-step-response-together" class="slide level2">
+<h2>Reactive Plot: Pole Location and Step Response Together</h2>
+<p>This block simultaneously shows:</p>
+<ul>
+<li>Pole positions in the <span class="math inline">\(s\)</span>-plane.</li>
+<li>Corresponding underdamped step response.</li>
+</ul>
+<div>
+<div id="pyodide-8" class="exercise-cell">
+
+</div>
+<script type="pyodide-8-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsic2lnbWFfZCIsIm9tZWdhX2QiXSwibWF4LWxpbmVzIjoxMH0sImNvZGUiOiJpbXBvcnQgbnVtcHkgYXMgbnBcbmltcG9ydCBwbG90bHkuZ3JhcGhfb2JqZWN0cyBhcyBnb1xuaW1wb3J0IG1hdGhcblxuz4NkID0gZmxvYXQoc2lnbWFfZClcbs+JZCA9IGZsb2F0KG9tZWdhX2QpXG5cbs+JbiA9IG1hdGguc3FydCjPg2QqKjIgKyDPiWQqKjIpXG7OtiA9IM+DZC/PiW5cblxuIyBVbmRlci1kYW1wZWQgaWYgMDzOtjwxIGFuZCDPiWQ+MFxuaWYgMCA8IM62IDwgMSBhbmQgz4lkID4gMDpcbiAgICBwaGkgPSBtYXRoLmF0YW4yKM62LCBtYXRoLnNxcnQoMS3OtioqMikpXG4gICAgdF9lbmQgPSA1LjAvz4NkXG4gICAgdCA9IG5wLmxpbnNwYWNlKDAsIHRfZW5kLCA4MDApXG4gICAgYyA9IDEgLSAoMS9ucC5zcXJ0KDEtzrYqKjIpKSpucC5leHAoLc62Ks+Jbip0KSpucC5jb3Moz4lkKnQgLSBwaGkpXG5cbiAgICAjIFN0ZXAgcmVzcG9uc2UgcGxvdFxuICAgIGZpZ19yZXNwID0gZ28uRmlndXJlKClcbiAgICBmaWdfcmVzcC5hZGRfdHJhY2UoZ28uU2NhdHRlcih4PXQsIHk9YywgbW9kZT1cImxpbmVzXCIsIG5hbWU9XCJjKHQpXCIpKVxuICAgIGZpZ19yZXNwLmFkZF9obGluZSh5PTEuMCwgbGluZV9kYXNoPVwiZG90XCIpXG4gICAgZmlnX3Jlc3AudXBkYXRlX2xheW91dChcbiAgICAgICAgdGl0bGU9ZlwiU3RlcCBSZXNwb25zZSBmb3IgUG9sZXMgYXQgLXvPg2Q6LjJmfSDCsSBqe8+JZDouMmZ9ICAozrY9e862Oi4yZn0pXCIsXG4gICAgICAgIHhheGlzX3RpdGxlPVwidCAocylcIixcbiAgICAgICAgeWF4aXNfdGl0bGU9XCJjKHQpXCIsXG4gICAgKVxuXG4gICAgIyBQb2xlIHBsb3RcbiAgICBmaWdfcG9sZXMgPSBnby5GaWd1cmUoKVxuICAgIGZpZ19wb2xlcy5hZGRfdHJhY2UoZ28uU2NhdHRlcihcbiAgICAgICAgeD1bLc+DZCwgLc+DZF0sXG4gICAgICAgIHk9W8+JZCwgLc+JZF0sXG4gICAgICAgIG1vZGU9XCJtYXJrZXJzXCIsXG4gICAgICAgIG1hcmtlcj1kaWN0KHNpemU9MTAsIHN5bWJvbD1cInhcIiksXG4gICAgICAgIG5hbWU9XCJQb2xlc1wiXG4gICAgKSlcbiAgICBmaWdfcG9sZXMuYWRkX3ZsaW5lKHg9MCwgbGluZV9jb2xvcj1cImJsYWNrXCIsIGxpbmVfd2lkdGg9MSlcbiAgICBmaWdfcG9sZXMuYWRkX2hsaW5lKHk9MCwgbGluZV9jb2xvcj1cImJsYWNrXCIsIGxpbmVfd2lkdGg9MSlcbiAgICBmaWdfcG9sZXMudXBkYXRlX2xheW91dChcbiAgICAgICAgdGl0bGU9XCJQb2xlIExvY2F0aW9ucyBpbiB0aGUgcy1QbGFuZVwiLFxuICAgICAgICB4YXhpc190aXRsZT1cIlJlKHMpXCIsXG4gICAgICAgIHlheGlzX3RpdGxlPVwiSW0ocylcIixcbiAgICAgICAgeGF4aXNfcmFuZ2U9Wy1tYXgoz4NkKjIsIDUpLCBtYXgoMiwgz4NkKV0sXG4gICAgICAgIHlheGlzX3JhbmdlPVstbWF4KM+JZCoxLjUsIDUpLCBtYXgoz4lkKjEuNSwgNSldLFxuICAgICAgICB5YXhpc19zY2FsZWFuY2hvcj1cInhcIixcbiAgICAgICAgeWF4aXNfc2NhbGVyYXRpbz0xXG4gICAgKVxuXG4gICAgZmlnX3Jlc3Auc2hvdygpXG4gICAgZmlnX3BvbGVzLnNob3coKVxuZWxzZTpcbiAgICBwcmludChcIkNob29zZSDPg19kID4gMCBhbmQgz4lfZCA+IDAsIHdpdGggMCA8IM62IDwgMSAod2hpY2ggaXMgYXV0b21hdGljIGlmIHlvdSBwaWNrIGFueSBwb3NpdGl2ZSDPg19kLCDPiV9kKS5cIikifQ==
+</script>
+</div>
+<aside class="notes">
+<p>Encourage: - Move poles farther left (increase σ_d) → watch response settle faster. - Move poles up/down (change ωd) → frequency of oscillation and <span class="math inline">\(T_p\)</span> change, while envelope slope (<span class="math inline">\(σ_d\)</span>) stays same.</p>
+<p>This is a direct visual of “move poles, change time response.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="design-sandbox-meet-a-os-and-t_s-spec" class="slide level2">
+<h2>Design Sandbox: Meet a %OS and <span class="math inline">\(T_s\)</span> Spec</h2>
+<p>Suppose we want an underdamped second-order system with:</p>
+<ul>
+<li>Max %OS requirement: <span class="math inline">\(\leq\)</span> given spec.</li>
+<li>Settling time <span class="math inline">\(T_s\)</span> requirement: <span class="math inline">\(\leq\)</span> given spec.</li>
+</ul>
+<p>We’ll: 1. Choose a %OS spec, compute <span class="math inline">\(\zeta\)</span>. 2. Choose a <span class="math inline">\(T_s\)</span> spec, compute <span class="math inline">\(\omega_n\)</span>. 3. Show the resulting step response.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="1970" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1969;"><span id="cb4-1970"><a></a>viewof OS_spec <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb4-1971"><a></a>  [<span class="dv">1</span><span class="op">,</span> <span class="dv">40</span>]<span class="op">,</span></span>
+<span id="cb4-1972"><a></a>  {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Desired maximum %OS (1–40%)"</span>}</span>
+<span id="cb4-1973"><a></a>)</span>
+<span id="cb4-1974"><a></a>viewof Ts_spec <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb4-1975"><a></a>  [<span class="fl">0.1</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span></span>
+<span id="cb4-1976"><a></a>  {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Desired maximum settling time Ts (s)"</span>}</span>
+<span id="cb4-1977"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-9" class="exercise-cell">
+
+</div>
+<script type="pyodide-9-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiT1Nfc3BlYyIsIlRzX3NwZWMiXSwibWF4LWxpbmVzIjoxMH0sImNvZGUiOiJpbXBvcnQgbnVtcHkgYXMgbnBcbmltcG9ydCBwbG90bHkuZ3JhcGhfb2JqZWN0cyBhcyBnb1xuaW1wb3J0IG1hdGhcblxuT1NfdGFyZ2V0ID0gZmxvYXQoT1Nfc3BlYylcblRzX3RhcmdldCA9IGZsb2F0KFRzX3NwZWMpXG5cbiMgQ29tcHV0ZSDOtiBmcm9tICVPU190YXJnZXQgdXNpbmcgaW52ZXJzZSBmb3JtdWxhXG7OtiA9IC1tYXRoLmxvZyhPU190YXJnZXQvMTAwKS9tYXRoLnNxcnQobWF0aC5waSoqMiArIG1hdGgubG9nKE9TX3RhcmdldC8xMDApKioyKVxuXG4jIENvbXB1dGUgz4lfbiBmcm9tIFRzX3RhcmdldCBhbmQgzrYgdXNpbmcgVHMg4omIIDQvKM62IM+JX24pXG7PiW4gPSA0LyjOtipUc190YXJnZXQpXG5cbs+JZCA9IM+JbiptYXRoLnNxcnQoMS3OtioqMilcbnBoaSA9IG1hdGguYXRhbjIozrYsIG1hdGguc3FydCgxLc62KioyKSlcblxuIyBTaW11bGF0ZSByZXNwb25zZVxudF9lbmQgPSBUc190YXJnZXQqMS41XG50ID0gbnAubGluc3BhY2UoMCwgdF9lbmQsIDEwMDApXG5jID0gMSAtICgxL25wLnNxcnQoMS3OtioqMikpKm5wLmV4cCgtzrYqz4luKnQpKm5wLmNvcyjPiWQqdCAtIHBoaSlcblxuZmlnID0gZ28uRmlndXJlKClcbmZpZy5hZGRfdHJhY2UoZ28uU2NhdHRlcih4PXQsIHk9YywgbW9kZT1cImxpbmVzXCIsIG5hbWU9XCJjKHQpXCIpKVxuZmlnLmFkZF9obGluZSh5PTEuMCwgbGluZV9kYXNoPVwiZG90XCIsIGFubm90YXRpb25fdGV4dD1cIkZpbmFsIHZhbHVlXCIpXG5maWcuYWRkX2hsaW5lKHk9MS4wMiwgbGluZV9kYXNoPVwiZGFzaFwiLCBsaW5lX2NvbG9yPVwiZ3JheVwiKVxuZmlnLmFkZF9obGluZSh5PTAuOTgsIGxpbmVfZGFzaD1cImRhc2hcIiwgbGluZV9jb2xvcj1cImdyYXlcIilcblxuZmlnLmFkZF92bGluZSh4PVRzX3RhcmdldCwgbGluZV9kYXNoPVwiZGFzaFwiLCBsaW5lX2NvbG9yPVwiZ3JlZW5cIixcbiAgICAgICAgICAgICAgYW5ub3RhdGlvbl90ZXh0PWZcIlRzX3NwZWMgPSB7VHNfdGFyZ2V0Oi4yZn1zXCIsIGFubm90YXRpb25fcG9zaXRpb249XCJib3R0b20gcmlnaHRcIilcblxuT1NfYWN0dWFsID0gbWF0aC5leHAoLc62Km1hdGgucGkvbWF0aC5zcXJ0KDEtzrYqKjIpKSoxMDBcblRwID0gbWF0aC5waS/PiWRcblxuZmlnLnVwZGF0ZV9sYXlvdXQoXG4gICAgdGl0bGU9ZlwiRGVzaWduIFNhbmRib3g6IEFjaGlldmVkIM62PXvOtjouM2Z9LCDPiV9uPXvPiW46LjJmfSAoT1PiiYh7T1NfYWN0dWFsOi4xZn0lLCBUc+KJiHs0LyjOtirPiW4pOi4yZn1zKVwiLFxuICAgIHhheGlzX3RpdGxlPVwidCAocylcIixcbiAgICB5YXhpc190aXRsZT1cImModClcIixcbilcbmZpZy5zaG93KCkifQ==
+</script>
+</div>
+<aside class="notes">
+<p>Guide students: - Set %OS_spec to 5% and Ts_spec to 1 s; observe ζ and ω_n. - Then relax Ts_spec (e.g., 3 s) and see how ω_n changes. - Experiment with more aggressive specs and see how ζ, ω_n, and the response behave.</p>
+<p>This mimics a basic design workflow: time-domain specs → <span class="math inline">\((\zeta, \omega_n)\)</span> → system behavior.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="wrap-up-interactive-reflections" class="slide level2 scrollable">
+<h2>Wrap-Up Interactive Reflections</h2>
+<p>Use the editors and reactive controls to answer:</p>
+<ol type="1">
+<li>How does <strong>moving real poles</strong> left or right impact:
+<ul>
+<li>First-order response speed?</li>
+<li>Second-order <span class="math inline">\(T_s\)</span> and <span class="math inline">\(T_p\)</span>?</li>
+</ul></li>
+<li>How does changing <strong>damping ratio <span class="math inline">\(\zeta\)</span></strong> at fixed <span class="math inline">\(\omega_n\)</span> affect:
+<ul>
+<li>Percent overshoot?</li>
+<li>Number of oscillations before settling?</li>
+</ul></li>
+<li>For a given performance requirement (e.g., <span class="math inline">\(T_s\)</span> and %OS), can you:
+<ul>
+<li>Compute suitable <span class="math inline">\(\zeta\)</span> and <span class="math inline">\(\omega_n\)</span>?</li>
+<li>Sketch approximate pole locations in the <span class="math inline">\(s\)</span>-plane?</li>
+</ul></li>
+</ol>
+<aside class="notes">
+<p>Encourage students to: - Screenshot or save plots for different parameter choices. - Discuss trade-offs (speed vs overshoot) with peers. - Reuse these interactive notebooks as a study tool before exams.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+
+<script type="pyodide-data">
+eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yOC4xL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIiwibnVtcHkiLCJwbG90bHkiLCJuYmZvcm1hdCJdfX0=
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTkiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoiX3B5b2RpZGVfdmFsdWVfOSA9IHtcbiAgY29uc3QgeyBoaWdobGlnaHRQeXRob24sIGI2NERlY29kZX0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS05LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgLy8gRGVmYXVsdCBldmFsdWF0aW9uIGNvbmZpZ3VyYXRpb25cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oe1xuICAgIGlkOiBcInB5b2RpZGUtOS1jb250ZW50c1wiLFxuICAgIGVjaG86IHRydWUsXG4gICAgb3V0cHV0OiB0cnVlXG4gIH0sIGJsb2NrLmF0dHIpO1xuXG4gIC8vIEV2YWx1YXRlIHRoZSBwcm92aWRlZCBQeXRob24gY29kZVxuICBjb25zdCByZXN1bHQgPSBweW9kaWRlT2pzLnByb2Nlc3Moe2NvZGU6IGJsb2NrLmNvZGUsIG9wdGlvbnN9LCB7T1Nfc3BlYywgVHNfc3BlY30pO1xuXG4gIC8vIEVhcmx5IHlpZWxkIHdoaWxlIHdlIHdhaXQgZm9yIHRoZSBmaXJzdCBldmFsdWF0aW9uIGFuZCByZW5kZXJcbiAgaWYgKG9wdGlvbnMub3V0cHV0ICYmICEoXCI5XCIgaW4gcHlvZGlkZU9qcy5yZW5kZXJlZE9qcykpIHtcbiAgICBjb25zdCBjb250YWluZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpO1xuICAgIGNvbnN0IHNwaW5uZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpO1xuXG4gICAgaWYgKG9wdGlvbnMuZWNobykge1xuICAgICAgLy8gU2hvdyBvdXRwdXQgYXMgaGlnaGxpZ2h0ZWQgc291cmNlXG4gICAgICBjb25zdCBwcmVFbGVtID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcInByZVwiKTtcbiAgICAgIGNvbnRhaW5lci5jbGFzc05hbWUgPSBcInNvdXJjZUNvZGVcIjtcbiAgICAgIHByZUVsZW0uY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlIHB5dGhvblwiO1xuICAgICAgcHJlRWxlbS5hcHBlbmRDaGlsZChoaWdobGlnaHRQeXRob24oYmxvY2suY29kZSkpO1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItZ3JvdyBzcGlubmVyLWdyb3ctc20gbS0yIHBvc2l0aW9uLWFic29sdXRlIHRvcC0wIGVuZC0wXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKHNwaW5uZXIpO1xuICAgICAgY29udGFpbmVyLmFwcGVuZENoaWxkKHByZUVsZW0pO1xuICAgIH0gZWxzZSB7XG4gICAgICBzcGlubmVyLmNsYXNzTmFtZSA9IFwic3Bpbm5lci1ib3JkZXIgc3Bpbm5lci1ib3JkZXItc21cIjtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICB9XG5cbiAgICB5aWVsZCBjb250YWluZXI7XG4gIH1cblxuICBweW9kaWRlT2pzLnJlbmRlcmVkT2pzW1wiOVwiXSA9IHRydWU7XG4gIHlpZWxkIGF3YWl0IHJlc3VsdDtcbn1cbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTgiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoiX3B5b2RpZGVfdmFsdWVfOCA9IHtcbiAgY29uc3QgeyBoaWdobGlnaHRQeXRob24sIGI2NERlY29kZX0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS04LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgLy8gRGVmYXVsdCBldmFsdWF0aW9uIGNvbmZpZ3VyYXRpb25cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oe1xuICAgIGlkOiBcInB5b2RpZGUtOC1jb250ZW50c1wiLFxuICAgIGVjaG86IHRydWUsXG4gICAgb3V0cHV0OiB0cnVlXG4gIH0sIGJsb2NrLmF0dHIpO1xuXG4gIC8vIEV2YWx1YXRlIHRoZSBwcm92aWRlZCBQeXRob24gY29kZVxuICBjb25zdCByZXN1bHQgPSBweW9kaWRlT2pzLnByb2Nlc3Moe2NvZGU6IGJsb2NrLmNvZGUsIG9wdGlvbnN9LCB7c2lnbWFfZCwgb21lZ2FfZH0pO1xuXG4gIC8vIEVhcmx5IHlpZWxkIHdoaWxlIHdlIHdhaXQgZm9yIHRoZSBmaXJzdCBldmFsdWF0aW9uIGFuZCByZW5kZXJcbiAgaWYgKG9wdGlvbnMub3V0cHV0ICYmICEoXCI4XCIgaW4gcHlvZGlkZU9qcy5yZW5kZXJlZE9qcykpIHtcbiAgICBjb25zdCBjb250YWluZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpO1xuICAgIGNvbnN0IHNwaW5uZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpO1xuXG4gICAgaWYgKG9wdGlvbnMuZWNobykge1xuICAgICAgLy8gU2hvdyBvdXRwdXQgYXMgaGlnaGxpZ2h0ZWQgc291cmNlXG4gICAgICBjb25zdCBwcmVFbGVtID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcInByZVwiKTtcbiAgICAgIGNvbnRhaW5lci5jbGFzc05hbWUgPSBcInNvdXJjZUNvZGVcIjtcbiAgICAgIHByZUVsZW0uY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlIHB5dGhvblwiO1xuICAgICAgcHJlRWxlbS5hcHBlbmRDaGlsZChoaWdobGlnaHRQeXRob24oYmxvY2suY29kZSkpO1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItZ3JvdyBzcGlubmVyLWdyb3ctc20gbS0yIHBvc2l0aW9uLWFic29sdXRlIHRvcC0wIGVuZC0wXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKHNwaW5uZXIpO1xuICAgICAgY29udGFpbmVyLmFwcGVuZENoaWxkKHByZUVsZW0pO1xuICAgIH0gZWxzZSB7XG4gICAgICBzcGlubmVyLmNsYXNzTmFtZSA9IFwic3Bpbm5lci1ib3JkZXIgc3Bpbm5lci1ib3JkZXItc21cIjtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICB9XG5cbiAgICB5aWVsZCBjb250YWluZXI7XG4gIH1cblxuICBweW9kaWRlT2pzLnJlbmRlcmVkT2pzW1wiOFwiXSA9IHRydWU7XG4gIHlpZWxkIGF3YWl0IHJlc3VsdDtcbn1cbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTciLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoiX3B5b2RpZGVfdmFsdWVfNyA9IHtcbiAgY29uc3QgeyBoaWdobGlnaHRQeXRob24sIGI2NERlY29kZX0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS03LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgLy8gRGVmYXVsdCBldmFsdWF0aW9uIGNvbmZpZ3VyYXRpb25cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oe1xuICAgIGlkOiBcInB5b2RpZGUtNy1jb250ZW50c1wiLFxuICAgIGVjaG86IHRydWUsXG4gICAgb3V0cHV0OiB0cnVlXG4gIH0sIGJsb2NrLmF0dHIpO1xuXG4gIC8vIEV2YWx1YXRlIHRoZSBwcm92aWRlZCBQeXRob24gY29kZVxuICBjb25zdCByZXN1bHQgPSBweW9kaWRlT2pzLnByb2Nlc3Moe2NvZGU6IGJsb2NrLmNvZGUsIG9wdGlvbnN9LCB7c2lnbWFfZCwgb21lZ2FfZH0pO1xuXG4gIC8vIEVhcmx5IHlpZWxkIHdoaWxlIHdlIHdhaXQgZm9yIHRoZSBmaXJzdCBldmFsdWF0aW9uIGFuZCByZW5kZXJcbiAgaWYgKG9wdGlvbnMub3V0cHV0ICYmICEoXCI3XCIgaW4gcHlvZGlkZU9qcy5yZW5kZXJlZE9qcykpIHtcbiAgICBjb25zdCBjb250YWluZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpO1xuICAgIGNvbnN0IHNwaW5uZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpO1xuXG4gICAgaWYgKG9wdGlvbnMuZWNobykge1xuICAgICAgLy8gU2hvdyBvdXRwdXQgYXMgaGlnaGxpZ2h0ZWQgc291cmNlXG4gICAgICBjb25zdCBwcmVFbGVtID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcInByZVwiKTtcbiAgICAgIGNvbnRhaW5lci5jbGFzc05hbWUgPSBcInNvdXJjZUNvZGVcIjtcbiAgICAgIHByZUVsZW0uY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlIHB5dGhvblwiO1xuICAgICAgcHJlRWxlbS5hcHBlbmRDaGlsZChoaWdobGlnaHRQeXRob24oYmxvY2suY29kZSkpO1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItZ3JvdyBzcGlubmVyLWdyb3ctc20gbS0yIHBvc2l0aW9uLWFic29sdXRlIHRvcC0wIGVuZC0wXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKHNwaW5uZXIpO1xuICAgICAgY29udGFpbmVyLmFwcGVuZENoaWxkKHByZUVsZW0pO1xuICAgIH0gZWxzZSB7XG4gICAgICBzcGlubmVyLmNsYXNzTmFtZSA9IFwic3Bpbm5lci1ib3JkZXIgc3Bpbm5lci1ib3JkZXItc21cIjtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICB9XG5cbiAgICB5aWVsZCBjb250YWluZXI7XG4gIH1cblxuICBweW9kaWRlT2pzLnJlbmRlcmVkT2pzW1wiN1wiXSA9IHRydWU7XG4gIHlpZWxkIGF3YWl0IHJlc3VsdDtcbn1cbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTYiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoiX3B5b2RpZGVfdmFsdWVfNiA9IHtcbiAgY29uc3QgeyBoaWdobGlnaHRQeXRob24sIGI2NERlY29kZX0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS02LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgLy8gRGVmYXVsdCBldmFsdWF0aW9uIGNvbmZpZ3VyYXRpb25cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oe1xuICAgIGlkOiBcInB5b2RpZGUtNi1jb250ZW50c1wiLFxuICAgIGVjaG86IHRydWUsXG4gICAgb3V0cHV0OiB0cnVlXG4gIH0sIGJsb2NrLmF0dHIpO1xuXG4gIC8vIEV2YWx1YXRlIHRoZSBwcm92aWRlZCBQeXRob24gY29kZVxuICBjb25zdCByZXN1bHQgPSBweW9kaWRlT2pzLnByb2Nlc3Moe2NvZGU6IGJsb2NrLmNvZGUsIG9wdGlvbnN9LCB7emV0YSwgb21lZ2Ffbn0pO1xuXG4gIC8vIEVhcmx5IHlpZWxkIHdoaWxlIHdlIHdhaXQgZm9yIHRoZSBmaXJzdCBldmFsdWF0aW9uIGFuZCByZW5kZXJcbiAgaWYgKG9wdGlvbnMub3V0cHV0ICYmICEoXCI2XCIgaW4gcHlvZGlkZU9qcy5yZW5kZXJlZE9qcykpIHtcbiAgICBjb25zdCBjb250YWluZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpO1xuICAgIGNvbnN0IHNwaW5uZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpO1xuXG4gICAgaWYgKG9wdGlvbnMuZWNobykge1xuICAgICAgLy8gU2hvdyBvdXRwdXQgYXMgaGlnaGxpZ2h0ZWQgc291cmNlXG4gICAgICBjb25zdCBwcmVFbGVtID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcInByZVwiKTtcbiAgICAgIGNvbnRhaW5lci5jbGFzc05hbWUgPSBcInNvdXJjZUNvZGVcIjtcbiAgICAgIHByZUVsZW0uY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlIHB5dGhvblwiO1xuICAgICAgcHJlRWxlbS5hcHBlbmRDaGlsZChoaWdobGlnaHRQeXRob24oYmxvY2suY29kZSkpO1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItZ3JvdyBzcGlubmVyLWdyb3ctc20gbS0yIHBvc2l0aW9uLWFic29sdXRlIHRvcC0wIGVuZC0wXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKHNwaW5uZXIpO1xuICAgICAgY29udGFpbmVyLmFwcGVuZENoaWxkKHByZUVsZW0pO1xuICAgIH0gZWxzZSB7XG4gICAgICBzcGlubmVyLmNsYXNzTmFtZSA9IFwic3Bpbm5lci1ib3JkZXIgc3Bpbm5lci1ib3JkZXItc21cIjtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICB9XG5cbiAgICB5aWVsZCBjb250YWluZXI7XG4gIH1cblxuICBweW9kaWRlT2pzLnJlbmRlcmVkT2pzW1wiNlwiXSA9IHRydWU7XG4gIHlpZWxkIGF3YWl0IHJlc3VsdDtcbn1cbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoiX3B5b2RpZGVfdmFsdWVfNSA9IHtcbiAgY29uc3QgeyBoaWdobGlnaHRQeXRob24sIGI2NERlY29kZX0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS01LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgLy8gRGVmYXVsdCBldmFsdWF0aW9uIGNvbmZpZ3VyYXRpb25cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oe1xuICAgIGlkOiBcInB5b2RpZGUtNS1jb250ZW50c1wiLFxuICAgIGVjaG86IHRydWUsXG4gICAgb3V0cHV0OiB0cnVlXG4gIH0sIGJsb2NrLmF0dHIpO1xuXG4gIC8vIEV2YWx1YXRlIHRoZSBwcm92aWRlZCBQeXRob24gY29kZVxuICBjb25zdCByZXN1bHQgPSBweW9kaWRlT2pzLnByb2Nlc3Moe2NvZGU6IGJsb2NrLmNvZGUsIG9wdGlvbnN9LCB7emV0YSwgb21lZ2Ffbn0pO1xuXG4gIC8vIEVhcmx5IHlpZWxkIHdoaWxlIHdlIHdhaXQgZm9yIHRoZSBmaXJzdCBldmFsdWF0aW9uIGFuZCByZW5kZXJcbiAgaWYgKG9wdGlvbnMub3V0cHV0ICYmICEoXCI1XCIgaW4gcHlvZGlkZU9qcy5yZW5kZXJlZE9qcykpIHtcbiAgICBjb25zdCBjb250YWluZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpO1xuICAgIGNvbnN0IHNwaW5uZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpO1xuXG4gICAgaWYgKG9wdGlvbnMuZWNobykge1xuICAgICAgLy8gU2hvdyBvdXRwdXQgYXMgaGlnaGxpZ2h0ZWQgc291cmNlXG4gICAgICBjb25zdCBwcmVFbGVtID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcInByZVwiKTtcbiAgICAgIGNvbnRhaW5lci5jbGFzc05hbWUgPSBcInNvdXJjZUNvZGVcIjtcbiAgICAgIHByZUVsZW0uY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlIHB5dGhvblwiO1xuICAgICAgcHJlRWxlbS5hcHBlbmRDaGlsZChoaWdobGlnaHRQeXRob24oYmxvY2suY29kZSkpO1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItZ3JvdyBzcGlubmVyLWdyb3ctc20gbS0yIHBvc2l0aW9uLWFic29sdXRlIHRvcC0wIGVuZC0wXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKHNwaW5uZXIpO1xuICAgICAgY29udGFpbmVyLmFwcGVuZENoaWxkKHByZUVsZW0pO1xuICAgIH0gZWxzZSB7XG4gICAgICBzcGlubmVyLmNsYXNzTmFtZSA9IFwic3Bpbm5lci1ib3JkZXIgc3Bpbm5lci1ib3JkZXItc21cIjtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICB9XG5cbiAgICB5aWVsZCBjb250YWluZXI7XG4gIH1cblxuICBweW9kaWRlT2pzLnJlbmRlcmVkT2pzW1wiNVwiXSA9IHRydWU7XG4gIHlpZWxkIGF3YWl0IHJlc3VsdDtcbn1cbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTQiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl80ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS00LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNC1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzQgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzQsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTMiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoiX3B5b2RpZGVfdmFsdWVfMyA9IHtcbiAgY29uc3QgeyBoaWdobGlnaHRQeXRob24sIGI2NERlY29kZX0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0zLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgLy8gRGVmYXVsdCBldmFsdWF0aW9uIGNvbmZpZ3VyYXRpb25cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oe1xuICAgIGlkOiBcInB5b2RpZGUtMy1jb250ZW50c1wiLFxuICAgIGVjaG86IHRydWUsXG4gICAgb3V0cHV0OiB0cnVlXG4gIH0sIGJsb2NrLmF0dHIpO1xuXG4gIC8vIEV2YWx1YXRlIHRoZSBwcm92aWRlZCBQeXRob24gY29kZVxuICBjb25zdCByZXN1bHQgPSBweW9kaWRlT2pzLnByb2Nlc3Moe2NvZGU6IGJsb2NrLmNvZGUsIG9wdGlvbnN9LCB7YV9mb30pO1xuXG4gIC8vIEVhcmx5IHlpZWxkIHdoaWxlIHdlIHdhaXQgZm9yIHRoZSBmaXJzdCBldmFsdWF0aW9uIGFuZCByZW5kZXJcbiAgaWYgKG9wdGlvbnMub3V0cHV0ICYmICEoXCIzXCIgaW4gcHlvZGlkZU9qcy5yZW5kZXJlZE9qcykpIHtcbiAgICBjb25zdCBjb250YWluZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpO1xuICAgIGNvbnN0IHNwaW5uZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpO1xuXG4gICAgaWYgKG9wdGlvbnMuZWNobykge1xuICAgICAgLy8gU2hvdyBvdXRwdXQgYXMgaGlnaGxpZ2h0ZWQgc291cmNlXG4gICAgICBjb25zdCBwcmVFbGVtID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcInByZVwiKTtcbiAgICAgIGNvbnRhaW5lci5jbGFzc05hbWUgPSBcInNvdXJjZUNvZGVcIjtcbiAgICAgIHByZUVsZW0uY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlIHB5dGhvblwiO1xuICAgICAgcHJlRWxlbS5hcHBlbmRDaGlsZChoaWdobGlnaHRQeXRob24oYmxvY2suY29kZSkpO1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItZ3JvdyBzcGlubmVyLWdyb3ctc20gbS0yIHBvc2l0aW9uLWFic29sdXRlIHRvcC0wIGVuZC0wXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKHNwaW5uZXIpO1xuICAgICAgY29udGFpbmVyLmFwcGVuZENoaWxkKHByZUVsZW0pO1xuICAgIH0gZWxzZSB7XG4gICAgICBzcGlubmVyLmNsYXNzTmFtZSA9IFwic3Bpbm5lci1ib3JkZXIgc3Bpbm5lci1ib3JkZXItc21cIjtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICB9XG5cbiAgICB5aWVsZCBjb250YWluZXI7XG4gIH1cblxuICBweW9kaWRlT2pzLnJlbmRlcmVkT2pzW1wiM1wiXSA9IHRydWU7XG4gIHlpZWxkIGF3YWl0IHJlc3VsdDtcbn1cbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8yID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzIgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzIsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8xID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0xLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzEgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzEsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLXByZWx1ZGUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJweW9kaWRlT2pzID0ge1xuICBjb25zdCB7XG4gICAgUHlvZGlkZUV2YWx1YXRvcixcbiAgICBQeW9kaWRlRW52aXJvbm1lbnRNYW5hZ2VyLFxuICAgIHNldHVwUHl0aG9uLFxuICAgIHN0YXJ0UHlvZGlkZVdvcmtlcixcbiAgICBiNjREZWNvZGUsXG4gICAgY29sbGFwc2VQYXRoLFxuICB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzdGF0dXNDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctc3RhdHVzXCIpO1xuICBjb25zdCBpbmRpY2F0b3JDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpbmRpY2F0b3JDb250YWluZXIuY2xhc3NMaXN0LnJlbW92ZShcImQtbm9uZVwiKTtcblxuICBsZXQgc3RhdHVzVGV4dCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIilcbiAgc3RhdHVzVGV4dC5jbGFzc0xpc3QgPSBcImV4ZXJjaXNlLWxvYWRpbmctZGV0YWlsc1wiO1xuICBzdGF0dXNUZXh0ID0gc3RhdHVzQ29udGFpbmVyLmFwcGVuZENoaWxkKHN0YXR1c1RleHQpO1xuICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYEluaXRpYWxpc2VgO1xuXG4gIC8vIEhvaXN0IGluZGljYXRvciBvdXQgZnJvbSBmaW5hbCBzbGlkZSB3aGVuIHJ1bm5pbmcgdW5kZXIgcmV2ZWFsXG4gIGNvbnN0IHJldmVhbFN0YXR1cyA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsIC5leGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaWYgKHJldmVhbFN0YXR1cykge1xuICAgIHJldmVhbFN0YXR1cy5yZW1vdmUoKTtcbiAgICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCA+IC5zbGlkZXNcIikuYXBwZW5kQ2hpbGQocmV2ZWFsU3RhdHVzKTtcbiAgfVxuXG4gIC8vIE1ha2UgYW55IHJldmVhbCBzbGlkZXMgd2l0aCBsaXZlIGNlbGxzIHNjcm9sbGFibGVcbiAgZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbChcIi5yZXZlYWwgLmV4ZXJjaXNlLWNlbGxcIikuZm9yRWFjaCgoZWwpID0+IHtcbiAgICBlbC5jbG9zZXN0KCdzZWN0aW9uLnNsaWRlJykuY2xhc3NMaXN0LmFkZChcInNjcm9sbGFibGVcIik7XG4gIH0pXG5cbiAgLy8gUHlvZGlkZSBzdXBwbGVtZW50YWwgZGF0YSBhbmQgb3B0aW9uc1xuICBjb25zdCBkYXRhQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLWRhdGFcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBkYXRhID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZGF0YUNvbnRlbnQpKTtcblxuICAvLyBHcmFiIGxpc3Qgb2YgcmVzb3VyY2VzIHRvIGJlIGRvd25sb2FkZWRcbiAgY29uc3QgZmlsZXNDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInZmcy1maWxlXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZmlsZXMgPSBKU09OLnBhcnNlKGI2NERlY29kZShmaWxlc0NvbnRlbnQpKTtcblxuICBsZXQgcHlvZGlkZVByb21pc2UgPSAoYXN5bmMgKCkgPT4ge1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgUHlvZGlkZWA7XG4gICAgY29uc3QgcHlvZGlkZSA9IGF3YWl0IHN0YXJ0UHlvZGlkZVdvcmtlcihkYXRhLm9wdGlvbnMpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiBtaWNyb3BpcGA7XG4gICAgYXdhaXQgcHlvZGlkZS5sb2FkUGFja2FnZShcIm1pY3JvcGlwXCIpO1xuICAgIGNvbnN0IG1pY3JvcGlwID0gYXdhaXQgcHlvZGlkZS5weWltcG9ydChcIm1pY3JvcGlwXCIpO1xuICAgIGF3YWl0IGRhdGEucGFja2FnZXMucGtncy5tYXAoKHBrZykgPT4gKCkgPT4ge1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBwYWNrYWdlOiAke3BrZ31gO1xuICAgICAgcmV0dXJuIG1pY3JvcGlwLmluc3RhbGwocGtnKTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcbiAgICBhd2FpdCBtaWNyb3BpcC5kZXN0cm95KCk7XG5cbiAgICAvLyBEb3dubG9hZCBhbmQgaW5zdGFsbCByZXNvdXJjZXNcbiAgICBhd2FpdCBmaWxlcy5tYXAoKGZpbGUpID0+IGFzeW5jICgpID0+IHtcbiAgICAgIGNvbnN0IG5hbWUgPSBmaWxlLnN1YnN0cmluZyhmaWxlLmxhc3RJbmRleE9mKCcvJykgKyAxKTtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcmVzb3VyY2U6ICR7bmFtZX1gO1xuICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChmaWxlKTtcbiAgICAgIGlmICghcmVzcG9uc2Uub2spIHtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBDYW4ndCBkb3dubG9hZCBcXGAke2ZpbGV9XFxgLiBFcnJvciAke3Jlc3BvbnNlLnN0YXR1c306IFwiJHtyZXNwb25zZS5zdGF0dXNUZXh0fVwiLmApO1xuICAgICAgfVxuICAgICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlc3BvbnNlLmFycmF5QnVmZmVyKCk7XG5cbiAgICAgIC8vIFN0b3JlIFVSTHMgaW4gdGhlIGN3ZCB3aXRob3V0IGFueSBzdWJkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBpZiAoZmlsZS5pbmNsdWRlcyhcIjovL1wiKSkge1xuICAgICAgICBmaWxlID0gbmFtZTtcbiAgICAgIH1cblxuICAgICAgLy8gQ29sbGFwc2UgaGlnaGVyIGRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGZpbGUgPSBjb2xsYXBzZVBhdGgoZmlsZSk7XG5cbiAgICAgIC8vIENyZWF0ZSBkaXJlY3RvcnkgdHJlZSwgaWdub3JpbmcgXCJkaXJlY3RvcnkgZXhpc3RzXCIgVkZTIGVycm9yc1xuICAgICAgY29uc3QgcGFydHMgPSBmaWxlLnNwbGl0KCcvJykuc2xpY2UoMCwgLTEpO1xuICAgICAgbGV0IHBhdGggPSAnJztcbiAgICAgIHdoaWxlIChwYXJ0cy5sZW5ndGggPiAwKSB7XG4gICAgICAgIHBhdGggKz0gcGFydHMuc2hpZnQoKSArICcvJztcbiAgICAgICAgdHJ5IHtcbiAgICAgICAgICBhd2FpdCBweW9kaWRlLkZTLm1rZGlyKHBhdGgpO1xuICAgICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgICAgaWYgKGUuZXJybm8gIT09IDIwKSB7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICAgICAgY29uc3QgZXJyb3JUZXh0ID0gYXdhaXQgcHlvZGlkZS5fbW9kdWxlLlVURjhUb1N0cmluZyhlcnJvclRleHRQdHIpO1xuICAgICAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICAgIH1cblxuICAgICAgLy8gV3JpdGUgdGhpcyBmaWxlIHRvIHRoZSBWRlNcbiAgICAgIHRyeSB7XG4gICAgICAgIHJldHVybiBhd2FpdCBweW9kaWRlLkZTLndyaXRlRmlsZShmaWxlLCBuZXcgVWludDhBcnJheShkYXRhKSk7XG4gICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgIGlmIChlLm5hbWUgIT09IFwiRXJybm9FcnJvclwiKSB0aHJvdyBlO1xuICAgICAgICBjb25zdCBlcnJvclRleHRQdHIgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuX3N0cmVycm9yKGUuZXJybm8pO1xuICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgRmlsZXN5c3RlbSBFcnJvciAke2UuZXJybm99IFwiJHtlcnJvclRleHR9XCIuYCk7XG4gICAgICB9XG4gICAgfSkucmVkdWNlKChjdXIsIG5leHQpID0+IGN1ci50aGVuKG5leHQpLCBQcm9taXNlLnJlc29sdmUoKSk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYFB5b2RpZGUgZW52aXJvbm1lbnQgc2V0dXBgO1xuICAgIGF3YWl0IHNldHVwUHl0aG9uKHB5b2RpZGUpO1xuXG4gICAgc3RhdHVzVGV4dC5yZW1vdmUoKTtcbiAgICBpZiAoc3RhdHVzQ29udGFpbmVyLmNoaWxkcmVuLmxlbmd0aCA9PSAwKSB7XG4gICAgICBzdGF0dXNDb250YWluZXIucGFyZW50Tm9kZS5yZW1vdmUoKTtcbiAgICB9XG4gICAgcmV0dXJuIHB5b2RpZGU7XG4gIH0pKCkuY2F0Y2goKGVycikgPT4ge1xuICAgIHN0YXR1c1RleHQuc3R5bGUuY29sb3IgPSBcInZhcigtLWV4ZXJjaXNlLWVkaXRvci1obC1lciwgI0FEMDAwMClcIjtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gZXJyLm1lc3NhZ2U7XG4gICAgLy9pbmRpY2F0b3JDb250YWluZXIucXVlcnlTZWxlY3RvcihcIi5zcGlubmVyLWdyb3dcIikuY2xhc3NMaXN0LmFkZChcImQtbm9uZVwiKTtcbiAgICB0aHJvdyBlcnI7XG4gIH0pO1xuXG4gIC8vIEtlZXAgdHJhY2sgb2YgaW5pdGlhbCBPSlMgYmxvY2sgcmVuZGVyXG4gIGNvbnN0IHJlbmRlcmVkT2pzID0ge307XG5cbiAgY29uc3QgcHJvY2VzcyA9IGFzeW5jIChjb250ZXh0LCBpbnB1dHMpID0+IHtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgcHlvZGlkZVByb21pc2U7XG4gICAgY29uc3QgZXZhbHVhdG9yID0gbmV3IFB5b2RpZGVFdmFsdWF0b3IocHlvZGlkZSwgY29udGV4dCk7XG4gICAgYXdhaXQgZXZhbHVhdG9yLnByb2Nlc3MoaW5wdXRzKTtcbiAgICByZXR1cm4gZXZhbHVhdG9yLmNvbnRhaW5lcjtcbiAgfVxuXG4gIHJldHVybiB7XG4gICAgcHlvZGlkZVByb21pc2UsXG4gICAgcmVuZGVyZWRPanMsXG4gICAgcHJvY2VzcyxcbiAgfTtcbn1cbiJ9XX0=
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="qrjs_pics/unsoed_logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="https://imron-slide.vercel.app">irosyadi-2025</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script type="ojs-module-contents">
+    eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBhX2ZvID0gSW5wdXRzLnJhbmdlKFxuICBbMC41LCAyMF0sXG4gIHtzdGVwOiAwLjUsIGxhYmVsOiBcIkZpcnN0LW9yZGVyIHBvbGUgbWFnbml0dWRlIGEgKHBvbGUgYXQgcyA9IC1hKVwifVxuKVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0yIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoidmlld29mIHpldGEgPSBJbnB1dHMucmFuZ2UoXG4gIFswLjAsIDEuMF0sXG4gIHtzdGVwOiAwLjAyLCBsYWJlbDogXCJEYW1waW5nIHJhdGlvIM62ICgwIOKJpCDOtiDiiaQgMSlcIn1cbilcbnZpZXdvZiBvbWVnYV9uID0gSW5wdXRzLnJhbmdlKFxuICBbMSwgMzBdLFxuICB7c3RlcDogMSwgbGFiZWw6IFwiTmF0dXJhbCBmcmVxdWVuY3kgz4lfbiAocmFkL3MpXCJ9XG4pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTMiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ2aWV3b2Ygc2lnbWFfZCA9IElucHV0cy5yYW5nZShcbiAgWzAuNSwgMTBdLFxuICB7c3RlcDogMC41LCBsYWJlbDogXCJSZWFsIHBhcnQgz4NfZCAoPjApIChkYW1waW5nIHJhdGUpXCJ9XG4pXG52aWV3b2Ygb21lZ2FfZCA9IElucHV0cy5yYW5nZShcbiAgWzAuNSwgMjBdLFxuICB7c3RlcDogMC41LCBsYWJlbDogXCJJbWFnIHBhcnQgz4lfZCAoPjApIChvc2NpbGxhdGlvbiBmcmVxdWVuY3kpXCJ9XG4pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTQiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ2aWV3b2YgT1Nfc3BlYyA9IElucHV0cy5yYW5nZShcbiAgWzEsIDQwXSxcbiAge3N0ZXA6IDEsIGxhYmVsOiBcIkRlc2lyZWQgbWF4aW11bSAlT1MgKDHigJM0MCUpXCJ9XG4pXG52aWV3b2YgVHNfc3BlYyA9IElucHV0cy5yYW5nZShcbiAgWzAuMSwgNV0sXG4gIHtzdGVwOiAwLjEsIGxhYmVsOiBcIkRlc2lyZWQgbWF4aW11bSBzZXR0bGluZyB0aW1lIFRzIChzKVwifVxuKVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdhX2ZvJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ3pldGEnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnb21lZ2FfbicpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdzaWdtYV9kJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ29tZWdhX2QnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnT1Nfc3BlYycpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdUc19zcGVjJykifV19
+    </script>
+    <script type="module">
+    if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+    window._ojs.paths.runtimeToDoc = "../..";
+    window._ojs.paths.runtimeToRoot = "../..";
+    window._ojs.paths.docToRoot = "";
+    window._ojs.selfContained = false;
+    window._ojs.runtime.interpretFromScriptTags();
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

@@ -1425,21 +1425,21 @@
     "href": "index.html#week-3",
     "title": "Control System",
     "section": "Week 3",
-    "text": "Week 3\n\nControl 2.4\nControl 5"
+    "text": "Week 3\n\nControl 2.4"
   },
   {
     "objectID": "index.html#week-4",
     "href": "index.html#week-4",
     "title": "Control System",
     "section": "Week 4",
-    "text": "Week 4"
+    "text": "Week 4\n\nControl 5"
   },
   {
     "objectID": "index.html#week-5",
     "href": "index.html#week-5",
     "title": "Control System",
     "section": "Week 5",
-    "text": "Week 5"
+    "text": "Week 5\n\nControl 4"
   },
   {
     "objectID": "index.html#week-6",
@@ -2979,7 +2979,7 @@
     "href": "control_5.html#reduction-of-multiple-subsystems",
     "title": "Reduction of Multiple Subsystems",
     "section": "Reduction of Multiple Subsystems",
-    "text": "Reduction of Multiple Subsystems\nBlock Diagrams, Signal-Flow Graphs, and Mason’s Rule\nChapter 5 focus: From many subsystems to one equivalent model\n\nOpen the chapter by connecting to what students already know:\n\nThey’ve seen single-transfer-function systems and second-order step responses.\nNow, realistic systems (space shuttles, UAV controllers, power converters, etc.) consist of many subsystems.\nOur goal is to compress complex interconnections into a single transfer function, or into a compact state-space model, so that all the tools (pole locations, overshoot, settling time, etc.) still apply.\n\nHighlight that this is a crucial “bridge” chapter: from simple textbook blocks to real multi-block systems."
+    "text": "Reduction of Multiple Subsystems\nBlock Diagrams, Signal-Flow Graphs, and Mason’s Rule"
   },
   {
     "objectID": "control_5.html#learning-objectives",
@@ -3000,14 +3000,14 @@
     "href": "control_5.html#why-reduce-multiple-subsystems",
     "title": "Reduction of Multiple Subsystems",
     "section": "5.1 Why Reduce Multiple Subsystems?",
-    "text": "5.1 Why Reduce Multiple Subsystems?\nWe start with subsystems:\n\nEach subsystem: a block with input, output, and transfer function.\nReal systems: many subsystems interconnected.\n\nGoal:\n\nReplace the whole interconnection by one equivalent transfer function from input to output.\nThen we can:\n\nApply transient-analysis formulas.\nStudy stability (poles).\nDesign gains and compensators.\n\n\n\n\nBlock diagrams vs. signal-flow graphs\n\nBlock diagrams\n\nBlocks + summing junctions + pickoff points.\nCommon in frequency-domain analysis & design.\n\nSignal‑flow graphs\n\nNodes = signals.\nDirected branches = transfer functions.\nVery convenient for state‑space and for using Mason’s Rule.\n\n\n\n\n\n\nFIGURE 5.1 – The space shuttle: countless subsystems, many of them control systems.\n\n\n\n\nUse the shuttle image to prompt a quick discussion:\n\nAsk: “Which subsystems are control systems?” (examples: attitude control, engine thrust control, environmental control, power management, navigation, etc.)\n\nThen emphasize: each of those high-level control systems is itself formed from many smaller subsystems (sensors, filters, compensators, actuators). We need systematic ways to model their interconnections."
+    "text": "5.1 Why Reduce Multiple Subsystems?\nWe start with subsystems:\n\nEach subsystem: a block with input, output, and transfer function.\nReal systems: many subsystems interconnected.\n\nGoal:\n\nReplace the whole interconnection by one equivalent transfer function from input to output.\nThen we can:\n\nApply transient-analysis formulas.\nStudy stability (poles).\nDesign gains and compensators."
   },
   {
     "objectID": "control_5.html#block-diagram-elements-lti-systems",
     "href": "control_5.html#block-diagram-elements-lti-systems",
     "title": "Reduction of Multiple Subsystems",
     "section": "Block Diagram Elements (LTI Systems)",
-    "text": "Block Diagram Elements (LTI Systems)\nAll basic block diagram components:\n\n\n\nFIGURE 5.2 – Components of a block diagram for a linear, time‑invariant system.\n\n\n\nBlocks: systems / subsystems with transfer function.\nSumming junctions: algebraic sum of inputs.\nPickoff points: copy a signal undiminished to multiple locations.\n\n\nWalk through Figure 5.2:\n\n\ntypical block: system with transfer function G(s).\n\n\ntypical input/output labeling.\n\n\nsumming junction: show that ( C(s) = R_1(s) R_2(s) R_3(s) ). Stress that signs matter.\n\n\npickoff: signal fan-out, no attenuation.\n\n\nHighlight assumption: signals are unloaded unless we explicitly include loading through transfer functions. This is important in the cascade loading example later."
+    "text": "Block Diagram Elements (LTI Systems)\nAll basic block diagram components:\n\n\n\nFIGURE 5.2 – Components of a block diagram for a linear, time‑invariant system.\n\n\n\nBlocks: systems / subsystems with transfer function.\nSumming junctions: algebraic sum of inputs.\nPickoff points: copy a signal undiminished to multiple locations.\n\n\nWalk through Figure 5.2:\n\n\ntypical block: system with transfer function G(s).\n\n\ntypical input/output labeling.\n\n\nsumming junction: show that \\(C(s) = R_1(s) \\pm R_2(s) \\pm R_3(s)\\). Stress that signs matter.\n\n\npickoff: signal fan-out, no attenuation.\n\n\nHighlight assumption: signals are unloaded unless we explicitly include loading through transfer functions. This is important in the cascade loading example later."
   },
   {
     "objectID": "control_5.html#basic-interconnection-forms",
@@ -3021,7 +3021,7 @@
     "href": "control_5.html#cascade-form-concept",
     "title": "Reduction of Multiple Subsystems",
     "section": "Cascade Form – Concept",
-    "text": "Cascade Form – Concept\n\n\nCascaded subsystems:\n\n\n\nFIGURE 5.3 – (a) Cascaded subsystems; (b) equivalent transfer function.\n\n\n\nGiven:\n\nSubsystems ( G_1(s), G_2(s), G_3(s) ) in series.\n\nEquivalent transfer function:\n\\[\nG_e(s) = G_3(s)\\,G_2(s)\\,G_1(s)\n\\]\n(assuming no loading between stages).\n\nAnalogy (ECE hardware):\n\nSeries of gain stages in an amplifier chain.\nA digital filter realized as cascaded biquad sections.\n\n\nDerive quickly:\n\nLet input be ( R(s) ).\nAfter ( G_1 ): ( X_1(s) = G_1(s)R(s) ).\nAfter ( G_2 ): ( X_2(s) = G_2(s)X_1(s) = G_2(s)G_1(s)R(s) ).\nAfter ( G_3 ): ( C(s) = G_3(s)X_2(s) = G_3(s)G_2(s)G_1(s)R(s) ).\nSo ( C/R = G_3 G_2 G_1 ).\n\nStress that this is correct if stages don’t “electrically load” each other (i.e., the representation as independent transfer functions is valid)."
+    "text": "Cascade Form – Concept\n\n\nCascaded subsystems:\n\n\n\nFIGURE 5.3 – (a) Cascaded subsystems; (b) equivalent transfer function.\n\n\n\nGiven:\n\nSubsystems \\(G_1(s), G_2(s), G_3(s)\\) in series.\n\nEquivalent transfer function:\n\\[\nG_e(s) = G_3(s)\\,G_2(s)\\,G_1(s)\n\\]\n(assuming no loading between stages).\n\nAnalogy (ECE hardware):\n\nSeries of gain stages in an amplifier chain.\nA digital filter realized as cascaded biquad sections.\n\n\nDerive quickly:\n\nLet input be \\(R(s)\\).\nAfter \\(G_1\\): \\(X_1(s) = G_1(s)R(s)\\).\nAfter \\(G_2\\): \\(X_2(s) = G_2(s)X_1(s) = G_2(s)G_1(s)R(s)\\).\nAfter \\(G_3\\): \\(C(s) = G_3(s)X_2(s) = G_3(s)G_2(s)G_1(s)R(s)\\).\nSo \\(C/R = G_3 G_2 G_1\\).\n\nStress that this is correct if stages don’t “electrically load” each other (i.e., the representation as independent transfer functions is valid)."
   },
   {
     "objectID": "control_5.html#cascade-form-when-loading-breaks-it",
@@ -3035,28 +3035,28 @@
     "href": "control_5.html#preventing-loading-buffering",
     "title": "Reduction of Multiple Subsystems",
     "section": "Preventing Loading – Buffering",
-    "text": "Preventing Loading – Buffering\n\n\n\nRC networks with amplifier buffer\n\n\n\nAmplifier/buffer between RC networks:\n\nHigh input impedance ⇒ does not load previous stage.\nLow output impedance ⇒ drives next stage like an ideal source.\n\n\nThen:\n\\[\nG_{\\text{eq}}(s) = K\\,G_2(s)G_1(s)\n\\]\nwhere ( K ) is the amplifier gain.\n\nConnect to op-amp circuits:\n\nA voltage follower (unity-gain buffer) prevents loading and preserves the cascade product.\n\nTie back to block diagrams: when we draw multiple blocks in cascade, we implicitly assume we have such ideal buffering (or non-interacting signals)."
+    "text": "Preventing Loading – Buffering\n\n\n\nRC networks with amplifier buffer\n\n\n\nAmplifier/buffer between RC networks:\n\nHigh input impedance ⇒ does not load previous stage.\nLow output impedance ⇒ drives next stage like an ideal source.\n\n\nThen:\n\\[\nG_{\\text{eq}}(s) = K\\,G_2(s)G_1(s)\n\\]\nwhere \\(K\\) is the amplifier gain.\n\nConnect to op-amp circuits:\n\nA voltage follower (unity-gain buffer) prevents loading and preserves the cascade product.\n\nTie back to block diagrams: when we draw multiple blocks in cascade, we implicitly assume we have such ideal buffering (or non-interacting signals)."
   },
   {
     "objectID": "control_5.html#parallel-form",
     "href": "control_5.html#parallel-form",
     "title": "Reduction of Multiple Subsystems",
     "section": "Parallel Form",
-    "text": "Parallel Form\n\n\n\n\n\nFIGURE 5.5(a) – Parallel subsystems.\n\n\n\n\n\n\nFIGURE 5.5(b) – Equivalent transfer function.\n\n\n\nParallel subsystems:\n\nSame input goes to each block.\nOutputs are algebraically summed.\n\nEquivalent transfer function:\n\\[\nG_e(s) = \\pm G_1(s) \\pm G_2(s) \\pm G_3(s)\n\\]\n(plus/minus depending on summing junction signs).\nReal ECE example:\n\nTwo sensor paths (e.g., high‑frequency and low‑frequency channels) summed to form one control input.\n\n\nDemonstrate quickly: Suppose input is ( R(s) ). Then:\n\n( C_1 = G_1 R )\n( C_2 = G_2 R )\n( C_3 = G_3 R ) Total output ( C = C_1 C_2 C_3 = (G_1 G_2 G_3)R ). So ( C/R = G_e(s) ).\n\nPoint out that parallel is often used for implementing sums/differences of dynamics, e.g., PD = sK_d + K_p = sK_d in parallel with K_p."
+    "text": "Parallel Form\n\n\n\n\n\nFIGURE 5.5(a) – Parallel subsystems.\n\n\n\n\n\nFIGURE 5.5(b) – Equivalent transfer function.\n\n\n\nParallel subsystems:\n\nSame input goes to each block.\nOutputs are algebraically summed.\n\nEquivalent transfer function:\n\\[\nG_e(s) = \\pm G_1(s) \\pm G_2(s) \\pm G_3(s)\n\\]\n(plus/minus depending on summing junction signs).\nReal ECE example:\n\nTwo sensor paths (e.g., high‑frequency and low‑frequency channels) summed to form one control input.\n\n\n\nDemonstrate quickly: Suppose input is \\(R(s)\\). Then:\n\n\\(C_1 = G_1 R\\)\n\\(C_2 = G_2 R\\)\n\\(C_3 = G_3 R\\) Total output \\(C = \\pm C_1 \\pm C_2 \\pm C_3 = (\\pm G_1 \\pm G_2 \\pm G_3)R\\). So \\(C/R = G_e(s)\\).\n\nPoint out that parallel is often used for implementing sums/differences of dynamics, e.g., PD = sK_d + K_p = sK_d in parallel with K_p."
   },
   {
     "objectID": "control_5.html#feedback-form-the-core-control-topology",
     "href": "control_5.html#feedback-form-the-core-control-topology",
     "title": "Reduction of Multiple Subsystems",
     "section": "Feedback Form – The Core Control Topology",
-    "text": "Feedback Form – The Core Control Topology\nTypical feedback control system:\n  \nFIGURE 5.6 – (a) Complete feedback system, (b) simplified, (c) equivalent transfer function.\nFrom simplified model:\n\nError: \\[\nE(s) = R(s) \\mp C(s)H(s)\n\\]\nOutput: \\[\nC(s) = G(s)E(s)\n\\]\n\nEliminate ( E(s) ):\n\\[\nE(s) = \\frac{C(s)}{G(s)}\n\\]\nSubstitute:\n\\[\n\\frac{C(s)}{G(s)} = R(s) \\mp C(s)H(s)\n\\]\nSolve for ( C(s)/R(s) ):\n\\[\nG_e(s) = \\frac{C(s)}{R(s)} = \\frac{G(s)}{1 \\pm G(s)H(s)}\n\\]\nThe product ( G(s)H(s) ) is the open-loop transfer function or loop gain.\n\nDerive this algebra carefully on the board so students can follow each step.\nStress sign convention:\n\nMinus in the denominator for negative feedback: ( G/(1+GH) ).\nPlus for positive feedback: ( G/(1-GH) ).\n\nReal-world example: position control:\n\n( G(s) ) = motor + gears + amplifier.\n( H(s) ) = sensor scale (e.g., potentiometer).\n\nNegative feedback drives error to zero (tracking, disturbance rejection)."
+    "text": "Feedback Form – The Core Control Topology\nTypical feedback control system:\n  \nFIGURE 5.6 – (a) Complete feedback system, (b) simplified, (c) equivalent transfer function."
   },
   {
     "objectID": "control_5.html#moving-blocks-why-it-matters",
     "href": "control_5.html#moving-blocks-why-it-matters",
     "title": "Reduction of Multiple Subsystems",
     "section": "Moving Blocks – Why It Matters",
-    "text": "Moving Blocks – Why It Matters\nComplex diagrams rarely show clean cascade/parallel/feedback chunks.\nWe must move blocks across:\n\nSumming junctions\nPickoff points\n\n…to expose:\n\nPure cascade segments\nPure parallel segments\nStandard feedback loops\n\nKey idea:\n\nYou may rearrange a block diagram as long as the input–output relationship remains identical.\n\n\n\n\n\n\n\nWarning\n\n\nIf you move a block incorrectly, you change the system. Always verify equivalence by writing expressions for intermediate signals.\n\n\n\n\nThis is like algebraic manipulation: ( (a+b)c = ac+bc ). You can move c across the sum; same value, different representation.\nIn block diagrams: we shift transfer functions across summing junctions or pickoffs while maintaining the equality of all node signals."
+    "text": "Moving Blocks – Why It Matters\nComplex diagrams rarely show clean cascade/parallel/feedback chunks.\nWe must move blocks across:\n\nSumming junctions\nPickoff points\n\n…to expose:\n\nPure cascade segments\nPure parallel segments\nStandard feedback loops\n\nKey idea:\n\nYou may rearrange a block diagram as long as the input–output relationship remains identical.\n\n\n\n\n\n\n\nWarning\n\n\nIf you move a block incorrectly, you change the system. Always verify equivalence by writing expressions for intermediate signals.\n\n\n\n\nThis is like algebraic manipulation: \\((a+b)c = ac+bc\\). You can move c across the sum; same value, different representation.\nIn block diagrams: we shift transfer functions across summing junctions or pickoffs while maintaining the equality of all node signals."
   },
   {
     "objectID": "control_5.html#moving-blocks-across-summing-junctions",
@@ -3091,14 +3091,14 @@
     "href": "control_5.html#example-5.1-step-2-cascade-and-parallel-recognition",
     "title": "Reduction of Multiple Subsystems",
     "section": "Example 5.1 – Step 2: Cascade and Parallel Recognition",
-    "text": "Example 5.1 – Step 2: Cascade and Parallel Recognition\n\n\n\nFIGURE 5.10(b) – Cascade in forward path, parallel in feedback path.\n\n\nRecognize:\n\nForward path: ( G_2(s) ) and ( G_3(s) ) in cascade: \\[\nG_{\\text{forward}}(s) = G_3(s)G_2(s)\n\\]\nFeedback path: ( H_1(s), H_2(s), H_3(s) ) in parallel: \\[\nH_{\\text{eq}}(s) = H_1(s) - H_2(s) + H_3(s)\n\\]\n\n\nStress the skill: recognizing forms. Students often get stuck simply because they don’t see that three blocks are in parallel or cascade.\nOnce recognized, you quickly replace them by their equivalents, drastically simplifying the diagram."
+    "text": "Example 5.1 – Step 2: Cascade and Parallel Recognition\n\n\n\nFIGURE 5.10(b) – Cascade in forward path, parallel in feedback path.\n\n\nRecognize:\n\nForward path: \\(G_2(s)\\) and \\(G_3(s)\\) in cascade: \\[\nG_{\\text{forward}}(s) = G_3(s)G_2(s)\n\\]\nFeedback path: \\(H_1(s), H_2(s), H_3(s)\\) in parallel: \\[\nH_{\\text{eq}}(s) = H_1(s) - H_2(s) + H_3(s)\n\\]\n\n\nStress the skill: recognizing forms. Students often get stuck simply because they don’t see that three blocks are in parallel or cascade.\nOnce recognized, you quickly replace them by their equivalents, drastically simplifying the diagram."
   },
   {
     "objectID": "control_5.html#example-5.1-step-3-final-reduction",
     "href": "control_5.html#example-5.1-step-3-final-reduction",
     "title": "Reduction of Multiple Subsystems",
     "section": "Example 5.1 – Step 3: Final Reduction",
-    "text": "Example 5.1 – Step 3: Final Reduction\n\n\n\nFIGURE 5.10(c) – Equivalent feedback system with cascaded (G_1(s)).\n\n\n\nOverall feedback loop: forward path ( G_3 G_2 ), feedback ( H_{} ).\n\nClosed-loop equivalent:\n\\[\n\\text{Inner loop:}\\quad\nG_{\\text{CL}}(s) =\n\\frac{G_3(s)G_2(s)}{1 + G_3(s)G_2(s)\\,H_{\\text{eq}}(s)}\n\\]\nThen cascade with ( G_1(s) ):\n\\[\nT(s) = \\frac{C(s)}{R(s)} = G_1(s) \\cdot G_{\\text{CL}}(s)\n\\]\n\nWalk through the logic: 1. Reduce parallel feedback path to one (H_{}). 2. Apply feedback formula for inner loop. 3. Multiply by (G_1) in cascade.\nEncourage students to write the final explicit expression if time permits."
+    "text": "Example 5.1 – Step 3: Final Reduction\n\n\n\nFIGURE 5.10(c) – Equivalent feedback system with cascaded \\(G_1(s)\\).\n\n\n\nOverall feedback loop: forward path \\(G_3 G_2\\), feedback \\(H_{\\text{eq}}\\).\n\nClosed-loop equivalent:\n\\[\n\\text{Inner loop:}\\quad\nG_{\\text{CL}}(s) =\n\\frac{G_3(s)G_2(s)}{1 + G_3(s)G_2(s)\\,H_{\\text{eq}}(s)}\n\\]\nThen cascade with \\(G_1(s)\\):\n\\[\nT(s) = \\frac{C(s)}{R(s)} = G_1(s) \\cdot G_{\\text{CL}}(s)\n\\]\n\nWalk through the logic: 1. Reduce parallel feedback path to one \\(H_{\\text{eq}}\\). 2. Apply feedback formula for inner loop. 3. Multiply by \\(G_1\\) in cascade.\nEncourage students to write the final explicit expression if time permits."
   },
   {
     "objectID": "control_5.html#example-5.2-block-diagram-reduction-by-moving-blocks",
@@ -3112,77 +3112,77 @@
     "href": "control_5.html#example-5.2-reduction-steps-visual-walkthrough",
     "title": "Reduction of Multiple Subsystems",
     "section": "Example 5.2 – Reduction Steps (Visual Walkthrough)",
-    "text": "Example 5.2 – Reduction Steps (Visual Walkthrough)\nWe only sketch the key steps; the textbook has full details.\n\nMove ( G_2(s) ) left past the pickoff; reduce the feedback loop with ( G_3(s) ) and ( H_3(s) ).\n\n\n\n\nStep (a)"
+    "text": "Example 5.2 – Reduction Steps (Visual Walkthrough)\nWe only sketch the key steps; the textbook has full details.\n\nMove \\(G_2(s)\\) left past the pickoff; reduce the feedback loop with \\(G_3(s)\\) and \\(H_3(s)\\).\n\n\n\n\nStep (a)"
   },
   {
     "objectID": "control_5.html#skill-assessment-exercise-5.1-concept-check",
     "href": "control_5.html#skill-assessment-exercise-5.1-concept-check",
     "title": "Reduction of Multiple Subsystems",
     "section": "Skill-Assessment Exercise 5.1 (Concept Check)",
-    "text": "Skill-Assessment Exercise 5.1 (Concept Check)\nProblem: Find equivalent transfer function ( T(s) = C(s)/R(s) ) for the system in Figure 5.13.\n\n\n\nFIGURE 5.13 – Block diagram for Skill-Assessment Exercise 5.1.\n\n\nGiven answer:\n\\[\nT(s) = \\frac{s^{3} + 1}{2s^{4} + s^{2} + 2s}\n\\]\n\n\n\n\n\n\nTip\n\n\nUse this as a self-check:\n\nTry to re-derive ( T(s) ) by systematically using cascade, parallel, and feedback reductions.\nCompare your expression with the given result.\n\n\n\n\n\nYou don’t need to derive it fully in class (time-consuming), but you can ask:\n\n“What’s the first reduction step you would take?”\n“Where is the main feedback loop?”\n\nPoint them to the online full solution for practice."
+    "text": "Skill-Assessment Exercise 5.1 (Concept Check)\nProblem: Find equivalent transfer function \\(T(s) = C(s)/R(s)\\) for the system in Figure 5.13.\n\n\n\nFIGURE 5.13 – Block diagram for Skill-Assessment Exercise 5.1.\n\n\nGiven answer:\n\\[\nT(s) = \\frac{s^{3} + 1}{2s^{4} + s^{2} + 2s}\n\\]\n\n\n\n\n\n\nTip\n\n\nUse this as a self-check:\n\nTry to re-derive \\(T(s)\\) by systematically using cascade, parallel, and feedback reductions.\nCompare your expression with the given result.\n\n\n\n\n\nYou don’t need to derive it fully in class (time-consuming), but you can ask:\n\n“What’s the first reduction step you would take?”\n“Where is the main feedback loop?”\n\nPoint them to the online full solution for practice."
   },
   {
     "objectID": "control_5.html#matlab-try-it-5.1-automation-of-block-reduction",
     "href": "control_5.html#matlab-try-it-5.1-automation-of-block-reduction",
     "title": "Reduction of Multiple Subsystems",
     "section": "MATLAB Try-It 5.1 – Automation of Block Reduction",
-    "text": "MATLAB Try-It 5.1 – Automation of Block Reduction\nUsing MATLAB/Control System Toolbox to find closed-loop transfer function of Example 5.2, with:\n\nAll ( G_i(s) = )\nAll ( H_i(s) = )\n\nG1=tf(1,[1 1]); \nG2=G1; G3=G1; \nH1=tf(1,[1 0]); \nH2=H1; H3=H1; \n\nSystem = append(G1,G2,G3,H1,H2,H3); \ninput  = 1; \noutput = 3;\n\nQ = [1 2  4 0 0 0 \n     3 2  5 0 0 0\n     4 2  0 5 6 0\n     5 2  0 0 0 0\n     6 3  0 0 0 0];\n\nT = connect(System, Q, input, output); \nT = tf(T); \nT = minreal(T)\n\n\n\n\n\n\nNote\n\n\nSoftware can do block diagram reduction for you, but you must understand the structure, especially when debugging or designing.\n\n\n\n\nIf you run this in a lab or demo:\n\nShow how append collects subsystems and connect wires them using the interconnection matrix Q.\nExplain the role of minreal (cancels pole-zero pairs).\n\nEmphasize: good to validate hand reduction with MATLAB."
+    "text": "MATLAB Try-It 5.1 – Automation of Block Reduction\nUsing MATLAB/Control System Toolbox to find closed-loop transfer function of Example 5.2, with:\n\nAll \\(G_i(s) = \\dfrac{1}{s + 1}\\)\nAll \\(H_i(s) = \\dfrac{1}{s}\\)\n\nG1=tf(1,[1 1]); \nG2=G1; G3=G1; \nH1=tf(1,[1 0]); \nH2=H1; H3=H1; \n\nSystem = append(G1,G2,G3,H1,H2,H3); \ninput  = 1; \noutput = 3;\n\nQ = [1 2  4 0 0 0 \n     3 2  5 0 0 0\n     4 2  0 5 6 0\n     5 2  0 0 0 0\n     6 3  0 0 0 0];\n\nT = connect(System, Q, input, output); \nT = tf(T); \nT = minreal(T)\n\n\n\n\n\n\nNote\n\n\nSoftware can do block diagram reduction for you, but you must understand the structure, especially when debugging or designing.\n\n\n\n\nIf you run this in a lab or demo:\n\nShow how append collects subsystems and connect wires them using the interconnection matrix Q.\nExplain the role of minreal (cancels pole-zero pairs).\n\nEmphasize: good to validate hand reduction with MATLAB."
   },
   {
     "objectID": "control_5.html#feedback-systems-from-structure-to-transient-specs",
     "href": "control_5.html#feedback-systems-from-structure-to-transient-specs",
     "title": "Reduction of Multiple Subsystems",
     "section": "5.3 Feedback Systems – From Structure to Transient Specs",
-    "text": "5.3 Feedback Systems – From Structure to Transient Specs\nImmediate application:\n\nSystems that reduce to second-order closed-loop forms.\nUse classic formulas for:\n\nPercent overshoot (%OS)\nSettling time ( T_s )\nPeak time ( T_p )\nRise time ( T_r )\n\n\nConsider system:\n\n\n\nFIGURE 5.14 – Second-order feedback control system.\n\n\nClosed-loop transfer function:\n\\[\nT(s) = \\frac{K}{s^{2} + a s + K}\n\\]\nHere:\n\n( K ): overall gain (e.g., amplifier gain).\n( a ): coefficient related to damping (e.g., friction, resistance).\n\n\nShow how Eq. (5.9) gives this:\n\nForward path: ( G(s) = ).\nFeedback: unity.\nThen ( T(s) = = ).\n\nHighlight: This looks exactly like the standard second-order denominator: ( s^2 + 2_n s + _n^2 ).\nSo we can identify: ( _n^2 = K ), ( 2_n = a )."
+    "text": "5.3 Feedback Systems – From Structure to Transient Specs\nImmediate application:\n\nSystems that reduce to second-order closed-loop forms.\nUse classic formulas for:\n\nPercent overshoot (%OS)\nSettling time \\(T_s\\)\nPeak time \\(T_p\\)\nRise time \\(T_r\\)"
   },
   {
     "objectID": "control_5.html#pole-locations-vs.-gain-k",
     "href": "control_5.html#pole-locations-vs.-gain-k",
     "title": "Reduction of Multiple Subsystems",
     "section": "Pole Locations vs. Gain K",
-    "text": "Pole Locations vs. Gain K\nPoles of closed-loop system:\n\nFor ( 0 &lt; K &lt; a^2/4 ): real, distinct (overdamped). \\[\ns_{1,2} = -\\frac{a}{2} \\pm \\frac{\\sqrt{a^{2} - 4K}}{2}\n\\]\nFor ( K = a^2/4 ): real, equal (critically damped).\nFor ( K &gt; a^2/4 ): complex conjugate (underdamped). \\[\ns_{1,2} = -\\frac{a}{2} \\pm j\\frac{\\sqrt{4K - a^{2}}}{2}\n\\]\n\nFor underdamped case:\n\nReal part fixed at ( -a/2 ).\nImaginary part increases with ( K ).\nImplications:\n\nPeak time ( T_p ) decreases (faster oscillations).\nPercent overshoot increases (more oscillatory).\nSettling time roughly constant (since real part fixed).\n\n\n\n\n\n\n\n\nImportant\n\n\nGain ( K ) trades off speed vs. overshoot. Design is about choosing ( K ) to satisfy both.\n\n\n\n\nRelate to root locus intuition: as ( K ) increases, the closed-loop poles move along a locus; their real and imaginary parts control transient response.\nMention this is a simple “family” of systems parameterized by K—ideal for introducing design."
+    "text": "Pole Locations vs. Gain K\nPoles of closed-loop system:\n\nFor \\(0 &lt; K &lt; a^2/4\\): real, distinct (overdamped). \\[\ns_{1,2} = -\\frac{a}{2} \\pm \\frac{\\sqrt{a^{2} - 4K}}{2}\n\\]\nFor \\(K = a^2/4\\): real, equal (critically damped).\nFor \\(K &gt; a^2/4\\): complex conjugate (underdamped). \\[\ns_{1,2} = -\\frac{a}{2} \\pm j\\frac{\\sqrt{4K - a^{2}}}{2}\n\\]"
   },
   {
     "objectID": "control_5.html#example-5.3-finding-transient-response",
     "href": "control_5.html#example-5.3-finding-transient-response",
     "title": "Reduction of Multiple Subsystems",
     "section": "Example 5.3 – Finding Transient Response",
-    "text": "Example 5.3 – Finding Transient Response\nProblem: For system in Figure 5.15, find ( T_p ), %OS, and ( T_s ).\n\n\n\nFeedback system Example 5.3\n\n\n\nFIGURE 5.15 – Feedback system for Example 5.3.\n\nClosed-loop transfer function:\n\\[\nT(s) = \\frac{25}{s^{2} + 5s + 25}\n\\]\nCompare with standard 2nd-order form:\n\\[\nT(s) = \\frac{\\omega_n^{2}}{s^{2} + 2\\zeta\\omega_n s + \\omega_n^{2}}\n\\]"
+    "text": "Example 5.3 – Finding Transient Response\nProblem: For system in Figure 5.15, find \\(T_p\\), %OS, and \\(T_s\\).\n\n\n\nFeedback system Example 5.3\n\n\nClosed-loop transfer function:\n\\[\nT(s) = \\frac{25}{s^{2} + 5s + 25}\n\\]\nCompare with standard 2nd-order form:\n\\[\nT(s) = \\frac{\\omega_n^{2}}{s^{2} + 2\\zeta\\omega_n s + \\omega_n^{2}}\n\\]"
   },
   {
     "objectID": "control_5.html#example-5.4-gain-design-for-transient-response",
     "href": "control_5.html#example-5.4-gain-design-for-transient-response",
     "title": "Reduction of Multiple Subsystems",
     "section": "Example 5.4 – Gain Design for Transient Response",
-    "text": "Example 5.4 – Gain Design for Transient Response\nProblem: For system in Figure 5.16, choose gain ( K ) so that step response has 10% overshoot.\n\n\n\nFIGURE 5.16 – Feedback system for Example 5.4.\n\n\nClosed-loop transfer function:\n\\[\nT(s) = \\frac{K}{s^{2} + 5s + K}\n\\]\nIdentify standard form:\n\n( _n^2 = K _n = )\n( 2_n = 5 = 5 = )"
+    "text": "Example 5.4 – Gain Design for Transient Response\nProblem: For system in Figure 5.16, choose gain \\(K\\) so that step response has 10% overshoot.\n\n\n\nFIGURE 5.16 – Feedback system for Example 5.4.\n\n\nClosed-loop transfer function:\n\\[\nT(s) = \\frac{K}{s^{2} + 5s + K}\n\\]\nIdentify standard form:\n\n\\(\\omega_n^2 = K \\Rightarrow \\omega_n = \\sqrt{K}\\)\n\\(2\\zeta\\omega_n = 5 \\Rightarrow 2\\zeta\\sqrt{K} = 5 \\Rightarrow \\zeta = \\dfrac{5}{2\\sqrt{K}}\\)"
   },
   {
     "objectID": "control_5.html#signal-flow-graphs-another-representation",
     "href": "control_5.html#signal-flow-graphs-another-representation",
     "title": "Reduction of Multiple Subsystems",
     "section": "5.4 Signal-Flow Graphs – Another Representation",
-    "text": "5.4 Signal-Flow Graphs – Another Representation\nKey differences from block diagrams:\n\nOnly nodes and directed branches:\n\nNode = signal.\nBranch = system/transfer function.\n\nSummation is implicit at each node:\n\nNode value = algebraic sum of incoming signals.\n\n\n\n\n\nFIGURE 5.17 – (a) Branch representing a system, (b) node representing a signal, (c) interconnection example.\n\n\n\n\n\nFIGURE 5.17 – (a) Branch representing a system, (b) node representing a signal, (c) interconnection example.\n\n\nExample node equation from Figure 5.17(c):\n\\[\nV(s) = R_1(s)G_1(s) - R_2(s)G_2(s) + R_3(s)G_3(s)\n\\]\nNote: negative input is modeled by negative branch gain (e.g., (-G_2(s))), not by a separate summing junction.\n\n\n\n\n\n\nNote\n\n\nSignal-flow graphs are especially convenient:\n\nFor state‑space (each state is a node).\nFor using Mason’s Rule to find transfer functions.\n\n\n\n\n\nExplain why signal-flow graphs can be more compact than block diagrams:\n\nNo explicit summing junctions or pickoffs.\nDirect representation of equations.\n\nConnect to state-space: each state variable x_i(t) becomes a node; its derivative equation determines incoming branches."
+    "text": "5.4 Signal-Flow Graphs – Another Representation\nKey differences from block diagrams:\n\nOnly nodes and directed branches:\n\nNode = signal.\nBranch = system/transfer function.\n\nSummation is implicit at each node:\n\nNode value = algebraic sum of incoming signals."
   },
   {
     "objectID": "control_5.html#from-block-diagrams-to-signal-flow-graphs",
     "href": "control_5.html#from-block-diagrams-to-signal-flow-graphs",
     "title": "Reduction of Multiple Subsystems",
     "section": "From Block Diagrams to Signal-Flow Graphs",
-    "text": "From Block Diagrams to Signal-Flow Graphs\nExample 5.5: Convert basic block forms (cascade, parallel, feedback) into signal-flow graphs.\nStrategy:\n\nDraw signal nodes for each intermediate signal.\nConnect nodes with directed branches labeled by transfer functions.\nUse negative gains for negative feedback or subtraction.\n\n\n\n\nCascade nodes and graph\n\n\n\n\n\nParallel nodes and graph\n\n\n\n\n\nFeedback nodes and graph\n\n\n\n\n\nFeedback signal-flow graph\n\n\nFIGURE 5.18 – Building signal-flow graphs for cascade, parallel, and feedback forms.\n\nFor each configuration:\n\nDraw R, intermediate nodes, C.\nAdd arrows with G’s and H’s.\nShow how negative feedback loop is a branch from C back to the error node with gain (-H).\n\nEmphasize that once you’re comfortable switching representations, you can choose whichever is more convenient for analysis."
+    "text": "From Block Diagrams to Signal-Flow Graphs\nExample 5.5: Convert basic block forms (cascade, parallel, feedback) into signal-flow graphs.\nStrategy:\n\nDraw signal nodes for each intermediate signal.\nConnect nodes with directed branches labeled by transfer functions.\nUse negative gains for negative feedback or subtraction."
   },
   {
     "objectID": "control_5.html#example-5.6-complex-block-diagram-signal-flow-graph",
     "href": "control_5.html#example-5.6-complex-block-diagram-signal-flow-graph",
     "title": "Reduction of Multiple Subsystems",
     "section": "Example 5.6 – Complex Block Diagram → Signal-Flow Graph",
-    "text": "Example 5.6 – Complex Block Diagram → Signal-Flow Graph\nConvert Figure 5.11 (from Example 5.2) into a signal-flow graph.\n\nDraw all signal nodes ( V_1(s), V_2(s), ) etc.\n\n\n\n\nSignal nodes"
+    "text": "Example 5.6 – Complex Block Diagram → Signal-Flow Graph\nConvert Figure 5.11 (from Example 5.2) into a signal-flow graph.\n\nDraw all signal nodes \\(V_1(s), V_2(s), \\dots\\) etc.\n\n\n\n\nSignal nodes"
   },
   {
     "objectID": "control_5.html#masons-rule-transfer-function-from-a-signal-flow-graph",
     "href": "control_5.html#masons-rule-transfer-function-from-a-signal-flow-graph",
     "title": "Reduction of Multiple Subsystems",
     "section": "5.5 Mason’s Rule – Transfer Function from a Signal-Flow Graph",
-    "text": "5.5 Mason’s Rule – Transfer Function from a Signal-Flow Graph\nMason’s Rule gives the transfer function ( C(s)/R(s) ) directly from a signal-flow graph:\n\\[\nG(s) = \\frac{C(s)}{R(s)} = \\frac{\\displaystyle\\sum_{k} T_k \\Delta_k}{\\Delta}\n\\]\nWhere:\n\n( T_k ): the k‑th forward-path gain from input node to output node.\n( ): the overall determinant of the graph, defined by:\n\\[\n\\Delta = 1\n- \\sum (\\text{individual loop gains})\n+ \\sum (\\text{products of loop gains in all nontouching loop pairs})\n- \\sum (\\text{products of loop gains in all nontouching triplets})\n+ \\dots\n\\]\n( _k ): same as ( ), but excluding all loops that touch the k-th forward path.\n\nKey definitions:\n\nLoop: a path that starts and ends at the same node without visiting any node more than once.\nLoop gain: product of branch gains around a loop.\nNontouching loops: loops that share no nodes in common.\n\n\n\n\n\n\n\nCaution\n\n\nThe hardest parts of Mason’s Rule are:\n\nEnumerating all loops.\nCorrectly identifying nontouching loop combinations.\n\n\n\n\n\nReassure students: Mason’s Rule looks intimidating, but in many practical systems:\n\nThere are few loops.\nOften no nontouching loops.\n\nIn such cases, ( = 1 - () ) and ( _k = 1 ) or something simple."
+    "text": "5.5 Mason’s Rule – Transfer Function from a Signal-Flow Graph\nMason’s Rule gives the transfer function \\(C(s)/R(s)\\) directly from a signal-flow graph:\n\\[\nG(s) = \\frac{C(s)}{R(s)} = \\frac{\\displaystyle\\sum_{k} T_k \\Delta_k}{\\Delta}\n\\]\nWhere:\n\n\\(T_k\\): the k‑th forward-path gain from input node to output node.\n\\(\\Delta\\): the overall determinant of the graph, defined by:\n\\[\n\\Delta = 1\n- \\sum (\\text{individual loop gains})\n+ \\sum (\\text{products of loop gains in all nontouching loop pairs})\n- \\sum (\\text{products of loop gains in all nontouching triplets})\n+ \\dots\n\\]\n\\(\\Delta_k\\): same as \\(\\Delta\\), but excluding all loops that touch the k-th forward path."
   },
   {
     "objectID": "control_5.html#visualizing-loops-and-forward-paths-mermaid-diagram",
@@ -3196,14 +3196,14 @@
     "href": "control_5.html#example-5.7-masons-rule-in-action",
     "title": "Reduction of Multiple Subsystems",
     "section": "Example 5.7 – Mason’s Rule in Action",
-    "text": "Example 5.7 – Mason’s Rule in Action\nProblem: Find ( C(s)/R(s) ) for the signal-flow graph in Figure 5.21.\n\n\n\nFIGURE 5.21 – Signal-flow graph for Example 5.7."
+    "text": "Example 5.7 – Mason’s Rule in Action\nProblem: Find \\(C(s)/R(s)\\) for the signal-flow graph in Figure 5.21.\n\n\n\nFIGURE 5.21 – Signal-flow graph for Example 5.7."
   },
   {
     "objectID": "control_5.html#example-5.7-step-1-forward-path",
     "href": "control_5.html#example-5.7-step-1-forward-path",
     "title": "Reduction of Multiple Subsystems",
     "section": "Example 5.7 – Step 1: Forward Path",
-    "text": "Example 5.7 – Step 1: Forward Path\nThere is one forward path:\n\nFrom input ( R(s) ) to output ( C(s) ).\n\nForward-path gain:\n\\[\nT_1 = G_1(s) G_2(s) G_3(s) G_4(s) G_5(s)\n\\]"
+    "text": "Example 5.7 – Step 1: Forward Path\nThere is one forward path:\n\nFrom input \\(R(s)\\) to output \\(C(s)\\).\n\nForward-path gain:\n\\[\nT_1 = G_1(s) G_2(s) G_3(s) G_4(s) G_5(s)\n\\]"
   },
   {
     "objectID": "control_5.html#example-5.7-step-2-identify-loop-gains",
@@ -3217,21 +3217,21 @@
     "href": "control_5.html#example-5.7-step-3-nontouching-loops",
     "title": "Reduction of Multiple Subsystems",
     "section": "Example 5.7 – Step 3: Nontouching Loops",
-    "text": "Example 5.7 – Step 3: Nontouching Loops\nCheck which loops do not share nodes:\n\nLoop 1 (through ( G_2,H_1 )) does not touch loop 2 (through ( G_4,H_2 )).\nLoop 1 does not touch loop 3 (through ( G_7,H_4 )).\nLoop 2 does not touch loop 3.\nAll of 1,2,3 touch loop 4.\n\nThus, nontouching loop products taken two at a time:\n\n\\[\nL_1 L_2 = G_2H_1G_4H_2\n\\]\n\\[\nL_1 L_3 = G_2H_1G_7H_4\n\\]\n\\[\nL_2 L_3 = G_4H_2G_7H_4\n\\]\n\nAnd one triple of nontouching loops:\n\nLoops 1, 2, and 3: \\[\nL_1 L_2 L_3 = G_2H_1G_4H_2G_7H_4\n\\]\n\nNo higher-order combinations."
+    "text": "Example 5.7 – Step 3: Nontouching Loops\nCheck which loops do not share nodes:\n\nLoop 1 (through \\(G_2,H_1\\)) does not touch loop 2 (through \\(G_4,H_2\\)).\nLoop 1 does not touch loop 3 (through \\(G_7,H_4\\)).\nLoop 2 does not touch loop 3.\nAll of 1,2,3 touch loop 4.\n\nThus, nontouching loop products taken two at a time:\n\n\\[\nL_1 L_2 = G_2H_1G_4H_2\n\\]\n\\[\nL_1 L_3 = G_2H_1G_7H_4\n\\]\n\\[\nL_2 L_3 = G_4H_2G_7H_4\n\\]"
   },
   {
     "objectID": "control_5.html#example-5.7-step-4-compute-δ-and-δ₁",
     "href": "control_5.html#example-5.7-step-4-compute-δ-and-δ₁",
     "title": "Reduction of Multiple Subsystems",
     "section": "Example 5.7 – Step 4: Compute Δ and Δ₁",
-    "text": "Example 5.7 – Step 4: Compute Δ and Δ₁\nOverall ( ):\n[\n\\[\\begin{aligned}\n\\Delta = & \\;1\n- \\big[ L_1 + L_2 + L_3 + L_4 \\big] \\\\\n& + \\big[ L_1L_2 + L_1L_3 + L_2L_3 \\big] \\\\\n& - \\big[ L_1L_2L_3 \\big]\n\\end{aligned}\\]\n]\nExplicitly:\n[\n\\[\\begin{aligned}\n\\Delta = & \\;1\n- \\big[ G_2H_1 + G_4H_2 + G_7H_4 \\\\\n& \\quad + G_2G_3G_4G_5G_6G_7G_8 \\big] \\\\\n& + \\big[ G_2H_1G_4H_2 + G_2H_1G_7H_4 + G_4H_2G_7H_4 \\big] \\\\\n& - \\big[ G_2H_1G_4H_2G_7H_4 \\big]\n\\end{aligned}\\]\n]\nNext, ( _1 ) for the only forward path.\n\nRemove from ( ) any loops that touch the forward path nodes.\nFrom the figure, only loop 3 (with ( G_7H_4 )) does not touch the forward path.\n\nSo:\n\\[\n\\Delta_1 = 1 - G_7(s)H_4(s)\n\\]"
+    "text": "Example 5.7 – Step 4: Compute Δ and Δ₁\nOverall \\(\\Delta\\):\n\\[\n\\begin{aligned}\n\\Delta = & \\;1\n- \\big[ L_1 + L_2 + L_3 + L_4 \\big] \\\\\n& + \\big[ L_1L_2 + L_1L_3 + L_2L_3 \\big] \\\\\n& - \\big[ L_1L_2L_3 \\big]\n\\end{aligned}\n\\]\nExplicitly:\n\\[\n\\begin{aligned}\n\\Delta = & \\;1\n- \\big[ G_2H_1 + G_4H_2 + G_7H_4 \\\\\n& \\quad + G_2G_3G_4G_5G_6G_7G_8 \\big] \\\\\n& + \\big[ G_2H_1G_4H_2 + G_2H_1G_7H_4 + G_4H_2G_7H_4 \\big] \\\\\n& - \\big[ G_2H_1G_4H_2G_7H_4 \\big]\n\\end{aligned}\n\\]\nNext, \\(\\Delta_1\\) for the only forward path.\n\nRemove from \\(\\Delta\\) any loops that touch the forward path nodes.\nFrom the figure, only loop 3 (with \\(G_7H_4\\)) does not touch the forward path.\n\nSo:\n\\[\n\\Delta_1 = 1 - G_7(s)H_4(s)\n\\]"
   },
   {
     "objectID": "control_5.html#example-5.7-step-5-final-transfer-function",
     "href": "control_5.html#example-5.7-step-5-final-transfer-function",
     "title": "Reduction of Multiple Subsystems",
     "section": "Example 5.7 – Step 5: Final Transfer Function",
-    "text": "Example 5.7 – Step 5: Final Transfer Function\nApply Mason’s formula:\n\\[\nG(s) = \\frac{C(s)}{R(s)}\n= \\frac{T_1 \\Delta_1}{\\Delta}\n= \\frac{[G_1G_2G_3G_4G_5]\\,[1 - G_7H_4]}{\\Delta}\n\\]\n\nHighlight that because there is only one forward path, the numerator is just a single term.\nIn problems with multiple forward paths, we’d have a sum: ( G(s) = (T_1_1 + T_2_2 + )/).\nEncourage students to compare this result with what they’d obtain via block-diagram reduction (for a simpler graph) to see that Mason’s Rule is equivalent but often more systematic."
+    "text": "Example 5.7 – Step 5: Final Transfer Function\nApply Mason’s formula:\n\\[\nG(s) = \\frac{C(s)}{R(s)}\n= \\frac{T_1 \\Delta_1}{\\Delta}\n= \\frac{[G_1G_2G_3G_4G_5]\\,[1 - G_7H_4]}{\\Delta}\n\\]\n\nHighlight that because there is only one forward path, the numerator is just a single term.\nIn problems with multiple forward paths, we’d have a sum: \\(G(s) = (T_1\\Delta_1 + T_2\\Delta_2 + \\dots)/\\Delta\\).\nEncourage students to compare this result with what they’d obtain via block-diagram reduction (for a simpler graph) to see that Mason’s Rule is equivalent but often more systematic."
   },
   {
     "objectID": "control_5.html#skill-assessment-exercise-5.4-mason-vs.-block-reduction",
@@ -3245,14 +3245,14 @@
     "href": "control_5.html#summary-key-points",
     "title": "Reduction of Multiple Subsystems",
     "section": "Summary / Key Points",
-    "text": "Summary / Key Points\n\nBlock diagrams model interconnections of subsystems via blocks, summing junctions, and pickoffs.\nThree key interconnection types:\n\nCascade: multiply transfer functions (if no loading).\nParallel: sum transfer functions.\nFeedback: ( G_{}(s) = ).\n\nBlock moves (across summing junctions and pickoffs) are essential to:\n\nExpose familiar forms.\nSystematically reduce complex diagrams.\n\nFeedback systems often reduce to second-order forms; then:\n\nStep response specs (%OS, ( T_s ), ( T_p ), etc.) are set by ( , _n ).\nWe can design gain ( K ) to meet transient performance requirements."
+    "text": "Summary / Key Points\n\nBlock diagrams model interconnections of subsystems via blocks, summing junctions, and pickoffs.\nThree key interconnection types:\n\nCascade: multiply transfer functions (if no loading).\nParallel: sum transfer functions.\nFeedback: \\(G_{\\text{CL}}(s) = \\dfrac{G}{1 \\pm GH}\\).\n\nBlock moves (across summing junctions and pickoffs) are essential to:\n\nExpose familiar forms.\nSystematically reduce complex diagrams.\n\nFeedback systems often reduce to second-order forms; then:\n\nStep response specs (%OS, \\(T_s\\), \\(T_p\\), etc.) are set by \\(\\zeta, \\omega_n\\).\nWe can design gain \\(K\\) to meet transient performance requirements."
   },
   {
     "objectID": "control_5.html#summary-of-key-formulas",
     "href": "control_5.html#summary-of-key-formulas",
     "title": "Reduction of Multiple Subsystems",
     "section": "Summary of Key Formulas",
-    "text": "Summary of Key Formulas\nCascade\n\nFor cascade of independent subsystems (no loading):\n\\[\nG_e(s) = G_n(s) G_{n-1}(s)\\dots G_2(s)G_1(s)\n\\]\n\nParallel\n\nFor parallel subsystems with same input and algebraically summed outputs:\n\\[\nG_e(s) = \\pm G_1(s) \\pm G_2(s) \\pm \\dots \\pm G_n(s)\n\\]\n\nFeedback\n\nClosed-loop transfer function (general feedback):\n\\[\nG_e(s) = \\frac{G(s)}{1 \\pm G(s)H(s)}\n\\]\n\nUse ( + ) in denominator for negative feedback."
+    "text": "Summary of Key Formulas\nCascade\n\nFor cascade of independent subsystems (no loading):\n\\[\nG_e(s) = G_n(s) G_{n-1}(s)\\dots G_2(s)G_1(s)\n\\]\n\nParallel\n\nFor parallel subsystems with same input and algebraically summed outputs:\n\\[\nG_e(s) = \\pm G_1(s) \\pm G_2(s) \\pm \\dots \\pm G_n(s)\n\\]\n\nFeedback\n\nClosed-loop transfer function (general feedback):\n\\[\nG_e(s) = \\frac{G(s)}{1 \\pm G(s)H(s)}\n\\]\n\nUse \\(+\\) in denominator for negative feedback."
   },
   {
     "objectID": "control_24.html#example-2.23-dc-motor-and-load",
@@ -3287,6 +3287,629 @@
     "href": "control_5.html#visualizing-loops-and-forward-paths",
     "title": "Reduction of Multiple Subsystems",
     "section": "Visualizing Loops and Forward Paths",
-    "text": "Visualizing Loops and Forward Paths\n\n\n\n\n\n\n\n\n\n\n\n\nForward path: ( R G_1 G_2 G_3 C ).\nLoops:\n\nAround ( X ) and ( Y ) via ( H_1(s) ).\nAround ( Y ) and ( C ) via ( H_2(s) ).\n\n\nUse this simple structure to practice identifying loops and nontouching loops.\n\nThis is just a self-made example for teaching. Use it to:\n\nAsk students: identify the forward path gain.\nIdentify loop gains.\nCheck if any loops are nontouching.\n\nUse it as a warm-up before tackling the textbook example."
+    "text": "Visualizing Loops and Forward Paths\n\n\n\n\n\n\n\n\n\n\n\n\nForward path: \\(R \\to G_1 \\to G_2 \\to G_3 \\to C\\).\nLoops:\n\nAround \\(X\\) and \\(Y\\) via \\(H_1(s)\\).\nAround \\(Y\\) and \\(C\\) via \\(H_2(s)\\).\n\n\nUse this simple structure to practice identifying loops and nontouching loops.\n\nThis is just a self-made example for teaching. Use it to:\n\nAsk students: identify the forward path gain.\nIdentify loop gains.\nCheck if any loops are nontouching.\n\nUse it as a warm-up before tackling the textbook example."
+  },
+  {
+    "objectID": "control_4.html",
+    "href": "control_4.html",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "",
+    "text": "In this session, we will:\n\nDefine Poles and Zeros and understand their qualitative impact on system response.\nAnalyze First-Order Systems and their performance specifications (Time Constant, Rise Time, Settling Time).\nCategorize Second-Order Systems based on damping (Overdamped, Underdamped, Undamped, Critically Damped).\nRelate \\(\\zeta\\) (damping ratio) and \\(\\omega_n\\) (natural frequency) to pole locations in the \\(s\\)-plane.\nCalculate transient specifications for underdamped systems (\\(T_p, \\%OS, T_s, T_r\\))."
+  },
+  {
+    "objectID": "control_4.html#learning-objectives",
+    "href": "control_4.html#learning-objectives",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\nAfter this session, you will be able to:\n\nUse poles and zeros of transfer functions to determine the time response of a control system.\nDescribe quantitatively the transient response of first-order systems.\nWrite the general response of second-order systems from pole locations.\nCompute damping ratio \\(\\zeta\\) and natural frequency \\(\\omega_n\\) from a transfer function.\nFind \\(T_s\\), \\(T_p\\), %OS, and \\(T_r\\) for underdamped second-order systems.\nRelate real-world ECE systems (RC/RL, RLC, mechanical) to first- and second-order models.\n\n\nThis list is a subset of the full chapter outcomes, focusing on transient behavior of 1st and 2nd order systems and how pole locations map to time-domain specs.\nWe will not yet go deep into approximation of higher-order systems or nonlinearities, but we will mention the idea that “dominant poles” often determine behavior."
+  },
+  {
+    "objectID": "control_4.html#defining-poles-and-zeros",
+    "href": "control_4.html#defining-poles-and-zeros",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Defining Poles and Zeros",
+    "text": "Defining Poles and Zeros\nThe qualitative “handle” on control system behavior lies in the roots of the transfer function \\(G(s) = \\frac{N(s)}{D(s)}\\).\n\n\n\nPoles (\\(\\times\\))\nValues of \\(s\\) that make \\(G(s) \\to \\infty\\). - Roots of the denominator \\(D(s)\\). - Determine the form of the natural response.\n\n\n\nZeros (\\(\\bigcirc\\))\nValues of \\(s\\) that make \\(G(s) \\to 0\\). - Roots of the numerator \\(N(s)\\). - Along with poles, determine the amplitude of the response.\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nIf a factor appears in both the numerator and denominator, we still refer to those roots as poles/zeros even if they cancel out."
+  },
+  {
+    "objectID": "control_4.html#evolution-of-a-system-response",
+    "href": "control_4.html#evolution-of-a-system-response",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Evolution of a System Response",
+    "text": "Evolution of a System Response\nConsider \\(G(s) = \\frac{(s+2)}{(s+5)}\\) with a unit step input \\(R(s) = \\frac{1}{s}\\).\n\\[C(s) = \\frac{(s+2)}{s(s+5)} = \\underbrace{\\frac{2/5}{s}}_{\\text{Forced}} + \\underbrace{\\frac{3/5}{s+5}}_{\\text{Natural}}\\]\n\n\n\nFigure 4.1: a. System input/output; b. Pole-zero plot; c. Response evolution\n\n\n\nExplain how the pole at the origin (from the input) creates the constant steady-state (forced) response, while the system pole at -5 creates the exponential decay (natural response)."
+  },
+  {
+    "objectID": "control_4.html#pole-locations-and-transients",
+    "href": "control_4.html#pole-locations-and-transients",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Pole Locations and Transients",
+    "text": "Pole Locations and Transients\nHow does the position of a pole on the real axis affect the speed of the response?\n\n\n\nA pole at \\(-\\alpha\\) generates \\(e^{-\\alpha t}\\).\nFarther Left: Larger \\(\\alpha \\to\\) faster decay.\nCloser to Origin: Smaller \\(\\alpha \\to\\) slower decay (sluggish system).\n\n\n\n\n\nFigure 4.2: Effect of a real-axis pole upon transient response"
+  },
+  {
+    "objectID": "control_4.html#example-4.1-inspection-method",
+    "href": "control_4.html#example-4.1-inspection-method",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Example 4.1: Inspection Method",
+    "text": "Example 4.1: Inspection Method\nProblem: Write the output \\(c(t)\\) in general terms for the system below:\n\n\n\nFigure 4.3: System with poles at -2, -4, -5 and zero at -3\n\n\nSolution: 1. Input pole at \\(s=0 \\to\\) Forced response \\(K_1\\). 2. System poles at \\(s=-2, -4, -5 \\to\\) Natural response.\n\\[c(t) = \\underbrace{K_1}_{\\text{Forced}} + \\underbrace{K_2 e^{-2t} + K_3 e^{-4t} + K_4 e^{-5t}}_{\\text{Natural}}\\]"
+  },
+  {
+    "objectID": "control_4.html#performance-specifications",
+    "href": "control_4.html#performance-specifications",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Performance Specifications",
+    "text": "Performance Specifications\nFor a standard first-order system \\(G(s) = \\frac{a}{s+a}\\):\n\n\n\nTime Constant (\\(\\tau = 1/a\\)): Time to reach 63% of the final value.\nRise Time (\\(T_r = 2.2/a\\)): Time to go from 0.1 to 0.9 of final value.\nSettling Time (\\(T_s = 4/a\\)): Time to reach and stay within 2% of final value.\n\n\n\n\n\nFigure 4.5: First-order system step response"
+  },
+  {
+    "objectID": "control_4.html#real-world-application-system-identification",
+    "href": "control_4.html#real-world-application-system-identification",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Real-World Application: System Identification",
+    "text": "Real-World Application: System Identification\nIf we have a “black box” system, we can find its transfer function \\(G(s) = \\frac{K}{s+a}\\) by testing its step response.\n\nMeasure Steady-State Value: This gives \\(K/a\\).\nMeasure Time Constant: Find time to reach 63% of final value \\(\\to a = 1/\\tau\\).\nCalculate \\(K\\): Multiply steady-state value by \\(a\\).\n\n\n\n\nFigure 4.6: Laboratory results of a system step response test"
+  },
+  {
+    "objectID": "control_4.html#the-four-faces-of-damping",
+    "href": "control_4.html#the-four-faces-of-damping",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "The Four Faces of Damping",
+    "text": "The Four Faces of Damping\nVarying parameters in a second-order system doesn’t just change speed; it changes the form of the response.\n\n\n\n\n\nflowchart LR\n    A[\"System Poles\"] --&gt; B{\"Type?\"}\n    B -- \"Two Real\" --&gt; C[\"Overdamped\"]\n    B -- \"Complex Pair\" --&gt; D[\"Underdamped\"]\n    B -- \"Pure Imaginary\" --&gt; E[\"Undamped\"]\n    B -- \"Double Real\" --&gt; F[\"Critically Damped\"]\n  \n    style C fill:#f9f,stroke:#333\n    style D fill:#bbf,stroke:#333\n    style E fill:#bfb,stroke:#333\n    style F fill:#fbb,stroke:#333"
+  },
+  {
+    "objectID": "control_4.html#visualizing-damping-cases",
+    "href": "control_4.html#visualizing-damping-cases",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Visualizing Damping Cases",
+    "text": "Visualizing Damping Cases\n\n\n\nFigure 4.10: Step responses for second-order system damping cases\n\n\n\nPoint out that Critically Damped is the boundary—it is the fastest response possible without overshooting the target."
+  },
+  {
+    "objectID": "control_4.html#general-second-order-form",
+    "href": "control_4.html#general-second-order-form",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "General Second-Order Form",
+    "text": "General Second-Order Form\nTo standardize analysis, we use the Natural Frequency (\\(\\omega_n\\)) and Damping Ratio (\\(\\zeta\\)):\n\\[G(s) = \\frac{\\omega_n^2}{s^2 + 2\\zeta\\omega_n s + \\omega_n^2}\\]\n\n\\(\\omega_n\\): Frequency of oscillation without damping.\n\\(\\zeta\\): Ratio of exponential decay frequency to natural frequency.\n\n\n\n\n\\(\\zeta\\) Value\nResponse Type\n\n\n\n\n\\(\\zeta &gt; 1\\)\nOverdamped\n\n\n\\(\\zeta = 1\\)\nCritically Damped\n\n\n\\(0 &lt; \\zeta &lt; 1\\)\nUnderdamped\n\n\n\\(\\zeta = 0\\)\nUndamped"
+  },
+  {
+    "objectID": "control_4.html#example-4.3-finding-parameters",
+    "href": "control_4.html#example-4.3-finding-parameters",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Example 4.3: Finding Parameters",
+    "text": "Example 4.3: Finding Parameters\nProblem: Given \\(G(s) = \\frac{36}{s^2 + 4.2s + 36}\\), find \\(\\zeta\\) and \\(\\omega_n\\).\nSolution: 1. \\(\\omega_n^2 = 36 \\implies \\omega_n = 6\\) rad/s. 2. \\(2\\zeta\\omega_n = 4.2\\). 3. \\(2\\zeta(6) = 4.2 \\implies 12\\zeta = 4.2 \\implies \\zeta = 0.35\\).\nConclusion: Since \\(0 &lt; 0.35 &lt; 1\\), the system is Underdamped."
+  },
+  {
+    "objectID": "control_4.html#underdamped-specifications",
+    "href": "control_4.html#underdamped-specifications",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Underdamped Specifications",
+    "text": "Underdamped Specifications\nMost control systems are designed to be underdamped for speed, accepting a small amount of oscillation.\n\n\n\nFigure 4.14: Underdamped response specifications"
+  },
+  {
+    "objectID": "control_4.html#critical-formulas-for-design",
+    "href": "control_4.html#critical-formulas-for-design",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Critical Formulas for Design",
+    "text": "Critical Formulas for Design\nIf we know \\(\\zeta\\) and \\(\\omega_n\\), we can predict the behavior exactly:\n\\[T_p = \\frac{\\pi}{\\omega_n \\sqrt{1-\\zeta^2}}\\]\n\\[\\%OS = e^{-\\left( \\frac{\\zeta \\pi}{\\sqrt{1-\\zeta^2}} \\right)} \\times 100\\]\n\\[T_s \\approx \\frac{4}{\\zeta \\omega_n}\\]\n\n\n\n\n\n\nTip\n\n\n\n\\(\\%OS\\) depends only on \\(\\zeta\\)! If you want to reduce overshoot, you must increase the damping ratio."
+  },
+  {
+    "objectID": "control_4.html#the-s-plane-geometry",
+    "href": "control_4.html#the-s-plane-geometry",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "The \\(s\\)-Plane Geometry",
+    "text": "The \\(s\\)-Plane Geometry\nPole locations provide an immediate visual summary of performance:\n\n\n\nFigure 4.17: Pole plot for underdamped second-order system\n\n\n\nRadial distance \\(= \\omega_n\\).\nReal part (\\(\\sigma_d\\)) \\(= \\zeta\\omega_n\\) (determines \\(T_s\\)).\nImaginary part (\\(\\omega_d\\)) \\(= \\omega_n \\sqrt{1-\\zeta^2}\\) (determines \\(T_p\\)).\nAngle (\\(\\theta\\)): \\(\\cos \\theta = \\zeta\\)."
+  },
+  {
+    "objectID": "control_4.html#summary-of-pole-movement",
+    "href": "control_4.html#summary-of-pole-movement",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Summary of Pole Movement",
+    "text": "Summary of Pole Movement\n\n\n\nFigure 4.18: Lines of constant performance\n\n\n\nHorizontal Lines: Constant Peak Time (\\(T_p\\)).\nVertical Lines: Constant Settling Time (\\(T_s\\)).\nRadial Lines: Constant Percent Overshoot (\\(\\%OS\\)).\n\n\nExplain that moving poles further left (vertically) keeps the same frequency but damps out faster. Moving them horizontally keeps the same peak time but changes the overshoot."
+  },
+  {
+    "objectID": "control_4.html#example-4.7-component-design",
+    "href": "control_4.html#example-4.7-component-design",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Example 4.7: Component Design",
+    "text": "Example 4.7: Component Design\nProblem: Design a mechanical system (find \\(J\\) and \\(D\\)) for 20% overshoot and \\(T_s = 2\\) s, given \\(K = 5\\).\nSolution Steps: 1. From 20% OS \\(\\to \\zeta = 0.456\\). 2. From \\(T_s = 2 \\to \\frac{4}{\\zeta\\omega_n} = 2 \\implies \\zeta\\omega_n = 2\\). 3. Solve for \\(\\omega_n\\): \\(0.456\\omega_n = 2 \\implies \\omega_n = 4.386\\). 4. Use system relations: \\(\\omega_n = \\sqrt{K/J} \\to 4.386 = \\sqrt{5/J} \\to J = 0.26\\). 5. Use \\(D/J = 2\\zeta\\omega_n \\to D/0.26 = 4 \\to D = 1.04\\)."
+  },
+  {
+    "objectID": "control_4.html#summary-key-points",
+    "href": "control_4.html#summary-key-points",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Summary / Key Points",
+    "text": "Summary / Key Points\n\nPoles and zeros give a powerful, often qualitative way to predict time response:\n\nInput poles → forced response shape.\nSystem poles → natural response shape.\nZeros and poles determine amplitudes.\n\nFirst-order systems:\n\nStep response: \\(1 - e^{-at}\\).\nTime constant \\(\\tau = 1/a\\) fully characterizes transient speed.\n\\(T_r \\approx 2.2\\tau\\), \\(T_s \\approx 4\\tau\\).\n\nSecond-order systems:\n\nStandard form: \\(\\dfrac{\\omega_n^2}{s^2+2\\zeta\\omega_n s+\\omega_n^2}\\).\n\\(\\omega_n\\) sets time scale; \\(\\zeta\\) sets damping/shape.\nBehavior classification: overdamped, critically damped, underdamped, undamped."
+  },
+  {
+    "objectID": "control_4.html#formulas-summary",
+    "href": "control_4.html#formulas-summary",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Formulas Summary",
+    "text": "Formulas Summary\n\n\n\n\n\n\n\n\nParameter\nFirst-Order (\\(a\\))\nSecond-Order (\\(\\zeta, \\omega_n\\))\n\n\n\n\nTransfer Function\n\\(\\frac{a}{s+a}\\)\n\\(\\frac{\\omega_n^2}{s^2+2\\zeta\\omega_ns+\\omega_n^2}\\)\n\n\nTime Constant\n\\(1/a\\)\n\\(1/(\\zeta\\omega_n)\\)\n\n\nSettling Time (\\(T_s\\))\n\\(4/a\\)\n\\(4/(\\zeta\\omega_n)\\)\n\n\nRise Time (\\(T_r\\))\n\\(2.2/a\\)\nSee Figure 4.16\n\n\nPeak Time (\\(T_p\\))\nN/A\n\\(\\frac{\\pi}{\\omega_n\\sqrt{1-\\zeta^2}}\\)\n\n\n% Overshoot\n0%\n\\(e^{-(\\zeta\\pi/\\sqrt{1-\\zeta^2})} \\times 100\\)"
+  },
+  {
+    "objectID": "control_4.html#practice-problem",
+    "href": "control_4.html#practice-problem",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Practice Problem",
+    "text": "Practice Problem\nSkill-Assessment 4.5: Given \\(G(s) = \\frac{361}{s^2 + 16s + 361}\\): 1. Find \\(\\omega_n\\) and \\(\\zeta\\). 2. Calculate \\(T_s\\) and \\(T_p\\).\nAnswers: - \\(\\omega_n = 19\\), \\(\\zeta = 0.421\\) - \\(T_s = 0.5\\) s - \\(T_p = 0.182\\) s - \\(\\%OS = 23.3\\%\\)\n\nEncourage students to try this before leaving. Remind them that \\(\\omega_n = \\sqrt{361}\\) and \\(2\\zeta\\omega_n = 16\\)."
+  },
+  {
+    "objectID": "control_4.html#poles-zeros-and-response",
+    "href": "control_4.html#poles-zeros-and-response",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "4.1 - 4.2 Poles, Zeros, and Response",
+    "text": "4.1 - 4.2 Poles, Zeros, and Response\nThe output response is the sum of the forced response and the natural response.\n\n\n\nPoles\n\nValues of \\(s\\) where \\(G(s) \\to \\infty\\).\nRoots of the denominator.\nGenerate the form of the response.\n\n\n\nZeros\n\nValues of \\(s\\) where \\(G(s) = 0\\).\nRoots of the numerator.\nAffect the amplitude of the response.\n\n\n\n\n\n\n\n\nflowchart TD\n    P[\"System Pole at -α\"] --&gt; R[\"Natural Response: e^(-αt)\"]\n    I[\"Input Pole at Origin\"] --&gt; F[\"Forced Response: Step\"]\n    Z[\"Zeros & Poles\"] --&gt; A[\"Amplitudes (Gain Factors)\"]\n    style R fill:#f9f,stroke:#333\n    style F fill:#bbf,stroke:#333\n\n\n\n\n\n\n\n\n\nAnalogy: Think of the poles as the “DNA” of the system—they dictate if it’s exponential or sinusoidal. The zeros and the input amplitude act as “volume knobs.”"
+  },
+  {
+    "objectID": "control_4.html#first-order-systems",
+    "href": "control_4.html#first-order-systems",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "4.3 First-Order Systems",
+    "text": "4.3 First-Order Systems\nStandard form: \\(G(s) = \\frac{a}{s+a}\\)\nStep Response: \\(c(t) = 1 - e^{-at}\\)\n\n\n\nTime Constant (\\(\\tau\\)): \\(1/a\\). Time to reach 63% of final value.\nRise Time (\\(T_r\\)): Time to go from 0.1 to 0.9 of final value.\n\n\\(T_r = \\frac{2.2}{a}\\)\n\nSettling Time (\\(T_s\\)): Time to stay within 2% of final value.\n\n\\(T_s = \\frac{4}{a}\\)\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nExponential Frequency The parameter \\(a\\) is also the initial rate of change at \\(t=0\\).\n\n\n\n\n\nFirst-order systems never overshoot. Their speed is entirely determined by the location of the single pole at \\(-a\\)."
+  },
+  {
+    "objectID": "control_4.html#second-order-systems-classification",
+    "href": "control_4.html#second-order-systems-classification",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "4.4 Second-Order Systems: Classification",
+    "text": "4.4 Second-Order Systems: Classification\nThe behavior of a second-order system depends on the nature of its poles.\n\n\n\n\n\ngraph TD\n    A[\"Second-Order Poles\"] --&gt; B[\"Two Real & Distinct\"]\n    A --&gt; C[\"Two Complex\"]\n    A --&gt; D[\"Two Pure Imaginary\"]\n    A --&gt; E[\"Two Real & Equal\"]\n  \n    B --&gt; B1[\"Overdamped\"]\n    C --&gt; C1[\"Underdamped\"]\n    D --&gt; D1[\"Undamped\"]\n    E --&gt; E1[\"Critically Damped\"]\n\n    style C1 fill:#ff9,stroke:#333"
+  },
+  {
+    "objectID": "control_4.html#second-order-responses-visualized",
+    "href": "control_4.html#second-order-responses-visualized",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Second-Order Responses Visualized",
+    "text": "Second-Order Responses Visualized\n\n\n\n\n\n\n\n\nType\nPole Locations\nResponse Form\n\n\n\n\nOverdamped\nReal, \\(-\\sigma_1, -\\sigma_2\\)\nSum of two exponentials\n\n\nUnderdamped\nComplex, \\(-\\sigma_d \\pm j\\omega_d\\)\nDamped sinusoid\n\n\nUndamped\nImaginary, \\(\\pm j\\omega_1\\)\nPure sinusoid\n\n\nCritically Damped\nReal, \\(-\\sigma_1, -\\sigma_1\\)\nExponential + \\(t \\cdot\\) exponential\n\n\n\n\nCritically damped is the “sweet spot”—the fastest response possible without hitting any overshoot."
+  },
+  {
+    "objectID": "control_4.html#the-general-second-order-system",
+    "href": "control_4.html#the-general-second-order-system",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "4.5 The General Second-Order System",
+    "text": "4.5 The General Second-Order System\nStandard transfer function: \\[G(s) = \\frac{\\omega_n^2}{s^2 + 2\\zeta\\omega_n s + \\omega_n^2}\\]\n\n\\(\\omega_n\\) (Natural Frequency): Frequency of oscillation without damping.\n\\(\\zeta\\) (Damping Ratio): \\[\\zeta = \\frac{\\text{Exponential Decay Frequency}}{\\text{Natural Frequency}}\\]\n\n\n\n\n\n\n\nImportantPole Locations via \\(\\zeta\\) and \\(\\omega_n\\)\n\n\n\n\\(s_{1,2} = -\\zeta\\omega_n \\pm \\omega_n\\sqrt{\\zeta^2 - 1}\\)"
+  },
+  {
+    "objectID": "control_4.html#damping-ratio-zeta-and-performance",
+    "href": "control_4.html#damping-ratio-zeta-and-performance",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Damping Ratio (\\(\\zeta\\)) and Performance",
+    "text": "Damping Ratio (\\(\\zeta\\)) and Performance\n\n\\(\\zeta &gt; 1\\): Overdamped\n\\(\\zeta = 1\\): Critically Damped\n\\(0 &lt; \\zeta &lt; 1\\): Underdamped\n\\(\\zeta = 0\\): Undamped\n\n\nIn ECE, we often design for the underdamped case because it allows for faster rise times, even if we have to tolerate a little “ringing” (overshoot)."
+  },
+  {
+    "objectID": "control_4.html#s-plane-vs.-time-response",
+    "href": "control_4.html#s-plane-vs.-time-response",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "s-Plane vs. Time Response",
+    "text": "s-Plane vs. Time Response\nHorizontal, vertical, and radial lines on the s-plane represent constant performance metrics.\n\n\n\nConstant \\(T_p\\): Horizontal lines (Imaginary part \\(\\omega_d\\) is fixed).\nConstant \\(T_s\\): Vertical lines (Real part \\(\\sigma_d\\) is fixed).\nConstant \\(\\%OS\\): Radial lines (Angle \\(\\theta\\) is fixed, \\(\\zeta = \\cos\\theta\\)).\n\n\n\n\n\n\n\n\n\nG\n\n\n\norigin\n\nOrigin\n\n\n\npole\n\nPole\n\n\n\norigin-&gt;pole\n\n\nwn (Radius)\n\n\n\naxis\njw\n\n\n\npole-&gt;axis\n\n\nwd\n\n\n\nreal\nsigma\n\n\n\npole-&gt;real\n\n\nsigma_d"
+  },
+  {
+    "objectID": "control_4.html#example-component-design",
+    "href": "control_4.html#example-component-design",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Example: Component Design",
+    "text": "Example: Component Design\nProblem: Find \\(J\\) and \\(D\\) for a rotational system where \\(G(s) = \\frac{1/J}{s^2 + (D/J)s + (K/J)}\\). Given: \\(K=5\\), target \\(20\\%\\) overshoot and \\(T_s = 2\\)s.\nSolution: 1. \\(20\\% OS \\implies \\zeta = 0.456\\) (using inverse formula). 2. \\(T_s = 2 \\implies \\frac{4}{\\zeta\\omega_n} = 2 \\implies \\zeta\\omega_n = 2\\). 3. Calculate \\(\\omega_n = 2 / 0.456 = 4.386\\) rad/s. 4. \\(\\omega_n^2 = K/J \\implies J = 5 / (4.386^2) = 0.26\\) kg·m². 5. \\(2\\zeta\\omega_n = D/J \\implies D = J(4) = 1.04\\) N·m·s/rad."
+  },
+  {
+    "objectID": "control_4.html#summary",
+    "href": "control_4.html#summary",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Summary",
+    "text": "Summary\n\nPoles dictate the nature (exponential vs sinusoidal) of the response.\nFirst-order systems are characterized by a single time constant \\(\\tau = 1/a\\).\nSecond-order systems are described by \\(\\zeta\\) and \\(\\omega_n\\).\nUnderdamped systems (\\(0 &lt; \\zeta &lt; 1\\)) involve trade-offs between speed (\\(T_r, T_p\\)) and stability (\\(\\%OS\\)).\nGeometry matters: Pole location on the s-plane provides a qualitative “map” of the system’s time behavior."
+  },
+  {
+    "objectID": "control_4.html#formula-summary",
+    "href": "control_4.html#formula-summary",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Formula Summary",
+    "text": "Formula Summary\n\n\n\n\n\n\n\nParameter\nFormula\n\n\n\n\nFirst-Order \\(T_s\\)\n\\(4/a\\)\n\n\nDamping Ratio\n\\(\\zeta = \\frac{a}{2\\sqrt{b}}\\)\n\n\nNatural Freq\n\\(\\omega_n = \\sqrt{b}\\)\n\n\nDamped Freq\n\\(\\omega_d = \\omega_n\\sqrt{1-\\zeta^2}\\)\n\n\nPeak Time\n\\(T_p = \\pi / \\omega_d\\)\n\n\nSettling Time\n\\(T_s \\approx 4 / (\\zeta\\omega_n)\\)\n\n\nPercent OS\n\\(100 \\cdot e^{-\\zeta\\pi / \\sqrt{1-\\zeta^2}}\\)\n\n\n\\(\\zeta\\) from OS\n\\(\\frac{-\\ln(\\%OS/100)}{\\sqrt{\\pi^2 + \\ln^2(\\%OS/100)}}\\)\n\n\n\n\nStudents should memorize the relationships between \\(\\sigma_d, \\omega_d, \\zeta, \\omega_n\\) and their s-plane triangle geometry."
+  },
+  {
+    "objectID": "control_4.html#motivation-why-time-response-matters",
+    "href": "control_4.html#motivation-why-time-response-matters",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Motivation: Why Time Response Matters",
+    "text": "Motivation: Why Time Response Matters\n\nControl systems are designed to make outputs follow desired inputs over time.\nTwo key aspects:\n\nSteady-state behavior (accuracy).\nTransient behavior (speed, overshoot, oscillation).\n\nTime response answers questions like:\n\nHow fast does a motor reach the commanded speed?\nDoes a robot arm overshoot and oscillate?\nHow “snappy” or “sluggish” is an amplifier or filter?\n\n\n\n\n\n\n\n\nTip\n\n\nThink of flicking a light switch vs. motion of an elevator. Both reach a “final value,” but with very different transient behavior.\n\n\n\n\nEmphasize that in many ECE applications—servo drives, power electronics, communication filters—the transient response is often a design constraint: overshoot limits, settling-time requirements, etc.\nStudents should see time response as something they can specify (requirements) and later meet via controller design."
+  },
+  {
+    "objectID": "control_4.html#system-representations-frequency-vs-time",
+    "href": "control_4.html#system-representations-frequency-vs-time",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "System Representations: Frequency vs Time",
+    "text": "System Representations: Frequency vs Time\nRecall from earlier chapters:\n\nTransfer functions in the \\(s\\)-domain (Laplace):\n\nDerived from differential equations.\nConvenient for algebraic manipulation and block diagrams.\n\nState-space in the time domain:\n\n\\(\\dot{x} = Ax + Bu\\)\n\\(y = Cx + Du\\)\n\n\nIn this chapter, we:\n\nStart with a mathematical model (usually a transfer function).\nUse poles and zeros to predict time response.\n\n\nRemind students they’ve already seen: - How to derive transfer functions from circuits or mechanical systems (Chapter 2). - How to represent systems in state-space (Chapter 3).\nNow we’ll exploit these models to understand transient behavior without solving differential equations from scratch each time."
+  },
+  {
+    "objectID": "control_4.html#forced-vs-natural-response",
+    "href": "control_4.html#forced-vs-natural-response",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Forced vs Natural Response",
+    "text": "Forced vs Natural Response\nAny linear time-invariant (LTI) system output can be decomposed as:\n\\[\ny(t) = y_f(t) + y_n(t)\n\\]\n\nForced response \\(y_f(t)\\):\n\nCaused directly by the input.\nAlso called particular solution.\n\nNatural response \\(y_n(t)\\):\n\nSystem’s own modes; how it behaves when “left alone.”\nDecays (or not) based on system poles.\n\n\n\n\n\n\n\n\nNote\n\n\nKey idea:\n\nInput poles \\(\\Rightarrow\\) shape of the forced response.\nSystem poles \\(\\Rightarrow\\) shape of the natural response.\n\n\n\n\n\nStress that “forced” and “natural” correspond to solutions of the non-homogeneous and homogeneous differential equations, respectively.\nIn practice: - Forced response tells us what type of steady-state we get (step, ramp, sinusoid, etc.). - Natural response tells us about transients: exponentials, oscillations, decay rate."
+  },
+  {
+    "objectID": "control_4.html#poles-and-zeros-definitions",
+    "href": "control_4.html#poles-and-zeros-definitions",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Poles and Zeros – Definitions",
+    "text": "Poles and Zeros – Definitions\nTransfer function: \\[\nG(s) = \\frac{N(s)}{D(s)}\n\\]\n\nPoles: values of \\(s\\) where \\(G(s)\\) becomes infinite.\n\nRoots of \\(D(s) = 0\\).\nIn control we also treat canceled denominator roots as “poles” because they still reflect system dynamics.\n\nZeros: values of \\(s\\) where \\(G(s)\\) becomes zero.\n\nRoots of \\(N(s) = 0\\).\nLikewise, canceled numerator roots are still called “zeros” in control.\n\n\n\n\n\n\n\n\nImportant\n\n\nEven if a pole-zero pair cancels algebraically, the physical mode may still exist. We keep track of them conceptually for design and robustness.\n\n\n\n\nClarify the subtlety: strictly speaking, only non-canceled denominator roots are mathematical poles. But in control design we often talk about “hidden” or “canceled” poles/zeros because they can reappear with parameter changes or nonlinearities.\nMake sure students can define poles and zeros clearly and distinguish numerator vs denominator roles."
+  },
+  {
+    "objectID": "control_4.html#first-example-simple-polezero-system",
+    "href": "control_4.html#first-example-simple-polezero-system",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "First Example: Simple Pole–Zero System",
+    "text": "First Example: Simple Pole–Zero System\nGiven the transfer function (from Fig. 4.1a):\n\\[\nG(s) = \\frac{s+2}{s+5}\n\\]\nWith a unit step input \\(R(s) = \\frac{1}{s}\\),\n\\[\nC(s) = G(s)R(s) = \\frac{s+2}{s(s+5)}\n= \\frac{\\frac{2}{5}}{s} + \\frac{\\frac{3}{5}}{s+5}\n\\]\nInverse Laplace transform:\n\\[\nc(t) = \\frac{2}{5} + \\frac{3}{5} e^{-5t}\n\\]\n\nForced response: \\(\\frac{2}{5}\\) (constant step).\nNatural response: \\(\\frac{3}{5} e^{-5t}\\).\n\n\nWalk through: - The pole at the origin in \\(R(s)\\) (step input) generated a constant forced component. - The pole at \\(s=-5\\) in \\(G(s)\\) generated the \\(e^{-5t}\\) natural response. - The zero at \\(s=-2\\) contributed to the coefficients (2/5 and 3/5) but not the basic functional forms.\nHighlight that we didn’t need to do heavy algebra to guess the form: - One input pole at 0 → constant term. - One real system pole at -5 → single exponential."
+  },
+  {
+    "objectID": "control_4.html#visualizing-poles-and-zeros-in-the-s-plane",
+    "href": "control_4.html#visualizing-poles-and-zeros-in-the-s-plane",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Visualizing Poles and Zeros in the \\(s\\)-Plane",
+    "text": "Visualizing Poles and Zeros in the \\(s\\)-Plane\n\n\n\nReal-axis pole at \\(s=-5\\).\nReal-axis zero at \\(s=-2\\).\nInput pole at \\(s=0\\) (from \\(1/s\\)).\n\n\n\n\nSystem and pole-zero plot (Fig. 4.1a,b)\n\n\n\n\nReal-axis pole \\(\\Rightarrow\\) response term of form \\(e^{-\\alpha t}\\).\nPole at \\(-5\\) \\(\\Rightarrow e^{-5t}\\) term.\nThe farther left the pole (more negative real part), the faster the exponential decays.\n\n\n\n\nEvolution of response components (Fig. 4.1c)\n\n\n\n\nAsk students: - What happens if the pole is at \\(-1\\) instead of \\(-5\\)? → Slower decay (\\(e^{-t}\\)).\nEmphasize: x’s for poles, o’s for zeros. This visual becomes extremely important later for root locus, Bode design, etc."
+  },
+  {
+    "objectID": "control_4.html#takeaways-from-the-example",
+    "href": "control_4.html#takeaways-from-the-example",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Takeaways from the Example",
+    "text": "Takeaways from the Example\nFrom \\(C(s) = \\frac{s+2}{s(s+5)}\\) → \\(c(t) = \\frac{2}{5} + \\frac{3}{5}e^{-5t}\\):\n\nA pole of the input (at \\(s=0\\)) generated the forced response (step).\nA pole of the transfer function (at \\(s=-5\\)) generated the natural response \\(e^{-5t}\\).\nA real-axis pole at \\(s=-\\alpha\\) always generates a term \\(e^{-\\alpha t}\\).\n\nMore negative \\(\\alpha\\) → faster decay.\n\nZeros and poles together determine the amplitudes of these components (the coefficients 2/5 and 3/5).\n\n\n\n\nEffect of a real-axis pole on transient response (Fig. 4.2)\n\n\n\nStress point (3): this is the first bridge between the s-plane and time response speed. Students should start seeing the left half-plane as a “fast-decay zone” and the right half-plane as unstable.\nLink to real systems: RC discharge, current decay in RL circuits, etc., all have real poles."
+  },
+  {
+    "objectID": "control_4.html#example-response-form-by-inspection-real-poles",
+    "href": "control_4.html#example-response-form-by-inspection-real-poles",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Example: Response Form by Inspection (Real Poles)",
+    "text": "Example: Response Form by Inspection (Real Poles)\nGiven (Example 4.1):\n\\[\nR(s) = \\frac{1}{s}, \\quad\nG(s) = \\frac{s+3}{(s+2)(s+4)(s+5)}\n\\]\n\n\nBy inspection,\n\\[\nC(s) = \\frac{K_1}{s}\n+ \\frac{K_2}{s+2}\n+ \\frac{K_3}{s+4}\n+ \\frac{K_4}{s+5}\n\\]\nInverse Laplace:\n\\[\nc(t) = K_1\n+ K_2 e^{-2t}\n+ K_3 e^{-4t}\n+ K_4 e^{-5t}\n\\]\n\n\\(K_1\\) → forced response (step).\nexponentials → natural response.\n\n\n\n\n\nSystem with multiple real poles (Fig. 4.3)\n\n\n\n\n\n\n\n\n\nTip\n\n\nPattern: each real pole at \\(s = -a_i\\) adds a term \\(e^{-a_i t}\\) to the natural response.\n\n\n\n\nKey teaching point: students do not need to compute \\(K_i\\) to describe the structure of \\(c(t)\\): - One constant term from input pole at 0. - One exponential per real pole of \\(G(s)\\).\nThis “by inspection” capability becomes extremely valuable when reasoning about higher-order systems."
+  },
+  {
+    "objectID": "control_4.html#skill-check-real-poles",
+    "href": "control_4.html#skill-check-real-poles",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Skill Check – Real Poles",
+    "text": "Skill Check – Real Poles\nGiven: \\[\nG(s)=\\frac{10(s+4)(s+6)}{(s+1)(s+7)(s+8)(s+10)},\\quad R(s)=\\frac{1}{s}\n\\]\nQuestion: Write the general form of the step response \\(c(t)\\) by inspection.\nAnswer:\n\\[\nc(t)\\equiv A\n+ B e^{-t}\n+ C e^{-7t}\n+ D e^{-8t}\n+ E e^{-10t}\n\\]\n\nDiscuss: - One input pole at \\(0\\) → constant \\(A\\). - Four real system poles → four distinct exponentials. - Zeros only affect the coefficients, not the time-function forms.\nEncourage students to quickly map: “\\(n\\) real poles → sum of \\(n\\) exponentials.”"
+  },
+  {
+    "objectID": "control_4.html#first-order-systems-no-zeros",
+    "href": "control_4.html#first-order-systems-no-zeros",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "First-Order Systems (No Zeros)",
+    "text": "First-Order Systems (No Zeros)\nConsider a first-order system (Fig. 4.4a):\n\\[\nG(s) = \\frac{a}{s + a},\\quad a &gt; 0\n\\]\nWith unit step input \\(R(s) = \\frac{1}{s}\\):\n\\[\nC(s)=\\frac{a}{s(s+a)}\n\\Rightarrow c(t) = 1 - e^{-at}\n\\]\n\nForced response: \\(1\\) (steady-state).\nNatural response: \\(-e^{-at}\\) from pole at \\(s=-a\\) (Fig. 4.4b).\n\n\n\n\nFirst-order system and pole (Fig. 4.4)\n\n\n\nUse a simple RC circuit as analogy: - Input: step voltage source. - Output: capacitor voltage. Transfer function has a single real pole, giving exponential charging.\nEmphasize that \\(a\\) completely characterizes the transient shape here."
+  },
+  {
+    "objectID": "control_4.html#time-constant-of-a-first-order-system",
+    "href": "control_4.html#time-constant-of-a-first-order-system",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Time Constant of a First-Order System",
+    "text": "Time Constant of a First-Order System\nFrom \\(c(t) = 1 - e^{-at}\\):\nAt \\(t = 1/a\\):\n\\[\ne^{-at}\\big|_{t=1/a} = e^{-1} \\approx 0.37\n\\]\nSo\n\\[\nc(1/a) = 1 - 0.37 = 0.63\n\\]\nTime constant:\n\n\\(\\tau = \\dfrac{1}{a}\\)\nTime for the step response to reach 63% of its final value.\nAlso: time for the exponential \\(e^{-at}\\) to decay to 37% of its initial value."
+  },
+  {
+    "objectID": "control_4.html#first-order-rise-time-and-settling-time",
+    "href": "control_4.html#first-order-rise-time-and-settling-time",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "First-Order: Rise Time and Settling Time",
+    "text": "First-Order: Rise Time and Settling Time\nFor \\(c(t) = 1 - e^{-at}\\):\n\nRise time \\(T_r\\)\n\nTime for \\(c(t)\\) to go from 10% to 90% of final value:\nSolve \\(1 - e^{-at} = 0.1\\) and 0.9, subtract:\n\n\\[\nT_r = \\frac{2.2}{a}\n\\]\nSettling time \\(T_s\\) (2% criterion)\n\nTime to reach and stay within 2% of final value.\nSolve \\(1 - e^{-at} = 0.98\\):\n\n\\[\nT_s = \\frac{4}{a}\n\\]\n\n\n\n\n\n\n\nTip\n\n\nFor a first-order system with pole at \\(s=-a\\):\n\n\\(\\tau = 1/a\\)\n\\(T_r \\approx 2.2\\tau\\)\n\\(T_s \\approx 4\\tau\\)\n\n\n\n\n\nPoint out that these definitions (10–90% rise time, ±2% settling time) are conventional but widely used.\nConnect to design: - If you want \\(T_s &lt; 0.1\\) s, you need \\(a &gt; 40\\) rad/s."
+  },
+  {
+    "objectID": "control_4.html#identifying-a-first-order-transfer-function-from-test-data",
+    "href": "control_4.html#identifying-a-first-order-transfer-function-from-test-data",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Identifying a First-Order Transfer Function from Test Data",
+    "text": "Identifying a First-Order Transfer Function from Test Data\nReal-world scenario:\n\nYou can step the input and measure the output, but do not know internal details.\nIf the response looks like a first-order curve (no overshoot, single exponential), you can estimate \\(G(s)\\) from the step response.\n\n\n\n\nMeasured step response (Fig. 4.6)"
+  },
+  {
+    "objectID": "control_4.html#skill-check-first-order-specs",
+    "href": "control_4.html#skill-check-first-order-specs",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Skill Check – First-Order Specs",
+    "text": "Skill Check – First-Order Specs\nGiven: \\(G(s) = \\dfrac{50}{s+50}\\)\n\nPole at \\(s = -50\\) → \\(a = 50\\)\nTime constant: \\(\\tau = 1/a = 0.02\\) s\nSettling time: \\(T_s = 4/a = 0.08\\) s\nRise time: \\(T_r = 2.2/a \\approx 0.044\\) s\n\nAnswer: \\(T_c = 0.02\\,\\)s, \\(T_s = 0.08\\,\\)s, \\(T_r = 0.044\\,\\)s.\n\nClarify notation: here \\(T_c\\) is being used for time constant; earlier we used \\(\\tau\\).\nAsk students: - If we double the pole magnitude to 100, how do the times change? → All times halve."
+  },
+  {
+    "objectID": "control_4.html#second-order-systems-richer-dynamics",
+    "href": "control_4.html#second-order-systems-richer-dynamics",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Second-Order Systems – Richer Dynamics",
+    "text": "Second-Order Systems – Richer Dynamics\nGeneral second-order transfer function (no zeros):\n\\[\nG(s) = \\frac{b}{s^{2} + a s + b}\n\\]\nDepending on \\(a\\) and \\(b\\), the poles may be:\n\nTwo distinct real poles → overdamped.\nComplex conjugate with negative real part → underdamped.\nRepeated real pole → critically damped.\nPurely imaginary → undamped oscillation.\n\n\n\n\nSecond-order cases: pole-zero plots and step responses (Fig. 4.7a–e)\n\n\n\nUse Fig. 4.7 set to visually walk through each case: - Overdamped: slow, no overshoot, combination of exponentials. - Underdamped: oscillatory with decaying amplitude. - Undamped: pure oscillation, never settles. - Critically damped: fastest non-overshooting response.\nConnect each to typical ECE systems: servo motors, RLC circuits, etc."
+  },
+  {
+    "objectID": "control_4.html#overdamped-second-order-response",
+    "href": "control_4.html#overdamped-second-order-response",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Overdamped Second-Order Response",
+    "text": "Overdamped Second-Order Response\nExample (Fig. 4.7b):\n\\[\nC(s)=\\frac{9}{s(s^{2}+9s+9)}\n=\\frac{9}{s(s+7.854)(s+1.146)}\n\\]\n\nPoles at \\(0\\), \\(-7.854\\), \\(-1.146\\).\nInput pole at 0 → constant forced response.\nTwo real system poles → two exponentials in natural response.\n\nForm:\n\\[\nc(t) = K_1 + K_2 e^{-7.854 t} + K_3 e^{-1.146 t}\n\\]\nThis is an overdamped response: - No oscillation. - Response is sluggish compared to critically damped.\n\nExplain that overdamping often occurs with very high damping (e.g., extremely viscous mechanical systems, heavy smoothing filters).\nWe can still read off the form directly from the poles, even before computing coefficients."
+  },
+  {
+    "objectID": "control_4.html#underdamped-second-order-response",
+    "href": "control_4.html#underdamped-second-order-response",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Underdamped Second-Order Response",
+    "text": "Underdamped Second-Order Response\nExample (Fig. 4.7c):\n\\[\nC(s) = \\frac{9}{s(s^{2}+2s+9)}\n\\]\nSystem poles at:\n\\[\ns = -1 \\pm j\\sqrt{8}\n\\]\n\nReal part \\(-1\\) → exponential decay rate.\nImag part \\(\\sqrt{8}\\) → oscillation frequency."
+  },
+  {
+    "objectID": "control_4.html#example-form-of-an-underdamped-response-by-inspection",
+    "href": "control_4.html#example-form-of-an-underdamped-response-by-inspection",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Example: Form of an Underdamped Response (By Inspection)",
+    "text": "Example: Form of an Underdamped Response (By Inspection)\nGiven (Example 4.2, Fig. 4.9):\n\n\n\nSystem with complex poles (Fig. 4.9)\n\n\n\nTransfer function has poles at \\(s = -5 \\pm j13.23\\).\n\nReal part \\(\\sigma_d = 5\\) → decay rate \\(e^{-5t}\\).\nImag part \\(\\omega_d = 13.23\\) → oscillation frequency.\n\n\nForm of step response:\n\\[\nc(t) = K_1 + e^{-5t}\\left(K_2\\cos 13.23 t + K_3\\sin 13.23 t\\right)\n\\]\nor\n\\[\nc(t) = K_1 + K_4 e^{-5t}\\cos(13.23 t - \\phi)\n\\]\n\nHighlight the structure: - Constant + damped sinusoid. - You can always combine \\(K_2\\cos + K_3\\sin\\) into a shifted cosine with amplitude \\(K_4\\) and phase \\(\\phi\\).\nStudents should practice going from complex poles to this form without solving partial fractions."
+  },
+  {
+    "objectID": "control_4.html#undamped-and-critically-damped-cases",
+    "href": "control_4.html#undamped-and-critically-damped-cases",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Undamped and Critically Damped Cases",
+    "text": "Undamped and Critically Damped Cases\n\nUndamped (Fig. 4.7d):\n\\[\nC(s) = \\frac{9}{s(s^2+9)}\n\\]\n\nPoles at \\(0\\), \\(\\pm j3\\).\nForm: \\(c(t) = K_1 + K_4 \\cos(3t - \\phi)\\).\nNo decay; pure oscillation.\n\nCritically damped (Fig. 4.7e):\n\\[\nC(s) = \\frac{9}{s(s^2+6s+9)} = \\frac{9}{s(s+3)^2}\n\\]\n\nPoles at \\(0\\), \\(-3\\) (double).\nForm: \\(c(t) = K_1 + K_2 e^{-3t} + K_3 t e^{-3t}\\).\nFastest response possible without overshoot."
+  },
+  {
+    "objectID": "control_4.html#summary-natural-responses-for-second-order-systems",
+    "href": "control_4.html#summary-natural-responses-for-second-order-systems",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Summary: Natural Responses for Second-Order Systems",
+    "text": "Summary: Natural Responses for Second-Order Systems\n\n\n\nOverdamped (\\(\\zeta &gt; 1\\)):\n\nPoles: \\(-\\sigma_1\\), \\(-\\sigma_2\\) real, distinct.\nNatural response: \\[\nc_n(t) = K_1 e^{-\\sigma_1 t} + K_2 e^{-\\sigma_2 t}\n\\]\n\nUnderdamped (\\(0 &lt; \\zeta &lt; 1\\)):\n\nPoles: \\(-\\sigma_d \\pm j\\omega_d\\).\nNatural response: \\[\nc_n(t) = A e^{-\\sigma_d t}\\cos(\\omega_d t - \\phi)\n\\]\n\n\n\n\nUndamped (\\(\\zeta = 0\\)):\n\nPoles: \\(\\pm j\\omega_1\\).\nNatural response: \\[\nc_n(t) = A\\cos(\\omega_1 t - \\phi)\n\\]\n\nCritically damped (\\(\\zeta = 1\\)):\n\nPoles: repeated real \\(-\\sigma_1\\).\nNatural response: \\[\nc_n(t) = K_1 e^{-\\sigma_1 t} + K_2 t e^{-\\sigma_1 t}\n\\]\n\n\n\n\nAt this point, ensure students can classify a given second-order denominator into one of these cases by checking discriminant or computing \\(\\zeta\\).\nSoon we’ll formalize \\(\\zeta\\) and \\(\\omega_n\\) and link them to these behaviors."
+  },
+  {
+    "objectID": "control_4.html#skill-check-classify-second-order-responses",
+    "href": "control_4.html#skill-check-classify-second-order-responses",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Skill Check – Classify Second-Order Responses",
+    "text": "Skill Check – Classify Second-Order Responses\nGiven the transfer functions:\n\n\\(G(s) = \\dfrac{400}{s^{2}+12s+400}\\)\n\\(G(s) = \\dfrac{900}{s^{2}+90s+900}\\)\n\\(G(s) = \\dfrac{225}{s^{2}+30s+225}\\)\n\\(G(s) = \\dfrac{625}{s^{2}+625}\\)\n\nBy inspection, the step responses are:\n\n\\(c(t)=A+B e^{-6t}\\cos(19.08t+\\phi)\\) (underdamped)\n\\(c(t)=A+B e^{-78.54t}+C e^{-11.46t}\\) (overdamped)\n\\(c(t)=A+B e^{-15t}+C t e^{-15t}\\) (critically damped)\n\\(c(t)=A+B\\cos(25t+\\phi)\\) (undamped)\n\n\nEncourage students to:\n\nFactor or complete the square.\nRecognize complex vs real roots quickly.\nMap roots to the patterns from the summary slide.\n\nThis will prepare them for computing \\(\\zeta\\) and \\(\\omega_n\\) next."
+  },
+  {
+    "objectID": "control_4.html#general-second-order-system-in-standard-form",
+    "href": "control_4.html#general-second-order-system-in-standard-form",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "General Second-Order System in Standard Form",
+    "text": "General Second-Order System in Standard Form\nWe rewrite\n\\[\nG(s) = \\frac{b}{s^{2} + a s + b}\n\\]\nin terms of natural frequency \\(\\omega_n\\) and damping ratio \\(\\zeta\\):\n\nSet \\(b = \\omega_n^2\\) → undamped poles at \\(\\pm j\\omega_n\\).\nUse definition of damping ratio:\n\\[\n\\zeta = \\frac{\\text{decay frequency}}{\\text{natural frequency}}\n= \\frac{|\\sigma|}{\\omega_n}\n\\]\nFor underdamped case, poles: \\(s = -\\frac{a}{2} \\pm j\\cdots\\) → \\(|\\sigma| = a/2\\).\nSo\n\\[\n\\zeta = \\frac{a/2}{\\omega_n}\n\\Rightarrow a = 2\\zeta \\omega_n\n\\]"
+  },
+  {
+    "objectID": "control_4.html#example-find-zeta-and-omega_n-from-gs",
+    "href": "control_4.html#example-find-zeta-and-omega_n-from-gs",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Example: Find \\(\\zeta\\) and \\(\\omega_n\\) from \\(G(s)\\)",
+    "text": "Example: Find \\(\\zeta\\) and \\(\\omega_n\\) from \\(G(s)\\)\n(Example 4.3)\nGiven:\n\\[\nG(s) = \\frac{36}{s^2 + 4.2s + 36}\n\\]\nCompare with\n\\[\n\\frac{\\omega_n^2}{s^2 + 2\\zeta\\omega_n s + \\omega_n^2}\n\\]\n\n\\(\\omega_n^2 = 36\\) → \\(\\omega_n = 6\\).\n\\(2\\zeta\\omega_n = 4.2 \\Rightarrow 2\\zeta(6) = 4.2 \\Rightarrow \\zeta = 0.35\\).\n\nSo:\n\n\\(\\omega_n = 6\\) rad/s.\n\\(\\zeta = 0.35\\) → underdamped.\n\n\nHave students quickly check: - \\(\\zeta &lt; 1\\) → underdamped, consistent with expectation of oscillatory response.\nThis pattern (compare numerator to \\(\\omega_n^2\\), denominator to \\(s^2 + 2\\zeta\\omega_n s + \\omega_n^2\\)) will be used repeatedly."
+  },
+  {
+    "objectID": "control_4.html#poles-of-the-standard-second-order-system",
+    "href": "control_4.html#poles-of-the-standard-second-order-system",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Poles of the Standard Second-Order System",
+    "text": "Poles of the Standard Second-Order System\nFor\n\\[\nG(s) = \\frac{\\omega_n^{2}}{s^{2} + 2\\zeta\\omega_n s + \\omega_n^{2}},\n\\]\nthe poles are:\n\\[\ns_{1,2} = -\\zeta\\omega_n \\pm \\omega_n\\sqrt{\\zeta^{2} - 1}\n\\]\n\nIf \\(0 &lt; \\zeta &lt; 1\\) → complex conjugate pair (underdamped).\nIf \\(\\zeta = 1\\) → repeated real pole (critical).\nIf \\(\\zeta &gt; 1\\) → two real distinct poles (overdamped).\nIf \\(\\zeta = 0\\) → purely imaginary poles (undamped)."
+  },
+  {
+    "objectID": "control_4.html#example-classifying-response-from-zeta",
+    "href": "control_4.html#example-classifying-response-from-zeta",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Example: Classifying Response from \\(\\zeta\\)",
+    "text": "Example: Classifying Response from \\(\\zeta\\)\n(Example 4.4, Fig. 4.12)\nGiven several systems of form:\n\\[\nG(s) = \\frac{b}{s^2 + a s + b}\n\\]\nWe use:\n\\[\n\\zeta = \\frac{a}{2\\sqrt{b}}\n\\]\nto compute \\(\\zeta\\) and classify:\n\nIf \\(\\zeta &gt; 1\\) → overdamped.\nIf \\(\\zeta = 1\\) → critically damped.\nIf \\(0 &lt; \\zeta &lt; 1\\) → underdamped."
+  },
+  {
+    "objectID": "control_4.html#underdamped-second-order-step-response",
+    "href": "control_4.html#underdamped-second-order-step-response",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Underdamped Second-Order Step Response",
+    "text": "Underdamped Second-Order Step Response\nFor underdamped \\(0 &lt; \\zeta &lt; 1\\):\n\\[\nG(s) = \\frac{\\omega_n^{2}}{s^{2} + 2\\zeta\\omega_n s + \\omega_n^{2}}\n\\]\nWith unit step input \\(R(s) = \\frac{1}{s}\\):\n\\[\nC(s)\n= \\frac{\\omega_n^{2}}{s(s^{2} + 2\\zeta\\omega_n s + \\omega_n^{2})}\n\\]\nAfter partial fractions and inverse Laplace (derivation omitted):\n\\[\n\\begin{aligned}\nc(t) &= 1 - e^{-\\zeta\\omega_n t}\\Bigg(\n\\cos\\omega_n\\sqrt{1-\\zeta^{2}}\\, t +\n\\frac{\\zeta}{\\sqrt{1-\\zeta^{2}}}\\sin\\omega_n\\sqrt{1-\\zeta^{2}}\\, t\n\\Bigg) \\\\\n&= 1 - \\frac{1}{\\sqrt{1-\\zeta^{2}}}\ne^{-\\zeta\\omega_n t}\n\\cos\\big(\\omega_n\\sqrt{1-\\zeta^{2}}\\, t - \\phi\\big)\n\\end{aligned}\n\\]\nwhere\n\\[\n\\phi = \\tan^{-1}\\left(\\frac{\\zeta}{\\sqrt{1 - \\zeta^2}}\\right)\n\\]"
+  },
+  {
+    "objectID": "control_4.html#under-damped-specs-definitions",
+    "href": "control_4.html#under-damped-specs-definitions",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Under-damped Specs: Definitions",
+    "text": "Under-damped Specs: Definitions\n\n\nFor the underdamped step response (Fig. 4.14):\n\n\n\nUnderdamped response specs (Fig. 4.14)\n\n\n\nDefinitions:\n\nRise time \\(T_r\\) — time to go from 10% to 90% of final value.\nPeak time \\(T_p\\) — time to the first (maximum) peak.\nPercent overshoot %OS — \\[\n\\%OS = \\frac{c_{\\max} - c_{\\text{final}}}{c_{\\text{final}}} \\times 100\\%\n\\]\nSettling time \\(T_s\\) — time to enter and stay within \\(\\pm 2\\%\\) of final value.\n\n\n\nReinforce that these definitions generalize beyond second-order systems but are exactly computable only for the standard second-order case.\nLater, for higher-order systems, we often approximate them as dominated by a pair of complex conjugate poles."
+  },
+  {
+    "objectID": "control_4.html#deriving-peak-time-t_p",
+    "href": "control_4.html#deriving-peak-time-t_p",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Deriving Peak Time \\(T_p\\)",
+    "text": "Deriving Peak Time \\(T_p\\)\nFor \\(c(t)\\) given earlier:\n\nDifferentiate \\(c(t)\\), set \\(\\dot{c}(t)=0\\) to find extrema.\nUsing Laplace differentiation property,\n\n\\[\n\\mathcal{L}[\\dot{c}(t)] = sC(s) = \\frac{\\omega_n^2}{s^{2}+2\\zeta\\omega_ns+\\omega_n^{2}}\n\\]\nInverse Laplace gives:\n\\[\n\\dot{c}(t)\n= \\frac{\\omega_n}{\\sqrt{1-\\zeta^2}}\ne^{-\\zeta\\omega_n t}\n\\sin\\left(\\omega_n\\sqrt{1-\\zeta^2}\\,t\\right)\n\\]\nSet \\(\\dot{c}(t)=0\\):\n\\[\n\\omega_n\\sqrt{1-\\zeta^2}\\,t = n\\pi\n\\Rightarrow t = \\frac{n\\pi}{\\omega_n\\sqrt{1-\\zeta^2}}\n\\]"
+  },
+  {
+    "objectID": "control_4.html#deriving-percent-overshoot-os",
+    "href": "control_4.html#deriving-percent-overshoot-os",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Deriving Percent Overshoot %OS",
+    "text": "Deriving Percent Overshoot %OS\nFrom the definition:\n\\[\n\\%OS = \\frac{c_{\\max} - c_{\\text{final}}}{c_{\\text{final}}}\\times100\n\\]\nFor a unit step, \\(c_{\\text{final}} = 1\\).\nEvaluate \\(c(t)\\) at \\(t = T_p\\):\n\\[\nc_{\\max} = c(T_p)\n= 1 + e^{-\\frac{\\zeta\\pi}{\\sqrt{1-\\zeta^2}}}\n\\]\nSo\n\\[\n\\%OS = e^{-\\frac{\\zeta\\pi}{\\sqrt{1-\\zeta^2}}}\\times100\n\\]\nThis depends only on \\(\\zeta\\)."
+  },
+  {
+    "objectID": "control_4.html#deriving-settling-time-t_s",
+    "href": "control_4.html#deriving-settling-time-t_s",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Deriving Settling Time \\(T_s\\)",
+    "text": "Deriving Settling Time \\(T_s\\)\nWe want \\(|c(t) - 1| \\le 0.02\\) for all \\(t \\ge T_s\\).\nApproximate envelope of oscillation from \\(c(t)\\):\n\\[\n\\left|\\frac{1}{\\sqrt{1-\\zeta^2}}e^{-\\zeta\\omega_n t}\\right| \\le 0.02\n\\]\nSolve\n\\[\n\\frac{1}{\\sqrt{1-\\zeta^2}}e^{-\\zeta\\omega_n t} = 0.02\n\\]\n\\[\nT_s = \\frac{-\\ln(0.02\\sqrt{1-\\zeta^2})}{\\zeta\\omega_n}\n\\]\nNumerator changes slowly with \\(\\zeta\\); we often approximate:\n\\[\nT_s \\approx \\frac{4}{\\zeta\\omega_n}\n\\]\n\nExplain: - Numerator ranges roughly 3.9–4.7 over typical \\(\\zeta\\) values. - Using 4 is a convenient engineering approximation (“4 time constants”).\nReinforce that \\(T_s\\) is dominated by the real part of the poles: larger \\(\\zeta\\omega_n\\) → faster decay."
+  },
+  {
+    "objectID": "control_4.html#rise-time-t_r-for-underdamped-systems",
+    "href": "control_4.html#rise-time-t_r-for-underdamped-systems",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Rise Time \\(T_r\\) for Underdamped Systems",
+    "text": "Rise Time \\(T_r\\) for Underdamped Systems\nThere is no simple closed-form formula like for \\(T_p\\) or \\(T_s\\).\nApproach:\n\nNormalize time by \\(\\omega_n\\) (use variable \\(\\omega_n t\\)).\nFor a given \\(\\zeta\\), numerically solve\n\n\\(c(t) = 0.1\\) and \\(c(t) = 0.9\\),\nThen \\(T_r = t_{0.9} - t_{0.1}\\)."
+  },
+  {
+    "objectID": "control_4.html#example-compute-t_p-os-t_s-t_r",
+    "href": "control_4.html#example-compute-t_p-os-t_s-t_r",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Example: Compute \\(T_p\\), %OS, \\(T_s\\), \\(T_r\\)",
+    "text": "Example: Compute \\(T_p\\), %OS, \\(T_s\\), \\(T_r\\)\n(Example 4.5)\nGiven\n\\[\nG(s) = \\frac{100}{s^2 + 15s + 100}\n\\]\n\nPut in standard form:\n\n\\(\\omega_n^2 = 100\\) → \\(\\omega_n = 10\\).\n\\(2\\zeta\\omega_n = 15\\) → \\(\\zeta = \\frac{15}{2\\cdot10} = 0.75\\).\n\nUse formulas:\n\n\\(T_p = \\dfrac{\\pi}{\\omega_n\\sqrt{1-\\zeta^{2}}}\n       = \\dfrac{\\pi}{10\\sqrt{1-0.75^2}} \\approx 0.475\\,\\)s.\n\\(\\%OS = e^{-\\zeta\\pi/\\sqrt{1-\\zeta^2}}\\times100\n      \\approx 2.84\\%\\).\n\\(T_s \\approx \\dfrac{4}{\\zeta\\omega_n}\n          = \\dfrac{4}{0.75\\cdot10} \\approx 0.533\\,\\)s.\nFrom Fig. 4.16, for \\(\\zeta=0.75\\), \\(\\omega_n T_r \\approx 2.3\\) → \\(T_r = 2.3/10 = 0.23\\,\\)s.\n\n\n\nKey lesson: we obtained all major time-domain specs without ever computing \\(c(t)\\) explicitly.\nStudents should recognize this as a powerful shortcut that will be used repeatedly in later chapters (root locus, PID tuning, etc.)."
+  },
+  {
+    "objectID": "control_4.html#geometric-interpretation-in-the-s-plane",
+    "href": "control_4.html#geometric-interpretation-in-the-s-plane",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Geometric Interpretation in the \\(s\\)-Plane",
+    "text": "Geometric Interpretation in the \\(s\\)-Plane\nFor underdamped poles:\n\\[\ns_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}\n\\]\nIn the \\(s\\)-plane (Fig. 4.17):\n\n\n\nPole plot for underdamped second-order system (Fig. 4.17)"
+  },
+  {
+    "objectID": "control_4.html#lines-of-constant-t_p-t_s-and-os",
+    "href": "control_4.html#lines-of-constant-t_p-t_s-and-os",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Lines of Constant \\(T_p\\), \\(T_s\\), and %OS",
+    "text": "Lines of Constant \\(T_p\\), \\(T_s\\), and %OS\n\n\n\nLines of constant \\(T_p\\), \\(T_s\\), and %OS (Fig. 4.18)\n\n\nInterpretation:\n\nVertical lines: same real part → same exponential damping → approximate same \\(T_s\\).\nHorizontal lines: same imaginary part → same oscillation frequency → same \\(T_p\\).\nRadial lines: same \\(\\zeta\\) → same %OS.\n\n\nUse this picture to preview control design: - In root locus design, controller gains “slide” poles along trajectories in the \\(s\\)-plane. - Designers choose a target region in the \\(s\\)-plane satisfying constraints on overshoot and speed.\nShow that as you move outwards along a constant \\(\\zeta\\) ray, the time response looks similar but scaled in time."
+  },
+  {
+    "objectID": "control_4.html#how-pole-movement-affects-response",
+    "href": "control_4.html#how-pole-movement-affects-response",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "How Pole Movement Affects Response",
+    "text": "How Pole Movement Affects Response\n\n\n\nStep responses as poles move (Fig. 4.19a–c)"
+  },
+  {
+    "objectID": "control_4.html#example-time-specs-from-pole-location",
+    "href": "control_4.html#example-time-specs-from-pole-location",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Example: Time Specs from Pole Location",
+    "text": "Example: Time Specs from Pole Location\n(Example 4.6)\nGiven poles at (Fig. 4.20):\n\n\n\nPole plot for Example 4.6\n\n\n\nReal part: \\(-3\\) → \\(\\sigma_d = 3\\).\nImag part: \\(7\\) → \\(\\omega_d = 7\\).\nRadial distance: \\(\\omega_n = \\sqrt{3^2 + 7^2} = 7.616\\).\nAngle: \\(\\theta = \\tan^{-1}(7/3)\\) → \\(\\zeta = \\cos\\theta = 0.394\\)."
+  },
+  {
+    "objectID": "control_4.html#design-example-mechanical-system-specs-component-values",
+    "href": "control_4.html#design-example-mechanical-system-specs-component-values",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Design Example: Mechanical System Specs → Component Values",
+    "text": "Design Example: Mechanical System Specs → Component Values\n(Example 4.7)\nRotational mechanical system (Fig. 4.21):\n\n\n\nRotational system for Example 4.7\n\n\nTransfer function:\n\\[\nG(s) = \\frac{\\Theta(s)}{T(s)} = \\frac{1/J}{s^2 + (D/J)s + (K/J)}\n\\]"
+  },
+  {
+    "objectID": "control_4.html#skill-check-complete-spec-from-gs",
+    "href": "control_4.html#skill-check-complete-spec-from-gs",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Skill Check – Complete Spec from \\(G(s)\\)",
+    "text": "Skill Check – Complete Spec from \\(G(s)\\)\n(Exercise 4.5)\nGiven:\n\\[\nG(s) = \\frac{361}{s^{2}+16s+361}\n\\]\n\n\\(\\omega_n^{2} = 361 \\Rightarrow \\omega_n = 19\\).\n\\(2\\zeta\\omega_n = 16 \\Rightarrow \\zeta = \\frac{16}{2\\cdot 19} = 0.421\\).\n\\(T_s \\approx \\frac{4}{\\zeta\\omega_n} = \\frac{4}{0.421\\cdot19} \\approx 0.5\\) s.\n\\(T_p = \\frac{\\pi}{\\omega_n\\sqrt{1-\\zeta^{2}}} \\approx 0.182\\) s.\nFrom Fig. 4.16: \\(\\omega_n T_r \\approx 1.5\\) (for \\(\\zeta\\approx 0.42\\)) → \\(T_r \\approx 0.079\\) s.\n\\(\\%OS = e^{-\\zeta\\pi/\\sqrt{1-\\zeta^2}}\\times100 \\approx 23.3\\%\\).\n\n\nEncourage students to check each computation carefully, especially %OS.\nThis exercise ties together all main formulas and shows the power of the standard second-order form."
+  },
+  {
+    "objectID": "control_4.html#formulas-summary-first--second-order-time-response",
+    "href": "control_4.html#formulas-summary-first--second-order-time-response",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Formulas Summary – First- & Second-Order Time Response",
+    "text": "Formulas Summary – First- & Second-Order Time Response\nFirst-order system\n\nTransfer function: \\[\nG(s) = \\frac{K}{s+a},\\quad a&gt;0\n\\]\nUnit step response: \\[\nc(t) = \\frac{K}{a}\\left(1-e^{-at}\\right)\n\\]\nTime constant: \\(\\tau = 1/a\\).\nRise time (10–90%): \\(T_r \\approx 2.2/a = 2.2\\tau\\).\nSettling time (2%): \\(T_s \\approx 4/a = 4\\tau\\)."
+  },
+  {
+    "objectID": "control_4.html#optional-concept-map-mermaid-diagram",
+    "href": "control_4.html#optional-concept-map-mermaid-diagram",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Optional Concept Map (Mermaid Diagram)",
+    "text": "Optional Concept Map (Mermaid Diagram)\n\n\n\n\n\n\n\n\n\n\n\n\nUse this concept map to reinforce how: - \\(G(s)\\) determines poles and \\((\\zeta,\\omega_n)\\). - Poles determine geometry in \\(s\\)-plane. - Geometry and \\((\\zeta,\\omega_n)\\) determine time-domain specs and the qualitative shape of the response."
+  },
+  {
+    "objectID": "control_4.html#getting-started-live-python-in-the-browser",
+    "href": "control_4.html#getting-started-live-python-in-the-browser",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Getting Started: Live Python in the Browser",
+    "text": "Getting Started: Live Python in the Browser\nYou can run Python code directly in this slide using Pyodide.\nTry modifying the parameters and re-running.\n\n\n\n\n\n\n\nHave students: - Change a to several values (e.g., 1, 2, 5, 10, 50). - Observe how the time constant and settling time scale.\nThis introduces them to the idea that pole location determines response speed."
+  },
+  {
+    "objectID": "control_4.html#interactive-first-order-step-response-shape",
+    "href": "control_4.html#interactive-first-order-step-response-shape",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Interactive: First-Order Step Response Shape",
+    "text": "Interactive: First-Order Step Response Shape\nExplore how the first-order step response\n\\[\nc(t) = 1 - e^{-a t}\n\\]\nchanges as the pole location \\(s=-a\\) moves.\n\n\n\n\n\n\n\nAsk: - Increase a — what happens to the response speed? - How does this relate to the pole moving farther left on the real axis?\nStudents should see that larger a → faster rise and settling."
+  },
+  {
+    "objectID": "control_4.html#reactive-controls-first-order-system-explorer",
+    "href": "control_4.html#reactive-controls-first-order-system-explorer",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Reactive Controls: First-Order System Explorer",
+    "text": "Reactive Controls: First-Order System Explorer\nUse the slider to change the pole location \\(s=-a\\) and see how the step response changes.\n\nviewof a_fo = Inputs.range(\n  [0.5, 20],\n  {step: 0.5, label: \"First-order pole magnitude a (pole at s = -a)\"}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\nGuide questions: - Move the slider to small a (near 0.5). What happens to \\(T_s\\)? - Move to large a (near 20). How does the response change?\nStudents should connect: - \\(T_s \\approx 4/a\\). - The graphical interpretation: how long until the curve stays close to 1."
+  },
+  {
+    "objectID": "control_4.html#interactive-second-order-parameters-from-coefficients",
+    "href": "control_4.html#interactive-second-order-parameters-from-coefficients",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Interactive: Second-Order Parameters from Coefficients",
+    "text": "Interactive: Second-Order Parameters from Coefficients\nGiven\n\\[\nG(s) = \\frac{b}{s^2 + a s + b}\n\\]\nwe have\n\\[\n\\omega_n = \\sqrt{b}, \\quad \\zeta = \\frac{a}{2\\sqrt{b}}\n\\]\nTry changing \\(a\\) and \\(b\\) and see how \\(\\zeta\\) and \\(\\omega_n\\) change.\n\n\n\n\n\n\n\nHave students: - Try a combination that yields \\(\\zeta &lt; 1\\) (e.g., \\(a=4.2\\), \\(b=36\\)). - Try a large \\(a\\) to get \\(\\zeta &gt; 1\\). - Observe how the classification changes.\nThis builds intuition on how numerator/denominator coefficients relate to damping."
+  },
+  {
+    "objectID": "control_4.html#reactive-second-order-zeta-omega_n-time-specs",
+    "href": "control_4.html#reactive-second-order-zeta-omega_n-time-specs",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Reactive: Second-Order \\((\\zeta, \\omega_n)\\) → Time Specs",
+    "text": "Reactive: Second-Order \\((\\zeta, \\omega_n)\\) → Time Specs\nUse sliders to pick \\(\\zeta\\) and \\(\\omega_n\\), then see \\(T_p\\), \\(T_s\\), and %OS.\n\nviewof zeta = Inputs.range(\n  [0.0, 1.0],\n  {step: 0.02, label: \"Damping ratio ζ (0 ≤ ζ ≤ 1)\"}\n)\nviewof omega_n = Inputs.range(\n  [1, 30],\n  {step: 1, label: \"Natural frequency ω_n (rad/s)\"}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAsk: - For fixed \\(\\zeta\\), increase \\(\\omega_n\\). What happens to \\(T_p\\) and \\(T_s\\)? - For fixed \\(\\omega_n\\), change \\(\\zeta\\). How do \\(T_p\\), \\(T_s\\), and %OS change?\nThey should see that: - Larger \\(\\omega_n\\) scales time faster (shorter \\(T_p\\), \\(T_s\\)). - Larger \\(\\zeta\\) reduces overshoot and also changes \\(T_p\\), \\(T_s\\)."
+  },
+  {
+    "objectID": "control_4.html#reactive-plot-underdamped-second-order-step-response",
+    "href": "control_4.html#reactive-plot-underdamped-second-order-step-response",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Reactive Plot: Underdamped Second-Order Step Response",
+    "text": "Reactive Plot: Underdamped Second-Order Step Response\nNow visualize the full step response for your chosen \\((\\zeta, \\omega_n)\\).\n\n\n\n\n\n\n\nHave students: - Choose \\(\\zeta\\) near 0.2: see large overshoot and long ringing. - Choose \\(\\zeta\\) near 0.7–0.8: small overshoot, fast settling. - Compare with earlier formulas for %OS and \\(T_s\\).\nThis integrates formulas with direct visual intuition."
+  },
+  {
+    "objectID": "control_4.html#reactive-from-poles-in-the-s-plane-to-time-specs",
+    "href": "control_4.html#reactive-from-poles-in-the-s-plane-to-time-specs",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Reactive: From Poles in the \\(s\\)-Plane to Time Specs",
+    "text": "Reactive: From Poles in the \\(s\\)-Plane to Time Specs\nUse sliders to set the real and imaginary parts of a complex pole pair \\(s = -\\sigma_d \\pm j\\omega_d\\) (under-damped case only, \\(\\sigma_d&gt;0\\), \\(\\omega_d&gt;0\\)).\n\nviewof sigma_d = Inputs.range(\n  [0.5, 10],\n  {step: 0.5, label: \"Real part σ_d (&gt;0) (damping rate)\"}\n)\nviewof omega_d = Inputs.range(\n  [0.5, 20],\n  {step: 0.5, label: \"Imag part ω_d (&gt;0) (oscillation frequency)\"}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nQuestions to explore: - For fixed \\(\\sigma_d\\), increase \\(\\omega_d\\): how does \\(T_p\\) change? - For fixed \\(\\omega_d\\), increase \\(\\sigma_d\\): how does \\(T_s\\) and %OS change?\nConnect back to the “lines of constant \\(T_p\\), \\(T_s\\), and %OS” slide in the main deck."
+  },
+  {
+    "objectID": "control_4.html#reactive-plot-pole-location-and-step-response-together",
+    "href": "control_4.html#reactive-plot-pole-location-and-step-response-together",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Reactive Plot: Pole Location and Step Response Together",
+    "text": "Reactive Plot: Pole Location and Step Response Together\nThis block simultaneously shows:\n\nPole positions in the \\(s\\)-plane.\nCorresponding underdamped step response.\n\n\n\n\n\n\n\n\nEncourage: - Move poles farther left (increase σ_d) → watch response settle faster. - Move poles up/down (change ωd) → frequency of oscillation and \\(T_p\\) change, while envelope slope (\\(σ_d\\)) stays same.\nThis is a direct visual of “move poles, change time response.”"
+  },
+  {
+    "objectID": "control_4.html#design-sandbox-meet-a-os-and-t_s-spec",
+    "href": "control_4.html#design-sandbox-meet-a-os-and-t_s-spec",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Design Sandbox: Meet a %OS and \\(T_s\\) Spec",
+    "text": "Design Sandbox: Meet a %OS and \\(T_s\\) Spec\nSuppose we want an underdamped second-order system with:\n\nMax %OS requirement: \\(\\leq\\) given spec.\nSettling time \\(T_s\\) requirement: \\(\\leq\\) given spec.\n\nWe’ll: 1. Choose a %OS spec, compute \\(\\zeta\\). 2. Choose a \\(T_s\\) spec, compute \\(\\omega_n\\). 3. Show the resulting step response.\n\nviewof OS_spec = Inputs.range(\n  [1, 40],\n  {step: 1, label: \"Desired maximum %OS (1–40%)\"}\n)\nviewof Ts_spec = Inputs.range(\n  [0.1, 5],\n  {step: 0.1, label: \"Desired maximum settling time Ts (s)\"}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGuide students: - Set %OS_spec to 5% and Ts_spec to 1 s; observe ζ and ω_n. - Then relax Ts_spec (e.g., 3 s) and see how ω_n changes. - Experiment with more aggressive specs and see how ζ, ω_n, and the response behave.\nThis mimics a basic design workflow: time-domain specs → \\((\\zeta, \\omega_n)\\) → system behavior."
+  },
+  {
+    "objectID": "control_4.html#wrap-up-interactive-reflections",
+    "href": "control_4.html#wrap-up-interactive-reflections",
+    "title": "Time Response: Analysis of Control Systems",
+    "section": "Wrap-Up Interactive Reflections",
+    "text": "Wrap-Up Interactive Reflections\nUse the editors and reactive controls to answer:\n\nHow does moving real poles left or right impact:\n\nFirst-order response speed?\nSecond-order \\(T_s\\) and \\(T_p\\)?\n\nHow does changing damping ratio \\(\\zeta\\) at fixed \\(\\omega_n\\) affect:\n\nPercent overshoot?\nNumber of oscillations before settling?\n\nFor a given performance requirement (e.g., \\(T_s\\) and %OS), can you:\n\nCompute suitable \\(\\zeta\\) and \\(\\omega_n\\)?\nSketch approximate pole locations in the \\(s\\)-plane?\n\n\n\nEncourage students to: - Screenshot or save plots for different parameter choices. - Discuss trade-offs (speed vs overshoot) with peers. - Reuse these interactive notebooks as a study tool before exams."
+  },
+  {
+    "objectID": "control_5.html#interactive-deck",
+    "href": "control_5.html#interactive-deck",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Interactive Deck",
+    "text": "Interactive Deck"
+  },
+  {
+    "objectID": "control_5.html#live-practice-cascade-of-subsystems-no-loading",
+    "href": "control_5.html#live-practice-cascade-of-subsystems-no-loading",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Live Practice: Cascade of Subsystems (No Loading)",
+    "text": "Live Practice: Cascade of Subsystems (No Loading)\nModify the transfer functions and see how the equivalent cascade behaves.\n\n\n\n\n\n\n\nAsk students to: - Change G1, G2, G3 and predict what G_eq will be before running. - Connect this to the formula ( G_e(s) = G_3(s)G_2(s)G_1(s) ) when no loading is present.\nDiscuss how, in a full transfer-function setting, each ( G_i(s) ) would be a rational function in ( s ), not just a scalar."
+  },
+  {
+    "objectID": "control_5.html#live-practice-parallel-combination",
+    "href": "control_5.html#live-practice-parallel-combination",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Live Practice: Parallel Combination",
+    "text": "Live Practice: Parallel Combination\nExperiment with a parallel combination of two subsystems and see their algebraic sum.\n\n\n\n\n\n\n\nConnect to the formula \\(G_e(s) = \\pm G_1(s) \\pm G_2(s) \\dots\\).\nAsk: - What happens if G1 and G2 nearly cancel? - How might this appear in a physical system (e.g., two sensors with opposite polarity)?"
+  },
+  {
+    "objectID": "control_5.html#interactive-closed-loop-gain-from-g-and-h",
+    "href": "control_5.html#interactive-closed-loop-gain-from-g-and-h",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Interactive: Closed-Loop Gain from G and H",
+    "text": "Interactive: Closed-Loop Gain from G and H\nPlay with forward-path and feedback gains and see the closed-loop gain.\nWe use the standard form:\n\\[\nG_{\\text{CL}}(s) = \\frac{G(s)}{1 + G(s)H(s)}\n\\]\n(assuming negative feedback).\n\n\n\n\n\n\n\nAsk students to: - Increase G while keeping H fixed. What happens to G_cl? Does it saturate? - Relate to control concept: large loop gain can make the closed-loop gain approach \\(1/H\\), improving tracking and reducing sensitivity."
+  },
+  {
+    "objectID": "control_5.html#reactive-overshoot-vs.-damping-ratio-ζ",
+    "href": "control_5.html#reactive-overshoot-vs.-damping-ratio-ζ",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Reactive: Overshoot vs. Damping Ratio ζ",
+    "text": "Reactive: Overshoot vs. Damping Ratio ζ\nUse the slider to change damping ratio \\(\\zeta\\), and observe the predicted percent overshoot of a standard second-order system.\n\nviewof zeta = Inputs.range([0.05, 1.2], {step: 0.05, label: \"Damping ratio ζ\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExplain to students: - For underdamped second-order systems (\\(0&lt;\\zeta&lt;1\\)), percent overshoot is \\(\\%OS = e^{-\\zeta\\pi/\\sqrt{1-\\zeta^{2}}}\\times 100\\). - As ζ increases towards 1, %OS decreases to 0.\nEncourage them to find approximate ζ for common overshoots:\n\n≈0.7 for about 5% overshoot.\n≈0.59 for 10% overshoot (as in Example 5.4)."
+  },
+  {
+    "objectID": "control_5.html#reactive-second-order-step-response-ζ-ωₙ-sliders",
+    "href": "control_5.html#reactive-second-order-step-response-ζ-ωₙ-sliders",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Reactive: Second-Order Step Response (ζ, ωₙ Sliders)",
+    "text": "Reactive: Second-Order Step Response (ζ, ωₙ Sliders)\nExplore how changing \\(\\zeta\\) and \\(\\omega_n\\) changes the step response of a standard second-order closed-loop system:\n\\[\nT(s) = \\frac{\\omega_n^2}{s^2 + 2\\zeta\\omega_n s + \\omega_n^2}\n\\]\n\nviewof zeta2 = Inputs.range([0.1, 1.0], {step: 0.05, label: \"Damping ratio ζ\"})\nviewof wn = Inputs.range([0.5, 10.0], {step: 0.5, label: \"Natural frequency ωₙ (rad/s)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGuide students through:\n\nLow ζ ⇒ oscillatory, high overshoot.\nHigher ωₙ ⇒ faster oscillations and faster response.\nζ ≈ 1 ⇒ sluggish but no overshoot (critically damped/overdamped region).\n\nHave them pick a ζ and ωₙ pair that would satisfy, for example, “&lt;10% overshoot and settling time &lt;2s” and describe what they see in the plot."
+  },
+  {
+    "objectID": "control_5.html#reactive-design-k-for-10-overshoot-example-5.4",
+    "href": "control_5.html#reactive-design-k-for-10-overshoot-example-5.4",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Reactive: Design K for 10% Overshoot (Example 5.4)",
+    "text": "Reactive: Design K for 10% Overshoot (Example 5.4)\nHere we revisit Example 5.4 interactively.\nRecall:\n\\[\nT(s) = \\frac{K}{s^{2} + 5s + K}\n\\]\nFor a 10% overshoot, we want \\(\\zeta \\approx 0.591\\). Use the slider to choose K and see the resulting ζ and %OS.\n\nviewof K = Inputs.range([1, 50], {step: 0.5, label: \"Gain K\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAsk students: - Adjust K until percent_overshoot is close to 10%. What K do they find? - Compare to the analytical result \\(K \\approx 17.9\\).\nThis demonstrates inverse design: choose K to realize a desired overshoot."
+  },
+  {
+    "objectID": "control_5.html#reactive-masons-rule-simple-two-loop-example",
+    "href": "control_5.html#reactive-masons-rule-simple-two-loop-example",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Reactive: Mason’s Rule – Simple Two-Loop Example",
+    "text": "Reactive: Mason’s Rule – Simple Two-Loop Example\nConsider a simple signal-flow graph with:\n\nForward path gain \\(T_1 = G_1 G_2\\).\nA single feedback loop with loop gain \\(L_1 = G_2 H\\).\n\nFor this simple case, Mason’s rule gives:\n\\[\n\\Delta = 1 - L_1, \\quad \\Delta_1 = 1, \\quad G(s) = \\frac{T_1 \\Delta_1}{\\Delta}\n= \\frac{G_1 G_2}{1 - G_2 H}\n\\]\nUse sliders to change \\(G_1, G_2, H\\) and observe the resulting transfer function.\n\nviewof G1 = Inputs.range([0.1, 10], {step: 0.1, label: \"G₁\"})\nviewof G2 = Inputs.range([0.1, 10], {step: 0.1, label: \"G₂\"})\nviewof H  = Inputs.range([0.0, 5], {step: 0.1, label: \"H\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nUse this to: - Show that Mason’s formula collapses to a familiar feedback expression in simple cases. - Reinforce the definitions: forward path \\(T_1\\), loop gain \\(L_1\\), and \\(\\Delta = 1 - \\text{sum of loops}\\) when no nontouching loops exist.\nAsk students what happens when Delta gets close to zero (i.e., loop gain approaching unity)."
+  },
+  {
+    "objectID": "control_5.html#live-practice-simple-block-moves-as-algebra",
+    "href": "control_5.html#live-practice-simple-block-moves-as-algebra",
+    "title": "Reduction of Multiple Subsystems",
+    "section": "Live Practice: Simple Block Moves as Algebra",
+    "text": "Live Practice: Simple Block Moves as Algebra\nTreat moving a gain G across a summing junction like factoring in algebra.\nConsider:\n\\[\nC(s) = G\\big(R(s) - X(s)\\big) \\quad \\text{vs.} \\quad C(s) = GR(s) - GX(s)\n\\]\n\n\n\n\n\n\n\nInvite students to edit G, R, and X to see that the equality always holds.\nThen connect to moving a block left or right across a summing junction (Figure 5.7): the operation is just factoring/unfactoring in algebra."
   }
 ]
