@@ -1852,7 +1852,7 @@
     "href": "index.html#week-2-analog-signal-conditioning",
     "title": "Instrumentation",
     "section": "Week 2 (Analog Signal Conditioning)",
-    "text": "Week 2 (Analog Signal Conditioning)\n\nInstrumentation 1.2\nInstrumentation 1.3\nInstrumentation 1.4\nInstrumentation 2.1"
+    "text": "Week 2 (Analog Signal Conditioning)\n\nInstrumentation 1.2\nInstrumentation 1.3\nInstrumentation 2.1"
   },
   {
     "objectID": "index.html#week-3-analog-signal-conditioning",
@@ -1880,7 +1880,7 @@
     "href": "index.html#week-6-mechanical-sensors",
     "title": "Instrumentation",
     "section": "Week 6 (Mechanical Sensors)",
-    "text": "Week 6 (Mechanical Sensors)\n\nInstrumentation 5.2"
+    "text": "Week 6 (Mechanical Sensors)\n\nInstrumentation 5.2\nInstrumentation 5.3"
   },
   {
     "objectID": "index.html#week-7",
@@ -4464,5 +4464,236 @@
     "title": "Motion, Pressure, and Flow Sensors",
     "section": "Hydrostatic Pressure vs Depth",
     "text": "Hydrostatic Pressure vs Depth\nUse sliders to explore \\(p = \\rho g h\\) for different depths and fluid densities.\n\nviewof rho_fluid = Inputs.range([500, 2000], {step: 50, value: 1000, label: \"Density ρ [kg/m³]\"})\nviewof h_depth = Inputs.range([0, 5], {step: 0.1, value: 2.0, label: \"Depth h [m]\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAsk:\n\nWhat is the slope of \\(p\\) vs \\(h\\)? Does it match \\(\\rho g\\)?\nHow does changing \\(\\rho\\) from 1000 to 1300 kg/m³ affect the curve?"
+  },
+  {
+    "objectID": "ins_53.html#learning-objectives",
+    "href": "ins_53.html#learning-objectives",
+    "title": "Flow Sensors",
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\nBy the end of this session, you should be able to:\n\nDistinguish between solid, liquid, and gas flow measurements in industrial systems.\nExplain how conveyor‑belt solid‑flow sensors work and compute mass flow from basic measurements.\nDefine and convert between common liquid flow units: volume flow, velocity, and mass/weight flow.\nDescribe and apply the restriction (differential‑pressure) method for measuring liquid flow in pipes.\nExplain how pitot tubes, obstruction meters (rotameter, vane, turbine), and magnetic flow meters operate.\nRelate the physical sensor outputs (load cell, LVDT, DP cell, etc.) to electrical signals for use in control systems.\n\n\nEmphasize that flow measurement is central to almost every process industry: chemical plants, water treatment, HVAC, automotive test benches, semiconductor fabs, etc.\nAlso connect to prior topics: pressure, displacement, and strain sensors. Flow is often not measured directly but converted to pressure, displacement, or force first, then sensed with familiar transducers (load cell, LVDT, etc.)."
+  },
+  {
+    "objectID": "ins_53.html#why-flow-measurement-matters-in-ece-industry",
+    "href": "ins_53.html#why-flow-measurement-matters-in-ece-industry",
+    "title": "Flow Sensors",
+    "section": "Why Flow Measurement Matters in ECE & Industry",
+    "text": "Why Flow Measurement Matters in ECE & Industry\n\nProcess industries run on moving material:\n\nCrude oil in pipelines\nCooling water in power plants\nSlurries in mineral processing\nAir/fuel in automotive engines\n\nControl goals often expressed in terms of flow:\n\nMaintain \\(150\\ \\mathrm{gal/min}\\) of cooling water\nKeep blood flow in a medical pump within safe limits\nDeliver accurate fuel mass flow to an engine cylinder\n\nFor ECE:\n\nSensors → signal conditioning → data acquisition → digital control systems\n\n\n\n\n\n\n\n\nImportant\n\n\nFlow is rarely measured “directly.” It is usually inferred from another measurable quantity such as weight, velocity, pressure drop, rotation speed, or induced voltage.\n\n\n\n\nMake a connection to block diagrams: process variable (flow) → sensor → transmitter → controller → actuator.\nHighlight that in real plants, flow loops are among the most common control loops along with temperature and pressure."
+  },
+  {
+    "objectID": "ins_53.html#three-broad-flow-categories",
+    "href": "ins_53.html#three-broad-flow-categories",
+    "title": "Flow Sensors",
+    "section": "Three Broad Flow Categories",
+    "text": "Three Broad Flow Categories\n\nSolid flow\n\nDiscrete items (cars on an assembly line)\nGranular solids or powders on conveyors (coal, grain, cement, pellets)\n\nLiquid flow\n\nWater, oils, chemicals in pipes and channels\n\nGas flow\n\nAir, natural gas, exhaust gases, compressed air\n\n\nWe will focus on:\n\nSolid‑flow on conveyors.\nLiquid flow in pipes, including several sensor types.\n\n\nMention that gas flow measurement often uses many of the same principles as liquid flow (pitot tubes, orifice plates, turbine meters, etc.), but with different calibration and compressibility effects. For this lecture, gas appears mainly with the pitot tube concept."
+  },
+  {
+    "objectID": "ins_53.html#solidflow-measurement-conveyor-systems",
+    "href": "ins_53.html#solidflow-measurement-conveyor-systems",
+    "title": "Flow Sensors",
+    "section": "6.1 Solid‑Flow Measurement: Conveyor Systems",
+    "text": "6.1 Solid‑Flow Measurement: Conveyor Systems\nSolid material can flow in several ways:\n\nOn conveyor belts (crushed ore, coal, packaged products).\nSuspended as particles in a liquid host, forming a slurry (treated as liquid flow).\n\nFor conveyors with granular solids or powders, we are typically interested in mass (or weight) flow rate:\n\nkg/min, kg/h\nlb/min, lb/h\n\nKey idea:\n\nMeasure how much mass is on a known length of conveyor, and use belt speed to compute mass flow per unit time.\n\n\nRelate to a simple thought experiment: counting the number of trucks passing a toll booth with known average mass per truck per hour. Here instead of counting items, we weigh a continuous layer of material over a known section."
+  },
+  {
+    "objectID": "ins_53.html#conveyor-belt-flow-concept",
+    "href": "ins_53.html#conveyor-belt-flow-concept",
+    "title": "Flow Sensors",
+    "section": "Conveyor Belt Flow Concept",
+    "text": "Conveyor Belt Flow Concept\n\n\nDefinitions\n\n\\(W\\) — weight of material on a section of belt of length \\(L\\) (kg or lb)\n\\(R\\) — belt speed (m/min or ft/min)\n\\(L\\) — length of weighing platform (m or ft)\n\\(Q\\) — flow (kg/min or lb/min)\n\nFormula\n\\[\nQ = \\frac{W R}{L} \\tag{34}\n\\]\nInterpretation:\n\n\\(W/L\\) = weight per unit length of belt.\nMultiply by \\(R\\) (length per unit time) → weight per unit time.\n\n\n\n\n\nFigure 37 Conveyor system for solid-flow measurement.\n\n\n\n\nWalk through the physical scenario:\n\nMaterial falls from a hopper, controlled by a mechanical valve.\nIt accumulates on a section of conveyor belt that passes over a weighing platform of length \\(L\\).\nThe platform deflects slightly due to the material weight.\nA load cell or LVDT measures this deflection.\n\nEmphasize: the sensor is not measuring “flow” directly, but instantaneous weight over a length. Combined with belt speed, this yields flow."
+  },
+  {
+    "objectID": "ins_53.html#conveyor-flow-sensor-implementation",
+    "href": "ins_53.html#conveyor-flow-sensor-implementation",
+    "title": "Flow Sensors",
+    "section": "Conveyor Flow: Sensor Implementation",
+    "text": "Conveyor Flow: Sensor Implementation\n\n\n\nThe “flow sensor” is a system:\n\nHopper + valve (controls how much falls on the belt).\nConveyor with known speed \\(R\\).\nWeighing platform of length \\(L\\).\n\nThe transducer on the platform:\n\nLoad cell (strain gauge) → measures deflection due to weight.\nOr LVDT → measures displacement (droop) of the belt.\n\n\n\nSignal chain:\n\n\n\n\n\n\n\n\n\n\n\n\n\nExplain that from the ECE point of view, the actual “sensor” is the load cell or LVDT.\nOften the system includes signal conditioning (Wheatstone bridge, instrumentation amplifier) and a microcontroller or PLC that computes \\(Q\\) and maybe closes a control loop on hopper valve opening or belt speed."
+  },
+  {
+    "objectID": "ins_53.html#example-18-coal-conveyor-flow",
+    "href": "ins_53.html#example-18-coal-conveyor-flow",
+    "title": "Flow Sensors",
+    "section": "Example 18 – Coal Conveyor Flow",
+    "text": "Example 18 – Coal Conveyor Flow\nA coal conveyor system moves at \\(100\\ \\mathrm{ft/min}\\). The weighing platform is \\(5.0\\ \\mathrm{ft}\\) long, and a particular weighing shows that \\(75\\ \\mathrm{lb}\\) of coal are on the platform.\nFind: coal delivery in \\(\\mathrm{lb/h}\\).\nGiven:\n\n\\(R = 100\\ \\mathrm{ft/min}\\)\n\\(L = 5.0\\ \\mathrm{ft}\\)\n\\(W = 75\\ \\mathrm{lb}\\)"
+  },
+  {
+    "objectID": "ins_53.html#example-18-solution",
+    "href": "ins_53.html#example-18-solution",
+    "title": "Flow Sensors",
+    "section": "Example 18 – Solution",
+    "text": "Example 18 – Solution\nUse Equation (34):\n\\[\nQ = \\frac{W R}{L}\n\\]\nSubstitute values:\n\\[\nQ = \\frac{(75\\ \\mathrm{lb})(100\\ \\mathrm{ft/min})}{5\\ \\mathrm{ft}}\n\\]\n\\[\nQ = 1500\\ \\mathrm{lb/min}\n\\]\nConvert to \\(\\mathrm{lb/h}\\):\n\\[\nQ = 1500\\ \\mathrm{lb/min} \\times 60\\ \\mathrm{min/h} = 90{,}000\\ \\mathrm{lb/h}\n\\]\nAnswer: \\(Q = 9.0 \\times 10^4\\ \\mathrm{lb/h}\\).\n\n\n\n\n\n\nTip\n\n\nCheck units carefully:\n\nft cancels in \\(W R / L\\), leaving lb/min.\nThen multiply by 60 to get lb/h.\n\n\n\n\n\nUse this example to highlight how straightforward these calculations can be and how easily a PLC or microcontroller can compute \\(Q\\) in real time given a continuous measurement of \\(W\\) and a known \\(R\\).\nOptionally ask students: - If the belt speed doubles while \\(W\\) stays the same, what happens to flow? (It doubles.) - If we want to keep \\(Q\\) constant, how should we adjust hopper valve opening as \\(R\\) changes?"
+  },
+  {
+    "objectID": "ins_53.html#liquid-flow-overview",
+    "href": "ins_53.html#liquid-flow-overview",
+    "title": "Flow Sensors",
+    "section": "6.2 Liquid Flow – Overview",
+    "text": "6.2 Liquid Flow – Overview\nLiquid flow measurement is central in:\n\nChemical plants, refineries.\nWater and wastewater treatment.\nPower plants (cooling water, boiler feed).\nFood and pharmaceutical industries.\n\nChallenge:\n\nMany fluid types (water, oil, corrosive chemicals, slurries).\nWide ranges of pressure, temperature, viscosity.\nDifferent line sizes and materials.\n\nWe will cover basic ideas and common measurement approaches, not full fluid mechanics.\n\nClarify that advanced fluid mechanics (Navier–Stokes, Reynolds number, detailed friction models) are out of scope here. Our focus: what signals do sensors generate and how we interpret them using simple formulas."
+  },
+  {
+    "objectID": "ins_53.html#common-liquid-flow-descriptions",
+    "href": "ins_53.html#common-liquid-flow-descriptions",
+    "title": "Flow Sensors",
+    "section": "Common Liquid Flow Descriptions",
+    "text": "Common Liquid Flow Descriptions\nThree primary ways to describe liquid flow:\n\nVolume flow rate\nFlow velocity\nMass or weight flow rate\n\nEach is useful for different engineering tasks. ECE students should be comfortable converting among them, because sensors often measure one while the process cares about another."
+  },
+  {
+    "objectID": "ins_53.html#volume-flow-rate",
+    "href": "ins_53.html#volume-flow-rate",
+    "title": "Flow Sensors",
+    "section": "Volume Flow Rate",
+    "text": "Volume Flow Rate\n\nDefinition: volume delivered per unit time.\nTypical units:\n\n\\(\\mathrm{gal/min}\\)\n\\(\\mathrm{m^3/h}\\)\n\\(\\mathrm{ft^3/h}\\)\n\nConversion:\n\n\\(1\\ \\mathrm{gal} = 231\\ \\mathrm{in^3}\\)\n\n\nUsed when tank levels, mixing ratios, and pipeline capacities are more about how much volume per time than about mass."
+  },
+  {
+    "objectID": "ins_53.html#flow-velocity",
+    "href": "ins_53.html#flow-velocity",
+    "title": "Flow Sensors",
+    "section": "Flow Velocity",
+    "text": "Flow Velocity\nFlow velocity \\(V\\) is how fast the fluid moves along the pipe:\n\nUnits: m/s, ft/s, m/min, ft/min.\n\nRelationship to volume flow rate:\n\\[\nV = \\frac{Q}{A} \\tag{35}\n\\]\nWhere:\n\n\\(V\\) = flow velocity\n\\(Q\\) = volume flow rate\n\\(A\\) = cross‑sectional area of the pipe\n\nEquivalently:\n\\[\nQ = V A\n\\]\n\n\n\n\n\n\nNote\n\n\nFor a given pipe size, measuring velocity is equivalent to measuring volume flow. Many flow sensors are fundamentally velocity sensors (pitot tube, turbine meter) that are then converted to volume flow using \\(Q = V A\\).\n\n\n\n\nPoint out that in practice \\(V\\) is not perfectly uniform across the pipe; it may be higher in the center and lower near walls (velocity profile). Many techniques assume a fully developed flow and use calibration factors to relate a measured point or average velocity to total flow."
+  },
+  {
+    "objectID": "ins_53.html#mass-or-weight-flow-rate",
+    "href": "ins_53.html#mass-or-weight-flow-rate",
+    "title": "Flow Sensors",
+    "section": "Mass or Weight Flow Rate",
+    "text": "Mass or Weight Flow Rate\nMass/weight flow rate \\(F\\) is mass (or weight) per unit time:\n\nUnits: kg/h, kg/s, lb/h, lb/min.\n\nRelated to volume flow via fluid density:\n\\[\nF = \\rho Q \\tag{36}\n\\]\nWhere:\n\n\\(F\\) = mass or weight flow rate\n\\(\\rho\\) = mass or weight density (e.g., \\(\\mathrm{kg/m^3}\\) or \\(\\mathrm{lb/ft^3}\\))\n\\(Q\\) = volume flow rate\n\nWhen density is approximately constant (e.g., water at moderate temperatures), this relationship is straightforward.\n\n\n\n\n\n\nImportant\n\n\nControl applications that care about energy or chemical reaction stoichiometry (e.g., fuel feed, reactant dosing) often need mass flow, not just volume flow."
+  },
+  {
+    "objectID": "ins_53.html#example-19-from-velocity-to-volume-weight-flow",
+    "href": "ins_53.html#example-19-from-velocity-to-volume-weight-flow",
+    "title": "Flow Sensors",
+    "section": "Example 19 – From Velocity to Volume & Weight Flow",
+    "text": "Example 19 – From Velocity to Volume & Weight Flow\nWater is pumped through a \\(1.5\\ \\mathrm{in}\\) diameter pipe with a flow velocity of \\(2.5\\ \\mathrm{ft/s}\\).\nGiven:\n\nPipe diameter \\(d = 1.5\\ \\mathrm{in}\\)\nVelocity \\(V = 2.5\\ \\mathrm{ft/s}\\)\nWater weight density \\(\\rho = 62.4\\ \\mathrm{lb/ft^3}\\)\n\nFind:\n\nVolume flow rate \\(Q\\) in \\(\\mathrm{ft^3/min}\\).\nWeight flow rate \\(F\\) in \\(\\mathrm{lb/min}\\)."
+  },
+  {
+    "objectID": "ins_53.html#example-19-solution-step-1-crosssectional-area",
+    "href": "ins_53.html#example-19-solution-step-1-crosssectional-area",
+    "title": "Flow Sensors",
+    "section": "Example 19 – Solution (Step 1: Cross‑Sectional Area)",
+    "text": "Example 19 – Solution (Step 1: Cross‑Sectional Area)\nConvert diameter to feet:\n\\[\nd = 1.5\\ \\mathrm{in} \\times \\frac{1\\ \\mathrm{ft}}{12\\ \\mathrm{in}} = 0.125\\ \\mathrm{ft}\n\\]\nArea of circular pipe:\n\\[\nA = \\frac{\\pi d^2}{4}\n\\]\nCompute:\n\\[\nA = \\frac{(3.14)(0.125)^2}{4} = 0.0122\\ \\mathrm{ft^2} \\quad (\\text{approximately})\n\\]"
+  },
+  {
+    "objectID": "ins_53.html#example-19-solution-step-2-volume-flow-rate",
+    "href": "ins_53.html#example-19-solution-step-2-volume-flow-rate",
+    "title": "Flow Sensors",
+    "section": "Example 19 – Solution (Step 2: Volume Flow Rate)",
+    "text": "Example 19 – Solution (Step 2: Volume Flow Rate)\nUse \\(Q = V A\\):\n\\[\nQ = (2.5\\ \\mathrm{ft/s})(0.0122\\ \\mathrm{ft^2})\n\\]\nConvert seconds to minutes:\n\\[\nQ = (2.5\\ \\mathrm{ft/s})(0.0122\\ \\mathrm{ft^2})(60\\ \\mathrm{s/min})\n\\]\n\\[\nQ \\approx 1.8\\ \\mathrm{ft^3/min}\n\\]\nOptional: Convert to gallons per minute (gpm):\n\n\\(1\\ \\mathrm{ft^3} \\approx 7.48\\ \\mathrm{gal}\\)\n\n\\[\n1.8\\ \\mathrm{ft^3/min} \\approx 1.8 \\times 7.48 \\approx 13.5\\ \\mathrm{gal/min}\n\\]"
+  },
+  {
+    "objectID": "ins_53.html#example-19-solution-step-3-weight-flow-rate",
+    "href": "ins_53.html#example-19-solution-step-3-weight-flow-rate",
+    "title": "Flow Sensors",
+    "section": "Example 19 – Solution (Step 3: Weight Flow Rate)",
+    "text": "Example 19 – Solution (Step 3: Weight Flow Rate)\nUse Equation (36):\n\\[\nF = \\rho Q\n\\]\nSubstitute:\n\\[\nF = (62.4\\ \\mathrm{lb/ft^3})(1.8\\ \\mathrm{ft^3/min})\n\\]\n\\[\nF \\approx 112\\ \\mathrm{lb/min}\n\\]\nAnswer:\n\n\\(Q \\approx 1.8\\ \\mathrm{ft^3/min} \\approx 13.5\\ \\mathrm{gal/min}\\)\n\\(F \\approx 112\\ \\mathrm{lb/min}\\)\n\n\nEmphasize unit tracking in all steps.\nAsk students: if we double the pipe diameter but keep the same velocity, what happens to \\(Q\\) and \\(F\\)? (Area scales as \\(d^2\\), so both double squared; specifically they increase by factor of 4.)"
+  },
+  {
+    "objectID": "ins_53.html#pipe-flow-and-pressure-head",
+    "href": "ins_53.html#pipe-flow-and-pressure-head",
+    "title": "Flow Sensors",
+    "section": "Pipe Flow and Pressure Head",
+    "text": "Pipe Flow and Pressure Head\nLiquid flow in pipes is driven mainly by pressure difference:\n\nPressure can be expressed as head, \\(h\\), equivalent height of a liquid column.\nIn a tank feeding a pipe at its bottom, head is the height \\(h\\) of the liquid above the outlet.\n\n\n\n\nFigure 38 Flow through the pipe P is determined in part by the pressure due to the head h.\n\n\nMany factors affect the actual flow rate:\n\nViscosity of liquid.\nPipe size and roughness.\nTurbulence vs laminar flow.\nFittings, bends, valves, etc.\n\nOur focus: How to measure flow, not to model all of these details.\n\nYou can briefly mention Bernoulli’s equation as the basis for many flow relations, but say we are using simplified empirical equations with a constant \\(K\\) that embeds these complexities."
+  },
+  {
+    "objectID": "ins_53.html#restriction-flow-sensors-basic-principle",
+    "href": "ins_53.html#restriction-flow-sensors-basic-principle",
+    "title": "Flow Sensors",
+    "section": "Restriction Flow Sensors – Basic Principle",
+    "text": "Restriction Flow Sensors – Basic Principle\nOne of the most common liquid flow measurement methods:\n\nInsert a restriction in the pipe (venturi, nozzle, or orifice plate).\nFlow speeds up through the restriction → static pressure drops.\nMeasure pressure drop \\(\\Delta p = p_1 - p_2\\) across the restriction.\n\nEmpirically, we have:\n\\[\nQ = K \\sqrt{\\Delta p} \\tag{37}\n\\]\nWhere:\n\n\\(Q\\) = volume flow rate.\n\\(\\Delta p\\) = pressure drop across restriction.\n\\(K\\) = constant depending on liquid, pipe size, restriction geometry, temperature, etc.\n\n\n\n\n\n\n\nWarning\n\n\nFlow rate is proportional to the square root of pressure drop. Doubling \\(\\Delta p\\) does not double \\(Q\\); it increases \\(Q\\) by \\(\\sqrt{2} \\approx 1.414\\)."
+  },
+  {
+    "objectID": "ins_53.html#common-restriction-types",
+    "href": "ins_53.html#common-restriction-types",
+    "title": "Flow Sensors",
+    "section": "Common Restriction Types",
+    "text": "Common Restriction Types\n\n\nVenturi\n\n\n\nVenturi\n\n\n\nSmoothly tapered constriction.\nLow energy loss.\nMore expensive, bulkier.\n\n\nNozzle\n\n\n\nNozzle\n\n\n\nSimpler, shorter than venturi.\nModerate energy loss.\n\n\nOrifice Plate\n\n\n\nOrifice plate\n\n\n\nFlat plate with a sharp‑edged hole.\nCheap, easy to install.\nHigher permanent pressure loss.\n\n\n\nExplain that \\(\\Delta p\\) is measured between upstream and downstream tappings.\nMention that in real implementations, you see “orifice plates” very often because of their low cost, despite energy loss disadvantages. Venturi meters used in more critical or high‑efficiency systems."
+  },
+  {
+    "objectID": "ins_53.html#from-flow-to-electrical-signal-dp-cells",
+    "href": "ins_53.html#from-flow-to-electrical-signal-dp-cells",
+    "title": "Flow Sensors",
+    "section": "From Flow to Electrical Signal – DP Cells",
+    "text": "From Flow to Electrical Signal – DP Cells\nMeasurement chain for restriction flow sensors:\n\n\n\n\n\n\n\n\n\n\n\n\nDP cell = Differential Pressure cell.\n\nUses bellows, diaphragms, or capsules.\n\\(\\Delta p\\) → mechanical displacement.\n\nLVDT or strain gauge then converts displacement → voltage or current.\n\n\nRelate this back to earlier topics: LVDT and bellows were used also for absolute or gauge pressure; here we use a similar structure for differential pressure.\nYou can discuss typical industrial transmitters (4–20 mA outputs, often linear with \\(\\sqrt{\\Delta p}\\) or with \\(\\Delta p\\) depending on internal linearization)."
+  },
+  {
+    "objectID": "ins_53.html#example-20-orifice-plate-with-lvdt-output",
+    "href": "ins_53.html#example-20-orifice-plate-with-lvdt-output",
+    "title": "Flow Sensors",
+    "section": "Example 20 – Orifice Plate with LVDT Output",
+    "text": "Example 20 – Orifice Plate with LVDT Output\nFlow is to be controlled from \\(20\\) to \\(150\\ \\mathrm{gal/min}\\).\n\nFlow measured using an orifice plate as in Figure 39c.\nOrifice plate obeys \\(Q = K \\sqrt{\\Delta p}\\).\n\\(K = 119.5\\ (\\mathrm{gal/min})/\\mathrm{psi}^{1/2}\\).\nA bellows + LVDT measure the pressure: LVDT sensitivity \\(= 1.8\\ \\mathrm{V/psi}\\).\n\nFind: range of voltages corresponding to \\(Q\\) from \\(20\\) to \\(150\\ \\mathrm{gal/min}\\)."
+  },
+  {
+    "objectID": "ins_53.html#example-20-solution-step-1-find-pressure-range",
+    "href": "ins_53.html#example-20-solution-step-1-find-pressure-range",
+    "title": "Flow Sensors",
+    "section": "Example 20 – Solution (Step 1: Find Pressure Range)",
+    "text": "Example 20 – Solution (Step 1: Find Pressure Range)\nStart with:\n\\[\nQ = K \\sqrt{\\Delta p} \\Rightarrow \\sqrt{\\Delta p} = \\frac{Q}{K}\n\\]\nSo:\n\\[\n\\Delta p = \\left(\\frac{Q}{K}\\right)^2\n\\]\nFor \\(Q = 20\\ \\mathrm{gal/min}\\):\n\\[\n\\Delta p = \\left(\\frac{20}{119.5}\\right)^2 \\approx 0.0280\\ \\mathrm{psi}\n\\]\nFor \\(Q = 150\\ \\mathrm{gal/min}\\):\n\\[\n\\Delta p = \\left(\\frac{150}{119.5}\\right)^2 \\approx 1.5756\\ \\mathrm{psi}\n\\]"
+  },
+  {
+    "objectID": "ins_53.html#example-20-solution-step-2-convert-pressure-to-voltage",
+    "href": "ins_53.html#example-20-solution-step-2-convert-pressure-to-voltage",
+    "title": "Flow Sensors",
+    "section": "Example 20 – Solution (Step 2: Convert Pressure to Voltage)",
+    "text": "Example 20 – Solution (Step 2: Convert Pressure to Voltage)\nLVDT output: \\(1.8\\ \\mathrm{V/psi}\\).\nFor \\(Q = 20\\ \\mathrm{gal/min}\\):\n\\[\nV = 0.0280\\ \\mathrm{psi} \\times 1.8\\ \\mathrm{V/psi} \\approx 0.0504\\ \\mathrm{V}\n\\]\nFor \\(Q = 150\\ \\mathrm{gal/min}\\):\n\\[\nV = 1.5756\\ \\mathrm{psi} \\times 1.8\\ \\mathrm{V/psi} \\approx 2.836\\ \\mathrm{V}\n\\]\nVoltage range: approximately \\(0.05\\ \\mathrm{V}\\) to \\(2.84\\ \\mathrm{V}\\) for flows from \\(20\\) to \\(150\\ \\mathrm{gal/min}\\).\n\n\n\n\n\n\nTip\n\n\nIn practice, a transmitter or controller often linearizes the \\(\\sqrt{\\Delta p}\\) relationship so that its electrical output is more directly proportional to flow \\(Q\\).\n\n\n\n\nPoint out that the sensor itself is nonlinear (\\(Q \\propto \\sqrt{\\Delta p}\\)).\nModern smart transmitters may implement square‑root extraction digitally so that the final 4–20 mA output is linear in \\(Q\\). This is important for calibration and control."
+  },
+  {
+    "objectID": "ins_53.html#pitot-tube-point-velocity-measurement",
+    "href": "ins_53.html#pitot-tube-point-velocity-measurement",
+    "title": "Flow Sensors",
+    "section": "Pitot Tube – Point Velocity Measurement",
+    "text": "Pitot Tube – Point Velocity Measurement\n\n\n\nFigure 40 The pitot tube measures flow at a point in the gas or liquid.\n\n\nPrinciple:\n\nTube opening faces into flow, bringing fluid to rest (stagnation point) inside the tube.\nStagnation pressure inside pitot tube = static pressure + dynamic pressure term related to velocity.\nMeasure differential pressure between:\n\nStagnation pressure in pitot tube.\nStatic pressure in surrounding fluid.\n\n\nResult:\n\nDifferential pressure \\(\\Delta p\\) is proportional to \\(V^2\\).\nThus \\(V \\propto \\sqrt{\\Delta p}\\).\n\n\nClarify: a pitot tube gives velocity at a point, not average flow through a pipe.\nTo estimate pipe flow, you may need to traverse the cross‑section or rely on empirical relationships assuming fully developed profiles.\nAlso mention it works for liquids and gases (e.g., airspeed indicator in aircraft)."
+  },
+  {
+    "objectID": "ins_53.html#obstruction-flow-sensors-overview",
+    "href": "ins_53.html#obstruction-flow-sensors-overview",
+    "title": "Flow Sensors",
+    "section": "Obstruction Flow Sensors – Overview",
+    "text": "Obstruction Flow Sensors – Overview\nInstead of measuring pressure drop in a restriction, we can directly use the force of the fluid on an obstruction.\nThree common types:\n\nRotameter (variable area meter).\nMoving vane flow meter.\nTurbine flow meter.\n\nAll introduce some obstruction into the flow, so they are used when that is acceptable."
+  },
+  {
+    "objectID": "ins_53.html#rotameter-variable-area-flow-meter",
+    "href": "ins_53.html#rotameter-variable-area-flow-meter",
+    "title": "Flow Sensors",
+    "section": "Rotameter – Variable Area Flow Meter",
+    "text": "Rotameter – Variable Area Flow Meter\n\n\n\nRotameter\n\n\n\nVertical tapered tube (wider at top, narrower at bottom).\nFloat placed inside tube; fluid flows upward.\nFlow increases → lifting force increases → float rises.\nFloat stabilizes where gravitational force balances fluid forces.\nFloat height is proportional to flow rate.\n\nTypical use:\n\nLocal indication (scale engraved on the tube).\nCan be equipped with position sensors for electrical output.\n\n\nMention that rotameters are relatively simple, inexpensive, and used for both liquids and gases.\nLimitation: must be installed vertically; reading depends on fluid density and viscosity."
+  },
+  {
+    "objectID": "ins_53.html#moving-vane-flow-meter",
+    "href": "ins_53.html#moving-vane-flow-meter",
+    "title": "Flow Sensors",
+    "section": "Moving Vane Flow Meter",
+    "text": "Moving Vane Flow Meter\n\n\n\nMoving vane flow meter\n\n\n\nA vane (like a small flap) is immersed in the flow.\nAs flow velocity increases, drag force on vane increases.\nVane is rotated out of flow; its angle is related to flow rate.\nAttach vane shaft to an angle sensor (potentiometer, encoder, resolver) → electrical signal.\n\nUsed where moderate obstruction is acceptable and where relatively simple mechanics are preferred."
+  },
+  {
+    "objectID": "ins_53.html#turbine-flow-meter",
+    "href": "ins_53.html#turbine-flow-meter",
+    "title": "Flow Sensors",
+    "section": "Turbine Flow Meter",
+    "text": "Turbine Flow Meter\n\n\n\nTurbine flow meter\n\n\n\nFreely spinning turbine wheel placed in the flow path.\nFlow torque rotates turbine; rotational speed \\(\\omega\\) is proportional to flow velocity.\nTypical transduction:\n\nMagnetic or optical pickup measures blade passage frequency.\n\nOutput: frequency or voltage proportional to volume flow \\(Q\\).\n\nAdvantages:\n\nGood accuracy over wide range.\nDirect electrical signal (especially frequency) suitable for digital counting.\n\nLimitations:\n\nMoving parts → wear and maintenance.\nRequires some straight pipe lengths upstream/downstream.\n\n\nConnect to ECE: turbine meters often directly produce a pulse train; microcontrollers can measure frequency or period to determine flow.\nNote that turbine meters are not ideal for very dirty or highly viscous fluids due to potential clogging or drag."
+  },
+  {
+    "objectID": "ins_53.html#magnetic-flow-meter-principle",
+    "href": "ins_53.html#magnetic-flow-meter-principle",
+    "title": "Flow Sensors",
+    "section": "Magnetic Flow Meter – Principle",
+    "text": "Magnetic Flow Meter – Principle\n\n\n\nMagnetic flow meter\n\n\nBased on electromagnetic induction:\n\nIf a conductive fluid moves through a magnetic field \\(\\vec{B}\\), charges experience a Lorentz force.\nThis induces a voltage across the pipe, perpendicular to both \\(\\vec{B}\\) and the velocity \\(\\vec{V}\\)."
+  },
+  {
+    "objectID": "ins_53.html#summary-key-points",
+    "href": "ins_53.html#summary-key-points",
+    "title": "Flow Sensors",
+    "section": "Summary / Key Points",
+    "text": "Summary / Key Points\n\nSolid flow on conveyors\n\nFlow \\(Q\\) (mass/time) computed as \\(Q = \\dfrac{W R}{L}\\).\nFlow measurement becomes weight measurement via load cells or LVDTs.\n\nLiquid flow\n\nDescribed via volume flow rate \\(Q\\), velocity \\(V\\), and mass/weight flow rate \\(F\\).\nKey relations: \\(Q = V A\\) and \\(F = \\rho Q\\).\n\nRestriction flow sensors (venturi, nozzle, orifice)\n\nUse pressure drop: \\(Q = K \\sqrt{\\Delta p}\\).\nDifferential pressure (DP) cells plus LVDTs/strain gauges convert \\(\\Delta p\\) to voltage.\n\nPitot tubes\n\nMeasure local flow velocity from differential pressure.\n\nObstruction meters (rotameter, moving vane, turbine)\n\nUse the mechanical effect of flow on floats, vanes, or turbines.\n\nMagnetic flow meters\n\nRely on electromagnetic induction in conductive fluids.\nDirect, linear electrical signal; no moving parts, minimal pressure loss.\n\n\n\nReinforce that many flow sensors translate flow into pressure, displacement, or rotation speed before an ECE‑type sensor converts that into an electrical signal.\nEncourage students to think in terms of system diagrams: process → primary element (e.g., orifice) → transducer (e.g., DP cell + LVDT) → signal conditioning → controller."
+  },
+  {
+    "objectID": "ins_53.html#formulas-summary",
+    "href": "ins_53.html#formulas-summary",
+    "title": "Flow Sensors",
+    "section": "Formulas Summary",
+    "text": "Formulas Summary\nConveyor solid flow\n\\[\nQ = \\frac{W R}{L}\n\\]\n\n\\(Q\\) = flow (kg/min or lb/min)\n\\(W\\) = weight on platform section (kg or lb)\n\\(R\\) = conveyor speed (m/min or ft/min)\n\\(L\\) = length of weighing platform (m or ft)"
+  },
+  {
+    "objectID": "ins_53.html#rotameter---variable-area-flow-meter",
+    "href": "ins_53.html#rotameter---variable-area-flow-meter",
+    "title": "Flow Sensors",
+    "section": "Rotameter - Variable Area Flow Meter",
+    "text": "Rotameter - Variable Area Flow Meter\n\n\n\nRotameter\n\n\n\nVertical tapered tube (wider at top, narrower at bottom).\nFloat placed inside tube; fluid flows upward.\nFlow increases → lifting force increases → float rises.\nFloat stabilizes where gravitational force balances fluid forces.\nFloat height is proportional to flow rate.\n\nTypical use:\n\nLocal indication (scale engraved on the tube).\nCan be equipped with position sensors for electrical output.\n\n\nMention that rotameters are relatively simple, inexpensive, and used for both liquids and gases.\nLimitation: must be installed vertically; reading depends on fluid density and viscosity."
   }
 ]
