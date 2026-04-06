@@ -1446,7 +1446,7 @@
     "href": "index.html#week-6",
     "title": "Control System",
     "section": "Week 6",
-    "text": "Week 6"
+    "text": "Week 6\n\nControl 7"
   },
   {
     "objectID": "index.html#week-7",
@@ -3911,5 +3911,334 @@
     "title": "Reduction of Multiple Subsystems",
     "section": "Live Practice: Simple Block Moves as Algebra",
     "text": "Live Practice: Simple Block Moves as Algebra\nTreat moving a gain G across a summing junction like factoring in algebra.\nConsider:\n\\[\nC(s) = G\\big(R(s) - X(s)\\big) \\quad \\text{vs.} \\quad C(s) = GR(s) - GX(s)\n\\]\n\n\n\n\n\n\n\nInvite students to edit G, R, and X to see that the equality always holds.\nThen connect to moving a block left or right across a summing junction (Figure 5.7): the operation is just factoring/unfactoring in algebra."
+  },
+  {
+    "objectID": "control_7.html#learning-objectives",
+    "href": "control_7.html#learning-objectives",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\nBy the end of this lecture, you will be able to:\n\nDefine steady-state error for standard test inputs (step, ramp, parabola).\nCompute steady-state error from the closed-loop transfer function \\(T(s)\\).\nCompute steady-state error from the open-loop transfer function \\(G(s)\\) for unity feedback.\nRelate steady-state error to:\n\nStatic error constants \\(K_p, K_v, K_a\\)\nSystem type (Type 0, 1, 2, …)\nNumber of integrators in the forward path\n\nUse steady-state error specifications to select gain \\(K\\).\nAnalyze how disturbances affect steady-state error and how to reduce it.\n\n\nMake clear that this is the “accuracy in the long run” part of performance, complementing transient response and stability.\nStudents should be able to both “plug and chug” formulas and also reason about whether error is zero, finite, or infinite just from system type."
+  },
+  {
+    "objectID": "control_7.html#why-steady-state-error-matters",
+    "href": "control_7.html#why-steady-state-error-matters",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "7.1 Why Steady-State Error Matters",
+    "text": "7.1 Why Steady-State Error Matters\nControl design typically balances:\n\nTransient response (speed, overshoot)\nStability (bounded response)\nSteady-state accuracy (how close output is to input as \\(t \\to \\infty\\))\n\nIn real ECE systems:\n\nAntenna pointing at a satellite must not “settle” with a 5° offset.\nRobot arm placing chips on a PCB must not have a 0.5 mm final offset.\nMotor speed controller must maintain constant speed under load changes.\n\nSteady-state error quantifies how much mismatch remains after transients die out.\n\n\n\n\n\n\nImportant\n\n\nKey idea: Even a stable system with “nice” transients can have unacceptable steady-state error.\n\n\n\n\nUse examples students know: servo motor that seems to “lock” but is just slightly off.\nContrast with stability: an unstable system never reaches steady state; steady-state error only makes sense for stable systems."
+  },
+  {
+    "objectID": "control_7.html#definition-of-steady-state-error",
+    "href": "control_7.html#definition-of-steady-state-error",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Definition of Steady-State Error",
+    "text": "Definition of Steady-State Error\nFor a (stable) feedback system:\n\nInput: \\(r(t)\\)\nOutput: \\(c(t)\\)\nError: \\(e(t) = r(t) - c(t)\\)\n\nSteady-state error:\n\\[\ne_{ss} = e(\\infty) = \\lim_{t \\to \\infty} e(t)\n\\]"
+  },
+  {
+    "objectID": "control_7.html#visualizing-the-test-inputs",
+    "href": "control_7.html#visualizing-the-test-inputs",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Visualizing the Test Inputs",
+    "text": "Visualizing the Test Inputs\n\n\n\n\n\nStep Waveform\n\n\nStep input: constant position command\n\n\n\n\nRamp Waveform\n\n\nRamp input: linearly increasing position (constant velocity target)\n\n\n\n\nParabola Waveform\n\n\nParabolic input: accelerating target (constant acceleration)\n\n\n\n\nTest inputs for various targets\n\n\n\nUse Figure 7.1 to connect to physical scenarios: - Step → holding a satellite fixed in geostationary orbit (constant angle). - Ramp → tracking a satellite moving at constant angular rate across the sky. - Parabola → tracking a missile with constant angular acceleration.\nAsk: Which test input should we care about if we want to track a slowly drifting temperature? (Step or slow ramp.)"
+  },
+  {
+    "objectID": "control_7.html#steady-state-error-requires-stability",
+    "href": "control_7.html#steady-state-error-requires-stability",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Steady-State Error Requires Stability",
+    "text": "Steady-State Error Requires Stability\nWe focus on stable systems:\n\nNatural response → \\(0\\) as \\(t \\to \\infty\\)\nEventually only forced response remains\nMakes sense to talk about a finite steady-state value\n\nUnstable systems:\n\nNatural response grows without bound\nOutput dominates input\n“Steady-state error” formulas from this chapter do not apply\n\n\n\n\n\n\n\nWarning\n\n\nAlways check closed-loop stability before trusting any steady-state error calculation.\n\n\n\n\nMention Routh-Hurwitz (Chapter 6) as the usual tool.\nIn practice, design loop: choose architecture → check stability → then compute steady-state error. Doing it in reverse can lead to nonsense (finite error statements on unstable systems)."
+  },
+  {
+    "objectID": "control_7.html#how-do-we-see-steady-state-error",
+    "href": "control_7.html#how-do-we-see-steady-state-error",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "How Do We “See” Steady-State Error?",
+    "text": "How Do We “See” Steady-State Error?\n\n\n\nStep input and outputs\n\n\n\nFor a step input:\n\nOutput 1: output converges exactly to input → \\(e_{ss} = 0\\)\nOutput 2: output converges to a different constant → finite \\(e_{ss}\\)"
+  },
+  {
+    "objectID": "control_7.html#general-closed-loop-view-of-error",
+    "href": "control_7.html#general-closed-loop-view-of-error",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "General Closed-Loop View of Error",
+    "text": "General Closed-Loop View of Error\n\n\nGeneral closed-loop system\n\n\n\nGeneral error representation\n\n\n\nClosed-loop transfer: \\(T(s) = \\dfrac{C(s)}{R(s)}\\)\nError: \\(E(s) = R(s) - C(s)\\)\n\n\nUnity feedback case\nSame diagram with \\(H(s)=1\\):\n\n\\(E(s) = R(s) - C(s)\\)\n\\(C(s) = E(s) G(s)\\)\nFocus in Sections 7.2–7.4: unity feedback systems\n\n\n\nClarify: We will first derive formulas in terms of \\(T(s)\\), then show a more insightful form in terms of \\(G(s)\\) for unity feedback.\nStudents often conflate \\(G(s)\\) and \\(T(s)\\); emphasize: - \\(G(s)\\) = forward path (controller + plant). - \\(T(s)\\) = closed-loop transfer from \\(R\\) to \\(C\\)."
+  },
+  {
+    "objectID": "control_7.html#steady-state-error-in-terms-of-ts",
+    "href": "control_7.html#steady-state-error-in-terms-of-ts",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "7.2 Steady-State Error in Terms of \\(T(s)\\)",
+    "text": "7.2 Steady-State Error in Terms of \\(T(s)\\)\nFrom the general block diagram:\n\n\\(E(s) = R(s) - C(s)\\)\n\\(C(s) = T(s) R(s)\\)\n\nSo:\n\\[\nE(s) = R(s) - T(s) R(s) = R(s) \\bigl[1 - T(s)\\bigr]\n\\]\nTo find steady-state error: apply the final value theorem\n\\[\ne(\\infty) = \\lim_{t \\to \\infty} e(t) = \\lim_{s \\to 0} s E(s)\n\\]\nThus:\n\\[\ne(\\infty) = \\lim_{s \\to 0} s R(s) \\bigl[1 - T(s)\\bigr]\n\\]\n\n\n\n\n\n\nTip\n\n\nUse this form when \\(T(s)\\) is given directly and the system is known to be stable.\n\n\n\n\nRemind students of final value theorem conditions:\n\nAll poles of \\(sE(s)\\) in left half-plane, except possibly a simple pole at the origin.\nThe closed-loop system must be stable (no RHP poles in \\(T(s)\\)).\n\nOtherwise, final value theorem gives wrong answers."
+  },
+  {
+    "objectID": "control_7.html#example-7.1-error-from-ts",
+    "href": "control_7.html#example-7.1-error-from-ts",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Example 7.1 – Error from \\(T(s)\\)",
+    "text": "Example 7.1 – Error from \\(T(s)\\)\nProblem\nGiven closed-loop transfer function:\n\\[\nT(s) = \\frac{5}{s^2 + 7s + 10}\n\\]\nFind the steady-state error for a unit step input.\nSolution\nStep input: \\(R(s) = \\dfrac{1}{s}\\)\n\nCompute \\(E(s)\\):\n\n\\[\nE(s) = R(s) \\bigl[1 - T(s)\\bigr] = \\frac{1}{s} \\left(1 - \\frac{5}{s^2 + 7s + 10}\\right)\n\\]\nCombine terms:\n\\[\nE(s) = \\frac{s^2 + 7s + 10 - 5}{s \\left(s^2 + 7s + 10\\right)} = \\frac{s^2 + 7s + 5}{s \\left(s^2 + 7s + 10\\right)}\n\\]"
+  },
+  {
+    "objectID": "control_7.html#steady-state-error-in-terms-of-gs-unity-feedback",
+    "href": "control_7.html#steady-state-error-in-terms-of-gs-unity-feedback",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "7.2 Steady-State Error in Terms of \\(G(s)\\) (Unity Feedback)",
+    "text": "7.2 Steady-State Error in Terms of \\(G(s)\\) (Unity Feedback)\nFor unity feedback:\n\n\nBlock diagram:\n\n\\(C(s) = E(s) G(s)\\)\n\\(E(s) = R(s) - C(s)\\)\n\n\nAlgebra:\n\n\\(E(s) = R(s) - C(s)\\)\n\\(C(s) = E(s) G(s)\\)\nSubstitute:\n\\(E(s) = R(s) - E(s) G(s)\\)\nSolve for \\(E(s)\\):\n\\[\nE(s) = \\frac{R(s)}{1 + G(s)}\n\\]"
+  },
+  {
+    "objectID": "control_7.html#step-input-error-in-terms-of-gs",
+    "href": "control_7.html#step-input-error-in-terms-of-gs",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Step Input: Error in Terms of \\(G(s)\\)",
+    "text": "Step Input: Error in Terms of \\(G(s)\\)\nFor a unit step input:\n\n\\(r(t) = u(t)\\)\n\\(R(s) = \\dfrac{1}{s}\\)\n\nPlug into the master formula:\n\\[\ne_{step}(\\infty) = \\lim_{s \\to 0} \\frac{s \\left(\\frac{1}{s}\\right)}{1 + G(s)} = \\frac{1}{1 + \\displaystyle \\lim_{s \\to 0} G(s)}\n\\]\nSo the key quantity is the dc gain of \\(G(s)\\):\n\\[\nK_p = \\lim_{s \\to 0} G(s)\n\\]\nThen:\n\\[\ne_{step}(\\infty) = \\frac{1}{1 + K_p}\n\\]\n\nExplain: “dc gain” = gain at zero frequency → constant (step) input.\nAlready hint at calling this \\(K_p\\) (position constant); formal definition comes later.\nPreview: - If \\(K_p = \\infty\\) → step error zero. - If \\(K_p\\) finite → step error finite. - If \\(K_p = 0\\) → step error = 1 (no tracking at all)."
+  },
+  {
+    "objectID": "control_7.html#when-is-step-error-zero-or-finite",
+    "href": "control_7.html#when-is-step-error-zero-or-finite",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "When Is Step Error Zero or Finite?",
+    "text": "When Is Step Error Zero or Finite?\nAssume\n\\[\nG(s) = \\frac{(s+z_1)(s+z_2)\\cdots}{s^n (s+p_1)(s+p_2)\\cdots}\n\\]\nEvaluate \\(K_p = \\lim_{s \\to 0} G(s)\\):\n\nIf \\(n = 0\\) (no integrators):\n\\[\nK_p = \\frac{z_1 z_2 \\cdots}{p_1 p_2 \\cdots} \\quad \\Rightarrow \\quad \\text{finite} \\Rightarrow e_{step}(\\infty) \\text{ finite}\n\\]\nIf \\(n \\ge 1\\) (at least one pole at origin \\(\\Rightarrow\\) at least one integrator):\nDenominator has \\(s^n\\); as \\(s \\to 0\\), denominator \\(\\to 0\\), so\n\\[\nK_p = \\lim_{s \\to 0} G(s) = \\infty \\quad \\Rightarrow \\quad e_{step}(\\infty) = 0\n\\]"
+  },
+  {
+    "objectID": "control_7.html#ramp-input-error-in-terms-of-gs",
+    "href": "control_7.html#ramp-input-error-in-terms-of-gs",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Ramp Input: Error in Terms of \\(G(s)\\)",
+    "text": "Ramp Input: Error in Terms of \\(G(s)\\)\nFor a unit ramp input:\n\n\\(r(t) = t u(t)\\)\n\\(R(s) = \\dfrac{1}{s^2}\\)\n\nFrom the master formula:\n\\[\ne_{ramp}(\\infty) = \\lim_{s \\to 0} \\frac{s \\left(\\frac{1}{s^2}\\right)}{1 + G(s)} = \\lim_{s \\to 0} \\frac{1}{s + s G(s)}\n\\]\nIf \\(G(s)\\) is proper and stable, for small \\(s\\):\n\n\\(s \\to 0 \\Rightarrow s \\ll s G(s)\\) if \\(s G(s)\\) does not vanish."
+  },
+  {
+    "objectID": "control_7.html#how-many-integrators-for-ramp-input",
+    "href": "control_7.html#how-many-integrators-for-ramp-input",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "How Many Integrators for Ramp Input?",
+    "text": "How Many Integrators for Ramp Input?\nAgain, assume\n\\[\nG(s) = \\frac{(s+z_1)(s+z_2)\\cdots}{s^n (s+p_1)(s+p_2)\\cdots}\n\\]\nThen\n\\[\ns G(s) = \\frac{(s+z_1)(s+z_2)\\cdots}{s^{n-1} (s+p_1)(s+p_2)\\cdots}\n\\]"
+  },
+  {
+    "objectID": "control_7.html#parabolic-input-error-in-terms-of-gs",
+    "href": "control_7.html#parabolic-input-error-in-terms-of-gs",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Parabolic Input: Error in Terms of \\(G(s)\\)",
+    "text": "Parabolic Input: Error in Terms of \\(G(s)\\)\nFor a unit parabolic input (constant acceleration):\n\n\\(r(t) = \\dfrac{t^2}{2} u(t)\\)\n\\(R(s) = \\dfrac{1}{s^3}\\)\n\nFrom the master formula:\n\\[\ne_{parabola}(\\infty) = \\lim_{s \\to 0} \\frac{s \\left(\\frac{1}{s^3}\\right)}{1 + G(s)}\n= \\lim_{s \\to 0} \\frac{1}{s^2 + s^2 G(s)}\n= \\frac{1}{\\displaystyle \\lim_{s \\to 0} s^2 G(s)} = \\frac{1}{K_a}\n\\]\nwhere\n\\[\nK_a = \\lim_{s \\to 0} s^2 G(s)\n\\]"
+  },
+  {
+    "objectID": "control_7.html#example-7.2-system-with-no-integrators",
+    "href": "control_7.html#example-7.2-system-with-no-integrators",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Example 7.2 – System with No Integrators",
+    "text": "Example 7.2 – System with No Integrators\n\n\n\nSystem for Example 7.2\n\n\nAssume closed-loop stable. There are no \\(1/s\\) factors in \\(G(s)\\).\nInputs:\n\n\\(5 u(t)\\) → \\(R(s) = \\dfrac{5}{s}\\)\n\\(5 t u(t)\\) → \\(R(s) = \\dfrac{5}{s^2}\\)\n\\(5 t^2 u(t)\\) → \\(R(s) = \\dfrac{10}{s^3}\\)"
+  },
+  {
+    "objectID": "control_7.html#example-7.3-system-with-one-integrator",
+    "href": "control_7.html#example-7.3-system-with-one-integrator",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Example 7.3 – System with One Integrator",
+    "text": "Example 7.3 – System with One Integrator\n\n\n\nSystem for Example 7.3\n\n\nNow \\(G(s)\\) includes one \\(1/s\\) factor (one integrator). Assume closed-loop stable.\nGiven in text:\n\n\\(\\lim_{s \\to 0} G(s) = \\infty\\) (due to integrator).\n\\(\\lim_{s \\to 0} s G(s) = 100\\)."
+  },
+  {
+    "objectID": "control_7.html#skill-assessment-7.1-stability-first",
+    "href": "control_7.html#skill-assessment-7.1-stability-first",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Skill-Assessment 7.1 – Stability First",
+    "text": "Skill-Assessment 7.1 – Stability First\nGiven:\n\\[\nG(s) = \\frac{10(s+20)(s+30)}{s (s+25)(s+35)}\n\\]\n\nThis has one integrator → candidate Type 1.\nClosed-loop is stable (stated in answer).\n\n\nFind steady-state errors for inputs \\(15 u(t)\\), \\(15 t u(t)\\), \\(15 t^2 u(t)\\).\n\nText answer:\n\n\\(e_{step}(\\infty) = 0\\) (Type 1 → zero step error).\n\\(e_{ramp}(\\infty) = 2.1875\\).\n\\(e_{parabola}(\\infty) = \\infty\\)."
+  },
+  {
+    "objectID": "control_7.html#static-error-constants",
+    "href": "control_7.html#static-error-constants",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "7.3 Static Error Constants",
+    "text": "7.3 Static Error Constants\nWe now formalize the three “special limits” we’ve seen:\n\nStep: \\(e_{step}(\\infty) = \\dfrac{1}{1 + \\displaystyle \\lim_{s \\to 0} G(s)}\\)\nRamp: \\(e_{ramp}(\\infty) = \\dfrac{1}{\\displaystyle \\lim_{s \\to 0} s G(s)}\\)\nParabola: \\(e_{parabola}(\\infty) = \\dfrac{1}{\\displaystyle \\lim_{s \\to 0} s^2 G(s)}\\)"
+  },
+  {
+    "objectID": "control_7.html#example-7.4-using-static-error-constants",
+    "href": "control_7.html#example-7.4-using-static-error-constants",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Example 7.4 – Using Static Error Constants",
+    "text": "Example 7.4 – Using Static Error Constants\nFor each system in Figure 7.7, compute \\(K_p, K_v, K_a\\) and the corresponding steady-state error for step, ramp, and parabola.\nSystem (a) – Type 0\n\n\n\nSystem 7.7(a)\n\n\nGiven (from text calculations):\n\n\\(K_p = \\dfrac{500 \\cdot 2 \\cdot 5}{8 \\cdot 10 \\cdot 12} = 5.208\\)\n\\(K_v = 0\\) (no integrator)\n\\(K_a = 0\\)\n\nHence:\n\nStep: \\(e(\\infty) = \\dfrac{1}{1 + K_p} \\approx 0.161\\)\nRamp: \\(e(\\infty) = \\dfrac{1}{K_v} = \\infty\\)\nParabola: \\(e(\\infty) = \\dfrac{1}{K_a} = \\infty\\)"
+  },
+  {
+    "objectID": "control_7.html#system-type-formal-definition",
+    "href": "control_7.html#system-type-formal-definition",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "System Type – Formal Definition",
+    "text": "System Type – Formal Definition\n\n\n\nGeneric unity feedback system\n\n\nConsider a unity feedback system with forward path:\n\\[\nG(s) = \\frac{(s+z_1)(s+z_2)\\cdots}{s^n (s+p_1)(s+p_2)\\cdots}\n\\]\nSystem type is defined as the number of pure integrations in the forward path, i.e., the exponent \\(n\\) of \\(1/s\\):\n\n\\(n = 0\\) → Type 0 system\n\\(n = 1\\) → Type 1 system\n\\(n = 2\\) → Type 2 system\netc.\n\nSystem type determines the pattern of static error constants and steady-state errors.\n\n\n\n\n\n\nNote\n\n\nIn design problems, first identify system type by counting integrators in \\(G(s)\\) for a unity feedback configuration.\n\n\n\n\nClarify: pure integration means a pole exactly at the origin (\\(1/s\\)). Complex poles near the origin or real poles close to zero are not counted as integrators for system type.\nImportant for exam-type questions: do not confuse near-zero poles with actual integrators."
+  },
+  {
+    "objectID": "control_7.html#summary-table-input-vs.-type-vs.-error",
+    "href": "control_7.html#summary-table-input-vs.-type-vs.-error",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Summary Table – Input vs. Type vs. Error",
+    "text": "Summary Table – Input vs. Type vs. Error\nTABLE 7.2 – Relationships between input, system type, static error constants, and steady-state error\n\n\n\n\n\n\n\n\n\n\n\n\n\nInput\nError formula\nType 0\nType 0 error\nType 1\nType 1 error\nType 2\nType 2 error\n\n\n\n\nStep, \\(u(t)\\)\n\\(\\dfrac{1}{1+K_p}\\)\n\\(K_p =\\) finite\n\\(\\dfrac{1}{1+K_p}\\)\n\\(K_p = \\infty\\)\n0\n\\(K_p = \\infty\\)\n0\n\n\nRamp, \\(t u(t)\\)\n\\(\\dfrac{1}{K_v}\\)\n\\(K_v = 0\\)\n\\(\\infty\\)\n\\(K_v =\\) finite\n\\(\\dfrac{1}{K_v}\\)\n\\(K_v = \\infty\\)\n0\n\n\nParabola, \\(\\dfrac{t^2}{2}u(t)\\)\n\\(\\dfrac{1}{K_a}\\)\n\\(K_a = 0\\)\n\\(\\infty\\)\n\\(K_a = 0\\)\n\\(\\infty\\)\n\\(K_a =\\) finite\n\\(\\dfrac{1}{K_a}\\)\n\n\n\n\n\n\n\n\n\nTip\n\n\nMemorize the pattern rather than the whole table:\n\nType 0: good for steps only (finite step error).\nType 1: perfect steps, finite ramps, bad parabolas.\nType 2: perfect steps and ramps, finite parabolas.\n\n\n\n\n\nUse this table to quickly answer conceptual questions:\n\n“What is the steady-state error for a ramp input in a Type 2 system?” → 0.\n“What is \\(K_v\\) for a Type 0 system?” → 0.\n\nGood to do a quick in-class quiz using multiple-choice clickers."
+  },
+  {
+    "objectID": "control_7.html#skill-assessment-7.2-practice-with-system-type",
+    "href": "control_7.html#skill-assessment-7.2-practice-with-system-type",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Skill-Assessment 7.2 – Practice with System Type",
+    "text": "Skill-Assessment 7.2 – Practice with System Type\nGiven unity feedback:\n\\[\nG(s) = \\frac{1000 (s+8)}{(s+7)(s+9)}\n\\]"
+  },
+  {
+    "objectID": "control_7.html#using-static-error-constants-as-specifications",
+    "href": "control_7.html#using-static-error-constants-as-specifications",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "7.4 Using Static Error Constants as Specifications",
+    "text": "7.4 Using Static Error Constants as Specifications\nEngineers specify desired steady-state performance via \\(K_p, K_v, K_a\\), e.g.:\n\n“Design such that \\(K_p = 1000\\)”\n“Design a system with \\(K_v = 20\\)”\n\nA specification like \\(K_v = 1000\\) implies:\n\nSystem is stable.\nSystem is Type 1 (only Type 1 has finite nonzero \\(K_v\\)).\nThe relevant test input is a ramp.\nSteady-state error to a unit-slope ramp is\n\\[\ne_{ramp}(\\infty) = \\frac{1}{K_v} = 0.001\n\\]\nFor a ramp with slope \\(A\\), error is \\(\\dfrac{A}{K_v}\\).\n\n\n\n\n\n\n\nNote\n\n\nJust from the numeric value of \\(K_p\\) or \\(K_v\\), you can infer system type, test input, and error magnitude.\n\n\n\n\nThis is powerful in requirements documents: specifying a single number like \\(K_v\\) tells designers a lot.\nEncourage students to think: if they see \\(K_p\\) or \\(K_v\\) in specs from a customer, what does it say about expected motion profile (position vs. velocity tracking)?"
+  },
+  {
+    "objectID": "control_7.html#example-7.5-interpreting-k_p-1000",
+    "href": "control_7.html#example-7.5-interpreting-k_p-1000",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Example 7.5 – Interpreting \\(K_p = 1000\\)",
+    "text": "Example 7.5 – Interpreting \\(K_p = 1000\\)\nSpec: \\(K_p = 1000\\).\nThis implies:\n\nSystem is stable (otherwise \\(K_p\\) would be meaningless as a spec).\nSystem is Type 0 (only Type 0 can have finite \\(K_p\\); Type 1 and above have \\(K_p = \\infty\\)).\nTest input is a step (position constant).\nSteady-state error to a unit step is:\n\\[\ne_{step}(\\infty) = \\frac{1}{1 + K_p} = \\frac{1}{1001}\n\\]\n\nSo the output will be within about 0.1% of the commanded step in steady state.\n\nAsk: Does \\(K_p = 1000\\) tell us anything about ramp performance? (No, for Type 0, ramp error is still infinite.)\nAlso note: large \\(K_p\\) usually means large loop gain at low frequency, which can affect stability margins."
+  },
+  {
+    "objectID": "control_7.html#example-7.6-designing-gain-k-from-steady-state-spec",
+    "href": "control_7.html#example-7.6-designing-gain-k-from-steady-state-spec",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Example 7.6 – Designing Gain \\(K\\) from Steady-State Spec",
+    "text": "Example 7.6 – Designing Gain \\(K\\) from Steady-State Spec\n\n\n\nSystem for Example 7.6\n\n\nProblem\nGiven unity feedback with forward path \\(G(s)\\) as in figure, choose \\(K\\) so that there is 10% error in the steady state.\nStep 1 – Identify system type and input\n\nFrom figure, forward path has one integrator → Type 1.\nType 1: finite error only for ramp input.\nSo “10% steady-state error” must refer to a ramp input.\n\nThus:\n\\[\ne_{ramp}(\\infty) = \\frac{1}{K_v} = 0.1 \\quad \\Rightarrow \\quad K_v = 10\n\\]"
+  },
+  {
+    "objectID": "control_7.html#skill-assessment-7.3-gain-from-ramp-error",
+    "href": "control_7.html#skill-assessment-7.3-gain-from-ramp-error",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Skill-Assessment 7.3 – Gain from Ramp Error",
+    "text": "Skill-Assessment 7.3 – Gain from Ramp Error\nGiven unity feedback:\n\\[\nG(s) = \\frac{K (s+12)}{(s+14)(s+18)}\n\\]\nSystem has no integrator → Type 0 → cannot have finite ramp error.\nBut text’s answer says \\(K = 189\\) for “10% error in steady state.”\nInterpreting:\n\nFor Type 0, finite error spec must be for step input.\nSo \\(e_{step}(\\infty) = 0.1\\)."
+  },
+  {
+    "objectID": "control_7.html#steady-state-error-due-to-disturbances",
+    "href": "control_7.html#steady-state-error-due-to-disturbances",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "7.5 Steady-State Error Due to Disturbances",
+    "text": "7.5 Steady-State Error Due to Disturbances\nSo far: we considered error due to the reference input \\(R(s)\\).\nNow: consider disturbances \\(D(s)\\) entering between controller and plant.\n\n\n\nSystem with disturbance\n\n\n\n\\(G_1(s)\\): controller + pre-plant dynamics\n\\(G_2(s)\\): plant (and maybe actuator)\nDisturbance \\(D(s)\\) enters between them.\n\nWe want to know how well feedback cancels the effect of \\(D(s)\\) on the error \\(E(s)\\).\n\nExplain that in many practical systems, disturbances are loads, torque disturbances, noise, etc. For a motor, \\(D(s)\\) might be an external torque.\nEmphasize: One major advantage of feedback is disturbance rejection."
+  },
+  {
+    "objectID": "control_7.html#deriving-error-with-disturbance",
+    "href": "control_7.html#deriving-error-with-disturbance",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Deriving Error with Disturbance",
+    "text": "Deriving Error with Disturbance\nFrom the block diagram:\n\nOutput:\n\\[\nC(s) = E(s) G_1(s) G_2(s) + D(s) G_2(s)\n\\]\nError:\n\\[\nE(s) = R(s) - C(s)\n\\]\n\nSubstitute \\(C(s)\\) into error equation:\n\\[\nE(s) = R(s) - \\bigl[ E(s) G_1(s) G_2(s) + D(s) G_2(s) \\bigr]\n\\]"
+  },
+  {
+    "objectID": "control_7.html#step-disturbance-expression-for-e_d",
+    "href": "control_7.html#step-disturbance-expression-for-e_d",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Step Disturbance – Expression for (e_D())",
+    "text": "Step Disturbance – Expression for (e_D())\nAssume a step disturbance:\n\n(d(t) = u(t))\n(D(s) = )\n\nThe disturbance contribution to steady-state error is:\n\\[\ne_D(\\infty) = -\\lim_{s \\to 0} \\frac{s G_2(s)}{1 + G_1(s) G_2(s)} D(s)\n= -\\lim_{s \\to 0} \\frac{s G_2(s)}{1 + G_1(s) G_2(s)} \\cdot \\frac{1}{s}\n\\]\nSimplify:\n\\[\ne_D(\\infty) = -\\lim_{s \\to 0} \\frac{G_2(s)}{1 + G_1(s) G_2(s)}\n\\]\nWith some algebra (factor (G_2(s)) out of denominator), this can be rearranged as:\n\\[\ne_D(\\infty) = -\\frac{1}{\\displaystyle \\lim_{s \\to 0} \\frac{1}{G_2(s)} + \\lim_{s \\to 0} G_1(s)}\n\\]\n\n\n\n\n\n\nImportant\n\n\nTo reduce error from a step disturbance, either:\n\nIncrease dc gain of controller (G_1(s)), or\nDecrease dc gain of plant (G_2(s)).\n\n\n\n\n\nIntuition: see the next slide with the rearranged block diagram. Increasing loop gain (G_1G_2) makes the feedback better at rejecting disturbances.\nHowever, decreasing (G_2) may not be practical if it represents physical plant gain. More often we increase (G_1) or add integrators in (G_1)."
+  },
+  {
+    "objectID": "control_7.html#disturbance-as-input-rearranged-view",
+    "href": "control_7.html#disturbance-as-input-rearranged-view",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Disturbance as Input – Rearranged View",
+    "text": "Disturbance as Input – Rearranged View\n\n\n\nDisturbance as input\n\n\nSet \\(R(s) = 0\\) and redraw:\n\nInput: disturbance \\(D(s)\\)\nOutput: error \\(E(s)\\)\n\nWe can think of the block diagram as a system from \\(D(s)\\) to \\(E(s)\\).\nTo minimize steady-state \\(E(s)\\):\n\nIncrease dc gain of \\(G_1(s)\\) → error is amplified and fed forward to cancel disturbance.\nReduce dc gain of \\(G_2(s)\\) → disturbance effect on output smaller.\n\n\nWalk through the signal flow qualitatively:\n\nDisturbance adds into plant input; plant output influences error through feedback.\nOver time, error adjusts so that the feedback through \\(G_1\\) cancels the effect of \\(D(s)\\) at the plant input.\n\nLarge \\(G_1\\) makes this cancellation more effective."
+  },
+  {
+    "objectID": "control_7.html#example-7.7-disturbance-rejection",
+    "href": "control_7.html#example-7.7-disturbance-rejection",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Example 7.7 – Disturbance Rejection",
+    "text": "Example 7.7 – Disturbance Rejection\n\n\n\nSystem for Example 7.7\n\n\nProblem\nFind steady-state error component due to a step disturbance for the system in the figure.\nGiven in text:\n\nSystem is stable.\n\\(G_1(s)\\) has large dc gain; \\(G_2(s)\\) has infinite dc gain."
+  },
+  {
+    "objectID": "control_7.html#skill-assessment-7.4-disturbance-practice",
+    "href": "control_7.html#skill-assessment-7.4-disturbance-practice",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Skill-Assessment 7.4 – Disturbance Practice",
+    "text": "Skill-Assessment 7.4 – Disturbance Practice\n\n\n\nSystem for Skill-Assessment 7.4\n\n\nGiven system and step disturbance \\(D(s) = \\dfrac{1}{s}\\), evaluate disturbance-induced steady-state error.\nText answer:\n\\[\ne_D(\\infty) = -9.98 \\times 10^{-4}\n\\]\nThis is nearly \\(-10^{-3}\\), suggesting that the loop gain is around 1000 in dc.\n\nEncourage students to compute \\(\\lim_{s \\to 0} 1/G_2(s)\\) and \\(\\lim_{s \\to 0} G_1(s)\\) for this system and verify the formula numerically as an exercise.\nThis reinforces use of low-frequency limits and the idea that large gain → small disturbance error."
+  },
+  {
+    "objectID": "control_7.html#real-world-ece-application-robot-positioning",
+    "href": "control_7.html#real-world-ece-application-robot-positioning",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Real-World ECE Application – Robot Positioning",
+    "text": "Real-World ECE Application – Robot Positioning\n\n\n\nRobot in semiconductor manufacturing\n\n\nIn semiconductor manufacturing:\n\nRobots move wafers or chips with high precision.\nDesign spec may say:\n\nStep position change: final error \\(&lt; 0.01\\) mm.\nConveyor with constant speed: tracking error \\(&lt; 0.1\\) mm.\n\n\nDesign approach:\n\nUse Type 1 or Type 2 systems with appropriate \\(K_p, K_v\\) to meet these specs.\nAdd integrators in controller (PI / PID) to increase type and improve steady-state accuracy.\nAlso design for good disturbance rejection to handle load changes, friction, etc.\n\n\nRemind students: the vocabulary and formulas they’re learning here translate directly into real “spec sheets” for industrial control systems.\nEncourage them to read a servomotor datasheet and look for terms like “tracking error” or “steady-state accuracy”; they map to these concepts."
+  },
+  {
+    "objectID": "control_7.html#summary-key-points",
+    "href": "control_7.html#summary-key-points",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Summary / Key Points",
+    "text": "Summary / Key Points\n\nSteady-state error \\(e_{ss}\\) is the difference between input and output as \\(t \\to \\infty\\).\nIt is defined for stable systems only. Always check stability.\nStandard test inputs model motion of position systems:\n\nStep (position), ramp (velocity), parabola (acceleration).\n\nFor unity feedback, steady-state error is conveniently computed from \\(G(s)\\):\n\\[\ne(\\infty) = \\lim_{s \\to 0} \\frac{s R(s)}{1 + G(s)}\n\\]\nStatic error constants summarize steady-state performance:\n\n\\(K_p = \\lim_{s \\to 0} G(s)\\), \\(e_{step} = \\dfrac{1}{1 + K_p}\\).\n\\(K_v = \\lim_{s \\to 0} s G(s)\\), \\(e_{ramp} = \\dfrac{1}{K_v}\\).\n\\(K_a = \\lim_{s \\to 0} s^2 G(s)\\), \\(e_{parabola} = \\dfrac{1}{K_a}\\)."
+  },
+  {
+    "objectID": "control_7.html#formula-summary-steady-state-error",
+    "href": "control_7.html#formula-summary-steady-state-error",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Formula Summary – Steady-State Error",
+    "text": "Formula Summary – Steady-State Error\nGeneral\n\nError signal:\n\\[\nE(s) = R(s) - C(s)\n\\]\nClosed-loop: \\(C(s) = T(s) R(s)\\) ⇒ \\(E(s) = R(s)[1 - T(s)]\\).\nFinal value theorem (for stable systems):\n\\[\ne(\\infty) = \\lim_{t \\to \\infty} e(t) = \\lim_{s \\to 0} s E(s)\n\\]"
+  },
+  {
+    "objectID": "control_7.html#step-disturbance-expression-for-e_dinfty",
+    "href": "control_7.html#step-disturbance-expression-for-e_dinfty",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Step Disturbance – Expression for \\(e_D(\\infty)\\)",
+    "text": "Step Disturbance – Expression for \\(e_D(\\infty)\\)\nAssume a step disturbance:\n\n\\(d(t) = u(t)\\)\n\\(D(s) = \\dfrac{1}{s}\\)\n\nThe disturbance contribution to steady-state error is:\n\\[\ne_D(\\infty) = -\\lim_{s \\to 0} \\frac{s G_2(s)}{1 + G_1(s) G_2(s)} D(s)\n= -\\lim_{s \\to 0} \\frac{s G_2(s)}{1 + G_1(s) G_2(s)} \\cdot \\frac{1}{s}\n\\]\nSimplify:\n\\[\ne_D(\\infty) = -\\lim_{s \\to 0} \\frac{G_2(s)}{1 + G_1(s) G_2(s)}\n\\]"
+  },
+  {
+    "objectID": "control_7.html#warm-up-final-value-theorem-in-code",
+    "href": "control_7.html#warm-up-final-value-theorem-in-code",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Warm-Up: Final Value Theorem in Code",
+    "text": "Warm-Up: Final Value Theorem in Code\nUse Python to compute\n\\[\ne(\\infty) = \\lim_{s\\to 0} s E(s)\n\\]\nfor a given closed-loop \\(T(s)\\) and step input \\(R(s) = 1/s\\).\nEdit the numerator/denominator and re-run.\n\n\n\n\n\n\nTasks:\n\nChange num_T and/or den_T and see how \\(e_{ss}\\) changes.\nTry to make \\(e_{ss} = 0\\). What condition on \\(T(0)\\) does that imply?\n\n\nGuide students to discover: for a step, \\(e_{ss} = 0\\) when \\(T(0) = 1\\).\nYou can also ask them to try an unstable \\(T(s)\\) (e.g., with a RHP pole) and see how Sympy behaves, then remind them the final value theorem is only valid for stable systems."
+  },
+  {
+    "objectID": "control_7.html#interactive-error-from-open-loop-gs-unity-feedback",
+    "href": "control_7.html#interactive-error-from-open-loop-gs-unity-feedback",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Interactive: Error from Open-Loop \\(G(s)\\) (Unity Feedback)",
+    "text": "Interactive: Error from Open-Loop \\(G(s)\\) (Unity Feedback)\nRecall for unity feedback:\n\\[\ne(\\infty) = \\lim_{s\\to 0} \\frac{s R(s)}{1 + G(s)}.\n\\]\nBelow, you can define \\(G(s)\\) and choose the test input type.\n\nviewof input_type = Inputs.select(\n  [\"step\", \"ramp\", \"parabola\"],\n  {label: \"Input type\"}\n)\n\nviewof K = Inputs.range([0, 50], {step: 1, value: 10, label: \"Gain K\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nQuestions:\n\nFor which input types do you get finite error with this \\(G(s)\\)?\nHow does increasing \\(K\\) affect the error?\nWhat system type is this (Type 0, 1, or 2)? How does that match your results?\n\n\nEncourage students to crank \\(K\\) up and notice: step error decreases but ramp and parabolic error stay infinite.\nConnect to the idea: Type 0 → only step performance is improvable by gain scaling; ramp/parabola need integrators."
+  },
+  {
+    "objectID": "control_7.html#exploring-system-type-via-integrators",
+    "href": "control_7.html#exploring-system-type-via-integrators",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Exploring System Type via Integrators",
+    "text": "Exploring System Type via Integrators\nNow let’s add integrators and see how system type affects \\(e_{ss}\\).\nWe define\n\\[\nG(s) = \\frac{K}{s^n (s+2)(s+3)},\n\\]\nwhere n is the number of integrators → system type \\(= n\\).\n\nviewof n_integrators = Inputs.range(\n  [0, 3],\n  {step: 1, value: 0, label: \"Number of integrators n (system type)\"}\n)\n\nviewof input_type2 = Inputs.select(\n  [\"step\", \"ramp\", \"parabola\"],\n  {label: \"Input type\"}\n)\n\nviewof K2 = Inputs.range([0, 200], {step: 10, value: 50, label: \"Gain K\"}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTry this:\n\nFix K2 = 50 and change n_integrators from 0 → 1 → 2 → 3.\nFor each input_type2, note when error becomes zero / finite / infinite.\nConnect your observations to Table 7.2 (Type 0/1/2 behavior).\n\n\nStudents should rediscover:\n\nType 0 (n=0): finite step error, ramp and parabola infinite.\nType 1 (n=1): zero step, finite ramp, infinite parabola.\nType 2 (n=2): zero step and ramp, finite parabola.\n\nYou may ask: what happens for n=3 (Type 3)? This is beyond standard table but good for deeper understanding."
+  },
+  {
+    "objectID": "control_7.html#static-error-constants-k_p-k_v-k_a-interactive",
+    "href": "control_7.html#static-error-constants-k_p-k_v-k_a-interactive",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Static Error Constants \\(K_p, K_v, K_a\\) – Interactive",
+    "text": "Static Error Constants \\(K_p, K_v, K_a\\) – Interactive\nWe’ll compute\n\\[\nK_p = \\lim_{s\\to 0} G(s),\\quad\nK_v = \\lim_{s\\to 0} s G(s),\\quad\nK_a = \\lim_{s\\to 0} s^2 G(s)\n\\]\nfor a parameterized \\(G(s)\\).\nLet\n\\[\nG(s) = \\frac{K(s+z)}{s^n (s+p_1)(s+p_2)}.\n\\]\n\nviewof n_type = Inputs.range([0, 2], {step: 1, value: 0, label: \"System type n\"})\nviewof K3 = Inputs.range([0, 200], {step: 20, value: 100, label: \"Gain K\"})\nviewof z = Inputs.range([0, 20], {step: 2, value: 10, label: \"Zero z\"})\nviewof p1 = Inputs.range([1, 20], {step: 2, value: 5, label: \"Pole p1\"})\nviewof p2 = Inputs.range([1, 20], {step: 2, value: 7, label: \"Pole p2\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nQuestions:\n\nFor each n_type, which of \\(K_p, K_v, K_a\\) is zero, finite, or infinite?\nHow does changing z, p1, p2 affect the finite constants?\nFor your chosen parameters, what are \\(e_{step}, e_{ramp}, e_{parabola}\\)?\n\n\nHave students relate these computed constants to the error formulas: - \\(e_{step} = 1/(1+K_p)\\) - \\(e_{ramp} = 1/K_v\\) - \\(e_{parabola} = 1/K_a\\)\nThey should see that zeros and finite poles change magnitudes but not which errors are zero vs. infinite—that’s set by integrators."
+  },
+  {
+    "objectID": "control_7.html#visualizing-step-response-vs.-k_p-simple-approximation",
+    "href": "control_7.html#visualizing-step-response-vs.-k_p-simple-approximation",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Visualizing Step Response vs. \\(K_p\\) (Simple Approximation)",
+    "text": "Visualizing Step Response vs. \\(K_p\\) (Simple Approximation)\nWe’ll approximate steady-state behavior by evaluating \\(T(0)\\) for a step, where\n\\[\nT(s) = \\frac{G(s)}{1 + G(s)}.\n\\]\nIf the input step amplitude is 1, then steady-state output ≈ \\(T(0)\\), and\n\\[\ne_{ss} \\approx 1 - T(0).\n\\]\n\nviewof K_step = Inputs.range([0, 200], {step: 10, value: 20, label: \"Gain K\"})\n\n\n\n\n\n\n\n\n\n\n\n\nTry:\n\nIncrease K_step. How do \\(T(0)\\) and \\(e_{ss}\\) change?\nInterpret \\(T(0)\\) physically (gain from input to output for DC).\n\n\nExplain that for step inputs, the static gain \\(T(0)\\) essentially tells us how close the output gets to the commanded value in steady state.\nFor unity gain tracking, we want \\(T(0) \\approx 1\\), which means high \\(K_p\\)."
+  },
+  {
+    "objectID": "control_7.html#ramp-tracking-simulated-output-and-error",
+    "href": "control_7.html#ramp-tracking-simulated-output-and-error",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Ramp Tracking – Simulated Output and Error",
+    "text": "Ramp Tracking – Simulated Output and Error\nLet’s simulate time-domain response to a ramp input for a Type 0 vs Type 1 system and visualize steady-state error.\nWe’ll use a simple numerical approximation here.\n\nviewof K_ramp = Inputs.range([0, 100], {step: 10, value: 20, label: \"Gain K\"})\nviewof has_integrator = Inputs.checkbox(\n  [\"Include integrator\"],\n  {label: \"Include integrator in G(s)?\", value: []}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nQuestions:\n\nWith no integrator (Type 0), does the error seem to grow without bound?\nWith an integrator (Type 1), does the error approach a finite constant?\nHow does increasing K_ramp affect the ramp error for Type 1?\n\n\nThis gives students a direct visual confirmation of the qualitative step–ramp–parabola behavior discussed in theory.\nEmphasize the difference between ever-growing error (Type 0) vs. converging offset (Type 1)."
+  },
+  {
+    "objectID": "control_7.html#disturbance-rejection-static-formula-exploration",
+    "href": "control_7.html#disturbance-rejection-static-formula-exploration",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Disturbance Rejection – Static Formula Exploration",
+    "text": "Disturbance Rejection – Static Formula Exploration\nFor a disturbance entering between \\(G_1\\) and \\(G_2\\), for a step disturbance \\(D(s) = 1/s\\),\n\\[\ne_D(\\infty) = -\\frac{1}{\\displaystyle \\lim_{s\\to 0} \\frac{1}{G_2(s)} + \\lim_{s\\to 0} G_1(s)}.\n\\]\nHere we’ll assume\n\\[\nG_1(s) \\approx K_1, \\quad G_2(s) \\approx K_2\n\\]\naround DC, and compute \\(e_D(\\infty)\\) interactively.\n\nviewof K1 = Inputs.range([0, 2000], {step: 100, value: 500, label: \"Controller DC gain K1 ≈ G1(0)\"})\nviewof K2 = Inputs.range([0.1, 10], {step: 0.1, value: 2, label: \"Plant DC gain K2 ≈ G2(0)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExplore:\n\nIncrease K1 while keeping K2 fixed. What happens to eD?\nDecrease K2 (weaker plant gain). How does that affect eD?\nRelate to the block diagram interpretation: why does high controller gain improve disturbance rejection?\n\n\nRemind students that this is a simplified dc analysis, but the trend is accurate: higher loop gain → better disturbance suppression (at low frequency).\nRelate to Example 7.7 and Skill-Assessment 7.4, where \\(e_D(\\infty)\\) was around \\(-10^{-3}\\)."
+  },
+  {
+    "objectID": "control_7.html#disturbance-rejection-time-domain-simulation",
+    "href": "control_7.html#disturbance-rejection-time-domain-simulation",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Disturbance Rejection – Time-Domain Simulation",
+    "text": "Disturbance Rejection – Time-Domain Simulation\nNow let’s simulate a disturbance step entering the plant input and see how the output error behaves.\nWe consider the canonical structure:\n\\[\nG_1(s) = K_1, \\quad G_2(s) = \\frac{K_2}{s+1}.\n\\]\n\nviewof K1_d = Inputs.range([0, 1000], {step: 100, value: 500, label: \"K1 (controller gain)\"})\nviewof K2_d = Inputs.range([0, 10], {step: 1, value: 5, label: \"K2 (plant gain)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTry:\n\nIncrease K1_d. Does steady-state error magnitude decrease?\nChange K2_d. How does that affect the shape and final value of E(t)?\nCompare with the static formula you just explored.\n\n\nThis reinforces the connection between the analytic formula for \\(e_D(\\infty)\\) and time-domain simulation.\nGood to ask students: is there any trade-off in transient behavior as K1 grows large (e.g., overshoot, oscillations)? That bridges to stability and transient design topics."
+  },
+  {
+    "objectID": "control_7.html#challenge-design-k-for-a-desired-ramp-error",
+    "href": "control_7.html#challenge-design-k-for-a-desired-ramp-error",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Challenge: Design \\(K\\) for a Desired Ramp Error",
+    "text": "Challenge: Design \\(K\\) for a Desired Ramp Error\nSuppose you have unity feedback with\n\\[\nG(s) = \\frac{K}{s (s+2)(s+3)},\n\\]\nwhich is Type 1.\nYou want a 10% error for a unit ramp input, i.e.,\n\\[\ne_{ramp}(\\infty) = 0.1.\n\\]\nUse the interactive code below to:\n\nCompute \\(K_v = \\lim_{s\\to 0} s G(s)\\).\nSolve for \\(K\\) such that \\(1/K_v = 0.1\\).\nVerify with a numerical simulation of a ramp response.\n\n\n\n\n\n\n\n\n\n\n\n\n\nNow plug that \\(K\\) into the previous ramp simulation slide by editing G(s) there to match this form and see if the final error matches \\(\\approx 0.1\\).\n\nThis slide encourages students to combine symbolic manipulation (Kv derivation), numerical solving (for K), and simulation (to check).\nMake sure to walk through at least once in class so students see the full loop."
+  },
+  {
+    "objectID": "control_7.html#reflection-what-did-you-observe",
+    "href": "control_7.html#reflection-what-did-you-observe",
+    "title": "Steady-State Errors in Feedback Control Systems",
+    "section": "Reflection – What Did You Observe?",
+    "text": "Reflection – What Did You Observe?\nUse this slide as a checklist:\n\nHow does the number of integrators (system type) influence which inputs have zero / finite / infinite error?\nHow does increasing gain \\(K\\) change steady-state error for:\n\nType 0 system with step input?\nType 1 system with ramp input?\n\nHow do the static error constants \\(K_p, K_v, K_a\\) help you quickly predict error behavior?\nHow does increasing controller dc gain help with disturbance rejection?\n\nConsider writing down:\n\nOne experiment that surprised you.\nOne pattern you discovered yourself while playing with the sliders.\n\n\nEncourage students to take screenshots or notes from configurations they find insightful.\nYou can also assign a short lab report where they must document a few parameter sweeps and interpret the results."
   }
 ]
