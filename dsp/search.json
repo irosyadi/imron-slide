@@ -1,0 +1,667 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Digital Signal Processing",
+    "section": "",
+    "text": "These are Digital Signal Processing lecture notes."
+  },
+  {
+    "objectID": "index.html#week-9",
+    "href": "index.html#week-9",
+    "title": "Digital Signal Processing",
+    "section": "Week 9",
+    "text": "Week 9\n\nRPS\n6.1 Basic Filtering Types and Digital Filter Realizations\n6.2 Basic Filtering Types, and Digital Filter Realizations"
+  },
+  {
+    "objectID": "index.html#week-10",
+    "href": "index.html#week-10",
+    "title": "Digital Signal Processing",
+    "section": "Week 10",
+    "text": "Week 10"
+  },
+  {
+    "objectID": "index.html#week-11",
+    "href": "index.html#week-11",
+    "title": "Digital Signal Processing",
+    "section": "Week 11",
+    "text": "Week 11"
+  },
+  {
+    "objectID": "index.html#week-12",
+    "href": "index.html#week-12",
+    "title": "Digital Signal Processing",
+    "section": "Week 12",
+    "text": "Week 12"
+  },
+  {
+    "objectID": "index.html#week-13",
+    "href": "index.html#week-13",
+    "title": "Digital Signal Processing",
+    "section": "Week 13",
+    "text": "Week 13"
+  },
+  {
+    "objectID": "index.html#week-14",
+    "href": "index.html#week-14",
+    "title": "Digital Signal Processing",
+    "section": "Week 14",
+    "text": "Week 14"
+  },
+  {
+    "objectID": "index.html#week-15",
+    "href": "index.html#week-15",
+    "title": "Digital Signal Processing",
+    "section": "Week 15",
+    "text": "Week 15"
+  },
+  {
+    "objectID": "index.html#week-16",
+    "href": "index.html#week-16",
+    "title": "Digital Signal Processing",
+    "section": "Week 16",
+    "text": "Week 16"
+  },
+  {
+    "objectID": "dsp_61.html#learning-objectives",
+    "href": "dsp_61.html#learning-objectives",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\nBy the end of this session, you will be able to:\n\nExpress a DSP system using a linear constant‑coefficient difference equation.\nCompute the output of a DSP system recursively (digital filtering) given initial conditions.\nDerive the transfer function \\(H(z)\\) from a difference equation (and vice versa).\nDetermine impulse, step, and general system responses using \\(H(z)\\) and the \\(z\\)-transform.\nPlot poles and zeros in the \\(z\\)-plane and assess BIBO stability.\nCompute and interpret the digital frequency response \\(H(e^{j\\Omega})\\) (magnitude and phase).\n\n\nPoint out how these objectives map directly to standard DSP design tasks in ECE:\n\nImplementing an equalizer, noise filter, or control algorithm = specifying a difference equation.\nVerifying stability and response specs = working with poles/zeros and frequency response."
+  },
+  {
+    "objectID": "dsp_61.html#dsp-systems-as-difference-equations",
+    "href": "dsp_61.html#dsp-systems-as-difference-equations",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "6.1 DSP Systems as Difference Equations",
+    "text": "6.1 DSP Systems as Difference Equations\n\n\n\nFIG. 6.1 DSP system with input \\(x(n)\\) and output \\(y(n)\\).\n\n\nKey Idea\nA (linear, time‑invariant, causal) DSP system (digital filter) with input \\(x(n)\\) and output \\(y(n)\\) is described by an \\(N\\)th‑order linear difference equation:\n\\[\n\\begin{aligned}\ny(n) &= b_{0}x(n) + b_{1}x(n-1) + \\cdots + b_{M}x(n-M) \\\\\n&\\quad - a_{1}y(n-1) - \\cdots - a_{N}y(n-N)\n\\end{aligned}\n\\]"
+  },
+  {
+    "objectID": "dsp_61.html#example-6.1-manual-digital-filtering-nonzero-ics",
+    "href": "dsp_61.html#example-6.1-manual-digital-filtering-nonzero-ics",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Example 6.1 – Manual Digital Filtering (Nonzero ICs)",
+    "text": "Example 6.1 – Manual Digital Filtering (Nonzero ICs)\nSystem:\n\\[\ny(n) = 0.5\\,y(n-2) + x(n-1)\n\\]\nIdentify coefficients:\n\n\\(N=2\\), \\(M=1\\)\n\\(a_1=0,\\ a_2=-0.5\\)\n\\(b_0=0,\\ b_1=1\\)\n\nCase (a) Nonzero initial conditions:\n\n\\(y(-2)=1,\\ y(-1)=0,\\ x(-1)=-1\\)\nInput \\(x(n) = (0.5)^n u(n)\\)"
+  },
+  {
+    "objectID": "dsp_61.html#example-6.1-effect-of-zero-initial-conditions",
+    "href": "dsp_61.html#example-6.1-effect-of-zero-initial-conditions",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Example 6.1 – Effect of Zero Initial Conditions",
+    "text": "Example 6.1 – Effect of Zero Initial Conditions\nCase (b) Zero initial conditions:\n\n\\(y(-2)=0,\\ y(-1)=0,\\ x(-1)=0\\)\nSame input: \\(x(n) = (0.5)^n u(n)\\)\n\nFor \\(n=0,1,2,3\\):\n\\[\n\\begin{aligned}\nx(0) &= 1 \\\\\ny(0) &= 0.5\\,y(-2) + x(-1) = 0\\cdot1 + 0 = 0\n\\end{aligned}\n\\]\n\\[\n\\begin{aligned}\nx(1) &= 0.5 \\\\\ny(1) &= 0.5\\,y(-1) + x(0) = 0\\cdot0 + 1 = 1\n\\end{aligned}\n\\]\n\\[\n\\begin{aligned}\nx(2) &= 0.25 \\\\\ny(2) &= 0.5\\,y(0) + x(1) = 0.5\\cdot0 + 0.5 = 0.5\n\\end{aligned}\n\\]\n\\[\n\\begin{aligned}\nx(3) &= 0.125 \\\\\ny(3) &= 0.5\\,y(1) + x(2) = 0.5\\cdot1 + 0.25 = 0.75\n\\end{aligned}\n\\]"
+  },
+  {
+    "objectID": "dsp_61.html#example-6.2-matlab-simulation-of-a-dsp-system",
+    "href": "dsp_61.html#example-6.2-matlab-simulation-of-a-dsp-system",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Example 6.2 – MATLAB Simulation of a DSP System",
+    "text": "Example 6.2 – MATLAB Simulation of a DSP System\nSystem:\n\\[\ny(n) = 2x(n) - 4x(n-1) - 0.5y(n-1) - y(n-2)\n\\]\nInitial conditions:\n\n\\(y(-2)=1,\\ y(-1)=0,\\ x(-1)=-1\\)\nInput \\(x(n) = (0.8)^n u(n)\\)\n\nGoal: compute \\(y(n)\\) for \\(n=0,\\dots,19\\) using MATLAB.\nWe pre‑allocate vectors for \\(y(n)\\) and embed initial conditions as extra entries:\ny = zeros(1,20);      % storage for y(0)...y(19)\ny = [1 0 y];          % prepend y(-2)=1, y(-1)=0\n\nn = 0:1:19;           % time indices\nx = (0.8).^n;         % x(0)...x(19)\nx = [0 -1 x];         % prepend x(-2)=0, x(-1)=-1\n\nfor n = 1:20\n    y(n+2) = 2*x(n+2) - 4*x(n+1) ...\n             - 0.5*y(n+1) - 0.5*y(n);\nend"
+  },
+  {
+    "objectID": "dsp_61.html#using-matlab-filter-and-filtic",
+    "href": "dsp_61.html#using-matlab-filter-and-filtic",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Using MATLAB filter() and filtic()",
+    "text": "Using MATLAB filter() and filtic()\nGeneral DSP form:\n\nCoefficient vectors:\n\\[\nA = [1\\ a_1\\ a_2\\ \\dots\\ a_N]\n\\] \\[\nB = [b_0\\ b_1\\ b_2\\ \\dots\\ b_M]\n\\]\nDifference equation:\n\\[\ny(n)=\\sum_{i=0}^{M}b_i x(n-i)-\\sum_{j=1}^{N} a_j y(n-j)\n\\]"
+  },
+  {
+    "objectID": "dsp_61.html#example-6.1-via-matlab",
+    "href": "dsp_61.html#example-6.1-via-matlab",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Example 6.1 via MATLAB",
+    "text": "Example 6.1 via MATLAB\nRecall system:\n\n\\(y(n) = 0.5\\,y(n-2) + x(n-1)\\)\nSo \\(B = [0\\ 1]\\), \\(A = [1\\ 0\\ -0.5]\\).\n\nCase (a) Nonzero initial conditions\n\n\\(x = [1\\ 0.5\\ 0.25\\ 0.125]\\) for \\(n=0,1,2,3\\).\n\\(X_i = [x(-1)\\ x(-2)\\dots] = [-1\\ 0]\\).\n\\(Y_i = [y(-1)\\ y(-2)\\dots] = [0\\ 1]\\).\n\nB  = [0 1];\nA  = [1 0 -0.5];\nx  = [1 0.5 0.25 0.125];\nXi = [-1 0];\nYi = [0 1];\n\nZi = filtic(B, A, Yi, Xi);\ny  = filter(B, A, x, Zi)\nOutput:\ny =\n   -0.5000    1.0000    0.2500    0.7500\nCase (b) Zero initial conditions\nB = [0 1];\nA = [1 0 -0.5];\nx = [1 0.5 0.25 0.125];\n\ny = filter(B, A, x)"
+  },
+  {
+    "objectID": "dsp_61.html#from-difference-equation-to-transfer-function-hz",
+    "href": "dsp_61.html#from-difference-equation-to-transfer-function-hz",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "6.2 From Difference Equation to Transfer Function \\(H(z)\\)",
+    "text": "6.2 From Difference Equation to Transfer Function \\(H(z)\\)\nGiven the general LTI difference equation with zero initial conditions:\n\\[\n\\begin{aligned}\ny(n) &= b_0 x(n) + b_1 x(n-1) + \\cdots + b_M x(n-M) \\\\\n&\\quad - a_1 y(n-1) - \\cdots - a_N y(n-N)\n\\end{aligned}\n\\]\nTake the \\(z\\)-transform of both sides, using\n\n\\(Z\\{x(n-k)\\} = X(z) z^{-k}\\)\n\\(Z\\{y(n-k)\\} = Y(z) z^{-k}\\)\n\nWe obtain:\n\\[\n\\begin{aligned}\nY(z) &= b_0 X(z) + b_1 X(z) z^{-1} + \\cdots + b_M X(z) z^{-M} \\\\\n&\\quad - a_1 Y(z) z^{-1} - \\cdots - a_N Y(z) z^{-N}\n\\end{aligned}\n\\]"
+  },
+  {
+    "objectID": "dsp_61.html#example-6.3-difference-equation-hz",
+    "href": "dsp_61.html#example-6.3-difference-equation-hz",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Example 6.3 – Difference Equation → \\(H(z)\\)",
+    "text": "Example 6.3 – Difference Equation → \\(H(z)\\)\nGiven:\n\\[\ny(n) = x(n) - x(n-2) - 1.3\\,y(n-1) - 0.36\\,y(n-2)\n\\]\n\nTake \\(z\\)-transform (zero ICs):\n\n\\[\nY(z) = X(z) - X(z)z^{-2} - 1.3 Y(z)z^{-1} - 0.36 Y(z)z^{-2}\n\\]\n\nGroup \\(Y(z)\\) and \\(X(z)\\):\n\n\\[\nY(z)\\big(1 + 1.3z^{-1} + 0.36z^{-2}\\big) = (1 - z^{-2})X(z)\n\\]"
+  },
+  {
+    "objectID": "dsp_61.html#example-6.4-fir-system",
+    "href": "dsp_61.html#example-6.4-fir-system",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Example 6.4 – FIR System",
+    "text": "Example 6.4 – FIR System\nGiven:\n\\[\ny(n) = x(n) - 0.5x(n-1) + 0.36x(n-2)\n\\]\nTake \\(z\\)-transform:\n\\[\nY(z) = X(z) - 0.5 X(z)z^{-1} + 0.36 X(z)z^{-2}\n\\]\nSo:\n\\[\nH(z) = \\frac{Y(z)}{X(z)} = 1 - 0.5z^{-1} + 0.36z^{-2}\n\\]\n\n\\(A(z) = 1\\)\n\\(B(z) = 1 - 0.5z^{-1} + 0.36z^{-2}\\)\n\n\n\n\n\n\n\nTip\n\n\nNo feedback terms (\\(a_j = 0\\)) ⇒ the impulse response has finite length ⇒ FIR filter.\n\n\n\n\nContrast with Example 6.3.\nMention that FIR filters are always BIBO stable (poles at \\(z=0\\) only), important in many ECE applications (e.g., precise phase control, linear phase designs)."
+  },
+  {
+    "objectID": "dsp_61.html#example-6.5-from-hz-back-to-difference-equation",
+    "href": "dsp_61.html#example-6.5-from-hz-back-to-difference-equation",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Example 6.5 – From \\(H(z)\\) Back to Difference Equation",
+    "text": "Example 6.5 – From \\(H(z)\\) Back to Difference Equation\n(a)\nGiven:\n\\[\nH(z) = \\frac{z^{2} - 1}{z^{2} + 1.3z + 0.36}\n\\]\n\nDivide numerator/denominator by \\(z^2\\):\n\n\\[\nH(z) = \\frac{(z^{2}-1)/z^{2}}{(z^{2} + 1.3z + 0.36)/z^{2}}\n     = \\frac{1 - z^{-2}}{1 + 1.3z^{-1} + 0.36z^{-2}}\n\\]\n\nWrite \\(Y(z)/X(z)\\):\n\n\\[\n\\frac{Y(z)}{X(z)} = \\frac{1 - z^{-2}}{1 + 1.3z^{-1} + 0.36z^{-2}}\n\\]"
+  },
+  {
+    "objectID": "dsp_61.html#factorized-polezero-form-of-hz",
+    "href": "dsp_61.html#factorized-polezero-form-of-hz",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Factorized Pole–Zero Form of \\(H(z)\\)",
+    "text": "Factorized Pole–Zero Form of \\(H(z)\\)\nAny rational \\(H(z)\\) can be factored as:\n\\[\nH(z) = \\frac{b_0 (z - z_1)(z - z_2)\\cdots(z - z_M)}\n           {(z - p_1)(z - p_2)\\cdots(z - p_N)}\n\\]\n\n\\(\\{z_i\\}\\): zeros (roots of numerator).\n\\(\\{p_i\\}\\): poles (roots of denominator)."
+  },
+  {
+    "objectID": "dsp_61.html#impulse-step-and-system-responses",
+    "href": "dsp_61.html#impulse-step-and-system-responses",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "6.2.1 Impulse, Step, and System Responses",
+    "text": "6.2.1 Impulse, Step, and System Responses\nImpulse response \\(h(n)\\)\n\nResponse to input \\(x(n) = \\delta(n)\\).\nWith \\(X(z) = Z\\{\\delta(n)\\} = 1\\):\n\\[\nh(n) = Z^{-1}\\{H(z) X(z)\\} = Z^{-1}\\{H(z)\\}\n\\]\n\nStep response (to \\(x(n)=u(n)\\), zero ICs):\n\n\\(X(z) = Z\\{u(n)\\} = \\dfrac{z}{z-1}\\).\n\\[\ny(n) = Z^{-1}\\Big\\{ H(z) \\frac{z}{z-1} \\Big\\}\n\\]"
+  },
+  {
+    "objectID": "dsp_61.html#example-6.7-responses-of-a-firstorder-system",
+    "href": "dsp_61.html#example-6.7-responses-of-a-firstorder-system",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Example 6.7 – Responses of a First‑Order System",
+    "text": "Example 6.7 – Responses of a First‑Order System\nSystem transfer function:\n\\[\nH(z) = \\frac{z+1}{z-0.5}\n\\]\nWe will find:\n\nImpulse response \\(h(n)\\).\nStep response to \\(x(n)=u(n)\\).\nResponse to \\(x(n) = (0.25)^n u(n)\\)."
+  },
+  {
+    "objectID": "dsp_61.html#the-z-plane-polezero-plot-and-stability",
+    "href": "dsp_61.html#the-z-plane-polezero-plot-and-stability",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "6.3 The \\(z\\)-Plane Pole–Zero Plot and Stability",
+    "text": "6.3 The \\(z\\)-Plane Pole–Zero Plot and Stability\n\n\nz-plane basics\n\nHorizontal axis: \\(\\Re\\{z\\}\\).\nVertical axis: \\(\\Im\\{z\\}\\).\nThe unit circle \\(|z|=1\\) divides the plane.\nPoles: marked with “×”.\nZeros: marked with “○”.\n\nWe plot poles and zeros of \\(H(z)\\) to analyze:\n\nStability (pole locations).\nFrequency response shape.\n\n\n\n\n\nFig. 6.5 Example z-plane with poles and zeros.\n\n\n\n\nEmphasize that many DSP design tools visualise pole–zero plots because they give immediate insight:\n\nPoles near the unit circle → sharp resonances.\nZeros on the unit circle → sharp notches.\n\nEspecially important in control, audio equalization, and communication filters."
+  },
+  {
+    "objectID": "dsp_61.html#example-6.8-polezero-plot",
+    "href": "dsp_61.html#example-6.8-polezero-plot",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Example 6.8 – Pole–Zero Plot",
+    "text": "Example 6.8 – Pole–Zero Plot\nGiven:\n\\[\nH(z) = \\frac{z^{-1}-0.5z^{-2}}{1 + 1.2z^{-1} + 0.45z^{-2}}\n\\]\nConvert to advanced form (positive powers) by multiplying numerator and denominator by \\(z^{2}\\):\n\\[\nH(z) = \\frac{(z^{-1}-0.5z^{-2})z^{2}}{(1+1.2z^{-1}+0.45z^{-2})z^{2}}\n     = \\frac{z - 0.5}{z^{2} + 1.2z + 0.45}\n\\]\nFind zeros and poles:\n\nZero: solve \\(z - 0.5 = 0\\) ⇒ \\(z_1 = 0.5\\).\nPoles: solve \\(z^{2} + 1.2z + 0.45 = 0\\):\n\\[\np_1 = -0.6 + j0.3,\\quad p_2 = -0.6 - j0.3\n\\]"
+  },
+  {
+    "objectID": "dsp_61.html#mapping-between-s-plane-and-z-plane",
+    "href": "dsp_61.html#mapping-between-s-plane-and-z-plane",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Mapping Between \\(s\\)-Plane and \\(z\\)-Plane",
+    "text": "Mapping Between \\(s\\)-Plane and \\(z\\)-Plane\nContinuous‑time sampled signal (sampling period \\(T\\)):\n\\[\nx_s(t) = \\sum_{n=0}^{\\infty} x(nT)\\,\\delta(t-nT)\n\\]\nLaplace transform: using \\(L\\{\\delta(t-nT)\\}=e^{-nTs}\\):\n\\[\nX_s(s) = \\sum_{n=0}^{\\infty} x(nT)e^{-nTs}\n\\]\nOne‑sided \\(z\\)-transform of sequence \\(x(n)\\):\n\\[\nX(z) = \\sum_{n=0}^{\\infty} x(n) z^{-n}\n\\]"
+  },
+  {
+    "objectID": "dsp_61.html#stability-rules-for-dsp-systems",
+    "href": "dsp_61.html#stability-rules-for-dsp-systems",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Stability Rules for DSP Systems",
+    "text": "Stability Rules for DSP Systems\nA digital system is BIBO stable if every bounded input produces a bounded output.\nFor a rational \\(H(z)\\), stability is determined by pole locations:\n\nStable:\n\nAll poles of \\(H(z)\\) are inside the unit circle.\n\nUnstable:\n\nAt least one pole is outside the unit circle.\n\nMarginally stable:\n\nOutermost pole(s) lie on the unit circle and are first‑order.\n\nUnstable (special case):\n\nOutermost pole(s) on the unit circle are multiple‑order (e.g., double pole).\n\nZeros do not affect stability (only poles matter)."
+  },
+  {
+    "objectID": "dsp_61.html#example-6.9-stability-from-polezero-plots",
+    "href": "dsp_61.html#example-6.9-stability-from-polezero-plots",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Example 6.9 – Stability from Pole–Zero Plots",
+    "text": "Example 6.9 – Stability from Pole–Zero Plots\nWe are given several transfer functions and asked to:\n\nSketch z‑plane pole–zero plots.\nDetermine stability.\n\n(a)\n\\[\nH(z) = \\frac{z+0.5}{(z-0.5)(z^2 + z + 0.5)}\n\\]\n\nZero: \\(z=-0.5\\).\nPoles:\n\n\\(z=0.5\\), \\(|z|=0.5 &lt; 1\\).\nRoots of \\(z^2 + z + 0.5 = 0\\):\n\\[\nz = -0.5 \\pm j0.5,\\quad |z| = \\sqrt{0.5^2 + 0.5^2} \\approx 0.707 &lt; 1\n\\]\n\n\nAll poles inside unit circle ⇒ stable."
+  },
+  {
+    "objectID": "dsp_61.html#digital-filter-frequency-response",
+    "href": "dsp_61.html#digital-filter-frequency-response",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "6.4 Digital Filter Frequency Response",
+    "text": "6.4 Digital Filter Frequency Response\nFrom analog to digital frequency response:\n\nAnalog LTI system: \\(H(s)\\).\nSteady‑state frequency response: \\(H(j\\omega) = H(s)\\big|_{s=j\\omega}\\).\n\nFor digital systems:\n\nUse mapping \\(z = e^{sT}\\).\nOn \\(j\\omega\\) axis → \\(z = e^{j\\omega T}\\).\n\nThus digital frequency response:\n\\[\nH(e^{j\\omega T}) = H(z)\\big|_{z=e^{j\\omega T}}\n   = \\big|H(e^{j\\omega T})\\big| \\angle H(e^{j\\omega T})\n\\]"
+  },
+  {
+    "objectID": "dsp_61.html#transient-vs-steadystate-response-to-a-sinusoid",
+    "href": "dsp_61.html#transient-vs-steadystate-response-to-a-sinusoid",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Transient vs Steady‑State Response to a Sinusoid",
+    "text": "Transient vs Steady‑State Response to a Sinusoid\nConsider a digital filter with transfer function \\(H(z)\\) and sinusoidal input:\n\nInput amplitude: \\(K\\).\nFrequency: \\(\\Omega\\).\n\n\n\n\nFig. 6.11 System transient and steady-state frequency responses.\n\n\nWe can show (by partial fractions and inverse \\(z\\)-transform, as in the text) that the output has form:\n\\[\ny(n) = y_{tr}(n) + y_{ss}(n)\n\\]\nwhere\n\n\\(y_{tr}(n)\\): transient response (decays with \\(n\\) for a stable system).\n\\(y_{ss}(n)\\): steady‑state sinusoid at same frequency."
+  },
+  {
+    "objectID": "dsp_61.html#properties-of-hejomega",
+    "href": "dsp_61.html#properties-of-hejomega",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Properties of \\(H(e^{j\\Omega})\\)",
+    "text": "Properties of \\(H(e^{j\\Omega})\\)\n1. Periodicity\nFrom Euler’s identity:\n\\[\ne^{j(\\Omega + k2\\pi)} = e^{j\\Omega}\n\\]\nfor integer \\(k\\). Thus:\n\n\\(H(e^{j\\Omega}) = H(e^{j(\\Omega + k2\\pi)})\\).\n\\(|H(e^{j\\Omega})| = |H(e^{j(\\Omega + k2\\pi)})|\\).\n\\(\\angle H(e^{j\\Omega}) = \\angle H(e^{j(\\Omega + k2\\pi)})\\).\n\n2. Symmetry (for real‑coefficient filters)\n\nMagnitude: \\(|H(e^{-j\\Omega})| = |H(e^{j\\Omega})|\\).\nPhase: \\(\\angle H(e^{-j\\Omega}) = -\\angle H(e^{j\\Omega})\\)."
+  },
+  {
+    "objectID": "dsp_61.html#example-6.10-frequency-response-of-a-simple-averager-lowpass",
+    "href": "dsp_61.html#example-6.10-frequency-response-of-a-simple-averager-lowpass",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Example 6.10 – Frequency Response of a Simple Averager (Lowpass)",
+    "text": "Example 6.10 – Frequency Response of a Simple Averager (Lowpass)\nSystem:\n\\[\ny(n) = 0.5x(n) + 0.5x(n-1)\n\\]\nThis is a 2‑point moving average with equal weights.\n\n\\(z\\)-transform:\n\n\\[\nY(z) = 0.5X(z) + 0.5z^{-1}X(z)\n\\]\n\nTransfer function:\n\n\\[\nH(z) = \\frac{Y(z)}{X(z)} = 0.5 + 0.5z^{-1}\n\\]"
+  },
+  {
+    "objectID": "dsp_61.html#example-6.10-periodicity-and-symmetry",
+    "href": "dsp_61.html#example-6.10-periodicity-and-symmetry",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Example 6.10 – Periodicity and Symmetry",
+    "text": "Example 6.10 – Periodicity and Symmetry\nUsing \\(\\Omega = 0.25\\pi + 2\\pi\\):\n\\[\n|H(e^{j(0.25\\pi + 2\\pi)})| = |H(e^{j0.25\\pi})| = 0.924\n\\]\n\\[\n\\angle H(e^{j(0.25\\pi + 2\\pi)}) = \\angle H(e^{j0.25\\pi}) = -22.5^\\circ\n\\]\nUsing \\(\\Omega = -0.25\\pi\\):\n\\[\n|H(e^{-j0.25\\pi})| = |H(e^{j0.25\\pi})| = 0.924\n\\]\n\\[\n\\angle H(e^{-j0.25\\pi}) = -\\angle H(e^{j0.25\\pi}) = +22.5^\\circ\n\\]"
+  },
+  {
+    "objectID": "dsp_61.html#example-6.11-firstorder-highpasslike-response",
+    "href": "dsp_61.html#example-6.11-firstorder-highpasslike-response",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Example 6.11 – First‑Order Highpass‑Like Response",
+    "text": "Example 6.11 – First‑Order Highpass‑Like Response\nSystem:\n\\[\ny(n) = x(n) - 0.5 y(n-1)\n\\]\n\n\\(z\\)-transform:\n\n\\[\nY(z) = X(z) - 0.5z^{-1}Y(z)\n\\]\n\nTransfer function:\n\n\\[\nH(z) = \\frac{Y(z)}{X(z)} = \\frac{1}{1 + 0.5z^{-1}} = \\frac{z}{z + 0.5}\n\\]"
+  },
+  {
+    "objectID": "dsp_61.html#fir-vs-iir-systems",
+    "href": "dsp_61.html#fir-vs-iir-systems",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "FIR vs IIR Systems",
+    "text": "FIR vs IIR Systems\nStarting from the general difference equation:\n\\[\ny(n) = \\sum_{i=0}^{M} b_i x(n-i) - \\sum_{j=1}^{N} a_j y(n-j)\n\\]\n\nIf all \\(a_j = 0\\), we get:\n\\[\ny(n) = \\sum_{i=0}^{M} b_i x(n-i)\n\\]\n\nThe impulse response \\(h(n)\\) is just \\(\\{b_0, b_1, \\dots, b_M\\}\\), and zero outside that range.\nFinite‑length \\(h(n)\\) ⇒ Finite Impulse Response (FIR).\n\\(H(z) = B(z)\\) with denominator \\(A(z) = 1\\)."
+  },
+  {
+    "objectID": "dsp_61.html#summary-key-points",
+    "href": "dsp_61.html#summary-key-points",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Summary / Key Points",
+    "text": "Summary / Key Points\n\nDifference equations are the time‑domain description of DSP systems (digital filters), involving past and present inputs and outputs.\nDigital filtering = recursively computing \\(y(n)\\) from the difference equation and initial conditions.\nThe transfer function \\(H(z) = \\dfrac{Y(z)}{X(z)} = \\dfrac{B(z)}{A(z)}\\) fully characterizes an LTI discrete‑time system in the \\(z\\)-domain.\nYou can convert between difference equations and \\(H(z)\\) (via \\(z\\)-transform and its inverse).\nImpulse response \\(h(n)\\) is \\(Z^{-1}\\{H(z)\\}\\).\n\nStep and general responses follow from \\(Y(z) = H(z)X(z)\\) and inverse \\(z\\)-transform."
+  },
+  {
+    "objectID": "dsp_61.html#formulas-summary",
+    "href": "dsp_61.html#formulas-summary",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Formulas Summary",
+    "text": "Formulas Summary\nGeneral LTI DSP system:\n\\[\ny(n) = \\sum_{i=0}^{M} b_i x(n-i) - \\sum_{j=1}^{N} a_j y(n-j)\n\\]\nTransfer function:\n\\[\nH(z) = \\frac{Y(z)}{X(z)} =\n\\frac{b_0 + b_1 z^{-1} + \\cdots + b_M z^{-M}}\n     {1 + a_1 z^{-1} + \\cdots + a_N z^{-N}}\n= \\frac{B(z)}{A(z)}\n\\]\nPole–zero factorization:\n\\[\nH(z) = \\frac{b_0 (z - z_1)\\cdots(z - z_M)}\n           {(z - p_1)\\cdots(z - p_N)}\n\\]\nImpulse response:\n\\[\nh(n) = Z^{-1}\\{H(z)\\}\n\\]"
+  },
+  {
+    "objectID": "dsp_61.html#warmup-simulating-a-simple-difference-equation",
+    "href": "dsp_61.html#warmup-simulating-a-simple-difference-equation",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Warm‑Up: Simulating a Simple Difference Equation",
+    "text": "Warm‑Up: Simulating a Simple Difference Equation\nWe start from the system in Example 6.1:\n\\[\ny(n) = 0.5\\,y(n-2) + x(n-1)\n\\]\nInput: (x(n) = (0.5)^n u(n)).\nUse Python to compute the first few samples and compare to the textbook.\n\n\n\n\n\n\n\nAsk students:\n\nCan you modify initial conditions to the zero case of Example 6.1(b)?\nWhat changes do you see in the early samples?\n\nEncourage them to try different decay factors (e.g., (0.3) instead of (0.5)) and observe output."
+  },
+  {
+    "objectID": "dsp_61.html#interactive-change-initial-conditions",
+    "href": "dsp_61.html#interactive-change-initial-conditions",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Interactive: Change Initial Conditions",
+    "text": "Interactive: Change Initial Conditions\nUse sliders to switch between nonzero and zero initial conditions and instantly see the outputs.\n\nviewof case_select = Inputs.radio(\n  [\"nonzero ICs\", \"zero ICs\"], \n  {label: \"Initial condition case\", value: \"nonzero ICs\"}\n)\n\nviewof N_samples = Inputs.range(\n  [4, 20], \n  {step: 1, value: 8, label: \"Number of output samples N\"}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLet students:\n\nToggle between cases and watch early outputs.\nIncrease (N) to see convergence of both cases.\n\nDiscussion prompt: “Why do later samples match even when early ones differ?” → effect of ICs dies out in a stable system."
+  },
+  {
+    "objectID": "dsp_61.html#interactive-build-a-generic-lti-filter-simulator",
+    "href": "dsp_61.html#interactive-build-a-generic-lti-filter-simulator",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Interactive: Build a Generic LTI Filter Simulator",
+    "text": "Interactive: Build a Generic LTI Filter Simulator\nNow let’s implement a general LTI filter:\n\\[\ny(n) = \\sum_{i=0}^{M} b_i x(n-i) - \\sum_{j=1}^{N} a_j y(n-j)\n\\]\nWe will allow students to edit (a_j), (b_i), and choose an input signal.\n\nviewof b_coeffs = Inputs.text(\n  \"1.0, -0.5, 0.25\", \n  {label: \"b coefficients (comma-separated, b0, b1,...,bM)\"}\n)\n\nviewof a_coeffs = Inputs.text(\n  \"0.0, 0.5\", \n  {label: \"a coefficients (comma-separated, a1,...,aN)  [enter 0.0 for none]\"}\n)\n\nviewof input_type = Inputs.select(\n  [\"unit step\", \"exponential 0.8^n\", \"impulse\"],\n  {label: \"Input x(n) type\", value: \"unit step\"}\n)\n\nviewof N_len = Inputs.range(\n  [10, 200], \n  {step: 10, value: 100, label: \"Number of samples\"}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEncourage students to:\n\nUse (b = [1, -0.5, 0.36]) and (a = [0.0]) to reproduce Example 6.4.\nUse (b = [1, 0, -1]), (a = [1.3, 0.36]) to approximate Example 6.3 form.\n\nAsk: can you visually distinguish FIR vs IIR behavior (finite vs infinite tail in (y(n)))?"
+  },
+  {
+    "objectID": "dsp_61.html#interactive-poles-zeros-and-stability",
+    "href": "dsp_61.html#interactive-poles-zeros-and-stability",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Interactive: Poles, Zeros, and Stability",
+    "text": "Interactive: Poles, Zeros, and Stability\nWe now plot poles and zeros in the (z)-plane and classify stability.\nUser‑Defined (H(z) = )\n\nviewof B_poly = Inputs.text(\n  \"1.0, -0.5, 0.36\", \n  {label: \"Numerator poly coefficients B(z) (highest power to constant)\"}\n)\n\nviewof A_poly = Inputs.text(\n  \"1.0, 1.3, 0.36\", \n  {label: \"Denominator poly coefficients A(z) (highest power to constant)\"}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLet students try:\n\nStable Example 6.3 denominator: A(z) = [1, 1.3, 0.36].\nMove poles near the unit circle and see sharper “resonance” in future frequency plots.\nCreate multiple poles on the unit circle to observe “unstable (multiple)”.\n\nAsk: what happens to the impulse response as poles move closer to (|z|=1)? (Slower decay)."
+  },
+  {
+    "objectID": "dsp_61.html#reactive-frequency-response-from-coefficients",
+    "href": "dsp_61.html#reactive-frequency-response-from-coefficients",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Reactive: Frequency Response from Coefficients",
+    "text": "Reactive: Frequency Response from Coefficients\nWe now link pole–zero structure with frequency response (H(e^{j})).\nStudents choose FIR or IIR coefficients and see (|H(e^{j})|) and phase vs frequency.\n\nviewof B_freq = Inputs.text(\n  \"0.5, 0.5\", \n  {label: \"B(z) coefficients for freq response (b0,...,bM, highest power to constant)\"}\n)\n\nviewof A_freq = Inputs.text(\n  \"1.0, 0.0\", \n  {label: \"A(z) coefficients for freq response (a0,...,aN, highest to constant) [a0 must be 1 for proper H(z)]\"}\n)\n\nviewof fs = Inputs.range(\n  [1_000, 24_000],\n  {step: 1_000, value: 8_000, label: \"Sampling frequency f_s (Hz)\"}\n)\n\nviewof log_scale = Inputs.checkbox(\n  [\"Show magnitude in dB\"], \n  {label: \"Options\", value: []}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSuggestions:\n\nReproduce Example 6.10: B(z) = [0.5, 0.5], A(z) = [1.0, 0.0] → lowpass.\nReproduce Example 6.11: H(z) = 1 / (1 + 0.5 z^{-1})\n\nMultiply by (z): H(z) = z / (z + 0.5).\nSo A(z) = [1, 0.5], B(z) = [1, 0].\n\n\nStudents can see highpass behavior and how changing coefficients moves the “corner” frequency."
+  },
+  {
+    "objectID": "dsp_61.html#interactive-steadystate-sinusoidal-response",
+    "href": "dsp_61.html#interactive-steadystate-sinusoidal-response",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Interactive: Steady‑State Sinusoidal Response",
+    "text": "Interactive: Steady‑State Sinusoidal Response\nWe now connect (H(e^{j})) to the time‑domain steady‑state response.\nFor input:\n\\[\nx(n) = K \\sin(\\Omega n)\n\\]\nThe steady‑state output is:\n\\[\ny_{ss}(n) = K |H(e^{j\\Omega})| \\sin\\big(\\Omega n + \\angle H(e^{j\\Omega})\\big)\n\\]\nLet’s pick a specific filter (e.g., Example 6.10’s 2‑point averager) and vary input frequency.\n\nviewof K_amp = Inputs.range(\n  [0.1, 2.0],\n  {step: 0.1, value: 1.0, label: \"Input amplitude K\"}\n)\n\nviewof norm_Omega = Inputs.range(\n  [0.0, 1.0],\n  {step: 0.05, value: 0.25, label: \"Normalized frequency Ω/π (0 to 1)\"}\n)\n\nviewof N_time = Inputs.range(\n  [20, 200],\n  {step: 10, value: 80, label: \"Number of time samples for plot\"}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAsk students to:\n\nSweep (/) from 0 to 1 and note how amplitude scaling and phase shift change.\nConnect maximum output near low frequencies (lowpass) with the magnitude plot previously.\n\nPoint out that transient portions are ignored here; we are visualizing only the ideal steady‑state response."
+  },
+  {
+    "objectID": "dsp_61.html#interactive-fir-vs-iir-impulse-response-comparison",
+    "href": "dsp_61.html#interactive-fir-vs-iir-impulse-response-comparison",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Interactive: FIR vs IIR Impulse Response Comparison",
+    "text": "Interactive: FIR vs IIR Impulse Response Comparison\nCompare a simple FIR and a simple IIR filter’s impulse responses side by side.\n\nviewof FIR_b = Inputs.text(\n  \"0.5, 0.5\", \n  {label: \"FIR b coefficients (highest power to constant)\"}\n)\n\nviewof IIR_B = Inputs.text(\n  \"1.0\", \n  {label: \"IIR numerator B(z) (highest power to constant)\"}\n)\n\nviewof IIR_A = Inputs.text(\n  \"1.0, 0.5\", \n  {label: \"IIR denominator A(z) (highest to constant, a0=1)\"}\n)\n\nviewof N_imp = Inputs.range(\n  [10, 200],\n  {step: 10, value: 80, label: \"Impulse response length N\"}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAsk:\n\nFor the chosen FIR example (e.g., 2‑tap average), is the impulse response zero beyond some finite (n)?\nFor the chosen IIR example (first‑order with pole inside unit circle), does the impulse response decay but never strictly become zero?\n\nDiscuss why FIR is “finite” and IIR is “infinite” in impulse response."
+  },
+  {
+    "objectID": "dsp_61.html#wrapup-what-to-explore-next",
+    "href": "dsp_61.html#wrapup-what-to-explore-next",
+    "title": "6.1 Basic Filtering Types and Digital Filter Realizations",
+    "section": "Wrap‑Up: What to Explore Next",
+    "text": "Wrap‑Up: What to Explore Next\nUse these interactive blocks to:\n\nExperiment with different (a_j, b_i) to design simple low‑pass, high‑pass, and band‑pass filters.\nSee how poles close to the unit circle create longer transients and sharper frequency responses.\nRelate (H(z)), poles/zeros, and (H(e^{j})) hands‑on.\n\n\nFor homework/lab ideas:\n\nAsk students to approximate a simple analog lowpass with an IIR digital filter and verify frequency response.\nHave them design a notch filter by placing zeros on the unit circle at a specific (_0) and test with a sinusoid at (_0).\nEncourage them to copy useful code snippets into their own Quarto notebooks for future DSP projects."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Digital Signal Processing Course Notes."
+  },
+  {
+    "objectID": "dsp_62.html#learning-objectives",
+    "href": "dsp_62.html#learning-objectives",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\nBy the end of this lesson, you should be able to:\n\nDistinguish between lowpass, highpass, bandpass, and bandstop digital filters based on their frequency responses and typical ECE applications.\nUse MATLAB freqz() to obtain magnitude and phase responses from a given transfer function \\(H(z)\\).\nExplain and sketch Direct‑Form I and Direct‑Form II realizations of IIR filters from their difference equations.\nDescribe cascade and parallel realizations and why we use first‑/second‑order sections.\nInterpret and design simple filters for speech preemphasis, speech bandpass filtering, and ECG enhancement with notch filtering.\n\n\nEmphasize that “recognizing” filter type from a plot is a key exam skill, but more importantly a core engineering skill: you’ll see these shapes in datasheets, measurements, and design tools.\nAlso highlight that realizations are about how we implement a given \\(H(z)\\)—which determines memory, numerical stability, and hardware cost."
+  },
+  {
+    "objectID": "dsp_62.html#basic-types-of-filtering-intuition",
+    "href": "dsp_62.html#basic-types-of-filtering-intuition",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "6.5 Basic Types of Filtering – Intuition",
+    "text": "6.5 Basic Types of Filtering – Intuition\nFilters answer one big question: &gt; Which frequency components do we want to keep, and which do we want to suppress?\nFour basic types:\n\nLowpass – keep low frequencies, remove high frequencies.\nHighpass – keep high frequencies, remove low frequencies.\nBandpass – keep a band of middle frequencies.\nBandstop / Notch – remove a band of frequencies, keep the rest.\n\nReal‑world ECE analogy:\n\nLowpass: Anti‑alias filter before ADC in a sensor interface.\nHighpass: AC‑coupling in audio to remove DC offsets.\nBandpass: Channel selection in a communication receiver.\nBandstop / Notch: Removing 50/60 Hz hum in bio‑signals (ECG, EEG).\n\n\nUse simple analogies:\n\nThink of a graphic equalizer on a music player: each slider roughly corresponds to a bandpass or shelving filter.\nIn wireless, each received “channel” is obtained by a bandpass filter.\nIn ECG, power‑line interference is a very narrow spike at 50/60 Hz: perfect for a notch."
+  },
+  {
+    "objectID": "dsp_62.html#idealized-magnitude-response-concepts",
+    "href": "dsp_62.html#idealized-magnitude-response-concepts",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Idealized Magnitude Response Concepts",
+    "text": "Idealized Magnitude Response Concepts\nKey regions of a filter’s magnitude response:\n\nPassband: frequency range where \\(|H(e^{j\\Omega})| \\approx 1\\).\nStopband: frequency range where \\(|H(e^{j\\Omega})|\\) is very small (strong attenuation).\nTransition band: frequency range between passband and stopband where the response “rolls off”.\n\nDesign parameters:\n\n\\(\\Omega_p\\): passband edge frequency.\n\\(\\Omega_s\\): stopband edge frequency.\n\\(\\delta_p\\): maximum allowed passband ripple.\n\\(\\delta_s\\): maximum allowed stopband ripple (or minimum attenuation).\n\n\n\n\n\n\n\nTip\n\n\nIn design specifications, you often see something like:\n\nPassband ripple \\(\\le 1\\) dB (\\(\\delta_p\\))\nStopband attenuation \\(\\ge 40\\) dB (\\(\\delta_s\\))\n\\(\\Omega_p = 0.4\\pi\\), \\(\\Omega_s = 0.5\\pi\\) (normalized radians/sample)\n\n\n\n\n\nStress that “ideal brick‑wall” filters are not realizable as finite‑order LTI systems; real filters are approximations that respect these specifications.\nDiscuss normalized frequency: \\(\\Omega\\) typically normalized by sampling rate so that \\(\\Omega \\in [0,\\pi]\\)."
+  },
+  {
+    "objectID": "dsp_62.html#lowpass-filter-magnitude-response",
+    "href": "dsp_62.html#lowpass-filter-magnitude-response",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Lowpass Filter – Magnitude Response",
+    "text": "Lowpass Filter – Magnitude Response\n\n\nNormalized Lowpass Filter\n\nPasses low frequencies: \\(0 \\le \\Omega \\le \\Omega_p\\).\nAttenuates high frequencies: \\(\\Omega \\ge \\Omega_s\\).\nHas a transition band between \\(\\Omega_p\\) and \\(\\Omega_s\\).\nPassband ripple \\(\\delta_p\\), stopband ripple \\(\\delta_s\\).\n\n\n\n\nFig 6.16: Magnitude response of normalized lowpass filter\n\n\n\nTypical ECE uses:\n\nAnti‑aliasing in sensor front‑ends (analog + digital).\nSmoothing / noise reduction in data (e.g., temperature, acceleration).\nAudio low‑frequency emphasis (bass boost as part of a more complex chain).\n\nKey design trade‑offs:\n\nSteeper transition band requires higher order filters.\nTighter stopband attenuation also increases order.\n\n\n\nPoint out on the plot where \\(\\Omega_p\\), \\(\\Omega_s\\), \\(\\delta_p\\), and \\(\\delta_s\\) are. Ask students: “What happens if I want my transition band to be extremely small?” Answer: filter order (and computational complexity) explodes."
+  },
+  {
+    "objectID": "dsp_62.html#highpass-filter-magnitude-response",
+    "href": "dsp_62.html#highpass-filter-magnitude-response",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Highpass Filter – Magnitude Response",
+    "text": "Highpass Filter – Magnitude Response\n\n\nNormalized Highpass Filter\n\nPasses high frequencies.\nAttenuates low frequencies.\n\n\n\n\nFig 6.17: Magnitude response of normalized highpass filter\n\n\n\nTypical ECE uses:\n\nRemove slow drift / DC offset from sensor signals.\n\ne.g., accelerometers measuring vibration but not constant gravity.\n\nIn speech: emphasize high‑frequency content (e.g., preemphasis).\nCommunication receivers: sometimes used after down‑conversion to remove image or DC component.\n\nNote: A preemphasis filter in speech (later) is essentially a highpass filter.\n\n\nHighlight how flipping a lowpass spec in frequency can give a highpass spec (lowpass ↔︎ highpass transformations).\nAsk: “If I have a lowpass spec, how might I convert it into a highpass design problem in practice?” (Frequency transformations / spectral inversion)."
+  },
+  {
+    "objectID": "dsp_62.html#bandpass-filter-magnitude-response",
+    "href": "dsp_62.html#bandpass-filter-magnitude-response",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Bandpass Filter – Magnitude Response",
+    "text": "Bandpass Filter – Magnitude Response\n\n\nNormalized Bandpass Filter\n\n\n\nFig 6.18: Magnitude response of normalized bandpass filter\n\n\n\nPasses a frequency band: \\(\\Omega_{pL} \\le \\Omega \\le \\Omega_{pH}\\).\nAttenuates frequencies below \\(\\Omega_{sL}\\) and above \\(\\Omega_{sH}\\).\nTwo transition bands: low side and high side.\n\n\nParameters:\n\n\\(\\Omega_{pL}\\), \\(\\Omega_{pH}\\): lower/upper passband edges.\n\\(\\Omega_{sL}\\), \\(\\Omega_{sH}\\): lower/upper stopband edges.\n\\(\\delta_p\\), \\(\\delta_s\\): ripple tolerances.\n\nTypical ECE uses:\n\nChannel selection in RF or IF stages.\nFormant extraction and band‑limited features in speech.\nAudio equalizer bands (e.g., “midrange” band).\nVibration analysis: isolating mechanical resonance bands.\n\n\n\nUse this to bridge later to the speech bandpass example: the voice band region we will isolate (1000–1400 Hz) is exactly one of these passbands."
+  },
+  {
+    "objectID": "dsp_62.html#bandstop-notch-filter-magnitude-response",
+    "href": "dsp_62.html#bandstop-notch-filter-magnitude-response",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Bandstop / Notch Filter – Magnitude Response",
+    "text": "Bandstop / Notch Filter – Magnitude Response\n\n\nNormalized Bandstop Filter\n\n\n\nFig 6.19: Magnitude of normalized bandstop filter\n\n\n\nRejects a band of middle frequencies.\nPasses low and high frequencies.\n\nSpecial case:\n\nNotch filter = very narrow bandstop filter.\n\n\nTypical ECE uses:\n\nPower‑line interference removal at 50/60 Hz in ECG, EEG, EMG.\nRemoval of a known interference tone in communication systems.\nAudio hum removal.\n\nDesign challenge:\n\nVery narrow notch ⇒ high Q ⇒ sensitive to coefficient quantization.\nImplementation choice (structure) matters for numerical stability.\n\n\n\nMention that the ECG example later uses a second‑order notch at 60 Hz with sampling at 500 Hz.\nIf time allows, ask: “What happens if the power‑line frequency drifts slightly, but your notch is fixed?” That motivates adaptive notch filters."
+  },
+  {
+    "objectID": "dsp_62.html#from-transfer-function-to-frequency-response",
+    "href": "dsp_62.html#from-transfer-function-to-frequency-response",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "From Transfer Function to Frequency Response",
+    "text": "From Transfer Function to Frequency Response\nTo analyze a digital filter, we often start from its transfer function:\n\\[\nH(z) = \\frac{B(z)}{A(z)} = \\frac{b_0 + b_1 z^{-1} + \\dots + b_M z^{-M}}{1 + a_1 z^{-1} + \\dots + a_N z^{-N}}.\n\\]\nWe want:\n\nMagnitude response: \\(|H(e^{j\\Omega})|\\).\nPhase response: \\(\\angle H(e^{j\\Omega})\\)."
+  },
+  {
+    "objectID": "dsp_62.html#example-6.12-transfer-functions-and-filter-types",
+    "href": "dsp_62.html#example-6.12-transfer-functions-and-filter-types",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Example 6.12 – Transfer Functions and Filter Types",
+    "text": "Example 6.12 – Transfer Functions and Filter Types\nGiven transfer functions:\n\n\\(H(z) = \\dfrac{z}{z - 0.5}\\)\n\\(H(z) = 1 - 0.5 z^{-1}\\)\n\\(H(z) = \\dfrac{0.5 z^2 - 0.32}{z^2 - 0.5 z + 0.25}\\)\n\\(H(z) = \\dfrac{1 - 0.9 z^{-1} + 0.81 z^{-2}}{1 - 0.6 z^{-1} + 0.36 z^{-2}}\\)\n\nTasks:\n\nPlot poles and zeros.\nUse freqz() to plot magnitude and phase.\nIdentify filter type (lowpass, highpass, bandpass, bandstop).\n\n\nAsk students: before seeing any plots, can you guess which is FIR/IIR and which might be lowpass/highpass by looking at coefficients or pole/zero patterns?\n\nFIR: denominator = 1.\nIIR: denominator has \\(z^{-1}\\) terms."
+  },
+  {
+    "objectID": "dsp_62.html#example-6.12-standard-delay-form-for-matlab",
+    "href": "dsp_62.html#example-6.12-standard-delay-form-for-matlab",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Example 6.12 – Standard (Delay) Form for MATLAB",
+    "text": "Example 6.12 – Standard (Delay) Form for MATLAB\nBefore using freqz(), rewrite in standard delay form (negative powers of \\(z\\)):\nFrom the original forms:\n\n\n\\[\nH(z) = \\frac{z}{z - 0.5} = \\frac{1}{1 - 0.5 z^{-1}}\n\\] ⇒ B = [1], A = [1 -0.5].\n\n\n\\[\nH(z) = \\frac{0.5 z^2 - 0.32}{z^2 - 0.5 z + 0.25}\n  = \\frac{0.5 - 0.32 z^{-2}}{1 - 0.5 z^{-1} + 0.25 z^{-2}}\n\\] ⇒ B = [0.5 0 -0.32], A = [1 -0.5 0.25].\n\n\n\nand (d) were already in delay form."
+  },
+  {
+    "objectID": "dsp_62.html#example-6.12-matlab-code-structure",
+    "href": "dsp_62.html#example-6.12-matlab-code-structure",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Example 6.12 – MATLAB Code Structure",
+    "text": "Example 6.12 – MATLAB Code Structure\nThe textbook Program 6.2 (cleaned up and corrected) looks like:\n% Example 6.12\n\nN = 1024;\n\n% Case (a)\nB = [1];\nA = [1 -0.5];\n[h, w] = freqz(B, A, N);\nphi = 180*unwrap(angle(h))/pi;\nfigure(1);\nsubplot(2,1,1); plot(w, abs(h)); grid;\nxlabel('Frequency (rad/sample)'); ylabel('Magnitude');\ntitle('Case (a)');\n\nsubplot(2,1,2); plot(w, phi); grid;\nxlabel('Frequency (rad/sample)'); ylabel('Phase (degrees)');\n\n% Case (b)\nB = [1 -0.5];\nA = [1];\n[h, w] = freqz(B, A, N);\n% ... (similar plotting)"
+  },
+  {
+    "objectID": "dsp_62.html#example-6.12-identifying-filter-types",
+    "href": "dsp_62.html#example-6.12-identifying-filter-types",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Example 6.12 – Identifying Filter Types",
+    "text": "Example 6.12 – Identifying Filter Types\nFrom the magnitude responses (Figs. 6.21(a–d)):\n\n\n\\(H(z) = \\dfrac{1}{1 - 0.5 z^{-1}}\\)\n\n\nMagnitude is largest at low frequencies, decreases at high frequencies.\n⇒ Lowpass filter.\n\n\n\\(H(z) = 1 - 0.5 z^{-1}\\)\n\n\nZero at \\(z = 0.5\\) (near DC), magnitude small at low frequencies, larger at high frequencies.\n⇒ Highpass filter (simple FIR)."
+  },
+  {
+    "objectID": "dsp_62.html#realization-of-digital-filters-big-picture",
+    "href": "dsp_62.html#realization-of-digital-filters-big-picture",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "6.6 Realization of Digital Filters – Big Picture",
+    "text": "6.6 Realization of Digital Filters – Big Picture\nGiven a transfer function\n\\[\nH(z) = \\frac{B(z)}{A(z)} = \\frac{b_0 + b_1 z^{-1} + \\dots + b_M z^{-M}}{1 + a_1 z^{-1} + \\dots + a_N z^{-N}},\n\\]\nwe can implement it in several equivalent ways:\n\nDirect‑Form I\nDirect‑Form II\nCascade (Series) of first/second‑order sections\nParallel sum of first/second‑order sections\n\nAll realize the same \\(H(z)\\) (ideally), but differ in:\n\nMemory (delay elements) required.\nNumerical behavior (sensitivity to coefficient quantization, overflow).\nHardware mapping (e.g., how many multipliers/adders).\n\n\nEmphasize that in real embedded DSP (fixed‑point), the structure matters as much as the polynomial. Many DSP libraries provide second‑order section (SOS) implementations by default."
+  },
+  {
+    "objectID": "dsp_62.html#directform-i-from-difference-equation",
+    "href": "dsp_62.html#directform-i-from-difference-equation",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Direct‑Form I – From Difference Equation",
+    "text": "Direct‑Form I – From Difference Equation\nStart from difference equation (time domain):\n\\[\n\\begin{aligned}\ny(n) &= b_0 x(n) + b_1 x(n-1) + \\dots + b_M x(n-M) \\\\\n     &\\quad - a_1 y(n-1) - a_2 y(n-2) - \\dots - a_N y(n-N).\n\\end{aligned}\n\\]\nInterpretation:\n\nFeedforward (FIR) part: weighted delayed inputs.\nFeedback (IIR) part: weighted delayed outputs."
+  },
+  {
+    "objectID": "dsp_62.html#directform-ii-reduced-memory",
+    "href": "dsp_62.html#directform-ii-reduced-memory",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Direct‑Form II – Reduced Memory",
+    "text": "Direct‑Form II – Reduced Memory\nStarting from\n\\[\nY(z) = H(z) X(z) = \\frac{B(z)}{A(z)} X(z),\n\\]\nwith \\(M = N\\), rearrange:\n\\[\nY(z) = B(z) \\left( \\frac{X(z)}{A(z)} \\right).\n\\]\nDefine an intermediate signal:\n\\[\nW(z) = \\frac{X(z)}{1 + a_1 z^{-1} + \\dots + a_M z^{-M}}.\n\\]\nThen\n\\[\nY(z) = (b_0 + b_1 z^{-1} + \\dots + b_M z^{-M}) W(z).\n\\]"
+  },
+  {
+    "objectID": "dsp_62.html#directform-i-vs-directform-ii-implementation-tradeoffs",
+    "href": "dsp_62.html#directform-i-vs-directform-ii-implementation-tradeoffs",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Direct‑Form I vs Direct‑Form II – Implementation Trade‑offs",
+    "text": "Direct‑Form I vs Direct‑Form II – Implementation Trade‑offs\n\nNumber of multiplications: same (same number of \\(a_j\\) and \\(b_i\\)).\nDelay elements:\n\nDirect‑Form I: two separate delay lines (input and output).\nDirect‑Form II: one shared delay chain (internal state).\n⇒ Direct‑Form II uses fewer delays, saves memory.\n\nAccumulation & scaling (fixed‑point):\n\nDirect‑Form II separates numerator and denominator accumulators.\nAllows separate scaling to avoid overflow.\n\nHigh‑order filters:\n\nBetter to implement as cascade of second‑order Direct‑Form II sections (biquads).\n\n\n\nAsk: In a fixed‑point DSP system, why is overflow dangerous? Answer: Wraparound or saturation can fundamentally distort filter behavior, possibly destabilizing it.\nThis motivates careful scaling and using second‑order sections rather than monolithic high‑order Direct‑Form II."
+  },
+  {
+    "objectID": "dsp_62.html#cascade-series-realization-concept",
+    "href": "dsp_62.html#cascade-series-realization-concept",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Cascade (Series) Realization – Concept",
+    "text": "Cascade (Series) Realization – Concept\nFactor \\(H(z)\\) into first‑ and second‑order sections:\n\\[\nH(z) = H_1(z) H_2(z) \\cdots H_K(z).\n\\]\nEach section \\(H_k(z)\\) is usually:\n\n\n\nFirst order: \\[\nH_k(z) = \\frac{b_{k0} + b_{k1} z^{-1}}{1 + a_{k1} z^{-1}}\n\\]\n\n\n\nOr second order: \\[\nH_k(z) = \\frac{b_{k0} + b_{k1} z^{-1} + b_{k2} z^{-2}}{1 + a_{k1} z^{-1} + a_{k2} z^{-2}}\n\\]\n\n\nBlock diagram:\n\n\n\nFig 6.24: Cascade realization\n\n\n\n\n\n\n\n\nTip\n\n\nIn practice, high‑order IIR filters are almost always implemented as a cascade of biquads (second‑order sections), each realized by Direct‑Form II (or other numerically robust forms like lattices).\n\n\n\n\nBenefits:\n\nBetter numerical conditioning: errors are “spread out” over sections.\nPoles/zeros can be paired in sections for optimal stability and dynamic range."
+  },
+  {
+    "objectID": "dsp_62.html#parallel-realization-concept",
+    "href": "dsp_62.html#parallel-realization-concept",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Parallel Realization – Concept",
+    "text": "Parallel Realization – Concept\nExpress \\(H(z)\\) as a sum of sections:\n\\[\nH(z) = H_1(z) + H_2(z) + \\dots + H_K(z).\n\\]\n\n\nTypically using partial fraction expansion:\n\nFirst order: \\[\nH_k(z) = \\frac{b_{k0}}{1 + a_{k1} z^{-1}}\n\\]\nOr second order: \\[\nH_k(z) = \\frac{b_{k0} + b_{k1} z^{-1}}{1 + a_{k1} z^{-1} + a_{k2} z^{-2}}\n\\]\n\n\nBlock diagram:\n\n\n\nFig 6.25: Parallel realization\n\n\n\n\nParallel form is particularly convenient when:\n\nUsing partial fraction expansion of rational functions.\nCertain sections correspond to specific spectral features you want to modify independently (e.g., adjustable resonances or notches).\n\nHowever, cascade is more common in standard IIR filter libraries."
+  },
+  {
+    "objectID": "dsp_62.html#example-6.13-given-secondorder-hz",
+    "href": "dsp_62.html#example-6.13-given-secondorder-hz",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Example 6.13 – Given Second‑Order \\(H(z)\\)",
+    "text": "Example 6.13 – Given Second‑Order \\(H(z)\\)\nGiven:\n\\[\nH(z) = \\frac{0.5(1 - z^{-2})}{1 + 1.3 z^{-1} + 0.36 z^{-2}}.\n\\]\nRewrite numerator:\n\\[\nH(z) = \\frac{0.5 - 0.5 z^{-2}}{1 + 1.3 z^{-1} + 0.36 z^{-2}}.\n\\]\nIdentify coefficients:\n\n\\(a_1 = 1.3\\), \\(a_2 = 0.36\\)\n\\(b_0 = 0.5\\), \\(b_1 = 0\\), \\(b_2 = -0.5\\)\n\nWe will realize it in:\n\nDirect‑Form I and Direct‑Form II.\nCascade form via first‑order sections.\nParallel form via first‑order sections.\n\n\nEncourage students to recognize: numerator \\(0.5(1 - z^{-2})\\) has zeros at \\(z = \\pm 1\\) (DC and Nyquist), i.e., notch at 0 and \\(\\pi\\) rad/sample. Denominator defines a second‑order pole pair."
+  },
+  {
+    "objectID": "dsp_62.html#example-6.13-directform-i",
+    "href": "dsp_62.html#example-6.13-directform-i",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Example 6.13 – Direct‑Form I",
+    "text": "Example 6.13 – Direct‑Form I\nDifference equation (plug coefficients into general form):\n\\[\n\\begin{aligned}\ny(n) &= 0.5 x(n) + 0 \\cdot x(n-1) - 0.5 x(n-2) \\\\\n     &\\quad - 1.3 y(n-1) - 0.36 y(n-2) \\\\\n     &= 0.5 x(n) - 0.5 x(n-2) - 1.3 y(n-1) - 0.36 y(n-2).\n\\end{aligned}\n\\]\nDirect‑Form I block diagram:\n\n\n\nFig 6.26: Direct-form I realization for Example 6.13\n\n\n\nPoint out where each coefficient appears in the diagram, and how missing \\(x(n-1)\\) term simply means that branch is absent.\nAsk: For implementation, how many multipliers and delays are needed? (4 multipliers, 4 delays here for M=N=2 in DF‑I)."
+  },
+  {
+    "objectID": "dsp_62.html#example-6.13-directform-ii",
+    "href": "dsp_62.html#example-6.13-directform-ii",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Example 6.13 – Direct‑Form II",
+    "text": "Example 6.13 – Direct‑Form II\nRecall Direct‑Form II equations:\n\nInternal state: \\[\nw(n) = x(n) - 1.3 w(n-1) - 0.36 w(n-2)\n\\]\nOutput: \\[\ny(n) = 0.5 w(n) + 0 \\cdot w(n-1) - 0.5 w(n-2) = 0.5 w(n) - 0.5 w(n-2).\n\\]\n\nDirect‑Form II structure:\n\n\n\nFig 6.27: Direct-form II realization for Example 6.13\n\n\n\nHighlight that now we only have one delay line holding \\(w\\) states, not separate lines for \\(x\\) and \\(y\\). Memory is reduced.\nHave students count delays again; note that the number of multipliers is the same as DF‑I."
+  },
+  {
+    "objectID": "dsp_62.html#example-6.13-cascade-via-firstorder-sections",
+    "href": "dsp_62.html#example-6.13-cascade-via-firstorder-sections",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Example 6.13 – Cascade via First‑Order Sections",
+    "text": "Example 6.13 – Cascade via First‑Order Sections\nFactor \\(H(z)\\) into two first‑order sections:\n\\[\n\\begin{aligned}\nH(z) &= \\frac{0.5(1 - z^{-2})}{1 + 1.3 z^{-1} + 0.36 z^{-2}} \\\\\n     &= \\frac{0.5 - 0.5 z^{-1}}{1 + 0.4 z^{-1}} \\cdot \\frac{1 + z^{-1}}{1 + 0.9 z^{-1}} \\\\\n     &= H_1(z) \\cdot H_2(z),\n\\end{aligned}\n\\]\nwith one possible choice:\n\n\\(H_1(z) = \\dfrac{0.5 - 0.5 z^{-1}}{1 + 0.4 z^{-1}}\\)\n\\(H_2(z) = \\dfrac{1 + z^{-1}}{1 + 0.9 z^{-1}}\\)\n\n(Other factorizations are possible; this is not unique.)"
+  },
+  {
+    "objectID": "dsp_62.html#example-6.13-cascade-difference-equations",
+    "href": "dsp_62.html#example-6.13-cascade-difference-equations",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Example 6.13 – Cascade Difference Equations",
+    "text": "Example 6.13 – Cascade Difference Equations\nLet \\(x(n)\\) → Section 1 → intermediate \\(y_1(n)\\) → Section 2 → final \\(y(n)\\).\nSection 1 (\\(H_1(z)\\)):\n\\[\n\\begin{aligned}\nw_1(n) &= x(n) - 0.4 w_1(n-1) \\\\\ny_1(n) &= 0.5 w_1(n) - 0.5 w_1(n-1)\n\\end{aligned}\n\\]\nSection 2 (\\(H_2(z)\\)):\n\\[\n\\begin{aligned}\nw_2(n) &= y_1(n) - 0.9 w_2(n-1) \\\\\ny(n)   &= w_2(n) + w_2(n-1)\n\\end{aligned}\n\\]\n\nExplain variable naming: \\(w_1, w_2\\) are internal states in each section; \\(y_1\\) is the internal signal between them.\nAsk: Could we swap \\(H_1\\) and \\(H_2\\)? Yes; the cascade of LTI systems commutes, though numerical properties may differ in finite precision."
+  },
+  {
+    "objectID": "dsp_62.html#example-6.13-parallel-via-firstorder-sections",
+    "href": "dsp_62.html#example-6.13-parallel-via-firstorder-sections",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Example 6.13 – Parallel via First‑Order Sections",
+    "text": "Example 6.13 – Parallel via First‑Order Sections\nUse partial fraction expansion. Start by writing:\n\\[\n\\frac{H(z)}{z} = \\frac{0.5(z^2 - 1)}{z(z + 0.4)(z + 0.9)}\n               = \\frac{A}{z} + \\frac{B}{z + 0.4} + \\frac{C}{z + 0.9}.\n\\]\nSolving for \\(A, B, C\\) (as in the text):\n\n\\(A = -1.39\\)\n\\(B = 2.1\\)\n\\(C = -0.21\\)\n\nSo:\n\\[\n\\begin{aligned}\nH(z) &= -1.39 + \\frac{2.1 z}{z + 0.4} - \\frac{0.21 z}{z + 0.9} \\\\\n     &= -1.39 + \\frac{2.1}{1 + 0.4 z^{-1}} + \\frac{-0.21}{1 + 0.9 z^{-1}}.\n\\end{aligned}\n\\]"
+  },
+  {
+    "objectID": "dsp_62.html#example-6.13-parallel-difference-equations",
+    "href": "dsp_62.html#example-6.13-parallel-difference-equations",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Example 6.13 – Parallel Difference Equations",
+    "text": "Example 6.13 – Parallel Difference Equations\nThree parallel paths:\n\nConstant‑gain path: \\[\ny_1(n) = -1.39\\, x(n)\n\\]\nFirst IIR path: \\[\n\\begin{aligned}\nw_2(n) &= x(n) - 0.4 w_2(n-1) \\\\\ny_2(n) &= 2.1\\, w_2(n)\n\\end{aligned}\n\\]\nSecond IIR path: \\[\n\\begin{aligned}\nw_3(n) &= x(n) - 0.9 w_3(n-1) \\\\\ny_3(n) &= -0.21\\, w_3(n)\n\\end{aligned}\n\\]\n\nTotal output:\n\\[\ny(n) = y_1(n) + y_2(n) + y_3(n).\n\\]\n\nHighlight: all three branches see the same input \\(x(n)\\) simultaneously; their outputs are linearly added.\nYou can see how each term in the partial fraction directly corresponds to a section."
+  },
+  {
+    "objectID": "dsp_62.html#applications-why-these-filters-matter",
+    "href": "dsp_62.html#applications-why-these-filters-matter",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "6.7 Applications – Why These Filters Matter",
+    "text": "6.7 Applications – Why These Filters Matter\nWe now apply these concepts to real‑world signals:\n\nPreemphasis of speech – simple highpass FIR to boost high frequencies.\nBandpass filtering of speech – IIR bandpass filter for a narrow formant region.\nECG enhancement with notch filtering – IIR bandstop filter to remove 60 Hz power‑line interference.\n\nThink in terms of:\n\nWhat is the signal of interest?\nWhat is the unwanted component (noise, interference)?\nHow do we choose filter type and specs to separate them?\n\n\nConnect back to the four basic filter types: each of these applications maps naturally to one of them.\nEncourage students to think of their project domain (audio, communication, power, biomedical) and picture where filters fit."
+  },
+  {
+    "objectID": "dsp_62.html#speech-preemphasis-motivation",
+    "href": "dsp_62.html#speech-preemphasis-motivation",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "6.7.1 Speech Preemphasis – Motivation",
+    "text": "6.7.1 Speech Preemphasis – Motivation\nSpeech spectra typically have more energy at low frequencies and less at high frequencies.\nIn some applications (e.g., speech coding, recognition):\n\nImportant phonetic information exists at higher frequencies.\nWe don’t want encoder/feature extractor to overlook that content."
+  },
+  {
+    "objectID": "dsp_62.html#preemphasis-filter-frequency-response-effect",
+    "href": "dsp_62.html#preemphasis-filter-frequency-response-effect",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Preemphasis Filter – Frequency Response & Effect",
+    "text": "Preemphasis Filter – Frequency Response & Effect\nFor \\(\\alpha = 0.9\\), \\(f_s = 8000\\) Hz:\n\nUse freqz([1 -alpha], 1, 512, fs) to plot frequency response.\n\n\n\n\nFig 6.30 (A): Frequency responses of preemphasis filter"
+  },
+  {
+    "objectID": "dsp_62.html#matlab-program-6.3-preemphasis-implementation",
+    "href": "dsp_62.html#matlab-program-6.3-preemphasis-implementation",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "MATLAB Program 6.3 – Preemphasis Implementation",
+    "text": "MATLAB Program 6.3 – Preemphasis Implementation\n% Program 6.3: Preemphasis of speech\nclose all; clear all\n\nfs    = 8000;    % Sampling rate\nalpha = 0.9;     % Degree of pre-emphasis\n\n% Frequency response\nfigure(1);\nfreqz([1 -alpha], 1, 512, fs);\n\n% Load speech signal\nload speech.dat     % Vector 'speech'\n\n% Apply preemphasis filter\ny = filter([1 -alpha], 1, speech);\n\n% Time-domain plots\nfigure(2);\nsubplot(2,1,1); plot(speech); grid;\nylabel('Speech samples');\ntitle('Original speech');\n\nsubplot(2,1,2); plot(y); grid;\nylabel('Filtered samples');\nxlabel('Sample index');\ntitle('Preemphasized speech');\n\n% Spectral analysis\nfigure(3);\nN   = length(speech);\nAxk = abs(fft(speech .* hamming(N))) / N;\nAyk = abs(fft(y      .* hamming(N))) / N;\n\nf = (0:N/2)*fs/N;\nAxk(2:N) = 2*Axk(2:N);\nAyk(2:N) = 2*Ayk(2:N);\n\nsubplot(2,1,1); plot(f, Axk(1:N/2+1)); grid;\nylabel('Amplitude spectrum');\ntitle('Original speech');\n\nsubplot(2,1,2); plot(f, Ayk(1:N/2+1)); grid;\nylabel('Amplitude spectrum');\nxlabel('Frequency (Hz)');\ntitle('Preemphasized speech');\n\nPoint out how similar this is to the earlier freqz() example.\nAsk students: “If I change alpha to 0.5 or 0.99, how will the spectrum look different?” Encourage them to try this as a quick lab exercise."
+  },
+  {
+    "objectID": "dsp_62.html#bandpass-filtering-of-speech-setup",
+    "href": "dsp_62.html#bandpass-filtering-of-speech-setup",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "6.7.2 Bandpass Filtering of Speech – Setup",
+    "text": "6.7.2 Bandpass Filtering of Speech – Setup\nGoal: isolate a narrow band of speech frequencies for analysis or feature extraction.\nGiven a 4th‑order digital Bandpass Butterworth filter:\n\nSampling rate: \\(f_s = 8000\\) Hz.\nLower cutoff: 1000 Hz.\nUpper cutoff: 1400 Hz.\nBandwidth: 400 Hz.\n\nTransfer function:\n\\[\nH(z) = \\frac{0.0201 - 0.0402 z^{-2} + 0.0201 z^{-4}}{1 - 2.1192 z^{-1} + 2.6952 z^{-2} - 1.6924 z^{-3} + 0.6414 z^{-4}}.\n\\]\nDifference equation:\n\\[\n\\begin{aligned}\ny(n) &= 0.0201 x(n) - 0.0402 x(n-2) + 0.0201 x(n-4) \\\\\n     &\\quad + 2.1192 y(n-1) - 2.6952 y(n-2) \\\\\n     &\\quad + 1.6924 y(n-3) - 0.6414 y(n-4).\n\\end{aligned}\n\\]\n\nHighlight that this is a 4th‑order IIR filter; typical to implement as two cascaded biquads in practice (though here given monolithically).\nButterworth ⇒ maximally flat passband (no ripple)."
+  },
+  {
+    "objectID": "dsp_62.html#bandpass-filter-frequency-response-and-effect",
+    "href": "dsp_62.html#bandpass-filter-frequency-response-and-effect",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Bandpass Filter – Frequency Response and Effect",
+    "text": "Bandpass Filter – Frequency Response and Effect\nFrequency response via freqz:\n\n\n\nFig 6.32 (A): Bandpass filter frequency responses"
+  },
+  {
+    "objectID": "dsp_62.html#matlab-program-6.4-bandpass-filter-implementation",
+    "href": "dsp_62.html#matlab-program-6.4-bandpass-filter-implementation",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "MATLAB Program 6.4 – Bandpass Filter Implementation",
+    "text": "MATLAB Program 6.4 – Bandpass Filter Implementation\n% Program 6.4: Bandpass filtering of speech\n\nfs = 8000;  % Sampling rate\n\n% Bandpass filter coefficients (4th-order)\nB = [0.0201 0 -0.0402 0 0.0201];\nA = [1 -2.1192 2.6952 -1.6924 0.6414];\n\n% Frequency response\nfigure(1);\nfreqz(B, A, 512, fs);\naxis([0 fs/2 -40 1]);  % Adjust axis if needed\n\n% Load speech\nload speech.dat\n\n% Filter speech\ny = filter(B, A, speech);\n\n% Time-domain plots\nfigure(2);\nsubplot(2,1,1); plot(speech); grid;\nylabel('Original Samples');\ntitle('Original speech');\n\nsubplot(2,1,2); plot(y); grid;\nxlabel('Sample index'); ylabel('Filtered Samples');\ntitle('Bandpass filtered speech.');\n\n% Spectral analysis\nfigure(3);\nN   = length(speech);\nAxk = abs(fft(speech .* hamming(N)))/N;\nAyk = abs(fft(y      .* hamming(N)))/N;\n\nf = (0:N/2)*fs/N;\nAxk(2:N) = 2*Axk(2:N);\nAyk(2:N) = 2*Ayk(2:N);\n\nsubplot(2,1,1); plot(f, Axk(1:N/2+1)); grid;\nylabel('Amplitude spectrum');\ntitle('Original speech');\n\nsubplot(2,1,2); plot(f, Ayk(1:N/2+1)); grid;\nylabel('Amplitude spectrum');\nxlabel('Frequency (Hz)');\ntitle('Bandpass filtered speech');\n\nEncourage students to experiment by changing cutoff frequencies (design new IIR filters using butter or cheby1), and observe how voice quality changes.\nThis also connects strongly to audio equalization and communication channel filtering."
+  },
+  {
+    "objectID": "dsp_62.html#ecg-enhancement-with-notch-filter",
+    "href": "dsp_62.html#ecg-enhancement-with-notch-filter",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "6.7.3 ECG Enhancement with Notch Filter",
+    "text": "6.7.3 ECG Enhancement with Notch Filter\nProblem: ECG signal contaminated by 60 Hz power‑line interference during acquisition.\nGiven:\n\nSampling frequency: \\(f_s = 500\\) Hz.\nTarget: Notch at 60 Hz.\n\nDesigned second‑order notch filter:\n\\[\nH(z) = \\frac{1 - 1.4579 z^{-1} + z^{-2}}{1 - 1.3850 z^{-1} + 0.9025 z^{-2}}.\n\\]\nDifference equation:\n\\[\ny(n) = x(n) - 1.4579 x(n-1) + x(n-2) + 1.3850 y(n-1) - 0.9025 y(n-2).\n\\]"
+  },
+  {
+    "objectID": "dsp_62.html#ecg-before-and-after-notch-filtering",
+    "href": "dsp_62.html#ecg-before-and-after-notch-filtering",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "ECG Before and After Notch Filtering",
+    "text": "ECG Before and After Notch Filtering\n\n\nTime‑domain ECG:\n\n\n\nFig 6.34: Corrupted and enhanced ECG\n\n\n\nUpper plot: ECG + 60 Hz interference.\nLower plot: Filtered ECG with notch filter applied.\n\n\nFrequency‑domain view:\n\n\n\nFig 6.35: Spectra of corrupted and enhanced ECG\n\n\n\nClear peak at 60 Hz in corrupted signal.\nPeak eliminated in enhanced signal; baseline ECG spectrum preserved.\n\n\n\n\n\n\n\n\nImportant\n\n\nThis is a classic and practical example of DSP in biomedical engineering: a simple, well‑designed digital notch filter significantly improves diagnostic signal quality.\n\n\n\n\nRemind students that in real medical devices, you must preserve morphology of ECG (P‑QRS‑T complex). Too aggressive filtering could distort clinical features.\nThus, filter design balances interference suppression with signal fidelity."
+  },
+  {
+    "objectID": "dsp_62.html#summary-key-points",
+    "href": "dsp_62.html#summary-key-points",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Summary / Key Points",
+    "text": "Summary / Key Points\n\nFour basic digital filter types:\n\nLowpass – passes low frequencies, attenuates high.\nHighpass – passes high, attenuates low.\nBandpass – passes a band, attenuates outside.\nBandstop / Notch – attenuates a band, passes outside.\n\nFilter specs defined by:\n\nPassband / stopband edges (\\(\\Omega_p\\), \\(\\Omega_s\\), etc.).\nPassband ripple \\(\\delta_p\\), stopband ripple \\(\\delta_s\\).\n\nfreqz(B, A, N) computes complex frequency response of \\(H(z) = B(z)/A(z)\\)."
+  },
+  {
+    "objectID": "dsp_62.html#key-formulas-summary",
+    "href": "dsp_62.html#key-formulas-summary",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Key Formulas Summary",
+    "text": "Key Formulas Summary\nGeneral IIR transfer function:\n\\[\nH(z) = \\frac{B(z)}{A(z)} = \\frac{b_0 + b_1 z^{-1} + \\dots + b_M z^{-M}}{1 + a_1 z^{-1} + \\dots + a_N z^{-N}}.\n\\]\nInput–output relation (Direct‑Form I):\n\\[\n\\begin{aligned}\ny(n) &= b_0 x(n) + b_1 x(n-1) + \\dots + b_M x(n-M) \\\\\n     &\\quad - a_1 y(n-1) - \\dots - a_N y(n-N).\n\\end{aligned}\n\\]\nDirect‑Form II internal state and output:\n\\[\nw(n) = x(n) - a_1 w(n-1) - \\dots - a_M w(n-M)\n\\]\n\\[\ny(n) = b_0 w(n) + b_1 w(n-1) + \\dots + b_M w(n-M)\n\\]"
+  },
+  {
+    "objectID": "dsp_62.html#quick-interactive-check",
+    "href": "dsp_62.html#quick-interactive-check",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Quick Interactive Check",
+    "text": "Quick Interactive Check\n\nSuppose you see a magnitude response that is nearly 1 from 0 to \\(0.3\\pi\\), then drops to nearly 0 after \\(0.4\\pi\\). What filter type is this?\nYou are given a speech signal sampled at 8 kHz and want to remove low‑frequency background hum below 200 Hz. What basic filter type would you design?\nIn an ECG system, you see strong narrowband interference at 50 Hz with \\(f_s = 500\\) Hz. What kind of filter and approximate normalized notch frequency would you choose?\n\n\nSuggested answers:\n\nLowpass filter.\nHighpass filter with cutoff around 200 Hz.\nNotch filter at \\(\\Omega_0 = 2\\pi \\cdot 50 / 500 = 0.2\\pi\\).\n\nUse this slide to gauge understanding and encourage questions."
+  },
+  {
+    "objectID": "dsp_62.html#reminder-freqz-vs-direct-computation",
+    "href": "dsp_62.html#reminder-freqz-vs-direct-computation",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Reminder: freqz vs Direct Computation",
+    "text": "Reminder: freqz vs Direct Computation\nIn MATLAB we used freqz(B, A, N) to get the frequency response. Here, we’ll do the equivalent in Python using scipy.signal.freqz‑style logic.\nWe’ll:\n\nDefine numerator B and denominator A.\nEvaluate \\(H(e^{j\\Omega})\\) at many points on the unit circle.\nPlot magnitude and phase."
+  },
+  {
+    "objectID": "dsp_62.html#interactive-basic-frequency-response-explorer",
+    "href": "dsp_62.html#interactive-basic-frequency-response-explorer",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Interactive: Basic Frequency Response Explorer",
+    "text": "Interactive: Basic Frequency Response Explorer\nExperiment with a simple IIR filter (like Example 6.12).\n\n\n\n\n\n\nTry:\n\nB = [1.0], A = [1.0, -0.5] (Example 6.12(a): lowpass).\nB = [1.0, -0.5], A = [1.0] (Example 6.12(b): highpass)."
+  },
+  {
+    "objectID": "dsp_62.html#reactive-identify-filter-type-from-coefficients",
+    "href": "dsp_62.html#reactive-identify-filter-type-from-coefficients",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Reactive: Identify Filter Type from Coefficients",
+    "text": "Reactive: Identify Filter Type from Coefficients\nUse sliders to set a simple 2‑tap FIR filter: \\(H(z) = b_0 + b_1 z^{-1}\\). Observe the magnitude response and guess: lowpass or highpass?\n\nviewof b0 = Inputs.range([-1, 1], {step: 0.1, label: \"b0 (feedthrough)\"})\nviewof b1 = Inputs.range([-1, 1], {step: 0.1, label: \"b1 (one-sample delay)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTry:\n\n\\(b_0 = 1\\), \\(b_1 = -0.9\\) → highpass / preemphasis‑like.\n\\(b_0 = 0.5\\), \\(b_1 = 0.5\\) → lowpass (moving average of length 2)."
+  },
+  {
+    "objectID": "dsp_62.html#interactive-from-difference-equation-to-code-directform-i",
+    "href": "dsp_62.html#interactive-from-difference-equation-to-code-directform-i",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Interactive: From Difference Equation to Code (Direct‑Form I)",
+    "text": "Interactive: From Difference Equation to Code (Direct‑Form I)\nGiven the general IIR difference equation:\n\\[\ny(n) = \\sum_{k=0}^{M} b_k x(n-k) - \\sum_{k=1}^{N} a_k y(n-k).\n\\]\nLet’s implement this manually and compare with the vector form.\n\n\n\n\n\n\nTry:\n\nChange x to a step input (x[n] = 1 for all n).\nObserve how the output responds and stabilizes (or not)."
+  },
+  {
+    "objectID": "dsp_62.html#reactive-directform-ii-state-evolution",
+    "href": "dsp_62.html#reactive-directform-ii-state-evolution",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Reactive: Direct‑Form II State Evolution",
+    "text": "Reactive: Direct‑Form II State Evolution\nWe now implement the Direct‑Form II state update equations with interactive coefficients.\nFor a second‑order IIR with \\(M=2\\):\n\\[\n\\begin{aligned}\nw(n) &= x(n) - a_1 w(n-1) - a_2 w(n-2) \\\\\ny(n) &= b_0 w(n) + b_1 w(n-1) + b_2 w(n-2).\n\\end{aligned}\n\\]\n\nviewof a1 = Inputs.range([-2, 2], {step: 0.1, label: \"a1 (feedback 1)\"})\nviewof a2 = Inputs.range([-2, 2], {step: 0.1, label: \"a2 (feedback 2)\"})\nviewof b0_df2 = Inputs.range([-1, 1], {step: 0.1, label: \"b0 (feedforward 0)\"})\nviewof b1_df2 = Inputs.range([-1, 1], {step: 0.1, label: \"b1 (feedforward 1)\"})\nviewof b2_df2 = Inputs.range([-1, 1], {step: 0.1, label: \"b2 (feedforward 2)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTry to make the filter unstable by choosing \\(a_1, a_2\\) so that poles move outside the unit circle (e.g., magnitudes &gt; 1). Observe the impulse response growing without bound."
+  },
+  {
+    "objectID": "dsp_62.html#interactive-polezero-plot-for-example-6.12",
+    "href": "dsp_62.html#interactive-polezero-plot-for-example-6.12",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Interactive: Pole–Zero Plot for Example 6.12",
+    "text": "Interactive: Pole–Zero Plot for Example 6.12\nLet’s approximate a pole–zero plot for one of the Example 6.12 filters.\n\n\n\n\n\n\nTry replacing B and A with other examples ((a), (b), or (d)) and see how poles and zeros move."
+  },
+  {
+    "objectID": "dsp_62.html#reactive-preemphasis-filter-hz-1---alpha-z-1",
+    "href": "dsp_62.html#reactive-preemphasis-filter-hz-1---alpha-z-1",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Reactive: Preemphasis Filter \\(H(z) = 1 - \\alpha z^{-1}\\)",
+    "text": "Reactive: Preemphasis Filter \\(H(z) = 1 - \\alpha z^{-1}\\)\nRecall:\n\nPreemphasis for speech: \\(y(n) = x(n) - \\alpha x(n-1)\\), \\(0 &lt; \\alpha &lt; 1\\).\n\\(H(z) = 1 - \\alpha z^{-1}\\) is a simple highpass filter.\n\nUse the slider to change \\(\\alpha\\) and observe the magnitude response.\n\nviewof alpha = Inputs.range([0, 0.99], {step: 0.01, label: \"Preemphasis α\"})\n\n\n\n\n\n\n\n\n\n\n\n\nObserve: as \\(\\alpha\\) → 1, the low‑frequency attenuation increases and high‑frequency boost increases."
+  },
+  {
+    "objectID": "dsp_62.html#interactive-timedomain-preemphasis-on-synthetic-signal",
+    "href": "dsp_62.html#interactive-timedomain-preemphasis-on-synthetic-signal",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Interactive: Time‑Domain Preemphasis on Synthetic Signal",
+    "text": "Interactive: Time‑Domain Preemphasis on Synthetic Signal\nApply preemphasis to a simple synthetic “speech‑like” signal: mixture of low and high frequencies.\n\n\n\n\n\n\nTry increasing the amplitude of the high‑frequency component in x and observe how preemphasis modifies the signal."
+  },
+  {
+    "objectID": "dsp_62.html#reactive-bandpass-filter-shape-control",
+    "href": "dsp_62.html#reactive-bandpass-filter-shape-control",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Reactive: Bandpass Filter – Shape Control",
+    "text": "Reactive: Bandpass Filter – Shape Control\nWe’ll create a simple FIR bandpass by subtracting a lowpass response from a highpass response. To keep it simple, use two moving-average filters and explore the transition region.\n\nviewof lp_width = Inputs.range([1, 30], {step: 1, label: \"Lowpass MA length (L1)\"})\nviewof hp_width = Inputs.range([1, 30], {step: 1, label: \"Highpass MA length (L2)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nChange L1 and L2 to see how the passband region and transition widths change."
+  },
+  {
+    "objectID": "dsp_62.html#reactive-notch-filter-at-variable-frequency",
+    "href": "dsp_62.html#reactive-notch-filter-at-variable-frequency",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Reactive: Notch Filter at Variable Frequency",
+    "text": "Reactive: Notch Filter at Variable Frequency\nDesign a simple second‑order notch:\n\\[\nH(z) = \\frac{1 - 2r\\cos\\Omega_0 z^{-1} + r^2 z^{-2}}{1 - 2\\cos\\Omega_0 z^{-1} + z^{-2}},\n\\]\nwhere \\(\\Omega_0\\) is the notch frequency and \\(0 &lt; r &lt; 1\\) controls the width.\n\nviewof f0 = Inputs.range([10, 100], {step: 1, label: \"Notch center f0 (Hz)\"})\nviewof r_notch = Inputs.range([0.5, 0.99], {step: 0.01, label: \"Pole radius r\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTry:\n\nSet f0 = 60 Hz, r ≈ 0.95 (similar to ECG example).\nMove f0 around and watch the notch move along the frequency axis."
+  },
+  {
+    "objectID": "dsp_62.html#interactive-apply-notch-filter-to-synthetic-ecg-noise",
+    "href": "dsp_62.html#interactive-apply-notch-filter-to-synthetic-ecg-noise",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Interactive: Apply Notch Filter to Synthetic ECG + Noise",
+    "text": "Interactive: Apply Notch Filter to Synthetic ECG + Noise\nCreate a synthetic ECG‑like waveform (simplified) plus a sinusoidal interference at f0.\n\n\n\n\n\n\nObserve how the oscillatory 60 Hz component is suppressed while the slower ECG‑like shape remains."
+  },
+  {
+    "objectID": "dsp_62.html#try-this-design-your-own-filter",
+    "href": "dsp_62.html#try-this-design-your-own-filter",
+    "title": "6.2 Basic Filtering Types, and Digital Filter Realizations",
+    "section": "Try This: Design Your Own Filter",
+    "text": "Try This: Design Your Own Filter\n\nPick a filter type (lowpass, highpass, bandpass, bandstop).\nDefine a simple FIR or low‑order IIR using the code templates above.\nPlot its magnitude response.\nApply it to a synthetic signal (e.g., sum of sinusoids).\n\nThink about:\n\nWhere are the passband and stopband?\nIs the filter stable?\nHow many taps or what order does it have?\n\nUse any of the Pyodide cells above as a starting point and modify coefficients, input signals, or sampling rates."
+  }
+]

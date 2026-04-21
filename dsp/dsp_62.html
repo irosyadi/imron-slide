@@ -1,0 +1,2649 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-html/tabby.min.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.37">
+
+  <meta name="author" content="Imron Rosyadi">
+  <title>Digital Signal Processing – 6.2 Basic Filtering Types, and Digital Filter Realizations</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-364db60e29fb914c6c58c0372f1cec08.css">
+  <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+  <link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">6.2 Basic Filtering Types, and Digital Filter Realizations</h1>
+  <p class="subtitle">Digital Signal Processing</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Imron Rosyadi 
+</div>
+</div>
+</div>
+
+</section>
+<section id="learning-objectives" class="slide level2 scrollable">
+<h2>Learning Objectives</h2>
+<p>By the end of this lesson, you should be able to:</p>
+<ol type="1">
+<li>Distinguish between <strong>lowpass, highpass, bandpass, and bandstop</strong> digital filters based on their frequency responses and typical ECE applications.</li>
+<li>Use <strong>MATLAB <code>freqz()</code></strong> to obtain magnitude and phase responses from a given transfer function <span class="math inline">\(H(z)\)</span>.</li>
+<li>Explain and sketch <strong>Direct‑Form I and Direct‑Form II</strong> realizations of IIR filters from their difference equations.</li>
+<li>Describe <strong>cascade</strong> and <strong>parallel</strong> realizations and why we use first‑/second‑order sections.</li>
+<li>Interpret and design simple filters for <strong>speech preemphasis</strong>, <strong>speech bandpass filtering</strong>, and <strong>ECG enhancement</strong> with <strong>notch filtering</strong>.</li>
+</ol>
+<aside class="notes">
+<p>Emphasize that “recognizing” filter type from a plot is a key exam skill, but more importantly a core engineering skill: you’ll see these shapes in datasheets, measurements, and design tools.</p>
+<p>Also highlight that realizations are about <strong>how</strong> we implement a given <span class="math inline">\(H(z)\)</span>—which determines memory, numerical stability, and hardware cost.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="basic-types-of-filtering-intuition" class="slide level2">
+<h2>6.5 Basic Types of Filtering – Intuition</h2>
+<p><strong>Filters answer one big question:</strong> &gt; <em>Which frequency components do we want to keep, and which do we want to suppress?</em></p>
+<p>Four basic types:</p>
+<ul>
+<li><strong>Lowpass</strong> – keep low frequencies, remove high frequencies.</li>
+<li><strong>Highpass</strong> – keep high frequencies, remove low frequencies.</li>
+<li><strong>Bandpass</strong> – keep a band of middle frequencies.</li>
+<li><strong>Bandstop / Notch</strong> – remove a band of frequencies, keep the rest.</li>
+</ul>
+<p>Real‑world ECE analogy:</p>
+<ul>
+<li>Lowpass: Anti‑alias filter before ADC in a sensor interface.</li>
+<li>Highpass: AC‑coupling in audio to remove DC offsets.</li>
+<li>Bandpass: Channel selection in a communication receiver.</li>
+<li>Bandstop / Notch: Removing 50/60 Hz hum in bio‑signals (ECG, EEG).</li>
+</ul>
+<aside class="notes">
+<p>Use simple analogies:</p>
+<ul>
+<li>Think of a <strong>graphic equalizer</strong> on a music player: each slider roughly corresponds to a bandpass or shelving filter.</li>
+<li>In wireless, each received “channel” is obtained by a bandpass filter.</li>
+<li>In ECG, power‑line interference is a very narrow spike at 50/60 Hz: perfect for a notch.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="idealized-magnitude-response-concepts" class="slide level2">
+<h2>Idealized Magnitude Response Concepts</h2>
+<p>Key regions of a filter’s magnitude response:</p>
+<ul>
+<li><strong>Passband</strong>: frequency range where <span class="math inline">\(|H(e^{j\Omega})| \approx 1\)</span>.</li>
+<li><strong>Stopband</strong>: frequency range where <span class="math inline">\(|H(e^{j\Omega})|\)</span> is very small (strong attenuation).</li>
+<li><strong>Transition band</strong>: frequency range between passband and stopband where the response “rolls off”.</li>
+</ul>
+<p>Design parameters:</p>
+<ul>
+<li><span class="math inline">\(\Omega_p\)</span>: passband edge frequency.</li>
+<li><span class="math inline">\(\Omega_s\)</span>: stopband edge frequency.</li>
+<li><span class="math inline">\(\delta_p\)</span>: maximum allowed <strong>passband ripple</strong>.</li>
+<li><span class="math inline">\(\delta_s\)</span>: maximum allowed <strong>stopband ripple</strong> (or minimum attenuation).</li>
+</ul>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>In design specifications, you often see something like:</p>
+<ul>
+<li>Passband ripple <span class="math inline">\(\le 1\)</span> dB (<span class="math inline">\(\delta_p\)</span>)</li>
+<li>Stopband attenuation <span class="math inline">\(\ge 40\)</span> dB (<span class="math inline">\(\delta_s\)</span>)</li>
+<li><span class="math inline">\(\Omega_p = 0.4\pi\)</span>, <span class="math inline">\(\Omega_s = 0.5\pi\)</span> (normalized radians/sample)</li>
+</ul>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Stress that “ideal brick‑wall” filters are not realizable as finite‑order LTI systems; real filters are approximations that respect these specifications.</p>
+<p>Discuss normalized frequency: <span class="math inline">\(\Omega\)</span> typically normalized by sampling rate so that <span class="math inline">\(\Omega \in [0,\pi]\)</span>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="lowpass-filter-magnitude-response" class="slide level2">
+<h2>Lowpass Filter – Magnitude Response</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>Normalized Lowpass Filter</strong></p>
+<ul>
+<li>Passes low frequencies: <span class="math inline">\(0 \le \Omega \le \Omega_p\)</span>.</li>
+<li>Attenuates high frequencies: <span class="math inline">\(\Omega \ge \Omega_s\)</span>.</li>
+<li>Has a <strong>transition band</strong> between <span class="math inline">\(\Omega_p\)</span> and <span class="math inline">\(\Omega_s\)</span>.</li>
+<li>Passband ripple <span class="math inline">\(\delta_p\)</span>, stopband ripple <span class="math inline">\(\delta_s\)</span>.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/600182a850050b3e82d2ded69205fa56_MD5.jpg" height="240"></p>
+<figcaption>Fig 6.16: Magnitude response of normalized lowpass filter</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:45%;">
+<p>Typical ECE uses:</p>
+<ul>
+<li>Anti‑aliasing in sensor front‑ends (analog + digital).</li>
+<li>Smoothing / noise reduction in data (e.g., temperature, acceleration).</li>
+<li>Audio low‑frequency emphasis (bass boost as part of a more complex chain).</li>
+</ul>
+<p>Key design trade‑offs:</p>
+<ul>
+<li>Steeper transition band requires <strong>higher order</strong> filters.</li>
+<li>Tighter stopband attenuation also increases order.</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>Point out on the plot where <span class="math inline">\(\Omega_p\)</span>, <span class="math inline">\(\Omega_s\)</span>, <span class="math inline">\(\delta_p\)</span>, and <span class="math inline">\(\delta_s\)</span> are. Ask students: “What happens if I want my transition band to be extremely small?” Answer: filter order (and computational complexity) explodes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="highpass-filter-magnitude-response" class="slide level2">
+<h2>Highpass Filter – Magnitude Response</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>Normalized Highpass Filter</strong></p>
+<ul>
+<li>Passes high frequencies.</li>
+<li>Attenuates low frequencies.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/e75b6ed70e78c3db84939237cfbcc0b2_MD5.jpg" height="240"></p>
+<figcaption>Fig 6.17: Magnitude response of normalized highpass filter</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:45%;">
+<p>Typical ECE uses:</p>
+<ul>
+<li>Remove slow drift / DC offset from sensor signals.
+<ul>
+<li>e.g., accelerometers measuring vibration but not constant gravity.</li>
+</ul></li>
+<li>In speech: emphasize high‑frequency content (e.g., preemphasis).</li>
+<li>Communication receivers: sometimes used after down‑conversion to remove image or DC component.</li>
+</ul>
+<p>Note: A <strong>preemphasis</strong> filter in speech (later) is essentially a highpass filter.</p>
+</div></div>
+<aside class="notes">
+<p>Highlight how flipping a lowpass spec in frequency can give a highpass spec (lowpass ↔︎ highpass transformations).</p>
+<p>Ask: “If I have a lowpass spec, how might I convert it into a highpass design problem in practice?” (Frequency transformations / spectral inversion).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="bandpass-filter-magnitude-response" class="slide level2">
+<h2>Bandpass Filter – Magnitude Response</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>Normalized Bandpass Filter</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/a4c8ca3b5cd3e2ce7ef98a9e1a3933b6_MD5.jpg" height="240"></p>
+<figcaption>Fig 6.18: Magnitude response of normalized bandpass filter</figcaption>
+</figure>
+</div>
+<ul>
+<li>Passes a frequency band: <span class="math inline">\(\Omega_{pL} \le \Omega \le \Omega_{pH}\)</span>.</li>
+<li>Attenuates frequencies below <span class="math inline">\(\Omega_{sL}\)</span> and above <span class="math inline">\(\Omega_{sH}\)</span>.</li>
+<li>Two transition bands: low side and high side.</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<p>Parameters:</p>
+<ul>
+<li><span class="math inline">\(\Omega_{pL}\)</span>, <span class="math inline">\(\Omega_{pH}\)</span>: lower/upper passband edges.</li>
+<li><span class="math inline">\(\Omega_{sL}\)</span>, <span class="math inline">\(\Omega_{sH}\)</span>: lower/upper stopband edges.</li>
+<li><span class="math inline">\(\delta_p\)</span>, <span class="math inline">\(\delta_s\)</span>: ripple tolerances.</li>
+</ul>
+<p>Typical ECE uses:</p>
+<ul>
+<li><strong>Channel selection</strong> in RF or IF stages.</li>
+<li><strong>Formant extraction</strong> and band‑limited features in speech.</li>
+<li>Audio equalizer bands (e.g., “midrange” band).</li>
+<li>Vibration analysis: isolating mechanical resonance bands.</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>Use this to bridge later to the speech bandpass example: the voice band region we will isolate (1000–1400 Hz) is exactly one of these passbands.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="bandstop-notch-filter-magnitude-response" class="slide level2">
+<h2>Bandstop / Notch Filter – Magnitude Response</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>Normalized Bandstop Filter</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/dea46fc08686504477eb5c3e04b62e86_MD5.jpg" height="240"></p>
+<figcaption>Fig 6.19: Magnitude of normalized bandstop filter</figcaption>
+</figure>
+</div>
+<ul>
+<li>Rejects a band of middle frequencies.</li>
+<li>Passes low and high frequencies.</li>
+</ul>
+<p>Special case:</p>
+<ul>
+<li><strong>Notch filter</strong> = very <strong>narrow</strong> bandstop filter.</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<p>Typical ECE uses:</p>
+<ul>
+<li><strong>Power‑line interference removal</strong> at 50/60 Hz in ECG, EEG, EMG.</li>
+<li>Removal of a known interference tone in communication systems.</li>
+<li>Audio hum removal.</li>
+</ul>
+<p>Design challenge:</p>
+<ul>
+<li>Very narrow notch ⇒ high Q ⇒ <strong>sensitive</strong> to coefficient quantization.</li>
+<li>Implementation choice (structure) matters for numerical stability.</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>Mention that the ECG example later uses a second‑order notch at 60 Hz with sampling at 500 Hz.</p>
+<p>If time allows, ask: “What happens if the power‑line frequency drifts slightly, but your notch is fixed?” That motivates adaptive notch filters.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="from-transfer-function-to-frequency-response" class="slide level2">
+<h2>From Transfer Function to Frequency Response</h2>
+<p>To analyze a digital filter, we often start from its <strong>transfer function</strong>:</p>
+<p><span class="math display">\[
+H(z) = \frac{B(z)}{A(z)} = \frac{b_0 + b_1 z^{-1} + \dots + b_M z^{-M}}{1 + a_1 z^{-1} + \dots + a_N z^{-N}}.
+\]</span></p>
+<p>We want:</p>
+<ul>
+<li>Magnitude response: <span class="math inline">\(|H(e^{j\Omega})|\)</span>.</li>
+<li>Phase response: <span class="math inline">\(\angle H(e^{j\Omega})\)</span>.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p><strong>MATLAB tool:</strong> <code>freqz()</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource matlab number-lines code-with-copy"><code class="sourceCode matlab"><span id="cb1-1"><a></a>[<span class="va">h</span><span class="op">,</span> <span class="va">w</span>] <span class="op">=</span> <span class="va">freqz</span>(<span class="va">B</span><span class="op">,</span> <span class="va">A</span><span class="op">,</span> <span class="va">N</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>B</code> – vector of numerator coefficients <span class="math inline">\([b_0 \; b_1 \; \dots \; b_M]\)</span>.</li>
+<li><code>A</code> – vector of denominator coefficients <span class="math inline">\([1 \; a_1 \; \dots \; a_N]\)</span>.</li>
+<li><code>N</code> – number of frequency samples between <span class="math inline">\(0\)</span> and <span class="math inline">\(\pi\)</span>.</li>
+<li><code>h</code> – complex frequency response at each <code>w</code>.</li>
+<li><code>w</code> – corresponding frequency samples in radians/sample.</li>
+</ul>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>To plot <strong>magnitude and phase</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource matlab number-lines code-with-copy"><code class="sourceCode matlab"><span id="cb2-1"><a></a>[<span class="va">h</span><span class="op">,</span> <span class="va">w</span>] <span class="op">=</span> <span class="va">freqz</span>(<span class="va">B</span><span class="op">,</span> <span class="va">A</span><span class="op">,</span> <span class="fl">1024</span>)<span class="op">;</span></span>
+<span id="cb2-2"><a></a><span class="va">mag</span> <span class="op">=</span> <span class="va">abs</span>(<span class="va">h</span>)<span class="op">;</span></span>
+<span id="cb2-3"><a></a><span class="va">phi</span> <span class="op">=</span> <span class="va">unwrap</span>(<span class="va">angle</span>(<span class="va">h</span>))<span class="op">*</span><span class="fl">180</span><span class="op">/</span><span class="va">pi</span><span class="op">;</span></span>
+<span id="cb2-4"><a></a><span class="va">subplot</span>(<span class="fl">2</span><span class="op">,</span><span class="fl">1</span><span class="op">,</span><span class="fl">1</span>)<span class="op">;</span> <span class="va">plot</span>(<span class="va">w</span><span class="op">,</span> <span class="va">mag</span>)<span class="op">;</span> <span class="va">grid</span><span class="op">;</span></span>
+<span id="cb2-5"><a></a><span class="va">subplot</span>(<span class="fl">2</span><span class="op">,</span><span class="fl">1</span><span class="op">,</span><span class="fl">2</span>)<span class="op">;</span> <span class="va">plot</span>(<span class="va">w</span><span class="op">,</span> <span class="va">phi</span>)<span class="op">;</span> <span class="va">grid</span><span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Important: <code>freqz</code> expects coefficients in <strong>delay form</strong> (negative powers of <span class="math inline">\(z\)</span>).</p>
+<p>If a transfer function is given in positive powers of <span class="math inline">\(z\)</span>, we must rewrite it with <span class="math inline">\(z^{-1}\)</span> terms before passing coefficients to <code>freqz</code>. That’s exactly what Example 6.12 did.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-6.12-transfer-functions-and-filter-types" class="slide level2 scrollable">
+<h2>Example 6.12 – Transfer Functions and Filter Types</h2>
+<p>Given transfer functions:</p>
+<ol type="a">
+<li><p><span class="math inline">\(H(z) = \dfrac{z}{z - 0.5}\)</span></p></li>
+<li><p><span class="math inline">\(H(z) = 1 - 0.5 z^{-1}\)</span></p></li>
+<li><p><span class="math inline">\(H(z) = \dfrac{0.5 z^2 - 0.32}{z^2 - 0.5 z + 0.25}\)</span></p></li>
+<li><p><span class="math inline">\(H(z) = \dfrac{1 - 0.9 z^{-1} + 0.81 z^{-2}}{1 - 0.6 z^{-1} + 0.36 z^{-2}}\)</span></p></li>
+</ol>
+<p>Tasks:</p>
+<ol type="1">
+<li>Plot poles and zeros.</li>
+<li>Use <code>freqz()</code> to plot magnitude and phase.</li>
+<li>Identify filter type (lowpass, highpass, bandpass, bandstop).</li>
+</ol>
+<aside class="notes">
+<p>Ask students: before seeing any plots, can you guess which is FIR/IIR and which might be lowpass/highpass by looking at coefficients or pole/zero patterns?</p>
+<ul>
+<li>FIR: denominator = 1.</li>
+<li>IIR: denominator has <span class="math inline">\(z^{-1}\)</span> terms.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-6.12-standard-delay-form-for-matlab" class="slide level2 scrollable">
+<h2>Example 6.12 – Standard (Delay) Form for MATLAB</h2>
+<p>Before using <code>freqz()</code>, rewrite in standard delay form (negative powers of <span class="math inline">\(z\)</span>):</p>
+<p>From the original forms:</p>
+<ul>
+<li><ol type="a">
+<li><span class="math display">\[
+H(z) = \frac{z}{z - 0.5} = \frac{1}{1 - 0.5 z^{-1}}
+\]</span> ⇒ <code>B = [1]</code>, <code>A = [1 -0.5]</code>.</li>
+</ol></li>
+<li><ol start="3" type="a">
+<li><span class="math display">\[
+H(z) = \frac{0.5 z^2 - 0.32}{z^2 - 0.5 z + 0.25}
+  = \frac{0.5 - 0.32 z^{-2}}{1 - 0.5 z^{-1} + 0.25 z^{-2}}
+\]</span> ⇒ <code>B = [0.5 0 -0.32]</code>, <code>A = [1 -0.5 0.25]</code>.</li>
+</ol></li>
+</ul>
+<ol start="2" type="a">
+<li>and (d) were already in delay form.</li>
+</ol>
+</section>
+<section class="slide level2">
+
+<p>Pole–zero plots are shown in Fig. 6.20:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/a99958f300f8f20e8e4575dfce706977_MD5.jpg" height="360"></p>
+<figcaption>Fig 6.20: Pole-zero plots of Example 6.12</figcaption>
+</figure>
+</div>
+<aside class="notes">
+<p>This is a good time to remind:</p>
+<ul>
+<li>Zeros on or near the unit circle at <span class="math inline">\(\Omega = 0\)</span> → notch at DC (highpass behavior).</li>
+<li>Zeros at <span class="math inline">\(\Omega = \pi\)</span> → notch at Nyquist frequency (lowpass behavior).</li>
+<li>Pole–zero patterns in conjugate pairs for real coefficient systems.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-6.12-matlab-code-structure" class="slide level2">
+<h2>Example 6.12 – MATLAB Code Structure</h2>
+<p>The textbook Program 6.2 (cleaned up and corrected) looks like:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource matlab number-lines code-with-copy"><code class="sourceCode matlab"><span id="cb3-1"><a></a><span class="co">% Example 6.12</span></span>
+<span id="cb3-2"><a></a></span>
+<span id="cb3-3"><a></a><span class="va">N</span> <span class="op">=</span> <span class="fl">1024</span><span class="op">;</span></span>
+<span id="cb3-4"><a></a></span>
+<span id="cb3-5"><a></a><span class="co">% Case (a)</span></span>
+<span id="cb3-6"><a></a><span class="va">B</span> <span class="op">=</span> [<span class="fl">1</span>]<span class="op">;</span></span>
+<span id="cb3-7"><a></a><span class="va">A</span> <span class="op">=</span> [<span class="fl">1</span> <span class="op">-</span><span class="fl">0.5</span>]<span class="op">;</span></span>
+<span id="cb3-8"><a></a>[<span class="va">h</span><span class="op">,</span> <span class="va">w</span>] <span class="op">=</span> <span class="va">freqz</span>(<span class="va">B</span><span class="op">,</span> <span class="va">A</span><span class="op">,</span> <span class="va">N</span>)<span class="op">;</span></span>
+<span id="cb3-9"><a></a><span class="va">phi</span> <span class="op">=</span> <span class="fl">180</span><span class="op">*</span><span class="va">unwrap</span>(<span class="va">angle</span>(<span class="va">h</span>))<span class="op">/</span><span class="va">pi</span><span class="op">;</span></span>
+<span id="cb3-10"><a></a><span class="va">figure</span>(<span class="fl">1</span>)<span class="op">;</span></span>
+<span id="cb3-11"><a></a><span class="va">subplot</span>(<span class="fl">2</span><span class="op">,</span><span class="fl">1</span><span class="op">,</span><span class="fl">1</span>)<span class="op">;</span> <span class="va">plot</span>(<span class="va">w</span><span class="op">,</span> <span class="va">abs</span>(<span class="va">h</span>))<span class="op">;</span> <span class="va">grid</span><span class="op">;</span></span>
+<span id="cb3-12"><a></a><span class="va">xlabel</span>(<span class="ss">'Frequency (rad/sample)'</span>)<span class="op">;</span> <span class="va">ylabel</span>(<span class="ss">'Magnitude'</span>)<span class="op">;</span></span>
+<span id="cb3-13"><a></a><span class="va">title</span>(<span class="ss">'Case (a)'</span>)<span class="op">;</span></span>
+<span id="cb3-14"><a></a></span>
+<span id="cb3-15"><a></a><span class="va">subplot</span>(<span class="fl">2</span><span class="op">,</span><span class="fl">1</span><span class="op">,</span><span class="fl">2</span>)<span class="op">;</span> <span class="va">plot</span>(<span class="va">w</span><span class="op">,</span> <span class="va">phi</span>)<span class="op">;</span> <span class="va">grid</span><span class="op">;</span></span>
+<span id="cb3-16"><a></a><span class="va">xlabel</span>(<span class="ss">'Frequency (rad/sample)'</span>)<span class="op">;</span> <span class="va">ylabel</span>(<span class="ss">'Phase (degrees)'</span>)<span class="op">;</span></span>
+<span id="cb3-17"><a></a></span>
+<span id="cb3-18"><a></a><span class="co">% Case (b)</span></span>
+<span id="cb3-19"><a></a><span class="va">B</span> <span class="op">=</span> [<span class="fl">1</span> <span class="op">-</span><span class="fl">0.5</span>]<span class="op">;</span></span>
+<span id="cb3-20"><a></a><span class="va">A</span> <span class="op">=</span> [<span class="fl">1</span>]<span class="op">;</span></span>
+<span id="cb3-21"><a></a>[<span class="va">h</span><span class="op">,</span> <span class="va">w</span>] <span class="op">=</span> <span class="va">freqz</span>(<span class="va">B</span><span class="op">,</span> <span class="va">A</span><span class="op">,</span> <span class="va">N</span>)<span class="op">;</span></span>
+<span id="cb3-22"><a></a><span class="co">% ... (similar plotting)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section class="slide level2">
+
+<p>Magnitude + phase plots for each case are shown in Figs. 6.21(a–d).</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/a0baee66feb0328fce5bef50a115f1da_MD5.jpg" height="240"></p>
+<figcaption>Fig 6.21 (a)</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/fc4973a52374bb42f98709b3ae3d55bd_MD5.jpg" height="240"></p>
+<figcaption>Fig 6.21 (b)</figcaption>
+</figure>
+</div>
+</div></div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/f21782d90c516100ecb3889d3d2b5d48_MD5.jpg" height="240"></p>
+<figcaption>Fig 6.21 (c)</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/21b1685d87280ef0434cc75df5d628bb_MD5.jpg" height="240"></p>
+<figcaption>Fig 6.21 (d)</figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>Mention that the code fragment in the book has variable naming inconsistencies (<code>[hw]=freqz</code> but later uses <code>h</code>, <code>w</code>). Show corrected version and encourage students to always check dimensions and variable names in MATLAB.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-6.12-identifying-filter-types" class="slide level2 scrollable">
+<h2>Example 6.12 – Identifying Filter Types</h2>
+<p>From the magnitude responses (Figs. 6.21(a–d)):</p>
+<ul>
+<li><ol type="a">
+<li><span class="math inline">\(H(z) = \dfrac{1}{1 - 0.5 z^{-1}}\)</span></li>
+</ol>
+<ul>
+<li>Magnitude is largest at low frequencies, decreases at high frequencies.</li>
+<li>⇒ <strong>Lowpass filter</strong>.</li>
+</ul></li>
+<li><ol start="2" type="a">
+<li><span class="math inline">\(H(z) = 1 - 0.5 z^{-1}\)</span></li>
+</ol>
+<ul>
+<li>Zero at <span class="math inline">\(z = 0.5\)</span> (near DC), magnitude small at low frequencies, larger at high frequencies.</li>
+<li>⇒ <strong>Highpass filter</strong> (simple FIR).</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2 scrollable">
+
+<ul>
+<li><ol start="3" type="a">
+<li><span class="math inline">\(H(z) = \dfrac{0.5 - 0.32 z^{-2}}{1 - 0.5 z^{-1} + 0.25 z^{-2}}\)</span></li>
+</ol>
+<ul>
+<li>Band of frequencies where magnitude is significant, low elsewhere.</li>
+<li>⇒ <strong>Bandpass filter</strong>.</li>
+</ul></li>
+<li><ol start="4" type="a">
+<li><span class="math inline">\(H(z) = \dfrac{1 - 0.9 z^{-1} + 0.81 z^{-2}}{1 - 0.6 z^{-1} + 0.36 z^{-2}}\)</span></li>
+</ol>
+<ul>
+<li>Narrow band of frequencies attenuated strongly, rest passed.</li>
+<li>⇒ <strong>Bandstop (bandreject) filter</strong>.</li>
+</ul></li>
+</ul>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>Being able to <strong>look at a magnitude response and classify the filter type</strong> is core. Practice mentally: - Does it pass low, high, a band, or “everything except a band”?</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Ask students to think:</p>
+<ul>
+<li>Which of these might be useful for speech preemphasis?</li>
+<li>Which for removing a narrow interference?</li>
+</ul>
+<p>Connect (b) to preemphasis (it’s a one‑zero highpass).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="realization-of-digital-filters-big-picture" class="slide level2">
+<h2>6.6 Realization of Digital Filters – Big Picture</h2>
+<p>Given a transfer function</p>
+<p><span class="math display">\[
+H(z) = \frac{B(z)}{A(z)} = \frac{b_0 + b_1 z^{-1} + \dots + b_M z^{-M}}{1 + a_1 z^{-1} + \dots + a_N z^{-N}},
+\]</span></p>
+<p>we can implement it in several equivalent ways:</p>
+<ul>
+<li><strong>Direct‑Form I</strong></li>
+<li><strong>Direct‑Form II</strong></li>
+<li><strong>Cascade (Series)</strong> of first/second‑order sections</li>
+<li><strong>Parallel</strong> sum of first/second‑order sections</li>
+</ul>
+<p>All realize the <em>same</em> <span class="math inline">\(H(z)\)</span> (ideally), but differ in:</p>
+<ul>
+<li>Memory (delay elements) required.</li>
+<li>Numerical behavior (sensitivity to coefficient quantization, overflow).</li>
+<li>Hardware mapping (e.g., how many multipliers/adders).</li>
+</ul>
+<aside class="notes">
+<p>Emphasize that in real embedded DSP (fixed‑point), the <strong>structure</strong> matters as much as the polynomial. Many DSP libraries provide second‑order section (SOS) implementations by default.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="directform-i-from-difference-equation" class="slide level2">
+<h2>Direct‑Form I – From Difference Equation</h2>
+<p>Start from difference equation (time domain):</p>
+<p><span class="math display">\[
+\begin{aligned}
+y(n) &amp;= b_0 x(n) + b_1 x(n-1) + \dots + b_M x(n-M) \\
+     &amp;\quad - a_1 y(n-1) - a_2 y(n-2) - \dots - a_N y(n-N).
+\end{aligned}
+\]</span></p>
+<p>Interpretation:</p>
+<ul>
+<li><strong>Feedforward (FIR) part</strong>: weighted delayed inputs.</li>
+<li><strong>Feedback (IIR) part</strong>: weighted delayed outputs.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>Direct‑Form I structure implements these <strong>two parts in parallel</strong>, then sums them.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/91476a1a420ed36bb37e9b3f4ade563a_MD5.jpg" height="220"></p>
+<figcaption>Fig 6.22 (A): Direct-form I realization</figcaption>
+</figure>
+</div>
+</section>
+<section class="slide level2">
+
+<p>Second‑order example (M = N = 2):</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/924298b7661eb2b77b83ec9254f516d2_MD5.jpg" height="220"></p>
+<figcaption>Fig 6.22 (B): Direct-form I with M=2</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/597e0a8283ad2ad5082caeef576a81ce_MD5.jpg" height="120"></p>
+<figcaption>Fig 6.22 (C): Notation</figcaption>
+</figure>
+</div>
+<aside class="notes">
+<p>Explain diagram components:</p>
+<ul>
+<li><span class="math inline">\(z^{-1}\)</span> = one‑sample delay.</li>
+<li>Multipliers labelled <span class="math inline">\(b_i\)</span>, <span class="math inline">\(a_j\)</span>.</li>
+<li>Adders summing contributions.</li>
+</ul>
+<p>Point out that if some <span class="math inline">\(a_j\)</span> or <span class="math inline">\(b_i\)</span> are zero, we simply remove those branches.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="directform-ii-reduced-memory" class="slide level2">
+<h2>Direct‑Form II – Reduced Memory</h2>
+<p>Starting from</p>
+<p><span class="math display">\[
+Y(z) = H(z) X(z) = \frac{B(z)}{A(z)} X(z),
+\]</span></p>
+<p>with <span class="math inline">\(M = N\)</span>, rearrange:</p>
+<p><span class="math display">\[
+Y(z) = B(z) \left( \frac{X(z)}{A(z)} \right).
+\]</span></p>
+<p>Define an intermediate signal:</p>
+<p><span class="math display">\[
+W(z) = \frac{X(z)}{1 + a_1 z^{-1} + \dots + a_M z^{-M}}.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+Y(z) = (b_0 + b_1 z^{-1} + \dots + b_M z^{-M}) W(z).
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p>Corresponding difference equations:</p>
+<ul>
+<li><p><strong>Internal state update</strong>: <span class="math display">\[
+w(n) = x(n) - a_1 w(n-1) - \dots - a_M w(n-M)
+\]</span></p></li>
+<li><p><strong>Output equation</strong>: <span class="math display">\[
+y(n) = b_0 w(n) + b_1 w(n-1) + \dots + b_M w(n-M)
+\]</span></p></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Structure:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/974fdc9d4d7bc6dc3260dfcdadf9df29_MD5.jpg" height="300"></p>
+<figcaption>Fig 6.23 (A): Direct-form II realization</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<p>Second‑order example:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/cdf1f493c1ecdb08e43e940f9be228f2_MD5.jpg" height="300"></p>
+<figcaption>Fig 6.23 (B): Direct-form II with M=2</figcaption>
+</figure>
+</div>
+</div></div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Direct‑Form II <strong>uses fewer delay elements</strong> than Direct‑Form I (roughly half when <span class="math inline">\(M = N\)</span>), which can save memory and hardware.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Explain conceptually: Direct‑Form II “shares” the delay line between feedforward and feedback parts by working on an internal state <span class="math inline">\(w(n)\)</span> rather than raw <span class="math inline">\(x(n)\)</span> and <span class="math inline">\(y(n)\)</span>.</p>
+<p>Also stress: Direct‑Form II can be more sensitive to coefficient quantization in high‑order filters → reason to use second‑order sections in cascade instead.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="directform-i-vs-directform-ii-implementation-tradeoffs" class="slide level2">
+<h2>Direct‑Form I vs Direct‑Form II – Implementation Trade‑offs</h2>
+<ul>
+<li><strong>Number of multiplications</strong>: same (same number of <span class="math inline">\(a_j\)</span> and <span class="math inline">\(b_i\)</span>).</li>
+<li><strong>Delay elements</strong>:
+<ul>
+<li>Direct‑Form I: two separate delay lines (input and output).</li>
+<li>Direct‑Form II: one shared delay chain (internal state).</li>
+<li>⇒ Direct‑Form II uses fewer delays, saves memory.</li>
+</ul></li>
+<li><strong>Accumulation &amp; scaling (fixed‑point)</strong>:
+<ul>
+<li>Direct‑Form II separates numerator and denominator accumulators.</li>
+<li>Allows <strong>separate scaling</strong> to avoid overflow.</li>
+</ul></li>
+<li><strong>High‑order filters</strong>:
+<ul>
+<li>Better to implement as <strong>cascade of second‑order Direct‑Form II sections</strong> (biquads).</li>
+</ul></li>
+</ul>
+<aside class="notes">
+<p>Ask: In a fixed‑point DSP system, why is overflow dangerous? Answer: Wraparound or saturation can fundamentally distort filter behavior, possibly destabilizing it.</p>
+<p>This motivates careful scaling and using second‑order sections rather than monolithic high‑order Direct‑Form II.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="cascade-series-realization-concept" class="slide level2">
+<h2>Cascade (Series) Realization – Concept</h2>
+<p>Factor <span class="math inline">\(H(z)\)</span> into <strong>first‑ and second‑order sections</strong>:</p>
+<p><span class="math display">\[
+H(z) = H_1(z) H_2(z) \cdots H_K(z).
+\]</span></p>
+<p>Each section <span class="math inline">\(H_k(z)\)</span> is usually:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>First order: <span class="math display">\[
+H_k(z) = \frac{b_{k0} + b_{k1} z^{-1}}{1 + a_{k1} z^{-1}}
+\]</span></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<ul>
+<li>Or second order: <span class="math display">\[
+H_k(z) = \frac{b_{k0} + b_{k1} z^{-1} + b_{k2} z^{-2}}{1 + a_{k1} z^{-1} + a_{k2} z^{-2}}
+\]</span></li>
+</ul>
+</div></div>
+<p>Block diagram:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/ad2fedb1e962601c3d15afa9ec3515c6_MD5.jpg" height="120"></p>
+<figcaption>Fig 6.24: Cascade realization</figcaption>
+</figure>
+</div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>In practice, <strong>high‑order IIR filters are almost always implemented as a cascade of biquads</strong> (second‑order sections), each realized by Direct‑Form II (or other numerically robust forms like lattices).</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Benefits:</p>
+<ul>
+<li>Better numerical conditioning: errors are “spread out” over sections.</li>
+<li>Poles/zeros can be paired in sections for optimal stability and dynamic range.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="parallel-realization-concept" class="slide level2">
+<h2>Parallel Realization – Concept</h2>
+<p>Express <span class="math inline">\(H(z)\)</span> as a <strong>sum of sections</strong>:</p>
+<p><span class="math display">\[
+H(z) = H_1(z) + H_2(z) + \dots + H_K(z).
+\]</span></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Typically using partial fraction expansion:</p>
+<ul>
+<li><p>First order: <span class="math display">\[
+H_k(z) = \frac{b_{k0}}{1 + a_{k1} z^{-1}}
+\]</span></p></li>
+<li><p>Or second order: <span class="math display">\[
+H_k(z) = \frac{b_{k0} + b_{k1} z^{-1}}{1 + a_{k1} z^{-1} + a_{k2} z^{-2}}
+\]</span></p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p>Block diagram:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/caa2f558516efd50a3524fd9f2b9d706_MD5.jpg" height="220"></p>
+<figcaption>Fig 6.25: Parallel realization</figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>Parallel form is particularly convenient when:</p>
+<ul>
+<li>Using partial fraction expansion of rational functions.</li>
+<li>Certain sections correspond to specific spectral features you want to modify independently (e.g., adjustable resonances or notches).</li>
+</ul>
+<p>However, cascade is more common in standard IIR filter libraries.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-6.13-given-secondorder-hz" class="slide level2 scrollable">
+<h2>Example 6.13 – Given Second‑Order <span class="math inline">\(H(z)\)</span></h2>
+<p>Given:</p>
+<p><span class="math display">\[
+H(z) = \frac{0.5(1 - z^{-2})}{1 + 1.3 z^{-1} + 0.36 z^{-2}}.
+\]</span></p>
+<p>Rewrite numerator:</p>
+<p><span class="math display">\[
+H(z) = \frac{0.5 - 0.5 z^{-2}}{1 + 1.3 z^{-1} + 0.36 z^{-2}}.
+\]</span></p>
+<p>Identify coefficients:</p>
+<ul>
+<li><span class="math inline">\(a_1 = 1.3\)</span>, <span class="math inline">\(a_2 = 0.36\)</span></li>
+<li><span class="math inline">\(b_0 = 0.5\)</span>, <span class="math inline">\(b_1 = 0\)</span>, <span class="math inline">\(b_2 = -0.5\)</span></li>
+</ul>
+<p>We will realize it in:</p>
+<ol type="1">
+<li>Direct‑Form I and Direct‑Form II.</li>
+<li>Cascade form via first‑order sections.</li>
+<li>Parallel form via first‑order sections.</li>
+</ol>
+<aside class="notes">
+<p>Encourage students to recognize: numerator <span class="math inline">\(0.5(1 - z^{-2})\)</span> has zeros at <span class="math inline">\(z = \pm 1\)</span> (DC and Nyquist), i.e., notch at 0 and <span class="math inline">\(\pi\)</span> rad/sample. Denominator defines a second‑order pole pair.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-6.13-directform-i" class="slide level2">
+<h2>Example 6.13 – Direct‑Form I</h2>
+<p>Difference equation (plug coefficients into general form):</p>
+<p><span class="math display">\[
+\begin{aligned}
+y(n) &amp;= 0.5 x(n) + 0 \cdot x(n-1) - 0.5 x(n-2) \\
+     &amp;\quad - 1.3 y(n-1) - 0.36 y(n-2) \\
+     &amp;= 0.5 x(n) - 0.5 x(n-2) - 1.3 y(n-1) - 0.36 y(n-2).
+\end{aligned}
+\]</span></p>
+<p>Direct‑Form I block diagram:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/e4e50ca499a97ab67ba3746e6d41ee8d_MD5.jpg" height="220"></p>
+<figcaption>Fig 6.26: Direct-form I realization for Example 6.13</figcaption>
+</figure>
+</div>
+<aside class="notes">
+<p>Point out where each coefficient appears in the diagram, and how missing <span class="math inline">\(x(n-1)\)</span> term simply means that branch is absent.</p>
+<p>Ask: For implementation, how many multipliers and delays are needed? (4 multipliers, 4 delays here for M=N=2 in DF‑I).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-6.13-directform-ii" class="slide level2">
+<h2>Example 6.13 – Direct‑Form II</h2>
+<p>Recall Direct‑Form II equations:</p>
+<ul>
+<li><p>Internal state: <span class="math display">\[
+w(n) = x(n) - 1.3 w(n-1) - 0.36 w(n-2)
+\]</span></p></li>
+<li><p>Output: <span class="math display">\[
+y(n) = 0.5 w(n) + 0 \cdot w(n-1) - 0.5 w(n-2) = 0.5 w(n) - 0.5 w(n-2).
+\]</span></p></li>
+</ul>
+<p>Direct‑Form II structure:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/66058424f3faa2060b0d63bbacf6bed7_MD5.jpg" height="220"></p>
+<figcaption>Fig 6.27: Direct-form II realization for Example 6.13</figcaption>
+</figure>
+</div>
+<aside class="notes">
+<p>Highlight that now we only have one delay line holding <span class="math inline">\(w\)</span> states, not separate lines for <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>. Memory is reduced.</p>
+<p>Have students count delays again; note that the number of multipliers is the same as DF‑I.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-6.13-cascade-via-firstorder-sections" class="slide level2">
+<h2>Example 6.13 – Cascade via First‑Order Sections</h2>
+<p>Factor <span class="math inline">\(H(z)\)</span> into two first‑order sections:</p>
+<p><span class="math display">\[
+\begin{aligned}
+H(z) &amp;= \frac{0.5(1 - z^{-2})}{1 + 1.3 z^{-1} + 0.36 z^{-2}} \\
+     &amp;= \frac{0.5 - 0.5 z^{-1}}{1 + 0.4 z^{-1}} \cdot \frac{1 + z^{-1}}{1 + 0.9 z^{-1}} \\
+     &amp;= H_1(z) \cdot H_2(z),
+\end{aligned}
+\]</span></p>
+<p>with one possible choice:</p>
+<ul>
+<li><span class="math inline">\(H_1(z) = \dfrac{0.5 - 0.5 z^{-1}}{1 + 0.4 z^{-1}}\)</span></li>
+<li><span class="math inline">\(H_2(z) = \dfrac{1 + z^{-1}}{1 + 0.9 z^{-1}}\)</span></li>
+</ul>
+<p>(Other factorizations are possible; this is <strong>not unique</strong>.)</p>
+</section>
+<section class="slide level2">
+
+<p>Cascade structure using Direct‑Form II in each section:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/b922e5c6f4cec4a094f48ffc603b513f_MD5.jpg" height="180"></p>
+<figcaption>Fig 6.28: Cascade realization for Example 6.13</figcaption>
+</figure>
+</div>
+<aside class="notes">
+<p>Explain that we treat each <span class="math inline">\(H_k(z)\)</span> as a <strong>small filter block</strong> (biquad or first order), and the full filter is their series connection.</p>
+<p>Engineering practice: Implementation libraries (like MATLAB’s <code>sosfilt</code>) take coefficient matrices where each row is one second‑order section.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-6.13-cascade-difference-equations" class="slide level2">
+<h2>Example 6.13 – Cascade Difference Equations</h2>
+<p>Let <span class="math inline">\(x(n)\)</span> → Section 1 → intermediate <span class="math inline">\(y_1(n)\)</span> → Section 2 → final <span class="math inline">\(y(n)\)</span>.</p>
+<p><strong>Section 1</strong> (<span class="math inline">\(H_1(z)\)</span>):</p>
+<p><span class="math display">\[
+\begin{aligned}
+w_1(n) &amp;= x(n) - 0.4 w_1(n-1) \\
+y_1(n) &amp;= 0.5 w_1(n) - 0.5 w_1(n-1)
+\end{aligned}
+\]</span></p>
+<p><strong>Section 2</strong> (<span class="math inline">\(H_2(z)\)</span>):</p>
+<p><span class="math display">\[
+\begin{aligned}
+w_2(n) &amp;= y_1(n) - 0.9 w_2(n-1) \\
+y(n)   &amp;= w_2(n) + w_2(n-1)
+\end{aligned}
+\]</span></p>
+<aside class="notes">
+<p>Explain variable naming: <span class="math inline">\(w_1, w_2\)</span> are internal states in each section; <span class="math inline">\(y_1\)</span> is the internal signal between them.</p>
+<p>Ask: Could we swap <span class="math inline">\(H_1\)</span> and <span class="math inline">\(H_2\)</span>? Yes; the cascade of LTI systems commutes, though numerical properties may differ in finite precision.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-6.13-parallel-via-firstorder-sections" class="slide level2">
+<h2>Example 6.13 – Parallel via First‑Order Sections</h2>
+<p>Use <strong>partial fraction expansion</strong>. Start by writing:</p>
+<p><span class="math display">\[
+\frac{H(z)}{z} = \frac{0.5(z^2 - 1)}{z(z + 0.4)(z + 0.9)}
+               = \frac{A}{z} + \frac{B}{z + 0.4} + \frac{C}{z + 0.9}.
+\]</span></p>
+<p>Solving for <span class="math inline">\(A, B, C\)</span> (as in the text):</p>
+<ul>
+<li><span class="math inline">\(A = -1.39\)</span></li>
+<li><span class="math inline">\(B = 2.1\)</span></li>
+<li><span class="math inline">\(C = -0.21\)</span></li>
+</ul>
+<p>So:</p>
+<p><span class="math display">\[
+\begin{aligned}
+H(z) &amp;= -1.39 + \frac{2.1 z}{z + 0.4} - \frac{0.21 z}{z + 0.9} \\
+     &amp;= -1.39 + \frac{2.1}{1 + 0.4 z^{-1}} + \frac{-0.21}{1 + 0.9 z^{-1}}.
+\end{aligned}
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p>Parallel structure: three sections in parallel, summed at the output.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/601bcc6e76f984765a208c9e26c3199c_MD5.jpg" height="300"></p>
+<figcaption>Fig 6.29: Parallel realization for Example 6.13</figcaption>
+</figure>
+</div>
+<aside class="notes">
+<p>Note that the constant term <span class="math inline">\(-1.39\)</span> can be seen as a “zero order” section: just a gain on <span class="math inline">\(x(n)\)</span>.</p>
+<p>Parallel form expresses <span class="math inline">\(H(z)\)</span> as a sum of simpler modes (like resonances). This can be useful in spectral modeling and for adjustable parametric equalizers.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-6.13-parallel-difference-equations" class="slide level2 scrollable">
+<h2>Example 6.13 – Parallel Difference Equations</h2>
+<p>Three parallel paths:</p>
+<ol type="1">
+<li><p>Constant‑gain path: <span class="math display">\[
+y_1(n) = -1.39\, x(n)
+\]</span></p></li>
+<li><p>First IIR path: <span class="math display">\[
+\begin{aligned}
+w_2(n) &amp;= x(n) - 0.4 w_2(n-1) \\
+y_2(n) &amp;= 2.1\, w_2(n)
+\end{aligned}
+\]</span></p></li>
+<li><p>Second IIR path: <span class="math display">\[
+\begin{aligned}
+w_3(n) &amp;= x(n) - 0.9 w_3(n-1) \\
+y_3(n) &amp;= -0.21\, w_3(n)
+\end{aligned}
+\]</span></p></li>
+</ol>
+<p>Total output:</p>
+<p><span class="math display">\[
+y(n) = y_1(n) + y_2(n) + y_3(n).
+\]</span></p>
+<aside class="notes">
+<p>Highlight: all three branches see the same input <span class="math inline">\(x(n)\)</span> simultaneously; their outputs are linearly added.</p>
+<p>You can see how each term in the partial fraction directly corresponds to a section.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="applications-why-these-filters-matter" class="slide level2 scrollable">
+<h2>6.7 Applications – Why These Filters Matter</h2>
+<p>We now apply these concepts to real‑world signals:</p>
+<ol type="1">
+<li><strong>Preemphasis of speech</strong> – simple highpass FIR to boost high frequencies.</li>
+<li><strong>Bandpass filtering of speech</strong> – IIR bandpass filter for a narrow formant region.</li>
+<li><strong>ECG enhancement with notch filtering</strong> – IIR bandstop filter to remove 60 Hz power‑line interference.</li>
+</ol>
+<p>Think in terms of:</p>
+<ul>
+<li>What is the <strong>signal of interest</strong>?</li>
+<li>What is the <strong>unwanted component</strong> (noise, interference)?</li>
+<li>How do we choose filter type and specs to separate them?</li>
+</ul>
+<aside class="notes">
+<p>Connect back to the four basic filter types: each of these applications maps naturally to one of them.</p>
+<p>Encourage students to think of their project domain (audio, communication, power, biomedical) and picture where filters fit.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="speech-preemphasis-motivation" class="slide level2">
+<h2>6.7.1 Speech Preemphasis – Motivation</h2>
+<p>Speech spectra typically have <strong>more energy at low frequencies</strong> and less at high frequencies.</p>
+<p>In some applications (e.g., speech coding, recognition):</p>
+<ul>
+<li>Important phonetic information exists at <strong>higher frequencies</strong>.</li>
+<li>We don’t want encoder/feature extractor to overlook that content.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>Solution:</p>
+<p><strong>Preemphasis</strong> filter – roughly a <strong>highpass</strong> filter that boosts high frequencies and slightly attenuates low ones.</p>
+<p>Simple digital preemphasis filter:</p>
+<p><span class="math display">\[
+y(n) = x(n) - \alpha x(n-1), \quad 0 &lt; \alpha &lt; 1.
+\]</span></p>
+<p>Transfer function:</p>
+<p><span class="math display">\[
+H(z) = 1 - \alpha z^{-1}.
+\]</span></p>
+<ul>
+<li>One zero at <span class="math inline">\(z = \alpha\)</span> (inside unit circle, close to DC).</li>
+<li>Magnitude increases with frequency → highpass behavior.</li>
+</ul>
+<aside class="notes">
+<p>Emphasize how simple this is: just <strong>one subtract and one multiply</strong> per sample. Good for hardware or real‑time embedded implementation.</p>
+<p>Typically <span class="math inline">\(\alpha\)</span> between 0.9 and 0.97 in many speech processing systems.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="preemphasis-filter-frequency-response-effect" class="slide level2">
+<h2>Preemphasis Filter – Frequency Response &amp; Effect</h2>
+<p>For <span class="math inline">\(\alpha = 0.9\)</span>, <span class="math inline">\(f_s = 8000\)</span> Hz:</p>
+<ul>
+<li>Use <code>freqz([1 -alpha], 1, 512, fs)</code> to plot frequency response.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/6cd5f7d82ce485b5a7988fd3fce6c625_MD5.jpg" height="300"></p>
+<figcaption>Fig 6.30 (A): Frequency responses of preemphasis filter</figcaption>
+</figure>
+</div>
+</section>
+<section class="slide level2">
+
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Effect on speech waveform:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/4f58ea971a4e31b78c4d11ad0104151c_MD5.jpg" height="220"></p>
+<figcaption>Fig 6.30 (B): Original and preemphasized speech waveforms</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<p>Spectra comparison (FFT + Hamming window):</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/7fa42ae2766e855da962e888345c9ba0_MD5.jpg" height="220"></p>
+<figcaption>Fig 6.31: Amplitude spectra of original and preemphasized speech</figcaption>
+</figure>
+</div>
+</div></div>
+<p>Observation:</p>
+<ul>
+<li>High‑frequency components are boosted.</li>
+<li>Low‑frequency components are relatively attenuated.</li>
+</ul>
+<aside class="notes">
+<p>Explain that the filter is linear phase (for this single zero it’s not symmetrical FIR, but phase is still well‑behaved for narrowband speech).</p>
+<p>Explain briefly the use of windowing (Hamming) in spectrum estimation to reduce leakage.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="matlab-program-6.3-preemphasis-implementation" class="slide level2">
+<h2>MATLAB Program 6.3 – Preemphasis Implementation</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource matlab number-lines code-with-copy"><code class="sourceCode matlab"><span id="cb4-1"><a></a><span class="co">% Program 6.3: Preemphasis of speech</span></span>
+<span id="cb4-2"><a></a><span class="va">close</span> <span class="va">all</span><span class="op">;</span> <span class="va">clear</span> <span class="va">all</span></span>
+<span id="cb4-3"><a></a></span>
+<span id="cb4-4"><a></a><span class="va">fs</span>    <span class="op">=</span> <span class="fl">8000</span><span class="op">;</span>    <span class="co">% Sampling rate</span></span>
+<span id="cb4-5"><a></a><span class="va">alpha</span> <span class="op">=</span> <span class="fl">0.9</span><span class="op">;</span>     <span class="co">% Degree of pre-emphasis</span></span>
+<span id="cb4-6"><a></a></span>
+<span id="cb4-7"><a></a><span class="co">% Frequency response</span></span>
+<span id="cb4-8"><a></a><span class="va">figure</span>(<span class="fl">1</span>)<span class="op">;</span></span>
+<span id="cb4-9"><a></a><span class="va">freqz</span>([<span class="fl">1</span> <span class="op">-</span><span class="va">alpha</span>]<span class="op">,</span> <span class="fl">1</span><span class="op">,</span> <span class="fl">512</span><span class="op">,</span> <span class="va">fs</span>)<span class="op">;</span></span>
+<span id="cb4-10"><a></a></span>
+<span id="cb4-11"><a></a><span class="co">% Load speech signal</span></span>
+<span id="cb4-12"><a></a><span class="va">load</span> <span class="va">speech</span>.<span class="va">dat</span>     <span class="co">% Vector 'speech'</span></span>
+<span id="cb4-13"><a></a></span>
+<span id="cb4-14"><a></a><span class="co">% Apply preemphasis filter</span></span>
+<span id="cb4-15"><a></a><span class="va">y</span> <span class="op">=</span> <span class="va">filter</span>([<span class="fl">1</span> <span class="op">-</span><span class="va">alpha</span>]<span class="op">,</span> <span class="fl">1</span><span class="op">,</span> <span class="va">speech</span>)<span class="op">;</span></span>
+<span id="cb4-16"><a></a></span>
+<span id="cb4-17"><a></a><span class="co">% Time-domain plots</span></span>
+<span id="cb4-18"><a></a><span class="va">figure</span>(<span class="fl">2</span>)<span class="op">;</span></span>
+<span id="cb4-19"><a></a><span class="va">subplot</span>(<span class="fl">2</span><span class="op">,</span><span class="fl">1</span><span class="op">,</span><span class="fl">1</span>)<span class="op">;</span> <span class="va">plot</span>(<span class="va">speech</span>)<span class="op">;</span> <span class="va">grid</span><span class="op">;</span></span>
+<span id="cb4-20"><a></a><span class="va">ylabel</span>(<span class="ss">'Speech samples'</span>)<span class="op">;</span></span>
+<span id="cb4-21"><a></a><span class="va">title</span>(<span class="ss">'Original speech'</span>)<span class="op">;</span></span>
+<span id="cb4-22"><a></a></span>
+<span id="cb4-23"><a></a><span class="va">subplot</span>(<span class="fl">2</span><span class="op">,</span><span class="fl">1</span><span class="op">,</span><span class="fl">2</span>)<span class="op">;</span> <span class="va">plot</span>(<span class="va">y</span>)<span class="op">;</span> <span class="va">grid</span><span class="op">;</span></span>
+<span id="cb4-24"><a></a><span class="va">ylabel</span>(<span class="ss">'Filtered samples'</span>)<span class="op">;</span></span>
+<span id="cb4-25"><a></a><span class="va">xlabel</span>(<span class="ss">'Sample index'</span>)<span class="op">;</span></span>
+<span id="cb4-26"><a></a><span class="va">title</span>(<span class="ss">'Preemphasized speech'</span>)<span class="op">;</span></span>
+<span id="cb4-27"><a></a></span>
+<span id="cb4-28"><a></a><span class="co">% Spectral analysis</span></span>
+<span id="cb4-29"><a></a><span class="va">figure</span>(<span class="fl">3</span>)<span class="op">;</span></span>
+<span id="cb4-30"><a></a><span class="va">N</span>   <span class="op">=</span> <span class="va">length</span>(<span class="va">speech</span>)<span class="op">;</span></span>
+<span id="cb4-31"><a></a><span class="va">Axk</span> <span class="op">=</span> <span class="va">abs</span>(<span class="va">fft</span>(<span class="va">speech</span> <span class="op">.*</span> <span class="va">hamming</span>(<span class="va">N</span>))) <span class="op">/</span> <span class="va">N</span><span class="op">;</span></span>
+<span id="cb4-32"><a></a><span class="va">Ayk</span> <span class="op">=</span> <span class="va">abs</span>(<span class="va">fft</span>(<span class="va">y</span>      <span class="op">.*</span> <span class="va">hamming</span>(<span class="va">N</span>))) <span class="op">/</span> <span class="va">N</span><span class="op">;</span></span>
+<span id="cb4-33"><a></a></span>
+<span id="cb4-34"><a></a><span class="va">f</span> <span class="op">=</span> (<span class="fl">0</span><span class="op">:</span><span class="va">N</span><span class="op">/</span><span class="fl">2</span>)<span class="op">*</span><span class="va">fs</span><span class="op">/</span><span class="va">N</span><span class="op">;</span></span>
+<span id="cb4-35"><a></a><span class="va">Axk</span>(<span class="fl">2</span><span class="op">:</span><span class="va">N</span>) <span class="op">=</span> <span class="fl">2</span><span class="op">*</span><span class="va">Axk</span>(<span class="fl">2</span><span class="op">:</span><span class="va">N</span>)<span class="op">;</span></span>
+<span id="cb4-36"><a></a><span class="va">Ayk</span>(<span class="fl">2</span><span class="op">:</span><span class="va">N</span>) <span class="op">=</span> <span class="fl">2</span><span class="op">*</span><span class="va">Ayk</span>(<span class="fl">2</span><span class="op">:</span><span class="va">N</span>)<span class="op">;</span></span>
+<span id="cb4-37"><a></a></span>
+<span id="cb4-38"><a></a><span class="va">subplot</span>(<span class="fl">2</span><span class="op">,</span><span class="fl">1</span><span class="op">,</span><span class="fl">1</span>)<span class="op">;</span> <span class="va">plot</span>(<span class="va">f</span><span class="op">,</span> <span class="va">Axk</span>(<span class="fl">1</span><span class="op">:</span><span class="va">N</span><span class="op">/</span><span class="fl">2</span><span class="op">+</span><span class="fl">1</span>))<span class="op">;</span> <span class="va">grid</span><span class="op">;</span></span>
+<span id="cb4-39"><a></a><span class="va">ylabel</span>(<span class="ss">'Amplitude spectrum'</span>)<span class="op">;</span></span>
+<span id="cb4-40"><a></a><span class="va">title</span>(<span class="ss">'Original speech'</span>)<span class="op">;</span></span>
+<span id="cb4-41"><a></a></span>
+<span id="cb4-42"><a></a><span class="va">subplot</span>(<span class="fl">2</span><span class="op">,</span><span class="fl">1</span><span class="op">,</span><span class="fl">2</span>)<span class="op">;</span> <span class="va">plot</span>(<span class="va">f</span><span class="op">,</span> <span class="va">Ayk</span>(<span class="fl">1</span><span class="op">:</span><span class="va">N</span><span class="op">/</span><span class="fl">2</span><span class="op">+</span><span class="fl">1</span>))<span class="op">;</span> <span class="va">grid</span><span class="op">;</span></span>
+<span id="cb4-43"><a></a><span class="va">ylabel</span>(<span class="ss">'Amplitude spectrum'</span>)<span class="op">;</span></span>
+<span id="cb4-44"><a></a><span class="va">xlabel</span>(<span class="ss">'Frequency (Hz)'</span>)<span class="op">;</span></span>
+<span id="cb4-45"><a></a><span class="va">title</span>(<span class="ss">'Preemphasized speech'</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<aside class="notes">
+<p>Point out how similar this is to the earlier <code>freqz()</code> example.</p>
+<p>Ask students: “If I change <code>alpha</code> to 0.5 or 0.99, how will the spectrum look different?” Encourage them to try this as a quick lab exercise.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="bandpass-filtering-of-speech-setup" class="slide level2">
+<h2>6.7.2 Bandpass Filtering of Speech – Setup</h2>
+<p>Goal: isolate a <strong>narrow band</strong> of speech frequencies for analysis or feature extraction.</p>
+<p>Given a 4th‑order digital <strong>Bandpass Butterworth</strong> filter:</p>
+<ul>
+<li>Sampling rate: <span class="math inline">\(f_s = 8000\)</span> Hz.</li>
+<li>Lower cutoff: 1000 Hz.</li>
+<li>Upper cutoff: 1400 Hz.</li>
+<li>Bandwidth: 400 Hz.</li>
+</ul>
+<p>Transfer function:</p>
+<p><span class="math display">\[
+H(z) = \frac{0.0201 - 0.0402 z^{-2} + 0.0201 z^{-4}}{1 - 2.1192 z^{-1} + 2.6952 z^{-2} - 1.6924 z^{-3} + 0.6414 z^{-4}}.
+\]</span></p>
+<p>Difference equation:</p>
+<p><span class="math display">\[
+\begin{aligned}
+y(n) &amp;= 0.0201 x(n) - 0.0402 x(n-2) + 0.0201 x(n-4) \\
+     &amp;\quad + 2.1192 y(n-1) - 2.6952 y(n-2) \\
+     &amp;\quad + 1.6924 y(n-3) - 0.6414 y(n-4).
+\end{aligned}
+\]</span></p>
+<aside class="notes">
+<p>Highlight that this is a <strong>4th‑order IIR filter</strong>; typical to implement as two cascaded biquads in practice (though here given monolithically).</p>
+<p>Butterworth ⇒ maximally flat passband (no ripple).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="bandpass-filter-frequency-response-and-effect" class="slide level2">
+<h2>Bandpass Filter – Frequency Response and Effect</h2>
+<p>Frequency response via <code>freqz</code>:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/16915f77657c0f92538731ae51c820c2_MD5.jpg" height="300"></p>
+<figcaption>Fig 6.32 (A): Bandpass filter frequency responses</figcaption>
+</figure>
+</div>
+</section>
+<section class="slide level2">
+
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Time‑domain speech before and after filtering:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/8618f2b89941f8d1cb1b4d60fbce24ce_MD5.jpg" height="300"></p>
+<figcaption>Fig 6.32 (B): Original and bandpass filtered speech</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<p>Spectra comparison:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/4cf32b5006844e0569e02521cf71ba21_MD5.jpg" height="300"></p>
+<figcaption>Fig 6.32 (C): Spectra of original and bandpass filtered speech</figcaption>
+</figure>
+</div>
+</div></div>
+<p>Observation:</p>
+<ul>
+<li>Frequencies below 1000 Hz and above 1400 Hz are significantly attenuated.</li>
+<li>Passband 1000–1400 Hz remains.</li>
+</ul>
+<aside class="notes">
+<p>Point out that many speech formants (resonant frequencies) lie in certain bands. A bandpass filter can isolate these for pitch or formant analysis.</p>
+<p>Ask: “What type of content (e.g., vowel vs consonant) might be emphasized in this band?” This can lead to a discussion of formants.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="matlab-program-6.4-bandpass-filter-implementation" class="slide level2">
+<h2>MATLAB Program 6.4 – Bandpass Filter Implementation</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource matlab number-lines code-with-copy"><code class="sourceCode matlab"><span id="cb5-1"><a></a><span class="co">% Program 6.4: Bandpass filtering of speech</span></span>
+<span id="cb5-2"><a></a></span>
+<span id="cb5-3"><a></a><span class="va">fs</span> <span class="op">=</span> <span class="fl">8000</span><span class="op">;</span>  <span class="co">% Sampling rate</span></span>
+<span id="cb5-4"><a></a></span>
+<span id="cb5-5"><a></a><span class="co">% Bandpass filter coefficients (4th-order)</span></span>
+<span id="cb5-6"><a></a><span class="va">B</span> <span class="op">=</span> [<span class="fl">0.0201</span> <span class="fl">0</span> <span class="op">-</span><span class="fl">0.0402</span> <span class="fl">0</span> <span class="fl">0.0201</span>]<span class="op">;</span></span>
+<span id="cb5-7"><a></a><span class="va">A</span> <span class="op">=</span> [<span class="fl">1</span> <span class="op">-</span><span class="fl">2.1192</span> <span class="fl">2.6952</span> <span class="op">-</span><span class="fl">1.6924</span> <span class="fl">0.6414</span>]<span class="op">;</span></span>
+<span id="cb5-8"><a></a></span>
+<span id="cb5-9"><a></a><span class="co">% Frequency response</span></span>
+<span id="cb5-10"><a></a><span class="va">figure</span>(<span class="fl">1</span>)<span class="op">;</span></span>
+<span id="cb5-11"><a></a><span class="va">freqz</span>(<span class="va">B</span><span class="op">,</span> <span class="va">A</span><span class="op">,</span> <span class="fl">512</span><span class="op">,</span> <span class="va">fs</span>)<span class="op">;</span></span>
+<span id="cb5-12"><a></a><span class="va">axis</span>([<span class="fl">0</span> <span class="va">fs</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span><span class="fl">40</span> <span class="fl">1</span>])<span class="op">;</span>  <span class="co">% Adjust axis if needed</span></span>
+<span id="cb5-13"><a></a></span>
+<span id="cb5-14"><a></a><span class="co">% Load speech</span></span>
+<span id="cb5-15"><a></a><span class="va">load</span> <span class="va">speech</span>.<span class="va">dat</span></span>
+<span id="cb5-16"><a></a></span>
+<span id="cb5-17"><a></a><span class="co">% Filter speech</span></span>
+<span id="cb5-18"><a></a><span class="va">y</span> <span class="op">=</span> <span class="va">filter</span>(<span class="va">B</span><span class="op">,</span> <span class="va">A</span><span class="op">,</span> <span class="va">speech</span>)<span class="op">;</span></span>
+<span id="cb5-19"><a></a></span>
+<span id="cb5-20"><a></a><span class="co">% Time-domain plots</span></span>
+<span id="cb5-21"><a></a><span class="va">figure</span>(<span class="fl">2</span>)<span class="op">;</span></span>
+<span id="cb5-22"><a></a><span class="va">subplot</span>(<span class="fl">2</span><span class="op">,</span><span class="fl">1</span><span class="op">,</span><span class="fl">1</span>)<span class="op">;</span> <span class="va">plot</span>(<span class="va">speech</span>)<span class="op">;</span> <span class="va">grid</span><span class="op">;</span></span>
+<span id="cb5-23"><a></a><span class="va">ylabel</span>(<span class="ss">'Original Samples'</span>)<span class="op">;</span></span>
+<span id="cb5-24"><a></a><span class="va">title</span>(<span class="ss">'Original speech'</span>)<span class="op">;</span></span>
+<span id="cb5-25"><a></a></span>
+<span id="cb5-26"><a></a><span class="va">subplot</span>(<span class="fl">2</span><span class="op">,</span><span class="fl">1</span><span class="op">,</span><span class="fl">2</span>)<span class="op">;</span> <span class="va">plot</span>(<span class="va">y</span>)<span class="op">;</span> <span class="va">grid</span><span class="op">;</span></span>
+<span id="cb5-27"><a></a><span class="va">xlabel</span>(<span class="ss">'Sample index'</span>)<span class="op">;</span> <span class="va">ylabel</span>(<span class="ss">'Filtered Samples'</span>)<span class="op">;</span></span>
+<span id="cb5-28"><a></a><span class="va">title</span>(<span class="ss">'Bandpass filtered speech.'</span>)<span class="op">;</span></span>
+<span id="cb5-29"><a></a></span>
+<span id="cb5-30"><a></a><span class="co">% Spectral analysis</span></span>
+<span id="cb5-31"><a></a><span class="va">figure</span>(<span class="fl">3</span>)<span class="op">;</span></span>
+<span id="cb5-32"><a></a><span class="va">N</span>   <span class="op">=</span> <span class="va">length</span>(<span class="va">speech</span>)<span class="op">;</span></span>
+<span id="cb5-33"><a></a><span class="va">Axk</span> <span class="op">=</span> <span class="va">abs</span>(<span class="va">fft</span>(<span class="va">speech</span> <span class="op">.*</span> <span class="va">hamming</span>(<span class="va">N</span>)))<span class="op">/</span><span class="va">N</span><span class="op">;</span></span>
+<span id="cb5-34"><a></a><span class="va">Ayk</span> <span class="op">=</span> <span class="va">abs</span>(<span class="va">fft</span>(<span class="va">y</span>      <span class="op">.*</span> <span class="va">hamming</span>(<span class="va">N</span>)))<span class="op">/</span><span class="va">N</span><span class="op">;</span></span>
+<span id="cb5-35"><a></a></span>
+<span id="cb5-36"><a></a><span class="va">f</span> <span class="op">=</span> (<span class="fl">0</span><span class="op">:</span><span class="va">N</span><span class="op">/</span><span class="fl">2</span>)<span class="op">*</span><span class="va">fs</span><span class="op">/</span><span class="va">N</span><span class="op">;</span></span>
+<span id="cb5-37"><a></a><span class="va">Axk</span>(<span class="fl">2</span><span class="op">:</span><span class="va">N</span>) <span class="op">=</span> <span class="fl">2</span><span class="op">*</span><span class="va">Axk</span>(<span class="fl">2</span><span class="op">:</span><span class="va">N</span>)<span class="op">;</span></span>
+<span id="cb5-38"><a></a><span class="va">Ayk</span>(<span class="fl">2</span><span class="op">:</span><span class="va">N</span>) <span class="op">=</span> <span class="fl">2</span><span class="op">*</span><span class="va">Ayk</span>(<span class="fl">2</span><span class="op">:</span><span class="va">N</span>)<span class="op">;</span></span>
+<span id="cb5-39"><a></a></span>
+<span id="cb5-40"><a></a><span class="va">subplot</span>(<span class="fl">2</span><span class="op">,</span><span class="fl">1</span><span class="op">,</span><span class="fl">1</span>)<span class="op">;</span> <span class="va">plot</span>(<span class="va">f</span><span class="op">,</span> <span class="va">Axk</span>(<span class="fl">1</span><span class="op">:</span><span class="va">N</span><span class="op">/</span><span class="fl">2</span><span class="op">+</span><span class="fl">1</span>))<span class="op">;</span> <span class="va">grid</span><span class="op">;</span></span>
+<span id="cb5-41"><a></a><span class="va">ylabel</span>(<span class="ss">'Amplitude spectrum'</span>)<span class="op">;</span></span>
+<span id="cb5-42"><a></a><span class="va">title</span>(<span class="ss">'Original speech'</span>)<span class="op">;</span></span>
+<span id="cb5-43"><a></a></span>
+<span id="cb5-44"><a></a><span class="va">subplot</span>(<span class="fl">2</span><span class="op">,</span><span class="fl">1</span><span class="op">,</span><span class="fl">2</span>)<span class="op">;</span> <span class="va">plot</span>(<span class="va">f</span><span class="op">,</span> <span class="va">Ayk</span>(<span class="fl">1</span><span class="op">:</span><span class="va">N</span><span class="op">/</span><span class="fl">2</span><span class="op">+</span><span class="fl">1</span>))<span class="op">;</span> <span class="va">grid</span><span class="op">;</span></span>
+<span id="cb5-45"><a></a><span class="va">ylabel</span>(<span class="ss">'Amplitude spectrum'</span>)<span class="op">;</span></span>
+<span id="cb5-46"><a></a><span class="va">xlabel</span>(<span class="ss">'Frequency (Hz)'</span>)<span class="op">;</span></span>
+<span id="cb5-47"><a></a><span class="va">title</span>(<span class="ss">'Bandpass filtered speech'</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<aside class="notes">
+<p>Encourage students to experiment by changing cutoff frequencies (design new IIR filters using <code>butter</code> or <code>cheby1</code>), and observe how voice quality changes.</p>
+<p>This also connects strongly to audio equalization and communication channel filtering.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="ecg-enhancement-with-notch-filter" class="slide level2">
+<h2>6.7.3 ECG Enhancement with Notch Filter</h2>
+<p>Problem: ECG signal contaminated by <strong>60 Hz power‑line interference</strong> during acquisition.</p>
+<p>Given:</p>
+<ul>
+<li>Sampling frequency: <span class="math inline">\(f_s = 500\)</span> Hz.</li>
+<li>Target: <strong>Notch</strong> at 60 Hz.</li>
+</ul>
+<p>Designed second‑order notch filter:</p>
+<p><span class="math display">\[
+H(z) = \frac{1 - 1.4579 z^{-1} + z^{-2}}{1 - 1.3850 z^{-1} + 0.9025 z^{-2}}.
+\]</span></p>
+<p>Difference equation:</p>
+<p><span class="math display">\[
+y(n) = x(n) - 1.4579 x(n-1) + x(n-2) + 1.3850 y(n-1) - 0.9025 y(n-2).
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p>Frequency response:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/a101e8e160df1916a8539235ef812849_MD5.jpg" height="360"></p>
+<figcaption>Fig 6.33: Notch filter frequency responses</figcaption>
+</figure>
+</div>
+<aside class="notes">
+<p>Explain that the numerator zeros are placed exactly at the normalized frequency of 60 Hz (and its conjugate), and poles are placed slightly inside the unit circle at almost the same angle, forming a narrow notch.</p>
+<p>Normalized notch angle: <span class="math inline">\(\Omega_0 = 2\pi \cdot 60 / 500\)</span>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="ecg-before-and-after-notch-filtering" class="slide level2">
+<h2>ECG Before and After Notch Filtering</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Time‑domain ECG:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/e0aa2be2ae87ad8d4566e57b48b5df71_MD5.jpg" height="300"></p>
+<figcaption>Fig 6.34: Corrupted and enhanced ECG</figcaption>
+</figure>
+</div>
+<ul>
+<li>Upper plot: ECG + 60 Hz interference.</li>
+<li>Lower plot: Filtered ECG with notch filter applied.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p>Frequency‑domain view:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/chapter_6/db8db14ff9fbcfcbcd5ca4d18db381a6_MD5.jpg" height="300"></p>
+<figcaption>Fig 6.35: Spectra of corrupted and enhanced ECG</figcaption>
+</figure>
+</div>
+<ul>
+<li>Clear peak at 60 Hz in corrupted signal.</li>
+<li>Peak eliminated in enhanced signal; baseline ECG spectrum preserved.</li>
+</ul>
+</div></div>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>This is a classic and <strong>practical</strong> example of DSP in biomedical engineering: a simple, well‑designed digital notch filter <strong>significantly improves</strong> diagnostic signal quality.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Remind students that in real medical devices, you must preserve morphology of ECG (P‑QRS‑T complex). Too aggressive filtering could distort clinical features.</p>
+<p>Thus, filter design balances interference suppression with signal fidelity.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="summary-key-points" class="slide level2">
+<h2>Summary / Key Points</h2>
+<ul>
+<li>Four basic digital filter types:
+<ul>
+<li><strong>Lowpass</strong> – passes low frequencies, attenuates high.</li>
+<li><strong>Highpass</strong> – passes high, attenuates low.</li>
+<li><strong>Bandpass</strong> – passes a band, attenuates outside.</li>
+<li><strong>Bandstop / Notch</strong> – attenuates a band, passes outside.</li>
+</ul></li>
+<li>Filter specs defined by:
+<ul>
+<li>Passband / stopband edges (<span class="math inline">\(\Omega_p\)</span>, <span class="math inline">\(\Omega_s\)</span>, etc.).</li>
+<li>Passband ripple <span class="math inline">\(\delta_p\)</span>, stopband ripple <span class="math inline">\(\delta_s\)</span>.</li>
+</ul></li>
+<li><code>freqz(B, A, N)</code> computes complex frequency response of <span class="math inline">\(H(z) = B(z)/A(z)\)</span>.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>Realizations of IIR filters:
+<ul>
+<li><strong>Direct‑Form I</strong> – two parallel paths (input and output delays).</li>
+<li><strong>Direct‑Form II</strong> – minimal delays via shared internal state.</li>
+<li><strong>Cascade</strong> – product of first/second‑order sections (common for high orders).</li>
+<li><strong>Parallel</strong> – sum of elementary sections via partial fraction expansion.</li>
+</ul></li>
+<li>Real ECE applications:
+<ul>
+<li><strong>Preemphasis of speech</strong> – simple highpass FIR filter <span class="math inline">\(H(z) = 1 - \alpha z^{-1}\)</span>.</li>
+<li><strong>Bandpass speech filter</strong> – 4th‑order IIR to isolate 1000–1400 Hz band.</li>
+<li><strong>ECG enhancement</strong> – narrow notch at 60 Hz to remove power‑line interference.</li>
+</ul></li>
+</ul>
+<aside class="notes">
+<p>Encourage students to revisit these examples when they see any new filter or DSP device: ask, “What type is it? What realization likely used? What application constraints shaped it?”</p>
+<p>These patterns repeat across many ECE sub‑disciplines.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="key-formulas-summary" class="slide level2">
+<h2>Key Formulas Summary</h2>
+<p><strong>General IIR transfer function:</strong></p>
+<p><span class="math display">\[
+H(z) = \frac{B(z)}{A(z)} = \frac{b_0 + b_1 z^{-1} + \dots + b_M z^{-M}}{1 + a_1 z^{-1} + \dots + a_N z^{-N}}.
+\]</span></p>
+<p><strong>Input–output relation (Direct‑Form I):</strong></p>
+<p><span class="math display">\[
+\begin{aligned}
+y(n) &amp;= b_0 x(n) + b_1 x(n-1) + \dots + b_M x(n-M) \\
+     &amp;\quad - a_1 y(n-1) - \dots - a_N y(n-N).
+\end{aligned}
+\]</span></p>
+<p><strong>Direct‑Form II internal state and output:</strong></p>
+<p><span class="math display">\[
+w(n) = x(n) - a_1 w(n-1) - \dots - a_M w(n-M)
+\]</span></p>
+<p><span class="math display">\[
+y(n) = b_0 w(n) + b_1 w(n-1) + \dots + b_M w(n-M)
+\]</span></p>
+</section>
+<section class="slide level2">
+
+<p><strong>Preemphasis filter:</strong></p>
+<p><span class="math display">\[
+y(n) = x(n) - \alpha x(n-1), \quad H(z) = 1 - \alpha z^{-1}.
+\]</span></p>
+<p><strong>Example bandpass IIR difference equation:</strong></p>
+<p><span class="math display">\[
+\begin{aligned}
+y(n) &amp;= 0.0201 x(n) - 0.0402 x(n-2) + 0.0201 x(n-4) \\
+     &amp;\quad + 2.1192 y(n-1) - 2.6952 y(n-2) \\
+     &amp;\quad + 1.6924 y(n-3) - 0.6414 y(n-4).
+\end{aligned}
+\]</span></p>
+<p><strong>Example ECG notch filter:</strong></p>
+<p><span class="math display">\[
+H(z) = \frac{1 - 1.4579 z^{-1} + z^{-2}}{1 - 1.3850 z^{-1} + 0.9025 z^{-2}}
+\]</span></p>
+<p><span class="math display">\[
+y(n) = x(n) - 1.4579 x(n-1) + x(n-2) + 1.3850 y(n-1) - 0.9025 y(n-2).
+\]</span></p>
+<aside class="notes">
+<p>Suggest that students create a “formula sheet” including:</p>
+<ul>
+<li>General <span class="math inline">\(H(z)\)</span> forms.</li>
+<li>Direct‑Form I &amp; II equations.</li>
+<li>Example simple filters (moving average, preemphasis, simple notch).</li>
+</ul>
+<p>This will be invaluable in exams and labs.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="quick-interactive-check" class="slide level2 scrollable">
+<h2>Quick Interactive Check</h2>
+<ol type="1">
+<li><p>Suppose you see a magnitude response that is nearly 1 from 0 to <span class="math inline">\(0.3\pi\)</span>, then drops to nearly 0 after <span class="math inline">\(0.4\pi\)</span>. What filter type is this?</p></li>
+<li><p>You are given a speech signal sampled at 8 kHz and want to remove low‑frequency background hum below 200 Hz. What basic filter type would you design?</p></li>
+<li><p>In an ECG system, you see strong narrowband interference at 50 Hz with <span class="math inline">\(f_s = 500\)</span> Hz. What kind of filter and approximate normalized notch frequency would you choose?</p></li>
+</ol>
+<aside class="notes">
+<p>Suggested answers:</p>
+<ol type="1">
+<li>Lowpass filter.</li>
+<li>Highpass filter with cutoff around 200 Hz.</li>
+<li>Notch filter at <span class="math inline">\(\Omega_0 = 2\pi \cdot 50 / 500 = 0.2\pi\)</span>.</li>
+</ol>
+<p>Use this slide to gauge understanding and encourage questions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+</section>
+<section>
+<section id="interactive-deck" class="title-slide slide level1 center">
+<h1>Interactive Deck</h1>
+
+</section>
+<section id="reminder-freqz-vs-direct-computation" class="slide level2 scrollable">
+<h2>Reminder: <code>freqz</code> vs Direct Computation</h2>
+<p>In MATLAB we used <code>freqz(B, A, N)</code> to get the frequency response. Here, we’ll do the equivalent in Python using <code>scipy.signal.freqz</code>‑style logic.</p>
+<p>We’ll:</p>
+<ol type="1">
+<li>Define numerator <code>B</code> and denominator <code>A</code>.</li>
+<li>Evaluate <span class="math inline">\(H(e^{j\Omega})\)</span> at many points on the unit circle.</li>
+<li>Plot magnitude and phase.</li>
+</ol>
+</section>
+<section id="interactive-basic-frequency-response-explorer" class="slide level2">
+<h2>Interactive: Basic Frequency Response Explorer</h2>
+<p>Experiment with a simple IIR filter (like Example 6.12).</p>
+<div>
+<div id="pyodide-1" class="exercise-cell">
+
+</div>
+<script type="pyodide-1-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5pbXBvcnQgcGxvdGx5LmdyYXBoX29iamVjdHMgYXMgZ29cblxuIyBDaGFuZ2UgdGhlc2UgY29lZmZpY2llbnRzIGFuZCByZS1ydW46XG5CID0gbnAuYXJyYXkoWzEuMF0pICAgICAgICAjIG51bWVyYXRvcjogZS5nLiwgWzEuMF0gb3IgWzEuMCwgLTAuNV1cbkEgPSBucC5hcnJheShbMS4wLCAtMC41XSkgICMgZGVub21pbmF0b3I6IGUuZy4sIFsxLjAsIC0wLjVdXG5cbiMgRnJlcXVlbmN5IGdyaWRcbncgPSBucC5saW5zcGFjZSgwLCBucC5waSwgNTEyKVxuIyBFdmFsdWF0ZSBIKGVee2ogd30pIGRpcmVjdGx5XG5lancgPSBucC5leHAoMWogKiB3KVxubnVtID0gbnAucG9seXZhbChCLCBlancqKi0xKSAgICMgQih6Xi0xKVxuZGVuID0gbnAucG9seXZhbChBLCBlancqKi0xKSAgICMgQSh6Xi0xKVxuSCA9IG51bSAvIGRlblxuXG5tYWcgPSBucC5hYnMoSClcbnBoYXNlID0gbnAudW53cmFwKG5wLmFuZ2xlKEgpKVxuXG5maWcgPSBnby5GaWd1cmUoKVxuZmlnLmFkZF90cmFjZShnby5TY2F0dGVyKHg9dywgeT1tYWcsIG5hbWU9XCJNYWduaXR1ZGVcIikpXG5maWcudXBkYXRlX2xheW91dCh0aXRsZT1cIk1hZ25pdHVkZSBSZXNwb25zZSB8SChlXntqz4l9KXxcIixcbiAgICAgICAgICAgICAgICAgIHhheGlzX3RpdGxlPVwiz4kgKHJhZC9zYW1wbGUpXCIsXG4gICAgICAgICAgICAgICAgICB5YXhpc190aXRsZT1cIk1hZ25pdHVkZVwiKVxuZmlnLnNob3coKVxuXG5maWcyID0gZ28uRmlndXJlKClcbmZpZzIuYWRkX3RyYWNlKGdvLlNjYXR0ZXIoeD13LCB5PXBoYXNlLCBuYW1lPVwiUGhhc2VcIikpXG5maWcyLnVwZGF0ZV9sYXlvdXQodGl0bGU9XCJQaGFzZSBSZXNwb25zZSDiiKBIKGVee2rPiX0pXCIsXG4gICAgICAgICAgICAgICAgICAgeGF4aXNfdGl0bGU9XCLPiSAocmFkL3NhbXBsZSlcIixcbiAgICAgICAgICAgICAgICAgICB5YXhpc190aXRsZT1cIlBoYXNlIChyYWQpXCIpXG5maWcyLnNob3coKSJ9
+</script>
+</div>
+<p>Try:</p>
+<ul>
+<li><code>B = [1.0]</code>, <code>A = [1.0, -0.5]</code> (Example 6.12(a): lowpass).</li>
+<li><code>B = [1.0, -0.5]</code>, <code>A = [1.0]</code> (Example 6.12(b): highpass).</li>
+</ul>
+</section>
+<section id="reactive-identify-filter-type-from-coefficients" class="slide level2">
+<h2>Reactive: Identify Filter Type from Coefficients</h2>
+<p>Use sliders to set a simple 2‑tap FIR filter: <span class="math inline">\(H(z) = b_0 + b_1 z^{-1}\)</span>. Observe the magnitude response and guess: lowpass or highpass?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="1453" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1452;"><span id="cb6-1453"><a></a>viewof b0 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"b0 (feedthrough)"</span>})</span>
+<span id="cb6-1454"><a></a>viewof b1 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"b1 (one-sample delay)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-2" class="exercise-cell">
+
+</div>
+<script type="pyodide-2-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiYjAiLCJiMSJdfSwiY29kZSI6ImltcG9ydCBudW1weSBhcyBucFxuaW1wb3J0IHBsb3RseS5ncmFwaF9vYmplY3RzIGFzIGdvXG5cbkIgPSBucC5hcnJheShbYjAsIGIxXSkgICMgRklSOiBiMCArIGIxIHpeLTFcbkEgPSBucC5hcnJheShbMS4wXSkgICAgICMgRGVub21pbmF0b3IgPSAxXG5cbncgPSBucC5saW5zcGFjZSgwLCBucC5waSwgNTEyKVxuZWp3ID0gbnAuZXhwKDFqICogdylcbm51bSA9IG5wLnBvbHl2YWwoQiwgZWp3KiotMSlcbmRlbiA9IG5wLnBvbHl2YWwoQSwgZWp3KiotMSlcbkggPSBudW0gLyBkZW5cblxubWFnID0gbnAuYWJzKEgpXG5cbmZpZyA9IGdvLkZpZ3VyZSgpXG5maWcuYWRkX3RyYWNlKGdvLlNjYXR0ZXIoeD13LCB5PW1hZywgbmFtZT1cInxIKGVee2rPiX0pfFwiKSlcbmZpZy51cGRhdGVfbGF5b3V0KHRpdGxlPWZcIjItdGFwIEZJUjogQiA9IFt7YjA6LjJmfSwge2IxOi4yZn1dXCIsXG4gICAgICAgICAgICAgICAgICB4YXhpc190aXRsZT1cIs+JIChyYWQvc2FtcGxlKVwiLFxuICAgICAgICAgICAgICAgICAgeWF4aXNfdGl0bGU9XCJNYWduaXR1ZGVcIilcbmZpZy5zaG93KCkifQ==
+</script>
+</div>
+<p>Try:</p>
+<ul>
+<li><span class="math inline">\(b_0 = 1\)</span>, <span class="math inline">\(b_1 = -0.9\)</span> → highpass / preemphasis‑like.</li>
+<li><span class="math inline">\(b_0 = 0.5\)</span>, <span class="math inline">\(b_1 = 0.5\)</span> → lowpass (moving average of length 2).</li>
+</ul>
+</section>
+<section id="interactive-from-difference-equation-to-code-directform-i" class="slide level2">
+<h2>Interactive: From Difference Equation to Code (Direct‑Form I)</h2>
+<p>Given the general IIR difference equation:</p>
+<p><span class="math display">\[
+y(n) = \sum_{k=0}^{M} b_k x(n-k) - \sum_{k=1}^{N} a_k y(n-k).
+\]</span></p>
+<p>Let’s implement this manually and compare with the vector form.</p>
+<div>
+<div id="pyodide-3" class="exercise-cell">
+
+</div>
+<script type="pyodide-3-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5cbiMgRXhhbXBsZTogc2Vjb25kLW9yZGVyIElJUiwgZGlyZWN0LWZvcm0gSVxuYiA9IG5wLmFycmF5KFswLjUsIDAuMCwgLTAuNV0pICAgICAgIyBiMCwgYjEsIGIyXG5hID0gbnAuYXJyYXkoWzEuMCwgMS4zLCAwLjM2XSkgICAgICAjIGEwLCBhMSwgYTIsIHdpdGggYTA9MVxuTiA9IDUwICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIyBudW1iZXIgb2Ygc2FtcGxlc1xuXG4jIFRlc3QgaW5wdXQ6IHVuaXQgaW1wdWxzZVxueCA9IG5wLnplcm9zKE4pXG54WzBdID0gMS4wXG5cbnkgPSBucC56ZXJvcyhOKVxuXG5mb3IgbiBpbiByYW5nZShOKTpcbiAgICAjIGZlZWRmb3J3YXJkIHBhcnRcbiAgICBmb3IgayBpbiByYW5nZShsZW4oYikpOlxuICAgICAgICBpZiBuLWsgPj0gMDpcbiAgICAgICAgICAgIHlbbl0gKz0gYltrXSAqIHhbbi1rXVxuICAgICMgZmVlZGJhY2sgcGFydFxuICAgIGZvciBrIGluIHJhbmdlKDEsIGxlbihhKSk6XG4gICAgICAgIGlmIG4tayA+PSAwOlxuICAgICAgICAgICAgeVtuXSAtPSBhW2tdICogeVtuLWtdXG5cbnByaW50KFwiRmlyc3QgMTAgc2FtcGxlcyBvZiBpbXB1bHNlIHJlc3BvbnNlOlwiKVxucHJpbnQoeVs6MTBdKSJ9
+</script>
+</div>
+<p>Try:</p>
+<ul>
+<li>Change <code>x</code> to a step input (<code>x[n] = 1</code> for all n).</li>
+<li>Observe how the output responds and stabilizes (or not).</li>
+</ul>
+</section>
+<section id="reactive-directform-ii-state-evolution" class="slide level2">
+<h2>Reactive: Direct‑Form II State Evolution</h2>
+<p>We now implement the Direct‑Form II state update equations with interactive coefficients.</p>
+<p>For a second‑order IIR with <span class="math inline">\(M=2\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+w(n) &amp;= x(n) - a_1 w(n-1) - a_2 w(n-2) \\
+y(n) &amp;= b_0 w(n) + b_1 w(n-1) + b_2 w(n-2).
+\end{aligned}
+\]</span></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb7" data-startfrom="1551" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1550;"><span id="cb7-1551"><a></a>viewof a1 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">2</span><span class="op">,</span> <span class="dv">2</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"a1 (feedback 1)"</span>})</span>
+<span id="cb7-1552"><a></a>viewof a2 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">2</span><span class="op">,</span> <span class="dv">2</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"a2 (feedback 2)"</span>})</span>
+<span id="cb7-1553"><a></a>viewof b0_df2 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"b0 (feedforward 0)"</span>})</span>
+<span id="cb7-1554"><a></a>viewof b1_df2 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"b1 (feedforward 1)"</span>})</span>
+<span id="cb7-1555"><a></a>viewof b2_df2 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"b2 (feedforward 2)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-4" class="exercise-cell">
+
+</div>
+<script type="pyodide-4-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiYTEiLCJhMiIsImIwX2RmMiIsImIxX2RmMiIsImIyX2RmMiJdfSwiY29kZSI6ImltcG9ydCBudW1weSBhcyBucFxuaW1wb3J0IHBsb3RseS5ncmFwaF9vYmplY3RzIGFzIGdvXG5cbiMgRGlyZWN0LWZvcm0gSUkgY29lZmZpY2llbnRzXG5hID0gbnAuYXJyYXkoWzEuMCwgYTEsIGEyXSlcbmIgPSBucC5hcnJheShbYjBfZGYyLCBiMV9kZjIsIGIyX2RmMl0pXG5cbk4gPSA2MFxueCA9IG5wLnplcm9zKE4pXG54WzBdID0gMS4wICAjIGltcHVsc2VcblxudyA9IG5wLnplcm9zKE4pXG55ID0gbnAuemVyb3MoTilcblxuZm9yIG4gaW4gcmFuZ2UoTik6XG4gICAgd1tuXSA9IHhbbl1cbiAgICBmb3IgayBpbiByYW5nZSgxLCBsZW4oYSkpOlxuICAgICAgICBpZiBuLWsgPj0gMDpcbiAgICAgICAgICAgIHdbbl0gLT0gYVtrXSAqIHdbbi1rXVxuICAgIGZvciBrIGluIHJhbmdlKGxlbihiKSk6XG4gICAgICAgIGlmIG4tayA+PSAwOlxuICAgICAgICAgICAgeVtuXSArPSBiW2tdICogd1tuLWtdXG5cbmZpZyA9IGdvLkZpZ3VyZSgpXG5maWcuYWRkX3RyYWNlKGdvLlNjYXR0ZXIoeD1saXN0KHJhbmdlKE4pKSwgeT15LCBuYW1lPVwieVtuXVwiKSlcbmZpZy51cGRhdGVfbGF5b3V0KHRpdGxlPVwiSW1wdWxzZSBSZXNwb25zZSAoRGlyZWN0LUZvcm0gSUkpXCIsXG4gICAgICAgICAgICAgICAgICB4YXhpc190aXRsZT1cIm5cIixcbiAgICAgICAgICAgICAgICAgIHlheGlzX3RpdGxlPVwieVtuXVwiKVxuZmlnLnNob3coKSJ9
+</script>
+</div>
+<p>Try to make the filter <strong>unstable</strong> by choosing <span class="math inline">\(a_1, a_2\)</span> so that poles move outside the unit circle (e.g., magnitudes &gt; 1). Observe the impulse response growing without bound.</p>
+</section>
+<section id="interactive-polezero-plot-for-example-6.12" class="slide level2">
+<h2>Interactive: Pole–Zero Plot for Example 6.12</h2>
+<p>Let’s approximate a pole–zero plot for one of the Example 6.12 filters.</p>
+<div>
+<div id="pyodide-5" class="exercise-cell">
+
+</div>
+<script type="pyodide-5-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5pbXBvcnQgcGxvdGx5LmdyYXBoX29iamVjdHMgYXMgZ29cblxuIyBFeGFtcGxlIChjKTpcbiMgSCh6KSA9ICgwLjUgLSAwLjMyIHpeLTIpIC8gKDEgLSAwLjUgel4tMSArIDAuMjUgel4tMilcbkIgPSBucC5hcnJheShbMC41LCAwLjAsIC0wLjMyXSlcbkEgPSBucC5hcnJheShbMS4wLCAtMC41LCAwLjI1XSlcblxuIyBGaW5kIHplcm9zIGFuZCBwb2xlcyAocm9vdHMgb2YgcG9seW5vbWlhbHMgaW4gel4tMSlcbnplcm9zID0gbnAucm9vdHMoQikgICMgcm9vdHMgaW4gel4tMSwgYnV0IHRoYXQncyBhY2NlcHRhYmxlIGZvciB2aXN1YWxpemF0aW9uXG5wb2xlcyA9IG5wLnJvb3RzKEEpXG5cbnRoZXRhID0gbnAubGluc3BhY2UoMCwgMipucC5waSwgNDAwKVxudW5pdF9jaXJjbGVfeCA9IG5wLmNvcyh0aGV0YSlcbnVuaXRfY2lyY2xlX3kgPSBucC5zaW4odGhldGEpXG5cbmZpZyA9IGdvLkZpZ3VyZSgpXG5maWcuYWRkX3RyYWNlKGdvLlNjYXR0ZXIoeD11bml0X2NpcmNsZV94LCB5PXVuaXRfY2lyY2xlX3ksXG4gICAgICAgICAgICAgICAgICAgICAgICAgbW9kZT0nbGluZXMnLCBuYW1lPSdVbml0IENpcmNsZScpKVxuZmlnLmFkZF90cmFjZShnby5TY2F0dGVyKHg9emVyb3MucmVhbCwgeT16ZXJvcy5pbWFnLFxuICAgICAgICAgICAgICAgICAgICAgICAgIG1vZGU9J21hcmtlcnMnLCBtYXJrZXI9ZGljdChzeW1ib2w9J2NpcmNsZScsIHNpemU9MTApLFxuICAgICAgICAgICAgICAgICAgICAgICAgIG5hbWU9J1plcm9zJykpXG5maWcuYWRkX3RyYWNlKGdvLlNjYXR0ZXIoeD1wb2xlcy5yZWFsLCB5PXBvbGVzLmltYWcsXG4gICAgICAgICAgICAgICAgICAgICAgICAgbW9kZT0nbWFya2VycycsIG1hcmtlcj1kaWN0KHN5bWJvbD0neCcsIHNpemU9MTApLFxuICAgICAgICAgICAgICAgICAgICAgICAgIG5hbWU9J1BvbGVzJykpXG5maWcudXBkYXRlX2xheW91dCh0aXRsZT1cIlBvbGUtWmVybyBQbG90IChFeGFtcGxlIDYuMTIgKGMpKVwiLFxuICAgICAgICAgICAgICAgICAgeGF4aXNfdGl0bGU9XCJSZXt6fVwiLCB5YXhpc190aXRsZT1cIklte3p9XCIsXG4gICAgICAgICAgICAgICAgICB4YXhpcz1kaWN0KHNjYWxlYW5jaG9yPVwieVwiLCBzY2FsZXJhdGlvPTEpLFxuICAgICAgICAgICAgICAgICAgeWF4aXM9ZGljdChjb25zdHJhaW49XCJkb21haW5cIikpXG5maWcuc2hvdygpIn0=
+</script>
+</div>
+<p>Try replacing <code>B</code> and <code>A</code> with other examples ((a), (b), or (d)) and see how poles and zeros move.</p>
+</section>
+<section id="reactive-preemphasis-filter-hz-1---alpha-z-1" class="slide level2">
+<h2>Reactive: Preemphasis Filter <span class="math inline">\(H(z) = 1 - \alpha z^{-1}\)</span></h2>
+<p>Recall:</p>
+<ul>
+<li>Preemphasis for speech: <span class="math inline">\(y(n) = x(n) - \alpha x(n-1)\)</span>, <span class="math inline">\(0 &lt; \alpha &lt; 1\)</span>.</li>
+<li><span class="math inline">\(H(z) = 1 - \alpha z^{-1}\)</span> is a simple <strong>highpass</strong> filter.</li>
+</ul>
+<p>Use the slider to change <span class="math inline">\(\alpha\)</span> and observe the magnitude response.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb8" data-startfrom="1652" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1651;"><span id="cb8-1652"><a></a>viewof alpha <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="fl">0.99</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Preemphasis α"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-6" class="exercise-cell">
+
+</div>
+<script type="pyodide-6-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiYWxwaGEiXX0sImNvZGUiOiJpbXBvcnQgbnVtcHkgYXMgbnBcbmltcG9ydCBwbG90bHkuZ3JhcGhfb2JqZWN0cyBhcyBnb1xuXG5CID0gbnAuYXJyYXkoWzEuMCwgLWFscGhhXSlcbkEgPSBucC5hcnJheShbMS4wXSlcblxudyA9IG5wLmxpbnNwYWNlKDAsIG5wLnBpLCA1MTIpXG5lancgPSBucC5leHAoMWogKiB3KVxubnVtID0gbnAucG9seXZhbChCLCBlancqKi0xKVxuSCA9IG51bSAgIyBkZW5vbWluYXRvciA9IDFcbm1hZyA9IG5wLmFicyhIKVxuXG5maWcgPSBnby5GaWd1cmUoKVxuZmlnLmFkZF90cmFjZShnby5TY2F0dGVyKHg9dywgeT1tYWcsIG5hbWU9XCJ8SChlXntqz4l9KXxcIikpXG5maWcudXBkYXRlX2xheW91dCh0aXRsZT1mXCJQcmVlbXBoYXNpcyBGaWx0ZXIgSCh6KSA9IDEgLSB7YWxwaGE6LjJmfSB6Xi0xXCIsXG4gICAgICAgICAgICAgICAgICB4YXhpc190aXRsZT1cIs+JIChyYWQvc2FtcGxlKVwiLFxuICAgICAgICAgICAgICAgICAgeWF4aXNfdGl0bGU9XCJNYWduaXR1ZGVcIilcbmZpZy5zaG93KCkifQ==
+</script>
+</div>
+<p>Observe: as <span class="math inline">\(\alpha\)</span> → 1, the low‑frequency attenuation increases and high‑frequency boost increases.</p>
+</section>
+<section id="interactive-timedomain-preemphasis-on-synthetic-signal" class="slide level2">
+<h2>Interactive: Time‑Domain Preemphasis on Synthetic Signal</h2>
+<p>Apply preemphasis to a simple synthetic “speech‑like” signal: mixture of low and high frequencies.</p>
+<div>
+<div id="pyodide-7" class="exercise-cell">
+
+</div>
+<script type="pyodide-7-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5pbXBvcnQgcGxvdGx5LmdyYXBoX29iamVjdHMgYXMgZ29cblxuZnMgPSA4MDAwXG50ID0gbnAuYXJhbmdlKDAsIDAuMDIsIDEvZnMpICAjIDIwIG1zXG54ID0gbnAuc2luKDIqbnAucGkqMjAwKnQpICsgMC40Km5wLnNpbigyKm5wLnBpKjIwMDAqdCkgICMgbG93ICsgaGlnaCB0b25lXG5cbmFscGhhID0gMC45ICAgIyB0cnkgY2hhbmdpbmcgdGhpc1xueSA9IG5wLnplcm9zX2xpa2UoeClcbmZvciBuIGluIHJhbmdlKGxlbih4KSk6XG4gICAgeVtuXSA9IHhbbl0gLSBhbHBoYSAqIHhbbi0xXSBpZiBuID4gMCBlbHNlIHhbbl1cblxuZmlnID0gZ28uRmlndXJlKClcbmZpZy5hZGRfdHJhY2UoZ28uU2NhdHRlcih4PXQqMTAwMCwgeT14LCBuYW1lPVwiT3JpZ2luYWxcIiwgbGluZT1kaWN0KGNvbG9yPVwiYmx1ZVwiKSkpXG5maWcuYWRkX3RyYWNlKGdvLlNjYXR0ZXIoeD10KjEwMDAsIHk9eSwgbmFtZT1cIlByZWVtcGhhc2l6ZWRcIiwgbGluZT1kaWN0KGNvbG9yPVwicmVkXCIpKSlcbmZpZy51cGRhdGVfbGF5b3V0KHRpdGxlPWZcIlByZWVtcGhhc2lzICjOsSA9IHthbHBoYX0pIG9uIFR3by1Ub25lIFNpZ25hbFwiLFxuICAgICAgICAgICAgICAgICAgeGF4aXNfdGl0bGU9XCJUaW1lIChtcylcIiwgeWF4aXNfdGl0bGU9XCJBbXBsaXR1ZGVcIilcbmZpZy5zaG93KCkifQ==
+</script>
+</div>
+<p>Try increasing the amplitude of the high‑frequency component in <code>x</code> and observe how preemphasis modifies the signal.</p>
+</section>
+<section id="reactive-bandpass-filter-shape-control" class="slide level2">
+<h2>Reactive: Bandpass Filter – Shape Control</h2>
+<p>We’ll create a <strong>simple FIR bandpass</strong> by subtracting a lowpass response from a highpass response. To keep it simple, use two <strong>moving-average</strong> filters and explore the transition region.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb9" data-startfrom="1720" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1719;"><span id="cb9-1720"><a></a>viewof lp_width <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">30</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Lowpass MA length (L1)"</span>})</span>
+<span id="cb9-1721"><a></a>viewof hp_width <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">30</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Highpass MA length (L2)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-8" class="exercise-cell">
+
+</div>
+<script type="pyodide-8-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsibHBfd2lkdGgiLCJocF93aWR0aCJdfSwiY29kZSI6ImltcG9ydCBudW1weSBhcyBucFxuaW1wb3J0IHBsb3RseS5ncmFwaF9vYmplY3RzIGFzIGdvXG5cbkwxID0gaW50KGxwX3dpZHRoKVxuTDIgPSBpbnQoaHBfd2lkdGgpXG5cbiMgTW92aW5nIGF2ZXJhZ2UgbG93cGFzczogQl9scCA9IDEvTDEgKiBbMSwgMSwgLi4uLCAxXVxuQl9scCA9IG5wLm9uZXMoTDEpIC8gTDFcbkFfbHAgPSBucC5hcnJheShbMS4wXSlcblxuIyBNb3ZpbmcgYXZlcmFnZSBoaWdocGFzcyB2aWEgc3BlY3RyYWwgaW52ZXJzaW9uOlxuIyBIX2hwKHopID0gMSAtIEhfbHAyKHopIHdoZXJlIEhfbHAyIGlzIE1BIG9mIGxlbmd0aCBMMlxuQl9scDIgPSBucC5vbmVzKEwyKSAvIEwyXG4jIEVxdWl2YWxlbnQgaGlnaHBhc3MgbnVtZXJhdG9yOiBkZWx0YVtuXSAtIEJfbHAyW25dXG5CX2hwID0gbnAuemVyb3MobWF4KEwyLDEpKVxuQl9ocFswXSA9IDEuMFxuZm9yIGsgaW4gcmFuZ2UoTDIpOlxuICAgIEJfaHBba10gLT0gQl9scDJba11cblxuIyBCYW5kcGFzcyA9IGxvd3Bhc3MgKEwxKSBmb2xsb3dlZCBieSBoaWdocGFzcyAoTDIpIGluIGNhc2NhZGVcbiMgV2UnbGwganVzdCBhcHByb3hpbWF0ZSBieSBtdWx0aXBseWluZyB0aGVpciBmcmVxdWVuY3kgcmVzcG9uc2VzXG53ID0gbnAubGluc3BhY2UoMCwgbnAucGksIDUxMilcbmVqdyA9IG5wLmV4cCgxaiAqIHcpXG5IX2xwID0gbnAucG9seXZhbChCX2xwLCBlancqKi0xKVxuSF9ocCA9IG5wLnBvbHl2YWwoQl9ocCwgZWp3KiotMSlcbkhfYnAgPSBIX2xwICogSF9ocFxubWFnID0gbnAuYWJzKEhfYnApXG5cbmZpZyA9IGdvLkZpZ3VyZSgpXG5maWcuYWRkX3RyYWNlKGdvLlNjYXR0ZXIoeD13LCB5PW1hZywgbmFtZT1cIkJhbmRwYXNzIG1hZ25pdHVkZVwiKSlcbmZpZy51cGRhdGVfbGF5b3V0KHRpdGxlPWZcIlNpbXBsaWZpZWQgRklSIEJhbmRwYXNzIChMMT17TDF9LCBMMj17TDJ9KVwiLFxuICAgICAgICAgICAgICAgICAgeGF4aXNfdGl0bGU9XCLPiSAocmFkL3NhbXBsZSlcIixcbiAgICAgICAgICAgICAgICAgIHlheGlzX3RpdGxlPVwiTWFnbml0dWRlXCIpXG5maWcuc2hvdygpIn0=
+</script>
+</div>
+<p>Change <code>L1</code> and <code>L2</code> to see how the passband region and transition widths change.</p>
+</section>
+<section id="reactive-notch-filter-at-variable-frequency" class="slide level2">
+<h2>Reactive: Notch Filter at Variable Frequency</h2>
+<p>Design a simple <strong>second‑order notch</strong>:</p>
+<p><span class="math display">\[
+H(z) = \frac{1 - 2r\cos\Omega_0 z^{-1} + r^2 z^{-2}}{1 - 2\cos\Omega_0 z^{-1} + z^{-2}},
+\]</span></p>
+<p>where <span class="math inline">\(\Omega_0\)</span> is the notch frequency and <span class="math inline">\(0 &lt; r &lt; 1\)</span> controls the width.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb10" data-startfrom="1780" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1779;"><span id="cb10-1780"><a></a>viewof f0 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">10</span><span class="op">,</span> <span class="dv">100</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Notch center f0 (Hz)"</span>})</span>
+<span id="cb10-1781"><a></a>viewof r_notch <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.5</span><span class="op">,</span> <span class="fl">0.99</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Pole radius r"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-5-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-5-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div>
+<div id="pyodide-9" class="exercise-cell">
+
+</div>
+<script type="pyodide-9-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiZjAiLCJyX25vdGNoIl19LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5pbXBvcnQgcGxvdGx5LmdyYXBoX29iamVjdHMgYXMgZ29cblxuZnMgPSA1MDAuMCAgICMgc2FtcGxlIHJhdGVcbk9tZWdhMCA9IDIqbnAucGkgKiAoZjAgLyBmcylcblxuciA9IHJfbm90Y2hcbiMgbnVtZXJhdG9yIHplcm9zIGF0IGVee8Kxak9tZWdhMH0sIG1hZ25pdHVkZSByXG5CID0gbnAuYXJyYXkoWzEuMCwgLTIqcipucC5jb3MoT21lZ2EwKSwgcioqMl0pXG4jIGRlbm9taW5hdG9yIHBvbGVzIGF0IGVee8Kxak9tZWdhMH0sIG1hZ25pdHVkZSAxXG5BID0gbnAuYXJyYXkoWzEuMCwgLTIqbnAuY29zKE9tZWdhMCksIDEuMF0pXG5cbncgPSBucC5saW5zcGFjZSgwLCBucC5waSwgNTEyKVxuZWp3ID0gbnAuZXhwKDFqICogdylcbkggPSBucC5wb2x5dmFsKEIsIGVqdyoqLTEpIC8gbnAucG9seXZhbChBLCBlancqKi0xKVxubWFnX2RiID0gMjAqbnAubG9nMTAobnAuYWJzKEgpICsgMWUtMTIpXG5cbmZpZyA9IGdvLkZpZ3VyZSgpXG5maWcuYWRkX3RyYWNlKGdvLlNjYXR0ZXIoeD13KmZzLygyKm5wLnBpKSwgeT1tYWdfZGIsIG5hbWU9XCJ8SHwgKGRCKVwiKSlcbmZpZy51cGRhdGVfbGF5b3V0KHRpdGxlPWZcIlNlY29uZC1PcmRlciBOb3RjaCBGaWx0ZXIsIGYwID0ge2YwOi4wZn0gSHosIHIgPSB7cjouMmZ9XCIsXG4gICAgICAgICAgICAgICAgICB4YXhpc190aXRsZT1cIkZyZXF1ZW5jeSAoSHopXCIsXG4gICAgICAgICAgICAgICAgICB5YXhpc190aXRsZT1cIk1hZ25pdHVkZSAoZEIpXCIpXG5maWcuc2hvdygpIn0=
+</script>
+</div>
+<p>Try:</p>
+<ul>
+<li>Set <code>f0 = 60</code> Hz, <code>r ≈ 0.95</code> (similar to ECG example).</li>
+<li>Move <code>f0</code> around and watch the notch move along the frequency axis.</li>
+</ul>
+</section>
+<section id="interactive-apply-notch-filter-to-synthetic-ecg-noise" class="slide level2">
+<h2>Interactive: Apply Notch Filter to Synthetic ECG + Noise</h2>
+<p>Create a synthetic ECG‑like waveform (simplified) plus a sinusoidal interference at <code>f0</code>.</p>
+<div>
+<div id="pyodide-10" class="exercise-cell">
+
+</div>
+<script type="pyodide-10-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1wb3J0IG51bXB5IGFzIG5wXG5pbXBvcnQgcGxvdGx5LmdyYXBoX29iamVjdHMgYXMgZ29cblxuZnMgPSA1MDAuMFxudCA9IG5wLmFyYW5nZSgwLCAyLjAsIDEvZnMpICAjIDIgc2Vjb25kc1xuXG4jIFZlcnkgcm91Z2ggXCJFQ0ctbGlrZVwiIHdhdmVmb3JtOiBsb3ctZnJlcXVlbmN5ICsgc3Bpa2VzXG5lY2dfYmFzZSA9IDAuMipucC5zaW4oMipucC5waSoxLjAqdClcbnNwaWtlcyA9IG5wLnplcm9zX2xpa2UodClcbnNwaWtlc1s6OmludCgwLjgqZnMpXSA9IDEuMCAgIyBwZXJpb2RpYyBzcGlrZXNcblxuZWNnID0gZWNnX2Jhc2UgKyBzcGlrZXNcblxuIyBBZGQgNjAgSHogaW50ZXJmZXJlbmNlXG5mMCA9IDYwLjBcbm5vaXNlID0gMC4zKm5wLnNpbigyKm5wLnBpKmYwKnQpXG54ID0gZWNnICsgbm9pc2VcblxuIyBOb3RjaCBmaWx0ZXIgcGFyYW1ldGVycyAoc2ltaWxhciB0byBFQ0cgZXhhbXBsZSlcbk9tZWdhMCA9IDIqbnAucGkgKiAoZjAgLyBmcylcbnIgPSAwLjk1XG5CID0gbnAuYXJyYXkoWzEuMCwgLTIqcipucC5jb3MoT21lZ2EwKSwgcioqMl0pXG5BID0gbnAuYXJyYXkoWzEuMCwgLTIqbnAuY29zKE9tZWdhMCksIDEuMF0pXG5cbiMgRGlyZWN0LWZvcm0gSUkgZmlsdGVyaW5nXG5OID0gbGVuKHgpXG53ID0gbnAuemVyb3MoTilcbnkgPSBucC56ZXJvcyhOKVxuXG5mb3IgbiBpbiByYW5nZShOKTpcbiAgICB3W25dID0geFtuXVxuICAgIGlmIG4tMSA+PSAwOlxuICAgICAgICB3W25dIC09IEFbMV0gKiB3W24tMV1cbiAgICBpZiBuLTIgPj0gMDpcbiAgICAgICAgd1tuXSAtPSBBWzJdICogd1tuLTJdXG4gICAgeVtuXSA9IEJbMF0qd1tuXVxuICAgIGlmIG4tMSA+PSAwOlxuICAgICAgICB5W25dICs9IEJbMV0qd1tuLTFdXG4gICAgaWYgbi0yID49IDA6XG4gICAgICAgIHlbbl0gKz0gQlsyXSp3W24tMl1cblxuZmlnID0gZ28uRmlndXJlKClcbmZpZy5hZGRfdHJhY2UoZ28uU2NhdHRlcih4PXQsIHk9eCwgbmFtZT1cIkNvcnJ1cHRlZCBFQ0dcIiwgbGluZT1kaWN0KGNvbG9yPVwicmVkXCIpKSlcbmZpZy5hZGRfdHJhY2UoZ28uU2NhdHRlcih4PXQsIHk9eSwgbmFtZT1cIkZpbHRlcmVkIEVDR1wiLCBsaW5lPWRpY3QoY29sb3I9XCJibHVlXCIpKSlcbmZpZy51cGRhdGVfbGF5b3V0KHRpdGxlPVwiU3ludGhldGljIEVDRyB3aXRoIDYwIEh6IEludGVyZmVyZW5jZSBhbmQgTm90Y2ggRmlsdGVyZWQgT3V0cHV0XCIsXG4gICAgICAgICAgICAgICAgICB4YXhpc190aXRsZT1cIlRpbWUgKHMpXCIsIHlheGlzX3RpdGxlPVwiQW1wbGl0dWRlXCIpXG5maWcuc2hvdygpIn0=
+</script>
+</div>
+<p>Observe how the oscillatory 60 Hz component is suppressed while the slower ECG‑like shape remains.</p>
+</section>
+<section id="try-this-design-your-own-filter" class="slide level2 scrollable">
+<h2>Try This: Design Your Own Filter</h2>
+<ol type="1">
+<li>Pick a <strong>filter type</strong> (lowpass, highpass, bandpass, bandstop).</li>
+<li>Define a simple FIR or low‑order IIR using the code templates above.</li>
+<li>Plot its magnitude response.</li>
+<li>Apply it to a synthetic signal (e.g., sum of sinusoids).</li>
+</ol>
+<p>Think about:</p>
+<ul>
+<li>Where are the passband and stopband?</li>
+<li>Is the filter stable?</li>
+<li>How many taps or what order does it have?</li>
+</ul>
+<p>Use any of the Pyodide cells above as a starting point and modify coefficients, input signals, or sampling rates.</p>
+
+
+<script type="pyodide-data">
+eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yOC4xL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIiwibnVtcHkiLCJwbG90bHkiLCJuYmZvcm1hdCJdfX0=
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTEwIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6InZpZXdvZiBfcHlvZGlkZV9lZGl0b3JfMTAgPSB7XG4gIGNvbnN0IHsgUHlvZGlkZUV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLTEwLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMTAtY29udGVudHNgIH0sIGJsb2NrLmF0dHIpO1xuICBjb25zdCBlZGl0b3IgPSBuZXcgUHlvZGlkZUV4ZXJjaXNlRWRpdG9yKFxuICAgIHB5b2RpZGVPanMucHlvZGlkZVByb21pc2UsXG4gICAgYmxvY2suY29kZSxcbiAgICBvcHRpb25zXG4gICk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fcHlvZGlkZV92YWx1ZV8xMCA9IHB5b2RpZGVPanMucHJvY2VzcyhfcHlvZGlkZV9lZGl0b3JfMTAsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTkiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoiX3B5b2RpZGVfdmFsdWVfOSA9IHtcbiAgY29uc3QgeyBoaWdobGlnaHRQeXRob24sIGI2NERlY29kZX0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS05LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgLy8gRGVmYXVsdCBldmFsdWF0aW9uIGNvbmZpZ3VyYXRpb25cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oe1xuICAgIGlkOiBcInB5b2RpZGUtOS1jb250ZW50c1wiLFxuICAgIGVjaG86IHRydWUsXG4gICAgb3V0cHV0OiB0cnVlXG4gIH0sIGJsb2NrLmF0dHIpO1xuXG4gIC8vIEV2YWx1YXRlIHRoZSBwcm92aWRlZCBQeXRob24gY29kZVxuICBjb25zdCByZXN1bHQgPSBweW9kaWRlT2pzLnByb2Nlc3Moe2NvZGU6IGJsb2NrLmNvZGUsIG9wdGlvbnN9LCB7ZjAsIHJfbm90Y2h9KTtcblxuICAvLyBFYXJseSB5aWVsZCB3aGlsZSB3ZSB3YWl0IGZvciB0aGUgZmlyc3QgZXZhbHVhdGlvbiBhbmQgcmVuZGVyXG4gIGlmIChvcHRpb25zLm91dHB1dCAmJiAhKFwiOVwiIGluIHB5b2RpZGVPanMucmVuZGVyZWRPanMpKSB7XG4gICAgY29uc3QgY29udGFpbmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcbiAgICBjb25zdCBzcGlubmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcblxuICAgIGlmIChvcHRpb25zLmVjaG8pIHtcbiAgICAgIC8vIFNob3cgb3V0cHV0IGFzIGhpZ2hsaWdodGVkIHNvdXJjZVxuICAgICAgY29uc3QgcHJlRWxlbSA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJwcmVcIik7XG4gICAgICBjb250YWluZXIuY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlXCI7XG4gICAgICBwcmVFbGVtLmNsYXNzTmFtZSA9IFwic291cmNlQ29kZSBweXRob25cIjtcbiAgICAgIHByZUVsZW0uYXBwZW5kQ2hpbGQoaGlnaGxpZ2h0UHl0aG9uKGJsb2NrLmNvZGUpKTtcbiAgICAgIHNwaW5uZXIuY2xhc3NOYW1lID0gXCJzcGlubmVyLWdyb3cgc3Bpbm5lci1ncm93LXNtIG0tMiBwb3NpdGlvbi1hYnNvbHV0ZSB0b3AtMCBlbmQtMFwiO1xuICAgICAgcHJlRWxlbS5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChwcmVFbGVtKTtcbiAgICB9IGVsc2Uge1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItYm9yZGVyIHNwaW5uZXItYm9yZGVyLXNtXCI7XG4gICAgICBjb250YWluZXIuYXBwZW5kQ2hpbGQoc3Bpbm5lcik7XG4gICAgfVxuXG4gICAgeWllbGQgY29udGFpbmVyO1xuICB9XG5cbiAgcHlvZGlkZU9qcy5yZW5kZXJlZE9qc1tcIjlcIl0gPSB0cnVlO1xuICB5aWVsZCBhd2FpdCByZXN1bHQ7XG59XG4ifSx7ImNlbGxOYW1lIjoicHlvZGlkZS04IiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6Il9weW9kaWRlX3ZhbHVlXzggPSB7XG4gIGNvbnN0IHsgaGlnaGxpZ2h0UHl0aG9uLCBiNjREZWNvZGV9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInB5b2RpZGUtOC1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIC8vIERlZmF1bHQgZXZhbHVhdGlvbiBjb25maWd1cmF0aW9uXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHtcbiAgICBpZDogXCJweW9kaWRlLTgtY29udGVudHNcIixcbiAgICBlY2hvOiB0cnVlLFxuICAgIG91dHB1dDogdHJ1ZVxuICB9LCBibG9jay5hdHRyKTtcblxuICAvLyBFdmFsdWF0ZSB0aGUgcHJvdmlkZWQgUHl0aG9uIGNvZGVcbiAgY29uc3QgcmVzdWx0ID0gcHlvZGlkZU9qcy5wcm9jZXNzKHtjb2RlOiBibG9jay5jb2RlLCBvcHRpb25zfSwge2xwX3dpZHRoLCBocF93aWR0aH0pO1xuXG4gIC8vIEVhcmx5IHlpZWxkIHdoaWxlIHdlIHdhaXQgZm9yIHRoZSBmaXJzdCBldmFsdWF0aW9uIGFuZCByZW5kZXJcbiAgaWYgKG9wdGlvbnMub3V0cHV0ICYmICEoXCI4XCIgaW4gcHlvZGlkZU9qcy5yZW5kZXJlZE9qcykpIHtcbiAgICBjb25zdCBjb250YWluZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpO1xuICAgIGNvbnN0IHNwaW5uZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpO1xuXG4gICAgaWYgKG9wdGlvbnMuZWNobykge1xuICAgICAgLy8gU2hvdyBvdXRwdXQgYXMgaGlnaGxpZ2h0ZWQgc291cmNlXG4gICAgICBjb25zdCBwcmVFbGVtID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcInByZVwiKTtcbiAgICAgIGNvbnRhaW5lci5jbGFzc05hbWUgPSBcInNvdXJjZUNvZGVcIjtcbiAgICAgIHByZUVsZW0uY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlIHB5dGhvblwiO1xuICAgICAgcHJlRWxlbS5hcHBlbmRDaGlsZChoaWdobGlnaHRQeXRob24oYmxvY2suY29kZSkpO1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItZ3JvdyBzcGlubmVyLWdyb3ctc20gbS0yIHBvc2l0aW9uLWFic29sdXRlIHRvcC0wIGVuZC0wXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKHNwaW5uZXIpO1xuICAgICAgY29udGFpbmVyLmFwcGVuZENoaWxkKHByZUVsZW0pO1xuICAgIH0gZWxzZSB7XG4gICAgICBzcGlubmVyLmNsYXNzTmFtZSA9IFwic3Bpbm5lci1ib3JkZXIgc3Bpbm5lci1ib3JkZXItc21cIjtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICB9XG5cbiAgICB5aWVsZCBjb250YWluZXI7XG4gIH1cblxuICBweW9kaWRlT2pzLnJlbmRlcmVkT2pzW1wiOFwiXSA9IHRydWU7XG4gIHlpZWxkIGF3YWl0IHJlc3VsdDtcbn1cbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTciLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl83ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS03LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzcgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzcsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTYiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoiX3B5b2RpZGVfdmFsdWVfNiA9IHtcbiAgY29uc3QgeyBoaWdobGlnaHRQeXRob24sIGI2NERlY29kZX0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS02LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgLy8gRGVmYXVsdCBldmFsdWF0aW9uIGNvbmZpZ3VyYXRpb25cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oe1xuICAgIGlkOiBcInB5b2RpZGUtNi1jb250ZW50c1wiLFxuICAgIGVjaG86IHRydWUsXG4gICAgb3V0cHV0OiB0cnVlXG4gIH0sIGJsb2NrLmF0dHIpO1xuXG4gIC8vIEV2YWx1YXRlIHRoZSBwcm92aWRlZCBQeXRob24gY29kZVxuICBjb25zdCByZXN1bHQgPSBweW9kaWRlT2pzLnByb2Nlc3Moe2NvZGU6IGJsb2NrLmNvZGUsIG9wdGlvbnN9LCB7YWxwaGF9KTtcblxuICAvLyBFYXJseSB5aWVsZCB3aGlsZSB3ZSB3YWl0IGZvciB0aGUgZmlyc3QgZXZhbHVhdGlvbiBhbmQgcmVuZGVyXG4gIGlmIChvcHRpb25zLm91dHB1dCAmJiAhKFwiNlwiIGluIHB5b2RpZGVPanMucmVuZGVyZWRPanMpKSB7XG4gICAgY29uc3QgY29udGFpbmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcbiAgICBjb25zdCBzcGlubmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcblxuICAgIGlmIChvcHRpb25zLmVjaG8pIHtcbiAgICAgIC8vIFNob3cgb3V0cHV0IGFzIGhpZ2hsaWdodGVkIHNvdXJjZVxuICAgICAgY29uc3QgcHJlRWxlbSA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJwcmVcIik7XG4gICAgICBjb250YWluZXIuY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlXCI7XG4gICAgICBwcmVFbGVtLmNsYXNzTmFtZSA9IFwic291cmNlQ29kZSBweXRob25cIjtcbiAgICAgIHByZUVsZW0uYXBwZW5kQ2hpbGQoaGlnaGxpZ2h0UHl0aG9uKGJsb2NrLmNvZGUpKTtcbiAgICAgIHNwaW5uZXIuY2xhc3NOYW1lID0gXCJzcGlubmVyLWdyb3cgc3Bpbm5lci1ncm93LXNtIG0tMiBwb3NpdGlvbi1hYnNvbHV0ZSB0b3AtMCBlbmQtMFwiO1xuICAgICAgcHJlRWxlbS5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChwcmVFbGVtKTtcbiAgICB9IGVsc2Uge1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItYm9yZGVyIHNwaW5uZXItYm9yZGVyLXNtXCI7XG4gICAgICBjb250YWluZXIuYXBwZW5kQ2hpbGQoc3Bpbm5lcik7XG4gICAgfVxuXG4gICAgeWllbGQgY29udGFpbmVyO1xuICB9XG5cbiAgcHlvZGlkZU9qcy5yZW5kZXJlZE9qc1tcIjZcIl0gPSB0cnVlO1xuICB5aWVsZCBhd2FpdCByZXN1bHQ7XG59XG4ifSx7ImNlbGxOYW1lIjoicHlvZGlkZS01IiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6InZpZXdvZiBfcHlvZGlkZV9lZGl0b3JfNSA9IHtcbiAgY29uc3QgeyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IsIGI2NERlY29kZSB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInB5b2RpZGUtNS1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHsgaWQ6IGBweW9kaWRlLTUtY29udGVudHNgIH0sIGJsb2NrLmF0dHIpO1xuICBjb25zdCBlZGl0b3IgPSBuZXcgUHlvZGlkZUV4ZXJjaXNlRWRpdG9yKFxuICAgIHB5b2RpZGVPanMucHlvZGlkZVByb21pc2UsXG4gICAgYmxvY2suY29kZSxcbiAgICBvcHRpb25zXG4gICk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fcHlvZGlkZV92YWx1ZV81ID0gcHlvZGlkZU9qcy5wcm9jZXNzKF9weW9kaWRlX2VkaXRvcl81LCB7fSk7XG4ifSx7ImNlbGxOYW1lIjoicHlvZGlkZS00IiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6Il9weW9kaWRlX3ZhbHVlXzQgPSB7XG4gIGNvbnN0IHsgaGlnaGxpZ2h0UHl0aG9uLCBiNjREZWNvZGV9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInB5b2RpZGUtNC1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIC8vIERlZmF1bHQgZXZhbHVhdGlvbiBjb25maWd1cmF0aW9uXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHtcbiAgICBpZDogXCJweW9kaWRlLTQtY29udGVudHNcIixcbiAgICBlY2hvOiB0cnVlLFxuICAgIG91dHB1dDogdHJ1ZVxuICB9LCBibG9jay5hdHRyKTtcblxuICAvLyBFdmFsdWF0ZSB0aGUgcHJvdmlkZWQgUHl0aG9uIGNvZGVcbiAgY29uc3QgcmVzdWx0ID0gcHlvZGlkZU9qcy5wcm9jZXNzKHtjb2RlOiBibG9jay5jb2RlLCBvcHRpb25zfSwge2ExLCBhMiwgYjBfZGYyLCBiMV9kZjIsIGIyX2RmMn0pO1xuXG4gIC8vIEVhcmx5IHlpZWxkIHdoaWxlIHdlIHdhaXQgZm9yIHRoZSBmaXJzdCBldmFsdWF0aW9uIGFuZCByZW5kZXJcbiAgaWYgKG9wdGlvbnMub3V0cHV0ICYmICEoXCI0XCIgaW4gcHlvZGlkZU9qcy5yZW5kZXJlZE9qcykpIHtcbiAgICBjb25zdCBjb250YWluZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpO1xuICAgIGNvbnN0IHNwaW5uZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpO1xuXG4gICAgaWYgKG9wdGlvbnMuZWNobykge1xuICAgICAgLy8gU2hvdyBvdXRwdXQgYXMgaGlnaGxpZ2h0ZWQgc291cmNlXG4gICAgICBjb25zdCBwcmVFbGVtID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcInByZVwiKTtcbiAgICAgIGNvbnRhaW5lci5jbGFzc05hbWUgPSBcInNvdXJjZUNvZGVcIjtcbiAgICAgIHByZUVsZW0uY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlIHB5dGhvblwiO1xuICAgICAgcHJlRWxlbS5hcHBlbmRDaGlsZChoaWdobGlnaHRQeXRob24oYmxvY2suY29kZSkpO1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItZ3JvdyBzcGlubmVyLWdyb3ctc20gbS0yIHBvc2l0aW9uLWFic29sdXRlIHRvcC0wIGVuZC0wXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKHNwaW5uZXIpO1xuICAgICAgY29udGFpbmVyLmFwcGVuZENoaWxkKHByZUVsZW0pO1xuICAgIH0gZWxzZSB7XG4gICAgICBzcGlubmVyLmNsYXNzTmFtZSA9IFwic3Bpbm5lci1ib3JkZXIgc3Bpbm5lci1ib3JkZXItc21cIjtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICB9XG5cbiAgICB5aWVsZCBjb250YWluZXI7XG4gIH1cblxuICBweW9kaWRlT2pzLnJlbmRlcmVkT2pzW1wiNFwiXSA9IHRydWU7XG4gIHlpZWxkIGF3YWl0IHJlc3VsdDtcbn1cbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTMiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8zID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0zLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzMgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzMsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoiX3B5b2RpZGVfdmFsdWVfMiA9IHtcbiAgY29uc3QgeyBoaWdobGlnaHRQeXRob24sIGI2NERlY29kZX0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgLy8gRGVmYXVsdCBldmFsdWF0aW9uIGNvbmZpZ3VyYXRpb25cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oe1xuICAgIGlkOiBcInB5b2RpZGUtMi1jb250ZW50c1wiLFxuICAgIGVjaG86IHRydWUsXG4gICAgb3V0cHV0OiB0cnVlXG4gIH0sIGJsb2NrLmF0dHIpO1xuXG4gIC8vIEV2YWx1YXRlIHRoZSBwcm92aWRlZCBQeXRob24gY29kZVxuICBjb25zdCByZXN1bHQgPSBweW9kaWRlT2pzLnByb2Nlc3Moe2NvZGU6IGJsb2NrLmNvZGUsIG9wdGlvbnN9LCB7YjAsIGIxfSk7XG5cbiAgLy8gRWFybHkgeWllbGQgd2hpbGUgd2Ugd2FpdCBmb3IgdGhlIGZpcnN0IGV2YWx1YXRpb24gYW5kIHJlbmRlclxuICBpZiAob3B0aW9ucy5vdXRwdXQgJiYgIShcIjJcIiBpbiBweW9kaWRlT2pzLnJlbmRlcmVkT2pzKSkge1xuICAgIGNvbnN0IGNvbnRhaW5lciA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIik7XG4gICAgY29uc3Qgc3Bpbm5lciA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIik7XG5cbiAgICBpZiAob3B0aW9ucy5lY2hvKSB7XG4gICAgICAvLyBTaG93IG91dHB1dCBhcyBoaWdobGlnaHRlZCBzb3VyY2VcbiAgICAgIGNvbnN0IHByZUVsZW0gPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwicHJlXCIpO1xuICAgICAgY29udGFpbmVyLmNsYXNzTmFtZSA9IFwic291cmNlQ29kZVwiO1xuICAgICAgcHJlRWxlbS5jbGFzc05hbWUgPSBcInNvdXJjZUNvZGUgcHl0aG9uXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKGhpZ2hsaWdodFB5dGhvbihibG9jay5jb2RlKSk7XG4gICAgICBzcGlubmVyLmNsYXNzTmFtZSA9IFwic3Bpbm5lci1ncm93IHNwaW5uZXItZ3Jvdy1zbSBtLTIgcG9zaXRpb24tYWJzb2x1dGUgdG9wLTAgZW5kLTBcIjtcbiAgICAgIHByZUVsZW0uYXBwZW5kQ2hpbGQoc3Bpbm5lcik7XG4gICAgICBjb250YWluZXIuYXBwZW5kQ2hpbGQocHJlRWxlbSk7XG4gICAgfSBlbHNlIHtcbiAgICAgIHNwaW5uZXIuY2xhc3NOYW1lID0gXCJzcGlubmVyLWJvcmRlciBzcGlubmVyLWJvcmRlci1zbVwiO1xuICAgICAgY29udGFpbmVyLmFwcGVuZENoaWxkKHNwaW5uZXIpO1xuICAgIH1cblxuICAgIHlpZWxkIGNvbnRhaW5lcjtcbiAgfVxuXG4gIHB5b2RpZGVPanMucmVuZGVyZWRPanNbXCIyXCJdID0gdHJ1ZTtcbiAgeWllbGQgYXdhaXQgcmVzdWx0O1xufVxuIn0seyJjZWxsTmFtZSI6InB5b2RpZGUtMSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3B5b2RpZGVfZWRpdG9yXzEgPSB7XG4gIGNvbnN0IHsgUHlvZGlkZUV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLTEtY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgcHlvZGlkZS0xLWNvbnRlbnRzYCB9LCBibG9jay5hdHRyKTtcbiAgY29uc3QgZWRpdG9yID0gbmV3IFB5b2RpZGVFeGVyY2lzZUVkaXRvcihcbiAgICBweW9kaWRlT2pzLnB5b2RpZGVQcm9taXNlLFxuICAgIGJsb2NrLmNvZGUsXG4gICAgb3B0aW9uc1xuICApO1xuXG4gIHJldHVybiBlZGl0b3IuY29udGFpbmVyO1xufVxuX3B5b2RpZGVfdmFsdWVfMSA9IHB5b2RpZGVPanMucHJvY2VzcyhfcHlvZGlkZV9lZGl0b3JfMSwge30pO1xuIn0seyJjZWxsTmFtZSI6InB5b2RpZGUtcHJlbHVkZSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InB5b2RpZGVPanMgPSB7XG4gIGNvbnN0IHtcbiAgICBQeW9kaWRlRXZhbHVhdG9yLFxuICAgIFB5b2RpZGVFbnZpcm9ubWVudE1hbmFnZXIsXG4gICAgc2V0dXBQeXRob24sXG4gICAgc3RhcnRQeW9kaWRlV29ya2VyLFxuICAgIGI2NERlY29kZSxcbiAgICBjb2xsYXBzZVBhdGgsXG4gIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHN0YXR1c0NvbnRhaW5lciA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKFwiZXhlcmNpc2UtbG9hZGluZy1zdGF0dXNcIik7XG4gIGNvbnN0IGluZGljYXRvckNvbnRhaW5lciA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKFwiZXhlcmNpc2UtbG9hZGluZy1pbmRpY2F0b3JcIik7XG4gIGluZGljYXRvckNvbnRhaW5lci5jbGFzc0xpc3QucmVtb3ZlKFwiZC1ub25lXCIpO1xuXG4gIGxldCBzdGF0dXNUZXh0ID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKVxuICBzdGF0dXNUZXh0LmNsYXNzTGlzdCA9IFwiZXhlcmNpc2UtbG9hZGluZy1kZXRhaWxzXCI7XG4gIHN0YXR1c1RleHQgPSBzdGF0dXNDb250YWluZXIuYXBwZW5kQ2hpbGQoc3RhdHVzVGV4dCk7XG4gIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgSW5pdGlhbGlzZWA7XG5cbiAgLy8gSG9pc3QgaW5kaWNhdG9yIG91dCBmcm9tIGZpbmFsIHNsaWRlIHdoZW4gcnVubmluZyB1bmRlciByZXZlYWxcbiAgY29uc3QgcmV2ZWFsU3RhdHVzID0gZG9jdW1lbnQucXVlcnlTZWxlY3RvcihcIi5yZXZlYWwgLmV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpZiAocmV2ZWFsU3RhdHVzKSB7XG4gICAgcmV2ZWFsU3RhdHVzLnJlbW92ZSgpO1xuICAgIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsID4gLnNsaWRlc1wiKS5hcHBlbmRDaGlsZChyZXZlYWxTdGF0dXMpO1xuICB9XG5cbiAgLy8gTWFrZSBhbnkgcmV2ZWFsIHNsaWRlcyB3aXRoIGxpdmUgY2VsbHMgc2Nyb2xsYWJsZVxuICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKFwiLnJldmVhbCAuZXhlcmNpc2UtY2VsbFwiKS5mb3JFYWNoKChlbCkgPT4ge1xuICAgIGVsLmNsb3Nlc3QoJ3NlY3Rpb24uc2xpZGUnKS5jbGFzc0xpc3QuYWRkKFwic2Nyb2xsYWJsZVwiKTtcbiAgfSlcblxuICAvLyBQeW9kaWRlIHN1cHBsZW1lbnRhbCBkYXRhIGFuZCBvcHRpb25zXG4gIGNvbnN0IGRhdGFDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInB5b2RpZGUtZGF0YVxcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGRhdGEgPSBKU09OLnBhcnNlKGI2NERlY29kZShkYXRhQ29udGVudCkpO1xuXG4gIC8vIEdyYWIgbGlzdCBvZiByZXNvdXJjZXMgdG8gYmUgZG93bmxvYWRlZFxuICBjb25zdCBmaWxlc0NvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwidmZzLWZpbGVcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBmaWxlcyA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKGZpbGVzQ29udGVudCkpO1xuXG4gIGxldCBweW9kaWRlUHJvbWlzZSA9IChhc3luYyAoKSA9PiB7XG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBQeW9kaWRlYDtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgc3RhcnRQeW9kaWRlV29ya2VyKGRhdGEub3B0aW9ucyk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHBhY2thZ2U6IG1pY3JvcGlwYDtcbiAgICBhd2FpdCBweW9kaWRlLmxvYWRQYWNrYWdlKFwibWljcm9waXBcIik7XG4gICAgY29uc3QgbWljcm9waXAgPSBhd2FpdCBweW9kaWRlLnB5aW1wb3J0KFwibWljcm9waXBcIik7XG4gICAgYXdhaXQgZGF0YS5wYWNrYWdlcy5wa2dzLm1hcCgocGtnKSA9PiAoKSA9PiB7XG4gICAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHBhY2thZ2U6ICR7cGtnfWA7XG4gICAgICByZXR1cm4gbWljcm9waXAuaW5zdGFsbChwa2cpO1xuICAgIH0pLnJlZHVjZSgoY3VyLCBuZXh0KSA9PiBjdXIudGhlbihuZXh0KSwgUHJvbWlzZS5yZXNvbHZlKCkpO1xuICAgIGF3YWl0IG1pY3JvcGlwLmRlc3Ryb3koKTtcblxuICAgIC8vIERvd25sb2FkIGFuZCBpbnN0YWxsIHJlc291cmNlc1xuICAgIGF3YWl0IGZpbGVzLm1hcCgoZmlsZSkgPT4gYXN5bmMgKCkgPT4ge1xuICAgICAgY29uc3QgbmFtZSA9IGZpbGUuc3Vic3RyaW5nKGZpbGUubGFzdEluZGV4T2YoJy8nKSArIDEpO1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyByZXNvdXJjZTogJHtuYW1lfWA7XG4gICAgICBjb25zdCByZXNwb25zZSA9IGF3YWl0IGZldGNoKGZpbGUpO1xuICAgICAgaWYgKCFyZXNwb25zZS5vaykge1xuICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYENhbid0IGRvd25sb2FkIFxcYCR7ZmlsZX1cXGAuIEVycm9yICR7cmVzcG9uc2Uuc3RhdHVzfTogXCIke3Jlc3BvbnNlLnN0YXR1c1RleHR9XCIuYCk7XG4gICAgICB9XG4gICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzcG9uc2UuYXJyYXlCdWZmZXIoKTtcblxuICAgICAgLy8gU3RvcmUgVVJMcyBpbiB0aGUgY3dkIHdpdGhvdXQgYW55IHN1YmRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGlmIChmaWxlLmluY2x1ZGVzKFwiOi8vXCIpKSB7XG4gICAgICAgIGZpbGUgPSBuYW1lO1xuICAgICAgfVxuXG4gICAgICAvLyBDb2xsYXBzZSBoaWdoZXIgZGlyZWN0b3J5IHN0cnVjdHVyZVxuICAgICAgZmlsZSA9IGNvbGxhcHNlUGF0aChmaWxlKTtcblxuICAgICAgLy8gQ3JlYXRlIGRpcmVjdG9yeSB0cmVlLCBpZ25vcmluZyBcImRpcmVjdG9yeSBleGlzdHNcIiBWRlMgZXJyb3JzXG4gICAgICBjb25zdCBwYXJ0cyA9IGZpbGUuc3BsaXQoJy8nKS5zbGljZSgwLCAtMSk7XG4gICAgICBsZXQgcGF0aCA9ICcnO1xuICAgICAgd2hpbGUgKHBhcnRzLmxlbmd0aCA+IDApIHtcbiAgICAgICAgcGF0aCArPSBwYXJ0cy5zaGlmdCgpICsgJy8nO1xuICAgICAgICB0cnkge1xuICAgICAgICAgIGF3YWl0IHB5b2RpZGUuRlMubWtkaXIocGF0aCk7XG4gICAgICAgIH0gY2F0Y2ggKGUpIHtcbiAgICAgICAgICBpZiAoZS5uYW1lICE9PSBcIkVycm5vRXJyb3JcIikgdGhyb3cgZTtcbiAgICAgICAgICBpZiAoZS5lcnJubyAhPT0gMjApIHtcbiAgICAgICAgICAgIGNvbnN0IGVycm9yVGV4dFB0ciA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5fc3RyZXJyb3IoZS5lcnJubyk7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYEZpbGVzeXN0ZW0gRXJyb3IgJHtlLmVycm5vfSBcIiR7ZXJyb3JUZXh0fVwiLmApO1xuICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgICAgfVxuXG4gICAgICAvLyBXcml0ZSB0aGlzIGZpbGUgdG8gdGhlIFZGU1xuICAgICAgdHJ5IHtcbiAgICAgICAgcmV0dXJuIGF3YWl0IHB5b2RpZGUuRlMud3JpdGVGaWxlKGZpbGUsIG5ldyBVaW50OEFycmF5KGRhdGEpKTtcbiAgICAgIH0gY2F0Y2ggKGUpIHtcbiAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgIGNvbnN0IGVycm9yVGV4dFB0ciA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5fc3RyZXJyb3IoZS5lcnJubyk7XG4gICAgICAgIGNvbnN0IGVycm9yVGV4dCA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5VVEY4VG9TdHJpbmcoZXJyb3JUZXh0UHRyKTtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgIH1cbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcblxuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgUHlvZGlkZSBlbnZpcm9ubWVudCBzZXR1cGA7XG4gICAgYXdhaXQgc2V0dXBQeXRob24ocHlvZGlkZSk7XG5cbiAgICBzdGF0dXNUZXh0LnJlbW92ZSgpO1xuICAgIGlmIChzdGF0dXNDb250YWluZXIuY2hpbGRyZW4ubGVuZ3RoID09IDApIHtcbiAgICAgIHN0YXR1c0NvbnRhaW5lci5wYXJlbnROb2RlLnJlbW92ZSgpO1xuICAgIH1cbiAgICByZXR1cm4gcHlvZGlkZTtcbiAgfSkoKS5jYXRjaCgoZXJyKSA9PiB7XG4gICAgc3RhdHVzVGV4dC5zdHlsZS5jb2xvciA9IFwidmFyKC0tZXhlcmNpc2UtZWRpdG9yLWhsLWVyLCAjQUQwMDAwKVwiO1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBlcnIubWVzc2FnZTtcbiAgICAvL2luZGljYXRvckNvbnRhaW5lci5xdWVyeVNlbGVjdG9yKFwiLnNwaW5uZXItZ3Jvd1wiKS5jbGFzc0xpc3QuYWRkKFwiZC1ub25lXCIpO1xuICAgIHRocm93IGVycjtcbiAgfSk7XG5cbiAgLy8gS2VlcCB0cmFjayBvZiBpbml0aWFsIE9KUyBibG9jayByZW5kZXJcbiAgY29uc3QgcmVuZGVyZWRPanMgPSB7fTtcblxuICBjb25zdCBwcm9jZXNzID0gYXN5bmMgKGNvbnRleHQsIGlucHV0cykgPT4ge1xuICAgIGNvbnN0IHB5b2RpZGUgPSBhd2FpdCBweW9kaWRlUHJvbWlzZTtcbiAgICBjb25zdCBldmFsdWF0b3IgPSBuZXcgUHlvZGlkZUV2YWx1YXRvcihweW9kaWRlLCBjb250ZXh0KTtcbiAgICBhd2FpdCBldmFsdWF0b3IucHJvY2VzcyhpbnB1dHMpO1xuICAgIHJldHVybiBldmFsdWF0b3IuY29udGFpbmVyO1xuICB9XG5cbiAgcmV0dXJuIHtcbiAgICBweW9kaWRlUHJvbWlzZSxcbiAgICByZW5kZXJlZE9qcyxcbiAgICBwcm9jZXNzLFxuICB9O1xufVxuIn1dfQ==
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="qrjs_pics/unsoed_logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="images/chapter_6/https://imron-slide.vercel.app">irosyadi-2025</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script type="ojs-module-contents">
+    eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBiMCA9IElucHV0cy5yYW5nZShbLTEsIDFdLCB7c3RlcDogMC4xLCBsYWJlbDogXCJiMCAoZmVlZHRocm91Z2gpXCJ9KVxudmlld29mIGIxID0gSW5wdXRzLnJhbmdlKFstMSwgMV0sIHtzdGVwOiAwLjEsIGxhYmVsOiBcImIxIChvbmUtc2FtcGxlIGRlbGF5KVwifSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMiIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBhMSA9IElucHV0cy5yYW5nZShbLTIsIDJdLCB7c3RlcDogMC4xLCBsYWJlbDogXCJhMSAoZmVlZGJhY2sgMSlcIn0pXG52aWV3b2YgYTIgPSBJbnB1dHMucmFuZ2UoWy0yLCAyXSwge3N0ZXA6IDAuMSwgbGFiZWw6IFwiYTIgKGZlZWRiYWNrIDIpXCJ9KVxudmlld29mIGIwX2RmMiA9IElucHV0cy5yYW5nZShbLTEsIDFdLCB7c3RlcDogMC4xLCBsYWJlbDogXCJiMCAoZmVlZGZvcndhcmQgMClcIn0pXG52aWV3b2YgYjFfZGYyID0gSW5wdXRzLnJhbmdlKFstMSwgMV0sIHtzdGVwOiAwLjEsIGxhYmVsOiBcImIxIChmZWVkZm9yd2FyZCAxKVwifSlcbnZpZXdvZiBiMl9kZjIgPSBJbnB1dHMucmFuZ2UoWy0xLCAxXSwge3N0ZXA6IDAuMSwgbGFiZWw6IFwiYjIgKGZlZWRmb3J3YXJkIDIpXCJ9KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0zIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoidmlld29mIGFscGhhID0gSW5wdXRzLnJhbmdlKFswLCAwLjk5XSwge3N0ZXA6IDAuMDEsIGxhYmVsOiBcIlByZWVtcGhhc2lzIM6xXCJ9KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC00IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoidmlld29mIGxwX3dpZHRoID0gSW5wdXRzLnJhbmdlKFsxLCAzMF0sIHtzdGVwOiAxLCBsYWJlbDogXCJMb3dwYXNzIE1BIGxlbmd0aCAoTDEpXCJ9KVxudmlld29mIGhwX3dpZHRoID0gSW5wdXRzLnJhbmdlKFsxLCAzMF0sIHtzdGVwOiAxLCBsYWJlbDogXCJIaWdocGFzcyBNQSBsZW5ndGggKEwyKVwifSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBmMCA9IElucHV0cy5yYW5nZShbMTAsIDEwMF0sIHtzdGVwOiAxLCBsYWJlbDogXCJOb3RjaCBjZW50ZXIgZjAgKEh6KVwifSlcbnZpZXdvZiByX25vdGNoID0gSW5wdXRzLnJhbmdlKFswLjUsIDAuOTldLCB7c3RlcDogMC4wMSwgbGFiZWw6IFwiUG9sZSByYWRpdXMgclwifSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnYjAnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnYjEnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnYTEnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnYTInKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnYjBfZGYyJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2IxX2RmMicpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdiMl9kZjInKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnYWxwaGEnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnbHBfd2lkdGgnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnaHBfd2lkdGgnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnZjAnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgncl9ub3RjaCcpIn1dfQ==
+    </script>
+    <script type="module">
+    if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+    window._ojs.paths.runtimeToDoc = "../..";
+    window._ojs.paths.runtimeToRoot = "../..";
+    window._ojs.paths.docToRoot = "";
+    window._ojs.selfContained = false;
+    window._ojs.runtime.interpretFromScriptTags();
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
