@@ -1,0 +1,586 @@
+
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title> Web Simulator | ShareTechnote</title>
+<meta name="description" content="This is to visualize engineering/scientific concepts">
+<link rel="stylesheet" type="text/css" href="FirI/fir.css">
+<script src="FirI/jquery-3.6.0.min.js"></script>
+  <script type='text/javascript'>
+   $(document).ready(function(){
+    $( "#header" ).load( "../../header.html" );
+   });
+   $(document).ready(function(){
+    $( "#menu_main" ).load( "../../menu_main.html" );
+   });
+   $(document).ready(function(){
+    $( "#menu_Websim" ).load( "menu_Websim.html" );
+   });
+   $(document).ready(function(){
+    $( "#panel_right" ).load( "../../panel_right.html" );
+   });
+  </script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="purple" alink="red">
+
+<div id='header'></div>
+<div id='menu_main'></div>
+
+<div class='content'>
+
+<table border="0" width="1368">
+        <tr>
+            <td width="151" rowspan="2" valign="top">
+                <div id='menu_Websim'></div>
+            </td>
+            <td width="802">
+                <p><page-title>Web Simulation&nbsp;</page-title>
+</p>
+            </td>
+            <td width="401">&nbsp;</td>
+        </tr>
+        <tr>
+            <td width="802" valign="top">
+                <p>&nbsp;</p>
+                <p align="center">&nbsp;
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9961293861045757"
+     crossorigin="anonymous">
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                </script>
+<!-- Horiz_Wide_NTN_Index -->
+                <ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-9961293861045757"
+     data-ad-slot="4394215235"></ins>
+                <script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                </script>
+   
+</p>
+                <p>&nbsp;
+                <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-39820307-1', 'auto');
+  ga('send', 'pageview');
+                
+                </script>
+
+			</p>
+                
+                <h0>Finite Impulse Response (FIR) Filter Tutorial&nbsp;</h0>
+                <div id='content_intro'>
+                    <p>
+  This interactive tutorial demonstrates <b>Finite Impulse Response (FIR) Filters</b>, one of the fundamental building blocks of digital signal processing. FIR filters use a <b>weighted sum of past input samples</b> (the convolution operation) to shape the frequency content of a signal. Unlike IIR filters, FIR filters are always stable and can achieve perfectly linear phase response.</p>
+                    <p>
+  The simulation visualizes the core concept of <b>Convolution</b>—showing how the filter's coefficients (called &quot;taps&quot;) slide across the input signal, multiply overlapping values, and sum them to create each output sample. You can <b>drag the coefficient bars</b> to design your own filter, or use the <b>dual dropdown system</b> to select from various filter types (Low Pass, High Pass, Band Pass, Band Stop) and design methods (Moving Average, Windowed Sinc, Butterworth, Chebyshev, Elliptic) to see
+how different approaches produce different frequency responses.</p>
+                    
+                    <h4>How FIR Filters Work</h4>
+                    <p>An FIR filter processes a signal by computing a weighted sum of the current and past input samples:</p>
+                    <div class="equation-display">
+                        <span class="math">y[n] = h[0]·x[n] + h[1]·x[n-1] + h[2]·x[n-2] + ... + h[N-1]·x[n-(N-1)]</span>
+                    </div>
+                    <p>Or more compactly:</p>
+                    <div class="equation-display">
+                        <span class="math">y[n] = Σ<sub>k=0</sub><sup>N-1</sup> h[k] · x[n-k]</span>
+                    </div>
+                    <p>where:</p>
+                    <ul>
+                        <li><b>y[n]</b> is the output sample at time n</li>
+                        <li><b>x[n]</b> is the input sample at time n</li>
+                        <li><b>h[k]</b> are the filter coefficients (also called &quot;taps&quot; or the &quot;impulse response&quot;)</li>
+                        <li><b>N</b> is the number of taps (filter order + 1)</li>
+                    </ul>
+                    <h4>Mathematical Foundation</h4>
+                    <p><b>Convolution</b>: The FIR filter equation is a discrete convolution:</p>
+                    <div class="equation-display">
+                        <p><span class="math">y[n] = (x * h)[n] = Σ<sub>k=0</sub><sup>N-1</sup> h[k] · x[n-k]</span>
+</p>
+                    </div>
+                    <p>This is the &quot;Multiply and Accumulate&quot; (MAC) operation that DSP processors optimize. For each output sample, we multiply N input samples by N coefficients and sum the results.</p>
+                    <p><b>Frequency Response</b>: The filter's frequency response is the Fourier Transform of its impulse response:</p>
+                    <div class="equation-display">
+                        <p><span class="math">H(e<sup>jω</sup>) = Σ<sub>k=0</sub><sup>N-1</sup> h[k] · e<sup>-jωk</sup></span>
+</p>
+                    </div>
+                    <p>The magnitude |H(e<sup>jω</sup>)| tells us how much the filter amplifies or attenuates each frequency. The phase �&nbsp;H(e<sup>jω</sup>) tells us how much the filter delays each frequency.</p>
+                    <p><b>Windowed-Sinc Method</b>: To design a low-pass filter with cutoff ω<sub>c</sub>:</p>
+                    <div class="equation-display">
+                        <p><span class="math">h[k] = sinc(ω<sub>c</sub>(k - M/2)) · window[k]</span>
+</p>
+                    </div>
+                    <p>where sinc(x) = sin(πx)/(πx), M = N-1, and window[k] is a tapering function (like Hamming) that reduces spectral leakage.</p>
+                    <p><b>High-Pass via Spectral Inversion</b>: Given a low-pass filter h<sub>LP</sub>[k], we create a high-pass filter by:</p>
+                    <div class="equation-display">
+                        <p><span class="math">h<sub>HP</sub>[k] = δ[k - M/2] - h<sub>LP</sub>[k]</span>
+</p>
+                    </div>
+                    <p>This flips the frequency response, converting a low-pass into a high-pass.</p>
+                    
+                    <p>&nbsp;</p>
+				
+                </div>
+                <div id='content_sim'>
+                    <div id="fir-simulation" class="fir-container">
+<!-- Control Panel -->
+                        <div class="control-panel">
+                            <div class="section-label">FIR Filter Controls</div>
+                            
+<!-- Preset Dropdowns Row -->
+                                    <div class="control-row">
+                                <label for="filterTypeSelect" style="width: 35px;">Type:</label>
+                                <select id="filterTypeSelect" class="preset-select" style="width: 95px;">
+                                    <option value="lowPass" selected>Low Pass</option>
+                                    <option value="highPass">High Pass</option>
+                                    <option value="bandPass">Band Pass</option>
+                                    <option value="bandStop">Band Stop</option>
+                                </select>
+                                
+                                <label for="designMethodSelect" style="margin-left: 10px; width: 50px;">Method:</label>
+                                <select id="designMethodSelect" class="preset-select" style="width: 110px;">
+                                    <option value="movingAvg">Moving Avg</option>
+                                    <option value="windowedSinc" selected>Windowed Sinc</option>
+                                    <option value="butterworth">Butterworth</option>
+                                    <option value="chebyshev1">Chebyshev I</option>
+                                    <option value="chebyshev2">Chebyshev II</option>
+                                    <option value="elliptic">Elliptic</option>
+                                </select>
+                                
+                                <label for="signalTypeSelect" style="margin-left: 10px; width: 40px;">Signal:</label>
+                                <select id="signalTypeSelect" class="preset-select" style="width: 115px;">
+                                    <option value="sineNoise" selected>Sine+Noise</option>
+                                    <option value="multiTone">Multi-tone</option>
+                                    <option value="squareMultiTone">Square+Multi</option>
+                                    <option value="chirp">Chirp</option>
+                                    <option value="squareWave">Square Wave</option>
+                                    <option value="whiteNoise">White Noise</option>
+                                </select>
+                                </div>
+                                
+<!-- Parameter Controls Row -->
+                                    <div class="control-row">
+                                <label for="cutoffSlider">Cutoff (ω):</label>
+                                <input type="range" id="cutoffSlider" min="0.01" max="0.45" value="0.15" step="0.01">
+                                <span id="cutoffValue">0.15π</span>
+                                
+                                <label for="numTapsSlider" style="margin-left: 20px;">Taps (N):</label>
+                                <input type="range" id="numTapsSlider" min="4" max="128" value="16" step="1">
+                                <span id="numTapsValue">16</span>
+                                </div>
+                                
+<!-- Animation Controls Row -->
+                                    <div class="control-row">
+                                <label>Controls:</label>
+                                <button id="playPauseBtn">Pause</button>
+                                <button id="stepBwdBtn">◀ Step</button>
+                                <button id="stepFwdBtn">Step ▶</button>
+                                <button id="resetBtn">Reset</button>
+                                </div>
+                                
+<!-- Display Options Row -->
+                                    <div class="control-row">
+                                <label for="showConvolution">Show Conv:</label>
+                                <input type="checkbox" id="showConvolution" checked>
+                                
+                                <label for="speedSlider" style="margin-left: 20px;">Speed:</label>
+                                <input type="range" id="speedSlider" min="1" max="5" value="1" step="1" style="width: 70px;">
+                                <span id="speedValue">1x</span>
+                                
+                                <label for="noiseSlider" style="margin-left: 20px;">Noise:</label>
+                                <input type="range" id="noiseSlider" min="0" max="0.8" value="0.35" step="0.05" style="width: 70px;">
+                                <span id="noiseValue">35%</span>
+                                    </div>
+                                </div>
+                                
+<!-- Coefficient Editor Section -->
+                        <div class="coefficient-section">
+                            <h3>Filter Coefficients h[k] — Click &amp; Drag to Edit</h3>
+                            <canvas id="canvas-coefficients" width="760" height="150"></canvas>
+                                </div>
+                                
+<!-- Legend -->
+                        <div class="legend">
+                            <div class="legend-item">
+                                <div class="legend-color input">
+                                </div>
+                                <span>Input Signal x[n]</span>
+                                    </div>
+                            <div class="legend-item">
+                                <div class="legend-color kernel">
+                                </div>
+                                <span>Filter Kernel h[k]</span>
+                                    </div>
+                            <div class="legend-item">
+                                <div class="legend-color output">
+                                </div>
+                                <span>Output Signal y[n]</span>
+                                    </div>
+                                </div>
+                                
+<!-- Time Domain Visualization -->
+                        <div class="visualization-section">
+                            <div class="canvas-wrapper">
+                                <div class="canvas-label input-label">TIME DOMAIN: Input Signal (with high-frequency noise)</div>
+                                <canvas id="canvas-input" width="760" height="140"></canvas>
+                                </div>
+                                
+                            <div class="canvas-wrapper">
+                                <div class="canvas-label output-label">TIME DOMAIN: Filtered Output (noise removed)</div>
+                                <canvas id="canvas-output" width="760" height="140"></canvas>
+                                    </div>
+                                </div>
+                                
+<!-- Frequency Domain Visualization -->
+                        <div class="visualization-section freq-section">
+                            <div class="freq-split-container">
+                                <div class="freq-plot-wrapper">
+                                    <div class="canvas-label freq-label">FREQUENCY DOMAIN: Magnitude Response |H(ω)|</div>
+                                    <div class="freq-canvas-container">
+                                        <canvas id="canvas-freq" width="560" height="160"></canvas>
+                                        <button id="scaleToggleBtn" class="scale-toggle-btn active">Linear</button>
+                                    </div>
+                                </div>
+                                <div class="zplane-plot-wrapper">
+                                    <div class="canvas-label zplane-label">Z-PLANE: Poles &amp; Zeros</div>
+                                    <canvas id="canvas-zplane" width="180" height="160"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        
+<!-- Info Panel -->
+                        <div class="info-display">
+                            <h3>Filter Information</h3>
+                            <div class="info-row">
+                                <span class="info-label">Filter Type:</span>
+                                <span class="info-value" id="info-filterType">Low Pass (Windowed Sinc)</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Number of Taps:</span>
+                                <span class="info-value" id="info-numTaps">16</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Sum of Coefficients:</span>
+                                <span class="info-value" id="info-sumCoeffs">1.0000</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">DC Gain:</span>
+                                <span class="info-value" id="info-dcGain">1.0000</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id='content_description'>
+                    <p>&nbsp; </p>
+                    <h4>Usage Example</h4>
+                    <p>Follow these steps to explore the FIR Filter visualization:</p>
+					<ol>
+						<li>
+							<b>Initial View</b>: When you first load the simulation, you'll see:
+							<ul style="margin-top: 5px; margin-bottom: 5px;">
+                                <li>Three <b>dropdown menus</b> for selecting Filter Type, Design Method, and Signal Type</li>
+                                <li>A <b>coefficient editor</b> showing the filter's impulse response as draggable bars</li>
+                                <li>An <b>input signal</b> canvas showing the selected test signal (default: sine wave with high-frequency noise)</li>
+                                <li>An <b>output signal</b> canvas showing the filtered result</li>
+                                <li>A <b>frequency response</b> plot showing the filter's magnitude response in dB scale (toggle Linear/dB with the button)</li>
+                                <li>A <b>Z-plane plot</b> showing poles at the origin and zeros calculated from coefficients</li>
+                                <li>A <b>convolution window</b> (dashed box) overlaid on both input and output showing the sliding multiply-accumulate operation</li>
+							</ul>
+						</li>
+						<li>
+							<b>Observe the Convolution</b>: Watch the input signal scroll from right to left. The dashed box shows which samples are currently being processed. The stem plot inside shows the filter coefficients h[k], and cyan dots mark the signal samples x[n-k] being multiplied.
+						</li>
+						<li>
+							<b>Select Filter Type, Design Method, and Signal</b>: Use the three dropdown menus to customize your experiment:
+                            <ul style="margin-top: 5px; margin-bottom: 5px;">
+                                <li><b>Filter Types:</b> Low Pass, High Pass, Band Pass, Band Stop (Notch)</li>
+                                <li><b>Design Methods:</b> Moving Average, Windowed Sinc, Butterworth, Chebyshev Type I/II, Elliptic</li>
+                                <li><b>Signal Types:</b> Sine+Noise, Multi-tone, Square+Multi, Chirp, Square Wave, White Noise</li>
+                            </ul>
+                            Each combination produces different coefficient patterns and frequency response characteristics. Try using &quot;Multi-tone&quot; or &quot;Square+Multi&quot; signals to better visualize Band Pass filter effects!
+						</li>
+						<li>
+							<b>Adjust Parameters</b>: Use the sliders to experiment:
+							<ul style="margin-top: 5px; margin-bottom: 5px;">
+                                <li><b>Cutoff (ω)</b>: Move this slider to change where the filter begins attenuating. Watch the frequency response curve shift in real-time!</li>
+                                <li><b>Taps (N)</b>: Increase the number of taps to see sharper frequency transitions. More taps = better frequency selectivity but more computation.</li>
+                                <li><b>Noise</b>: Increase noise to see how well the filter removes it. Different design methods have different noise rejection characteristics.</li>
+							</ul>
+						</li>
+						<li>
+							<b>Design Your Own Filter</b>: Click and drag on the coefficient bars to create custom filters! Try:
+                            <ul style="margin-top: 5px; margin-bottom: 5px;">
+                                <li>Setting all to zero except one (creates a delay)</li>
+                                <li>Alternating positive and negative values (high-pass effect)</li>
+                                <li>A triangular envelope (smoother than rectangular window)</li>
+                            </ul>
+						</li>
+						<li>
+							<b>Step Through Animation</b>: Use &quot;◀ Step&quot; and &quot;Step ▶&quot; buttons to advance the animation one sample at a time. This is excellent for understanding how each input sample contributes to the output.
+						</li>
+						<li>
+							<b>Toggle Frequency Scale</b>: Click the &quot;dB&quot; button on the frequency plot to switch between Linear and dB scale. dB scale reveals stopband attenuation details that are invisible in linear scale.
+						</li>
+					</ol>
+                    <p><note1>Tip</note1>: The key insight is that the frequency response is the <b>Fourier Transform of the coefficients</b>. When you drag the coefficient bars, you're literally shaping the frequency response! A flat coefficient pattern (Moving Average) has a sinc-like frequency response. A sinc-shaped coefficient pattern has a flat (ideal brick-wall) frequency response. This duality is fundamental to understanding FIR filter design.</p>
+                    
+                    <h4>Filter Types</h4>
+                    <p>The <b>Filter Type</b> dropdown selects what frequency bands to pass or reject:</p>
+                    <ul>
+                        <li><b>Low Pass:</b> Passes low frequencies, attenuates high frequencies. Used for smoothing, anti-aliasing, and removing high-frequency noise.</li>
+                        <li><b>High Pass:</b> Passes high frequencies, attenuates low frequencies. Used for edge detection, DC removal, and extracting rapid changes.</li>
+                        <li><b>Band Pass:</b> Passes only frequencies within a specific band around the cutoff frequency. Used for isolating specific frequency components like carriers in communication systems. Note: For bandpass to work effectively, set the cutoff to mid-spectrum (0.2-0.3) rather than near DC.</li>
+                        <li><b>Band Stop (Notch):</b> Rejects frequencies within a specific band, passes everything else. Used for removing interference like 50/60Hz hum.</li>
+                    </ul>
+                    
+                    <h4>Signal Types</h4>
+                    <p>The <b>Signal</b> dropdown selects the input test signal to demonstrate filter effects:</p>
+                    <ul>
+                        <li><b>Sine+Noise:</b> A low-frequency sine wave with added high-frequency noise. Ideal for demonstrating Low Pass filters—watch the noise get removed while the sine wave passes through.</li>
+                        <li><b>Multi-tone:</b> Three sine waves at different frequencies (low, mid, high). Perfect for demonstrating Band Pass filters—you can see which frequency components are passed or rejected.</li>
+                        <li><b>Square+Multi:</b> A square wave combined with multiple sine tones. Great for seeing filter effects on both harmonics (from the square wave's sharp edges) and distinct frequency components. The square wave's step transitions clearly show the filter's smoothing effect.</li>
+                        <li><b>Chirp:</b> A sine wave with linearly increasing frequency (frequency sweep). Excellent for visualizing the filter's frequency response in the time domain—watch where the signal gets attenuated as frequency increases.</li>
+                        <li><b>Square Wave:</b> A pure square wave with sharp transitions. Contains odd harmonics at 1×, 3×, 5×, 7×... the fundamental frequency. Great for seeing how filters affect harmonic content and edge sharpness.</li>
+                        <li><b>White Noise:</b> Random signal with equal energy at all frequencies. Useful for seeing the filter's overall frequency response directly in the time domain output.</li>
+                    </ul>
+                    
+                    <h4>Design Methods</h4>
+                    <p>The <b>Design Method</b> dropdown selects the mathematical approach used to calculate the filter coefficients:</p>
+                    <ul>
+                        <li>
+                            <b>Moving Average:</b> Simplest filter—all coefficients equal to 1/N. Provides basic smoothing but has poor frequency selectivity with significant ripples in the stopband. Best for simple noise reduction when sharp cutoff isn't needed.
+    </li>
+                        <li>
+                            <b>Windowed Sinc:</b> The classic FIR design method. Uses a sinc function (ideal brick-wall response) multiplied by a Hamming window. Provides excellent frequency selectivity with controlled ripples. Good general-purpose choice.
+    </li>
+                        <li>
+                            <b>Butterworth:</b> &quot;Maximally flat&quot; in the passband—no ripples at all. The smoothest possible frequency response but has a gradual rolloff (slower transition from passband to stopband). Best when passband flatness is critical.
+    </li>
+                        <li>
+                            <b>Chebyshev Type I:</b> Allows equiripple (controlled ripples) in the passband to achieve a steeper rolloff than Butterworth. The tradeoff is small amplitude variations in frequencies you want to pass.
+    </li>
+                        <li>
+                            <b>Chebyshev Type II:</b> Equiripple in the stopband instead of the passband. Provides monotonic passband (no ripples) with steeper rolloff than Butterworth, at the cost of ripples in the stopband.
+    </li>
+                        <li>
+                            <b>Elliptic (Cauer):</b> Equiripple in both passband and stopband. Achieves the steepest possible rolloff for a given filter order, but has ripples everywhere. Best when transition width must be minimized.
+    </li>
+                    </ul>
+
+                    <h4>Parameters</h4>
+                    <p>Descriptions of each parameter:</p>
+                    <ul>
+                        <li>
+    <b>Filter Coefficients h[k]</b>: The heart of the FIR filter. These N values determine how past input samples are weighted when computing each output sample. The coefficients are also called &quot;taps&quot; or the &quot;impulse response&quot; (because if you input an impulse [1, 0, 0, 0, ...], the output will be exactly h[k]).
+    </li>
+                        <li>
+    <b>Number of Taps (N)</b>: The filter order plus one. More taps allow for sharper frequency transitions but require more computation. Typical values range from 8 (simple smoothing) to 256+ (high-quality audio processing).
+    </li>
+                        <li>
+    <b>Cutoff Frequency (ω)</b>: The frequency at which the filter begins attenuating signals. Expressed in normalized form (0 to π, where π corresponds to the Nyquist frequency, half the sampling rate). A cutoff of 0.15π means the filter passes frequencies below 15% of Nyquist.
+    </li>
+                        <li>
+    <b>Windowing</b>: The simulation uses Hamming window for Windowed Sinc, and Kaiser window for Butterworth/Chebyshev/Elliptic methods. Windowing reduces the ripples (Gibbs phenomenon) in the frequency response at the cost of a slightly wider transition band.
+    </li>
+                        <li>
+    <b>DC Gain</b>: The sum of all coefficients. For a low-pass filter, this should be 1.0 (unity gain at DC/0 Hz). For a high-pass filter, DC gain is near 0. For a properly normalized Moving Average, DC gain is 1.0.
+    </li>
+                        <li>
+    <b>Magnitude Response |H(ω)|</b>: The filter's gain as a function of frequency. Computed as the magnitude of the Discrete Fourier Transform of the coefficients. The -3dB line (shown in red on dB scale) marks where the filter attenuates to ~70.7% of its passband level—the conventional &quot;cutoff&quot; point.
+    </li>
+                    </ul>
+
+                    <h4>Controls</h4>
+                    <ul>
+                        <li><b>Type Dropdown:</b> Select the filter type (Low Pass, High Pass, Band Pass, Band Stop).</li>
+                        <li><b>Method Dropdown:</b> Select the filter design method (Moving Average, Windowed Sinc, Butterworth, Chebyshev I/II, Elliptic).</li>
+                        <li><b>Signal Dropdown:</b> Select the input test signal (Sine+Noise, Multi-tone, Square+Multi, Chirp, Square Wave, White Noise).</li>
+                        <li><b>Cutoff (ω):</b> Adjust the cutoff frequency from 0.01π to 0.45π.</li>
+                        <li><b>Taps (N):</b> Set the number of filter taps from 4 to 128.</li>
+                        <li><b>Pause/Run:</b> Freezes or resumes the signal animation. Useful for detailed examination of the convolution process.</li>
+                        <li><b>◀ Step / Step ▶:</b> Advance the animation backward or forward one sample at a time while paused.</li>
+                        <li><b>Reset:</b> Returns all settings to default values.</li>
+                        <li><b>Show Convolution:</b> Toggle the visual overlay showing which samples are being multiplied by the kernel.</li>
+                        <li><b>Speed:</b> Control the animation speed (samples processed per frame).</li>
+                        <li><b>Noise Level:</b> Adjust the amount of high-frequency noise added to the test signal (applies to Sine+Noise signal).</li>
+                        <li><b>Linear/dB Toggle:</b> Switch the frequency response plot between linear scale (0-1) and decibel scale (useful for seeing stopband details). Default is dB scale.</li>
+                        <li><b>Drag Coefficients:</b> Click and drag the red bars to manually edit coefficient values and design custom filters!</li>
+                    </ul>
+                    
+                    <h4>Key Concepts</h4>
+                    <ul>
+                        <li>
+    <b>Finite Impulse Response</b>: Unlike IIR (Infinite Impulse Response) filters that use feedback, FIR filters have no recursion. Their impulse response is exactly the coefficient array h[k], which has finite length N. This guarantees stability—an FIR filter can never become unstable or oscillate.
+    </li>
+                        <li>
+    <b>Linear Phase</b>: FIR filters with symmetric coefficients (h[k] = h[N-1-k]) have perfectly linear phase response. This means all frequencies are delayed by the same amount, preserving the shape of signals like audio waveforms or digital pulses.
+    </li>
+                        <li>
+    <b>Trade-offs</b>: FIR filters require more coefficients (and thus more computation) than IIR filters to achieve the same sharpness. However, they offer guaranteed stability, linear phase, and simpler design. Modern DSP processors have specialized MAC units that make FIR filters very efficient.
+    </li>
+                        <li>
+    <b>Duality</b>: There's a beautiful duality between the time domain (coefficients) and frequency domain (response). A rectangular coefficient window (Moving Average) produces a sinc-like frequency response. A sinc-shaped coefficient pattern produces a rectangular (ideal brick-wall) frequency response. This is the essence of Fourier duality.
+    </li>
+                        <li>
+    <b>Applications</b>: FIR filters are everywhere in signal processing—audio equalizers, anti-aliasing filters before ADCs, interpolation filters for sample rate conversion, matched filters in communications, edge detection in image processing, and noise reduction in medical devices.
+    </li>
+                    </ul>
+                    
+                    <h4>Z-Plane: Poles and Zeros in FIR Filters</h4>
+                    <p>The Z-plane visualization provides deep insight into a filter's behavior. Understanding pole-zero locations is fundamental to digital filter analysis.</p>
+                    
+                    <p><b>Poles in FIR Filters</b></p>
+                    <p>FIR filters technically have poles, but <b>only at z = 0</b> (the origin). The transfer function of an FIR filter is:</p>
+                    <div class="equation-display">
+                        <span class="math">H(z) = h[0] + h[1]z<sup>-1</sup> + h[2]z<sup>-2</sup> + ... + h[N-1]z<sup>-(N-1)</sup></span>
+                    </div>
+                    <p>Multiplying by z<sup>N-1</sup> to get polynomial form:</p>
+                    <div class="equation-display">
+                        <span class="math">H(z) = (h[0]z<sup>N-1</sup> + h[1]z<sup>N-2</sup> + ... + h[N-1]) / z<sup>N-1</sup></span>
+                    </div>
+                    <p>The denominator is z<sup>N-1</sup>, so <b>all (N-1) poles are at z = 0</b>. These are called &quot;trivial poles&quot; and are often ignored in practice because:</p>
+                    <ul>
+                        <li>They're always inside the unit circle → <b>FIR filters are always stable</b></li>
+                        <li>They don't meaningfully affect the frequency response</li>
+                    </ul>
+                    
+                    <p><b>Zeros: Location Matters!</b></p>
+                    <p>The location of zeros relative to the unit circle has important implications:</p>
+                    
+                    <table border="1" cellpadding="8" style="border-collapse: collapse; margin: 10px 0; width: 100%;">
+                        <tr style="background-color: #333; color: #fff;">
+                            <th>Zero Location</th>
+                            <th>Meaning</th>
+                            <th>Filter Property</th>
+                        </tr>
+                        <tr>
+                            <td><b>On Unit Circle</b> (|z| = 1)</td>
+                            <td>Complete nulls at that frequency</td>
+                            <td>That frequency is completely blocked (0 dB → -∞ dB)</td>
+                        </tr>
+                        <tr>
+                            <td><b>Inside Circle</b> (|z| &lt; 1)</td>
+                            <td>Minimum-phase zeros</td>
+                            <td>Minimum group delay; causal and stable inverse possible</td>
+                        </tr>
+                        <tr>
+                            <td><b>Outside Circle</b> (|z| &gt; 1)</td>
+                            <td>Maximum-phase zeros</td>
+                            <td>More group delay; inverse filter would be unstable</td>
+                        </tr>
+                    </table>
+                    
+                    <p><b>Why Unit Circle Zeros are Special</b></p>
+                    <p>When a zero lies exactly on the unit circle at angle θ, it creates a <b>perfect null</b> at the frequency ω = θ. For example:</p>
+                    <ul>
+                        <li><b>Moving Average</b>: Zeros are evenly spaced on the unit circle at z = e<sup>j2πk/N</sup> (except z=1). These create the characteristic nulls visible in the frequency response ripples.</li>
+                        <li><b>Notch Filter</b>: A zero placed at z = e<sup>jω₀</sup> completely removes frequency ω₀ from the signal.</li>
+                    </ul>
+                    
+                    <p><b>Linear Phase and Zero Symmetry</b></p>
+                    <p>For a linear-phase FIR filter (symmetric coefficients), zeros come in <b>conjugate reciprocal pairs</b>:</p>
+                    <ul>
+                        <li>If z₀ is a zero, so is z₀* (complex conjugate)</li>
+                        <li>If z₀ is a zero, so is 1/z₀* (reciprocal conjugate)</li>
+                    </ul>
+                    <p>This means zeros appear in groups of 4 (or pairs on the real axis/unit circle). In the visualization, you can see this symmetry when using the preset filters.</p>
+                    
+                    <p><note1>Tip</note1>: The zeros shown in the Z-plane are calculated from the filter coefficients using polynomial root-finding. Watch how the zero pattern changes as you switch between different filter types and design methods!</p>
+                    
+                    <h4>Comparing Design Methods</h4>
+                    <table border="1" cellpadding="8" style="border-collapse: collapse; margin: 10px 0; width: 100%;">
+                        <tr style="background-color: #333; color: #fff;">
+                            <th>Method</th>
+                            <th>Passband</th>
+                            <th>Stopband</th>
+                            <th>Transition</th>
+                            <th>Best For</th>
+                        </tr>
+                        <tr>
+                            <td><b>Moving Average</b></td>
+                            <td>Rippled</td>
+                            <td>Rippled</td>
+                            <td>Wide</td>
+                            <td>Simple smoothing</td>
+                        </tr>
+                        <tr>
+                            <td><b>Windowed Sinc</b></td>
+                            <td>Slight ripple</td>
+                            <td>Slight ripple</td>
+                            <td>Medium</td>
+                            <td>General purpose</td>
+                        </tr>
+                        <tr>
+                            <td><b>Butterworth</b></td>
+                            <td>Flat</td>
+                            <td>Flat</td>
+                            <td>Gradual</td>
+                            <td>Passband flatness critical</td>
+                        </tr>
+                        <tr>
+                            <td><b>Chebyshev I</b></td>
+                            <td>Equiripple</td>
+                            <td>Monotonic</td>
+                            <td>Steep</td>
+                            <td>Stopband flatness needed</td>
+                        </tr>
+                        <tr>
+                            <td><b>Chebyshev II</b></td>
+                            <td>Monotonic</td>
+                            <td>Equiripple</td>
+                            <td>Steep</td>
+                            <td>Passband flatness needed</td>
+                        </tr>
+                        <tr>
+                            <td><b>Elliptic</b></td>
+                            <td>Equiripple</td>
+                            <td>Equiripple</td>
+                            <td>Steepest</td>
+                            <td>Minimum transition width</td>
+                        </tr>
+                    </table>
+                </div>
+                <p style="line-height:100%; margin-top:0; margin-bottom:0;">&nbsp;</p>
+                <p style="line-height:100%; margin-top:0; margin-bottom:0;">&nbsp;</p>
+                <p>&nbsp;</p>
+            </td>
+            <td width="401" valign="top">
+               <div id='panel_right'></div>        
+            </td>
+        </tr>
+    <tr>
+            <td width="151">&nbsp;</td>
+        <td width="802">&nbsp;</td>
+            <td width="401">&nbsp;</td>
+    </tr>
+</table>
+
+</div>
+
+<!-- JavaScript loaded at bottom for proper initialization -->
+<script src="FirI/fir.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,620 @@
+
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title> Web Simulator | ShareTechnote</title>
+<meta name="description" content="This is to visualize engineering/scientific concepts">
+<link rel="stylesheet" type="text/css" href="IirI/iir.css">
+<script src="IirI/jquery-3.6.0.min.js"></script>
+  <script type='text/javascript'>
+   $(document).ready(function(){
+    $( "#header" ).load( "../../header.html" );
+   });
+   $(document).ready(function(){
+    $( "#menu_main" ).load( "../../menu_main.html" );
+   });
+   $(document).ready(function(){
+    $( "#menu_Websim" ).load( "menu_Websim.html" );
+   });
+   $(document).ready(function(){
+    $( "#panel_right" ).load( "../../panel_right.html" );
+   });
+  </script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="purple" alink="red">
+
+<div id='header'></div>
+<div id='menu_main'></div>
+
+<div class='content'>
+
+<table border="0" width="1368">
+        <tr>
+            <td width="151" rowspan="2" valign="top">
+                <div id='menu_Websim'></div>
+            </td>
+            <td width="802">
+                <p><page-title>Web Simulation&nbsp;</page-title>
+</p>
+            </td>
+            <td width="401">&nbsp;</td>
+        </tr>
+        <tr>
+            <td width="802" valign="top">
+                <p>&nbsp;</p>
+                <p align="center">&nbsp;
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9961293861045757"
+     crossorigin="anonymous">
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                </script>
+<!-- Horiz_Wide_NTN_Index -->
+                <ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-9961293861045757"
+     data-ad-slot="4394215235"></ins>
+                <script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                </script>
+   
+</p>
+                <p>&nbsp;
+                <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-39820307-1', 'auto');
+  ga('send', 'pageview');
+                
+                </script>
+
+			</p>
+                
+                <h0>Infinite Impulse Response (IIR) Filter Tutorial&nbsp;</h0>
+                <div id='content_intro'>
+                    <p>
+  This interactive tutorial demonstrates <b>Infinite Impulse Response (IIR) Filters</b>, a powerful and efficient class of digital filters used throughout signal processing. Unlike FIR filters, IIR filters use <b>feedback (recursion)</b>—the output depends not only on past inputs but also on <b>past outputs</b>. This recursion creates an infinitely long impulse response from just a few coefficients.</p>
+                    <p>
+  The simulation visualizes the core concept of <b>Recursive Filtering</b>—showing both the <b>feedforward path</b> (input processing) and the <b>feedback path</b> (output recursion). You can observe how poles and zeros in the Z-plane determine filter behavior, and critically, how <b>pole locations determine stability</b>. IIR filters can become unstable if poles move outside the unit circle!</p>
+                    
+                    <h4>How IIR Filters Work</h4>
+                    <p>An IIR filter processes a signal using both current/past inputs AND past outputs:</p>
+                    <div class="equation-display">
+                        <span class="math">y[n] = b[0]·x[n] + b[1]·x[n-1] + ... - a[1]·y[n-1] - a[2]·y[n-2] - ...</span>
+                    </div>
+                    <p>Or more compactly:</p>
+                    <div class="equation-display">
+                        <span class="math">y[n] = Σ<sub>k=0</sub><sup>M</sup> b[k]·x[n-k] − Σ<sub>k=1</sub><sup>N</sup> a[k]·y[n-k]</span>
+                    </div>
+                    <p>where:</p>
+                    <ul>
+                        <li><b>y[n]</b> is the output sample at time n</li>
+                        <li><b>x[n]</b> is the input sample at time n</li>
+                        <li><b>b[k]</b> are the <b>feedforward coefficients</b> (numerator) - multiply past inputs</li>
+                        <li><b>a[k]</b> are the <b>feedback coefficients</b> (denominator) - multiply past outputs</li>
+                        <li><b>a[0]</b> is always normalized to 1</li>
+                    </ul>
+                    
+                    <h4>Mathematical Foundation</h4>
+                    <p><b>Transfer Function</b>: In the Z-domain, the IIR filter is a ratio of polynomials:</p>
+                    <div class="equation-display">
+                        <p><span class="math">H(z) = B(z)/A(z) = (b[0] + b[1]z<sup>-1</sup> + b[2]z<sup>-2</sup> + ...) / (1 + a[1]z<sup>-1</sup> + a[2]z<sup>-2</sup> + ...)</span>
+</p>
+                    </div>
+                    <p>The <b>zeros</b> of H(z) are the roots of B(z) - they create nulls in the frequency response. The <b>poles</b> are the roots of A(z) - they create peaks and determine stability.</p>
+                    
+                    <p><b>Stability Criterion</b>: An IIR filter is stable if and only if:</p>
+                    <div class="equation-display">
+                        <p><span class="math">All poles |p<sub>k</sub>| &lt; 1 (inside the unit circle)</span>
+</p>
+                    </div>
+                    <p>If any pole has magnitude ≥ 1, the filter becomes unstable—the output grows without bound!</p>
+                    
+                    <p><b>Bilinear Transform</b>: IIR filters are typically designed in the analog (s-domain) and converted to digital using the bilinear transform:</p>
+                    <div class="equation-display">
+                        <p><span class="math">s = (2/T) · (z-1)/(z+1)</span>
+</p>
+                    </div>
+                    <p>This maps the entire left half of the s-plane (stable analog filters) to inside the unit circle (stable digital filters).</p>
+                    
+                    <p>&nbsp;</p>
+				
+                </div>
+                <div id='content_sim'>
+                    <div id="iir-simulation" class="iir-container">
+<!-- Control Panel -->
+                        <div class="control-panel">
+                            <div class="section-label">IIR Filter Controls</div>
+                            
+<!-- Preset Dropdowns Row -->
+                                    <div class="control-row">
+                                <label for="filterTypeSelect" style="width: 35px;">Type:</label>
+                                <select id="filterTypeSelect" class="preset-select" style="width: 95px;">
+                                    <option value="lowPass" selected>Low Pass</option>
+                                    <option value="highPass">High Pass</option>
+                                    <option value="bandPass">Band Pass</option>
+                                    <option value="bandStop">Band Stop</option>
+                                </select>
+                                
+                                <label for="designMethodSelect" style="margin-left: 10px; width: 50px;">Method:</label>
+                                <select id="designMethodSelect" class="preset-select" style="width: 110px;">
+                                    <option value="butterworth" selected>Butterworth</option>
+                                    <option value="chebyshev1">Chebyshev I</option>
+                                    <option value="chebyshev2">Chebyshev II</option>
+                                    <option value="elliptic">Elliptic</option>
+                                    <option value="bessel">Bessel</option>
+                                </select>
+                                
+                                <label for="signalTypeSelect" style="margin-left: 10px; width: 40px;">Signal:</label>
+                                <select id="signalTypeSelect" class="preset-select" style="width: 115px;">
+                                    <option value="sine" selected>Sine</option>
+                                    <option value="square">Square</option>
+                                    <option value="multiTone">Multi-tone</option>
+                                    <option value="squareMultiTone">Square+Multi</option>
+                                    <option value="chirp">Chirp</option>
+                                    <option value="impulse">Impulse</option>
+                                    <option value="step">Step</option>
+                                    <option value="whiteNoise">White Noise</option>
+                                </select>
+                                </div>
+                                
+<!-- Parameter Controls Row -->
+                                    <div class="control-row">
+                                <label for="cutoffSlider">Cutoff (ω):</label>
+                                <input type="range" id="cutoffSlider" min="0.01" max="0.45" value="0.15" step="0.01">
+                                <span id="cutoffValue">0.15π</span>
+                                
+                                <label for="orderSpinbox" style="margin-left: 20px;">Order:</label>
+                                <div class="spinbox-container">
+                                    <input type="number" id="orderSpinbox" min="1" max="4" value="2" step="1" class="order-spinbox">
+                                    <div class="spin-buttons">
+                                        <button type="button" class="spin-btn spin-up" onclick="adjustOrder(1)">▲</button>
+                                        <button type="button" class="spin-btn spin-down" onclick="adjustOrder(-1)">▼</button>
+                                    </div>
+                                </div>
+                                </div>
+                                
+<!-- Animation Controls Row -->
+                                    <div class="control-row">
+                                <label>Controls:</label>
+                                <button id="playPauseBtn">Pause</button>
+                                <button id="stepBwdBtn">◀ Step</button>
+                                <button id="stepFwdBtn">Step ▶</button>
+                                <button id="resetBtn">Reset</button>
+                                </div>
+                                
+<!-- Display Options Row -->
+                                    <div class="control-row">
+                                <label for="showConvolution">Show Recursion:</label>
+                                <input type="checkbox" id="showConvolution" checked>
+                                
+                                <label for="speedSlider" style="margin-left: 20px;">Speed:</label>
+                                <input type="range" id="speedSlider" min="1" max="5" value="1" step="1" style="width: 70px;">
+                                <span id="speedValue">1x</span>
+                                
+                                <label for="noiseSlider" style="margin-left: 20px;">Noise:</label>
+                                <input type="range" id="noiseSlider" min="0" max="0.8" value="0.35" step="0.05" style="width: 70px;">
+                                <span id="noiseValue">35%</span>
+                                    </div>
+                                </div>
+                                
+<!-- Coefficient / Block Diagram Section -->
+                        <div class="coefficient-section">
+                            <div class="section-header">
+                                <h3>IIR Filter Structure</h3>
+                                <div class="view-toggle">
+                                    <button id="viewCoeffsBtn" class="view-btn active">Coefficients</button>
+                                    <button id="viewBlockBtn" class="view-btn">Block Diagram</button>
+                                </div>
+                            </div>
+                            <canvas id="canvas-coefficients" width="760" height="200"></canvas>
+                            
+                            <!-- Live Calculation Panel -->
+                            <div id="calcPanel" class="calculation-panel">
+                                <div class="calc-title">LIVE CALCULATION: y[n]</div>
+                                <div class="calc-content">
+                                    <div class="calc-row feedforward-calc">
+                                        <span class="calc-label">FEEDFORWARD:</span>
+                                        <span id="calcFeedforward" class="calc-values"></span>
+                                    </div>
+                                    <div class="calc-row feedback-calc">
+                                        <span class="calc-label">FEEDBACK:</span>
+                                        <span id="calcFeedback" class="calc-values"></span>
+                                    </div>
+                                    <div class="calc-row result-calc">
+                                        <span class="calc-label">RESULT:</span>
+                                        <span id="calcResult" class="calc-result"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                
+<!-- Legend -->
+                        <div class="legend">
+                            <div class="legend-item">
+                                <div class="legend-color input">
+                                </div>
+                                <span>Input x[n]</span>
+                                    </div>
+                            <div class="legend-item">
+                                <div class="legend-color feedforward">
+                                </div>
+                                <span>Feedforward b[k]</span>
+                                    </div>
+                            <div class="legend-item">
+                                <div class="legend-color feedback">
+                                </div>
+                                <span>Feedback a[k]</span>
+                                    </div>
+                            <div class="legend-item">
+                                <div class="legend-color output">
+                                </div>
+                                <span>Output y[n]</span>
+                                    </div>
+                                </div>
+                                
+<!-- Time Domain Visualization -->
+                        <div class="visualization-section">
+                            <div class="canvas-wrapper">
+                                <div class="canvas-label input-label">TIME DOMAIN: Input Signal x[n]</div>
+                                <canvas id="canvas-input" width="760" height="140"></canvas>
+                                </div>
+                                
+                            <div class="canvas-wrapper">
+                                <div class="canvas-label output-label">TIME DOMAIN: Filtered Output y[n] (with feedback)</div>
+                                <canvas id="canvas-output" width="760" height="140"></canvas>
+                                    </div>
+                                </div>
+                                
+<!-- Frequency Domain Visualization -->
+                        <div class="visualization-section freq-section">
+                            <div class="freq-split-container">
+                                <div class="freq-plot-wrapper">
+                                    <div class="canvas-label freq-label">FREQUENCY DOMAIN: Magnitude Response |H(ω)|</div>
+                                    <div class="freq-canvas-container">
+                                        <canvas id="canvas-freq" width="560" height="160"></canvas>
+                                        <button id="scaleToggleBtn" class="scale-toggle-btn active">Linear</button>
+                                    </div>
+                                </div>
+                                <div class="zplane-plot-wrapper">
+                                    <div class="canvas-label zplane-label">Z-PLANE: Poles (×) &amp; Zeros (○)</div>
+                                    <canvas id="canvas-zplane" width="180" height="160"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        
+<!-- Info Panel -->
+                        <div class="info-display">
+                            <h3>Filter Information</h3>
+                            <div class="info-row">
+                                <span class="info-label">Filter Type:</span>
+                                <span class="info-value" id="info-filterType">Low Pass (Butterworth)</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Filter Order:</span>
+                                <span class="info-value" id="info-order">2</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Stability:</span>
+                                <span class="info-value" id="info-stability">STABLE</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">DC Gain:</span>
+                                <span class="info-value" id="info-dcGain">1.0000</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id='content_description'>
+                    <p>&nbsp; </p>
+                    <h4>Usage Example</h4>
+                    <p>Follow these steps to explore the IIR Filter visualization:</p>
+					<ol>
+						<li>
+							<b>Initial View</b>: When you first load the simulation, you'll see:
+							<ul style="margin-top: 5px; margin-bottom: 5px;">
+                                <li>Three <b>dropdown menus</b> for Filter Type, Design Method, and Signal Type</li>
+                                <li>A <b>coefficient display</b> showing both b[k] (feedforward) and a[k] (feedback) coefficients</li>
+                                <li>An <b>input signal</b> canvas with the feedforward window highlighted</li>
+                                <li>An <b>output signal</b> canvas with the feedback window highlighted</li>
+                                <li>A <b>frequency response</b> plot (dB scale by default)</li>
+                                <li>A <b>Z-plane plot</b> showing poles (×) and zeros (○) with stability indicator</li>
+							</ul>
+						</li>
+						<li>
+							<b>Observe the Recursion</b>: Unlike FIR filters, IIR filters feed the output back into the calculation. The orange &quot;FEEDFORWARD&quot; box shows input samples being processed, while the red &quot;FEEDBACK&quot; box shows output samples being used recursively.
+						</li>
+						<li>
+							<b>Select Filter Type and Design Method</b>: Use the dropdowns to experiment:
+                            <ul style="margin-top: 5px; margin-bottom: 5px;">
+                                <li><b>Filter Types:</b> Low Pass, High Pass, Band Pass, Band Stop</li>
+                                <li><b>Design Methods:</b> Butterworth, Chebyshev I/II, Elliptic, Bessel</li>
+                                <li><b>Signal Types:</b> Sine, Square, Multi-tone, Chirp, Impulse, Step, White Noise</li>
+                            </ul>
+                            Watch how different methods produce different pole-zero patterns!
+						</li>
+						<li>
+							<b>Watch the Z-Plane</b>: The pole locations are CRITICAL for IIR filters:
+                            <ul style="margin-top: 5px; margin-bottom: 5px;">
+                                <li>Poles inside the unit circle → <b>STABLE</b> filter</li>
+                                <li>Poles on or outside the unit circle → <b>UNSTABLE</b> filter</li>
+                                <li>Poles near the unit circle → sharper frequency response but closer to instability</li>
+                            </ul>
+						</li>
+						<li>
+							<b>Use Impulse Response</b>: Select &quot;Impulse&quot; signal to see the filter's impulse response. Unlike FIR filters (finite duration), IIR impulse responses decay exponentially but theoretically last forever—hence &quot;Infinite Impulse Response&quot;!
+						</li>
+						<li>
+							<b>Use Step Response</b>: Select &quot;Step&quot; signal to observe transient behavior. IIR filters may exhibit overshoot and ringing, especially with higher Q factors.
+						</li>
+					</ol>
+                    <p><note1>Key Insight</note1>: IIR filters achieve sharper frequency cutoffs with fewer coefficients than FIR filters because the feedback creates resonance. However, this efficiency comes at the cost of potential instability and non-linear phase response.</p>
+                    
+                    <h4>Filter Types</h4>
+                    <p>The <b>Filter Type</b> dropdown selects what frequency bands to pass or reject:</p>
+                    <ul>
+                        <li><b>Low Pass:</b> Passes low frequencies, attenuates high frequencies. The classic &quot;smoothing&quot; filter.</li>
+                        <li><b>High Pass:</b> Passes high frequencies, attenuates low frequencies. Removes DC offset and slow variations.</li>
+                        <li><b>Band Pass:</b> Passes frequencies within a specific band. Creates a resonant &quot;peak&quot; in the response.</li>
+                        <li><b>Band Stop (Notch):</b> Rejects a specific frequency band. Creates a &quot;notch&quot; or null in the response.</li>
+                    </ul>
+                    
+                    <h4>Signal Types</h4>
+                    <p>The <b>Signal</b> dropdown selects the input test signal. The <b>Noise slider</b> adds controllable noise to all signals (except White Noise):</p>
+                    <ul>
+                        <li><b>Sine:</b> Pure sine wave. Add noise with the Noise slider to see noise rejection.</li>
+                        <li><b>Square:</b> Simple square wave. Great for seeing harmonic filtering and overshoot.</li>
+                        <li><b>Multi-tone:</b> Three sine waves at different frequencies. Shows frequency selectivity.</li>
+                        <li><b>Square+Multi:</b> Square wave combined with sine tones. Shows harmonic filtering.</li>
+                        <li><b>Chirp:</b> Frequency sweep signal. Shows filter response across all frequencies.</li>
+                        <li><b>Impulse:</b> Periodic impulses. Shows the impulse response—the &quot;fingerprint&quot; of the filter. IIR impulse responses decay but never truly end.</li>
+                        <li><b>Step:</b> Step function. Shows transient response, overshoot, and settling time.</li>
+                        <li><b>White Noise:</b> Pure random signal. Shows overall frequency shaping.</li>
+                    </ul>
+                    
+                    <h4>Design Methods</h4>
+                    <p>The <b>Design Method</b> dropdown selects the IIR filter design approach. Each method represents a different tradeoff:</p>
+                    <ul>
+                        <li>
+                            <b>Butterworth:</b> &quot;Maximally flat&quot; magnitude response in the passband. No ripples, but gradual rolloff. Poles are evenly spaced on a circle. Best general-purpose choice when you want smooth response.
+    </li>
+                        <li>
+                            <b>Chebyshev Type I:</b> Allows controlled ripples in the passband to achieve steeper rolloff than Butterworth. Poles lie on an ellipse. Use when you need sharper cutoff and can tolerate passband variations.
+    </li>
+                        <li>
+                            <b>Chebyshev Type II:</b> Flat passband (like Butterworth) but with ripples in the stopband. Provides steeper rolloff than Butterworth while keeping the passband smooth.
+    </li>
+                        <li>
+                            <b>Elliptic (Cauer):</b> Ripples in BOTH passband and stopband. Achieves the steepest possible rolloff for a given order. Use when transition width must be minimized at all costs.
+    </li>
+                        <li>
+                            <b>Bessel:</b> Maximally flat GROUP DELAY (not magnitude). Preserves the shape of signals passing through—no overshoot or ringing on step response. Sacrifices sharp cutoff for linear phase approximation.
+    </li>
+                    </ul>
+
+                    <h4>Parameters</h4>
+                    <p>Descriptions of each parameter:</p>
+                    <ul>
+                        <li>
+    <b>Feedforward Coefficients b[k]</b>: These multiply the current and past INPUT samples. They define the filter's zeros (roots of the numerator polynomial). Zeros create nulls in the frequency response.
+    </li>
+                        <li>
+    <b>Feedback Coefficients a[k]</b>: These multiply past OUTPUT samples and create the recursive behavior. They define the filter's poles (roots of the denominator polynomial). a[0] is always 1 (normalized). Poles create peaks in the response and determine stability.
+    </li>
+                        <li>
+    <b>Filter Order</b>: The number of poles (and zeros). Higher order = sharper cutoff but more computation and closer to instability. A 2nd-order IIR can match a ~20th-order FIR in sharpness!
+    </li>
+                        <li>
+    <b>Cutoff Frequency (ω)</b>: The -3dB point where the filter begins significant attenuation. Expressed as normalized frequency (0 to π, where π = Nyquist).
+    </li>
+                        <li>
+    <b>DC Gain</b>: The gain at zero frequency. Calculated as H(1) = B(1)/A(1) = Σb[k]/Σa[k]. Should be 1.0 for a properly normalized low-pass filter.
+    </li>
+                    </ul>
+
+                    <h4>Controls</h4>
+                    <ul>
+                        <li><b>Type Dropdown:</b> Select Low Pass, High Pass, Band Pass, or Band Stop.</li>
+                        <li><b>Method Dropdown:</b> Select Butterworth, Chebyshev I/II, Elliptic, or Bessel.</li>
+                        <li><b>Signal Dropdown:</b> Select the test signal (Impulse and Step are especially useful for IIR analysis).</li>
+                        <li><b>Cutoff (ω):</b> Adjust cutoff frequency from 0.01π to 0.45π.</li>
+                        <li><b>Order:</b> Set filter order from 1 to 4 using the spinbox. Higher = sharper but riskier.</li>
+                        <li><b>Pause/Run:</b> Freeze or resume animation.</li>
+                        <li><b>◀ Step / Step ▶:</b> Advance one sample at a time (auto-pauses animation).</li>
+                        <li><b>Reset:</b> Return to default settings.</li>
+                        <li><b>Show Recursion:</b> Toggle the feedforward/feedback visualization boxes.</li>
+                        <li><b>Speed:</b> Adjust animation speed from 1x to 5x.</li>
+                        <li><b>Noise:</b> Add noise to all signal types (0% to 80%). Does not affect White Noise.</li>
+                        <li><b>Linear/dB Toggle:</b> Switch frequency response between linear and dB scale.</li>
+                    </ul>
+                    
+                    <h4>Key Concepts</h4>
+                    <ul>
+                        <li>
+    <b>Infinite Impulse Response</b>: The feedback creates an impulse response that theoretically lasts forever (though it decays exponentially for stable filters). This is why they're called &quot;IIR&quot;—even a single impulse input produces infinite output samples.
+    </li>
+                        <li>
+    <b>Efficiency</b>: IIR filters need far fewer coefficients than FIR filters for the same sharpness. A 2nd-order IIR biquad (5 coefficients) can match a 20+ tap FIR. This makes IIR filters computationally attractive.
+    </li>
+                        <li>
+    <b>Stability</b>: The critical difference from FIR! IIR filters CAN become unstable if poles move outside the unit circle. The feedback amplifies the signal without bound. Always check pole locations!
+    </li>
+                        <li>
+    <b>Phase Response</b>: IIR filters generally have NON-LINEAR phase response. Different frequencies are delayed by different amounts, which can distort signal shape. Use Bessel design if phase linearity matters.
+    </li>
+                        <li>
+    <b>Cascade vs. Direct Form</b>: Higher-order IIR filters are usually implemented as cascaded 2nd-order &quot;biquad&quot; sections for numerical stability, not as one high-order difference equation.
+    </li>
+                    </ul>
+                    
+                    <h4>Z-Plane Analysis: Poles and Zeros</h4>
+                    <p>The Z-plane is the key to understanding IIR filter behavior:</p>
+                    
+                    <p><b>Poles (× marks)</b></p>
+                    <p>Poles are roots of the denominator A(z). They determine:</p>
+                    <ul>
+                        <li><b>Stability:</b> ALL poles must be inside the unit circle (|p| &lt; 1)</li>
+                        <li><b>Frequency peaks:</b> A pole near the unit circle creates a peak at that frequency</li>
+                        <li><b>Resonance:</b> Poles closer to the circle = sharper resonance but closer to instability</li>
+                        <li><b>Impulse response:</b> Pole magnitude determines decay rate; pole angle determines oscillation frequency</li>
+                    </ul>
+                    
+                    <p><b>Zeros (○ marks)</b></p>
+                    <p>Zeros are roots of the numerator B(z). They determine:</p>
+                    <ul>
+                        <li><b>Frequency nulls:</b> A zero ON the unit circle completely blocks that frequency</li>
+                        <li><b>Notch filters:</b> Created by placing zeros exactly on the unit circle</li>
+                        <li><b>Response shaping:</b> Zeros &quot;pull down&quot; the response near their locations</li>
+                    </ul>
+                    
+                    <table border="1" cellpadding="8" style="border-collapse: collapse; margin: 10px 0; width: 100%;">
+                        <tr style="background-color: #333; color: #fff;">
+                            <th>Pole Location</th>
+                            <th>Effect</th>
+                            <th>Stability</th>
+                        </tr>
+                        <tr>
+                            <td><b>|p| &lt; 1</b> (inside circle)</td>
+                            <td>Exponentially decaying impulse response</td>
+                            <td style="color: #00ff00;"><b>STABLE</b></td>
+                        </tr>
+                        <tr>
+                            <td><b>|p| = 1</b> (on circle)</td>
+                            <td>Sustained oscillation (marginally stable)</td>
+                            <td style="color: #ffff00;"><b>MARGINAL</b></td>
+                        </tr>
+                        <tr>
+                            <td><b>|p| &gt; 1</b> (outside circle)</td>
+                            <td>Exponentially GROWING output!</td>
+                            <td style="color: #ff0000;"><b>UNSTABLE</b></td>
+                        </tr>
+                    </table>
+                    
+                    <h4>Comparing Design Methods</h4>
+                    <table border="1" cellpadding="8" style="border-collapse: collapse; margin: 10px 0; width: 100%;">
+                        <tr style="background-color: #333; color: #fff;">
+                            <th>Method</th>
+                            <th>Passband</th>
+                            <th>Stopband</th>
+                            <th>Rolloff</th>
+                            <th>Phase</th>
+                            <th>Best For</th>
+                        </tr>
+                        <tr>
+                            <td><b>Butterworth</b></td>
+                            <td>Maximally flat</td>
+                            <td>Monotonic</td>
+                            <td>Gradual</td>
+                            <td>Non-linear</td>
+                            <td>General purpose</td>
+                        </tr>
+                        <tr>
+                            <td><b>Chebyshev I</b></td>
+                            <td>Equiripple</td>
+                            <td>Monotonic</td>
+                            <td>Steep</td>
+                            <td>Non-linear</td>
+                            <td>Sharp cutoff needed</td>
+                        </tr>
+                        <tr>
+                            <td><b>Chebyshev II</b></td>
+                            <td>Monotonic</td>
+                            <td>Equiripple</td>
+                            <td>Steep</td>
+                            <td>Non-linear</td>
+                            <td>Flat passband + sharp cutoff</td>
+                        </tr>
+                        <tr>
+                            <td><b>Elliptic</b></td>
+                            <td>Equiripple</td>
+                            <td>Equiripple</td>
+                            <td>Steepest</td>
+                            <td>Non-linear</td>
+                            <td>Minimum order for specs</td>
+                        </tr>
+                        <tr>
+                            <td><b>Bessel</b></td>
+                            <td>Flat</td>
+                            <td>Gentle</td>
+                            <td>Gradual</td>
+                            <td>~Linear</td>
+                            <td>Waveform preservation</td>
+                        </tr>
+                    </table>
+                    
+                    <h4>IIR vs. FIR: When to Use Each</h4>
+                    <table border="1" cellpadding="8" style="border-collapse: collapse; margin: 10px 0; width: 100%;">
+                        <tr style="background-color: #333; color: #fff;">
+                            <th>Aspect</th>
+                            <th>IIR</th>
+                            <th>FIR</th>
+                        </tr>
+                        <tr>
+                            <td><b>Efficiency</b></td>
+                            <td>Fewer coefficients for same sharpness</td>
+                            <td>More coefficients needed</td>
+                        </tr>
+                        <tr>
+                            <td><b>Stability</b></td>
+                            <td>Can be unstable!</td>
+                            <td>Always stable</td>
+                        </tr>
+                        <tr>
+                            <td><b>Phase</b></td>
+                            <td>Non-linear (distorts waveforms)</td>
+                            <td>Can be perfectly linear</td>
+                        </tr>
+                        <tr>
+                            <td><b>Design</b></td>
+                            <td>Based on analog prototypes</td>
+                            <td>Direct digital design</td>
+                        </tr>
+                        <tr>
+                            <td><b>Best For</b></td>
+                            <td>Real-time, resource-constrained, audio</td>
+                            <td>Data analysis, imaging, linear phase needed</td>
+                        </tr>
+                    </table>
+                </div>
+                <p style="line-height:100%; margin-top:0; margin-bottom:0;">&nbsp;</p>
+                <p style="line-height:100%; margin-top:0; margin-bottom:0;">&nbsp;</p>
+                <p>&nbsp;</p>
+            </td>
+            <td width="401" valign="top">
+               <div id='panel_right'></div>        
+            </td>
+        </tr>
+    <tr>
+            <td width="151">&nbsp;</td>
+        <td width="802">&nbsp;</td>
+            <td width="401">&nbsp;</td>
+    </tr>
+</table>
+
+</div>
+
+<!-- JavaScript loaded at bottom for proper initialization -->
+<script src="IirI/iir.js"></script>
+</body>
+
+</html>
