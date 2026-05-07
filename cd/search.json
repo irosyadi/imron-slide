@@ -191,9 +191,9 @@
   {
     "objectID": "cd_05.html#where-are-we-in-the-vmodel",
     "href": "cd_05.html#where-are-we-in-the-vmodel",
-    "title": "Stage 5",
+    "title": "Stage 5 – Implementation / Construction",
     "section": "Where Are We in the V‑Model?",
-    "text": "Where Are We in the V‑Model?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nStage 5 sits at the bottom of the V:\nYou turn your designs (DCP‑300) into real artifacts (DCP‑400) while maintaining traceability.\n\n\n\n\nRemind them: - Up to now: mostly documents, diagrams, and planning. - Now: code, hardware, prototypes – but you can’t abandon discipline. Stage 5 sets up the success of Stages 6–8 (testing & validation)."
+    "text": "Where Are We in the V‑Model?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nStage 5 is the bottom of the V: You turn design descriptions into working hardware, firmware, and software.\n\n\n\n\nRemind students how we got here: - Stages 1–3: defined the right problem and specified the system (StRS, SyRS). - Stage 4: decided how we will realize it (architecture, components, interfaces). Now Stage 5: we build those components, but still within the discipline of the lifecycle.\nStress that Implementation is not isolated: everything we build must trace back up to CMP-*, REQ-*, and STR-*, and forward into TST-*, VER-*, VAL-*."
   },
   {
     "objectID": "cd_05.html#stage-5-in-the-course-deliverables",
@@ -705,5 +705,173 @@
     "title": "Writing Like a Pro with Markdown, Mermaid, and LaTeX",
     "section": "System Overview",
     "text": "System Overview\nflowchart LR\n  Sensor[Temp Sensor] --&gt; MCU[Microcontroller]\n  MCU --&gt; Display[7-Segment Display]\n  MCU --&gt; Logger[UART Logger]"
+  },
+  {
+    "objectID": "cd_05.html#stage-5-implementation-construction",
+    "href": "cd_05.html#stage-5-implementation-construction",
+    "title": "Stage 5 – Implementation / Construction",
+    "section": "Stage 5 – Implementation / Construction",
+    "text": "Stage 5 – Implementation / Construction\n\nThis deck is for a dedicated session on Stage 5 of the capstone. Students have already seen the overall course framework and V‑Model; here we zoom in on Implementation / Construction and the role of 29148/15288 and configuration management (CM).\nKey goals for you as the instructor: - Connect “hands‑on building” to the formal lifecycle: implementation is not “just coding and soldering”; it is a controlled transformation of design into verified build artifacts, governed by 15288 processes and by the requirements from 29148. - Emphasize configuration management as the glue that keeps the project coherent while reality forces changes. - Use concrete ECE examples (embedded system, FPGA, mixed‑signal board, IoT lab network) so students see themselves in the scenarios."
+  },
+  {
+    "objectID": "cd_05.html#session-learning-objectives",
+    "href": "cd_05.html#session-learning-objectives",
+    "title": "Stage 5 – Implementation / Construction",
+    "section": "Session Learning Objectives",
+    "text": "Session Learning Objectives\nBy the end of this session, you will be able to:\n\nExplain how ISO/IEC/IEEE 15288 and 29148 define and constrain the Implementation process.\nDescribe what configuration management (CM) means in a capstone project and why it matters during implementation.\nIdentify the main activities of Stage 5 (Implementation / Construction) and relate them to the V‑Model and earlier stages.\nList the key deliverables of Stage 5, including what goes into DCP‑400 Implementation and how IMP-* items appear in the RTM.\nApply these ideas to typical ECE capstone projects (e.g., embedded controller, RF or mixed‑signal board, FPGA/DSP design, IoT system).\n\n\nYou can use these as checkpoints: - After coverage of standards: ask students to restate in their own words what implementation is (per 15288) vs “just coding”. - After CM discussion: ask for recent personal horror stories where they “lost work”, broke a build, or forgot which version worked."
+  },
+  {
+    "objectID": "cd_05.html#standards-view-15288-29148-at-stage-5",
+    "href": "cd_05.html#standards-view-15288-29148-at-stage-5",
+    "title": "Stage 5 – Implementation / Construction",
+    "section": "Standards View: 15288 & 29148 at Stage 5",
+    "text": "Standards View: 15288 & 29148 at Stage 5\n\n\nISO/IEC/IEEE 15288 – System Life Cycle Processes\nRelevant processes for Stage 5:\n\nImplementation Process\n\nTransform system element specifications into realized system elements (code, boards, FPGA bitstreams, etc.).\nConfirm that each implementation corresponds to its design description.\n\nConfiguration Management Process\n\nEstablish and control configuration items (CIs).\nManage baselines, versions, and changes.\nEnsure the correct items are used in integration, test, and deployment.\n\n\n\nISO/IEC/IEEE 29148 – Requirements Engineering\n\nStill relevant in Stage 5 because:\n\nRequirements guide what to implement.\nRequirement changes must be controlled (change requests, impact analysis).\nImplementation status is recorded in the RTM as REQ-* → CMP-* → IMP-*.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExplain that 15288 gives the process scaffolding (Implementation & CM), while 29148 keeps us honest about why we’re building each thing (requirements).\nYou don’t need students to recite clause numbers; instead, keep it conceptual: - Implementation is a disciplined transformation from specs to reality. - Configuration management makes that transformation reproducible and controllable."
+  },
+  {
+    "objectID": "cd_05.html#stage-5-in-the-course-framework",
+    "href": "cd_05.html#stage-5-in-the-course-framework",
+    "title": "Stage 5 – Implementation / Construction",
+    "section": "Stage 5 in the Course Framework",
+    "text": "Stage 5 in the Course Framework\n\n\nCourse Stage:\n\nStage 5 – Implementation / Construction\n\nV‑Model Level:\n\nBottom: HW/SW Build\n\nInputs from earlier stages:\n\nApproved StRS and SyRS/SRS (STR-*, REQ-*).\nApproved Design (DCP‑300) with CMP-* components and interface specs.\nInitial Test Plan (TST-* planned).\n\n\nOutputs to later stages:\n\nRealized implementations (IMP-*):\n\nSource code, HDL, schematics, PCBs, 3D models, configs, scripts.\n\nBuild & configuration documentation.\nUpdated RTM:\n\nCMP-* → IMP-* links.\n\nDCP‑400 – Implementation package.\n\n\n\n\n\n\n\nImportant\n\n\nYou should not be inventing major new requirements or architecture in Stage 5. If you must, it goes through change control.\n\n\n\n\n\nUse the “no surprise architecture” rule: if someone opens DCP‑300 and DCP‑400, they should recognize that DCP‑400 is just the realization of what DCP‑300 promised, modulo logged changes.\nYou can ask: &gt; If you discover a better sensor or new algorithm at Stage 5, what do you do? Answer: evaluate impact, propose a change, update requirements/design formally, then implement—not just silently swap."
+  },
+  {
+    "objectID": "cd_05.html#what-is-implementation-in-15288-terms",
+    "href": "cd_05.html#what-is-implementation-in-15288-terms",
+    "title": "Stage 5 – Implementation / Construction",
+    "section": "What Is “Implementation” in 15288 Terms?",
+    "text": "What Is “Implementation” in 15288 Terms?\nISO/IEC/IEEE 15288 – Implementation Process (informal summary):\n\nPrepare for Implementation\n\nConfirm design is implementable with available tools, parts, skills.\nSet up repositories, build environments, toolchains, labs.\n\nPerform Implementation\n\nDevelop and assemble system elements per design.\nFollow coding standards, EDA rules, lab safety procedures.\n\nConfirm Implementation\n\nCheck each built element against its design description.\nEnsure the implementation is ready for verification (Stage 6).\n\n\n\n\n\n\n\n\nNote\n\n\nIn capstone terms: Implementation is “build what you designed, in a reproducible way, and prove you’re ready to test.”\n\n\n\n\nMake a distinction: - Unit tests and bring‑up in Stage 5 might be informal quick checks. - Formal Verification activities belong to Stages 6 and 7.\n15288 expects that by the end of Implementation, you have: - Buildable configurations. - Baselines. - Items that can be passed to Verification with a clear bill of materials and build procedures."
+  },
+  {
+    "objectID": "cd_05.html#what-is-configuration-management-cm",
+    "href": "cd_05.html#what-is-configuration-management-cm",
+    "title": "Stage 5 – Implementation / Construction",
+    "section": "What Is Configuration Management (CM)?",
+    "text": "What Is Configuration Management (CM)?\nConfiguration Management (from 15288 CM process):\n\nIdentify the configuration items (CIs) that make up your system.\nDefine baselines: snapshots of CIs at key milestones (e.g., end of Stage 4, Stage 5 TRR).\nControl changes:\n\nPropose → evaluate → approve/reject → implement → record.\n\nMaintain status accounting: who changed what, when, and why.\nAudit: verify that delivered items match the documented configuration.\n\n\n\n\n\n\n\nWarning\n\n\nWithout CM, you get: - “It works on my laptop.” - “Which version are we demoing?” - “We lost the only working firmware.”\n\n\n\n\nRelate to students’ experience: - Broken group project because one teammate overwrote someone else’s code. - PCB rev that worked, followed by a “fixed” rev that doesn’t, because no one recorded the exact component values that worked.\nExplicitly mention: - In industry, CM is central for safety, certification, and maintainability (e.g., in medical devices, aerospace, automotive)."
+  },
+  {
+    "objectID": "cd_05.html#cm-in-the-capstone-context",
+    "href": "cd_05.html#cm-in-the-capstone-context",
+    "title": "Stage 5 – Implementation / Construction",
+    "section": "CM in the Capstone Context",
+    "text": "CM in the Capstone Context\n\n\nTypical Configuration Items (CIs) in ECE capstone:\n\nSoftware artifacts:\n\nSource code, libraries, build scripts, Dockerfiles.\n\nHardware artifacts:\n\nSchematics, PCB layouts, BOM, mechanical CAD.\n\nProgrammable logic:\n\nHDL, constraint files, synthesis/project files, bitstreams.\n\nConfiguration data:\n\nCalibration tables, config files, lookup tables, FPGA register maps.\n\nDocumentation:\n\nDCP documents, test procedures, user manuals.\n\n\n\nCM mechanisms you will use:\n\nGit repository (or equivalent):\n\nBranches, tags, pull requests, commit history.\n\nVersioning schemes:\n\ne.g., v0.9-proto, v1.0-TRR, PCB rev A/B/C.\n\nChange log / issue tracker:\n\nLink issues to REQ-*, CMP-*, IMP-*.\n\nRTM updates:\n\nTrack which requirements are implemented by which IMP-* items.\n\n\n\n\nClarify expectations: - Every team should have one or more repos that collectively define the full system. - They should use branching and pull requests rather than committing to main blindly. - They should use tags for baselines (e.g., stage5-trr-baseline).\nYou can show a sample repo structure on the board or in a live demo."
+  },
+  {
+    "objectID": "cd_05.html#stage-5-activities-big-picture",
+    "href": "cd_05.html#stage-5-activities-big-picture",
+    "title": "Stage 5 – Implementation / Construction",
+    "section": "Stage 5 Activities – Big Picture",
+    "text": "Stage 5 Activities – Big Picture\n\n\nKey activities in Stage 5:\n\nSet up the implementation environment\n\nToolchains, IDEs, simulators, synthesis tools, PCB vendors, lab benches.\n\nImplement components (IMP-*)\n\nCoding firmware/applications/FPGA logic.\nBuilding and assembling PCBs and hardware prototypes.\n\nPerform internal checks\n\nSmoke tests, static analysis, code review, bench bring‑up.\n\nManage configurations and changes\n\nUse Git, track issues, maintain change logs.\nKeep RTM synchronized with evolving implementation.\n\nPrepare for Unit/System Verification\n\nEnsure build is repeatable and documented.\nEnsure component implementations match design (CMP-*).\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEmphasize that this is iterative: - You implement a subset of components. - You do some internal tests. - You discover issues → maybe update design or even requirements through formal change control.\nBut from a process perspective, all this iteration still stays within Stage 5 until the team is formally ready to enter Stage 6 (Unit Verification)."
+  },
+  {
+    "objectID": "cd_05.html#dcp400-implementation-package-overview",
+    "href": "cd_05.html#dcp400-implementation-package-overview",
+    "title": "Stage 5 – Implementation / Construction",
+    "section": "DCP‑400 – Implementation Package (Overview)",
+    "text": "DCP‑400 – Implementation Package (Overview)\nMain artifact for Stage 5:\n\nDCP‑400 – Implementation\n\nTypical contents:\n\nImplementation Overview\n\nSummary of what was implemented relative to DCP‑300.\n\nImplementation Items List\n\nTable of IMP-* items and links to CMP-*, REQ-*.\n\nBuild & Deployment Procedures\n\nHow to build, load, configure, and run the system.\n\nConfiguration Management Summary\n\nRepository location, branches, tags.\nList of baselines and CI identifiers.\n\nChange Log\n\nApproved changes to requirements and design that affected implementation.\n\n\n\n\n\n\n\n\nImportant\n\n\nIf someone gave you DCP‑300 and DCP‑400, you should be able to rebuild the project from scratch.\n\n\n\n\nMake clear that DCP‑400 is not a giant code printout. Instead, it’s the index and explanation of the implementation and CM approach. Actual code, schematics, etc. live in repos and tool projects, referenced by DCP‑400."
+  },
+  {
+    "objectID": "cd_05.html#example-imp--entries-in-the-rtm",
+    "href": "cd_05.html#example-imp--entries-in-the-rtm",
+    "title": "Stage 5 – Implementation / Construction",
+    "section": "Example: IMP-* Entries in the RTM",
+    "text": "Example: IMP-* Entries in the RTM\n\n\nTraceability extension at Stage 5:\nPreviously:\n\nSTR-* → REQ-* → CMP-*\n\nNow we add:\n\nCMP-* → IMP-*\n\nExample rows in RTM:\n\n\n\nCMP ID\nIMP ID\nDescription\n\n\n\n\nCMP-SW-010\nIMP-SW-010A\nUI module (Flutter app)\n\n\nCMP-SW-020\nIMP-SW-020A\nControl task (FreeRTOS C module)\n\n\nCMP-SY-030\nIMP-SY-030A\nSensor PCB rev B (KiCad project)\n\n\nCMP-SY-040\nIMP-SY-040A\nLoRa gateway firmware (C++)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTip\n\n\nUse IDs in: - Commit messages - Issue tracker - Comments in code (// Implements REQ-SW-015 via CMP-SW-020)\n\n\n\n\n\nWalk through a specific example: - REQ-SW-015: “System shall log all temperature readings to local storage with timestamp resolution of 1 s.” - Allocated to CMP-SW-020 (Data logger module). - Implementation: IMP-SW-020A (C++ class DataLogger, files logger.cpp/h).\nShow how a commit message might look: - Implement IMP-SW-020A (DataLogger) for REQ-SW-015 This is exactly the kind of traceability 29148 and many regulated domains expect."
+  },
+  {
+    "objectID": "cd_05.html#ece-example-1-embedded-motor-controller",
+    "href": "cd_05.html#ece-example-1-embedded-motor-controller",
+    "title": "Stage 5 – Implementation / Construction",
+    "section": "ECE Example 1 – Embedded Motor Controller",
+    "text": "ECE Example 1 – Embedded Motor Controller\n\n\nProject Scenario:\nA BLDC motor controller for a small robot arm.\nEarlier stages defined:\n\nREQ-SY-010: Motor speed shall be controllable from 0–3000 RPM with ±2% accuracy.\nCMP-SW-020: Motor control firmware module.\nCMP-SY-030: Power stage & gate driver PCB.\n\nStage 5 Implementation Tasks:\n\nWrite firmware for:\n\nPWM generation & current sensing.\nPID speed controller (or FOC if advanced).\n\nAssemble power stage PCB, solder drivers and MOSFETs.\nBring up current sensors and encoders.\n\n\nRelated IMP-* Items:\n\nIMP-SW-020A: motor_ctrl.c / motor_ctrl.h implementing speed loop.\nIMP-SW-020B: current_sense.c with ADC driver and calibration.\nIMP-SY-030A: Assembled PCB rev B with BOM v1.1.\n\nConfiguration Management:\n\nGit repo for firmware with tags:\n\nv0.3-proto-pwm-only\nv0.5-closed-loop\n\nPCB project with revision labels:\n\nmotor_board_revB, BOM file versioned.\n\n\n\n\nYou can ask students: - What happens if they re‑tune the PID gains directly on hardware and forget to update the repo or note in DCP‑400? This is a CM failure: the arm that “worked in the demo” is not reproducible.\nPoint out that even analog tweaks (e.g., adjusting a trimpot) should be documented as part of configuration."
+  },
+  {
+    "objectID": "cd_05.html#ece-example-2-fpgabased-dsp-filter",
+    "href": "cd_05.html#ece-example-2-fpgabased-dsp-filter",
+    "title": "Stage 5 – Implementation / Construction",
+    "section": "ECE Example 2 – FPGA‑Based DSP Filter",
+    "text": "ECE Example 2 – FPGA‑Based DSP Filter\n\n\nProject Scenario:\nFPGA card that performs real‑time FIR filtering on an audio stream.\nEarlier stages defined:\n\nREQ-SY-020: The system shall implement a low‑pass FIR filter with 60 dB stop‑band attenuation at 8 kHz, fs = 48 kHz.\nCMP-HW-010: FPGA top‑level design.\nCMP-SW-030: Coefficients generator / control interface software.\n\nStage 5 Implementation Tasks:\n\nWrite HDL modules:\n\nfir_core, axi_stream_if, clk_gen.\n\nGenerate filter coefficients with Python/MATLAB script.\nSynthesize and place‑and‑route for chosen FPGA.\n\n\nIMP-* Items & CM:\n\nIMP-HW-010A: HDL sources in /hdl/fir_core/, Git repo tag fpga-fir-v1.0.\nIMP-SW-030A: gen_coeffs.py script version 1.2, with config file for 8 kHz cutoff.\nIMP-HW-010B: Bitstream file fir_filter_top.bit built from tag fpga-fir-v1.0.\n\nConfiguration concerns:\n\nStore exact tool versions (e.g., Vivado 2023.2).\nStore synthesis options & constraints used for the baseline build.\n\n\n\nHighlight a common failure mode in FPGA projects: - “We had a working bitstream, then we re‑synthesized with slightly different options, and timing broke.” Without CM, you may never recover the working configuration.\nTie back to 15288’s idea that you must be able to reproduce a configuration for maintenance and future verification."
+  },
+  {
+    "objectID": "cd_05.html#ece-example-3-iot-sensor-network-smart-lab",
+    "href": "cd_05.html#ece-example-3-iot-sensor-network-smart-lab",
+    "title": "Stage 5 – Implementation / Construction",
+    "section": "ECE Example 3 – IoT Sensor Network (Smart Lab)",
+    "text": "ECE Example 3 – IoT Sensor Network (Smart Lab)\nThis continues the course’s earlier Smart Lab Sensor Network example.\n\n\nRecall Requirements:\n\nREQ-SY-010: Each sensor node shall measure temperature 10–40°C with ±0.5°C accuracy.\nREQ-SY-011: Each node shall transmit measurements at least once every 60 s.\n\nStage 5 Tasks:\n\nImplement sensor node firmware (temp/humidity readout, LoRaWAN stack).\nImplement gateway service and database.\nImplement dashboard UI.\n\n\nImplementation & CM:\n\nIMP-SW-040A: Node firmware repo with modules sensor.c, radio.c, main.c.\nIMP-SW-050A: Server backend repo (api.py, db_models.py).\nIMP-SW-060A: Web dashboard (dashboard.vue).\nIMP-SY-070A: Node PCB rev C (KiCad project).\n\nUse Git tags: - stage5-demo-node-fw-v0.9 - stage5-demo-backend-v0.7\nDCP‑400 references all of these as CIs and explains how to deploy a full test network.\n\n\nYou can discuss typical IoT pitfalls: - Changing data format or protocol without updating both ends → integration breakage. CM and traceability help: - A change request might say “Update payload format to include battery voltage (REQ-SY-0xx)”; this would cause updates in design and implementation, all referenced from DCP‑400."
+  },
+  {
+    "objectID": "cd_05.html#implementation-workflow-from-design-to-codeboards",
+    "href": "cd_05.html#implementation-workflow-from-design-to-codeboards",
+    "title": "Stage 5 – Implementation / Construction",
+    "section": "Implementation Workflow – From Design to Code/Boards",
+    "text": "Implementation Workflow – From Design to Code/Boards\n\n\n\n\n\n\n\n\n\n\n\n\nStress that the plan step is real: - Map components to tasks, assign owners. - Decide which branches and repos will host each IMP-*.\nAlso emphasize internal checks: - These are not the same as formal Stage 6 tests; they are developer tests to ensure the implementation is stable and ready to enter formal verification."
+  },
+  {
+    "objectID": "cd_05.html#implementation-planning-breaking-down-the-work",
+    "href": "cd_05.html#implementation-planning-breaking-down-the-work",
+    "title": "Stage 5 – Implementation / Construction",
+    "section": "Implementation Planning – Breaking Down the Work",
+    "text": "Implementation Planning – Breaking Down the Work\n\n\nFrom components to tasks:\nExample (Smart Lab project):\n\nCMP-SW-010 UI module → tasks:\n\nDesign page layout.\nImplement dashboard front‑end.\n\nCMP-SW-020 control logic → tasks:\n\nImplement alert rules engine.\n\nCMP-SY-030 sensor board → tasks:\n\nLayout rev B, order PCBs, assemble 3 prototypes.\n\n\nBest practices:\n\nDefine clear task boundaries aligned with CMP-*.\nAssign owners for each IMP-* implementation.\nUse issues/tickets that reference component IDs.\n\n\nExample Task Table:\n\n\n\nTask ID\nCMP ID\nShort Description\nAssignee\n\n\n\n\nT‑501\nCMP-SY-030\nLayout sensor PCB rev B\nAlice\n\n\nT‑502\nCMP-SW-020\nImplement alert engine\nBob\n\n\nT‑503\nCMP-SW-010\nDashboard UI first version\nChen\n\n\nT‑504\nCMP-SY-030\nAssemble 3 sensor boards\nDana\n\n\n\nLater, each task produces corresponding IMP-* entries linked back to CMP-*.\n\n\nPoint out that this is also project management: breaking work down into implementable chunks that match your architecture.\nEncourage teams to map tasks into whatever tracking tool they use (GitHub Issues, Jira, Trello), always referencing CMP-* and (when relevant) REQ-*."
+  },
+  {
+    "objectID": "cd_05.html#coding-and-hdl-practices-at-stage-5",
+    "href": "cd_05.html#coding-and-hdl-practices-at-stage-5",
+    "title": "Stage 5 – Implementation / Construction",
+    "section": "Coding and HDL Practices at Stage 5",
+    "text": "Coding and HDL Practices at Stage 5\nSoftware / Firmware / HDL implementation guidelines:\n\nFollow style guides (consistent naming, comments, formatting).\nEmbed traceability hints:\n\nComments like // Implements REQ-SW-011, CMP-SW-020.\n\nModularize code according to components (CMP-*).\nUse unit‑test‑friendly design (dependency injection, test benches).\nFor HDL: use clean module boundaries that match architecture diagrams.\n\n\n\n\n\n\n\nTip\n\n\nThink of each IMP-* as a product someone else might reuse. Make it readable, testable, and traceable.\n\n\n\n\nWhile this lecture is not a full software engineering class, remind them: - Poorly structured code makes Stage 6 and Stage 7 much harder. - Traceability in code makes debugging and compliance easier.\nIf you have departmental coding standards, reference them here."
+  },
+  {
+    "objectID": "cd_05.html#hardware-build-practices-at-stage-5",
+    "href": "cd_05.html#hardware-build-practices-at-stage-5",
+    "title": "Stage 5 – Implementation / Construction",
+    "section": "Hardware Build Practices at Stage 5",
+    "text": "Hardware Build Practices at Stage 5\nHardware implementation guidelines:\n\nKeep versioned schematics and layouts; never edit without version control.\nLabel board revisions clearly (e.g., silkscreen “Rev B.1”).\nMaintain a versioned BOM:\n\nInclude part numbers, manufacturers, tolerances, and any acceptable alternates.\n\nDocument assembly process:\n\nWhich parts are hand‑soldered vs reflowed.\nRework steps (e.g., “Cut trace X, add 10 kΩ pull‑up”).\n\n\n\n\n\n\n\n\nNote\n\n\nYour PCB rev that works “after some bodges” is still a configuration that must be documented.\n\n\n\n\nIn many ECE projects, the “working board” in the lab is not identical to the design file baseline due to hand mods.\nStress that these must become explicit IMP-* changes: - E.g., IMP-SY-030B: “Sensor PCB rev B with blue‑wire fix F1 and F2 applied.” Later, Stage 4 design files may be updated to rev C reflecting those fixes."
+  },
+  {
+    "objectID": "cd_05.html#configuration-baselines-in-stage-5",
+    "href": "cd_05.html#configuration-baselines-in-stage-5",
+    "title": "Stage 5 – Implementation / Construction",
+    "section": "Configuration Baselines in Stage 5",
+    "text": "Configuration Baselines in Stage 5\nWhat is a baseline?\nA baseline is a formally agreed snapshot of your configuration items (CIs) at a specific time, used as a reference going forward.\nTypical baselines at Stage 5:\n\nImplementation Baseline for TRR (Test Readiness Review):\n\nTagged Git commits for firmware, backend, and UI.\nPCB revision and BOM version.\nDocumented calibration/config files.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nImportant\n\n\nAt the Stage 5 Gate (TRR), you must be able to say: &gt; “We are using these exact versions of code, boards, and configs for verification.”\n\n\n\n\nRelate this to DCP‑400: - DCP‑400 should state which tags/branches form the TRR baseline. - This allows Stage 6/7 to report test results against a known configuration."
+  },
+  {
+    "objectID": "cd_05.html#change-control-during-implementation",
+    "href": "cd_05.html#change-control-during-implementation",
+    "title": "Stage 5 – Implementation / Construction",
+    "section": "Change Control During Implementation",
+    "text": "Change Control During Implementation\nReality: you will discover issues during Stage 5.\nExamples:\n\nA sensor is noisier than the datasheet claimed → requirement or design may need adjustment.\nMCU flash is too small → firmware must be refactored or hardware changed.\n\nChange control steps (adapted from 15288):\n\nRaise a change request (CR)\n\nDescribe the problem and proposed change.\n\nImpact analysis\n\nWhich REQ-*, CMP-*, TST-* are affected?\n\nDecision\n\nAdvisor / team approves, rejects, or defers.\n\nImplement change\n\nUpdate requirements/design/implementation.\n\nUpdate traceability & DCPs\n\nRTM, DCP‑200/300/400 updated accordingly.\n\n\n\n\n\n\n\n\nWarning\n\n\nDo not silently change functionality. If it affects requirements or design, it must go through change control.\n\n\n\n\nIn smaller student projects, this can be lightweight: - A shared “Change Log” section in DCP‑400. - A label in GitHub issues (“Change Request”), referencing IDs.\nBut the discipline is the same as 15288: changes are evaluated and recorded, not hidden."
+  },
+  {
+    "objectID": "cd_05.html#example-change-request-smart-lab-project",
+    "href": "cd_05.html#example-change-request-smart-lab-project",
+    "title": "Stage 5 – Implementation / Construction",
+    "section": "Example Change Request – Smart Lab Project",
+    "text": "Example Change Request – Smart Lab Project\nProblem:\n\nPrototype nodes last only 12 hours on battery instead of the 72 hours implied by REQ-SY-0xx (battery life requirement).\n\nProposed Changes:\n\nChange reporting interval from 60 s to 5 min.\nAdd deep‑sleep mode in firmware.\n\nChange Control Actions:\n\nCR‑005 logged referencing REQ-SY-0xx and CMP-SW-020.\nImpact analysis:\n\nData latency may affect stakeholder expectations (STR-SY-001).\n\nStakeholders consulted; they accept 5 min updates.\nApprove CR‑005.\nUpdate:\n\nREQ-SY-011 text to new 5 min period in DCP‑200.\nDesign (DCP‑300) to include deep‑sleep mode.\nFirmware implementation (IMP-SW-020B) to include sleep logic.\n\nUpdate RTM and DCP‑400.\n\n\nThis shows 29148 and 15288 principles in practice: requirements are living but controlled, and implementation changes must be consistent with updated requirements and stakeholder needs.\nUse this to underscore: &gt; “It’s fine to discover problems. It’s not fine to hide them or ‘hack around’ them without updating the formal artifacts.”"
+  },
+  {
+    "objectID": "cd_05.html#internal-testing-vs-formal-verification",
+    "href": "cd_05.html#internal-testing-vs-formal-verification",
+    "title": "Stage 5 – Implementation / Construction",
+    "section": "Internal Testing vs Formal Verification",
+    "text": "Internal Testing vs Formal Verification\n\n\nDuring Stage 5, you will:\n\nRun quick checks to see if your implementation basically works:\n\nPower‑on tests.\nSimple functional tests (e.g., “LED blinks”, “UART prints messages”).\nHDL simulations to see waveforms look reasonable.\n\nFix defects discovered during bring‑up.\n\nThese are sometimes called developer tests or smoke tests.\n\nFormal Verification (Stages 6 & 7):\n\nUses planned test cases (TST-*, VER-*) traceable to REQ-*.\nFollows documented procedures.\nHas clearly recorded pass/fail criteria.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nStage 5 ends when you have implementations stable enough to enter planned verification.\n\n\n\n\nExplain that students should do a lot of testing in Stage 5, but those tests may not be fully documented or traceable yet.\nFormality and traceability of tests increase as you move into Stages 6 and 7."
+  },
+  {
+    "objectID": "cd_05.html#documenting-implementation-in-dcp400",
+    "href": "cd_05.html#documenting-implementation-in-dcp400",
+    "title": "Stage 5 – Implementation / Construction",
+    "section": "Documenting Implementation in DCP‑400",
+    "text": "Documenting Implementation in DCP‑400\nSuggested sections (template):\n\nIntroduction\n\nScope of this implementation phase.\n\nImplementation Items (IMP-*)\n\nTable mapping CMP-* → IMP-* → repository paths / file sets.\n\nConfiguration Identification\n\nRepos, branches, tags, PCB revs, BOM versions, toolchain versions.\n\nBuild & Deployment Procedures\n\nStep‑by‑step instructions to build firmware/HDL/software and deploy to hardware.\n\nChange Log & Known Issues\n\nList of change requests and their status.\nKnown limitations of this implementation (for Stage 6/7 awareness).\n\nReadiness for Verification\n\nStatement of which REQ-* are now implemented and ready for testing.\n\n\n\nEncourage teams to think of DCP‑400 as something a new engineer could pick up to reproduce the system.\nDuring grading, DCP‑400 gives you a way to see: - Whether the team has coherent CM. - Whether they understand what has actually been implemented versus what was merely designed."
+  },
+  {
+    "objectID": "cd_05.html#inclass-exercise-map-your-project-to-imp-",
+    "href": "cd_05.html#inclass-exercise-map-your-project-to-imp-",
+    "title": "Stage 5 – Implementation / Construction",
+    "section": "In‑Class Exercise – Map Your Project to IMP-*",
+    "text": "In‑Class Exercise – Map Your Project to IMP-*\nActivity (5–10 minutes):\n\nPick your current or planned capstone project.\nIdentify 3–5 components (CMP-*) from your Stage 4 architecture.\nFor each component, propose:\n\nA plausible implementation artifact (IMP-*).\nThe repository or file where it will live.\nWho on the team is likely to own it.\n\n\nExample answer snippet:\n\nCMP-SW-015 – Data acquisition service\n\nIMP-SW-015A – daq_service.py in labdaq/backend/ (owned by Sam).\n\nCMP-SY-025 – Sensor shield board\n\nIMP-SY-025A – sensor_shield_revA KiCad project (owned by Alex).\n\n\n\n\n\n\n\n\nTip\n\n\nUse this to plan your repos and tasks early, rather than improvising halfway through implementation.\n\n\n\n\nWalk around and spot‑check a few teams. Ask questions: - “Is every major block in your architecture getting at least one IMP-*?” - “Who’s responsible for PCB vs firmware vs server side—do you have coverage?”\nThis exercise makes the abstract IMP-* concept tangible and also helps identify scope issues early."
+  },
+  {
+    "objectID": "cd_05.html#summary-key-takeaways-for-stage-5",
+    "href": "cd_05.html#summary-key-takeaways-for-stage-5",
+    "title": "Stage 5 – Implementation / Construction",
+    "section": "Summary – Key Takeaways for Stage 5",
+    "text": "Summary – Key Takeaways for Stage 5\n\nStage 5 (Implementation / Construction) is the bottom of the V‑Model, where designs become real HW/SW systems.\nISO/IEC/IEEE 15288 defines the Implementation and Configuration Management processes that guide how you build and control your system elements.\nISO/IEC/IEEE 29148 remains active: implementation must continue to respect and trace back to requirements, and any requirement changes must be controlled.\nYour main Stage‑5 deliverable is DCP‑400 Implementation, which documents:\n\nImplementation items (IMP-*) and their traceability to CMP-* / REQ-*.\nConfiguration baselines, repos, versions, build procedures, and change log.\n\nSolid configuration management (Git, tags, PCB revs, BOM versions, change control) is essential for:\n\nReproducibility.\nReliable verification and validation later.\nProfessional practice aligned with real ECE industries.\n\n\n\n\n\n\n\n\nImportant\n\n\nStage 5 is not “just hacking until it works.” It is disciplined construction under configuration control, preparing you for rigorous verification and validation.\n\n\n\n\nClose by connecting forward: - Next sessions will focus on how your Stage 5 implementation feeds into Stage 6 (Unit / Component Verification) and Stage 7 (System / Integration Verification).\nInvite questions: - About Git workflows, PCB versioning, or how detailed DCP‑400 needs to be. Encourage teams to start setting up repos and CM practices immediately, not halfway through the build."
   }
 ]
