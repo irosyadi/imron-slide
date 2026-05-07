@@ -11,42 +11,42 @@
     "href": "index.html#week-9",
     "title": "Digital Signal Processing",
     "section": "Week 9",
-    "text": "Week 9\n\nRPS\n6.1 Basic Filtering Types and Digital Filter Realizations\n6.2 Basic Filtering Types, and Digital Filter Realizations"
+    "text": "Week 9\n\nRPS\n6.1 Basic Filtering Types and Digital Filter Realizations"
   },
   {
     "objectID": "index.html#week-10",
     "href": "index.html#week-10",
     "title": "Digital Signal Processing",
     "section": "Week 10",
-    "text": "Week 10"
+    "text": "Week 10\n\n6.1 Basic Filtering Types and Digital Filter Realizations"
   },
   {
     "objectID": "index.html#week-11",
     "href": "index.html#week-11",
     "title": "Digital Signal Processing",
     "section": "Week 11",
-    "text": "Week 11"
+    "text": "Week 11\n\n6.1 Basic Filtering Types and Digital Filter Realizations"
   },
   {
     "objectID": "index.html#week-12",
     "href": "index.html#week-12",
     "title": "Digital Signal Processing",
     "section": "Week 12",
-    "text": "Week 12"
+    "text": "Week 12\n\n6.2 Basic Filtering Types, and Digital Filter Realizations"
   },
   {
     "objectID": "index.html#week-13",
     "href": "index.html#week-13",
     "title": "Digital Signal Processing",
     "section": "Week 13",
-    "text": "Week 13"
+    "text": "Week 13\n\n7.1 FIR Filter Design: Format, Fourier Design, and Windows"
   },
   {
     "objectID": "index.html#week-14",
     "href": "index.html#week-14",
     "title": "Digital Signal Processing",
     "section": "Week 14",
-    "text": "Week 14"
+    "text": "Week 14\n\n7.2 FIR Filter Design: Format, Fourier Design, and Windows"
   },
   {
     "objectID": "index.html#week-15",
@@ -61,6 +61,398 @@
     "title": "Digital Signal Processing",
     "section": "Week 16",
     "text": "Week 16"
+  },
+  {
+    "objectID": "dsp_71.html#learning-objectives",
+    "href": "dsp_71.html#learning-objectives",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\nBy the end of this session, you should be able to:\n\nWrite and interpret the FIR filter difference equation, transfer function, and impulse response.\nExplain why FIR filters are always BIBO stable and how their structure leads to linear phase.\nUse the Fourier transform design method to derive ideal lowpass (and other) FIR impulse responses.\nUnderstand the Gibbs effect and why simple truncation causes ripples in the passband/stopband.\nExplain how window functions (rectangular, Hanning, Hamming, Blackman, etc.) modify FIR characteristics.\nEstimate FIR length from specs (ripple, attenuation, transition width) and pick an appropriate window.\nConnect FIR filter design to real-world ECE examples (e.g., audio, speech, communication systems).\n\n\nStress that this lecture is about concepts and a concrete recipe:\n\nStart with ideal frequency response.\nUse inverse DTFT to get an infinite impulse response.\nTruncate (→ Gibbs) and then window to control ripples vs transition width.\nShift to make the filter causal.\n\nAlso highlight that all designs here are linear-phase FIR, which is a big selling point in audio and communication systems."
+  },
+  {
+    "objectID": "dsp_71.html#fir-filter-format-difference-equation",
+    "href": "dsp_71.html#fir-filter-format-difference-equation",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "7.1 FIR Filter Format – Difference Equation",
+    "text": "7.1 FIR Filter Format – Difference Equation\nA length-\\((K+1)\\) FIR filter is defined by the input-output relation\n\\[\n\\begin{aligned}\ny(n)\n&= \\sum_{i=0}^{K} b_i\\, x(n-i) \\\\\n&= b_0 x(n) + b_1 x(n-1) + \\cdots + b_K x(n-K).\n\\end{aligned}\n\\]\n\n\\(b_i\\): FIR filter coefficients.\n\\(K+1\\): number of taps (filter length).\n\nECE view:\n\nThis is just a weighted moving sum of current and past samples.\nCommon in audio EQs, channel equalizers, anti-aliasing filters, etc.\n\n\nRelate to a simple moving average filter used in lab: if all \\(b_i = 1/(K+1)\\), this is a smoothing FIR lowpass.\nMake sure students see that there is no dependence on past outputs \\(y(n-1), y(n-2),\\dots\\). That’s the key difference vs IIR."
+  },
+  {
+    "objectID": "dsp_71.html#fir-filter-format-z-domain-and-transfer-function",
+    "href": "dsp_71.html#fir-filter-format-z-domain-and-transfer-function",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "7.1 FIR Filter Format – Z-Domain and Transfer Function",
+    "text": "7.1 FIR Filter Format – Z-Domain and Transfer Function\nApply the \\(z\\)-transform to the difference equation:\n\\[\nY(z) = \\sum_{i=0}^{K} b_i z^{-i} X(z).\n\\]\nFactor out \\(X(z)\\) and divide:\n\\[\nH(z) = \\frac{Y(z)}{X(z)}\n= b_0 + b_1 z^{-1} + \\cdots + b_K z^{-K}.\n\\]\nKey structural properties:\n\nNumerator only, no denominator (other than 1).\nAll poles are at the origin \\(z = 0\\) (or equivalently, there is only a zero-order denominator).\nImpulse response \\(h(n)\\) has only \\(K+1\\) nonzero samples → finite impulse response.\n\n\nExplicitly mention:\n\nFor FIR, the transfer function is a polynomial in \\(z^{-1}\\).\nAll poles at the origin ⇒ the ROC includes the unit circle ⇒ BIBO stability guaranteed for any coefficients.\n\nPrepare to connect \\(H(z)\\) to \\(H(e^{j\\Omega})\\) by setting \\(z = e^{j\\Omega}\\)."
+  },
+  {
+    "objectID": "dsp_71.html#example-7.1-reading-fir-format-from-an-equation",
+    "href": "dsp_71.html#example-7.1-reading-fir-format-from-an-equation",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Example 7.1 – Reading FIR Format from an Equation",
+    "text": "Example 7.1 – Reading FIR Format from an Equation\nGiven\n\\[\ny(n) = 0.1 x(n) + 0.25 x(n-1) + 0.2 x(n-2),\n\\]\ndetermine:\n\nTransfer function \\(H(z)\\)\nFilter length\nCoefficients \\(b_i\\)\nImpulse response \\(h(n)\\)\n\nSolution:\nZ-transform:\n\\[\nY(z) = 0.1 X(z) + 0.25 z^{-1} X(z) + 0.2 z^{-2} X(z).\n\\]"
+  },
+  {
+    "objectID": "dsp_71.html#fir-filters-why-theyre-attractive",
+    "href": "dsp_71.html#fir-filters-why-theyre-attractive",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "FIR Filters – Why They’re Attractive",
+    "text": "FIR Filters – Why They’re Attractive\nFrom Example 7.1 and the general form, we can say:\n\nStability:\n\n\\(H(z) = b_0 + b_1 z^{-1} + \\cdots + b_K z^{-K}\\)\nAll poles at the origin.\nFinite-length impulse response ⇒ always BIBO stable.\n\nImplementation:\n\nOnly involves multiplies and adds on the input samples.\nEasy to implement in hardware (FIR “tap delay line”) or software (convolution).\n\nLinear phase (if symmetric coefficients):\n\nIf \\(b_n\\) are symmetric, then phase is (approximately) linear ⇒ no waveform distortion in passband."
+  },
+  {
+    "objectID": "dsp_71.html#visual-fir-filter-as-a-tap-delay-line",
+    "href": "dsp_71.html#visual-fir-filter-as-a-tap-delay-line",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Visual: FIR Filter as a Tap Delay Line",
+    "text": "Visual: FIR Filter as a Tap Delay Line\n\n\n\n\n\n\n\n\n\n\n\n\nUse this diagram to reinforce that FIR is just:\n\nShift register (delays)\nMultipliers by coefficients\nAdders\n\nEasy mapping to FPGA or DSP processor implementation."
+  },
+  {
+    "objectID": "dsp_71.html#fourier-transform-design-starting-from-an-ideal-filter",
+    "href": "dsp_71.html#fourier-transform-design-starting-from-an-ideal-filter",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "7.2 Fourier Transform Design – Starting from an Ideal Filter",
+    "text": "7.2 Fourier Transform Design – Starting from an Ideal Filter\nWe begin with an ideal lowpass filter with normalized cutoff frequency \\(\\Omega_c\\). Its ideal frequency response is:\n\\[\nH(e^{j\\Omega}) =\n\\begin{cases}\n1, & 0 \\le |\\Omega| \\le \\Omega_c, \\\\\n0, & \\Omega_c \\le |\\Omega| \\le \\pi.\n\\end{cases}\n\\]\n\n\\(\\Omega\\) is the normalized digital frequency in radians/sample.\nThis is a brick-wall (perfect) lowpass filter on the unit circle.\n\n\n\n\nFIG. 7.1 Frequency response of an ideal lowpass filter.\n\n\n\nRemind:\n\nThe DTFT is periodic in \\(\\Omega\\) with period \\(2\\pi\\).\nThe magnitude response describes how each discrete-time sinusoid is scaled.\n\nMake sure they understand that this filter is non-realizable directly (noncausal, infinite support), but it’s a good starting point."
+  },
+  {
+    "objectID": "dsp_71.html#ideal-lowpass-periodic-extension",
+    "href": "dsp_71.html#ideal-lowpass-periodic-extension",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Ideal Lowpass – Periodic Extension",
+    "text": "Ideal Lowpass – Periodic Extension\nBecause \\(H(e^{j\\Omega})\\) is \\(2\\pi\\)-periodic, we can extend it beyond \\(-\\pi\\) to \\(\\pi\\):\n\n\n\nFIG. 7.2 Periodicity of the ideal lowpass frequency response.\n\n\nIdea:\n\nView \\(H(e^{j\\Omega})\\) as a periodic function of \\(\\Omega\\).\nThen express it as a Fourier series in \\(\\Omega\\).\nThe Fourier series coefficients in \\(\\Omega\\)-domain will turn out to be the impulse response \\(h(n)\\)."
+  },
+  {
+    "objectID": "dsp_71.html#frequency-domain-fourier-series-representation",
+    "href": "dsp_71.html#frequency-domain-fourier-series-representation",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Frequency-Domain Fourier Series Representation",
+    "text": "Frequency-Domain Fourier Series Representation\nWrite the periodic spectrum as a complex Fourier series in \\(\\Omega\\):\n\\[\nH(e^{j\\Omega}) = \\sum_{n=-\\infty}^{\\infty} c_n e^{-j \\omega_0 n \\Omega}.\n\\]\nFourier series coefficients:\n\\[\nc_n = \\frac{1}{2\\pi} \\int_{-\\pi}^{\\pi} H(e^{j\\Omega}) e^{j \\omega_0 n \\Omega} \\, d\\Omega.\n\\]\nFor our case, the period is \\(2\\pi\\), so:\n\\[\n\\omega_0 = \\frac{2\\pi}{2\\pi} = 1.\n\\]"
+  },
+  {
+    "objectID": "dsp_71.html#ideal-lowpass-desired-infinite-impulse-response",
+    "href": "dsp_71.html#ideal-lowpass-desired-infinite-impulse-response",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Ideal Lowpass – Desired (Infinite) Impulse Response",
+    "text": "Ideal Lowpass – Desired (Infinite) Impulse Response\nApply the formula\n\\[\nh(n) = \\frac{1}{2\\pi} \\int_{-\\pi}^{\\pi} H(e^{j\\Omega}) e^{j n \\Omega} \\, d\\Omega\n\\]\nwith \\(H(e^{j\\Omega}) = 1\\) for \\(|\\Omega|\\le \\Omega_c\\) and 0 otherwise.\nFor \\(n = 0\\):\n\\[\n\\begin{aligned}\nh(0)\n&= \\frac{1}{2\\pi} \\int_{-\\pi}^{\\pi} H(e^{j\\Omega})\\, d\\Omega \\\\\n&= \\frac{1}{2\\pi} \\int_{-\\Omega_c}^{\\Omega_c} 1 \\, d\\Omega \\\\\n&= \\frac{\\Omega_c}{\\pi}.\n\\end{aligned}\n\\]"
+  },
+  {
+    "objectID": "dsp_71.html#ideal-lowpass-impulse-response-shape",
+    "href": "dsp_71.html#ideal-lowpass-impulse-response-shape",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Ideal Lowpass Impulse Response Shape",
+    "text": "Ideal Lowpass Impulse Response Shape\n\n\n\nFIG. 7.3 Impulse response of an ideal digital lowpass filter.\n\n\nObservations:\n\n\\(h(n)\\) is infinite-length (exists for all integer \\(n\\)).\nSymmetric around \\(n = 0\\): \\(h(n) = h(-n)\\).\nAmplitude decays roughly like \\(1/|n|\\).\n\nThis is essentially a discrete-time sinc function:\n\\[\nh(n) \\propto \\frac{\\sin(\\Omega_c n)}{n}.\n\\]\n\nConnect to continuous-time sinc used for ideal lowpass filter in analog and in sampling/reconstruction theory.\nMention that evenness of \\(H(e^{j\\Omega})\\) (symmetry in frequency) leads to a real, even impulse response \\(h(n)\\)."
+  },
+  {
+    "objectID": "dsp_71.html#from-ideal-infinite-impulse-response-to-fir",
+    "href": "dsp_71.html#from-ideal-infinite-impulse-response-to-fir",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "From Ideal Infinite Impulse Response to FIR",
+    "text": "From Ideal Infinite Impulse Response to FIR\nThe ideal impulse response is noncausal and infinite:\n\\[\nH(z) = \\sum_{n=-\\infty}^{\\infty} h(n) z^{-n}\n= \\cdots + h(-2) z^{2} + h(-1) z^{1} + h(0) + h(1) z^{-1} + \\cdots\n\\]\nProblems:\n\nInfinite number of taps → impossible to implement exactly.\nContains positive powers of \\(z\\) ⇒ noncausal (depends on future inputs)."
+  },
+  {
+    "objectID": "dsp_71.html#summary-table-for-ideal-fir-impulse-responses",
+    "href": "dsp_71.html#summary-table-for-ideal-fir-impulse-responses",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Summary Table for Ideal FIR Impulse Responses",
+    "text": "Summary Table for Ideal FIR Impulse Responses\nTable 7.1 (noncausal ideal coefficients \\(h(n)\\), \\(-M \\le n \\le M\\)):\n\n\n\n\n\n\n\nFilter Type\nIdeal Impulse Response \\(h(n)\\)\n\n\n\n\nLowpass\n\\(h(0) = \\dfrac{\\Omega_c}{\\pi}\\) and \\(h(n) = \\dfrac{\\sin(\\Omega_c n)}{n\\pi},\\; n\\neq 0\\)\n\n\nHighpass\n\\(h(0) = \\dfrac{\\pi - \\Omega_c}{\\pi}\\) and \\(h(n) = -\\dfrac{\\sin(\\Omega_c n)}{n\\pi},\\; n\\neq 0\\)\n\n\nBandpass\n\\(h(0) = \\dfrac{\\Omega_H - \\Omega_L}{\\pi}\\) and \\(h(n) = \\dfrac{\\sin(\\Omega_H n)}{n\\pi} - \\dfrac{\\sin(\\Omega_L n)}{n\\pi},\\; n\\neq 0\\)\n\n\nBandstop\n\\(h(0) = \\dfrac{\\pi - \\Omega_H + \\Omega_L}{\\pi}\\) and \\(h(n) = -\\dfrac{\\sin(\\Omega_H n)}{n\\pi} + \\dfrac{\\sin(\\Omega_L n)}{n\\pi},\\; n\\neq 0\\)\n\n\n\nThen make it causal by shifting: \\(b_n = h(n-M)\\).\n\nPoint out that all these formulas come from applying the inverse DTFT to the appropriate ideal magnitude response (rectangular in some band).\nThis table is central: highlight that design = choose type + choose band edges + choose M."
+  },
+  {
+    "objectID": "dsp_71.html#example-7.2-3-tap-lowpass-by-fourier-design",
+    "href": "dsp_71.html#example-7.2-3-tap-lowpass-by-fourier-design",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Example 7.2 – 3-Tap Lowpass by Fourier Design",
+    "text": "Example 7.2 – 3-Tap Lowpass by Fourier Design\nGoal: Design a 3-tap (\\(2M+1=3\\) ⇒ \\(M=1\\)) lowpass FIR with:\n\n\\(f_c = 800\\) Hz, \\(f_s = 8000\\) Hz.\n\n(a) Coefficients via Fourier method\nNormalized cutoff:\n\\[\n\\Omega_c = 2\\pi \\frac{f_c}{f_s} = 2\\pi \\frac{800}{8000} = 0.2\\pi \\; \\text{rad}.\n\\]\nFrom the lowpass formula:\n\\[\nh(0) = \\frac{\\Omega_c}{\\pi} = 0.2,\n\\quad\nh(1) = \\frac{\\sin(0.2\\pi)}{\\pi} \\approx 0.1871,\n\\quad\nh(-1) = h(1) = 0.1871.\n\\]\nShift by \\(M=1\\) to get causal coefficients:\n\\[\n\\begin{aligned}\nb_0 &= h(-1) = 0.1871, \\\\\nb_1 &= h(0) = 0.2, \\\\\nb_2 &= h(1) = 0.1871.\n\\end{aligned}\n\\]"
+  },
+  {
+    "objectID": "dsp_71.html#example-7.2-transfer-function-and-difference-equation",
+    "href": "dsp_71.html#example-7.2-transfer-function-and-difference-equation",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Example 7.2 – Transfer Function and Difference Equation",
+    "text": "Example 7.2 – Transfer Function and Difference Equation\n\nTransfer function:\n\n\\[\nH(z) = 0.1871 + 0.2 z^{-1} + 0.1871 z^{-2}.\n\\]\nDifference equation (inverse \\(z\\)-transform):\n\\[\ny(n) = 0.1871 x(n) + 0.2 x(n-1) + 0.1871 x(n-2).\n\\]\nThis is a symmetric 3-tap FIR lowpass filter."
+  },
+  {
+    "objectID": "dsp_71.html#example-7.2-frequency-response-and-linear-phase",
+    "href": "dsp_71.html#example-7.2-frequency-response-and-linear-phase",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Example 7.2 – Frequency Response and Linear Phase",
+    "text": "Example 7.2 – Frequency Response and Linear Phase\n\nSubstitute \\(z = e^{j\\Omega}\\):\n\n\\[\nH(e^{j\\Omega}) = 0.1871 + 0.2 e^{-j\\Omega} + 0.1871 e^{-j2\\Omega}.\n\\]\nFactor \\(e^{-j\\Omega}\\):\n\\[\n\\begin{aligned}\nH(e^{j\\Omega})\n&= e^{-j\\Omega} \\left( 0.1871 e^{j\\Omega} + 0.2 + 0.1871 e^{-j\\Omega} \\right) \\\\\n&= e^{-j\\Omega} \\left( 0.2 + 0.3742 \\cos\\Omega \\right).\n\\end{aligned}\n\\]\nMagnitude and phase:\n\\[\n|H(e^{j\\Omega})| = \\big|0.2 + 0.3742 \\cos\\Omega\\big|,\n\\]\n\\[\n\\angle H(e^{j\\Omega}) =\n\\begin{cases}\n-\\Omega, & 0.2 + 0.3742 \\cos\\Omega &gt; 0, \\\\\n-\\Omega + \\pi, & 0.2 + 0.3742 \\cos\\Omega &lt; 0.\n\\end{cases}\n\\]"
+  },
+  {
+    "objectID": "dsp_71.html#visual-3-tap-vs-17-tap-lowpass-filters",
+    "href": "dsp_71.html#visual-3-tap-vs-17-tap-lowpass-filters",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Visual: 3-Tap vs 17-Tap Lowpass Filters",
+    "text": "Visual: 3-Tap vs 17-Tap Lowpass Filters\n\n\n\nFIG. 7.5 Magnitude and phase responses of 3-tap (dash-dotted) and 17-tap (solid) lowpass FIR filters with \\(\\Omega_c = 0.2\\pi\\)."
+  },
+  {
+    "objectID": "dsp_71.html#gibbs-effect-why-ripples-appear",
+    "href": "dsp_71.html#gibbs-effect-why-ripples-appear",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Gibbs Effect – Why Ripples Appear",
+    "text": "Gibbs Effect – Why Ripples Appear\nThe passband and stopband ripples in ideal-based FIR design come from:\n\nAbrupt truncation of the infinite impulse response.\n\nAnalogy:\n\nTruncating a continuous-time sinc (multiplying by a rectangular window) produces ripples in frequency.\n\nIn our discrete-time design:\n\nMultiplying the ideal infinite \\(h(n)\\) by a finite-length rectangular window in time ⇒ convolution with sinc-like main/side lobes in frequency ⇒ ripples (Gibbs).\n\nWe will reduce these ripples by using smoother windows (Hanning, Hamming, Blackman, etc.) instead of the abrupt rectangular window."
+  },
+  {
+    "objectID": "dsp_71.html#linear-phase-and-waveform-preservation",
+    "href": "dsp_71.html#linear-phase-and-waveform-preservation",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Linear Phase and Waveform Preservation",
+    "text": "Linear Phase and Waveform Preservation\nBecause the FIR coefficients are symmetric, the filter has linear phase:\n\\[\n\\angle H(e^{j\\Omega}) \\approx -M\\Omega.\n\\]\nIf input is a sinusoid \\(x(n) = A \\sin(\\Omega n)\\), the steady-state output is:\n\\[\ny(n) = A |H(e^{j\\Omega})| \\sin\\big(\\Omega(n - M)\\big).\n\\]\n\nSame frequency.\nSame waveform shape.\nOnly delayed by \\(M\\) samples and scaled in amplitude."
+  },
+  {
+    "objectID": "dsp_71.html#what-if-phase-is-nonlinear",
+    "href": "dsp_71.html#what-if-phase-is-nonlinear",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "What if Phase Is Nonlinear?",
+    "text": "What if Phase Is Nonlinear?\nConsider input (sum of two sinusoids):\n\\[\nx(n) = \\sin(0.05\\pi n) u(n) - \\frac{1}{3} \\sin(0.15\\pi n) u(n).\n\\]\n\nLinear phase filter (delay 8 samples):\n\\[\ny_1(n) = \\sin\\big(0.05\\pi(n-8)\\big) - \\frac{1}{3}\\sin\\big(0.15\\pi(n-8)\\big).\n\\]\n\nEntire signal looks like delayed copy of \\(x(n)\\).\n\nNonlinear phase filter with \\(90^\\circ\\) phase shift at both frequencies:\n\\[\ny_2(n) = \\sin(0.05\\pi n - \\pi/2) - \\frac{1}{3} \\sin(0.15\\pi n - \\pi/2).\n\\]\n\nDelay depends on frequency (10 samples vs \\(10/3\\) samples).\nWaveform shape changes: phase distortion."
+  },
+  {
+    "objectID": "dsp_71.html#example-7.3-5-tap-bandpass-filter",
+    "href": "dsp_71.html#example-7.3-5-tap-bandpass-filter",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Example 7.3 – 5-Tap Bandpass Filter",
+    "text": "Example 7.3 – 5-Tap Bandpass Filter\nSpecs:\n\n\\(f_L = 2000\\) Hz, \\(f_H = 2400\\) Hz, \\(f_s = 8000\\) Hz.\n5 taps ⇒ \\(2M+1 = 5\\) ⇒ \\(M = 2\\).\n\nNormalized edges:\n\\[\n\\Omega_L = 2\\pi \\frac{2000}{8000} = 0.5\\pi,\n\\quad\n\\Omega_H = 2\\pi \\frac{2400}{8000} = 0.6\\pi.\n\\]\nIdeal bandpass impulse (noncausal):\n\\[\nh(0) = \\frac{\\Omega_H - \\Omega_L}{\\pi} = 0.1.\n\\]\n\\[\nh(1) = \\frac{\\sin(0.6\\pi)}{\\pi} - \\frac{\\sin(0.5\\pi)}{\\pi} \\approx -0.01558,\n\\]\n\\[\nh(2) = \\frac{\\sin(1.2\\pi)}{2\\pi} - \\frac{\\sin(\\pi)}{2\\pi} \\approx -0.09355,\n\\]"
+  },
+  {
+    "objectID": "dsp_71.html#example-7.3-observing-gibbs-in-bandpass",
+    "href": "dsp_71.html#example-7.3-observing-gibbs-in-bandpass",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Example 7.3 – Observing Gibbs in Bandpass",
+    "text": "Example 7.3 – Observing Gibbs in Bandpass\n\n\nMATLAB frequency response (Program 7.1) gives:\n\n\n\nFIG. 7.8 Frequency responses for Example 7.3.\n\n\n\nObservations:\n\nPassband peak is ~\\(-10\\) dB instead of 0 dB.\nStopband side lobes swing between roughly -18 and -70 dB (lower) and -25 and -68 dB (upper).\nThis is again Gibbs oscillation, due to abrupt truncation.\n\nFix: Window the impulse response instead of raw truncation."
+  },
+  {
+    "objectID": "dsp_71.html#window-method-motivation",
+    "href": "dsp_71.html#window-method-motivation",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "7.3 Window Method – Motivation",
+    "text": "7.3 Window Method – Motivation\nWe know:\n\nTruncating the ideal, infinite \\(h(n)\\) with a rectangular window (just cutting off) gives Gibbs ripples.\n\nIdea:\n\nReplace sharp truncation with smoother weighting that tapers to zero at the ends.\n\nMathematically:\n\\[\nh_w(n) = h(n)\\, w(n),\n\\]\nwhere \\(w(n)\\) is a window function, nonzero for \\(-M \\le n \\le M\\), symmetric around 0.\nEffect in frequency:\n\nConvolution of ideal response with window’s spectrum.\nTapered windows reduce side lobes (ripples) but broaden main lobe (wider transition)."
+  },
+  {
+    "objectID": "dsp_71.html#common-window-functions",
+    "href": "dsp_71.html#common-window-functions",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Common Window Functions",
+    "text": "Common Window Functions\n\nRectangular:\n\n\\[\nw_{\\text{rec}}(n) = 1,\\quad -M \\le n \\le M.\n\\]\n\nTriangular (Bartlett):\n\n\\[\nw_{\\text{tri}}(n) = 1 - \\frac{|n|}{M},\\quad -M \\le n \\le M.\n\\]\n\nHanning:\n\n\\[\nw_{\\text{han}}(n) = 0.5 + 0.5\\cos\\left(\\frac{\\pi n}{M}\\right),\\quad -M \\le n \\le M.\n\\]"
+  },
+  {
+    "objectID": "dsp_71.html#example-7.4-applying-hamming-window-to-fir-coefficients",
+    "href": "dsp_71.html#example-7.4-applying-hamming-window-to-fir-coefficients",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Example 7.4 – Applying Hamming Window to FIR Coefficients",
+    "text": "Example 7.4 – Applying Hamming Window to FIR Coefficients\nGiven noncausal symmetric coefficients (ideal lowpass):\n\\[\nh(0)=0.25,\\; h(\\pm1)=0.22508,\\; h(\\pm2)=0.15915,\\; h(\\pm3)=0.07503.\n\\]\nUse Hamming window with \\(M=3\\):\n\n\nWindow values:\n\\[\n\\begin{aligned}\nw_{\\text{ham}}(0) &= 0.54 + 0.46 \\cos(0) = 1.0, \\\\\nw_{\\text{ham}}(\\pm 1) &= 0.77, \\\\\nw_{\\text{ham}}(\\pm 2) &= 0.31, \\\\\nw_{\\text{ham}}(\\pm 3) &= 0.08.\n\\end{aligned}\n\\]\n\nWindowed coefficients:\n\\[\n\\begin{aligned}\nh_w(0) &= 0.25 \\times 1 = 0.25, \\\\\nh_w(\\pm1) &= 0.22508 \\times 0.77 \\approx 0.17331, \\\\\nh_w(\\pm2) &= 0.15915 \\times 0.31 \\approx 0.04934, \\\\\nh_w(\\pm3) &= 0.07503 \\times 0.08 \\approx 0.00600.\n\\end{aligned}\n\\]"
+  },
+  {
+    "objectID": "dsp_71.html#fir-design-via-windowing-3-step-recipe",
+    "href": "dsp_71.html#fir-design-via-windowing-3-step-recipe",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "FIR Design via Windowing – 3-Step Recipe",
+    "text": "FIR Design via Windowing – 3-Step Recipe\n\nDesign ideal truncated impulse response \\(h(n)\\):\n\nUse formulas in Table 7.1.\nChoose filter type (lowpass, highpass, bandpass, bandstop).\nChoose \\(M\\) (length \\(2M+1\\)).\n\nApply window:\n\\[\nh_w(n) = h(n)\\, w(n),\\quad -M \\le n \\le M.\n\\]\n\nChoose \\(w(n)\\): rectangular, Hanning, Hamming, Blackman, etc.\n\nMake it causal by shifting \\(M\\) samples:\n\\[\nb_n = h_w(n - M),\\quad n = 0, 1, \\dots, 2M.\n\\]\n\nImplement FIR with coefficients \\(b_n\\)."
+  },
+  {
+    "objectID": "dsp_71.html#example-7.5-3-tap-lowpass-with-hamming-window",
+    "href": "dsp_71.html#example-7.5-3-tap-lowpass-with-hamming-window",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Example 7.5 – 3-Tap Lowpass with Hamming Window",
+    "text": "Example 7.5 – 3-Tap Lowpass with Hamming Window\nSame spec as Example 7.2:\n\n\\(f_c = 800\\) Hz, \\(f_s = 8000\\) Hz ⇒ \\(\\Omega_c = 0.2\\pi\\).\n\\(2M+1 = 3\\) ⇒ \\(M = 1\\).\n\nIdeal coefficients (from Example 7.2):\n\\[\nh(0) = 0.2,\\quad h(\\pm1) = 0.1871.\n\\]\nHamming window (for \\(M=1\\)):\n\\[\nw_{\\text{ham}}(0) = 1,\\quad w_{\\text{ham}}(\\pm1) = 0.08.\n\\]"
+  },
+  {
+    "objectID": "dsp_71.html#example-7.5-frequency-response",
+    "href": "dsp_71.html#example-7.5-frequency-response",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Example 7.5 – Frequency Response",
+    "text": "Example 7.5 – Frequency Response\nFrequency response:\n\\[\nH(e^{j\\Omega}) = e^{-j\\Omega}\\big(0.2 + 0.02994\\cos\\Omega\\big).\n\\]\nMagnitude:\n\\[\n|H(e^{j\\Omega})| = \\big|0.2 + 0.02994\\cos\\Omega\\big|.\n\\]\nPhase:\n\\[\n\\angle H(e^{j\\Omega})=\n\\begin{cases}\n-\\Omega, & 0.2 + 0.02994\\cos\\Omega &gt; 0, \\\\\n-\\Omega + \\pi, & 0.2 + 0.02994\\cos\\Omega &lt; 0.\n\\end{cases}\n\\]\nSample values (Table 7.4) show slightly reduced peak magnitude and less ripple compared to the unwindowed case."
+  },
+  {
+    "objectID": "dsp_71.html#example-7.6-5-tap-bandstop-with-hamming-window",
+    "href": "dsp_71.html#example-7.6-5-tap-bandstop-with-hamming-window",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Example 7.6 – 5-Tap Bandstop with Hamming Window",
+    "text": "Example 7.6 – 5-Tap Bandstop with Hamming Window\nSpecs:\n\nBandreject (notch) from 2000–2400 Hz.\n\\(f_s = 8000\\) Hz.\n5 taps ⇒ \\(M=2\\).\n\nIdeal bandstop \\(h(n)\\) (Table 7.1):\n\\[\nh(0) = \\frac{\\pi - \\Omega_H + \\Omega_L}{\\pi} = 0.9,\n\\]\n\\[\nh(1) \\approx 0.01558, \\quad h(2) \\approx 0.09355,\n\\quad h(-1)=h(1),\\; h(-2)=h(2).\n\\]\nHamming window (\\(M=2\\)):\n\\[\nw_{\\text{ham}}(0) = 1,\\quad w_{\\text{ham}}(\\pm1)=0.54,\\quad w_{\\text{ham}}(\\pm2)=0.08.\n\\]"
+  },
+  {
+    "objectID": "dsp_71.html#matlab-helper-function-firwd",
+    "href": "dsp_71.html#matlab-helper-function-firwd",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "MATLAB Helper Function: firwd",
+    "text": "MATLAB Helper Function: firwd\nFor larger designs, we let MATLAB do the heavy lifting. Custom function:\nB = firwd(N, Ftype, WnL, WnH, Wtype)\n\nN: number of taps (must be odd).\nFtype:\n\n1 = lowpass\n2 = highpass\n3 = bandpass\n4 = bandreject\n\nWnL, WnH: lower and upper cutoff frequencies (in radians).\n\nFor lowpass: set WnH = 0, use WnL = Ω_c.\nFor highpass: set WnL = 0, use WnH = Ω_c."
+  },
+  {
+    "objectID": "dsp_71.html#example-7.7-25-tap-lowpass-rectangular-vs-hamming",
+    "href": "dsp_71.html#example-7.7-25-tap-lowpass-rectangular-vs-hamming",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Example 7.7 – 25-Tap Lowpass: Rectangular vs Hamming",
+    "text": "Example 7.7 – 25-Tap Lowpass: Rectangular vs Hamming\nSpecs:\n\nLowpass, \\(f_c = 2000\\) Hz, \\(f_s = 8000\\) Hz.\n25 taps ⇒ \\(M=12\\).\n\\(\\Omega_c = 0.5\\pi\\).\n\nUse firwd twice:\n\nRectangular window (Wtype=1).\nHamming window (Wtype=4)."
+  },
+  {
+    "objectID": "dsp_71.html#comparing-hanning-hamming-blackman",
+    "href": "dsp_71.html#comparing-hanning-hamming-blackman",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Comparing Hanning, Hamming, Blackman",
+    "text": "Comparing Hanning, Hamming, Blackman\n\n\nFor the same lowpass spec (25 taps, \\(f_c=2000\\) Hz):\n\n\n\nFIG. 7.13 Magnitude responses with different windows: Hanning vs Hamming vs Blackman\n\n\n\nQualitative summary:\n\nHanning: medium main-lobe width, moderate side lobes (~-44 dB).\nHamming: similar main-lobe width, lower side lobes (~-53 dB).\nBlackman: wider main lobe, very low side lobes (~-74 dB).\n\nTrade-off:\n\nBetter stopband attenuation ⇒ more main-lobe widening (worse transition)."
+  },
+  {
+    "objectID": "dsp_71.html#window-performance-and-length-estimation-table-7.7",
+    "href": "dsp_71.html#window-performance-and-length-estimation-table-7.7",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Window Performance and Length Estimation (Table 7.7)",
+    "text": "Window Performance and Length Estimation (Table 7.7)\nFor normalized transition width\n\\[\n\\Delta f = \\frac{|f_{\\text{stop}} - f_{\\text{pass}}|}{f_s},\n\\]"
+  },
+  {
+    "objectID": "dsp_71.html#example-7.8-lowpass-length-from-specs",
+    "href": "dsp_71.html#example-7.8-lowpass-length-from-specs",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Example 7.8 – Lowpass Length from Specs",
+    "text": "Example 7.8 – Lowpass Length from Specs\nSpecs:\n\nPassband: 0–1850 Hz.\nStopband: 2150–4000 Hz.\nStopband attenuation: 20 dB.\nPassband ripple: 1 dB.\n\\(f_s = 8000\\) Hz.\n\nCompute normalized transition width:\n\\[\n\\Delta f = \\frac{|2150 - 1850|}{8000} = 0.0375.\n\\]"
+  },
+  {
+    "objectID": "dsp_71.html#example-7.8-effect-on-speech",
+    "href": "dsp_71.html#example-7.8-effect-on-speech",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Example 7.8 – Effect on Speech",
+    "text": "Example 7.8 – Effect on Speech\nApply this lowpass FIR to speech sampled at 8 kHz:\n\n\n\nFIG. 7.15(A) Original speech vs lowpass filtered speech."
+  },
+  {
+    "objectID": "dsp_71.html#example-7.9-highpass-filter-from-specs",
+    "href": "dsp_71.html#example-7.9-highpass-filter-from-specs",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Example 7.9 – Highpass Filter from Specs",
+    "text": "Example 7.9 – Highpass Filter from Specs\nSpecs:\n\nStopband: 0–1500 Hz.\nPassband: 2500–4000 Hz.\nStopband attenuation: 40 dB.\nPassband ripple: 0.1 dB.\n\\(f_s = 8000\\) Hz.\n\nTransition width:\n\\[\n\\Delta f = \\frac{|2500 - 1500|}{8000} = 0.125.\n\\]\nFrom Table 7.7:\n\nNeed stopband ∼ 40 dB and small ripple ⇒ Hanning (≈44 dB, 0.0546 dB ripple) is acceptable."
+  },
+  {
+    "objectID": "dsp_71.html#example-7.9-effect-on-speech",
+    "href": "dsp_71.html#example-7.9-effect-on-speech",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Example 7.9 – Effect on Speech",
+    "text": "Example 7.9 – Effect on Speech\nFrequency response:\n\n\n\nFIG. 7.16 Highpass FIR designed with Hanning window."
+  },
+  {
+    "objectID": "dsp_71.html#example-7.10-bandpass-design-from-specs",
+    "href": "dsp_71.html#example-7.10-bandpass-design-from-specs",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Example 7.10 – Bandpass Design from Specs",
+    "text": "Example 7.10 – Bandpass Design from Specs\nSpecs:\n\nLower stopband: 0–500 Hz.\nPassband: 1600–2300 Hz.\nUpper stopband: 3500–4000 Hz.\nStopband attenuation: 50 dB.\nPassband ripple: 0.05 dB.\n\\(f_s = 8000\\) Hz.\n\nCompute transition widths:\n\\[\n\\Delta f_1 = \\frac{1600-500}{8000} = 0.1375,\n\\quad\n\\Delta f_2 = \\frac{3500-2300}{8000} = 0.15.\n\\]"
+  },
+  {
+    "objectID": "dsp_71.html#example-7.10-bandpass-on-speech",
+    "href": "dsp_71.html#example-7.10-bandpass-on-speech",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Example 7.10 – Bandpass on Speech",
+    "text": "Example 7.10 – Bandpass on Speech\nFrequency response:\n\n\n\nFIG. 7.18 Bandpass response via Hamming window.\n\n\nCoefficients in Table 7.9."
+  },
+  {
+    "objectID": "dsp_71.html#example-7.11-bandstop-design-from-specs",
+    "href": "dsp_71.html#example-7.11-bandstop-design-from-specs",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Example 7.11 – Bandstop Design from Specs",
+    "text": "Example 7.11 – Bandstop Design from Specs\nSpecs:\n\nLower cutoff: 1250 Hz.\nLower transition width: 1500 Hz.\nUpper cutoff: 2850 Hz.\nUpper transition width: 1300 Hz.\nStopband attenuation: 60 dB.\nPassband ripple: 0.02 dB.\n\\(f_s = 8000\\) Hz.\n\nTransition widths:\n\\[\n\\Delta f_1 = \\frac{1500}{8000} = 0.1875,\\quad\n\\Delta f_2 = \\frac{1300}{8000} = 0.1625.\n\\]\nNeed ≈60 dB attenuation ⇒ Blackman window (~74 dB)."
+  },
+  {
+    "objectID": "dsp_71.html#example-7.11-bandstop-on-speech",
+    "href": "dsp_71.html#example-7.11-bandstop-on-speech",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Example 7.11 – Bandstop on Speech",
+    "text": "Example 7.11 – Bandstop on Speech\nFrequency response:\n\n\n\nFIG. 7.20 Bandstop FIR with Blackman window.\n\n\nCoefficients in Table 7.10."
+  },
+  {
+    "objectID": "dsp_71.html#in-class-practice-designing-a-simple-fir",
+    "href": "dsp_71.html#in-class-practice-designing-a-simple-fir",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "In-Class Practice – Designing a Simple FIR",
+    "text": "In-Class Practice – Designing a Simple FIR\nProblem:\nDesign a 7-tap lowpass FIR filter (\\(N=7\\), so \\(M=3\\)) with:\n\n\\(f_c = 1000\\) Hz, \\(f_s = 8000\\) Hz.\nUse the Hanning window.\n\nTasks:\n\nCompute \\(\\Omega_c\\).\nUse Table 7.1 to compute noncausal ideal \\(h(n)\\), \\(-3 \\le n \\le 3\\).\nCompute Hanning window \\(w_{\\text{han}}(n)\\), \\(-3 \\le n \\le 3\\).\nCompute \\(h_w(n) = h(n) w(n)\\).\nShift by \\(M=3\\) to find causal \\(b_0,\\dots,b_6\\).\n\n\nWork through one or two coefficients with the class, then let them complete in pairs.\nOptionally, show how to verify frequency response using MATLAB or Python."
+  },
+  {
+    "objectID": "dsp_71.html#key-takeaways-conceptual",
+    "href": "dsp_71.html#key-takeaways-conceptual",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Key Takeaways – Conceptual",
+    "text": "Key Takeaways – Conceptual\n\nFIR format:\n\n\\(y(n) = \\sum b_i x(n-i)\\),\n\\(H(z) = \\sum b_i z^{-i}\\).\nAlways BIBO stable, easy to implement as tap delay line.\n\nFourier design method:\n\nStart from ideal frequency response \\(H_d(e^{j\\Omega})\\).\nUse inverse DTFT to find ideal \\(h_d(n)\\).\nTruncate and shift to get practical FIR.\n\nGibbs effect:\n\nAbrupt truncation (rectangular window) causes ripples in passband/stopband.\n\nLinear phase:\n\nSymmetric FIR coefficients (odd length) ⇒ \\(\\angle H(e^{j\\Omega})\\) is linear in \\(\\Omega\\).\nAll passband components delayed by same number of samples ⇒ no phase distortion."
+  },
+  {
+    "objectID": "dsp_71.html#key-takeaways-window-method-and-design-rules",
+    "href": "dsp_71.html#key-takeaways-window-method-and-design-rules",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Key Takeaways – Window Method and Design Rules",
+    "text": "Key Takeaways – Window Method and Design Rules\n\nWindow method:\n\n\\(h_w(n) = h_d(n)\\, w(n)\\).\nSmoother windows (Hanning, Hamming, Blackman) reduce ripple (side lobes) but enlarge transition width (main lobe).\n\nWindow choices (rough performance):\n\nRectangular: short \\(N\\), poor attenuation (~21 dB).\nHanning: moderate \\(N\\), ~44 dB attenuation.\nHamming: moderate \\(N\\), ~53 dB attenuation (good general choice).\nBlackman: long \\(N\\), ~74 dB attenuation (for tight specs)."
+  },
+  {
+    "objectID": "dsp_71.html#formula-summary",
+    "href": "dsp_71.html#formula-summary",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Formula Summary",
+    "text": "Formula Summary\nFIR structure:\n\\[\ny(n) = \\sum_{i=0}^{K} b_i x(n-i),\\quad\nH(z) = \\sum_{i=0}^{K} b_i z^{-i}.\n\\]\nFrequency response (DTFT of impulse response):\n\\[\nH(e^{j\\Omega}) = \\sum_{n=-\\infty}^{\\infty} h(n) e^{-jn\\Omega}.\n\\]\nInverse DTFT (design equation):\n\\[\nh(n) = \\frac{1}{2\\pi}\\int_{-\\pi}^{\\pi} H(e^{j\\Omega}) e^{jn\\Omega} \\, d\\Omega.\n\\]"
+  },
+  {
+    "objectID": "dsp_71.html#how-to-use-this-interactive-deck",
+    "href": "dsp_71.html#how-to-use-this-interactive-deck",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "How to Use This Interactive Deck",
+    "text": "How to Use This Interactive Deck\n\nAll code runs in your browser using Pyodide (Python in WebAssembly).\nYou can:\n\nEdit and run Python code ({pyodide} blocks).\nUse sliders and controls ({ojs} blocks) to change parameters.\nSee FIR impulse and frequency responses update live with Plotly.\n\n\nTry to:\n\nChange cutoff frequencies.\nChange filter length (N).\nChange window type.\nObserve the effects on ripples, transition width, and phase.\n\n\nExplain to students that this deck is for exploration. Encourage them to “break” things: choose extreme parameter values and see what happens.\nMake sure the environment is set up with Pyodide, Plotly, and OJS in Quarto. Usually this just works in the browser for Quarto Reveal presentations."
+  },
+  {
+    "objectID": "dsp_71.html#warm-up-evaluate-a-simple-fir-filter-in-python",
+    "href": "dsp_71.html#warm-up-evaluate-a-simple-fir-filter-in-python",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Warm-Up: Evaluate a Simple FIR Filter in Python",
+    "text": "Warm-Up: Evaluate a Simple FIR Filter in Python\nTask: Change the coefficients and input samples and re-run the code.\n\n\n\n\n\n\nTry:\n\nChange b to [1/3, 1/3, 1/3] → moving average lowpass.\nChange x to a step: [0, 0, 1, 1, 1, 1].\n\n\nAfter they run, ask:\n\nIs this filter “smoothing” or “sharpening”?\nCompare shape of y to x.\n\nReinforce the implementation structure: multiply–accumulate over past inputs only."
+  },
+  {
+    "objectID": "dsp_71.html#interactive-impulse-response-of-an-ideal-lowpass-analytical",
+    "href": "dsp_71.html#interactive-impulse-response-of-an-ideal-lowpass-analytical",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Interactive: Impulse Response of an Ideal Lowpass (Analytical)",
+    "text": "Interactive: Impulse Response of an Ideal Lowpass (Analytical)\nWe know the ideal lowpass impulse response is\n\\[\nh(n) =\n\\begin{cases}\n\\Omega_c / \\pi, & n = 0, \\\\\n\\sin(\\Omega_c n) / (\\pi n), & n \\neq 0.\n\\end{cases}\n\\]\nUse the sliders to see how \\(\\Omega_c\\) and truncation index \\(M\\) affect \\(h(n)\\).\n\nviewof oc = Inputs.range([0.1, 0.9], {step: 0.05, label: \"Normalized cutoff Ω_c / π\"})\nviewof M  = Inputs.range([3, 40], {step: 1, label: \"Truncation index M (half-length)\"} )\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAsk:\n\nWhat happens to the shape as M increases?\nDoes h(n) look more “sinc-like” for large M?\n\nPoint out symmetry: \\(h(n) = h(-n)\\)."
+  },
+  {
+    "objectID": "dsp_71.html#interactive-from-ideal-noncausal-hn-to-causal-b_n",
+    "href": "dsp_71.html#interactive-from-ideal-noncausal-hn-to-causal-b_n",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Interactive: From Ideal Noncausal \\(h(n)\\) to Causal \\(b_n\\)",
+    "text": "Interactive: From Ideal Noncausal \\(h(n)\\) to Causal \\(b_n\\)\nWe shift the impulse response by \\(M\\) samples to get a causal FIR:\n\\[\nb_n = h(n - M), \\quad n = 0,\\dots,2M.\n\\]\nInteractively see the effect of the shift.\n\nviewof M_shift = Inputs.range([3, 20], {step: 1, label: \"M (shift, and half-length)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\nPoint out:\n\nThe shape is the same, only shifted right.\nThe causal version starts at n=0; all negative-time samples are moved to positive n."
+  },
+  {
+    "objectID": "dsp_71.html#interactive-magnitude-response-of-an-ideal-truncated-lowpass",
+    "href": "dsp_71.html#interactive-magnitude-response-of-an-ideal-truncated-lowpass",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Interactive: Magnitude Response of an Ideal-Truncated Lowpass",
+    "text": "Interactive: Magnitude Response of an Ideal-Truncated Lowpass\nNow we compute the DTFT of truncated \\(h(n)\\) and plot \\(|H(e^{j\\Omega})|\\).\n\nviewof oc2 = Inputs.range([0.1, 0.9], {step: 0.05, label: \"Normalized cutoff Ω_c / π\"})\nviewof M2  = Inputs.range([5, 60], {step: 1, label: \"M (truncation index)\"} )\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExplore:\n\nIncrease \\(M\\) ⇒ transition narrows, side lobes get closer together.\nObserve Gibbs ripples near the cutoff."
+  },
+  {
+    "objectID": "dsp_71.html#interactive-add-a-window-compare-rectangular-vs-hamming",
+    "href": "dsp_71.html#interactive-add-a-window-compare-rectangular-vs-hamming",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Interactive: Add a Window – Compare Rectangular vs Hamming",
+    "text": "Interactive: Add a Window – Compare Rectangular vs Hamming\nWe now apply a window to \\(h(n)\\):\n\\[\nh_w(n) = h(n) w(n).\n\\]\nCompare rectangular and Hamming windows.\n\nviewof oc3 = Inputs.range([0.1, 0.9], {step: 0.05, label: \"Normalized cutoff Ω_c / π\"})\nviewof M3  = Inputs.range([5, 60], {step: 1, label: \"M (half-length)\"} )\nviewof wtype = Inputs.select(\n  [\"Rectangular\", \"Hamming\", \"Both\"],\n  {label: \"Window type\", value: \"Both\"}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nObserve:\n\nRectangular: sharper transition, higher side lobes.\nHamming: slightly wider main lobe, much lower side lobes."
+  },
+  {
+    "objectID": "dsp_71.html#interactive-window-choices-hanning-vs-hamming-vs-blackman",
+    "href": "dsp_71.html#interactive-window-choices-hanning-vs-hamming-vs-blackman",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Interactive: Window Choices – Hanning vs Hamming vs Blackman",
+    "text": "Interactive: Window Choices – Hanning vs Hamming vs Blackman\nPlay with different windows and see main-lobe / side-lobe trade-offs.\n\nviewof oc4 = Inputs.range([0.1, 0.9], {step: 0.05, label: \"Normalized cutoff Ω_c / π\"})\nviewof M4  = Inputs.range([10, 80], {step: 2, label: \"M (half-length)\"} )\nviewof wmulti = Inputs.checkbox(\n  [\"Rectangular\", \"Hanning\", \"Hamming\", \"Blackman\"],\n  {label: \"Windows to plot\", value: [\"Rectangular\", \"Hanning\", \"Hamming\", \"Blackman\"]}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTry:\n\nCompare Blackman vs Hamming: note much lower side lobes but wider transition.\nTurn windows on/off to see differences clearly."
+  },
+  {
+    "objectID": "dsp_71.html#interactive-length-estimation-from-specs-table-7.7",
+    "href": "dsp_71.html#interactive-length-estimation-from-specs-table-7.7",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Interactive: Length Estimation from Specs (Table 7.7)",
+    "text": "Interactive: Length Estimation from Specs (Table 7.7)\nUse the rules of thumb to estimate \\(N\\) from transition width \\(\\Delta f\\).\n\nviewof df = Inputs.range([0.01, 0.3], {step: 0.005, label: \"Normalized transition width Δf\"})\nviewof win_choice = Inputs.select(\n  [\"Rectangular\", \"Hanning\", \"Hamming\", \"Blackman\"],\n  {label: \"Window type\", value: \"Hamming\"}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExperiment:\n\nNarrower (f) ⇒ larger (N).\nDifferent windows need different lengths to achieve similar transition widths."
+  },
+  {
+    "objectID": "dsp_71.html#interactive-build-a-lowpass-filter-to-spec-full-workflow",
+    "href": "dsp_71.html#interactive-build-a-lowpass-filter-to-spec-full-workflow",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Interactive: Build a Lowpass Filter to Spec (Full Workflow)",
+    "text": "Interactive: Build a Lowpass Filter to Spec (Full Workflow)\nLet’s approximate a lowpass design with:\n\nPassband edge \\(f_{pass}\\).\nStopband edge \\(f_{stop}\\).\nSampling rate \\(f_s = 8000\\) Hz (fixed).\nChoose window type.\n\n\nviewof fpass = Inputs.range([500, 3500], {step: 100, label: \"Passband edge f_pass (Hz)\", value: 1800})\nviewof fstop = Inputs.range([600, 3900], {step: 100, label: \"Stopband edge f_stop (Hz)\", value: 2200})\nviewof wdesign = Inputs.select(\n  [\"Rectangular\", \"Hanning\", \"Hamming\", \"Blackman\"],\n  {label: \"Window type\", value: \"Hamming\"}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nChallenge:\n\nTry to match the spec from Example 7.8 (0–1850 Hz passband, 2150–4000 Hz stopband).\nCompare your chosen window and N to the textbook’s."
+  },
+  {
+    "objectID": "dsp_71.html#interactive-time-domain-filtering-of-a-sinusoid-sum",
+    "href": "dsp_71.html#interactive-time-domain-filtering-of-a-sinusoid-sum",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Interactive: Time-Domain Filtering of a Sinusoid Sum",
+    "text": "Interactive: Time-Domain Filtering of a Sinusoid Sum\nTest the linear phase property of a symmetric FIR on a sum of sinusoids.\n\nviewof f1 = Inputs.range([200, 1500], {step: 50, label: \"Sinusoid 1 frequency f1 (Hz)\", value: 400})\nviewof f2 = Inputs.range([500, 3000], {step: 50, label: \"Sinusoid 2 frequency f2 (Hz)\", value: 1200})\nviewof Nd = Inputs.range([5, 41], {step: 2, label: \"Filter length N (odd)\", value: 17})\nviewof ocd = Inputs.range([0.1, 0.9], {step: 0.05, label: \"Normalized cutoff Ω_c / π for lowpass\", value: 0.4})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExplore:\n\nAdjust \\(f_1\\) and \\(f_2\\) to be both below cutoff, both above, or one below and one above.\nWatch how the waveform shape and delay change."
+  },
+  {
+    "objectID": "dsp_71.html#summary-next-steps",
+    "href": "dsp_71.html#summary-next-steps",
+    "title": "7.1 FIR Filter Design: Format, Fourier Design, and Windows",
+    "section": "Summary & Next Steps",
+    "text": "Summary & Next Steps\nIn this interactive deck you:\n\nImplemented FIR filtering in Python.\nBuilt ideal lowpass impulse responses and made them causal.\nVisualized the Gibbs effect with finite-length truncation.\nApplied different windows and saw main-lobe / side-lobe trade-offs.\nUsed spec-based formulas to estimate FIR length and design complete filters.\nObserved linear-phase behavior in the time domain.\n\nSuggested follow-ups:\n\nExtend these examples to highpass, bandpass, and bandstop designs.\nReplace sinusoids with real speech or music clips and listen to the effect (in a full Python or MATLAB environment).\nExplore automated design functions (firwin in SciPy, fir1 in MATLAB) and compare with your manual designs.\n\n\nEncourage students to save their favorite designs (cutoffs, N, window) and bring them to lab.\nYou can ask them to explain in a short paragraph:\n\nWhy they chose that window.\nHow many taps they used and why.\nWhat trade-offs they observed in the magnitude response."
   },
   {
     "objectID": "dsp_61.html#learning-objectives",
@@ -665,405 +1057,6 @@
     "text": "Try This: Design Your Own Filter\n\nPick a filter type (lowpass, highpass, bandpass, bandstop).\nDefine a simple FIR or low‑order IIR using the code templates above.\nPlot its magnitude response.\nApply it to a synthetic signal (e.g., sum of sinusoids).\n\nThink about:\n\nWhere are the passband and stopband?\nIs the filter stable?\nHow many taps or what order does it have?\n\nUse any of the Pyodide cells above as a starting point and modify coefficients, input signals, or sampling rates."
   },
   {
-    "objectID": "dsp_71.html#learning-objectives",
-    "href": "dsp_71.html#learning-objectives",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Learning Objectives",
-    "text": "Learning Objectives\nBy the end of this session, you should be able to:\n\nWrite and interpret the FIR filter difference equation, transfer function, and impulse response.\nExplain why FIR filters are always BIBO stable and how their structure leads to linear phase.\nUse the Fourier transform design method to derive ideal lowpass (and other) FIR impulse responses.\nUnderstand the Gibbs effect and why simple truncation causes ripples in the passband/stopband.\nExplain how window functions (rectangular, Hanning, Hamming, Blackman, etc.) modify FIR characteristics.\nEstimate FIR length from specs (ripple, attenuation, transition width) and pick an appropriate window.\nConnect FIR filter design to real-world ECE examples (e.g., audio, speech, communication systems).\n\n\nStress that this lecture is about concepts and a concrete recipe:\n\nStart with ideal frequency response.\nUse inverse DTFT to get an infinite impulse response.\nTruncate (→ Gibbs) and then window to control ripples vs transition width.\nShift to make the filter causal.\n\nAlso highlight that all designs here are linear-phase FIR, which is a big selling point in audio and communication systems."
-  },
-  {
-    "objectID": "dsp_71.html#roadmap-for-this-part-of-the-chapter",
-    "href": "dsp_71.html#roadmap-for-this-part-of-the-chapter",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Roadmap for This Part of the Chapter",
-    "text": "Roadmap for This Part of the Chapter\n\n7.1 FIR Filter Format\n7.2 Fourier Transform Design\n7.3 Window Method\n\nWe will:\n\nBuild the basic FIR math model.\nUse Fourier series / transform ideas to design ideal filters.\nTurn ideal, infinite-length impulse responses into practical FIR filters.\nFix truncation artifacts using windowing."
-  },
-  {
-    "objectID": "dsp_71.html#fir-filter-format-difference-equation",
-    "href": "dsp_71.html#fir-filter-format-difference-equation",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "7.1 FIR Filter Format – Difference Equation",
-    "text": "7.1 FIR Filter Format – Difference Equation\nA length-\\((K+1)\\) FIR filter is defined by the input-output relation\n\\[\n\\begin{aligned}\ny(n)\n&= \\sum_{i=0}^{K} b_i\\, x(n-i) \\\\\n&= b_0 x(n) + b_1 x(n-1) + \\cdots + b_K x(n-K).\n\\end{aligned}\n\\]\n\n\\(b_i\\): FIR filter coefficients.\n\\(K+1\\): number of taps (filter length).\n\nECE view:\n\nThis is just a weighted moving sum of current and past samples.\nCommon in audio EQs, channel equalizers, anti-aliasing filters, etc.\n\n\nRelate to a simple moving average filter used in lab: if all \\(b_i = 1/(K+1)\\), this is a smoothing FIR lowpass.\nMake sure students see that there is no dependence on past outputs \\(y(n-1), y(n-2),\\dots\\). That’s the key difference vs IIR."
-  },
-  {
-    "objectID": "dsp_71.html#fir-filter-format-z-domain-and-transfer-function",
-    "href": "dsp_71.html#fir-filter-format-z-domain-and-transfer-function",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "7.1 FIR Filter Format – Z-Domain and Transfer Function",
-    "text": "7.1 FIR Filter Format – Z-Domain and Transfer Function\nApply the \\(z\\)-transform to the difference equation:\n\\[\nY(z) = \\sum_{i=0}^{K} b_i z^{-i} X(z).\n\\]\nFactor out \\(X(z)\\) and divide:\n\\[\nH(z) = \\frac{Y(z)}{X(z)}\n= b_0 + b_1 z^{-1} + \\cdots + b_K z^{-K}.\n\\]\nKey structural properties:\n\nNumerator only, no denominator (other than 1).\nAll poles are at the origin \\(z = 0\\) (or equivalently, there is only a zero-order denominator).\nImpulse response \\(h(n)\\) has only \\(K+1\\) nonzero samples → finite impulse response.\n\n\nExplicitly mention:\n\nFor FIR, the transfer function is a polynomial in \\(z^{-1}\\).\nAll poles at the origin ⇒ the ROC includes the unit circle ⇒ BIBO stability guaranteed for any coefficients.\n\nPrepare to connect \\(H(z)\\) to \\(H(e^{j\\Omega})\\) by setting \\(z = e^{j\\Omega}\\)."
-  },
-  {
-    "objectID": "dsp_71.html#example-7.1-reading-fir-format-from-an-equation",
-    "href": "dsp_71.html#example-7.1-reading-fir-format-from-an-equation",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Example 7.1 – Reading FIR Format from an Equation",
-    "text": "Example 7.1 – Reading FIR Format from an Equation\nGiven\n\\[\ny(n) = 0.1 x(n) + 0.25 x(n-1) + 0.2 x(n-2),\n\\]\ndetermine:\n\nTransfer function \\(H(z)\\)\nFilter length\nCoefficients \\(b_i\\)\nImpulse response \\(h(n)\\)\n\nSolution:\nZ-transform:\n\\[\nY(z) = 0.1 X(z) + 0.25 z^{-1} X(z) + 0.2 z^{-2} X(z).\n\\]"
-  },
-  {
-    "objectID": "dsp_71.html#fir-filters-why-theyre-attractive",
-    "href": "dsp_71.html#fir-filters-why-theyre-attractive",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "FIR Filters – Why They’re Attractive",
-    "text": "FIR Filters – Why They’re Attractive\nFrom Example 7.1 and the general form, we can say:\n\nStability:\n\n\\(H(z) = b_0 + b_1 z^{-1} + \\cdots + b_K z^{-K}\\)\nAll poles at the origin.\nFinite-length impulse response ⇒ always BIBO stable.\n\nImplementation:\n\nOnly involves multiplies and adds on the input samples.\nEasy to implement in hardware (FIR “tap delay line”) or software (convolution).\n\nLinear phase (if symmetric coefficients):\n\nIf \\(b_n\\) are symmetric, then phase is (approximately) linear ⇒ no waveform distortion in passband."
-  },
-  {
-    "objectID": "dsp_71.html#visual-fir-filter-as-a-tap-delay-line",
-    "href": "dsp_71.html#visual-fir-filter-as-a-tap-delay-line",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Visual: FIR Filter as a Tap Delay Line",
-    "text": "Visual: FIR Filter as a Tap Delay Line\n\n\n\n\n\n\n\n\n\n\n\n\nUse this diagram to reinforce that FIR is just:\n\nShift register (delays)\nMultipliers by coefficients\nAdders\n\nEasy mapping to FPGA or DSP processor implementation."
-  },
-  {
-    "objectID": "dsp_71.html#fourier-transform-design-starting-from-an-ideal-filter",
-    "href": "dsp_71.html#fourier-transform-design-starting-from-an-ideal-filter",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "7.2 Fourier Transform Design – Starting from an Ideal Filter",
-    "text": "7.2 Fourier Transform Design – Starting from an Ideal Filter\nWe begin with an ideal lowpass filter with normalized cutoff frequency \\(\\Omega_c\\). Its ideal frequency response is:\n\\[\nH(e^{j\\Omega}) =\n\\begin{cases}\n1, & 0 \\le |\\Omega| \\le \\Omega_c, \\\\\n0, & \\Omega_c \\le |\\Omega| \\le \\pi.\n\\end{cases}\n\\]\n\n\\(\\Omega\\) is the normalized digital frequency in radians/sample.\nThis is a brick-wall (perfect) lowpass filter on the unit circle.\n\n\n\n\nFIG. 7.1 Frequency response of an ideal lowpass filter.\n\n\n\nRemind:\n\nThe DTFT is periodic in \\(\\Omega\\) with period \\(2\\pi\\).\nThe magnitude response describes how each discrete-time sinusoid is scaled.\n\nMake sure they understand that this filter is non-realizable directly (noncausal, infinite support), but it’s a good starting point."
-  },
-  {
-    "objectID": "dsp_71.html#ideal-lowpass-periodic-extension",
-    "href": "dsp_71.html#ideal-lowpass-periodic-extension",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Ideal Lowpass – Periodic Extension",
-    "text": "Ideal Lowpass – Periodic Extension\nBecause \\(H(e^{j\\Omega})\\) is \\(2\\pi\\)-periodic, we can extend it beyond \\(-\\pi\\) to \\(\\pi\\):\n\n\n\nFIG. 7.2 Periodicity of the ideal lowpass frequency response.\n\n\nIdea:\n\nView \\(H(e^{j\\Omega})\\) as a periodic function of \\(\\Omega\\).\nThen express it as a Fourier series in \\(\\Omega\\).\nThe Fourier series coefficients in \\(\\Omega\\)-domain will turn out to be the impulse response \\(h(n)\\)."
-  },
-  {
-    "objectID": "dsp_71.html#frequency-domain-fourier-series-representation",
-    "href": "dsp_71.html#frequency-domain-fourier-series-representation",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Frequency-Domain Fourier Series Representation",
-    "text": "Frequency-Domain Fourier Series Representation\nWrite the periodic spectrum as a complex Fourier series in \\(\\Omega\\):\n\\[\nH(e^{j\\Omega}) = \\sum_{n=-\\infty}^{\\infty} c_n e^{-j \\omega_0 n \\Omega}.\n\\]\nFourier series coefficients:\n\\[\nc_n = \\frac{1}{2\\pi} \\int_{-\\pi}^{\\pi} H(e^{j\\Omega}) e^{j \\omega_0 n \\Omega} \\, d\\Omega.\n\\]\nFor our case, the period is \\(2\\pi\\), so:\n\\[\n\\omega_0 = \\frac{2\\pi}{2\\pi} = 1.\n\\]"
-  },
-  {
-    "objectID": "dsp_71.html#ideal-lowpass-desired-infinite-impulse-response",
-    "href": "dsp_71.html#ideal-lowpass-desired-infinite-impulse-response",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Ideal Lowpass – Desired (Infinite) Impulse Response",
-    "text": "Ideal Lowpass – Desired (Infinite) Impulse Response\nApply the formula\n\\[\nh(n) = \\frac{1}{2\\pi} \\int_{-\\pi}^{\\pi} H(e^{j\\Omega}) e^{j n \\Omega} \\, d\\Omega\n\\]\nwith \\(H(e^{j\\Omega}) = 1\\) for \\(|\\Omega|\\le \\Omega_c\\) and 0 otherwise.\nFor \\(n = 0\\):\n\\[\n\\begin{aligned}\nh(0)\n&= \\frac{1}{2\\pi} \\int_{-\\pi}^{\\pi} H(e^{j\\Omega})\\, d\\Omega \\\\\n&= \\frac{1}{2\\pi} \\int_{-\\Omega_c}^{\\Omega_c} 1 \\, d\\Omega \\\\\n&= \\frac{\\Omega_c}{\\pi}.\n\\end{aligned}\n\\]"
-  },
-  {
-    "objectID": "dsp_71.html#ideal-lowpass-impulse-response-shape",
-    "href": "dsp_71.html#ideal-lowpass-impulse-response-shape",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Ideal Lowpass Impulse Response Shape",
-    "text": "Ideal Lowpass Impulse Response Shape\n\n\n\nFIG. 7.3 Impulse response of an ideal digital lowpass filter.\n\n\nObservations:\n\n\\(h(n)\\) is infinite-length (exists for all integer \\(n\\)).\nSymmetric around \\(n = 0\\): \\(h(n) = h(-n)\\).\nAmplitude decays roughly like \\(1/|n|\\).\n\nThis is essentially a discrete-time sinc function:\n\\[\nh(n) \\propto \\frac{\\sin(\\Omega_c n)}{n}.\n\\]\n\nConnect to continuous-time sinc used for ideal lowpass filter in analog and in sampling/reconstruction theory.\nMention that evenness of \\(H(e^{j\\Omega})\\) (symmetry in frequency) leads to a real, even impulse response \\(h(n)\\)."
-  },
-  {
-    "objectID": "dsp_71.html#from-ideal-infinite-impulse-response-to-fir",
-    "href": "dsp_71.html#from-ideal-infinite-impulse-response-to-fir",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "From Ideal Infinite Impulse Response to FIR",
-    "text": "From Ideal Infinite Impulse Response to FIR\nThe ideal impulse response is noncausal and infinite:\n\\[\nH(z) = \\sum_{n=-\\infty}^{\\infty} h(n) z^{-n}\n= \\cdots + h(-2) z^{2} + h(-1) z^{1} + h(0) + h(1) z^{-1} + \\cdots\n\\]\nProblems:\n\nInfinite number of taps → impossible to implement exactly.\nContains positive powers of \\(z\\) ⇒ noncausal (depends on future inputs)."
-  },
-  {
-    "objectID": "dsp_71.html#summary-table-for-ideal-fir-impulse-responses",
-    "href": "dsp_71.html#summary-table-for-ideal-fir-impulse-responses",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Summary Table for Ideal FIR Impulse Responses",
-    "text": "Summary Table for Ideal FIR Impulse Responses\nTable 7.1 (noncausal ideal coefficients \\(h(n)\\), \\(-M \\le n \\le M\\)):\n\n\n\n\n\n\n\nFilter Type\nIdeal Impulse Response \\(h(n)\\)\n\n\n\n\nLowpass\n\\(h(0) = \\dfrac{\\Omega_c}{\\pi}\\) and \\(h(n) = \\dfrac{\\sin(\\Omega_c n)}{n\\pi},\\; n\\neq 0\\)\n\n\nHighpass\n\\(h(0) = \\dfrac{\\pi - \\Omega_c}{\\pi}\\) and \\(h(n) = -\\dfrac{\\sin(\\Omega_c n)}{n\\pi},\\; n\\neq 0\\)\n\n\nBandpass\n\\(h(0) = \\dfrac{\\Omega_H - \\Omega_L}{\\pi}\\) and \\(h(n) = \\dfrac{\\sin(\\Omega_H n)}{n\\pi} - \\dfrac{\\sin(\\Omega_L n)}{n\\pi},\\; n\\neq 0\\)\n\n\nBandstop\n\\(h(0) = \\dfrac{\\pi - \\Omega_H + \\Omega_L}{\\pi}\\) and \\(h(n) = -\\dfrac{\\sin(\\Omega_H n)}{n\\pi} + \\dfrac{\\sin(\\Omega_L n)}{n\\pi},\\; n\\neq 0\\)\n\n\n\nThen make it causal by shifting: \\(b_n = h(n-M)\\).\n\nPoint out that all these formulas come from applying the inverse DTFT to the appropriate ideal magnitude response (rectangular in some band).\nThis table is central: highlight that design = choose type + choose band edges + choose M."
-  },
-  {
-    "objectID": "dsp_71.html#example-7.2-3-tap-lowpass-by-fourier-design",
-    "href": "dsp_71.html#example-7.2-3-tap-lowpass-by-fourier-design",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Example 7.2 – 3-Tap Lowpass by Fourier Design",
-    "text": "Example 7.2 – 3-Tap Lowpass by Fourier Design\nGoal: Design a 3-tap (\\(2M+1=3\\) ⇒ \\(M=1\\)) lowpass FIR with:\n\n\\(f_c = 800\\) Hz, \\(f_s = 8000\\) Hz.\n\n(a) Coefficients via Fourier method\nNormalized cutoff:\n\\[\n\\Omega_c = 2\\pi \\frac{f_c}{f_s} = 2\\pi \\frac{800}{8000} = 0.2\\pi \\; \\text{rad}.\n\\]\nFrom the lowpass formula:\n\\[\nh(0) = \\frac{\\Omega_c}{\\pi} = 0.2,\n\\quad\nh(1) = \\frac{\\sin(0.2\\pi)}{\\pi} \\approx 0.1871,\n\\quad\nh(-1) = h(1) = 0.1871.\n\\]\nShift by \\(M=1\\) to get causal coefficients:\n\\[\n\\begin{aligned}\nb_0 &= h(-1) = 0.1871, \\\\\nb_1 &= h(0) = 0.2, \\\\\nb_2 &= h(1) = 0.1871.\n\\end{aligned}\n\\]"
-  },
-  {
-    "objectID": "dsp_71.html#example-7.2-transfer-function-and-difference-equation",
-    "href": "dsp_71.html#example-7.2-transfer-function-and-difference-equation",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Example 7.2 – Transfer Function and Difference Equation",
-    "text": "Example 7.2 – Transfer Function and Difference Equation\n\nTransfer function:\n\n\\[\nH(z) = 0.1871 + 0.2 z^{-1} + 0.1871 z^{-2}.\n\\]\nDifference equation (inverse \\(z\\)-transform):\n\\[\ny(n) = 0.1871 x(n) + 0.2 x(n-1) + 0.1871 x(n-2).\n\\]\nThis is a symmetric 3-tap FIR lowpass filter."
-  },
-  {
-    "objectID": "dsp_71.html#example-7.2-frequency-response-and-linear-phase",
-    "href": "dsp_71.html#example-7.2-frequency-response-and-linear-phase",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Example 7.2 – Frequency Response and Linear Phase",
-    "text": "Example 7.2 – Frequency Response and Linear Phase\n\nSubstitute \\(z = e^{j\\Omega}\\):\n\n\\[\nH(e^{j\\Omega}) = 0.1871 + 0.2 e^{-j\\Omega} + 0.1871 e^{-j2\\Omega}.\n\\]\nFactor \\(e^{-j\\Omega}\\):\n\\[\n\\begin{aligned}\nH(e^{j\\Omega})\n&= e^{-j\\Omega} \\left( 0.1871 e^{j\\Omega} + 0.2 + 0.1871 e^{-j\\Omega} \\right) \\\\\n&= e^{-j\\Omega} \\left( 0.2 + 0.3742 \\cos\\Omega \\right).\n\\end{aligned}\n\\]\nMagnitude and phase:\n\\[\n|H(e^{j\\Omega})| = \\big|0.2 + 0.3742 \\cos\\Omega\\big|,\n\\]\n\\[\n\\angle H(e^{j\\Omega}) =\n\\begin{cases}\n-\\Omega, & 0.2 + 0.3742 \\cos\\Omega &gt; 0, \\\\\n-\\Omega + \\pi, & 0.2 + 0.3742 \\cos\\Omega &lt; 0.\n\\end{cases}\n\\]"
-  },
-  {
-    "objectID": "dsp_71.html#visual-3-tap-vs-17-tap-lowpass-filters",
-    "href": "dsp_71.html#visual-3-tap-vs-17-tap-lowpass-filters",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Visual: 3-Tap vs 17-Tap Lowpass Filters",
-    "text": "Visual: 3-Tap vs 17-Tap Lowpass Filters\n\n\n\nFIG. 7.5 Magnitude and phase responses of 3-tap (dash-dotted) and 17-tap (solid) lowpass FIR filters with \\(\\Omega_c = 0.2\\pi\\)."
-  },
-  {
-    "objectID": "dsp_71.html#gibbs-effect-why-ripples-appear",
-    "href": "dsp_71.html#gibbs-effect-why-ripples-appear",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Gibbs Effect – Why Ripples Appear",
-    "text": "Gibbs Effect – Why Ripples Appear\nThe passband and stopband ripples in ideal-based FIR design come from:\n\nAbrupt truncation of the infinite impulse response.\n\nAnalogy:\n\nTruncating a continuous-time sinc (multiplying by a rectangular window) produces ripples in frequency.\n\nIn our discrete-time design:\n\nMultiplying the ideal infinite \\(h(n)\\) by a finite-length rectangular window in time ⇒ convolution with sinc-like main/side lobes in frequency ⇒ ripples (Gibbs).\n\nWe will reduce these ripples by using smoother windows (Hanning, Hamming, Blackman, etc.) instead of the abrupt rectangular window."
-  },
-  {
-    "objectID": "dsp_71.html#linear-phase-and-waveform-preservation",
-    "href": "dsp_71.html#linear-phase-and-waveform-preservation",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Linear Phase and Waveform Preservation",
-    "text": "Linear Phase and Waveform Preservation\nBecause the FIR coefficients are symmetric, the filter has linear phase:\n\\[\n\\angle H(e^{j\\Omega}) \\approx -M\\Omega.\n\\]\nIf input is a sinusoid \\(x(n) = A \\sin(\\Omega n)\\), the steady-state output is:\n\\[\ny(n) = A |H(e^{j\\Omega})| \\sin\\big(\\Omega(n - M)\\big).\n\\]\n\nSame frequency.\nSame waveform shape.\nOnly delayed by \\(M\\) samples and scaled in amplitude."
-  },
-  {
-    "objectID": "dsp_71.html#what-if-phase-is-nonlinear",
-    "href": "dsp_71.html#what-if-phase-is-nonlinear",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "What if Phase Is Nonlinear?",
-    "text": "What if Phase Is Nonlinear?\nConsider input (sum of two sinusoids):\n\\[\nx(n) = \\sin(0.05\\pi n) u(n) - \\frac{1}{3} \\sin(0.15\\pi n) u(n).\n\\]\n\nLinear phase filter (delay 8 samples):\n\\[\ny_1(n) = \\sin\\big(0.05\\pi(n-8)\\big) - \\frac{1}{3}\\sin\\big(0.15\\pi(n-8)\\big).\n\\]\n\nEntire signal looks like delayed copy of \\(x(n)\\).\n\nNonlinear phase filter with \\(90^\\circ\\) phase shift at both frequencies:\n\\[\ny_2(n) = \\sin(0.05\\pi n - \\pi/2) - \\frac{1}{3} \\sin(0.15\\pi n - \\pi/2).\n\\]\n\nDelay depends on frequency (10 samples vs \\(10/3\\) samples).\nWaveform shape changes: phase distortion."
-  },
-  {
-    "objectID": "dsp_71.html#example-7.3-5-tap-bandpass-filter",
-    "href": "dsp_71.html#example-7.3-5-tap-bandpass-filter",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Example 7.3 – 5-Tap Bandpass Filter",
-    "text": "Example 7.3 – 5-Tap Bandpass Filter\nSpecs:\n\n\\(f_L = 2000\\) Hz, \\(f_H = 2400\\) Hz, \\(f_s = 8000\\) Hz.\n5 taps ⇒ \\(2M+1 = 5\\) ⇒ \\(M = 2\\).\n\nNormalized edges:\n\\[\n\\Omega_L = 2\\pi \\frac{2000}{8000} = 0.5\\pi,\n\\quad\n\\Omega_H = 2\\pi \\frac{2400}{8000} = 0.6\\pi.\n\\]\nIdeal bandpass impulse (noncausal):\n\\[\nh(0) = \\frac{\\Omega_H - \\Omega_L}{\\pi} = 0.1.\n\\]\n\\[\nh(1) = \\frac{\\sin(0.6\\pi)}{\\pi} - \\frac{\\sin(0.5\\pi)}{\\pi} \\approx -0.01558,\n\\]\n\\[\nh(2) = \\frac{\\sin(1.2\\pi)}{2\\pi} - \\frac{\\sin(\\pi)}{2\\pi} \\approx -0.09355,\n\\]"
-  },
-  {
-    "objectID": "dsp_71.html#example-7.3-observing-gibbs-in-bandpass",
-    "href": "dsp_71.html#example-7.3-observing-gibbs-in-bandpass",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Example 7.3 – Observing Gibbs in Bandpass",
-    "text": "Example 7.3 – Observing Gibbs in Bandpass\n\n\nMATLAB frequency response (Program 7.1) gives:\n\n\n\nFIG. 7.8 Frequency responses for Example 7.3.\n\n\n\nObservations:\n\nPassband peak is ~\\(-10\\) dB instead of 0 dB.\nStopband side lobes swing between roughly -18 and -70 dB (lower) and -25 and -68 dB (upper).\nThis is again Gibbs oscillation, due to abrupt truncation.\n\nFix: Window the impulse response instead of raw truncation."
-  },
-  {
-    "objectID": "dsp_71.html#window-method-motivation",
-    "href": "dsp_71.html#window-method-motivation",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "7.3 Window Method – Motivation",
-    "text": "7.3 Window Method – Motivation\nWe know:\n\nTruncating the ideal, infinite \\(h(n)\\) with a rectangular window (just cutting off) gives Gibbs ripples.\n\nIdea:\n\nReplace sharp truncation with smoother weighting that tapers to zero at the ends.\n\nMathematically:\n\\[\nh_w(n) = h(n)\\, w(n),\n\\]\nwhere \\(w(n)\\) is a window function, nonzero for \\(-M \\le n \\le M\\), symmetric around 0.\nEffect in frequency:\n\nConvolution of ideal response with window’s spectrum.\nTapered windows reduce side lobes (ripples) but broaden main lobe (wider transition)."
-  },
-  {
-    "objectID": "dsp_71.html#common-window-functions",
-    "href": "dsp_71.html#common-window-functions",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Common Window Functions",
-    "text": "Common Window Functions\n\nRectangular:\n\n\\[\nw_{\\text{rec}}(n) = 1,\\quad -M \\le n \\le M.\n\\]\n\nTriangular (Bartlett):\n\n\\[\nw_{\\text{tri}}(n) = 1 - \\frac{|n|}{M},\\quad -M \\le n \\le M.\n\\]\n\nHanning:\n\n\\[\nw_{\\text{han}}(n) = 0.5 + 0.5\\cos\\left(\\frac{\\pi n}{M}\\right),\\quad -M \\le n \\le M.\n\\]"
-  },
-  {
-    "objectID": "dsp_71.html#example-7.4-applying-hamming-window-to-fir-coefficients",
-    "href": "dsp_71.html#example-7.4-applying-hamming-window-to-fir-coefficients",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Example 7.4 – Applying Hamming Window to FIR Coefficients",
-    "text": "Example 7.4 – Applying Hamming Window to FIR Coefficients\nGiven noncausal symmetric coefficients (ideal lowpass):\n\\[\nh(0)=0.25,\\; h(\\pm1)=0.22508,\\; h(\\pm2)=0.15915,\\; h(\\pm3)=0.07503.\n\\]\nUse Hamming window with \\(M=3\\):\n\n\nWindow values:\n\\[\n\\begin{aligned}\nw_{\\text{ham}}(0) &= 0.54 + 0.46 \\cos(0) = 1.0, \\\\\nw_{\\text{ham}}(\\pm 1) &= 0.77, \\\\\nw_{\\text{ham}}(\\pm 2) &= 0.31, \\\\\nw_{\\text{ham}}(\\pm 3) &= 0.08.\n\\end{aligned}\n\\]\n\nWindowed coefficients:\n\\[\n\\begin{aligned}\nh_w(0) &= 0.25 \\times 1 = 0.25, \\\\\nh_w(\\pm1) &= 0.22508 \\times 0.77 \\approx 0.17331, \\\\\nh_w(\\pm2) &= 0.15915 \\times 0.31 \\approx 0.04934, \\\\\nh_w(\\pm3) &= 0.07503 \\times 0.08 \\approx 0.00600.\n\\end{aligned}\n\\]"
-  },
-  {
-    "objectID": "dsp_71.html#fir-design-via-windowing-3-step-recipe",
-    "href": "dsp_71.html#fir-design-via-windowing-3-step-recipe",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "FIR Design via Windowing – 3-Step Recipe",
-    "text": "FIR Design via Windowing – 3-Step Recipe\n\nDesign ideal truncated impulse response \\(h(n)\\):\n\nUse formulas in Table 7.1.\nChoose filter type (lowpass, highpass, bandpass, bandstop).\nChoose \\(M\\) (length \\(2M+1\\)).\n\nApply window:\n\\[\nh_w(n) = h(n)\\, w(n),\\quad -M \\le n \\le M.\n\\]\n\nChoose \\(w(n)\\): rectangular, Hanning, Hamming, Blackman, etc.\n\nMake it causal by shifting \\(M\\) samples:\n\\[\nb_n = h_w(n - M),\\quad n = 0, 1, \\dots, 2M.\n\\]\n\nImplement FIR with coefficients \\(b_n\\)."
-  },
-  {
-    "objectID": "dsp_71.html#example-7.5-3-tap-lowpass-with-hamming-window",
-    "href": "dsp_71.html#example-7.5-3-tap-lowpass-with-hamming-window",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Example 7.5 – 3-Tap Lowpass with Hamming Window",
-    "text": "Example 7.5 – 3-Tap Lowpass with Hamming Window\nSame spec as Example 7.2:\n\n\\(f_c = 800\\) Hz, \\(f_s = 8000\\) Hz ⇒ \\(\\Omega_c = 0.2\\pi\\).\n\\(2M+1 = 3\\) ⇒ \\(M = 1\\).\n\nIdeal coefficients (from Example 7.2):\n\\[\nh(0) = 0.2,\\quad h(\\pm1) = 0.1871.\n\\]\nHamming window (for \\(M=1\\)):\n\\[\nw_{\\text{ham}}(0) = 1,\\quad w_{\\text{ham}}(\\pm1) = 0.08.\n\\]"
-  },
-  {
-    "objectID": "dsp_71.html#example-7.5-frequency-response",
-    "href": "dsp_71.html#example-7.5-frequency-response",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Example 7.5 – Frequency Response",
-    "text": "Example 7.5 – Frequency Response\nFrequency response:\n\\[\nH(e^{j\\Omega}) = e^{-j\\Omega}\\big(0.2 + 0.02994\\cos\\Omega\\big).\n\\]\nMagnitude:\n\\[\n|H(e^{j\\Omega})| = \\big|0.2 + 0.02994\\cos\\Omega\\big|.\n\\]\nPhase:\n\\[\n\\angle H(e^{j\\Omega})=\n\\begin{cases}\n-\\Omega, & 0.2 + 0.02994\\cos\\Omega &gt; 0, \\\\\n-\\Omega + \\pi, & 0.2 + 0.02994\\cos\\Omega &lt; 0.\n\\end{cases}\n\\]\nSample values (Table 7.4) show slightly reduced peak magnitude and less ripple compared to the unwindowed case."
-  },
-  {
-    "objectID": "dsp_71.html#example-7.6-5-tap-bandstop-with-hamming-window",
-    "href": "dsp_71.html#example-7.6-5-tap-bandstop-with-hamming-window",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Example 7.6 – 5-Tap Bandstop with Hamming Window",
-    "text": "Example 7.6 – 5-Tap Bandstop with Hamming Window\nSpecs:\n\nBandreject (notch) from 2000–2400 Hz.\n\\(f_s = 8000\\) Hz.\n5 taps ⇒ \\(M=2\\).\n\nIdeal bandstop \\(h(n)\\) (Table 7.1):\n\\[\nh(0) = \\frac{\\pi - \\Omega_H + \\Omega_L}{\\pi} = 0.9,\n\\]\n\\[\nh(1) \\approx 0.01558, \\quad h(2) \\approx 0.09355,\n\\quad h(-1)=h(1),\\; h(-2)=h(2).\n\\]\nHamming window (\\(M=2\\)):\n\\[\nw_{\\text{ham}}(0) = 1,\\quad w_{\\text{ham}}(\\pm1)=0.54,\\quad w_{\\text{ham}}(\\pm2)=0.08.\n\\]"
-  },
-  {
-    "objectID": "dsp_71.html#matlab-helper-function-firwd",
-    "href": "dsp_71.html#matlab-helper-function-firwd",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "MATLAB Helper Function: firwd",
-    "text": "MATLAB Helper Function: firwd\nFor larger designs, we let MATLAB do the heavy lifting. Custom function:\nB = firwd(N, Ftype, WnL, WnH, Wtype)\n\nN: number of taps (must be odd).\nFtype:\n\n1 = lowpass\n2 = highpass\n3 = bandpass\n4 = bandreject\n\nWnL, WnH: lower and upper cutoff frequencies (in radians).\n\nFor lowpass: set WnH = 0, use WnL = Ω_c.\nFor highpass: set WnL = 0, use WnH = Ω_c."
-  },
-  {
-    "objectID": "dsp_71.html#example-7.7-25-tap-lowpass-rectangular-vs-hamming",
-    "href": "dsp_71.html#example-7.7-25-tap-lowpass-rectangular-vs-hamming",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Example 7.7 – 25-Tap Lowpass: Rectangular vs Hamming",
-    "text": "Example 7.7 – 25-Tap Lowpass: Rectangular vs Hamming\nSpecs:\n\nLowpass, \\(f_c = 2000\\) Hz, \\(f_s = 8000\\) Hz.\n25 taps ⇒ \\(M=12\\).\n\\(\\Omega_c = 0.5\\pi\\).\n\nUse firwd twice:\n\nRectangular window (Wtype=1).\nHamming window (Wtype=4)."
-  },
-  {
-    "objectID": "dsp_71.html#comparing-hanning-hamming-blackman",
-    "href": "dsp_71.html#comparing-hanning-hamming-blackman",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Comparing Hanning, Hamming, Blackman",
-    "text": "Comparing Hanning, Hamming, Blackman\n\n\nFor the same lowpass spec (25 taps, \\(f_c=2000\\) Hz):\n\n\n\nFIG. 7.13 Magnitude responses with different windows: Hanning vs Hamming vs Blackman\n\n\n\nQualitative summary:\n\nHanning: medium main-lobe width, moderate side lobes (~-44 dB).\nHamming: similar main-lobe width, lower side lobes (~-53 dB).\nBlackman: wider main lobe, very low side lobes (~-74 dB).\n\nTrade-off:\n\nBetter stopband attenuation ⇒ more main-lobe widening (worse transition)."
-  },
-  {
-    "objectID": "dsp_71.html#window-performance-and-length-estimation-table-7.7",
-    "href": "dsp_71.html#window-performance-and-length-estimation-table-7.7",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Window Performance and Length Estimation (Table 7.7)",
-    "text": "Window Performance and Length Estimation (Table 7.7)\nFor normalized transition width\n\\[\n\\Delta f = \\frac{|f_{\\text{stop}} - f_{\\text{pass}}|}{f_s},\n\\]"
-  },
-  {
-    "objectID": "dsp_71.html#example-7.8-lowpass-length-from-specs",
-    "href": "dsp_71.html#example-7.8-lowpass-length-from-specs",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Example 7.8 – Lowpass Length from Specs",
-    "text": "Example 7.8 – Lowpass Length from Specs\nSpecs:\n\nPassband: 0–1850 Hz.\nStopband: 2150–4000 Hz.\nStopband attenuation: 20 dB.\nPassband ripple: 1 dB.\n\\(f_s = 8000\\) Hz.\n\nCompute normalized transition width:\n\\[\n\\Delta f = \\frac{|2150 - 1850|}{8000} = 0.0375.\n\\]"
-  },
-  {
-    "objectID": "dsp_71.html#example-7.8-effect-on-speech",
-    "href": "dsp_71.html#example-7.8-effect-on-speech",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Example 7.8 – Effect on Speech",
-    "text": "Example 7.8 – Effect on Speech\nApply this lowpass FIR to speech sampled at 8 kHz:\n\n\n\nFIG. 7.15(A) Original speech vs lowpass filtered speech."
-  },
-  {
-    "objectID": "dsp_71.html#example-7.9-highpass-filter-from-specs",
-    "href": "dsp_71.html#example-7.9-highpass-filter-from-specs",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Example 7.9 – Highpass Filter from Specs",
-    "text": "Example 7.9 – Highpass Filter from Specs\nSpecs:\n\nStopband: 0–1500 Hz.\nPassband: 2500–4000 Hz.\nStopband attenuation: 40 dB.\nPassband ripple: 0.1 dB.\n\\(f_s = 8000\\) Hz.\n\nTransition width:\n\\[\n\\Delta f = \\frac{|2500 - 1500|}{8000} = 0.125.\n\\]\nFrom Table 7.7:\n\nNeed stopband ∼ 40 dB and small ripple ⇒ Hanning (≈44 dB, 0.0546 dB ripple) is acceptable."
-  },
-  {
-    "objectID": "dsp_71.html#example-7.9-effect-on-speech",
-    "href": "dsp_71.html#example-7.9-effect-on-speech",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Example 7.9 – Effect on Speech",
-    "text": "Example 7.9 – Effect on Speech\nFrequency response:\n\n\n\nFIG. 7.16 Highpass FIR designed with Hanning window."
-  },
-  {
-    "objectID": "dsp_71.html#example-7.10-bandpass-design-from-specs",
-    "href": "dsp_71.html#example-7.10-bandpass-design-from-specs",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Example 7.10 – Bandpass Design from Specs",
-    "text": "Example 7.10 – Bandpass Design from Specs\nSpecs:\n\nLower stopband: 0–500 Hz.\nPassband: 1600–2300 Hz.\nUpper stopband: 3500–4000 Hz.\nStopband attenuation: 50 dB.\nPassband ripple: 0.05 dB.\n\\(f_s = 8000\\) Hz.\n\nCompute transition widths:\n\\[\n\\Delta f_1 = \\frac{1600-500}{8000} = 0.1375,\n\\quad\n\\Delta f_2 = \\frac{3500-2300}{8000} = 0.15.\n\\]"
-  },
-  {
-    "objectID": "dsp_71.html#example-7.10-bandpass-on-speech",
-    "href": "dsp_71.html#example-7.10-bandpass-on-speech",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Example 7.10 – Bandpass on Speech",
-    "text": "Example 7.10 – Bandpass on Speech\nFrequency response:\n\n\n\nFIG. 7.18 Bandpass response via Hamming window.\n\n\nCoefficients in Table 7.9."
-  },
-  {
-    "objectID": "dsp_71.html#example-7.11-bandstop-design-from-specs",
-    "href": "dsp_71.html#example-7.11-bandstop-design-from-specs",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Example 7.11 – Bandstop Design from Specs",
-    "text": "Example 7.11 – Bandstop Design from Specs\nSpecs:\n\nLower cutoff: 1250 Hz.\nLower transition width: 1500 Hz.\nUpper cutoff: 2850 Hz.\nUpper transition width: 1300 Hz.\nStopband attenuation: 60 dB.\nPassband ripple: 0.02 dB.\n\\(f_s = 8000\\) Hz.\n\nTransition widths:\n\\[\n\\Delta f_1 = \\frac{1500}{8000} = 0.1875,\\quad\n\\Delta f_2 = \\frac{1300}{8000} = 0.1625.\n\\]\nNeed ≈60 dB attenuation ⇒ Blackman window (~74 dB)."
-  },
-  {
-    "objectID": "dsp_71.html#example-7.11-bandstop-on-speech",
-    "href": "dsp_71.html#example-7.11-bandstop-on-speech",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Example 7.11 – Bandstop on Speech",
-    "text": "Example 7.11 – Bandstop on Speech\nFrequency response:\n\n\n\nFIG. 7.20 Bandstop FIR with Blackman window.\n\n\nCoefficients in Table 7.10."
-  },
-  {
-    "objectID": "dsp_71.html#in-class-practice-designing-a-simple-fir",
-    "href": "dsp_71.html#in-class-practice-designing-a-simple-fir",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "In-Class Practice – Designing a Simple FIR",
-    "text": "In-Class Practice – Designing a Simple FIR\nProblem:\nDesign a 7-tap lowpass FIR filter (\\(N=7\\), so \\(M=3\\)) with:\n\n\\(f_c = 1000\\) Hz, \\(f_s = 8000\\) Hz.\nUse the Hanning window.\n\nTasks:\n\nCompute \\(\\Omega_c\\).\nUse Table 7.1 to compute noncausal ideal \\(h(n)\\), \\(-3 \\le n \\le 3\\).\nCompute Hanning window \\(w_{\\text{han}}(n)\\), \\(-3 \\le n \\le 3\\).\nCompute \\(h_w(n) = h(n) w(n)\\).\nShift by \\(M=3\\) to find causal \\(b_0,\\dots,b_6\\).\n\n\nWork through one or two coefficients with the class, then let them complete in pairs.\nOptionally, show how to verify frequency response using MATLAB or Python."
-  },
-  {
-    "objectID": "dsp_71.html#key-takeaways-conceptual",
-    "href": "dsp_71.html#key-takeaways-conceptual",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Key Takeaways – Conceptual",
-    "text": "Key Takeaways – Conceptual\n\nFIR format:\n\n\\(y(n) = \\sum b_i x(n-i)\\),\n\\(H(z) = \\sum b_i z^{-i}\\).\nAlways BIBO stable, easy to implement as tap delay line.\n\nFourier design method:\n\nStart from ideal frequency response \\(H_d(e^{j\\Omega})\\).\nUse inverse DTFT to find ideal \\(h_d(n)\\).\nTruncate and shift to get practical FIR.\n\nGibbs effect:\n\nAbrupt truncation (rectangular window) causes ripples in passband/stopband.\n\nLinear phase:\n\nSymmetric FIR coefficients (odd length) ⇒ \\(\\angle H(e^{j\\Omega})\\) is linear in \\(\\Omega\\).\nAll passband components delayed by same number of samples ⇒ no phase distortion."
-  },
-  {
-    "objectID": "dsp_71.html#key-takeaways-window-method-and-design-rules",
-    "href": "dsp_71.html#key-takeaways-window-method-and-design-rules",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Key Takeaways – Window Method and Design Rules",
-    "text": "Key Takeaways – Window Method and Design Rules\n\nWindow method:\n\n\\(h_w(n) = h_d(n)\\, w(n)\\).\nSmoother windows (Hanning, Hamming, Blackman) reduce ripple (side lobes) but enlarge transition width (main lobe).\n\nWindow choices (rough performance):\n\nRectangular: short \\(N\\), poor attenuation (~21 dB).\nHanning: moderate \\(N\\), ~44 dB attenuation.\nHamming: moderate \\(N\\), ~53 dB attenuation (good general choice).\nBlackman: long \\(N\\), ~74 dB attenuation (for tight specs)."
-  },
-  {
-    "objectID": "dsp_71.html#formula-summary",
-    "href": "dsp_71.html#formula-summary",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Formula Summary",
-    "text": "Formula Summary\nFIR structure:\n\\[\ny(n) = \\sum_{i=0}^{K} b_i x(n-i),\\quad\nH(z) = \\sum_{i=0}^{K} b_i z^{-i}.\n\\]\nFrequency response (DTFT of impulse response):\n\\[\nH(e^{j\\Omega}) = \\sum_{n=-\\infty}^{\\infty} h(n) e^{-jn\\Omega}.\n\\]\nInverse DTFT (design equation):\n\\[\nh(n) = \\frac{1}{2\\pi}\\int_{-\\pi}^{\\pi} H(e^{j\\Omega}) e^{jn\\Omega} \\, d\\Omega.\n\\]"
-  },
-  {
-    "objectID": "dsp_71.html#how-to-use-this-interactive-deck",
-    "href": "dsp_71.html#how-to-use-this-interactive-deck",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "How to Use This Interactive Deck",
-    "text": "How to Use This Interactive Deck\n\nAll code runs in your browser using Pyodide (Python in WebAssembly).\nYou can:\n\nEdit and run Python code ({pyodide} blocks).\nUse sliders and controls ({ojs} blocks) to change parameters.\nSee FIR impulse and frequency responses update live with Plotly.\n\n\nTry to:\n\nChange cutoff frequencies.\nChange filter length (N).\nChange window type.\nObserve the effects on ripples, transition width, and phase.\n\n\nExplain to students that this deck is for exploration. Encourage them to “break” things: choose extreme parameter values and see what happens.\nMake sure the environment is set up with Pyodide, Plotly, and OJS in Quarto. Usually this just works in the browser for Quarto Reveal presentations."
-  },
-  {
-    "objectID": "dsp_71.html#warm-up-evaluate-a-simple-fir-filter-in-python",
-    "href": "dsp_71.html#warm-up-evaluate-a-simple-fir-filter-in-python",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Warm-Up: Evaluate a Simple FIR Filter in Python",
-    "text": "Warm-Up: Evaluate a Simple FIR Filter in Python\nTask: Change the coefficients and input samples and re-run the code.\n\n\n\n\n\n\nTry:\n\nChange b to [1/3, 1/3, 1/3] → moving average lowpass.\nChange x to a step: [0, 0, 1, 1, 1, 1].\n\n\nAfter they run, ask:\n\nIs this filter “smoothing” or “sharpening”?\nCompare shape of y to x.\n\nReinforce the implementation structure: multiply–accumulate over past inputs only."
-  },
-  {
-    "objectID": "dsp_71.html#interactive-impulse-response-of-an-ideal-lowpass-analytical",
-    "href": "dsp_71.html#interactive-impulse-response-of-an-ideal-lowpass-analytical",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Interactive: Impulse Response of an Ideal Lowpass (Analytical)",
-    "text": "Interactive: Impulse Response of an Ideal Lowpass (Analytical)\nWe know the ideal lowpass impulse response is\n\\[\nh(n) =\n\\begin{cases}\n\\Omega_c / \\pi, & n = 0, \\\\\n\\sin(\\Omega_c n) / (\\pi n), & n \\neq 0.\n\\end{cases}\n\\]\nUse the sliders to see how \\(\\Omega_c\\) and truncation index \\(M\\) affect \\(h(n)\\).\n\nviewof oc = Inputs.range([0.1, 0.9], {step: 0.05, label: \"Normalized cutoff Ω_c / π\"})\nviewof M  = Inputs.range([3, 40], {step: 1, label: \"Truncation index M (half-length)\"} )\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAsk:\n\nWhat happens to the shape as M increases?\nDoes h(n) look more “sinc-like” for large M?\n\nPoint out symmetry: \\(h(n) = h(-n)\\)."
-  },
-  {
-    "objectID": "dsp_71.html#interactive-from-ideal-noncausal-hn-to-causal-b_n",
-    "href": "dsp_71.html#interactive-from-ideal-noncausal-hn-to-causal-b_n",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Interactive: From Ideal Noncausal \\(h(n)\\) to Causal \\(b_n\\)",
-    "text": "Interactive: From Ideal Noncausal \\(h(n)\\) to Causal \\(b_n\\)\nWe shift the impulse response by \\(M\\) samples to get a causal FIR:\n\\[\nb_n = h(n - M), \\quad n = 0,\\dots,2M.\n\\]\nInteractively see the effect of the shift.\n\nviewof M_shift = Inputs.range([3, 20], {step: 1, label: \"M (shift, and half-length)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\nPoint out:\n\nThe shape is the same, only shifted right.\nThe causal version starts at n=0; all negative-time samples are moved to positive n."
-  },
-  {
-    "objectID": "dsp_71.html#interactive-magnitude-response-of-an-ideal-truncated-lowpass",
-    "href": "dsp_71.html#interactive-magnitude-response-of-an-ideal-truncated-lowpass",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Interactive: Magnitude Response of an Ideal-Truncated Lowpass",
-    "text": "Interactive: Magnitude Response of an Ideal-Truncated Lowpass\nNow we compute the DTFT of truncated \\(h(n)\\) and plot \\(|H(e^{j\\Omega})|\\).\n\nviewof oc2 = Inputs.range([0.1, 0.9], {step: 0.05, label: \"Normalized cutoff Ω_c / π\"})\nviewof M2  = Inputs.range([5, 60], {step: 1, label: \"M (truncation index)\"} )\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExplore:\n\nIncrease \\(M\\) ⇒ transition narrows, side lobes get closer together.\nObserve Gibbs ripples near the cutoff."
-  },
-  {
-    "objectID": "dsp_71.html#interactive-add-a-window-compare-rectangular-vs-hamming",
-    "href": "dsp_71.html#interactive-add-a-window-compare-rectangular-vs-hamming",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Interactive: Add a Window – Compare Rectangular vs Hamming",
-    "text": "Interactive: Add a Window – Compare Rectangular vs Hamming\nWe now apply a window to \\(h(n)\\):\n\\[\nh_w(n) = h(n) w(n).\n\\]\nCompare rectangular and Hamming windows.\n\nviewof oc3 = Inputs.range([0.1, 0.9], {step: 0.05, label: \"Normalized cutoff Ω_c / π\"})\nviewof M3  = Inputs.range([5, 60], {step: 1, label: \"M (half-length)\"} )\nviewof wtype = Inputs.select(\n  [\"Rectangular\", \"Hamming\", \"Both\"],\n  {label: \"Window type\", value: \"Both\"}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nObserve:\n\nRectangular: sharper transition, higher side lobes.\nHamming: slightly wider main lobe, much lower side lobes."
-  },
-  {
-    "objectID": "dsp_71.html#interactive-window-choices-hanning-vs-hamming-vs-blackman",
-    "href": "dsp_71.html#interactive-window-choices-hanning-vs-hamming-vs-blackman",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Interactive: Window Choices – Hanning vs Hamming vs Blackman",
-    "text": "Interactive: Window Choices – Hanning vs Hamming vs Blackman\nPlay with different windows and see main-lobe / side-lobe trade-offs.\n\nviewof oc4 = Inputs.range([0.1, 0.9], {step: 0.05, label: \"Normalized cutoff Ω_c / π\"})\nviewof M4  = Inputs.range([10, 80], {step: 2, label: \"M (half-length)\"} )\nviewof wmulti = Inputs.checkbox(\n  [\"Rectangular\", \"Hanning\", \"Hamming\", \"Blackman\"],\n  {label: \"Windows to plot\", value: [\"Rectangular\", \"Hanning\", \"Hamming\", \"Blackman\"]}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTry:\n\nCompare Blackman vs Hamming: note much lower side lobes but wider transition.\nTurn windows on/off to see differences clearly."
-  },
-  {
-    "objectID": "dsp_71.html#interactive-length-estimation-from-specs-table-7.7",
-    "href": "dsp_71.html#interactive-length-estimation-from-specs-table-7.7",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Interactive: Length Estimation from Specs (Table 7.7)",
-    "text": "Interactive: Length Estimation from Specs (Table 7.7)\nUse the rules of thumb to estimate \\(N\\) from transition width \\(\\Delta f\\).\n\nviewof df = Inputs.range([0.01, 0.3], {step: 0.005, label: \"Normalized transition width Δf\"})\nviewof win_choice = Inputs.select(\n  [\"Rectangular\", \"Hanning\", \"Hamming\", \"Blackman\"],\n  {label: \"Window type\", value: \"Hamming\"}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExperiment:\n\nNarrower (f) ⇒ larger (N).\nDifferent windows need different lengths to achieve similar transition widths."
-  },
-  {
-    "objectID": "dsp_71.html#interactive-build-a-lowpass-filter-to-spec-full-workflow",
-    "href": "dsp_71.html#interactive-build-a-lowpass-filter-to-spec-full-workflow",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Interactive: Build a Lowpass Filter to Spec (Full Workflow)",
-    "text": "Interactive: Build a Lowpass Filter to Spec (Full Workflow)\nLet’s approximate a lowpass design with:\n\nPassband edge \\(f_{pass}\\).\nStopband edge \\(f_{stop}\\).\nSampling rate \\(f_s = 8000\\) Hz (fixed).\nChoose window type.\n\n\nviewof fpass = Inputs.range([500, 3500], {step: 100, label: \"Passband edge f_pass (Hz)\", value: 1800})\nviewof fstop = Inputs.range([600, 3900], {step: 100, label: \"Stopband edge f_stop (Hz)\", value: 2200})\nviewof wdesign = Inputs.select(\n  [\"Rectangular\", \"Hanning\", \"Hamming\", \"Blackman\"],\n  {label: \"Window type\", value: \"Hamming\"}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nChallenge:\n\nTry to match the spec from Example 7.8 (0–1850 Hz passband, 2150–4000 Hz stopband).\nCompare your chosen window and N to the textbook’s."
-  },
-  {
-    "objectID": "dsp_71.html#interactive-time-domain-filtering-of-a-sinusoid-sum",
-    "href": "dsp_71.html#interactive-time-domain-filtering-of-a-sinusoid-sum",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Interactive: Time-Domain Filtering of a Sinusoid Sum",
-    "text": "Interactive: Time-Domain Filtering of a Sinusoid Sum\nTest the linear phase property of a symmetric FIR on a sum of sinusoids.\n\nviewof f1 = Inputs.range([200, 1500], {step: 50, label: \"Sinusoid 1 frequency f1 (Hz)\", value: 400})\nviewof f2 = Inputs.range([500, 3000], {step: 50, label: \"Sinusoid 2 frequency f2 (Hz)\", value: 1200})\nviewof Nd = Inputs.range([5, 41], {step: 2, label: \"Filter length N (odd)\", value: 17})\nviewof ocd = Inputs.range([0.1, 0.9], {step: 0.05, label: \"Normalized cutoff Ω_c / π for lowpass\", value: 0.4})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExplore:\n\nAdjust \\(f_1\\) and \\(f_2\\) to be both below cutoff, both above, or one below and one above.\nWatch how the waveform shape and delay change."
-  },
-  {
-    "objectID": "dsp_71.html#summary-next-steps",
-    "href": "dsp_71.html#summary-next-steps",
-    "title": "8.1 FIR Filter Design: Format, Fourier Design, and Windows",
-    "section": "Summary & Next Steps",
-    "text": "Summary & Next Steps\nIn this interactive deck you:\n\nImplemented FIR filtering in Python.\nBuilt ideal lowpass impulse responses and made them causal.\nVisualized the Gibbs effect with finite-length truncation.\nApplied different windows and saw main-lobe / side-lobe trade-offs.\nUsed spec-based formulas to estimate FIR length and design complete filters.\nObserved linear-phase behavior in the time domain.\n\nSuggested follow-ups:\n\nExtend these examples to highpass, bandpass, and bandstop designs.\nReplace sinusoids with real speech or music clips and listen to the effect (in a full Python or MATLAB environment).\nExplore automated design functions (firwin in SciPy, fir1 in MATLAB) and compare with your manual designs.\n\n\nEncourage students to save their favorite designs (cutoffs, N, window) and bring them to lab.\nYou can ask them to explain in a short paragraph:\n\nWhy they chose that window.\nHow many taps they used and why.\nWhat trade-offs they observed in the magnitude response."
-  },
-  {
     "objectID": "dsp_72.html#learning-objectives",
     "href": "dsp_72.html#learning-objectives",
     "title": "7.2 FIR Filter Design – Applications & Advanced Methods",
@@ -1356,558 +1349,5 @@
     "title": "7.2 FIR Filter Design – Applications & Advanced Methods",
     "section": "10. Reflection – What Did You Learn Interactively?",
     "text": "10. Reflection – What Did You Learn Interactively?\nUse this slide to check your understanding.\n\n\n\n\n\n\nTry answering in your own words (mentally or in your notes) before the instructor discussion.\n\nUse this slide as a prompt for in‑class discussion or a quick poll. Students should link their interactive observations (sliders, plots) back to the formal definitions: passband ripple, stopband attenuation, transition width, linear phase, etc."
-  },
-  {
-    "objectID": "capstone_design.html#capstone-design-course-introduction",
-    "href": "capstone_design.html#capstone-design-course-introduction",
-    "title": "Capstone Design Course Introduction",
-    "section": "Capstone Design Course Introduction",
-    "text": "Capstone Design Course Introduction\nFrom Needs to Validated Systems using the V‑Model & ISO/IEC/IEEE 29148\nDocument Context: DCP‑000 Course Guide, Rev 1.0\n\nThis deck is the first session introduction for the Capstone Design course. Goal: give students a big‑picture roadmap of the course, explain why we use the V‑Model and 29148, and how the DCP document series and traceability tie everything together. Remind them: this is not “just a project course”; it is a systems engineering lab that simulates industry practice."
-  },
-  {
-    "objectID": "capstone_design.html#session-learning-objectives",
-    "href": "capstone_design.html#session-learning-objectives",
-    "title": "Capstone Design Course Introduction",
-    "section": "Session Learning Objectives",
-    "text": "Session Learning Objectives\nBy the end of this session, you will be able to:\n\nExplain the overall V‑Model lifecycle used in the course.\nDescribe the nine stages of the Capstone project and their main deliverables.\nExplain the difference between verification and validation.\nUse the basic ID and traceability scheme (STR, REQ, CMP, IMP, TST, VER, VAL).\nUnderstand the DCP document package and gate reviews.\n\n\nEmphasize that this lecture is meta‑level: today is about how the course works, not technical content. Students should leave understanding what success looks like administratively and methodologically."
-  },
-  {
-    "objectID": "capstone_design.html#why-a-structured-capstone",
-    "href": "capstone_design.html#why-a-structured-capstone",
-    "title": "Capstone Design Course Introduction",
-    "section": "Why a Structured Capstone?",
-    "text": "Why a Structured Capstone?\n\n\nEngineering reality:\n\nReal systems are complex (HW + SW + users + environment).\nFailing late is expensive (money, safety, reputation).\nIndustry uses process models (V‑Model, 29148, 15288) to reduce risk.\n\nCourse philosophy:\n\nYour capstone is a mini‑industry project, not just a demo.\nYou will practice the full lifecycle from need → requirements → design → code/hardware → tests → handover.\nWe grade both technical quality and engineering discipline.\n\n\nReal‑world ECE examples:\n\nMedical device firmware must trace every requirement to a test (FDA).\nAutomotive ECUs follow V‑Model (ISO 26262) to prove safety.\nTelecom base stations use detailed requirements / architecture for complex RF + DSP chains.\n\n\n\n\n\n\n\nImportant\n\n\nKey message: You’re learning how real engineering organizations work.\n\n\n\n\n\nUse real anecdotes if you have them (e.g., a product recall from a requirement misunderstanding). Point out that many students will interview at companies that ask about requirements, testing, traceability, not just coding syntax or basic circuits."
-  },
-  {
-    "objectID": "capstone_design.html#standards-backbone-for-the-course",
-    "href": "capstone_design.html#standards-backbone-for-the-course",
-    "title": "Capstone Design Course Introduction",
-    "section": "Standards Backbone for the Course",
-    "text": "Standards Backbone for the Course\n\n\nCore standards guiding this course:\n\nISO/IEC/IEEE 29148:2018 Life cycle processes — Requirements engineering\nISO/IEC/IEEE 15288:2023 System life cycle processes — provides the V‑Model context.\n\nWe map the course to these by:\n\nStructuring stages according to 29148 processes.\nUsing the V‑Model as the project roadmap.\nEmphasizing requirements quality, verification, validation, and traceability.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nClarify that students are not expected to memorize the standard numbers, but they should understand the concepts those standards enforce: - Good requirements. - Systematic verification/validation. - Lifecycle thinking."
-  },
-  {
-    "objectID": "capstone_design.html#core-principles-of-the-capstone",
-    "href": "capstone_design.html#core-principles-of-the-capstone",
-    "title": "Capstone Design Course Introduction",
-    "section": "Core Principles of the Capstone",
-    "text": "Core Principles of the Capstone\n\nRequirements before solutions\n\nUnderstand the problem and needs before jumping to circuits, code, or schematics.\n\nTraceability always\n\nEvery artifact (requirement, design element, test) is linked up and down.\nThe Requirements Traceability Matrix (RTM) is your single source of truth.\n\nVerifiable & Validated\n\nVerification: “Did we build it right?”\nValidation: “Did we build the right thing?”\n\n\n\n\n\n\n\n\nTip\n\n\nThink of requirements like a contract: You can’t claim you met the contract unless each clause is testable and tested.\n\n\n\n\nThis slide defines the mental model for the whole course. Use a simple story (e.g., building a smart thermostat): - Requirement: “User can set temperature between 16–30°C with ±0.5°C accuracy.” - Verification: bench‑test the temp sensor and control algorithm. - Validation: check if actual users are comfortable and find the UI usable."
-  },
-  {
-    "objectID": "capstone_design.html#the-vmodel-big-picture",
-    "href": "capstone_design.html#the-vmodel-big-picture",
-    "title": "Capstone Design Course Introduction",
-    "section": "The V‑Model – Big Picture",
-    "text": "The V‑Model – Big Picture\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nLeft side: Define & design. Right side: Test & prove. Bottom: Implementation.\n\n\n\n\nPoint out the mirror relationships:\n\nStakeholder needs ↔︎ Stakeholder validation.\nSystem requirements ↔︎ System verification.\nComponent design ↔︎ Unit tests.\n\nStudents will live this structure through the nine stages."
-  },
-  {
-    "objectID": "capstone_design.html#course-stages-overview",
-    "href": "capstone_design.html#course-stages-overview",
-    "title": "Capstone Design Course Introduction",
-    "section": "Course Stages Overview",
-    "text": "Course Stages Overview\nWe implement the V‑Model in nine stages:\n\nProject Framing & Concept of Operations (ConOps)\nStakeholder Requirements\nSystem Requirements\nArchitecture & Component Design\nImplementation\nUnit / Component Verification\nSystem / Integration Verification\nStakeholder Validation\nProject Finalization & Handover\n\nEach stage:\n\nHas a clear purpose.\nProduces a DCP document.\nIs gated by a review before moving on.\n\n\nTell students: “Think of this like levels in a game. You can’t move to Level 3 until you beat the boss at Level 2 (gate review).” This helps them anticipate workload and milestones across the year."
-  },
-  {
-    "objectID": "capstone_design.html#dcp-document-package-your-engineering-dossier",
-    "href": "capstone_design.html#dcp-document-package-your-engineering-dossier",
-    "title": "Capstone Design Course Introduction",
-    "section": "DCP Document Package – Your “Engineering Dossier”",
-    "text": "DCP Document Package – Your “Engineering Dossier”\n\n\n\n\n\n\n\n\n\n\nID\nTitle\n29148 Item\nGate Review\nTypical Due Time\n\n\n\n\nDCP‑100A\nProject Proposal\nConOps, Stakeholder List\nStage 1 Gate\nWeek 3\n\n\nDCP‑100B\nStakeholder Requirements\nStRS\nStage 2 Gate\nWeek 6\n\n\nDCP‑200\nSystem Requirements\nSyRS\nStage 3 Gate\nWeek 9\n\n\nDCP‑300\nDesign\nArchitecture, Design Descr\nCDR (Critical Design Rev)\nWeek 13\n\n\nDCP‑400\nImplementation\nImplementation records\nTRR (Test Readiness Rev)\nSem 2 Week 6\n\n\nDCP‑500A\nUnit Verification\nVerification Reports\nUnit Test Review\nSem 2 Week 8\n\n\nDCP‑500B\nSystem Verification\nVerification Reports\nSystem Test Review\nSem 2 Week 11\n\n\nDCP‑500C\nStakeholder Validation\nValidation Reports\nFinal Demo\nSem 2 Week 14\n\n\nDCP‑600\nFinal Report & Handover\nFinal RTM, Manuals, Archive\nFinal Submission\nFinals Week\n\n\n\n\n\n\n\n\n\nWarning\n\n\nGate Reviews:\nYou cannot proceed to the next stage without:\n\nApproved document\nUpdated RTM\nTraceability intact\nKey risks reviewed\n\n\n\n\n\nStress that DCP documents are living documents, updated as the project evolves. They are not “busy work”; they are the record that future engineers could pick up to maintain or extend the system."
-  },
-  {
-    "objectID": "capstone_design.html#traceability-the-backbone-of-the-project",
-    "href": "capstone_design.html#traceability-the-backbone-of-the-project",
-    "title": "Capstone Design Course Introduction",
-    "section": "Traceability: The Backbone of the Project",
-    "text": "Traceability: The Backbone of the Project\n\n\nArtifacts and IDs:\n\nStakeholder Requirement → STR-SY-### or STR-SW-###\nSystem Requirement → REQ-SY-### or REQ-SW-###\nComponent → CMP-SY-### or CMP-SW-###\nImplementation Artifact → IMP-SY-### or IMP-SW-###\nUnit Test → TST-SY-### or TST-SW-###\nSystem Verification Test → VER-SY-### or VER-SW-###\nValidation Activity → VAL-SY-### or VAL-SW-###\n\nAll of these live in the Requirements Traceability Matrix (RTM).\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExplain vertical traceability: STR → REQ → CMP → IMP → TST → VER → VAL. Mention horizontal traceability: - Stage 2 ↔︎ Stage 8 (STR ↔︎ VAL) - Stage 3 ↔︎ Stage 7 (REQ ↔︎ VER) - Stage 4 ↔︎ Stage 6 (CMP ↔︎ TST)\nStudents will maintain this in a spreadsheet or requirements tool."
-  },
-  {
-    "objectID": "capstone_design.html#traceability-in-the-vmodel",
-    "href": "capstone_design.html#traceability-in-the-vmodel",
-    "title": "Capstone Design Course Introduction",
-    "section": "Traceability in the V‑Model",
-    "text": "Traceability in the V‑Model\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nHorizontal links: - STR-* ↔︎ VAL-* (Stakeholder needs ↔︎ Acceptance tests) - REQ-* ↔︎ VER-* (System requirements ↔︎ System tests) - CMP-* ↔︎ TST-* (Component design ↔︎ Unit tests)\n\n\n\n\nThis is the “V‑Model as a graph” where nodes are artifacts and edges are traceability links. Use an example: - STR-SY-001: “Lab tech can measure temperature remotely.” - REQ-SY-003: “System shall transmit temperature updates every 1 s with ±0.5°C accuracy.” - CMP-SY-010: “Wireless module & protocol design.” - TST-SY-007: “Unit test for wireless throughput and reliability.” - VER-SY-002: “System‑level test of telemetry performance.” - VAL-SY-001: “User acceptance test in actual lab environment.”"
-  },
-  {
-    "objectID": "capstone_design.html#stage-1-project-framing-concept-of-operations",
-    "href": "capstone_design.html#stage-1-project-framing-concept-of-operations",
-    "title": "Capstone Design Course Introduction",
-    "section": "Stage 1 – Project Framing & Concept of Operations",
-    "text": "Stage 1 – Project Framing & Concept of Operations\n\n\nV‑Model Level: Top‑left – Concept / Need\n29148 Processes:\n\nBusiness or Mission Analysis\nStakeholder Identification\n\nCapstone Activities:\n\nDefine the problem domain and business/mission need.\nAnalyze existing solutions and their limitations.\nCharacterize environment: users, constraints, stakeholders.\nSelect a solution class (not a detailed design).\nProduce a Concept of Operations (ConOps).\n\n\nKey Deliverable:\n\nDCP‑100A Project Proposal\n\nProblem statement\nStakeholder map\nOperational scenarios\nHigh‑level success criteria\n\n\n\n\n\n\n\n\nTip\n\n\nFocus on the “why”, not on schematics or specific chips yet.\n\n\n\n\n\nWarn students against “premature design fixation”.\nIf someone says, “We’re building with Raspberry Pi and LoRa,” ask:\n\nWhat problem are you solving?\nWho are your stakeholders?\nWhat are the operational scenarios?"
-  },
-  {
-    "objectID": "capstone_design.html#stage-2-stakeholder-needs-requirements",
-    "href": "capstone_design.html#stage-2-stakeholder-needs-requirements",
-    "title": "Capstone Design Course Introduction",
-    "section": "Stage 2 – Stakeholder Needs & Requirements",
-    "text": "Stage 2 – Stakeholder Needs & Requirements\n\n\nV‑Model Level: Upper‑left – Stakeholder / User Requirements\n29148 Processes:\n\nStakeholder Needs & Requirements Definition\nEarly Requirements Validation (planning)\n\nCapstone Activities:\n\nIdentify all stakeholders: advisors, clients, end‑users, regulators, lab staff.\nConduct interviews, surveys, observations.\nUse use cases, user stories, and scenarios to elicit needs.\nPrioritize needs (e.g., MoSCoW, Kano).\nResolve conflicts and negotiate scope.\nDevelop a Stakeholder Requirements Specification (StRS).\n\n\nKey Deliverable:\n\nDCP‑100B Stakeholder Requirements\n\nSTR-* IDs\nHigh‑level acceptance criteria\nInitial Validation Plan (VAL-* planned)\n\n\nQuality Criteria (29148):\n\nNecessary\nUnambiguous\nComplete (to agreed scope)\nTraceable to business needs\n\n\n\nUse a quick in‑class exercise: Give them a vague requirement like “System should be easy to use” and ask how to make it measurable and testable (e.g., “User shall complete basic task X within 2 minutes without external help”)."
-  },
-  {
-    "objectID": "capstone_design.html#stage-3-system-software-requirements",
-    "href": "capstone_design.html#stage-3-system-software-requirements",
-    "title": "Capstone Design Course Introduction",
-    "section": "Stage 3 – System / Software Requirements",
-    "text": "Stage 3 – System / Software Requirements\n\n\nV‑Model Level: Mid‑left – System Requirements\n29148 Processes:\n\nSystem/Software Requirements Definition\nRequirements Analysis\n\nCapstone Activities:\n\nTransform stakeholder needs (StRS) into technical requirements.\nCategorize:\n\nFunctional\nPerformance\nInterface\nSecurity\nUsability\nEnvironmental / Reliability / Safety\n\nDefine acceptance criteria and verification methods:\n\nTest, Analysis, Model, Demonstration, Inspection (TAMDI).\n\nEnsure requirements are:\n\nVerifiable, Feasible, Singular (one requirement per statement).\n\nProduce SyRS/SRS.\n\n\nKey Deliverable:\n\nDCP‑200 System Requirements\n\nREQ-* IDs\nBidirectional traceability: STR-* → REQ-*\nInitial Verification Plan (VER-* planned)\n\n\nExample requirement form:\n\\[\n\\text{REQ-SY-023: The system shall}~ &lt;\\text{observable behavior}&gt; \\\\\n\\text{under}~ &lt;\\text{conditions}&gt; ~\\text{with}~ &lt;\\text{quantitative criteria}&gt;.\n\\]\n\n\nClarify the difference between StRS and SyRS/SRS:\n\nStRS: stakeholder language (“The lab wants to …”).\nSyRS: engineering language, quantitative, testable.\n\nUse a simple example:\n\nSTR: “Student should be able to log in quickly.”\nREQ: “System shall authenticate a user within 2 s in 95% of attempts over campus Wi‑Fi.”"
-  },
-  {
-    "objectID": "capstone_design.html#stage-4-architecture-component-design",
-    "href": "capstone_design.html#stage-4-architecture-component-design",
-    "title": "Capstone Design Course Introduction",
-    "section": "Stage 4 – Architecture & Component Design",
-    "text": "Stage 4 – Architecture & Component Design\n\n\nV‑Model Level: Mid‑left – Architecture and Detailed Design\n29148 / 15288 Role:\n\nArchitecture Definition\nDesign Definition\nRequirements Allocation\n\nCapstone Activities:\n\nDevelop system architecture:\n\nBlock diagrams\nData flow, control flow, or state diagrams\n\nAllocate each REQ-* to one or more components (CMP-*).\nDefine interfaces (signals, protocols, voltages, APIs).\nDevelop detailed design:\n\nAlgorithms, data structures (SW)\nSchematics, PCB layouts (HW)\n\nUpdate RTM: REQ-* → CMP-*.\n\n\nKey Deliverable:\n\nDCP‑300 Design\n\nArchitecture views\nComponent specifications (CMP-*)\nRequirements Allocation Matrix\nInitial Test Plan (TST-* planned)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nImportant\n\n\nEvery component should exist because it satisfies at least one requirement. If you can’t map a component to a requirement, question why it exists.\n\n\n\n\nThis is where many projects either stay coherent or become a “bag of parts.” Highlight interface definitions as common failure points in integration."
-  },
-  {
-    "objectID": "capstone_design.html#stage-5-implementation-construction",
-    "href": "capstone_design.html#stage-5-implementation-construction",
-    "title": "Capstone Design Course Introduction",
-    "section": "Stage 5 – Implementation / Construction",
-    "text": "Stage 5 – Implementation / Construction\n\n\nV‑Model Level: Bottom – Coding / Building\n29148 / 15288 Role:\n\nImplementation Process\nConfiguration Management\n\nCapstone Activities:\n\nImplement the design:\n\nDevelop software modules (embedded, apps, services).\nBuild hardware (prototypes, PCBs, mechanical assemblies).\n\nUse version control (Git) and branching strategies.\nPerform code / design reviews against requirements.\nManage change requests when implementation forces requirement/design updates.\n\n\nKey Deliverable:\n\nDCP‑400 Implementation\n\nImplementation artifacts (IMP-*)\nBuild procedures\nUpdated requirements baseline & change log\n\n\n\n\n\n\n\n\nNote\n\n\nExpect iterative build–test–fix cycles.\nThe key is to manage changes and keep traceability up to date.\n\n\n\n\n\nMake clear that this is the most “hands‑on” stage, but good work here depends on good requirements and design upstream.\nUse a quick example of a Git log entry referencing a requirement ID (REQ-SW-012) in the commit message as a traceability practice."
-  },
-  {
-    "objectID": "capstone_design.html#stage-6-unit-component-verification",
-    "href": "capstone_design.html#stage-6-unit-component-verification",
-    "title": "Capstone Design Course Introduction",
-    "section": "Stage 6 – Unit / Component Verification",
-    "text": "Stage 6 – Unit / Component Verification\n\n\nV‑Model Level: Lower‑right – Unit Testing / Component Verification\n29148 Process: Verification at component level\nCapstone Activities:\n\nDesign and execute unit tests for each component (CMP-*).\nMap each test (TST-*) to:\n\nComponent(s)\nAllocated requirements (REQ-*)\n\nRecord test procedures, environments, and results.\nLog defects and perform root‑cause analysis.\nUpdate RTM: CMP-* → TST-*.\n\n\nKey Deliverable:\n\nDCP‑500A Unit Verification\n\nTST-* test cases\nUnit test logs\nDefect reports\n\n\n\n\n\n\n\n\nTip\n\n\nFor every test case, be able to answer:\n\n“Which requirement does this verify?”\n\n\n\n\n\n\nFor ECE:\n\nUnit test for a DSP filter module: check frequency response vs spec.\nUnit test for a sensor board: measure offset, noise, linearity vs REQ-SY-0xx. You can show simple pseudo‑code or a testbench listing referencing requirement IDs in comments."
-  },
-  {
-    "objectID": "capstone_design.html#stage-7-system-integration-verification",
-    "href": "capstone_design.html#stage-7-system-integration-verification",
-    "title": "Capstone Design Course Introduction",
-    "section": "Stage 7 – System / Integration Verification",
-    "text": "Stage 7 – System / Integration Verification\n\n\nV‑Model Level: Mid‑right – Integration & System Test\n29148 Process: Verification against system requirements\nCapstone Activities:\n\nIntegrate components incrementally (e.g., bottom‑up, top‑down, or mixed).\nTest interfaces and interactions (timing, protocols, data consistency).\nExecute system test procedures derived from SyRS/SRS.\nEnsure full coverage of REQ-* in system verification.\nUpdate RTM: REQ-* ↔︎ VER-*.\n\n\nKey Deliverable:\n\nDCP‑500B System Verification\n\nVER-* system test cases and results\nIntegration & system test reports\nUpdated RTM with coverage metrics\n\n\n\n\n\n\n\n\nImportant\n\n\nVerification = “Did we build it right?” Does the integrated system meet all system requirements?\n\n\n\n\n\nHighlight emergent behavior: problems that only appear when subsystems interact. Examples in ECE: RF interference when two subsystems are close, timing issues between microcontroller and peripheral, race conditions in distributed systems, etc."
-  },
-  {
-    "objectID": "capstone_design.html#stage-8-stakeholder-validation-acceptance",
-    "href": "capstone_design.html#stage-8-stakeholder-validation-acceptance",
-    "title": "Capstone Design Course Introduction",
-    "section": "Stage 8 – Stakeholder Validation & Acceptance",
-    "text": "Stage 8 – Stakeholder Validation & Acceptance\n\n\nV‑Model Level: Top‑right – System / Acceptance Testing\n29148 Process: Validation\nCapstone Activities:\n\nExecute system‑level tests against stakeholder needs (StRS).\nConduct acceptance testing with real stakeholders.\nObserve users in realistic environments or scenarios.\nAsk:\n\n\n“Does this system solve the original business/mission problem?”\n\n\nGather feedback, capture issues or change requests.\nProduce Validation Report and Acceptance Sign‑off.\n\n\nKey Deliverable:\n\nDCP‑500C Stakeholder Validation\n\nVAL-* validation activities and results\nStakeholder demo summary\nLessons learned from usage\n\n\n\n\n\n\n\n\nImportant\n\n\nValidation = “Did we build the right thing?” Even a perfectly verified system can fail validation if it doesn’t meet real needs.\n\n\n\n\n\nUse a simple story: A system that meets every technical spec but has a terrible UI and users refuse to adopt it → verification succeeded, validation failed. Encourage teams to involve stakeholders early and often (e.g., quick UI mockup sessions)."
-  },
-  {
-    "objectID": "capstone_design.html#stage-9-project-finalization-handover",
-    "href": "capstone_design.html#stage-9-project-finalization-handover",
-    "title": "Capstone Design Course Introduction",
-    "section": "Stage 9 – Project Finalization & Handover",
-    "text": "Stage 9 – Project Finalization & Handover\n\n\nV‑Model Level: Spans entire V – Transition & Closure\n29148 / 15288 Processes:\n\nInformation Management\nTransition\nDisposal Planning (at least conceptually)\n\nCapstone Activities:\n\nFinalize all documentation:\n\nStRS, SyRS/SRS\nDesign docs\nTest reports\nUser & maintenance manuals\n\nFreeze and archive the Requirements Traceability Matrix (RTM).\nConduct a project post‑mortem (lessons learned).\nPresent final system to faculty, sponsors, and stakeholders.\n\n\nKey Deliverable:\n\nDCP‑600 Final Report & Handover\n\nComplete RTM\nProject archive (source, CAD, configs)\nHandover instructions\n\n\n\n\n\n\n\n\nNote\n\n\nThink like a professional engineer handing a system to a client or another engineering team.\n\n\n\n\n\nAsk: “If you left the company tomorrow, could someone else maintain or extend your system using only your final package?” Use this to motivate clean documentation, code comments, and design rationale."
-  },
-  {
-    "objectID": "capstone_design.html#teaching-topics-by-stage-roadmap",
-    "href": "capstone_design.html#teaching-topics-by-stage-roadmap",
-    "title": "Capstone Design Course Introduction",
-    "section": "Teaching Topics by Stage (Roadmap)",
-    "text": "Teaching Topics by Stage (Roadmap)\n\n\n\n\n\n\n\nStage\nFocus Topics\n\n\n\n\n1\nProblem scoping, stakeholder analysis, ConOps, problem vs solution space, systems thinking\n\n\n2\nElicitation techniques, characteristics of good StRS, use cases, MoSCoW, ambiguity review\n\n\n3\nFunctional vs non‑functional, 29148 requirement characteristics, TAMDI verification methods, constraints\n\n\n4\nArchitecture views, requirement allocation, interfaces, make/buy, design rationale\n\n\n5\nConfiguration management, baselines, change control, technical debt, integration planning\n\n\n6\nUnit test design, code coverage, requirement‑based testing, defect tracking\n\n\n7\nIntegration strategy, system test design, emergent properties, test environments\n\n\n8\nValidation planning, usability testing, stakeholder feedback, “fit for purpose”\n\n\n9\nDocumentation, handover, maintenance planning, post‑mortem, ethics\n\n\n\n\nUse this slide to set expectations for upcoming lectures / labs. Students can see how theoretical topics (e.g., requirements quality) map to deliverables (e.g., DCP‑200)."
-  },
-  {
-    "objectID": "capstone_design.html#example-smart-lab-sensor-network-ece-context",
-    "href": "capstone_design.html#example-smart-lab-sensor-network-ece-context",
-    "title": "Capstone Design Course Introduction",
-    "section": "Example: Smart Lab Sensor Network (ECE Context)",
-    "text": "Example: Smart Lab Sensor Network (ECE Context)\n\n\nConcept:\nDesign a wireless sensor network that monitors temperature and humidity in teaching labs and pushes data to a dashboard.\nSample Stakeholder Requirements (STR-*):\n\nSTR-SY-001: Lab technicians shall monitor each lab’s temperature in real time from a central dashboard.\nSTR-SY-002: System shall alert staff when temperature in any lab exceeds 28°C for more than 10 minutes.\n\n\nDerived System Requirements (REQ-*):\n\nREQ-SY-010: Each sensor node shall measure temperature from 10–40°C with ±0.5°C accuracy.\nREQ-SY-011: Each node shall transmit measurements at least once every 60 s.\nREQ-SW-020: The server software shall generate an alert within 2 min of detecting a lab exceeding 28°C for 10 min.\n\nPotential Tests (TST-*, VER-*, VAL-*):\n\nTST-SY-001: Bench‑test temperature sensor calibration.\nVER-SW-002: System‑level test of data latency and alert generation.\nVAL-SY-001: Validation session with lab staff to confirm alerts are useful and understandable.\n\n\n\nWalk through this example across the stages:\n\nStage 1: Why monitor labs? Who cares?\nStage 2: What do technicians, facilities, and students need?\nStage 3: Convert those into quantitative specs.\nStage 4: Architecture (nodes, gateways, server, dashboard).\nStage 5: HW + SW implementation.\nStage 6–7: Testing sensors, network, alerts.\nStage 8: Let real lab staff try the system and collect feedback."
-  },
-  {
-    "objectID": "capstone_design.html#summary-what-you-should-take-away-today",
-    "href": "capstone_design.html#summary-what-you-should-take-away-today",
-    "title": "Capstone Design Course Introduction",
-    "section": "Summary – What You Should Take Away Today",
-    "text": "Summary – What You Should Take Away Today\n\nThe course uses the V‑Model and ISO/IEC/IEEE 29148 to structure your capstone.\nYou will work through nine stages from problem framing to handover.\nTraceability is central: STR-* → REQ-* → CMP-* → IMP-* → TST-* → VER-* → VAL-*.\nDCP documents (DCP‑100A … DCP‑600) are your official artifacts for gate reviews.\nVerification asks: “Did we build it right?” Validation asks: “Did we build the right thing?”\n\n\n\n\n\n\n\nImportant\n\n\nYour success is not just the final demo. It is demonstrating that you can engineer a system professionally, from needs to validated solution.\n\n\n\n\nClose by connecting this to students’ future careers and accreditation outcomes (ABET, etc., if applicable). Invite questions specifically about: - Scope of projects - Team composition - Tools for RTM (spreadsheets, requirements plugins, etc.)"
-  },
-  {
-    "objectID": "cd_00_intro.html#capstone-design-course-introduction",
-    "href": "cd_00_intro.html#capstone-design-course-introduction",
-    "title": "Capstone Design Course Introduction",
-    "section": "Capstone Design Course Introduction",
-    "text": "Capstone Design Course Introduction\nFrom Needs to Validated Systems using the V‑Model & ISO/IEC/IEEE 29148\nDocument Context: DCP‑000 Course Guide, Rev 1.0\n\nThis deck is the first session introduction for the Capstone Design course. Goal: give students a big‑picture roadmap of the course, explain why we use the V‑Model and 29148, and how the DCP document series and traceability tie everything together. Remind them: this is not “just a project course”; it is a systems engineering lab that simulates industry practice."
-  },
-  {
-    "objectID": "cd_00_intro.html#session-learning-objectives",
-    "href": "cd_00_intro.html#session-learning-objectives",
-    "title": "Capstone Design Course Introduction",
-    "section": "Session Learning Objectives",
-    "text": "Session Learning Objectives\nBy the end of this session, you will be able to:\n\nExplain the overall V‑Model lifecycle used in the course.\nDescribe the nine stages of the Capstone project and their main deliverables.\nExplain the difference between verification and validation.\nUse the basic ID and traceability scheme (STR, REQ, CMP, IMP, TST, VER, VAL).\nUnderstand the DCP document package and gate reviews.\n\n\nEmphasize that this lecture is meta‑level: today is about how the course works, not technical content. Students should leave understanding what success looks like administratively and methodologically."
-  },
-  {
-    "objectID": "cd_00_intro.html#why-a-structured-capstone",
-    "href": "cd_00_intro.html#why-a-structured-capstone",
-    "title": "Capstone Design Course Introduction",
-    "section": "Why a Structured Capstone?",
-    "text": "Why a Structured Capstone?\n\n\nEngineering reality:\n\nReal systems are complex (HW + SW + users + environment).\nFailing late is expensive (money, safety, reputation).\nIndustry uses process models (V‑Model, 29148, 15288) to reduce risk.\n\nCourse philosophy:\n\nYour capstone is a mini‑industry project, not just a demo.\nYou will practice the full lifecycle from need → requirements → design → code/hardware → tests → handover.\nWe grade both technical quality and engineering discipline.\n\n\nReal‑world ECE examples:\n\nMedical device firmware must trace every requirement to a test (FDA).\nAutomotive ECUs follow V‑Model (ISO 26262) to prove safety.\nTelecom base stations use detailed requirements / architecture for complex RF + DSP chains.\n\n\n\n\n\n\n\nImportant\n\n\nKey message: You’re learning how real engineering organizations work.\n\n\n\n\n\nUse real anecdotes if you have them (e.g., a product recall from a requirement misunderstanding). Point out that many students will interview at companies that ask about requirements, testing, traceability, not just coding syntax or basic circuits."
-  },
-  {
-    "objectID": "cd_00_intro.html#standards-backbone-for-the-course",
-    "href": "cd_00_intro.html#standards-backbone-for-the-course",
-    "title": "Capstone Design Course Introduction",
-    "section": "Standards Backbone for the Course",
-    "text": "Standards Backbone for the Course\n\n\nCore standards guiding this course:\n\nISO/IEC/IEEE 29148:2018 Life cycle processes — Requirements engineering\nISO/IEC/IEEE 15288:2023 System life cycle processes — provides the V‑Model context.\n\nWe map the course to these by:\n\nStructuring stages according to 29148 processes.\nUsing the V‑Model as the project roadmap.\nEmphasizing requirements quality, verification, validation, and traceability.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nClarify that students are not expected to memorize the standard numbers, but they should understand the concepts those standards enforce: - Good requirements. - Systematic verification/validation. - Lifecycle thinking."
-  },
-  {
-    "objectID": "cd_00_intro.html#core-principles-of-the-capstone",
-    "href": "cd_00_intro.html#core-principles-of-the-capstone",
-    "title": "Capstone Design Course Introduction",
-    "section": "Core Principles of the Capstone",
-    "text": "Core Principles of the Capstone\n\nRequirements before solutions\n\nUnderstand the problem and needs before jumping to circuits, code, or schematics.\n\nTraceability always\n\nEvery artifact (requirement, design element, test) is linked up and down.\nThe Requirements Traceability Matrix (RTM) is your single source of truth.\n\nVerifiable & Validated\n\nVerification: “Did we build it right?”\nValidation: “Did we build the right thing?”\n\n\n\n\n\n\n\n\nTip\n\n\nThink of requirements like a contract: You can’t claim you met the contract unless each clause is testable and tested.\n\n\n\n\nThis slide defines the mental model for the whole course. Use a simple story (e.g., building a smart thermostat): - Requirement: “User can set temperature between 16–30°C with ±0.5°C accuracy.” - Verification: bench‑test the temp sensor and control algorithm. - Validation: check if actual users are comfortable and find the UI usable."
-  },
-  {
-    "objectID": "cd_00_intro.html#the-vmodel-big-picture",
-    "href": "cd_00_intro.html#the-vmodel-big-picture",
-    "title": "Capstone Design Course Introduction",
-    "section": "The V‑Model – Big Picture",
-    "text": "The V‑Model – Big Picture\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nLeft side: Define & design.\nRight side: Test & prove.\nBottom: Implementation.\n\n\n\n\nPoint out the mirror relationships:\n\nStakeholder needs ↔︎ Stakeholder validation.\nSystem requirements ↔︎ System verification.\nComponent design ↔︎ Unit tests.\n\nStudents will live this structure through the nine stages."
-  },
-  {
-    "objectID": "cd_00_intro.html#course-stages-overview",
-    "href": "cd_00_intro.html#course-stages-overview",
-    "title": "Capstone Design Course Introduction",
-    "section": "Course Stages Overview",
-    "text": "Course Stages Overview\nWe implement the V‑Model in nine stages:\n\nProject Framing & Concept of Operations (ConOps)\nStakeholder Requirements\nSystem Requirements\nArchitecture & Component Design\nImplementation\nUnit / Component Verification\nSystem / Integration Verification\nStakeholder Validation\nProject Finalization & Handover\n\nEach stage:\n\nHas a clear purpose.\nProduces a DCP document.\nIs gated by a review before moving on.\n\n\nTell students: “Think of this like levels in a game. You can’t move to Level 3 until you beat the boss at Level 2 (gate review).” This helps them anticipate workload and milestones across the year."
-  },
-  {
-    "objectID": "cd_00_intro.html#dcp-document-package-your-engineering-dossier",
-    "href": "cd_00_intro.html#dcp-document-package-your-engineering-dossier",
-    "title": "Capstone Design Course Introduction",
-    "section": "DCP Document Package – Your “Engineering Dossier”",
-    "text": "DCP Document Package – Your “Engineering Dossier”\n\n\n\n\n\n\n\n\n\n\nID\nTitle\n29148 Item\nGate Review\nTypical Due Time\n\n\n\n\nDCP‑100A\nProject Proposal\nConOps, Stakeholder List\nStage 1 Gate\nWeek 3\n\n\nDCP‑100B\nStakeholder Requirements\nStRS\nStage 2 Gate\nWeek 6\n\n\nDCP‑200\nSystem Requirements\nSyRS\nStage 3 Gate\nWeek 9\n\n\nDCP‑300\nDesign\nArchitecture, Design Descr\nCDR (Critical Design Rev)\nWeek 13\n\n\nDCP‑400\nImplementation\nImplementation records\nTRR (Test Readiness Rev)\nSem 2 Week 6\n\n\nDCP‑500A\nUnit Verification\nVerification Reports\nUnit Test Review\nSem 2 Week 8\n\n\nDCP‑500B\nSystem Verification\nVerification Reports\nSystem Test Review\nSem 2 Week 11\n\n\nDCP‑500C\nStakeholder Validation\nValidation Reports\nFinal Demo\nSem 2 Week 14\n\n\nDCP‑600\nFinal Report & Handover\nFinal RTM, Manuals, Archive\nFinal Submission\nFinals Week\n\n\n\n\n\n\n\n\n\nWarning\n\n\nGate Reviews:\nYou cannot proceed to the next stage without:\n\nApproved document\nUpdated RTM\nTraceability intact\nKey risks reviewed\n\n\n\n\n\nStress that DCP documents are living documents, updated as the project evolves. They are not “busy work”; they are the record that future engineers could pick up to maintain or extend the system."
-  },
-  {
-    "objectID": "cd_00_intro.html#traceability-the-backbone-of-the-project",
-    "href": "cd_00_intro.html#traceability-the-backbone-of-the-project",
-    "title": "Capstone Design Course Introduction",
-    "section": "Traceability: The Backbone of the Project",
-    "text": "Traceability: The Backbone of the Project\n\n\nArtifacts and IDs:\n\nStakeholder Requirement → STR-SY-### or STR-SW-###\nSystem Requirement → REQ-SY-### or REQ-SW-###\nComponent → CMP-SY-### or CMP-SW-###\nImplementation Artifact → IMP-SY-### or IMP-SW-###\nUnit Test → TST-SY-### or TST-SW-###\nSystem Verification Test → VER-SY-### or VER-SW-###\nValidation Activity → VAL-SY-### or VAL-SW-###\n\nAll of these live in the Requirements Traceability Matrix (RTM).\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExplain vertical traceability: STR → REQ → CMP → IMP → TST → VER → VAL. Mention horizontal traceability: - Stage 2 ↔︎ Stage 8 (STR ↔︎ VAL) - Stage 3 ↔︎ Stage 7 (REQ ↔︎ VER) - Stage 4 ↔︎ Stage 6 (CMP ↔︎ TST)\nStudents will maintain this in a spreadsheet or requirements tool."
-  },
-  {
-    "objectID": "cd_00_intro.html#traceability-in-the-vmodel",
-    "href": "cd_00_intro.html#traceability-in-the-vmodel",
-    "title": "Capstone Design Course Introduction",
-    "section": "Traceability in the V‑Model",
-    "text": "Traceability in the V‑Model\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nHorizontal links:\n\nSTR-* ↔︎ VAL-* (Stakeholder needs ↔︎ Acceptance tests)\nREQ-* ↔︎ VER-* (System requirements ↔︎ System tests)\nCMP-* ↔︎ TST-* (Component design ↔︎ Unit tests)\n\n\n\n\n\nThis is the “V‑Model as a graph” where nodes are artifacts and edges are traceability links. Use an example: - STR-SY-001: “Lab tech can measure temperature remotely.” - REQ-SY-003: “System shall transmit temperature updates every 1 s with ±0.5°C accuracy.” - CMP-SY-010: “Wireless module & protocol design.” - TST-SY-007: “Unit test for wireless throughput and reliability.” - VER-SY-002: “System‑level test of telemetry performance.” - VAL-SY-001: “User acceptance test in actual lab environment.”"
-  },
-  {
-    "objectID": "cd_00_intro.html#stage-1-project-framing-concept-of-operations",
-    "href": "cd_00_intro.html#stage-1-project-framing-concept-of-operations",
-    "title": "Capstone Design Course Introduction",
-    "section": "Stage 1 – Project Framing & Concept of Operations",
-    "text": "Stage 1 – Project Framing & Concept of Operations\n\n\nV‑Model Level: Top‑left – Concept / Need\n29148 Processes:\n\nBusiness or Mission Analysis\nStakeholder Identification\n\nCapstone Activities:\n\nDefine the problem domain and business/mission need.\nAnalyze existing solutions and their limitations.\nCharacterize environment: users, constraints, stakeholders.\nSelect a solution class (not a detailed design).\nProduce a Concept of Operations (ConOps).\n\n\nKey Deliverable:\n\nDCP‑100A Project Proposal\n\nProblem statement\nStakeholder map\nOperational scenarios\nHigh‑level success criteria\n\n\n\n\n\n\n\n\nTip\n\n\nFocus on the “why”, not on schematics or specific chips yet.\n\n\n\n\n\nWarn students against “premature design fixation”.\nIf someone says, “We’re building with Raspberry Pi and LoRa,” ask:\n\nWhat problem are you solving?\nWho are your stakeholders?\nWhat are the operational scenarios?"
-  },
-  {
-    "objectID": "cd_00_intro.html#stage-2-stakeholder-needs-requirements",
-    "href": "cd_00_intro.html#stage-2-stakeholder-needs-requirements",
-    "title": "Capstone Design Course Introduction",
-    "section": "Stage 2 – Stakeholder Needs & Requirements",
-    "text": "Stage 2 – Stakeholder Needs & Requirements\n\n\nV‑Model Level: Upper‑left – Stakeholder / User Requirements\n29148 Processes:\n\nStakeholder Needs & Requirements Definition\nEarly Requirements Validation (planning)\n\nCapstone Activities:\n\nIdentify all stakeholders: advisors, clients, end‑users, regulators, lab staff.\nConduct interviews, surveys, observations.\nUse use cases, user stories, and scenarios to elicit needs.\nPrioritize needs (e.g., MoSCoW, Kano).\nResolve conflicts and negotiate scope.\nDevelop a Stakeholder Requirements Specification (StRS).\n\n\nKey Deliverable:\n\nDCP‑100B Stakeholder Requirements\n\nSTR-* IDs\nHigh‑level acceptance criteria\nInitial Validation Plan (VAL-* planned)\n\n\nQuality Criteria (29148):\n\nNecessary\nUnambiguous\nComplete (to agreed scope)\nTraceable to business needs\n\n\n\nUse a quick in‑class exercise: Give them a vague requirement like “System should be easy to use” and ask how to make it measurable and testable (e.g., “User shall complete basic task X within 2 minutes without external help”)."
-  },
-  {
-    "objectID": "cd_00_intro.html#stage-3-system-software-requirements",
-    "href": "cd_00_intro.html#stage-3-system-software-requirements",
-    "title": "Capstone Design Course Introduction",
-    "section": "Stage 3 – System / Software Requirements",
-    "text": "Stage 3 – System / Software Requirements\n\n\nV‑Model Level: Mid‑left – System Requirements\n29148 Processes:\n\nSystem/Software Requirements Definition\nRequirements Analysis\n\nCapstone Activities:\n\nTransform stakeholder needs (StRS) into technical requirements.\nCategorize:\n\nFunctional\nPerformance\nInterface\nSecurity\nUsability\nEnvironmental / Reliability / Safety\n\nDefine acceptance criteria and verification methods:\n\nTest, Analysis, Model, Demonstration, Inspection (TAMDI).\n\nEnsure requirements are:\n\nVerifiable, Feasible, Singular (one requirement per statement).\n\nProduce SyRS/SRS.\n\n\nKey Deliverable:\n\nDCP‑200 System Requirements\n\nREQ-* IDs\nBidirectional traceability: STR-* → REQ-*\nInitial Verification Plan (VER-* planned)\n\n\nExample requirement form:\n\\[\n\\text{REQ-SY-023: The system shall}~ &lt;\\text{observable behavior}&gt; \\\\\n\\text{under}~ &lt;\\text{conditions}&gt; ~\\text{with}~ &lt;\\text{quantitative criteria}&gt;.\n\\]\n\n\nClarify the difference between StRS and SyRS/SRS:\n\nStRS: stakeholder language (“The lab wants to …”).\nSyRS: engineering language, quantitative, testable.\n\nUse a simple example:\n\nSTR: “Student should be able to log in quickly.”\nREQ: “System shall authenticate a user within 2 s in 95% of attempts over campus Wi‑Fi.”"
-  },
-  {
-    "objectID": "cd_00_intro.html#stage-4-architecture-component-design",
-    "href": "cd_00_intro.html#stage-4-architecture-component-design",
-    "title": "Capstone Design Course Introduction",
-    "section": "Stage 4 – Architecture & Component Design",
-    "text": "Stage 4 – Architecture & Component Design\n\n\nV‑Model Level: Mid‑left – Architecture and Detailed Design\n29148 / 15288 Role:\n\nArchitecture Definition\nDesign Definition\nRequirements Allocation\n\nCapstone Activities:\n\nDevelop system architecture:\n\nBlock diagrams\nData flow, control flow, or state diagrams\n\nAllocate each REQ-* to one or more components (CMP-*).\nDefine interfaces (signals, protocols, voltages, APIs).\nDevelop detailed design:\n\nAlgorithms, data structures (SW)\nSchematics, PCB layouts (HW)\n\nUpdate RTM: REQ-* → CMP-*.\n\n\nKey Deliverable:\n\nDCP‑300 Design\n\nArchitecture views\nComponent specifications (CMP-*)\nRequirements Allocation Matrix\nInitial Test Plan (TST-* planned)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nImportant\n\n\nEvery component should exist because it satisfies at least one requirement. If you can’t map a component to a requirement, question why it exists.\n\n\n\n\nThis is where many projects either stay coherent or become a “bag of parts.” Highlight interface definitions as common failure points in integration."
-  },
-  {
-    "objectID": "cd_00_intro.html#stage-5-implementation-construction",
-    "href": "cd_00_intro.html#stage-5-implementation-construction",
-    "title": "Capstone Design Course Introduction",
-    "section": "Stage 5 – Implementation / Construction",
-    "text": "Stage 5 – Implementation / Construction\n\n\nV‑Model Level: Bottom – Coding / Building\n29148 / 15288 Role:\n\nImplementation Process\nConfiguration Management\n\nCapstone Activities:\n\nImplement the design:\n\nDevelop software modules (embedded, apps, services).\nBuild hardware (prototypes, PCBs, mechanical assemblies).\n\nUse version control (Git) and branching strategies.\nPerform code / design reviews against requirements.\nManage change requests when implementation forces requirement/design updates.\n\n\nKey Deliverable:\n\nDCP‑400 Implementation\n\nImplementation artifacts (IMP-*)\nBuild procedures\nUpdated requirements baseline & change log\n\n\n\n\n\n\n\n\nNote\n\n\nExpect iterative build–test–fix cycles.\nThe key is to manage changes and keep traceability up to date.\n\n\n\n\n\nMake clear that this is the most “hands‑on” stage, but good work here depends on good requirements and design upstream.\nUse a quick example of a Git log entry referencing a requirement ID (REQ-SW-012) in the commit message as a traceability practice."
-  },
-  {
-    "objectID": "cd_00_intro.html#stage-6-unit-component-verification",
-    "href": "cd_00_intro.html#stage-6-unit-component-verification",
-    "title": "Capstone Design Course Introduction",
-    "section": "Stage 6 – Unit / Component Verification",
-    "text": "Stage 6 – Unit / Component Verification\n\n\nV‑Model Level: Lower‑right – Unit Testing / Component Verification\n29148 Process: Verification at component level\nCapstone Activities:\n\nDesign and execute unit tests for each component (CMP-*).\nMap each test (TST-*) to:\n\nComponent(s)\nAllocated requirements (REQ-*)\n\nRecord test procedures, environments, and results.\nLog defects and perform root‑cause analysis.\nUpdate RTM: CMP-* → TST-*.\n\n\nKey Deliverable:\n\nDCP‑500A Unit Verification\n\nTST-* test cases\nUnit test logs\nDefect reports\n\n\n\n\n\n\n\n\nTip\n\n\nFor every test case, be able to answer:\n\n“Which requirement does this verify?”\n\n\n\n\n\n\nFor ECE:\n\nUnit test for a DSP filter module: check frequency response vs spec.\nUnit test for a sensor board: measure offset, noise, linearity vs REQ-SY-0xx. You can show simple pseudo‑code or a testbench listing referencing requirement IDs in comments."
-  },
-  {
-    "objectID": "cd_00_intro.html#stage-7-system-integration-verification",
-    "href": "cd_00_intro.html#stage-7-system-integration-verification",
-    "title": "Capstone Design Course Introduction",
-    "section": "Stage 7 – System / Integration Verification",
-    "text": "Stage 7 – System / Integration Verification\n\n\nV‑Model Level: Mid‑right – Integration & System Test\n29148 Process: Verification against system requirements\nCapstone Activities:\n\nIntegrate components incrementally (e.g., bottom‑up, top‑down, or mixed).\nTest interfaces and interactions (timing, protocols, data consistency).\nExecute system test procedures derived from SyRS/SRS.\nEnsure full coverage of REQ-* in system verification.\nUpdate RTM: REQ-* ↔︎ VER-*.\n\n\nKey Deliverable:\n\nDCP‑500B System Verification\n\nVER-* system test cases and results\nIntegration & system test reports\nUpdated RTM with coverage metrics\n\n\n\n\n\n\n\n\nImportant\n\n\nVerification = “Did we build it right?” Does the integrated system meet all system requirements?\n\n\n\n\n\nHighlight emergent behavior: problems that only appear when subsystems interact. Examples in ECE: RF interference when two subsystems are close, timing issues between microcontroller and peripheral, race conditions in distributed systems, etc."
-  },
-  {
-    "objectID": "cd_00_intro.html#stage-8-stakeholder-validation-acceptance",
-    "href": "cd_00_intro.html#stage-8-stakeholder-validation-acceptance",
-    "title": "Capstone Design Course Introduction",
-    "section": "Stage 8 – Stakeholder Validation & Acceptance",
-    "text": "Stage 8 – Stakeholder Validation & Acceptance\n\n\nV‑Model Level: Top‑right – System / Acceptance Testing\n29148 Process: Validation\nCapstone Activities:\n\nExecute system‑level tests against stakeholder needs (StRS).\nConduct acceptance testing with real stakeholders.\nObserve users in realistic environments or scenarios.\nAsk:\n\n\n“Does this system solve the original business/mission problem?”\n\n\nGather feedback, capture issues or change requests.\nProduce Validation Report and Acceptance Sign‑off.\n\n\nKey Deliverable:\n\nDCP‑500C Stakeholder Validation\n\nVAL-* validation activities and results\nStakeholder demo summary\nLessons learned from usage\n\n\n\n\n\n\n\n\nImportant\n\n\nValidation = “Did we build the right thing?” Even a perfectly verified system can fail validation if it doesn’t meet real needs.\n\n\n\n\n\nUse a simple story: A system that meets every technical spec but has a terrible UI and users refuse to adopt it → verification succeeded, validation failed. Encourage teams to involve stakeholders early and often (e.g., quick UI mockup sessions)."
-  },
-  {
-    "objectID": "cd_00_intro.html#stage-9-project-finalization-handover",
-    "href": "cd_00_intro.html#stage-9-project-finalization-handover",
-    "title": "Capstone Design Course Introduction",
-    "section": "Stage 9 – Project Finalization & Handover",
-    "text": "Stage 9 – Project Finalization & Handover\n\n\nV‑Model Level: Spans entire V – Transition & Closure\n29148 / 15288 Processes:\n\nInformation Management\nTransition\nDisposal Planning (at least conceptually)\n\nCapstone Activities:\n\nFinalize all documentation:\n\nStRS, SyRS/SRS\nDesign docs\nTest reports\nUser & maintenance manuals\n\nFreeze and archive the Requirements Traceability Matrix (RTM).\nConduct a project post‑mortem (lessons learned).\nPresent final system to faculty, sponsors, and stakeholders.\n\n\nKey Deliverable:\n\nDCP‑600 Final Report & Handover\n\nComplete RTM\nProject archive (source, CAD, configs)\nHandover instructions\n\n\n\n\n\n\n\n\nNote\n\n\nThink like a professional engineer handing a system to a client or another engineering team.\n\n\n\n\n\nAsk: “If you left the company tomorrow, could someone else maintain or extend your system using only your final package?” Use this to motivate clean documentation, code comments, and design rationale."
-  },
-  {
-    "objectID": "cd_00_intro.html#teaching-topics-by-stage-roadmap",
-    "href": "cd_00_intro.html#teaching-topics-by-stage-roadmap",
-    "title": "Capstone Design Course Introduction",
-    "section": "Teaching Topics by Stage (Roadmap)",
-    "text": "Teaching Topics by Stage (Roadmap)\n\n\n\n\n\n\n\nStage\nFocus Topics\n\n\n\n\n1\nProblem scoping, stakeholder analysis, ConOps, problem vs solution space, systems thinking\n\n\n2\nElicitation techniques, characteristics of good StRS, use cases, MoSCoW, ambiguity review\n\n\n3\nFunctional vs non‑functional, 29148 requirement characteristics, TAMDI verification methods, constraints\n\n\n4\nArchitecture views, requirement allocation, interfaces, make/buy, design rationale\n\n\n5\nConfiguration management, baselines, change control, technical debt, integration planning\n\n\n6\nUnit test design, code coverage, requirement‑based testing, defect tracking\n\n\n7\nIntegration strategy, system test design, emergent properties, test environments\n\n\n8\nValidation planning, usability testing, stakeholder feedback, “fit for purpose”\n\n\n9\nDocumentation, handover, maintenance planning, post‑mortem, ethics\n\n\n\n\nUse this slide to set expectations for upcoming lectures / labs. Students can see how theoretical topics (e.g., requirements quality) map to deliverables (e.g., DCP‑200)."
-  },
-  {
-    "objectID": "cd_00_intro.html#example-smart-lab-sensor-network-ece-context",
-    "href": "cd_00_intro.html#example-smart-lab-sensor-network-ece-context",
-    "title": "Capstone Design Course Introduction",
-    "section": "Example: Smart Lab Sensor Network (ECE Context)",
-    "text": "Example: Smart Lab Sensor Network (ECE Context)\n\n\nConcept:\nDesign a wireless sensor network that monitors temperature and humidity in teaching labs and pushes data to a dashboard.\nSample Stakeholder Requirements (STR-*):\n\nSTR-SY-001: Lab technicians shall monitor each lab’s temperature in real time from a central dashboard.\nSTR-SY-002: System shall alert staff when temperature in any lab exceeds 28°C for more than 10 minutes.\n\n\nDerived System Requirements (REQ-*):\n\nREQ-SY-010: Each sensor node shall measure temperature from 10–40°C with ±0.5°C accuracy.\nREQ-SY-011: Each node shall transmit measurements at least once every 60 s.\nREQ-SW-020: The server software shall generate an alert within 2 min of detecting a lab exceeding 28°C for 10 min.\n\nPotential Tests (TST-*, VER-*, VAL-*):\n\nTST-SY-001: Bench‑test temperature sensor calibration.\nVER-SW-002: System‑level test of data latency and alert generation.\nVAL-SY-001: Validation session with lab staff to confirm alerts are useful and understandable.\n\n\n\nWalk through this example across the stages:\n\nStage 1: Why monitor labs? Who cares?\nStage 2: What do technicians, facilities, and students need?\nStage 3: Convert those into quantitative specs.\nStage 4: Architecture (nodes, gateways, server, dashboard).\nStage 5: HW + SW implementation.\nStage 6–7: Testing sensors, network, alerts.\nStage 8: Let real lab staff try the system and collect feedback."
-  },
-  {
-    "objectID": "cd_00_intro.html#summary-what-you-should-take-away-today",
-    "href": "cd_00_intro.html#summary-what-you-should-take-away-today",
-    "title": "Capstone Design Course Introduction",
-    "section": "Summary – What You Should Take Away Today",
-    "text": "Summary – What You Should Take Away Today\n\nThe course uses the V‑Model and ISO/IEC/IEEE 29148 to structure your capstone.\nYou will work through nine stages from problem framing to handover.\nTraceability is central: STR-* → REQ-* → CMP-* → IMP-* → TST-* → VER-* → VAL-*.\nDCP documents (DCP‑100A … DCP‑600) are your official artifacts for gate reviews.\nVerification asks: “Did we build it right?” Validation asks: “Did we build the right thing?”\n\n\n\n\n\n\n\nImportant\n\n\nYour success is not just the final demo. It is demonstrating that you can engineer a system professionally, from needs to validated solution.\n\n\n\n\nClose by connecting this to students’ future careers and accreditation outcomes (ABET, etc., if applicable). Invite questions specifically about: - Scope of projects - Team composition - Tools for RTM (spreadsheets, requirements plugins, etc.)"
-  },
-  {
-    "objectID": "cd_04.html#stage-5-implementation-configuration-management",
-    "href": "cd_04.html#stage-5-implementation-configuration-management",
-    "title": "Stage 5",
-    "section": "Stage 5 – Implementation & Configuration Management",
-    "text": "Stage 5 – Implementation & Configuration Management\nConfig Control, Baselines, Change Management, Technical Debt, Integration Planning\nCapstone Design – Electrical & Computer Engineering\n\nThis session zooms in on Stage 5 of the capstone: Implementation. Students are likely already writing code and building hardware; now we teach them to manage that work professionally using configuration management, baselines, change control, and integration planning. Emphasize: lots of student capstones “die” here due to unmanaged changes and chaotic integration."
-  },
-  {
-    "objectID": "cd_04.html#learning-objectives-stage-5",
-    "href": "cd_04.html#learning-objectives-stage-5",
-    "title": "Stage 5",
-    "section": "Learning Objectives – Stage 5",
-    "text": "Learning Objectives – Stage 5\nBy the end of this session, you will be able to:\n\nExplain what configuration management (CM) means in a capstone project.\nDefine and use baselines (requirements, design, implementation) in your project.\nApply a simple change control process using change requests and approvals.\nRecognize and manage technical debt in both HW and SW.\nPlan for integration using a V‑Model mindset.\nRelate these concepts to real ECE project examples (embedded systems, RF, power, FPGA, etc.).\n\n\nThese are behavior‑level objectives: students should do CM, not just know definitions. At the end, you can revisit these objectives and ask students to self‑assess where they feel strong/weak."
-  },
-  {
-    "objectID": "cd_04.html#where-are-we-in-the-vmodel",
-    "href": "cd_04.html#where-are-we-in-the-vmodel",
-    "title": "Stage 5",
-    "section": "Where Are We in the V‑Model?",
-    "text": "Where Are We in the V‑Model?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nStage 5 sits at the bottom of the V:\nYou turn your designs (DCP‑300) into real artifacts (DCP‑400) while maintaining traceability.\n\n\n\n\nRemind them: - Up to now: mostly documents, diagrams, and planning. - Now: code, hardware, prototypes – but you can’t abandon discipline. Stage 5 sets up the success of Stages 6–8 (testing & validation)."
-  },
-  {
-    "objectID": "cd_04.html#stage-5-in-the-course-deliverables",
-    "href": "cd_04.html#stage-5-in-the-course-deliverables",
-    "title": "Stage 5",
-    "section": "Stage 5 in the Course Deliverables",
-    "text": "Stage 5 in the Course Deliverables\n\n\nStage 5 Key Outcomes:\n\nImplementation of planned components (CMP-* → IMP-*).\nAll work under configuration management (Git, etc.).\nDefined implementation baseline at key milestones.\nActive change control: every major divergence from design/requirements tracked.\nUpdated Requirements Traceability Matrix (RTM).\n\n\nDCP‑400 – Implementation\nMust include:\n\nList of implementation artifacts (IMP-* IDs for code, schematics, PCBs, etc.).\nBuild scripts / README for building SW/HW.\nChange log (approved changes vs original plan).\nUpdated baselines and CM strategy (branches/tags).\n\n\n\nStress: DCP‑400 is more than “we built it.” It documents how it was built, what versions are official, and how those versions relate back to requirements and design."
-  },
-  {
-    "objectID": "cd_04.html#configuration-management-what-why",
-    "href": "cd_04.html#configuration-management-what-why",
-    "title": "Stage 5",
-    "section": "Configuration Management – What & Why",
-    "text": "Configuration Management – What & Why\n\n\nConfiguration Management (CM) is the discipline of:\n\nIdentifying the configuration items (CIs) that define your system.\nControlling changes to those items.\nKeeping an accurate record of what version is used where.\n\nTypical CIs in ECE Capstones:\n\nSource code, HDL (VHDL/Verilog), firmware.\nSchematics, PCB layouts, BOMs.\nFPGA bitstreams, compiled binaries.\nTest scripts, calibration data, FPGA constraints files.\nKey documents (StRS, SyRS, design, test plans).\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nImportant\n\n\nWithout CM, you don’t know which version was tested or delivered.\n\n\n\n\n\nUse the classic horror story:\n\nTeam tests version A.\nTeam demos accidentally with version B that was only half‑tested. They can’t reproduce results because they never tagged the working commit or documented differences."
-  },
-  {
-    "objectID": "cd_04.html#concrete-cm-example-fpgabased-dsp-system",
-    "href": "cd_04.html#concrete-cm-example-fpgabased-dsp-system",
-    "title": "Stage 5",
-    "section": "Concrete CM Example – FPGA‑Based DSP System",
-    "text": "Concrete CM Example – FPGA‑Based DSP System\nECE Example: An FPGA‑based OFDM transceiver for a custom wireless link.\nConfiguration Items (CIs):\n\nIMP-SW-101: FPGA HDL source (filters, OFDM mod/demod).\nIMP-SW-102: MATLAB/NumPy models for algorithm verification.\nIMP-SY-201: RF front‑end schematic and PCB layout.\nIMP-SY-202: Clock distribution network design and constraints file.\nIMP-SW-103: RTL testbenches and simulation scripts.\n\nCM Actions:\n\nAll HDL and models in a Git repository.\nMajor milestones tagged: v0.1-prototype, v1.0-lab-demo.\nPCB design files archived with version numbers and date.\nChange requests logged when modifying OFDM parameters (e.g., subcarrier spacing).\n\n\nTie this back to traceability: - Each IMP-* artifact links back to CMP-* (e.g., OFDM core component) and REQ-* (e.g., throughput requirement). Emphasize the importance of tagging bitstreams and matching them to the Git revision that produced them."
-  },
-  {
-    "objectID": "cd_04.html#baselines-freezing-a-moving-target",
-    "href": "cd_04.html#baselines-freezing-a-moving-target",
-    "title": "Stage 5",
-    "section": "Baselines – Freezing a Moving Target",
-    "text": "Baselines – Freezing a Moving Target\n\n\nA baseline is a formally agreed version of one or more artifacts that serves as a reference for:\n\nFurther development\nTesting\nChange control\n\nCommon baselines in your capstone:\n\nRequirements Baseline – DCP‑200 approved (no change without CR).\nDesign Baseline – DCP‑300 approved (architecture/components frozen).\nImplementation Baseline – DCP‑400 milestone (code/hardware version used for tests).\n\nOnce a baseline is set:\n\nChanges must go through a controlled process.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nBaselines reduce chaos: Everyone knows which version is “the official one” at each stage.\n\n\n\n\n\nExplain that a “baseline” does not mean “can never change.” It means: from now on, changes are intentional, documented, and reviewed, not accidental."
-  },
-  {
-    "objectID": "cd_04.html#change-control-keeping-changes-under-control",
-    "href": "cd_04.html#change-control-keeping-changes-under-control",
-    "title": "Stage 5",
-    "section": "Change Control – Keeping Changes Under Control",
-    "text": "Change Control – Keeping Changes Under Control\n\n\nWhy change control?\n\nNew insights: requirements were incomplete or wrong.\nHardware constraints: chosen component is EOL or behaves differently.\nPerformance issues: design doesn’t meet timing, power, or noise specs.\n\nMinimal Change Control Process for Capstone:\n\nIdentify needed change (bug, new requirement, design fix).\nLog change request (CR) with:\n\nDescription\nReason / impact\nAffected IDs (REQ-*, CMP-*, IMP-*, etc.).\n\nAssess impact (performance, schedule, risk).\nDecide (approve / reject / defer) as a team (with advisor input).\nImplement and update RTM + docs.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWarning\n\n\nIf you change HW/SW or requirements without a CR, your traceability and test results become invalid.\n\n\n\n\n\nShow a simple CR template in your LMS or repo (spreadsheet, GitHub Issue template). Encourage linking to related Git commits and requirement IDs."
-  },
-  {
-    "objectID": "cd_04.html#ece-change-control-example-embedded-motor-controller",
-    "href": "cd_04.html#ece-change-control-example-embedded-motor-controller",
-    "title": "Stage 5",
-    "section": "ECE Change Control Example – Embedded Motor Controller",
-    "text": "ECE Change Control Example – Embedded Motor Controller\nProject: BLDC motor controller for a robotics platform.\n\nRequirement:\n\nREQ-SY-030: “Controller shall regulate motor speed within ±5% of setpoint under loads from 0–2 Nm.”\n\n\nProblem discovered in Stage 5:\n\nLab tests show with 2 Nm load, speed error is ±15%.\nRoot cause: chosen MOSFET has higher Rds_on than expected; thermal issues.\n\nChange Control Actions:\n\nCR‑001 logged: propose changing MOSFET to a lower Rds_on device and updating PCB.\nImpact analysis:\n\nCost + $10 per controller.\nPCB re‑spin requires 2 extra weeks.\nMay affect EMI; new tests needed.\n\nDecision: Approve with schedule adjustment; risk accepted.\nUpdate:\n\nCMP-SY-050 (power stage) design updated.\nIMP-SY-105 (PCB files) new version tagged.\nDCP‑300 and DCP‑400 updated.\nTests re‑run; new results linked to updated components.\n\n\n\nThis illustrates: - Real ECE constraints (thermal, power) causing design change. - How unmanaged changes would break traceability and schedule."
-  },
-  {
-    "objectID": "cd_04.html#technical-debt-the-credit-card-of-engineering",
-    "href": "cd_04.html#technical-debt-the-credit-card-of-engineering",
-    "title": "Stage 5",
-    "section": "Technical Debt – The “Credit Card” of Engineering",
-    "text": "Technical Debt – The “Credit Card” of Engineering\n\n\nTechnical debt = extra work you incur later because you take shortcuts now.\nSources in ECE projects:\n\nQuick‑and‑dirty code “just to make it work” with no tests.\nPoorly labeled wires / undocumented pin mappings.\nTemporary breadboard hacks instead of final PCB.\nIncomplete calibration of sensors (“we’ll fix later”).\nSkipping documentation (“we’ll write it at the end”).\n\nDebt isn’t always bad if:\n\nIt’s intentional.\nIt’s documented.\nYou have a plan to pay it back.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nTechnical debt is like a credit card:\nUsed carefully, it helps.\nIgnored, it compounds and crashes your project.\n\n\n\n\n\nAsk students for examples from prior projects where they “hacked something” and then regretted it weeks later. Link technical debt to integration pain (things break when you combine subsystems)."
-  },
-  {
-    "objectID": "cd_04.html#managing-technical-debt-ece-examples",
-    "href": "cd_04.html#managing-technical-debt-ece-examples",
-    "title": "Stage 5",
-    "section": "Managing Technical Debt – ECE Examples",
-    "text": "Managing Technical Debt – ECE Examples\nMixed‑Signal Sensor Front‑End\n\nShortcut:\n\nUse a quick, unshielded breadboard layout for analog front‑end.\n\nDebt:\n\nUnpredictable noise; every test has random artifacts.\n\n\nManaging:\n\nLog debt item: “Replace breadboard with PCB (IMP-SY-201) before final validation.”\nReserve time in schedule and integrate into Stage 6 test plan.\n\n\nMake them see that “we’ll just debug it later” is a decision that should be tracked like any other risk or change. Encourage them to keep a technical debt register alongside their risk register."
-  },
-  {
-    "objectID": "cd_04.html#integration-planning-dont-leave-it-to-the-last-week",
-    "href": "cd_04.html#integration-planning-dont-leave-it-to-the-last-week",
-    "title": "Stage 5",
-    "section": "Integration Planning – Don’t Leave It to the Last Week",
-    "text": "Integration Planning – Don’t Leave It to the Last Week\n\n\nIntegration = combining components so they work as a coherent system.\nBad approach: - “We’ll each build our part and plug everything together the week before the demo.”\nBetter approach:\n\nPlan integration in increments:\n\nStart with critical paths (e.g., sensor → microcontroller → actuator).\nUse stubs/mocks for parts not ready yet.\n\nAlign integration with verification plans:\n\nEach integration step tied to specific REQ-* and VER-* tests.\n\nConsider interfaces early:\n\nElectrical levels, communication protocols, timing, data formats.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nIntegration steps example:\n\nSENS ↔︎ CTRL (local link).\nCTRL ↔︎ UI (basic local UI).\nCTRL ↔︎ CLOUD (remote access).\nFull system test with all four.\n\n\n\nPoint out that integration order matters. Encourage teams to identify high‑risk interfaces and integrate those first."
-  },
-  {
-    "objectID": "cd_04.html#integration-planning-example-multiboard-power-system",
-    "href": "cd_04.html#integration-planning-example-multiboard-power-system",
-    "title": "Stage 5",
-    "section": "Integration Planning Example – Multi‑Board Power System",
-    "text": "Integration Planning Example – Multi‑Board Power System\nProject: Programmable DC power supply with:\n\nControl board (MCU + display).\nPower board (buck/boost converter).\nCommunication interface (USB/CAN).\n\nIntegration Plan:\n\nStage 5 (early):\n\nIntegrate MCU with display only; verify UI flows.\nPower board tested separately with dummy loads.\n\nStage 5 (mid):\n\nIntegrate controller board and power board:\n\nVerify setpoint‑to‑output mapping.\nCheck ADC readings vs true voltage/current.\n\n\nStage 5/6 boundary:\n\nAdd USB/CAN link to PC app.\nExecute partial system tests (logging, remote setpoint).\n\nStage 7:\n\nFull integration (controller + power + comm + safety interlocks).\nSystem verification against REQ-SY-* (accuracy, response time, safety).\n\n\n\nUse this to show integration as a planned sequence, not a one‑shot event. Emphasize that each integration step should be accompanied by targeted tests."
-  },
-  {
-    "objectID": "cd_04.html#tying-stage-5-back-to-traceability",
-    "href": "cd_04.html#tying-stage-5-back-to-traceability",
-    "title": "Stage 5",
-    "section": "Tying Stage 5 Back to Traceability",
-    "text": "Tying Stage 5 Back to Traceability\n\n\nAt Stage 5, your traceability links focus on:\n\nFrom components to implementation artifacts:\n\nCMP-* → IMP-*\n\nFrom implementation to upcoming tests:\n\nIMP-* → TST-* (planned)\n\n\nYou should know for each IMP-*:\n\nWhich CMP-* it implements.\nWhich REQ-* ultimately depend on it.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nImportant\n\n\nIf you can’t map an IMP-* artifact back to a CMP-* and REQ-*, ask: Why are we building this?\n\n\n\n\n\nRemind them to keep the RTM updated as they implement and refactor. This ensures by Stage 6 they can design tests that cover all implemented requirements."
-  },
-  {
-    "objectID": "cd_04.html#minimal-cm-setup-what-your-team-should-do-this-week",
-    "href": "cd_04.html#minimal-cm-setup-what-your-team-should-do-this-week",
-    "title": "Stage 5",
-    "section": "Minimal CM Setup – What Your Team Should Do This Week",
-    "text": "Minimal CM Setup – What Your Team Should Do This Week\n\nVersion Control:\n\nUse a shared Git repo (GitHub, GitLab, Bitbucket, self‑hosted).\nCommit often with meaningful messages referencing IDs (e.g., REQ-SW-012).\n\nBranching & Tagging:\n\nmain (or master) for stable, tested code.\ndev and feature branches (e.g., feature-motor-driver).\nTag stable milestones (v0.1-prototype, v0.2-integration1).\n\nChange Log & CRs:\n\nTrack major changes as issues or in a CR spreadsheet.\nFor each: link to requirements, components, commits.\n\nBaselines:\n\nAgree as a team what is Baseline 1 for DCP‑400 (e.g., “version used for first integrated test”).\n\n\n\nYou can show them a sample Git workflow diagram and/or a screenshot of a well‑structured repository. Offer guidelines for commit message format: [CMP-SW-050][REQ-SW-012] Implement basic PID loop"
-  },
-  {
-    "objectID": "cd_04.html#quick-interactive-exercise",
-    "href": "cd_04.html#quick-interactive-exercise",
-    "title": "Stage 5",
-    "section": "Quick Interactive Exercise",
-    "text": "Quick Interactive Exercise\nYou are working on an IoT‑enabled smart lighting system for a campus building.\nIn your team / with a neighbor:\n\nList 3 configuration items (CIs) that should be under version control.\nPropose one baseline you would like to establish in the next 3 weeks.\nDescribe one likely technical debt shortcut you might be tempted to take and how you would manage it.\n\nWe’ll share a few answers and discuss.\n\nWalk around while they discuss; prompt them with hints: - CI could include firmware, PCB, cloud backend, mobile app, etc. - Baseline: first end‑to‑end demo version, first hardware revision, etc. - Shortcut: skipping proper security for the cloud, using global variables in firmware, etc."
-  },
-  {
-    "objectID": "cd_04.html#summary-stage-5-takeaways",
-    "href": "cd_04.html#summary-stage-5-takeaways",
-    "title": "Stage 5",
-    "section": "Summary – Stage 5 Takeaways",
-    "text": "Summary – Stage 5 Takeaways\n\nConfiguration Management keeps your system reproducible and understandable.\nBaselines are reference points that stabilize requirements, design, and implementation.\nChange control prevents hidden, untracked changes from breaking your project.\nTechnical debt is inevitable; manage it consciously instead of ignoring it.\nIntegration planning should start early and proceed in planned increments, not last‑minute chaos.\nECE projects (FPGA DSPs, power converters, embedded controllers, IoT systems) need these practices just as much as large industrial systems.\n\n\n\n\n\n\n\nImportant\n\n\nStage 5 is where your project can either become a controlled engineering effort or descend into a fragile hack. Your CM and integration discipline determines which.\n\n\n\n\nClose by connecting Stage 5 to upcoming Stage 6: Good CM and integration planning make unit testing and debugging easier. Poor CM multiplies effort in later stages. Encourage questions about repositories, tools, and how to structure DCP‑400."
-  },
-  {
-    "objectID": "cd_04.html#next-steps-for-your-team",
-    "href": "cd_04.html#next-steps-for-your-team",
-    "title": "Stage 5",
-    "section": "Next Steps for Your Team",
-    "text": "Next Steps for Your Team\nBefore the next lab:\n\nSet up or review your Git (or other VC) workflow.\nIdentify and list your configuration items and proposed first baseline.\nCreate a simple change request template (issue template or spreadsheet).\nNote at least two areas where you are carrying technical debt and how you plan to pay it down.\n\nBring this information to the lab – we’ll review and refine it together.\n\nYou can collect their minimal CM plans as a short graded or ungraded exercise. This forces them to concretely apply what they learned and sets better habits for the rest of the project."
-  },
-  {
-    "objectID": "cd_05.html#stage-5-implementation-configuration-management",
-    "href": "cd_05.html#stage-5-implementation-configuration-management",
-    "title": "Stage 5",
-    "section": "Stage 5 – Implementation & Configuration Management",
-    "text": "Stage 5 – Implementation & Configuration Management\nConfig Control, Baselines, Change Management, Technical Debt, Integration Planning\nCapstone Design – Electrical & Computer Engineering\n\nThis session zooms in on Stage 5 of the capstone: Implementation. Students are likely already writing code and building hardware; now we teach them to manage that work professionally using configuration management, baselines, change control, and integration planning. Emphasize: lots of student capstones “die” here due to unmanaged changes and chaotic integration."
-  },
-  {
-    "objectID": "cd_05.html#learning-objectives-stage-5",
-    "href": "cd_05.html#learning-objectives-stage-5",
-    "title": "Stage 5",
-    "section": "Learning Objectives – Stage 5",
-    "text": "Learning Objectives – Stage 5\nBy the end of this session, you will be able to:\n\nExplain what configuration management (CM) means in a capstone project.\nDefine and use baselines (requirements, design, implementation) in your project.\nApply a simple change control process using change requests and approvals.\nRecognize and manage technical debt in both HW and SW.\nPlan for integration using a V‑Model mindset.\nRelate these concepts to real ECE project examples (embedded systems, RF, power, FPGA, etc.).\n\n\nThese are behavior‑level objectives: students should do CM, not just know definitions. At the end, you can revisit these objectives and ask students to self‑assess where they feel strong/weak."
-  },
-  {
-    "objectID": "cd_05.html#where-are-we-in-the-vmodel",
-    "href": "cd_05.html#where-are-we-in-the-vmodel",
-    "title": "Stage 5",
-    "section": "Where Are We in the V‑Model?",
-    "text": "Where Are We in the V‑Model?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nStage 5 sits at the bottom of the V:\nYou turn your designs (DCP‑300) into real artifacts (DCP‑400) while maintaining traceability.\n\n\n\n\nRemind them: - Up to now: mostly documents, diagrams, and planning. - Now: code, hardware, prototypes – but you can’t abandon discipline. Stage 5 sets up the success of Stages 6–8 (testing & validation)."
-  },
-  {
-    "objectID": "cd_05.html#stage-5-in-the-course-deliverables",
-    "href": "cd_05.html#stage-5-in-the-course-deliverables",
-    "title": "Stage 5",
-    "section": "Stage 5 in the Course Deliverables",
-    "text": "Stage 5 in the Course Deliverables\n\n\nStage 5 Key Outcomes:\n\nImplementation of planned components (CMP-* → IMP-*).\nAll work under configuration management (Git, etc.).\nDefined implementation baseline at key milestones.\nActive change control: every major divergence from design/requirements tracked.\nUpdated Requirements Traceability Matrix (RTM).\n\n\nDCP‑400 – Implementation\nMust include:\n\nList of implementation artifacts (IMP-* IDs for code, schematics, PCBs, etc.).\nBuild scripts / README for building SW/HW.\nChange log (approved changes vs original plan).\nUpdated baselines and CM strategy (branches/tags).\n\n\n\nStress: DCP‑400 is more than “we built it.” It documents how it was built, what versions are official, and how those versions relate back to requirements and design."
-  },
-  {
-    "objectID": "cd_05.html#configuration-management-what-why",
-    "href": "cd_05.html#configuration-management-what-why",
-    "title": "Stage 5",
-    "section": "Configuration Management – What & Why",
-    "text": "Configuration Management – What & Why\n\n\nConfiguration Management (CM) is the discipline of:\n\nIdentifying the configuration items (CIs) that define your system.\nControlling changes to those items.\nKeeping an accurate record of what version is used where.\n\nTypical CIs in ECE Capstones:\n\nSource code, HDL (VHDL/Verilog), firmware.\nSchematics, PCB layouts, BOMs.\nFPGA bitstreams, compiled binaries.\nTest scripts, calibration data, FPGA constraints files.\nKey documents (StRS, SyRS, design, test plans).\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nImportant\n\n\nWithout CM, you don’t know which version was tested or delivered.\n\n\n\n\n\nUse the classic horror story:\n\nTeam tests version A.\nTeam demos accidentally with version B that was only half‑tested. They can’t reproduce results because they never tagged the working commit or documented differences."
-  },
-  {
-    "objectID": "cd_05.html#concrete-cm-example-fpgabased-dsp-system",
-    "href": "cd_05.html#concrete-cm-example-fpgabased-dsp-system",
-    "title": "Stage 5",
-    "section": "Concrete CM Example – FPGA‑Based DSP System",
-    "text": "Concrete CM Example – FPGA‑Based DSP System\nECE Example: An FPGA‑based OFDM transceiver for a custom wireless link.\nConfiguration Items (CIs):\n\nIMP-SW-101: FPGA HDL source (filters, OFDM mod/demod).\nIMP-SW-102: MATLAB/NumPy models for algorithm verification.\nIMP-SY-201: RF front‑end schematic and PCB layout.\nIMP-SY-202: Clock distribution network design and constraints file.\nIMP-SW-103: RTL testbenches and simulation scripts.\n\nCM Actions:\n\nAll HDL and models in a Git repository.\nMajor milestones tagged: v0.1-prototype, v1.0-lab-demo.\nPCB design files archived with version numbers and date.\nChange requests logged when modifying OFDM parameters (e.g., subcarrier spacing).\n\n\nTie this back to traceability: - Each IMP-* artifact links back to CMP-* (e.g., OFDM core component) and REQ-* (e.g., throughput requirement). Emphasize the importance of tagging bitstreams and matching them to the Git revision that produced them."
-  },
-  {
-    "objectID": "cd_05.html#baselines-freezing-a-moving-target",
-    "href": "cd_05.html#baselines-freezing-a-moving-target",
-    "title": "Stage 5",
-    "section": "Baselines – Freezing a Moving Target",
-    "text": "Baselines – Freezing a Moving Target\n\n\nA baseline is a formally agreed version of one or more artifacts that serves as a reference for:\n\nFurther development\nTesting\nChange control\n\nCommon baselines in your capstone:\n\nRequirements Baseline – DCP‑200 approved (no change without CR).\nDesign Baseline – DCP‑300 approved (architecture/components frozen).\nImplementation Baseline – DCP‑400 milestone (code/hardware version used for tests).\n\nOnce a baseline is set:\n\nChanges must go through a controlled process.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nBaselines reduce chaos: Everyone knows which version is “the official one” at each stage.\n\n\n\n\n\nExplain that a “baseline” does not mean “can never change.” It means: from now on, changes are intentional, documented, and reviewed, not accidental."
-  },
-  {
-    "objectID": "cd_05.html#change-control-keeping-changes-under-control",
-    "href": "cd_05.html#change-control-keeping-changes-under-control",
-    "title": "Stage 5",
-    "section": "Change Control – Keeping Changes Under Control",
-    "text": "Change Control – Keeping Changes Under Control\n\n\nWhy change control?\n\nNew insights: requirements were incomplete or wrong.\nHardware constraints: chosen component is EOL or behaves differently.\nPerformance issues: design doesn’t meet timing, power, or noise specs.\n\nMinimal Change Control Process for Capstone:\n\nIdentify needed change (bug, new requirement, design fix).\nLog change request (CR) with:\n\nDescription\nReason / impact\nAffected IDs (REQ-*, CMP-*, IMP-*, etc.).\n\nAssess impact (performance, schedule, risk).\nDecide (approve / reject / defer) as a team (with advisor input).\nImplement and update RTM + docs.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWarning\n\n\nIf you change HW/SW or requirements without a CR, your traceability and test results become invalid.\n\n\n\n\n\nShow a simple CR template in your LMS or repo (spreadsheet, GitHub Issue template). Encourage linking to related Git commits and requirement IDs."
-  },
-  {
-    "objectID": "cd_05.html#ece-change-control-example-embedded-motor-controller",
-    "href": "cd_05.html#ece-change-control-example-embedded-motor-controller",
-    "title": "Stage 5",
-    "section": "ECE Change Control Example – Embedded Motor Controller",
-    "text": "ECE Change Control Example – Embedded Motor Controller\nProject: BLDC motor controller for a robotics platform.\n\nRequirement:\n\nREQ-SY-030: “Controller shall regulate motor speed within ±5% of setpoint under loads from 0–2 Nm.”\n\n\nProblem discovered in Stage 5:\n\nLab tests show with 2 Nm load, speed error is ±15%.\nRoot cause: chosen MOSFET has higher Rds_on than expected; thermal issues."
-  },
-  {
-    "objectID": "cd_05.html#technical-debt-the-credit-card-of-engineering",
-    "href": "cd_05.html#technical-debt-the-credit-card-of-engineering",
-    "title": "Stage 5",
-    "section": "Technical Debt – The “Credit Card” of Engineering",
-    "text": "Technical Debt – The “Credit Card” of Engineering\n\n\nTechnical debt = extra work you incur later because you take shortcuts now.\nSources in ECE projects:\n\nQuick‑and‑dirty code “just to make it work” with no tests.\nPoorly labeled wires / undocumented pin mappings.\nTemporary breadboard hacks instead of final PCB.\nIncomplete calibration of sensors (“we’ll fix later”).\nSkipping documentation (“we’ll write it at the end”).\n\nDebt isn’t always bad if:\n\nIt’s intentional.\nIt’s documented.\nYou have a plan to pay it back.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nTechnical debt is like a credit card:\nUsed carefully, it helps.\nIgnored, it compounds and crashes your project.\n\n\n\n\n\nAsk students for examples from prior projects where they “hacked something” and then regretted it weeks later. Link technical debt to integration pain (things break when you combine subsystems)."
-  },
-  {
-    "objectID": "cd_05.html#managing-technical-debt-ece-examples",
-    "href": "cd_05.html#managing-technical-debt-ece-examples",
-    "title": "Stage 5",
-    "section": "Managing Technical Debt – ECE Examples",
-    "text": "Managing Technical Debt – ECE Examples\nMixed‑Signal Sensor Front‑End\n\nShortcut:\n\nUse a quick, unshielded breadboard layout for analog front‑end.\n\nDebt:\n\nUnpredictable noise; every test has random artifacts.\n\n\nManaging:\n\nLog debt item: “Replace breadboard with PCB (IMP-SY-201) before final validation.”\nReserve time in schedule and integrate into Stage 6 test plan.\n\n\nMake them see that “we’ll just debug it later” is a decision that should be tracked like any other risk or change. Encourage them to keep a technical debt register alongside their risk register."
-  },
-  {
-    "objectID": "cd_05.html#integration-planning-dont-leave-it-to-the-last-week",
-    "href": "cd_05.html#integration-planning-dont-leave-it-to-the-last-week",
-    "title": "Stage 5",
-    "section": "Integration Planning – Don’t Leave It to the Last Week",
-    "text": "Integration Planning – Don’t Leave It to the Last Week\n\n\nIntegration = combining components so they work as a coherent system.\nBad approach: - “We’ll each build our part and plug everything together the week before the demo.”\nBetter approach:\n\nPlan integration in increments:\n\nStart with critical paths (e.g., sensor → microcontroller → actuator).\nUse stubs/mocks for parts not ready yet.\n\nAlign integration with verification plans:\n\nEach integration step tied to specific REQ-* and VER-* tests.\n\nConsider interfaces early:\n\nElectrical levels, communication protocols, timing, data formats.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nIntegration steps example:\n\nSENS ↔︎ CTRL (local link).\nCTRL ↔︎ UI (basic local UI).\nCTRL ↔︎ CLOUD (remote access).\nFull system test with all four.\n\n\n\nPoint out that integration order matters. Encourage teams to identify high‑risk interfaces and integrate those first."
-  },
-  {
-    "objectID": "cd_05.html#integration-planning-example-multiboard-power-system",
-    "href": "cd_05.html#integration-planning-example-multiboard-power-system",
-    "title": "Stage 5",
-    "section": "Integration Planning Example – Multi‑Board Power System",
-    "text": "Integration Planning Example – Multi‑Board Power System\nProject: Programmable DC power supply with:\n\nControl board (MCU + display).\nPower board (buck/boost converter).\nCommunication interface (USB/CAN)."
-  },
-  {
-    "objectID": "cd_05.html#tying-stage-5-back-to-traceability",
-    "href": "cd_05.html#tying-stage-5-back-to-traceability",
-    "title": "Stage 5",
-    "section": "Tying Stage 5 Back to Traceability",
-    "text": "Tying Stage 5 Back to Traceability\n\n\nAt Stage 5, your traceability links focus on:\n\nFrom components to implementation artifacts:\n\nCMP-* → IMP-*\n\nFrom implementation to upcoming tests:\n\nIMP-* → TST-* (planned)\n\n\nYou should know for each IMP-*:\n\nWhich CMP-* it implements.\nWhich REQ-* ultimately depend on it.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nImportant\n\n\nIf you can’t map an IMP-* artifact back to a CMP-* and REQ-*, ask: Why are we building this?\n\n\n\n\n\nRemind them to keep the RTM updated as they implement and refactor. This ensures by Stage 6 they can design tests that cover all implemented requirements."
-  },
-  {
-    "objectID": "cd_05.html#minimal-cm-setup-what-your-team-should-do-this-week",
-    "href": "cd_05.html#minimal-cm-setup-what-your-team-should-do-this-week",
-    "title": "Stage 5",
-    "section": "Minimal CM Setup – What Your Team Should Do This Week",
-    "text": "Minimal CM Setup – What Your Team Should Do This Week\n\nVersion Control:\n\nUse a shared Git repo (GitHub, GitLab, Bitbucket, self‑hosted).\nCommit often with meaningful messages referencing IDs (e.g., REQ-SW-012).\n\nBranching & Tagging:\n\nmain (or master) for stable, tested code.\ndev and feature branches (e.g., feature-motor-driver).\nTag stable milestones (v0.1-prototype, v0.2-integration1).\n\nChange Log & CRs:\n\nTrack major changes as issues or in a CR spreadsheet.\nFor each: link to requirements, components, commits.\n\nBaselines:\n\nAgree as a team what is Baseline 1 for DCP‑400 (e.g., “version used for first integrated test”).\n\n\n\nYou can show them a sample Git workflow diagram and/or a screenshot of a well‑structured repository. Offer guidelines for commit message format: [CMP-SW-050][REQ-SW-012] Implement basic PID loop"
-  },
-  {
-    "objectID": "cd_05.html#summary-stage-5-takeaways",
-    "href": "cd_05.html#summary-stage-5-takeaways",
-    "title": "Stage 5",
-    "section": "Summary – Stage 5 Takeaways",
-    "text": "Summary – Stage 5 Takeaways\n\nConfiguration Management keeps your system reproducible and understandable.\nBaselines are reference points that stabilize requirements, design, and implementation.\nChange control prevents hidden, untracked changes from breaking your project.\nTechnical debt is inevitable; manage it consciously instead of ignoring it.\nIntegration planning should start early and proceed in planned increments, not last‑minute chaos.\nECE projects (FPGA DSPs, power converters, embedded controllers, IoT systems) need these practices just as much as large industrial systems.\n\n\n\n\n\n\n\nImportant\n\n\nStage 5 is where your project can either become a controlled engineering effort or descend into a fragile hack. Your CM and integration discipline determines which.\n\n\n\n\nClose by connecting Stage 5 to upcoming Stage 6: Good CM and integration planning make unit testing and debugging easier. Poor CM multiplies effort in later stages. Encourage questions about repositories, tools, and how to structure DCP‑400."
-  },
-  {
-    "objectID": "index.html#capstone-design",
-    "href": "index.html#capstone-design",
-    "title": "Digital Signal Processing",
-    "section": "Capstone Design",
-    "text": "Capstone Design\n\nCapstone Design Intro\nCapstone Design Chapter 5"
   }
 ]
