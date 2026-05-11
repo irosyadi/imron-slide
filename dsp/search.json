@@ -53,7 +53,7 @@
     "href": "index.html#week-15",
     "title": "Digital Signal Processing",
     "section": "Week 15",
-    "text": "Week 15"
+    "text": "Week 15\n\n8.1 Infinite Impulse Response (IIR) Filter Design\n8.2 Infinite Impulse Response (IIR) Filter Design\n8.3 Infinite Impulse Response (IIR) Filter Design\n8.4 Infinite Impulse Response (IIR) Filter Design"
   },
   {
     "objectID": "index.html#week-16",
@@ -61,6 +61,678 @@
     "title": "Digital Signal Processing",
     "section": "Week 16",
     "text": "Week 16"
+  },
+  {
+    "objectID": "dsp_83.html#infinite-impulse-response-iir-filter-design-and-realization",
+    "href": "dsp_83.html#infinite-impulse-response-iir-filter-design-and-realization",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8.6–8.8 Infinite Impulse Response (IIR) Filter Design and Realization",
+    "text": "8.6–8.8 Infinite Impulse Response (IIR) Filter Design and Realization\n\nThis entire deck is meant for one or two 50‑minute lectures in an undergraduate DSP course. We’ll move from continuous‑time (analog) filters to discrete‑time (digital) IIR filters, focus on two design approaches (impulse invariant and pole–zero placement), and then show how to implement these filters using direct‑form structures and cascade sections. Emphasize the connection to real ECE systems: audio filters, communication channel filters, and control systems."
+  },
+  {
+    "objectID": "dsp_83.html#learning-objectives",
+    "href": "dsp_83.html#learning-objectives",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\nBy the end of this session, you should be able to:\n\nExplain the impulse invariant design method and when it is appropriate.\nDerive a digital IIR transfer function from an analog transfer function using impulse invariance.\nDescribe how pole–zero placement shapes the magnitude response of a digital filter.\nDesign simple IIR filters by manually placing poles and zeros:\n\nSecond‑order bandpass and bandstop (notch) filters.\nFirst‑order lowpass and highpass filters.\n\nImplement IIR filters using:\n\nDirect‑Form I, Direct‑Form II, and\nCascade realization with second‑order sections.\n\n\n\nExplicitly map these objectives to exam or project expectations: students will need to derive H(z) from H(s), sketch pole‑zero plots, and write out realization equations or block diagrams. Stress that this chapter also prepares them to interpret what MATLAB’s butter, cheby1, etc., are doing internally."
+  },
+  {
+    "objectID": "dsp_83.html#realworld-ece-motivation",
+    "href": "dsp_83.html#realworld-ece-motivation",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Real‑World ECE Motivation",
+    "text": "Real‑World ECE Motivation\n\n\nWhere do IIR filters show up?\n\nWireless communications\n\nIF bandpass filters, channel shaping\n\nAudio / speech\n\nEqualizers, telephone channel models\n\nControl systems\n\nDigital equivalents of analog compensators\n\nSensors & instrumentation\n\nLowpass filters for noise reduction\n\n\nWhy IIR instead of FIR?\n\nOften achieve sharp transitions with lower order\nCan mimic analog filters (Butterworth, Chebyshev, etc.)\n\n\n\n\n\nFIG. 8.27\n\n\nFigure: Impulse invariant design concept.\n\n\nUse a quick analogy: - FIR filters are like “finite memory” systems (moving average). - IIR filters are like analog RC/RLC circuits—feedback gives infinite impulse response and efficient sharp filtering.\nMention that many legacy systems started as analog and were later digitized; impulse invariance is one way to do that translation."
+  },
+  {
+    "objectID": "dsp_83.html#impulse-invariant-design-core-idea",
+    "href": "dsp_83.html#impulse-invariant-design-core-idea",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8.6 Impulse Invariant Design: Core Idea",
+    "text": "8.6 Impulse Invariant Design: Core Idea\nWe start with an analog filter:\n\nAnalog transfer function: \\(H(s)\\)\nAnalog impulse response: \\(h(t) = \\mathcal{L}^{-1}\\{H(s)\\}\\)\n\nImpulse invariant design:\n\nCompute analog impulse response \\(h(t)\\).\nSample \\(h(t)\\) at \\(t = nT\\) to get \\(h(nT)\\).\nMultiply by \\(T\\) to approximate area: \\(T\\,h(n) = T\\,h(t)\\big|_{t=nT}\\).\nTake \\(z\\)‑transform of \\(T\\,h(n)\\) to obtain \\(H(z)\\).\n\nMathematically:\n\\[\nh(t) = \\mathcal{L}^{-1}\\{H(s)\\}\n\\]\n\\[\nT h(n) = T h(t)\\big|_{t=nT},\\quad n\\ge 0\n\\]\n\\[\nH(z) = \\mathcal{Z}\\{T h(n)\\}\n\\]\n\n\n\n\n\n\nNote\n\n\nKey idea: The digital impulse response is a sampled (and scaled) version of the analog impulse response. This makes the time‑domain behavior similar, especially for low frequencies.\n\n\n\n\nEmphasize: Unlike the bilinear transform, impulse invariance directly samples the continuous‑time impulse response. Students usually confuse “sample the input” vs “sample the impulse response”; highlight that here we are sampling \\(h(t)\\) itself. We scale by \\(T\\) because the integral (area) of the analog impulse response should match the sum (area of rectangles) of the digital impulse response."
+  },
+  {
+    "objectID": "dsp_83.html#area-and-dc-gain-matching",
+    "href": "dsp_83.html#area-and-dc-gain-matching",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Area and DC Gain Matching",
+    "text": "Area and DC Gain Matching\nThe scaling factor \\(T\\) is chosen so that the area under \\(h(t)\\) matches the sum of \\(T h(n)\\):\n\\[\n\\int_0^{\\infty} h(t)\\,dt \\;\\approx\\; T h(0) + T h(1) + T h(2) + \\cdots\n\\]\n\nLeft side: DC gain of the analog filter.\nRight side: DC gain of the digital filter.\n\nAs \\(T \\to 0\\) (sampling frequency \\(f_s = 1/T \\to \\infty\\)):\n\nRectangular approximation becomes very accurate.\nDC gain of digital filter \\(\\approx\\) DC gain of analog filter.\n\nBut for practical \\(T\\), we may need extra gain scaling to match an exact DC gain.\n\nConnect this to Riemann sums from calculus: the sum \\(T\\sum h(n)\\) approximates the integral. Point out that in Example 8.15, they later rescale \\(H(z)\\) to enforce unit DC gain, which is common practice when the passband gain is specified."
+  },
+  {
+    "objectID": "dsp_83.html#example-8.15-analog-to-digital-13",
+    "href": "dsp_83.html#example-8.15-analog-to-digital-13",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.15 – Analog to Digital (1/3)",
+    "text": "Example 8.15 – Analog to Digital (1/3)\nGiven analog transfer function:\n\\[\nH(s) = \\frac{2}{s + 2}\n\\]\nSampling rate: \\(f_s = 10\\ \\text{Hz} \\Rightarrow T = 0.1\\ \\text{s}\\)\nStep 1: Inverse Laplace transform to get analog impulse response:\n\\[\nh(t) = \\mathcal{L}^{-1}\\left\\{\\frac{2}{s + 2}\\right\\} = 2 e^{-2t} u(t)\n\\]\nStep 2: Sample and scale:\n\\[\nT h(n) = T \\cdot 2 e^{-2nT} u(n) = 0.2 e^{-0.2 n} u(n)\n\\]\nStep 3: Use \\(z\\)‑transform pair (Chapter 5):\n\\[\n\\mathcal{Z}\\{e^{-a n} u(n)\\}\n= \\frac{z}{z - e^{-a}}\n\\]\nHere, \\(a = 0.2\\), so \\(e^{-a} = e^{-0.2} \\approx 0.8187\\).\n\nClarify \\(a\\): The discrete‑time sequence is \\(e^{-a n}\\) with \\(a&gt;0\\). Here \\(e^{-a} = e^{-0.2}\\) is the common ratio of the exponential sequence. Also remind students that \\(u(n)\\) (unit step) ensures causality (\\(n \\ge 0\\))."
+  },
+  {
+    "objectID": "dsp_83.html#example-8.15-analog-to-digital-23",
+    "href": "dsp_83.html#example-8.15-analog-to-digital-23",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.15 – Analog to Digital (2/3)",
+    "text": "Example 8.15 – Analog to Digital (2/3)\nApply the \\(z\\)‑transform to \\(T h(n)\\):\n\\[\nH(z) = \\mathcal{Z}\\{0.2 e^{-0.2n} u(n)\\}\n= 0.2 \\,\\mathcal{Z}\\{e^{-0.2n} u(n)\\}\n= 0.2\\,\\frac{z}{z - 0.8187}\n\\]\nExpress in standard IIR form:\n\\[\nH(z) = \\frac{0.2 z}{z - 0.8187}\n= \\frac{0.2}{1 - 0.8187 z^{-1}}\n\\]\nThis is a first‑order IIR lowpass‑like filter with:\n\nOne pole at \\(z = 0.8187\\) (inside unit circle)\nOne zero at \\(z = 0\\)\n\n\n\n\n\n\n\nTip\n\n\nTo quickly sketch the frequency response: - Pole close to \\(z=1\\) → large low‑frequency gain - Zero at \\(z=0\\) → attenuates high frequencies.\n\n\n\n\nShow or sketch a simple pole–zero plot on the board: - Real axis: mark 0.8187; that’s the pole. - Zero at origin. Use this to intuitively justify why the magnitude response looks lowpass. Mention that the exact magnitude and phase responses are plotted in MATLAB (Program 8.12)."
+  },
+  {
+    "objectID": "dsp_83.html#example-8.15-frequency-response-33",
+    "href": "dsp_83.html#example-8.15-frequency-response-33",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.15 – Frequency Response (3/3)",
+    "text": "Example 8.15 – Frequency Response (3/3)\nMATLAB (Program 8.12) computes:\n\nAnalog frequency response \\(H(j\\omega)\\) using freqs.\nDigital frequency response \\(H(e^{j\\Omega})\\) using freqz.\n\nMain observations (Fig. 8.28):\n\nThe magnitude responses of analog and digital filters closely match in shape for \\(f\\) below about \\(1.8\\ \\text{Hz}\\).\nThere is a DC gain mismatch:\n\\[\nH(e^{j\\Omega})\\big|_{\\Omega=0} = H(1) = 1.1031\n\\]\n\nTo enforce unit DC gain, scale \\(H(z)\\):\n\\[\nH(z) = \\frac{1}{1.1031}\\,\\frac{0.2}{1 - 0.8187 z^{-1}}\n= \\frac{0.1813}{1 - 0.8187 z^{-1}}\n\\]\nMiddle plot of Fig. 8.28 shows the scaled magnitude response, now matching the analog much better in passband.\n\nPoint out how gain scaling is routinely done in filter design: - Design the basic structure for the right shape. - Then scale gain to match specifications (e.g., unit DC gain, 0 dB at center frequency).\nEncourage students to run Program 8.12 and modify T (sampling interval) to see the effect on aliasing visually."
+  },
+  {
+    "objectID": "dsp_83.html#aliasing-in-impulse-invariant-design",
+    "href": "dsp_83.html#aliasing-in-impulse-invariant-design",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Aliasing in Impulse Invariant Design",
+    "text": "Aliasing in Impulse Invariant Design\nKey issue: The analog impulse response \\(h(t)\\) is generally not band‑limited.\nSampling \\(h(t)\\) at rate \\(f_s\\):\n\nAny frequency content above Nyquist frequency \\(f_s/2\\) gets aliased back into \\([0, f_s/2]\\).\nThis causes distortion in the digital filter’s frequency response.\n\nFig. 8.29 shows this numerically for Example 8.15:\n\n(A, B): Sampling at \\(f_s = 8\\ \\text{Hz}\\) (T=0.125 s) → strong aliasing, poor match.\n(C, D): Sampling at \\(f_s = 16\\ \\text{Hz}\\) → less aliasing, better magnitude match.\n\n\n\n\nFIG. 8.29\n\n\n\n\n\n\n\n\nWarning\n\n\nAliasing cannot be eliminated in the impulse invariant method because we sample a non‑band‑limited impulse response. We can only reduce aliasing by: - Increasing sampling frequency \\(f_s\\), or - Designing the analog filter with a very low cutoff frequency.\n\n\n\n\nUse a real‑world analogy: sampling a sharp spike vs sampling a smooth sine wave. Sharp, fast decay in time often implies high‑frequency content in frequency domain.\nStress that this is why the impulse invariant method is not recommended for highpass or bandstop filters: those responses inherently concentrate energy near the folding frequency, where aliasing is worst."
+  },
+  {
+    "objectID": "dsp_83.html#when-to-use-impulse-invariance",
+    "href": "dsp_83.html#when-to-use-impulse-invariance",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "When to Use Impulse Invariance",
+    "text": "When to Use Impulse Invariance\nFrom the aliasing analysis:\n\nAnalog highpass or bandstop filters have significant energy near the Nyquist limit even when oversampled.\nSampling their impulse responses leads to maximum aliasing.\n\nSo:\n\nDo not use impulse invariance alone to design digital highpass or bandstop IIR filters (unless using extra anti‑aliasing or prewarping tricks).\nPrefer bilinear transform (BLT) for highpass or bandstop designs.\n\nImpulse invariant design is appropriate for:\n\nLowpass filters.\nBandpass filters when sampling rate is much larger than the largest passband frequency.\n\n\n\n\n\n\n\nImportant\n\n\nRule of thumb: Use impulse invariant for low frequency, lowpass/bandpass designs with high oversampling. Use BLT for highpass / bandstop and more general cases.\n\n\n\n\nTie this back to design flow: - If the analog prototype is already given (e.g., from a control engineer), choose the digital mapping. - If you must preserve time‑domain shape (e.g., step responses), impulse invariance can be attractive, but always check aliasing."
+  },
+  {
+    "objectID": "dsp_83.html#example-8.16-secondorder-bandpass-via-impulse-invariance-13",
+    "href": "dsp_83.html#example-8.16-secondorder-bandpass-via-impulse-invariance-13",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.16 – Second‑Order Bandpass via Impulse Invariance (1/3)",
+    "text": "Example 8.16 – Second‑Order Bandpass via Impulse Invariance (1/3)\nGiven analog transfer function:\n\\[\nH(s) = \\frac{s}{s^2 + 2s + 5}\n\\]\nSampling rate: \\(f_s = 10\\ \\text{Hz} \\Rightarrow T = 0.1\\ \\text{s}\\)\nStep 1: Complete the square in denominator:\n\\[\nH(s) = \\frac{s}{(s+1)^2 + 2^2}\n\\]\nRewrite numerator to match table form:\n\\[\nH(s) = \\frac{(s+1) - 1}{(s+1)^2 + 2^2}\n= \\frac{s+1}{(s+1)^2 + 2^2} - 0.5\\frac{2}{(s+1)^2 + 2^2}\n\\]\nUse Laplace transform table:\n\n\\(\\mathcal{L}^{-1}\\big\\{\\frac{s+a}{(s+a)^2 + \\omega_0^2}\\big\\} = e^{-a t}\\cos(\\omega_0 t) u(t)\\)\n\\(\\mathcal{L}^{-1}\\big\\{\\frac{\\omega_0}{(s+a)^2 + \\omega_0^2}\\big\\} = e^{-a t}\\sin(\\omega_0 t) u(t)\\)\n\nSo analog impulse response is:\n\\[\nh(t) = e^{-t}\\cos(2t)\\,u(t) - 0.5 e^{-t}\\sin(2t)\\,u(t)\n\\]\n\nHighlight that this is a typical underdamped second‑order system: exponentially decaying sinusoid. Students should recognize that such systems often correspond to bandpass behavior. The two terms correspond to cosine and sine components."
+  },
+  {
+    "objectID": "dsp_83.html#example-8.16-sampling-and-ztransform-23",
+    "href": "dsp_83.html#example-8.16-sampling-and-ztransform-23",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.16 – Sampling and \\(z\\)‑Transform (2/3)",
+    "text": "Example 8.16 – Sampling and \\(z\\)‑Transform (2/3)\nSample and scale: \\(T=0.1\\)\n\\[\n\\begin{aligned}\nT h(n) &= T h(t)\\big|_{t=nT} \\\\\n&= 0.1 e^{-0.1n}\\cos(0.2n) u(n) \\\\\n&\\quad - 0.05 e^{-0.1n}\\sin(0.2n) u(n)\n\\end{aligned}\n\\]\nApply \\(z\\)‑transform (using formulas from Chapter 5):\n\\[\n\\begin{aligned}\nH(z)\n&= \\mathcal{Z}\\left\\{0.1 e^{-0.1n}\\cos(0.2n) u(n)\\right\\} \\\\\n&\\quad - \\mathcal{Z}\\left\\{0.05 e^{-0.1n}\\sin(0.2n) u(n)\\right\\} \\\\\n&= \\frac{0.1z(z - e^{-0.1}\\cos(0.2))}{z^2 - 2 e^{-0.1}\\cos(0.2) z + e^{-0.2}} \\\\\n&\\quad - \\frac{0.05 e^{-0.1}\\sin(0.2) z}{z^2 - 2 e^{-0.1}\\cos(0.2) z + e^{-0.2}}\n\\end{aligned}\n\\]\nAfter algebraic simplification, we obtain:\n\\[\nH(z) = \\frac{0.1 - 0.09767 z^{-1}}{1 - 1.7735 z^{-1} + 0.8187 z^{-2}}\n\\]\n\nEmphasize that the denominator corresponds to a pair of complex conjugate poles, consistent with the analog poles at \\(s=-1 \\pm 2j\\). The digital poles are inside the unit circle, and the real parts relate to the discrete damping factor \\(e^{-0.1}\\). Encourage students to verify the coefficients using MATLAB’s symbolic toolbox (or Python) as a quick check."
+  },
+  {
+    "objectID": "dsp_83.html#example-8.16-frequency-response-33",
+    "href": "dsp_83.html#example-8.16-frequency-response-33",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.16 – Frequency Response (3/3)",
+    "text": "Example 8.16 – Frequency Response (3/3)\nProgram 8.13 uses:\n\nfreqs([10],[1 2 5],w) (conceptually) for the analog \\(H(s)\\)\nfreqz([0.1 -0.09766],[1 -1.7735 0.8187], length(w)) for the digital \\(H(z)\\)\n\nFig. 8.30:\n\n\n\nFIG. 8.30\n\n\nObservations:\n\nThe shape of the digital filter’s magnitude response (bandpass) matches the analog filter’s shape.\nThe passband gain is higher for the digital filter; again, gain scaling can be applied if unit gain is required.\n\n\n\n\n\n\n\nTip\n\n\nWhen comparing analog and digital designs: - Match frequency axes in Hz: use \\(\\Omega = 2\\pi f T\\) for digital. - Focus on shape (location of peaks, nulls, bandwidth) first, then adjust gain.\n\n\n\n\nThis is a good place to ask students: - Where do you expect the center frequency to be in Hz? - How does the sampling rate relate to the discrete‑time frequency where the peak occurs?\nAlso note that impulse invariance preserves the analog impulse response shape at integer multiples of \\(T\\), which often indirectly preserves resonant frequencies reasonably well for sufficiently large \\(f_s\\)."
+  },
+  {
+    "objectID": "dsp_83.html#polezero-placement-intuition",
+    "href": "dsp_83.html#polezero-placement-intuition",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8.7 Pole–Zero Placement: Intuition",
+    "text": "8.7 Pole–Zero Placement: Intuition\nIn the \\(z\\)‑plane, consider placing poles and zeros and evaluating the response on the unit circle \\(z = e^{j\\Omega}\\).\n\nPlace a zero at angle \\(\\theta\\) on the unit circle: \\(z_0 = e^{j\\theta}\\).\n\nNumerator factor: \\((z - e^{j\\theta})(z - e^{-j\\theta})\\).\nAt \\(\\Omega = \\theta\\), one factor is \\((e^{j\\theta} - e^{j\\theta}) = 0\\) → magnitude null.\n\nPlace poles at \\(z_p = r e^{\\pm j\\theta}\\), with \\(r &lt; 1\\):\n\nDenominator factor: \\((z - re^{j\\theta})(z - re^{-j\\theta})\\).\nAt \\(\\Omega = \\theta\\), distance from \\(e^{j\\theta}\\) to pole is \\((1 - r)\\) → small denominator → large magnitude.\n\n\n\n\n\nFIG. 8.31\n\n\n\n\n\n\n\n\nNote\n\n\nRule of thumb:\n\nZeros suppress magnitude near their angle.\nPoles boost magnitude near their angle.\n\n\n\n\n\nDraw a quick sketch: - Unit circle. - A zero on the circle and a pole just inside, both at the same angle. Then trace how distances from evaluation point \\(e^{j\\Omega}\\) change as \\(\\Omega\\) sweeps around the circle.\nThis geometric view is extremely powerful and will be reused when designing bandpass, bandstop, lowpass, and highpass filters by hand."
+  },
+  {
+    "objectID": "dsp_83.html#application-of-polezero-placement",
+    "href": "dsp_83.html#application-of-polezero-placement",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Application of Pole–Zero Placement",
+    "text": "Application of Pole–Zero Placement\nBy combining pole and zero placements, we can create different filter types:\n\nLowpass:\n\nPole(s) near \\(z=1\\), zeros near \\(z=-1\\) or on unit circle at higher frequencies.\n\nHighpass:\n\nZero at \\(z=1\\) (kill DC), pole closer to \\(z=-1\\) to emphasize high frequencies.\n\nBandpass:\n\nComplex poles at angle \\(\\theta_0\\) (center frequency); zeros at DC and Nyquist to attenuate outside band.\n\nBandstop (notch):\n\nZeros on the unit circle at \\(\\theta_0\\) (notch frequency); poles near zeros (inside unit circle) to restore neighboring frequencies.\n\n\nPole–zero placement is:\n\nIntuitive and approximate.\nVery useful for simple filters with narrow bands or extreme cutoff frequencies.\n\n\nStress that this is not the same as systematic design (Butterworth, Chebyshev) but is excellent for quick designs and for understanding how pole locations affect response. In many embedded systems, simple pole–zero designs are enough and easier to implement and tune by hand."
+  },
+  {
+    "objectID": "dsp_83.html#secondorder-bandpass-filter-geometry",
+    "href": "dsp_83.html#secondorder-bandpass-filter-geometry",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8.7.1 Second‑Order Bandpass Filter – Geometry",
+    "text": "8.7.1 Second‑Order Bandpass Filter – Geometry\nTypical placement for a narrow bandpass (Fig. 8.32A):\n\nComplex poles: \\(z = r e^{\\pm j\\theta}\\)\n\nRadius \\(r\\) controls bandwidth.\nAngle \\(\\theta\\) sets center frequency.\n\nZeros: at \\(z = 1\\) and \\(z = -1\\)\n\nZero gain at DC and folding frequency \\(f_s/2\\).\n\n\n\n\n\nFIG. 8.32\n\n\nCenter frequency angle:\n\\[\n\\theta = \\left(\\frac{f_0}{f_s}\\right) \\times 360^\\circ\n\\]\nBandwidth (approximate narrowband formula):\n\\[\nr \\approx 1 - \\pi\\frac{BW_{3\\text{dB}}}{f_s},\\quad 0.9 \\le r &lt; 1\n\\]\n\nExplain the derivation idea: - At center frequency, poles are very close to unit circle → large gain. - At 3 dB points, geometry yields \\(r_3 = \\sqrt{2(1 - r)}\\) and then bandwidth \\(\\approx 2(1-r)\\) in normalized radian frequency, leading to \\(r = 1 - \\pi BW_{3dB} / f_s\\).\nStudents don’t need to memorize the geometric derivation; they should remember the design formulas and the interpretation."
+  },
+  {
+    "objectID": "dsp_83.html#secondorder-bandpass-filter-transfer-function",
+    "href": "dsp_83.html#secondorder-bandpass-filter-transfer-function",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Second‑Order Bandpass Filter – Transfer Function",
+    "text": "Second‑Order Bandpass Filter – Transfer Function\nGeneral transfer function:\n\\[\nH(z) = \\frac{K (z - 1)(z + 1)}{(z - r e^{j\\theta})(z - r e^{-j\\theta})}\n= \\frac{K(z^2 - 1)}{z^2 - 2 r \\cos\\theta\\, z + r^2}\n\\]\nDesign formulas summary:\n\nCenter frequency:\n\\[\n\\theta = \\left(\\frac{f_0}{f_s}\\right) 360^\\circ\n\\]\nPole radius:\n\\[\nr \\approx 1 - \\pi \\frac{BW_{3\\text{dB}}}{f_s},\\quad 0.9 \\le r &lt; 1\n\\]\nGain scaling for unit passband gain:\n\\[\nK = \\frac{(1 - r)\\sqrt{1 - 2 r \\cos(2\\theta) + r^2}}{2|\\sin\\theta|}\n\\]\n\n\n\n\n\n\n\nTip\n\n\nImplementation form (for code):\n\\[\nH(z) = \\frac{b_0 + b_2 z^{-2}}{1 - a_1 z^{-1} + a_2 z^{-2}}\n\\]\nwhere \\(b_0 = K\\), \\(b_1 = 0\\), \\(b_2 = -K\\), \\(a_1 = 2 r \\cos\\theta\\), \\(a_2 = -r^2\\) (after factoring a \\(z^2\\) in numerator and denominator).\n\n\n\n\nClarify: we can write the denominator as \\(z^2 - 2r\\cos\\theta z + r^2 = z^2 (1 - 2r\\cos\\theta z^{-1} + r^2 z^{-2})\\) and then read off the IIR coefficients. Students will frequently convert between polynomial in \\(z\\) (for math) and polynomial in \\(z^{-1}\\) (for implementation)."
+  },
+  {
+    "objectID": "dsp_83.html#example-8.17-secondorder-bandpass-design",
+    "href": "dsp_83.html#example-8.17-secondorder-bandpass-design",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.17 – Second‑Order Bandpass Design",
+    "text": "Example 8.17 – Second‑Order Bandpass Design\nSpecifications:\n\nSampling rate: \\(f_s = 8000\\ \\text{Hz}\\)\nCenter frequency: \\(f_0 = 1000\\ \\text{Hz}\\)\n3‑dB bandwidth: \\(BW = 200\\ \\text{Hz}\\)\nZero gain at 0 Hz and 4000 Hz (DC and Nyquist)\n\nStep 1: Compute pole radius \\(r\\):\n\\[\nr = 1 - \\pi \\frac{BW}{f_s}\n= 1 - \\pi \\frac{200}{8000}\n= 0.9215\n\\]\nStep 2: Center frequency angle:\n\\[\n\\theta = \\frac{f_0}{f_s} 360^\\circ\n= \\frac{1000}{8000} 360^\\circ\n= 45^\\circ\n\\]\nStep 3: Gain factor \\(K\\):\n\\[\nK = \\frac{(1 - 0.9215)\\sqrt{1 - 2(0.9215)\\cos(90^\\circ) + 0.9215^2}}{2|\\sin 45^\\circ|} = 0.0755\n\\]\nFinal transfer function:\n\\[\nH(z) = \\frac{0.0755(z^2 - 1)}{z^2 - 2(0.9215)\\cos 45^\\circ z + 0.9215^2}\n      = \\frac{0.0755 - 0.0755 z^{-2}}{1 - 1.3031 z^{-1} + 0.8491 z^{-2}}\n\\]\n\nAsk: What is the qualitative shape of this filter? - A narrow bandpass centered at 1000 Hz, strong rejection at DC and 4000 Hz.\nYou can show how to plug this into MATLAB:\nb = [0.0755 0 -0.0755];\na = [1 -1.3031 0.8491];\nfreqz(b,a,1024,8000);\nand observe the magnitude plot."
+  },
+  {
+    "objectID": "dsp_83.html#secondorder-bandstop-notch-filter-geometry",
+    "href": "dsp_83.html#secondorder-bandstop-notch-filter-geometry",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8.7.2 Second‑Order Bandstop (Notch) Filter – Geometry",
+    "text": "8.7.2 Second‑Order Bandstop (Notch) Filter – Geometry\nFor a notch (or bandstop) filter:\n\nPoles: same as bandpass, \\(z = r e^{\\pm j\\theta}\\).\nZeros: placed on the unit circle at \\(z = e^{\\pm j\\theta}\\) (the notch frequency).\n\n\n\n\nFIG. 8.33\n\n\nDesign formulas:\n\nCenter (notch) frequency:\n\\[\n\\theta = \\left(\\frac{f_0}{f_s}\\right) 360^\\circ\n\\]\nPole radius:\n\\[\nr \\approx 1 - \\pi \\frac{BW_{3\\text{dB}}}{f_s},\\quad 0.9 \\le r &lt; 1\n\\]\n\nTransfer function:\n\\[\nH(z) = \\frac{K (z - e^{j\\theta})(z - e^{-j\\theta})}{(z - r e^{j\\theta})(z - r e^{-j\\theta})}\n= \\frac{K(z^2 - 2 z\\cos\\theta + 1)}{z^2 - 2 r z\\cos\\theta + r^2}\n\\]\nUnit passband gain factor:\n\\[\nK = \\frac{1 - 2r\\cos\\theta + r^2}{2 - 2\\cos\\theta}\n\\]\n\nExplain why zeros at \\(e^{\\pm j\\theta}\\) notch out that frequency: at \\(z=e^{j\\theta}\\) the numerator is zero, so \\(|H(e^{j\\theta})| = 0\\). The nearby poles (inside) ensure that frequencies around the notch are not overly attenuated, leading to a narrow notch.\nTypical application: removing 50/60 Hz mains hum from biomedical or audio signals."
+  },
+  {
+    "objectID": "dsp_83.html#example-8.18-notch-filter-design",
+    "href": "dsp_83.html#example-8.18-notch-filter-design",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.18 – Notch Filter Design",
+    "text": "Example 8.18 – Notch Filter Design\nSpecifications:\n\nSampling rate: \\(f_s = 8000\\ \\text{Hz}\\)\nCenter (notch) frequency: \\(f_0 = 1500\\ \\text{Hz}\\)\n3‑dB bandwidth: \\(BW = 100\\ \\text{Hz}\\)\n\nStep 1: Pole radius:\n\\[\nr \\approx 1 - \\pi\\frac{100}{8000} = 0.9607\n\\]\nStep 2: Angle \\(\\theta\\):\n\\[\n\\theta = \\frac{1500}{8000} 360^\\circ = 67.5^\\circ\n\\]\nStep 3: Gain factor \\(K\\):\n\\[\nK = \\frac{1 - 2(0.9607)\\cos 67.5^\\circ + 0.9607^2}{2 - 2\\cos 67.5^\\circ} = 0.9620\n\\]\nFinal transfer function:\n\\[\nH(z) = \\frac{0.9620(z^2 - 2 z\\cos 67.5^\\circ + 1)}\n           {z^2 - 2(0.9607) z\\cos 67.5^\\circ + 0.9607^2}\n\\]\n\\[\n= \\frac{0.9620 - 0.7363 z^{-1} + 0.9620 z^{-2}}\n         {1 - 0.7353 z^{-1} + 0.9229 z^{-2}}\n\\]\n\nNote: there is a small discrepancy in the last denominator coefficient in the text (should be + 0.9229 z^{-2} after normalization w.r.t. \\(z^2\\)). Encourage students to verify the entire design in MATLAB with freqz and visually confirm the deep notch at 1500 Hz.\nYou can also show how slight changes in \\(r\\) affect the notch width."
+  },
+  {
+    "objectID": "dsp_83.html#firstorder-lowpass-filter-case-1-f_c-f_s4",
+    "href": "dsp_83.html#firstorder-lowpass-filter-case-1-f_c-f_s4",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8.7.3 First‑Order Lowpass Filter – Case 1: \\(f_c < f_s/4\\)",
+    "text": "8.7.3 First‑Order Lowpass Filter – Case 1: \\(f_c &lt; f_s/4\\)\nPole–zero placement (Fig. 8.34A):\n\nOne real pole at \\(z = \\alpha\\) on real axis.\nOne zero at \\(z = -1\\) to force zero gain at Nyquist \\(f_s/2\\).\n\n\n\n\nFIG. 8.34\n\n\nApproximate derivation:\n\nDC magnitude:\n\\[\n\\left|H(e^{j0})\\right|\n= \\frac{\\text{dist from }1 \\text{ to } -1}{\\text{dist from }1 \\text{ to }\\alpha}\n= \\frac{2}{1 - \\alpha}\n\\]\nAt 3‑dB cutoff, approximate distance geometry leads to:\n\\[\n2\\pi f_c T = 1 - \\alpha\n\\]\n\nTherefore, pole location:\n\\[\n\\alpha = 1 - 2\\pi \\frac{f_c}{f_s}\n\\]\nValid when \\(f_c &lt; f_s/4\\) and \\(\\alpha \\approx 0.9\\,\\text{to}\\,1\\).\n\n\n\n\n\n\nImportant\n\n\nDesign formulas – Lowpass (case 1):\n\nIf \\(f_c &lt; f_s/4\\):\n\\[\n\\alpha \\approx 1 - 2\\pi\\frac{f_c}{f_s},\\quad 0.9 \\le \\alpha &lt; 1\n\\]\nTransfer function:\n\\[\nH(z) = \\frac{K (z + 1)}{z - \\alpha},\\quad K = \\frac{1 - \\alpha}{2}\n\\]\n\n\n\n\n\nGeometric view: - At DC, distance to zero (\\(-1\\)) is 2; at the pole, it is \\(1-\\alpha\\). - At \\(f_c\\), the magnitude is down by \\(1/\\sqrt{2}\\) relative to DC.\nThis is an approximate design, good enough for simple smoothing filters or control loop filters."
+  },
+  {
+    "objectID": "dsp_83.html#firstorder-lowpass-case-2-f_c-f_s4",
+    "href": "dsp_83.html#firstorder-lowpass-case-2-f_c-f_s4",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "First‑Order Lowpass – Case 2: \\(f_c > f_s/4\\)",
+    "text": "First‑Order Lowpass – Case 2: \\(f_c &gt; f_s/4\\)\nWhen the cutoff frequency is above \\(f_s/4\\), we reposition the pole near \\(z = -1\\) (Fig. 8.35).\n\n\n\nFIG. 8.35\n\n\nApproximate design formula:\n\nFor \\(f_c &gt; f_s/4\\):\n\\[\n\\alpha \\approx -\\big(1 - \\pi + 2\\pi\\frac{f_c}{f_s}\\big),\\quad -1 &lt; \\alpha \\le -0.9\n\\]\n\nTransfer function is still:\n\\[\nH(z) = \\frac{K(z + 1)}{z - \\alpha},\\quad K = \\frac{1 - \\alpha}{2}\n\\]\n\nIntuition: we want the passband to extend closer to Nyquist, so the pole moves closer to \\(z = -1\\), and the zero at \\(-1\\) now plays a different role. This is less common in practice; often designers will switch to a more systematic IIR design or use a different sampling rate. But this formula is useful if you are heavily constrained and need a simple 1st‑order design."
+  },
+  {
+    "objectID": "dsp_83.html#example-8.19-firstorder-lowpass",
+    "href": "dsp_83.html#example-8.19-firstorder-lowpass",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.19 – First‑Order Lowpass",
+    "text": "Example 8.19 – First‑Order Lowpass\nSpecifications:\n\nSampling rate: \\(f_s = 8000\\ \\text{Hz}\\)\n3‑dB cutoff frequency: \\(f_c = 100\\ \\text{Hz}\\)\nZero gain at 4000 Hz (Nyquist)\n\nSince \\(f_c = 100\\ \\text{Hz} \\ll f_s/4 = 2000\\ \\text{Hz}\\), use case 1 formula:\n\\[\n\\alpha \\approx 1 - 2\\pi\\frac{100}{8000} = 0.9215\n\\]\nScale factor:\n\\[\nK = \\frac{1 - \\alpha}{2} = \\frac{1 - 0.9215}{2} = 0.03925\n\\]\nTransfer function:\n\\[\nH(z) = \\frac{0.03925(z + 1)}{z - 0.9215}\n     = \\frac{0.03925 + 0.03925 z^{-1}}{1 - 0.9215 z^{-1}}\n\\]\nAlternative way to compute \\(K\\):\n\nDC gain of unscaled filter:\n\\[\n\\text{DC gain} = \\frac{z+1}{z-0.9215}\\Bigg|_{z=1}\n= \\frac{2}{1 - 0.9215} = 25.4777\n\\]\nSet \\(K = 1 / 25.4777 = 0.03925\\).\n\n\nHighlight that verifying gain via \\(H(1)\\) is a very general trick for lowpass filters. Ask students which property of the filter response the numerator \\((z+1)\\) is enforcing (zero at Nyquist).\nAlso show how to derive the time‑domain recursion: \\(y(n) = -0.9215 y(n-1) + 0.03925 x(n) + 0.03925 x(n-1)\\)."
+  },
+  {
+    "objectID": "dsp_83.html#firstorder-highpass-filter",
+    "href": "dsp_83.html#firstorder-highpass-filter",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8.7.4 First‑Order Highpass Filter",
+    "text": "8.7.4 First‑Order Highpass Filter\nVery similar structure, but we swap the location of the zero:\n\nZero at \\(z = 1\\) → kills DC.\nPole at \\(z = \\alpha\\) on real axis.\n\nTwo cases again:\n\nIf \\(f_c &lt; f_s/4\\), then \\(\\alpha \\approx 1 - 2\\pi\\frac{f_c}{f_s}\\), \\(0.9 \\le \\alpha &lt; 1\\).\nIf \\(f_c &gt; f_s/4\\), then \\(\\alpha \\approx -\\left(1 - \\pi + 2\\pi \\frac{f_c}{f_s}\\right)\\), \\(-1 &lt; \\alpha \\le -0.9\\).\n\nTransfer function:\n\\[\nH(z) = \\frac{K(z - 1)}{z - \\alpha},\\quad\nK = \\frac{1 + \\alpha}{2}\n\\]\n\n\n\nFIG. 8.36\n\n\n\n\n\n\n\n\nNote\n\n\nCompare with lowpass:\n\nLowpass: zero at \\(z=-1\\), numerator \\((z+1)\\).\nHighpass: zero at \\(z=1\\), numerator \\((z-1)\\).\n\n\n\n\n\nRemind students that \\(z=1\\) on the unit circle corresponds to \\(\\Omega = 0\\) (DC), and \\(z=-1\\) corresponds to \\(\\Omega = \\pi\\) (Nyquist). Thus, by choosing where to place zeros, we can control which extreme of the spectrum is attenuated."
+  },
+  {
+    "objectID": "dsp_83.html#example-8.20-firstorder-highpass",
+    "href": "dsp_83.html#example-8.20-firstorder-highpass",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.20 – First‑Order Highpass",
+    "text": "Example 8.20 – First‑Order Highpass\nSpecifications:\n\nSampling rate: \\(f_s = 8000\\ \\text{Hz}\\)\n3‑dB cutoff frequency: \\(f_c = 3800\\ \\text{Hz}\\)\nZero gain at 0 Hz (DC)\n\nSince \\(f_c = 3800\\ \\text{Hz} &gt; f_s/4 = 2000\\ \\text{Hz}\\), use highpass case 2 formula:\n\\[\n\\alpha \\approx -\\left(1 - \\pi + 2\\pi\\frac{3800}{8000}\\right) = -0.8429\n\\]\nScale factor (note: the text appears to have a minor sign typo):\nThe correct highpass formula is typically:\n\\[\nK = \\frac{1 + \\alpha}{2} = \\frac{1 - 0.8429}{2} = 0.07855\\ (\\text{approx})\n\\]\nTransfer function:\n\\[\nH(z) = \\frac{0.07854(z - 1)}{z + 0.8429}\n     = \\frac{0.07854 - 0.07854 z^{-1}}{1 + 0.8429 z^{-1}}\n\\]\nAlternative: enforce unity gain at Nyquist (\\(z = -1\\)):\n\nPassband gain:\n\\[\n\\frac{z - 1}{z + 0.8429}\\Bigg|_{z=-1}\n= \\frac{-1 - 1}{-1 + 0.8429}\n= 12.7307\n\\]\nSo \\(K = 1 / 12.7307 = 0.07854\\).\n\n\nAsk students: - How does this differ from the lowpass example structurally? - What is the time‑domain recursion?\n\\(y(n) = -0.8429 y(n-1) + 0.07854 x(n) - 0.07854 x(n-1)\\).\nAlso, connect this to applications like DC blocking in audio or biomedical signals."
+  },
+  {
+    "objectID": "dsp_83.html#realization-structures-for-iir-filters",
+    "href": "dsp_83.html#realization-structures-for-iir-filters",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8.8 Realization Structures for IIR Filters",
+    "text": "8.8 Realization Structures for IIR Filters\nOnce we have the transfer function \\(H(z)\\), we need to implement it in hardware or software.\nCommon realization forms:\n\nDirect‑Form I\nDirect‑Form II\nCascade form using second‑order sections\n\nTrade‑offs:\n\nMemory usage (# of delay elements)\nNumerical stability and sensitivity to coefficient quantization\nEase of mapping into code or DSP instructions\n\n\n\n\n\n\n\nTip\n\n\nIn practice, engineers often: - Factor a high‑order design into biquad (2nd‑order) sections. - Implement each biquad in direct‑form II transposed (for good numerical properties).\n\n\n\n\nRemind students of Chapter 6 FIR realizations: direct forms carry over here but now we have feedback as well as feedforward paths. The presence of feedback means we must be more careful with numerical effects and stability."
+  },
+  {
+    "objectID": "dsp_83.html#example-8.21-directform-i-realization-12",
+    "href": "dsp_83.html#example-8.21-directform-i-realization-12",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.21 – Direct‑Form I Realization (1/2)",
+    "text": "Example 8.21 – Direct‑Form I Realization (1/2)\nGiven first‑order highpass Butterworth filter:\n\\[\nH(z) = \\frac{0.1936 - 0.1936 z^{-1}}{1 + 0.6128 z^{-1}}\n\\]\nIdentify coefficients:\n\nNumerator: \\(b_0 = 0.1936,\\ b_1 = -0.1936\\)\nDenominator: \\(a_0 = 1,\\ a_1 = 0.6128\\)\n\nDifference equation (from \\(H(z)\\)):\n\\[\ny(n) = -0.6128 y(n-1) + 0.1936 x(n) - 0.1936 x(n-1)\n\\]\nDirect‑Form I structure (Fig. 8.37):\n\n\n\nFIG. 8.37\n\n\n\nExplain that Direct‑Form I uses two parallel paths: - FIR part (feedforward) using \\(b_k\\) coefficients. - IIR part (feedback) using \\(a_k\\) coefficients.\nThe structure directly mirrors the difference equation. Make sure students can sketch this from the difference equation without looking at the figure."
+  },
+  {
+    "objectID": "dsp_83.html#example-8.21-matlab-implementation-22",
+    "href": "dsp_83.html#example-8.21-matlab-implementation-22",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.21 – MATLAB Implementation (2/2)",
+    "text": "Example 8.21 – MATLAB Implementation (2/2)\nProgram 8.14 implements Direct‑Form I manually:\nsample = 2:2:20;      % Input test array\nx = [0 0];            % Input buffer [x(n) x(n-1)]\ny = [0 0];            % Output buffer [y(n) y(n-1)]\nb = [0.1936 -0.1936]; % Numerator coefficients\na = [1 0.6128];       % Denominator coefficients\n\nfor n = 1:1:length(sample)\n    % Shift buffers\n    for k = 2:-1:2\n        x(k) = x(k-1);\n        y(k) = y(k-1);\n    end\n    x(1) = sample(n);\n    y(1) = 0; % Initialize output\n\n    % FIR (feedforward) part\n    for k = 1:1:2\n        y(1) = y(1) + x(k)*b(k);\n    end\n\n    % IIR (feedback) part\n    for k = 2:2\n        y(1) = y(1) - a(k)*y(k);\n    end\n\n    out(n) = y(1);\nend\nout\n\n\n\n\n\n\nNote\n\n\nIn practice, you rarely write this loop manually. You use:\nout = filter(b, a, sample);\n\n\n\n\nThis code is mainly pedagogical, showing how the delay buffers implement the recursion. It’s a good exercise to trace the first few iterations by hand to verify that the code matches the difference equation. Also stress that a(1) is assumed to be 1 (normalized)."
+  },
+  {
+    "objectID": "dsp_83.html#example-8.22-directform-ii-realization-12",
+    "href": "dsp_83.html#example-8.22-directform-ii-realization-12",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.22 – Direct‑Form II Realization (1/2)",
+    "text": "Example 8.22 – Direct‑Form II Realization (1/2)\nGiven second‑order filter:\n\\[\nH(z) = \\frac{0.7157 + 1.4314 z^{-1} + 0.7157 z^{-2}}\n           {1 + 1.3490 z^{-1} + 0.5140 z^{-2}}\n\\]\nCoefficients:\n\n\\(b_0 = 0.7157,\\ b_1 = 1.4314,\\ b_2 = 0.7157\\)\n\\(a_0 = 1,\\ a_1 = 1.3490,\\ a_2 = 0.5140\\)\n\nDirect‑Form II uses an internal state \\(w(n)\\):\n\\[\n\\begin{aligned}\nw(n) &= x(n) - a_1 w(n-1) - a_2 w(n-2) \\\\\ny(n) &= b_0 w(n) + b_1 w(n-1) + b_2 w(n-2)\n\\end{aligned}\n\\]\nFig. 8.38 shows the Direct‑Form II block diagram.\n\n\n\nFIG. 8.38\n\n\n\n\n\n\n\n\nTip\n\n\nDirect‑Form II reuses the same delay line for feedforward and feedback, which halves the number of delay elements compared to Direct‑Form I.\n\n\n\n\nExplain the concept of the canonical form: minimal number of memory elements. However, in finite‑word‑length systems, Direct‑Form II can be more sensitive to coefficient quantization; often DF‑II transposed is used in practice."
+  },
+  {
+    "objectID": "dsp_83.html#example-8.22-matlab-implementation-22",
+    "href": "dsp_83.html#example-8.22-matlab-implementation-22",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.22 – MATLAB Implementation (2/2)",
+    "text": "Example 8.22 – MATLAB Implementation (2/2)\nProgram 8.15 manually implements Direct‑Form II:\nsample = 2:2:20;                 % Input test array\nx = [0];                         % Input buffer [x(n)]\ny = [0];                         % Output buffer [y(n)]\nw = [0 0 0];                     % Internal states [w(n) w(n-1) w(n-2)]\nb = [0.7157 1.4314 0.7157];      % Numerator coefficients\na = [1 1.3490 0.5140];           % Denominator coefficients\n\nfor n = 1:1:length(sample)\n    % Shift w(n) states\n    for k = 3:-1:2\n        w(k) = w(k-1);\n    end\n    x(1) = sample(n);\n\n    % IIR (feedback) stage: compute w(n)\n    w(1) = x(1);\n    for k = 2:1:3\n        w(1) = w(1) - a(k)*w(k);\n    end\n\n    % FIR (feedforward) stage: compute y(n)\n    y(1) = 0;\n    for k = 1:1:3\n        y(1) = y(1) + b(k)*w(k);\n    end\n\n    out(n) = y(1);\nend\nout\nAgain, this is equivalent to:\nout = filter(b, a, sample);\n\nHighlight that here \\(w(n)\\) is the state vector of the filter, and this structure maps well to hardware implementations. Ask students which form (direct I vs direct II) is more memory‑efficient and which might be more numerically robust.\nThis sets up the next topic: cascade realizations, which use multiple biquads."
+  },
+  {
+    "objectID": "dsp_83.html#cascade-form-for-higherorder-iir-filters-12",
+    "href": "dsp_83.html#cascade-form-for-higherorder-iir-filters-12",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8.8.2 Cascade Form for Higher‑Order IIR Filters (1/2)",
+    "text": "8.8.2 Cascade Form for Higher‑Order IIR Filters (1/2)\nHigh‑order IIR filters are typically factored into second‑order sections:\n\\[\nH(z) = H_1(z)\\, H_2(z)\\,\\cdots H_M(z)\n\\]\nEach \\(H_k(z)\\) is a second‑order (biquad) filter implemented via Direct‑Form I or II.\nExample 8.23:\nGiven 4th‑order filter:\n\\[\nH(z) =\n\\frac{0.5108z^{2}+1.0215z+0.5108}{z^{2}+0.5654z+0.4776}\n\\times\n\\frac{0.3730z^{2}+0.7460z+0.3730}{z^{2}+0.4129z+0.0790}\n\\]\nWrite each as standard second‑order section in \\(z^{-1}\\):\n\\[\nH_1(z) =\n\\frac{0.5108 + 1.0215 z^{-1} + 0.5108 z^{-2}}\n     {1 + 0.5654 z^{-1} + 0.4776 z^{-2}}\n\\]\n\\[\nH_2(z) =\n\\frac{0.3730 + 0.7460 z^{-1} + 0.3730 z^{-2}}\n     {1 + 0.4129 z^{-1} + 0.0790 z^{-2}}\n\\]\n\nThe advantage: each biquad is easier to implement and tune, and the cascade form is more numerically stable (less sensitive to coefficient quantization and scaling). DSP libraries like MATLAB’s sosfilt work with these second‑order sections."
+  },
+  {
+    "objectID": "dsp_83.html#example-8.23-cascade-realization-22",
+    "href": "dsp_83.html#example-8.23-cascade-realization-22",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.23 – Cascade Realization (2/2)",
+    "text": "Example 8.23 – Cascade Realization (2/2)\nDirect‑Form I cascade (Fig. 8.39):\n\n\n\nFIG. 8.39\n\n\nDifference equations – first section:\n\\[\n\\begin{aligned}\ny_1(n)\n&= -0.5654 y_1(n-1) - 0.4776 y_1(n-2) \\\\\n&\\quad + 0.5108 x(n) + 1.0215 x(n-1) + 0.5108 x(n-2)\n\\end{aligned}\n\\]\nSecond section:\n\\[\n\\begin{aligned}\ny(n)\n&= -0.4129 y(n-1) - 0.0790 y(n-2) \\\\\n&\\quad + 0.3730 y_1(n) + 0.7460 y_1(n-1) + 0.3730 y_1(n-2)\n\\end{aligned}\n\\]\nDirect‑Form II cascade (Fig. 8.40) just replaces each second‑order block with its DF‑II implementation:\n\n\n\nFIG. 8.40\n\n\nIn both cases, output of section 1 (\\(y_1(n)\\) or \\(w_1\\) outputs) becomes input to section 2.\n\nConnect this to real practice: - MATLAB’s tf2sos or zp2sos functions factor a high‑order filter into second‑order sections. - Good implementations then apply section scaling and use DF‑II transposed for each biquad.\nAsk students why we prefer multiple 2nd‑order sections rather than one giant 4th‑order section: - Numerical stability, easier debugging, modular design."
+  },
+  {
+    "objectID": "dsp_83.html#summary-key-points",
+    "href": "dsp_83.html#summary-key-points",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Summary / Key Points",
+    "text": "Summary / Key Points\n\nImpulse invariant design:\n\nSample and scale the analog impulse response \\(h(t)\\) to obtain digital \\(h[n]\\).\nWorks well for lowpass and bandpass with high sampling rates.\nSuffers from aliasing because \\(h(t)\\) is not band‑limited.\n\nPole–zero placement:\n\nGeometric design of simple IIRs using intuition about how poles/zeros shape the response.\nSecond‑order bandpass and bandstop (notch) filters: complex poles with radius \\(r\\) and angle \\(\\theta\\).\nFirst‑order lowpass and highpass: real pole \\(\\alpha\\) and a single zero at DC or Nyquist.\n\nRealization structures:\n\nDirect‑Form I: straightforward mapping from difference equation, more delay elements.\nDirect‑Form II: memory‑efficient using internal state \\(w(n)\\).\nCascade of second‑order sections: standard for higher‑order IIRs (better numerical properties).\n\n\n\n\n\n\n\n\nImportant\n\n\nConceptually:\n\nDesign domain: analog \\(H(s)\\) vs digital \\(H(z)\\) vs pole–zero geometry.\nImplementation domain: difference equations → Direct I, Direct II, cascade.\n\n\n\n\n\nEncourage students to see these as connected steps in a pipeline: 1. Start with an analog spec or prototype. 2. Choose a transformation (impulse invariant or BLT). 3. Optionally tweak design with pole–zero placement. 4. Factor into sections and choose realization for implementation.\nThese are the same steps used in industry‑grade DSP design tools."
+  },
+  {
+    "objectID": "dsp_83.html#formulas-summary",
+    "href": "dsp_83.html#formulas-summary",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Formulas Summary",
+    "text": "Formulas Summary\nImpulse Invariant\n\nAnalog impulse response:\n\\[\nh(t) = \\mathcal{L}^{-1}\\{H(s)\\}\n\\]\nSample and scale:\n\\[\nT h(n) = T h(t)\\big|_{t=nT},\\quad n \\ge 0\n\\]\nDigital transfer function:\n\\[\nH(z) = \\mathcal{Z}\\{T h(n)\\}\n\\]\nDC gain approximation:\n\\[\n\\int_0^\\infty h(t)\\,dt \\approx T \\sum_{n=0}^\\infty h(n)\n\\]"
+  },
+  {
+    "objectID": "dsp_83.html#getting-started",
+    "href": "dsp_83.html#getting-started",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Getting Started",
+    "text": "Getting Started\nThis interactive deck lets you:\n\nExperiment with impulse invariant design in Python.\nExplore how poles and zeros affect frequency responses.\nSee how realization structures map from equations to code.\n\nAll the Python examples run in your browser via Pyodide (WebAssembly). You can edit the code and re‑run to immediately see the effect.\n\nRemind students that everything here runs locally in the browser—no server needed. Encourage them to deliberately “break” things (change parameters wildly) to see stability issues and aliasing."
+  },
+  {
+    "objectID": "dsp_83.html#impulse-invariant-firstorder-example-hs-2s2",
+    "href": "dsp_83.html#impulse-invariant-firstorder-example-hs-2s2",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "1. Impulse Invariant – First‑Order Example (H(s) = 2/(s+2))",
+    "text": "1. Impulse Invariant – First‑Order Example (H(s) = 2/(s+2))\nUse this cell to:\n\nChange the analog pole (currently at \\(s=-2\\)).\nChange the sampling rate \\(f_s\\).\nSee how the digital pole and \\(H(z)\\) coefficients change.\n\n\n\n\n\n\n\n\nAsk students to: - Increase fs and observe how the digital pole changes. - Compare z_p = e^{-aT} to the analog pole \\(-a\\). - Explain why smaller \\(T\\) (larger fs) yields a pole closer to 1, and what that implies for the time constant of the digital response."
+  },
+  {
+    "objectID": "dsp_83.html#impulse-invariant-compare-analog-vs-digital-magnitude-interactive",
+    "href": "dsp_83.html#impulse-invariant-compare-analog-vs-digital-magnitude-interactive",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "2. Impulse Invariant – Compare Analog vs Digital Magnitude (Interactive)",
+    "text": "2. Impulse Invariant – Compare Analog vs Digital Magnitude (Interactive)\nUse a reactive slider for sampling rate and see how the digital magnitude response changes relative to a fixed analog filter.\nAnalog prototype: - \\(H(s) = \\dfrac{2}{s+2}\\)\nWe’ll:\n\nFix the analog filter.\nLet you change fs interactively.\nPlot analog and digital magnitudes over frequency in Hz.\n\n\nviewof fs_slider = Inputs.range([8, 64], {step: 2, label: \"Sampling rate fs (Hz)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\nAsk students:\n\nHow does increasing fs change the match between analog and digital curves?\nWhere do you start to see significant deviations near Nyquist?\nWhy is aliasing worse for lower fs?\n\nEncourage them to try fs = 8 and then fs = 64 and describe what they see."
+  },
+  {
+    "objectID": "dsp_83.html#impulse-invariant-secondorder-example-hs-ss²-2s-5",
+    "href": "dsp_83.html#impulse-invariant-secondorder-example-hs-ss²-2s-5",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "3. Impulse Invariant – Second‑Order Example (H(s) = s/(s² + 2s + 5))",
+    "text": "3. Impulse Invariant – Second‑Order Example (H(s) = s/(s² + 2s + 5))\nNow work with the second‑order bandpass‐like analog filter:\n\\[\nH(s) = \\frac{s}{s^2 + 2s + 5}\n\\]\nWe’ll:\n\nDerive the digital coefficients symbolically (as in Example 8.16).\nLet you change the sampling rate fs.\nSee how the digital pole locations move.\n\n\n\n\n\n\n\n\nThis snippet focuses on how the discrete poles depend on fs. You can ask students to:\n\nIncrease fs and see how the poles move closer to the unit circle (for a fixed analog damping).\nReason what happens to the discrete‑time resonance.\n\nThey can later compute the actual poles with np.roots([1, -a1, a2]) if desired."
+  },
+  {
+    "objectID": "dsp_83.html#polezero-placement-interactive-bandpass-design",
+    "href": "dsp_83.html#polezero-placement-interactive-bandpass-design",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "4. Pole–Zero Placement – Interactive Bandpass Design",
+    "text": "4. Pole–Zero Placement – Interactive Bandpass Design\nUse the bandpass formulas from Section 8.7.1 interactively:\n\nChoose center frequency \\(f_0\\).\nChoose 3‑dB bandwidth \\(BW\\).\nObserve the resulting frequency response and approximate pole radius \\(r\\).\n\n\nviewof f0   = Inputs.range([200, 3000], {step: 100, value: 1000, label: \"Center frequency f0 (Hz)\"})\nviewof bw   = Inputs.range([50, 1000], {step: 50, value: 200, label: \"3-dB bandwidth BW (Hz)\"})\nviewof fs2  = Inputs.range([4000, 16000], {step: 1000, value: 8000, label: \"Sampling rate fs (Hz)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPrompts for students:\n\nHow does increasing BW affect the pole radius r and the width of the passband?\nWhat happens if you push f0 close to Nyquist (fs/2)?\nFor which ranges of r do you expect numerical stability issues (hint: \\(|r|&lt;1\\) but too close to 1 may cause sensitivity)?"
+  },
+  {
+    "objectID": "dsp_83.html#polezero-placement-interactive-notch-bandstop",
+    "href": "dsp_83.html#polezero-placement-interactive-notch-bandstop",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "5. Pole–Zero Placement – Interactive Notch (Bandstop)",
+    "text": "5. Pole–Zero Placement – Interactive Notch (Bandstop)\nHere, we implement the notch filter from Section 8.7.2.\n\nSlide the notch frequency \\(f_0\\).\nAdjust the bandwidth to see a wider or narrower notch.\n\n\nviewof f0_notch = Inputs.range([200, 3500], {step: 100, value: 1500, label: \"Notch center f0 (Hz)\"})\nviewof bw_notch = Inputs.range([20, 400], {step: 20, value: 100, label: \"3-dB bandwidth BW (Hz)\"})\nviewof fs3      = Inputs.range([4000, 16000], {step: 1000, value: 8000, label: \"Sampling rate fs (Hz)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDiscussion points:\n\nShow that the notch occurs at \\(f_0\\) (where magnitude is near zero).\nNarrower BW → larger r → poles closer to the unit circle → sharper, deeper notch but more sensitive numerically.\nTypical application: removing powerline interference at 50/60 Hz from biomedical signals."
+  },
+  {
+    "objectID": "dsp_83.html#firstorder-lowpass-interactive-design-pole-at-α",
+    "href": "dsp_83.html#firstorder-lowpass-interactive-design-pole-at-α",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "6. First‑Order Lowpass – Interactive Design (Pole at α)",
+    "text": "6. First‑Order Lowpass – Interactive Design (Pole at α)\nUse the first‑order lowpass formulas from Section 8.7.3.\nWe’ll let you:\n\nSet cutoff frequency \\(f_c\\).\nCompute \\(\\alpha\\) automatically (case \\(f_c &lt; f_s/4\\)).\nVisualize the magnitude response.\n\n\nviewof fc_lp = Inputs.range([10, 1000], {step: 10, value: 100, label: \"Lowpass 3-dB cutoff fc (Hz)\"})\nviewof fs_lp = Inputs.range([4000, 16000], {step: 1000, value: 8000, label: \"Sampling rate fs (Hz)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAsk students:\n\nAs fc increases (still &lt; fs/4), how does alpha change?\nWhy does alpha approaching 1 mean a slower lowpass (longer memory)?\nCheck that the magnitude at fc is roughly -3 dB.\n\nTry fs=8000, fc=100 to recover something close to Example 8.19."
+  },
+  {
+    "objectID": "dsp_83.html#firstorder-highpass-interactive-design-pole-at-α",
+    "href": "dsp_83.html#firstorder-highpass-interactive-design-pole-at-α",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "7. First‑Order Highpass – Interactive Design (Pole at α)",
+    "text": "7. First‑Order Highpass – Interactive Design (Pole at α)\nSimilarly for first‑order highpass (Section 8.7.4):\n\nZero at \\(z=1\\) (kill DC).\nPole at \\(\\alpha\\) (real).\n\n\nviewof fc_hp = Inputs.range([50, 3800], {step: 50, value: 3800, label: \"Highpass 3-dB cutoff fc (Hz)\"})\nviewof fs_hp = Inputs.range([4000, 16000], {step: 1000, value: 8000, label: \"Sampling rate fs (Hz)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPrompts:\n\nVerify that at low frequencies, the magnitude is strongly attenuated (highpass behavior).\nFor fc near Nyquist (as in Example 8.20), check how the shape compares.\nDiscuss why the fc &gt; fs/4 case uses a different formula for \\(\\alpha\\), and what happens if you naively use the wrong formula."
+  },
+  {
+    "objectID": "dsp_83.html#directform-i-vs-directform-ii-interactive-signal-flow",
+    "href": "dsp_83.html#directform-i-vs-directform-ii-interactive-signal-flow",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8. Direct‑Form I vs Direct‑Form II – Interactive Signal Flow",
+    "text": "8. Direct‑Form I vs Direct‑Form II – Interactive Signal Flow\nHere we simulate a second‑order section with user‑chosen coefficients and compare Direct‑Form I vs Direct‑Form II outputs for a test signal.\nYou can:\n\nChange the input signal type (step, impulse, sine).\nSet simple coefficients to see stability and shape.\n\n\nviewof sig_type = Inputs.select(\n  [\"step\", \"impulse\", \"sine\"], \n  {value: \"step\", label: \"Input signal type\"}\n)\n\nviewof N_len = Inputs.range([10, 200], {step: 10, value: 100, label: \"Number of samples N\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nKey teaching points:\n\nFor ideal arithmetic, Direct‑Form I and II outputs match exactly.\nIn finite precision, they may differ slightly; cascade of biquads in DF‑II transposed is often preferred.\n\nEncourage students to change b and a to represent an unstable filter (e.g., pole outside unit circle) and observe divergence."
+  },
+  {
+    "objectID": "dsp_83.html#design-challenge-from-specs-to-code",
+    "href": "dsp_83.html#design-challenge-from-specs-to-code",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "9. Design Challenge – From Specs to Code",
+    "text": "9. Design Challenge – From Specs to Code\nUse this space as a sandbox:\n\nDesign a bandpass or notch filter with your own specs.\nReuse formulas from the earlier reactive cells.\nPlot the frequency response and test it on a signal.\n\n\n\n\n\n\n\n\nGive students specific mini‑tasks:\n\nDesign a notch filter to remove 60 Hz noise at fs=2000 Hz.\nTest it on a sine wave consisting of 60 Hz + 150 Hz components.\nVerify that 60 Hz is strongly attenuated but 150 Hz remains.\n\nThey can expand this cell to compute and plot the frequency response and filtered signal."
+  },
+  {
+    "objectID": "dsp_83.html#reflection-what-did-you-observe",
+    "href": "dsp_83.html#reflection-what-did-you-observe",
+    "title": "8.3 Infinite Impulse Response (IIR) Filter Design",
+    "section": "10. Reflection – What Did You Observe?",
+    "text": "10. Reflection – What Did You Observe?\nUse these questions to consolidate learning:\n\nHow does changing sampling rate in the impulse invariant method affect:\n\nThe location of the digital pole(s)?\nThe closeness of analog and digital magnitude responses?\n\nIn pole–zero placement:\n\nHow do radius \\(r\\) and angle \\(\\theta\\) shape the filter type and bandwidth?\nWhy do we place zeros at DC or Nyquist for lowpass/highpass?\n\nIn realization:\n\nHow do Direct‑Form I and Direct‑Form II differ structurally?\nWhy might we prefer a cascade of second‑order sections in practice?\n\n\n\nYou can use this slide for an in‑class poll or quick written reflection. Ask 1–2 students to summarize (verbally) how they would go from:\n\nAnalog spec → choose method (impulse invariant vs BLT) → derive H(z) → choose implementation form.\n\nReinforce that mastering these connections is the main learning goal for this chapter."
+  },
+  {
+    "objectID": "dsp_81.html#bilinear-transformation-method-lowpass-prototype-transformations",
+    "href": "dsp_81.html#bilinear-transformation-method-lowpass-prototype-transformations",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Bilinear Transformation Method & Lowpass Prototype Transformations",
+    "text": "Bilinear Transformation Method & Lowpass Prototype Transformations"
+  },
+  {
+    "objectID": "dsp_81.html#learning-objectives",
+    "href": "dsp_81.html#learning-objectives",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\nBy the end of this session, you should be able to:\n\nDescribe the mathematical format of an IIR filter (difference equation, transfer function, impulse response).\nExplain why IIR filters can achieve sharp responses with relatively low order, and what is traded off.\nUse lowpass prototype transformations to obtain analog lowpass, highpass, bandpass, and bandstop filters.\nDerive and interpret the bilinear transform (BLT) as a mapping from the analog s‑plane to the digital z‑plane.\nExplain frequency warping and why prewarping is needed in BLT‑based IIR filter design.\nApply a structured BLT design procedure to obtain a digital IIR filter that meets given specifications."
+  },
+  {
+    "objectID": "dsp_81.html#iir-filter-format-intuition",
+    "href": "dsp_81.html#iir-filter-format-intuition",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8.1 IIR Filter Format – Intuition",
+    "text": "8.1 IIR Filter Format – Intuition\nIIR filter = recursive digital filter.\nSignal‑flow intuition (for a simple 1st‑order IIR):\n\n\n\n\n\n\n\n\n\n\n\n\nCurrent output depends on:\n\ncurrent input sample(s)\npast inputs\npast outputs (feedback)\n\n\n\nExplain that “infinite impulse response” means the impulse response theoretically never becomes exactly zero, because energy from the impulse keeps feeding back through the recursive path. Contrast this with FIR where the impulse response length is finite and equals the filter order + 1."
+  },
+  {
+    "objectID": "dsp_81.html#iir-difference-equation-and-transfer-function",
+    "href": "dsp_81.html#iir-difference-equation-and-transfer-function",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "IIR Difference Equation and Transfer Function",
+    "text": "IIR Difference Equation and Transfer Function\nGeneral causal LTI IIR filter:\nDifference equation:\n\\[\ny(n)=b_0 x(n)+b_1 x(n-1)+\\cdots +b_M x(n-M)\n\\quad -\\, a_1 y(n-1)-\\cdots-a_N y(n-N)\n\\]\n(Your book uses the convention that the denominator is written as \\(1+a_1 z^{-1}+\\dots\\).)\nTransfer function:\n\\[\nH(z) = \\frac{Y(z)}{X(z)} =\n\\frac{b_0 + b_1 z^{-1} + \\cdots + b_M z^{-M}}{1 + a_1 z^{-1} + \\cdots + a_N z^{-N}}\n\\]\nKey properties:\n\nNumerator coefficients: \\(b_i\\) → zeros.\nDenominator coefficients: \\(a_i\\) → poles.\nImpulse response: generally infinite‑length (decays but never strictly ends).\n\n\n\n\n\n\n\nImportant\n\n\nStability condition\nFor a causal IIR filter to be BIBO‑stable, all poles must lie strictly inside the unit circle in the z‑plane.\n\n\n\n\nClarify that the denominator polynomial roots (poles) determine natural modes of the system. For physical or stable systems, their magnitudes must be &lt; 1. Because of feedback, they can generate a long‑lasting response."
+  },
+  {
+    "objectID": "dsp_81.html#example-8.1-a-simple-iir-filter",
+    "href": "dsp_81.html#example-8.1-a-simple-iir-filter",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.1 – A Simple IIR Filter",
+    "text": "Example 8.1 – A Simple IIR Filter\nGiven\n\\[\ny(n) = 0.2x(n) + 0.4x(n-1) + 0.5y(n-1)\n\\]\n\nTransfer function\n\nApply the z‑transform (zero initial conditions):\n\\[\nY(z) = 0.2X(z) + 0.4 z^{-1} X(z) + 0.5 z^{-1} Y(z)\n\\]\nRearrange:\n\\[\nY(z) - 0.5 z^{-1} Y(z) = (0.2 + 0.4 z^{-1}) X(z)\n\\]\nSo\n\\[\nH(z)=\\frac{Y(z)}{X(z)}=\\frac{0.2+0.4z^{-1}}{1-0.5z^{-1}}\n\\]"
+  },
+  {
+    "objectID": "dsp_81.html#iir-vs-fir-design-tradeoffs",
+    "href": "dsp_81.html#iir-vs-fir-design-tradeoffs",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "IIR vs FIR – Design Tradeoffs",
+    "text": "IIR vs FIR – Design Tradeoffs\n\n\nIIR Filters\n\nRecursive: depend on past outputs.\nTypically lower order for given magnitude specs.\nComputationally cheaper (fewer multiplies/adds).\nNon‑linear phase in general.\nPotential stability issues if poles not inside unit circle.\n\n\nFIR Filters\n\nNonrecursive: depend only on past inputs.\nTypically higher order for same specs.\nLinear phase easy to obtain (e.g., symmetric coefficients).\nGuaranteed stable if finite length.\nOften preferred in applications where phase distortion is critical (e.g., data communications, some audio).\n\n\nReal‑world ECE applications where IIR is common:\n\nLow‑order audio tone controls (bass/treble shelves).\nAnalog‑style equalizers (biquad sections).\nControl systems where digital filters approximate analog compensators."
+  },
+  {
+    "objectID": "dsp_81.html#goal-of-iir-filter-design",
+    "href": "dsp_81.html#goal-of-iir-filter-design",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Goal of IIR Filter Design",
+    "text": "Goal of IIR Filter Design\nGiven desired digital specifications (e.g., lowpass with passband ripple, stopband attenuation, cutoff frequency), we want to determine:\n\nNumerator coefficients \\(b_0, \\dots, b_M\\)\nDenominator coefficients \\(a_1, \\dots, a_N\\)\n\nsuch that:\n\nPassband meets gain and ripple specs.\nStopband meets attenuation specs.\nCutoff or band edges occur at desired digital frequencies.\nFilter is stable and realizable.\n\nWe will use the bilinear transformation (BLT) method together with analog lowpass prototypes (Butterworth, Chebyshev)."
+  },
+  {
+    "objectID": "dsp_81.html#big-picture-bltbased-iir-design-flow",
+    "href": "dsp_81.html#big-picture-bltbased-iir-design-flow",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Big Picture: BLT‑Based IIR Design Flow",
+    "text": "Big Picture: BLT‑Based IIR Design Flow\n\n\n\nFIG. 8.1\n\n\nFIG. 8.1 General procedure for IIR filter design using BLT.\nKey steps:\n\nDigital specs → Analog specs (prewarping).\nAnalog filter design from lowpass prototype.\nBilinear transform: map \\(s\\)‑domain filter to \\(z\\)‑domain filter.\nVerify digital magnitude/phase response."
+  },
+  {
+    "objectID": "dsp_81.html#analog-filters-via-lowpass-prototype",
+    "href": "dsp_81.html#analog-filters-via-lowpass-prototype",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8.2.1 Analog Filters via Lowpass Prototype",
+    "text": "8.2.1 Analog Filters via Lowpass Prototype\nIdea:\n\nDesign a normalized analog lowpass prototype \\(H_P(s)\\) with cutoff at 1 rad/s.\nTransform this prototype into practical analog lowpass / highpass / bandpass / bandstop filters with desired cutoff and bandwidth.\nLater, convert the analog filter into a digital filter via BLT.\n\nPrototype example (1st order):\n\\[\nH_P(s) = \\frac{1}{s+1}\n\\]\n\nCutoff at \\(|\\omega| = 1\\) rad/s (gain \\(=1/\\sqrt{2}\\)).\nDC gain = 1."
+  },
+  {
+    "objectID": "dsp_81.html#prototype-frequency-response-normalized-lowpass",
+    "href": "dsp_81.html#prototype-frequency-response-normalized-lowpass",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Prototype Frequency Response – Normalized Lowpass",
+    "text": "Prototype Frequency Response – Normalized Lowpass\nFor prototype\n\\[\nH_P(s) = \\frac{1}{s+1}\n\\]\nFrequency response:\n\\[\nH_P(j\\nu) = \\frac{1}{j\\nu + 1}\n\\]\nMagnitude:\n\\[\n|H_P(j\\nu)| = \\frac{1}{\\sqrt{1+\\nu^2}}\n\\]\nEvaluate:\n\n\\(\\nu = 0\\): \\(|H_P(j0)| = 1\\) (DC gain)\n\\(\\nu = 1\\): \\(|H_P(j1)| = \\frac{1}{\\sqrt{2}} \\approx 0.707\\) → \\(-3\\) dB cutoff\n\\(\\nu = 100\\): \\(\\approx 0.00995\\)\n\\(\\nu = 10\\,000\\): \\(\\approx 0.0001\\)\n\nThis is a normalized lowpass: cutoff frequency = 1 rad/s."
+  },
+  {
+    "objectID": "dsp_81.html#from-prototype-to-practical-analog-lowpass",
+    "href": "dsp_81.html#from-prototype-to-practical-analog-lowpass",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "From Prototype to Practical Analog Lowpass",
+    "text": "From Prototype to Practical Analog Lowpass\n\n\n\nFIG. 8.2\n\n\nFIG. 8.2 Analog lowpass prototype transformation into a lowpass filter.\nTransformation:\n\nWant a lowpass with cutoff \\(\\omega_c\\) rad/s.\nReplace \\(s\\) in prototype with \\(s / \\omega_c\\)."
+  },
+  {
+    "objectID": "dsp_81.html#prototype-analog-highpass",
+    "href": "dsp_81.html#prototype-analog-highpass",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Prototype → Analog Highpass",
+    "text": "Prototype → Analog Highpass\n\n\n\nFIG. 8.3\n\n\nFIG. 8.3 Analog lowpass prototype transformation to the highpass filter.\nUse substitution\n\\[\ns \\;\\to\\; \\frac{\\omega_c}{s}\n\\]\nResultant highpass transfer function:\n\\[\nH_{HP}(s) = H_P\\!\\left(\\frac{\\omega_c}{s}\\right)\n\\]\nInterpretation:\n\nLow frequencies (\\(|s|\\) small) → large argument of \\(H_P\\) → prototype is attenuated.\nHigh frequencies (\\(|s|\\) large) → argument small → prototype passes them.\n\nAnalogy: Frequency “inversion” around \\(\\omega_c\\)."
+  },
+  {
+    "objectID": "dsp_81.html#prototype-analog-bandpass",
+    "href": "dsp_81.html#prototype-analog-bandpass",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Prototype → Analog Bandpass",
+    "text": "Prototype → Analog Bandpass\n\n\n\nFIG. 8.4\n\n\nFIG. 8.4 Analog lowpass prototype transformation to the bandpass filter.\nBandpass parameters:\n\nLower cutoff: \\(\\omega_l\\)\nUpper cutoff: \\(\\omega_h\\)\nCenter (geometric mean): \\(\\omega_0 = \\sqrt{\\omega_l\\omega_h}\\)\nBandwidth: \\(W = \\omega_h - \\omega_l\\)\n\nTransformation:\n\\[\ns \\;\\to\\; \\frac{s^2 + \\omega_0^2}{s W}\n\\]\nTherefore\n\\[\nH_{BP}(s) = H_P\\!\\left( \\frac{s^2 + \\omega_0^2}{sW} \\right)\n\\]\nResulting filter: - Passes a band around \\(\\omega_0\\) with bandwidth \\(W\\). - Order is doubled relative to prototype."
+  },
+  {
+    "objectID": "dsp_81.html#prototype-analog-bandstop-bandreject",
+    "href": "dsp_81.html#prototype-analog-bandstop-bandreject",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Prototype → Analog Bandstop (Bandreject)",
+    "text": "Prototype → Analog Bandstop (Bandreject)\n\n\n\nFIG. 8.5\n\n\nFIG. 8.5 Analog lowpass prototype transformation to a bandstop filter.\nTransformation:\n\\[\ns \\;\\to\\; \\frac{sW}{s^2 + \\omega_0^2}\n\\]\nSo\n\\[\nH_{BS}(s) = H_P\\!\\left( \\frac{sW}{s^2 + \\omega_0^2} \\right)\n\\]\nAgain: band edges defined by \\(\\omega_l, \\omega_h\\), with center and bandwidth as before."
+  },
+  {
+    "objectID": "dsp_81.html#summary-analog-lowpass-prototype-transformations",
+    "href": "dsp_81.html#summary-analog-lowpass-prototype-transformations",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Summary: Analog Lowpass Prototype Transformations",
+    "text": "Summary: Analog Lowpass Prototype Transformations\nTable 8.1\n\n\n\n\n\n\n\nFilter Type\nPrototype Transformation (substitute into \\(H_P(s)\\))\n\n\n\n\nLowpass\n\\(s \\to \\dfrac{s}{\\omega_c}\\), where \\(\\omega_c\\) is the cutoff frequency\n\n\nHighpass\n\\(s \\to \\dfrac{\\omega_c}{s}\\), where \\(\\omega_c\\) is the cutoff frequency\n\n\nBandpass\n\\(s \\to \\dfrac{s^2 + \\omega_0^2}{sW}\\), where \\(\\omega_0 = \\sqrt{\\omega_l \\omega_h}\\), \\(W = \\omega_h - \\omega_l\\)\n\n\nBandstop\n\\(s \\to \\dfrac{sW}{s^2 + \\omega_0^2}\\), where \\(\\omega_0 = \\sqrt{\\omega_l \\omega_h}\\), \\(W = \\omega_h - \\omega_l\\)\n\n\n\n\n\n\n\n\n\nTip\n\n\nDesign process:\n\nPick prototype \\(H_P(s)\\) (Butterworth/Chebyshev).\nApply the appropriate substitution from the table.\nSimplify to get \\(H(s)\\) (analog).\nConvert to digital via BLT (later)."
+  },
+  {
+    "objectID": "dsp_81.html#example-8.2-from-lowpass-prototype-to-hp-and-bp",
+    "href": "dsp_81.html#example-8.2-from-lowpass-prototype-to-hp-and-bp",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.2 – From Lowpass Prototype to HP and BP",
+    "text": "Example 8.2 – From Lowpass Prototype to HP and BP\nPrototype:\n\\[\nH_P(s) = \\frac{1}{s+1}\n\\]\nDesign:\n\nHighpass with cutoff \\(\\omega_c = 40\\) rad/s.\nBandpass with center frequency \\(\\omega_0 = 10\\) rad/s and bandwidth \\(W = 20\\) rad/s."
+  },
+  {
+    "objectID": "dsp_81.html#example-8.2-highpass-design",
+    "href": "dsp_81.html#example-8.2-highpass-design",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.2 – Highpass Design",
+    "text": "Example 8.2 – Highpass Design\nUse transformation \\(s \\to \\omega_c/s\\):\n\\[\nH_{HP}(s) = H_P\\!\\left(\\frac{40}{s}\\right)\n= \\frac{1}{\\frac{40}{s} + 1}\n= \\frac{1}{\\frac{40 + s}{s}}\n= \\frac{s}{s+40}\n\\]\nThis is a first‑order analog highpass filter with:\n\nDC gain ≈ 0\nGain approaches 1 at high frequencies\n−3 dB at \\(\\omega = 40\\) rad/s"
+  },
+  {
+    "objectID": "dsp_81.html#example-8.2-bandpass-design",
+    "href": "dsp_81.html#example-8.2-bandpass-design",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.2 – Bandpass Design",
+    "text": "Example 8.2 – Bandpass Design\nGiven \\(\\omega_0 = 10\\) rad/s, \\(W=20\\) rad/s.\nLowpass → bandpass substitution:\n\\[\ns \\to \\frac{s^2 + \\omega_0^2}{sW} = \\frac{s^2 + 100}{20s}\n\\]\nThus\n\\[\nH_{BP}(s) = H_P\\!\\left( \\frac{s^2 + 100}{20s} \\right)\n           = \\frac{1}{\\frac{s^2 + 100}{20s} + 1}\n           = \\frac{1}{\\frac{s^2 + 100 + 20s}{20s}}\n           = \\frac{20s}{s^2 + 20s + 100}\n\\]\nThis is a 2nd‑order analog bandpass filter."
+  },
+  {
+    "objectID": "dsp_81.html#example-8.2-matlab-confirmation",
+    "href": "dsp_81.html#example-8.2-matlab-confirmation",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.2 – MATLAB Confirmation",
+    "text": "Example 8.2 – MATLAB Confirmation\nProgram 8.1 (corrected)\nW = 0:1:200;            % Analog frequency points (rad/s)\n\n% Highpass: H_HP(s) = s / (s + 40)\nB_HP = [1 0];           % s^1 + 0\nA_HP = [1 40];          % s + 40\nHa = freqs(B_HP, A_HP, W);\n\n% Bandpass: H_BP(s) = 20s / (s^2 + 20s + 100)\nB_BP = [20 0];          % 20s + 0\nA_BP = [1 20 100];      % s^2 + 20s + 100\nHb = freqs(B_BP, A_BP, W);\n\nsubplot(2,1,1);\nplot(W, abs(Ha), 'k'); grid on;\nxlabel('a) Frequency (rad/s)');\nylabel('Magnitude');\n\nsubplot(2,1,2);\nplot(W, abs(Hb), 'k'); grid on;\nxlabel('b) Frequency (rad/s)');\nylabel('Magnitude');\n\n\n\nFIG. 8.6\n\n\nFIG. 8.6 Magnitude responses for the analog highpass and bandpass filters in Example 8.2.\n\nPoint out that freqs works with analog filters: numerator and denominator polynomials in s, not z. Highlight the increase in filter order from 1 (prototype) to 2 (bandpass)."
+  },
+  {
+    "objectID": "dsp_81.html#bilinear-transformation-from-integration",
+    "href": "dsp_81.html#bilinear-transformation-from-integration",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8.2.2 Bilinear Transformation – From Integration",
+    "text": "8.2.2 Bilinear Transformation – From Integration\nWe want to map analog filters \\(H(s)\\) to digital filters \\(H(z)\\) in a way that:\n\nMaps the entire jω axis onto the unit circle.\nPreserves stability (left half‑plane → inside unit circle).\nIs one‑to‑one (no aliasing of frequencies).\n\nDerivation uses the analogy of continuous‑time integration vs. trapezoidal numerical integration."
+  },
+  {
+    "objectID": "dsp_81.html#analog-integrator",
+    "href": "dsp_81.html#analog-integrator",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Analog Integrator",
+    "text": "Analog Integrator\nAnalog integrator system:\n\\[\ny(t) = \\int_0^t x(\\tau)\\, d\\tau\n\\]\nApply Laplace transform:\n\\[\nY(s) = \\frac{1}{s} X(s) \\quad \\Rightarrow \\quad G(s) = \\frac{Y(s)}{X(s)} = \\frac{1}{s}\n\\]\nSo integration corresponds to multiplication by \\(1/s\\) in the s‑domain."
+  },
+  {
+    "objectID": "dsp_81.html#digital-approximation-trapezoidal-integration",
+    "href": "dsp_81.html#digital-approximation-trapezoidal-integration",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Digital Approximation: Trapezoidal Integration",
+    "text": "Digital Approximation: Trapezoidal Integration\nNumerical approximation (Fig. 8.7):\n\n\n\nFIG. 8.7\n\n\nFIG. 8.7 Digital integration method to calculate the area under the curve.\nDifference equation (trapezoidal rule):\n\\[\ny(n) = y(n-1) + \\frac{T}{2}\\big[x(n) + x(n-1)\\big]\n\\]\nApply z‑transform (zero initial conditions):\n\\[\nY(z) = z^{-1} Y(z) + \\frac{T}{2}\\left[X(z) + z^{-1} X(z)\\right]\n\\]\nSolve for \\(Y(z)/X(z)\\):\n\\[\nH(z) = \\frac{Y(z)}{X(z)} = \\frac{T}{2} \\frac{1 + z^{-1}}{1 - z^{-1}}\n\\]"
+  },
+  {
+    "objectID": "dsp_81.html#relating-1s-to-digital-integrator",
+    "href": "dsp_81.html#relating-1s-to-digital-integrator",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Relating \\(1/s\\) to Digital Integrator",
+    "text": "Relating \\(1/s\\) to Digital Integrator\nWe know:\n\nAnalog integrator: \\(G(s) = 1/s\\)\nDigital trapezoidal integrator: \\(H(z) = \\dfrac{T}{2} \\dfrac{1+z^{-1}}{1 - z^{-1}}\\)\n\nSo we identify:\n\\[\n\\frac{1}{s} \\;\\approx\\; \\frac{T}{2} \\frac{1 + z^{-1}}{1 - z^{-1}}\n\\]\nThus\n\\[\ns \\;\\approx\\; \\frac{2}{T} \\frac{1 - z^{-1}}{1 + z^{-1}}\n= \\frac{2z - 2}{T(z + 1)} = \\frac{2}{T} \\frac{z - 1}{z + 1}\n\\]\nThis is the bilinear transform (up to exact algebra):\n\\[\ns = \\frac{2}{T} \\frac{z - 1}{z + 1}\n\\]\nEquivalently:\n\\[\nz = \\frac{1 + sT/2}{1 - sT/2}\n\\]\n\n\n\n\n\n\nNote\n\n\nThe bilinear transform is thus equivalent to using the trapezoidal rule to discretize an analog system."
+  },
+  {
+    "objectID": "dsp_81.html#blt-mapping-properties",
+    "href": "dsp_81.html#blt-mapping-properties",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "BLT Mapping Properties",
+    "text": "BLT Mapping Properties\nFrom\n\\[\nz = \\frac{1 + sT/2}{1 - sT/2}\n\\]\nwe can deduce:\n\nLeft half‑plane (\\(\\Re\\{s\\} &lt; 0\\)) → inside the unit circle (\\(|z|&lt;1\\)).\nRight half‑plane (\\(\\Re\\{s\\} &gt; 0\\)) → outside the unit circle (\\(|z|&gt;1\\)).\nImaginary axis (\\(s = j\\omega\\)) → unit circle (\\(z = e^{j\\omega_d T}\\)).\n\n\n\n\nFIG. 8.8\n\n\nFIG. 8.8 Mapping between the s-plane and the z-plane by the BLT.\nConclusion: Stable analog filters map to stable digital filters."
+  },
+  {
+    "objectID": "dsp_81.html#example-8.3-mapping-specific-spoints-to-zplane",
+    "href": "dsp_81.html#example-8.3-mapping-specific-spoints-to-zplane",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.3 – Mapping Specific s‑Points to z‑Plane",
+    "text": "Example 8.3 – Mapping Specific s‑Points to z‑Plane\nTake \\(T = 2\\) s. Then\n\\[\nz = \\frac{1 + s}{1 - s}\n\\]\nGiven\n\n\\(s_1 = -1 + j\\) (left half‑plane)\n\\(s_2 = 1 - j\\) (right half‑plane)\n\\(s_3 = j\\) (positive imaginary axis)\n\\(s_4 = -j\\) (negative imaginary axis)\n\nWe compute\n\n\\(z_1 = \\dfrac{1 + (-1+j)}{1 - (-1+j)}\n= \\dfrac{j}{2-j} \\approx 0.4472 \\angle 116.57^\\circ\\)\n\n\\(|z_1| = 0.4472 &lt; 1\\) → inside unit circle.\n\n\\(z_2 = \\dfrac{1+(1-j)}{1-(1-j)}\n= \\dfrac{2-j}{j} \\approx 2.2361 \\angle -116.57^\\circ\\)\n\n\\(|z_2| = 2.2361 &gt; 1\\) → outside unit circle.\n\n\\(z_3 = \\dfrac{1+j}{1-j} = 1 \\angle 90^\\circ\\) → unit circle (upper half).\n\\(z_4 = \\dfrac{1-j}{1+j} = 1 \\angle -90^\\circ\\) → unit circle (lower half).\n\n\nWalk through at least one of the computations on the board for practice with complex division in polar form. Emphasize how the magnitude indicates stability (inside vs. outside unit circle)."
+  },
+  {
+    "objectID": "dsp_81.html#example-8.4-analog-to-digital-via-blt",
+    "href": "dsp_81.html#example-8.4-analog-to-digital-via-blt",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.4 – Analog to Digital via BLT",
+    "text": "Example 8.4 – Analog to Digital via BLT\nAnalog lowpass filter:\n\\[\nH(s) = \\frac{10}{s + 10}\n\\]\nSampling period: \\(T = 0.01\\) s.\nDesign digital filter \\(H(z)\\) and its difference equation."
+  },
+  {
+    "objectID": "dsp_81.html#example-8.4-applying-blt",
+    "href": "dsp_81.html#example-8.4-applying-blt",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.4 – Applying BLT",
+    "text": "Example 8.4 – Applying BLT\nBLT substitution:\n\\[\ns = \\frac{2}{T} \\frac{z - 1}{z + 1} = \\frac{200(z - 1)}{z + 1}\n\\]\nSo\n\\[\nH(z) = H(s)\\Big|_{s=\\frac{200(z - 1)}{z + 1}}\n     = \\frac{10}{\\dfrac{200(z - 1)}{z + 1} + 10}\n\\]\nSimplify:\n\\[\nH(z) = \\frac{10}{\\frac{200(z - 1) + 10(z + 1)}{z + 1}}\n     = \\frac{10(z + 1)}{200(z - 1) + 10(z + 1)}\n\\]\nCompute denominator:\n\\[\n200(z - 1) + 10(z + 1) = 210z - 190\n\\]\nThus\n\\[\nH(z) = \\frac{10(z + 1)}{210z - 190}\n     = \\frac{0.05(z + 1)}{1.05 z - 0.95}\n\\]\nRewrite in standard \\(z^{-1}\\) form:\n\\[\nH(z) = \\frac{0.05z + 0.05}{1.05 z - 0.95}\n     = \\frac{(0.05z + 0.05)/(1.05z)}{(1.05z - 0.95)/(1.05z)}\n     = \\frac{0.0476 + 0.0476 z^{-1}}{1 - 0.9048 z^{-1}}\n\\]\nDifference equation:\n\\[\ny(n) = 0.0476 x(n) + 0.0476 x(n-1) + 0.9048 y(n-1)\n\\]"
+  },
+  {
+    "objectID": "dsp_81.html#frequency-mapping-and-warping",
+    "href": "dsp_81.html#frequency-mapping-and-warping",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Frequency Mapping and Warping",
+    "text": "Frequency Mapping and Warping\nWe want relationship between analog frequency \\(\\omega_a\\) and digital frequency \\(\\omega_d\\).\nOn the imaginary axis:\n\n\\(s = j\\omega_a\\)\n\\(z = e^{j\\omega_d T}\\)\n\nPlug into BLT:\n\\[\nj\\omega_a = \\frac{2}{T} \\frac{e^{j\\omega_d T} - 1}{e^{j\\omega_d T} + 1}\n\\]\nAfter simplification, we obtain:\n\\[\n\\omega_a = \\frac{2}{T} \\tan\\!\\left(\\frac{\\omega_d T}{2}\\right)\n\\]\nInverse relation:\n\\[\n\\omega_d = \\frac{2}{T} \\tan^{-1}\\!\\left(\\frac{\\omega_a T}{2}\\right)\n\\]\nThis mapping is nonlinear → frequency warping.\n\n\n\nFIG. 8.9\n\n\nFIG. 8.9 Frequency mapping from the analog domain to the digital domain."
+  },
+  {
+    "objectID": "dsp_81.html#frequency-warping-visualization",
+    "href": "dsp_81.html#frequency-warping-visualization",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Frequency Warping Visualization",
+    "text": "Frequency Warping Visualization\n\n\n\nFIG. 8.10\n\n\nFIG. 8.10 Frequency warping from BLT.\nObservations:\n\nFor \\(0 \\leq \\omega_d \\leq 0.25\\omega_s\\), mapping is nearly linear:\n\n\\(0 \\leq \\omega_a \\leq 0.32\\omega_s\\)\n\nFor higher frequencies, mapping becomes nonlinear.\nThe entire infinite analog frequency range maps to finite digital range \\([0, \\omega_s/2]\\).\n\nImplication: - We must prewarp digital frequency specifications before designing the analog prototype."
+  },
+  {
+    "objectID": "dsp_81.html#example-8.5-warping-effect",
+    "href": "dsp_81.html#example-8.5-warping-effect",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.5 – Warping Effect",
+    "text": "Example 8.5 – Warping Effect\nGiven sampling period \\(T = 0.01\\) s.\nAnalog frequencies:\n\n\\(\\omega_a = 10\\) rad/s\n\\(\\omega_a = \\omega_s/4 = 50\\pi \\approx 157\\) rad/s\n\\(\\omega_a = \\omega_s/2 = 100\\pi \\approx 314\\) rad/s\n\nDigital frequency via\n\\[\n\\omega_d = \\frac{2}{T} \\tan^{-1}\\!\\left(\\frac{\\omega_a T}{2}\\right)\n\\]\nCompute:\n\n\\(\\omega_a = 10\\):\n\n\\[\n\\omega_d \\approx \\frac{2}{0.01} \\tan^{-1}\\!\\left(\\frac{10 \\cdot 0.01}{2}\\right)\n\\approx 200 \\tan^{-1}(0.05) \\approx 9.99 \\text{ rad/s}\n\\]\n→ almost no error.\n\n\\(\\omega_a \\approx 157\\):\n\n\\[\n\\omega_d \\approx 133.11 \\text{ rad/s}\n\\]\n→ noticeable error.\n\n\\(\\omega_a \\approx 314\\):\n\n\\[\n\\omega_d \\approx 252.5 \\text{ rad/s}\n\\]\n→ larger error (near Nyquist).\nConclusion: warping is small at low frequencies, significant near Nyquist."
+  },
+  {
+    "objectID": "dsp_81.html#correcting-warping-prewarping",
+    "href": "dsp_81.html#correcting-warping-prewarping",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Correcting Warping: Prewarping",
+    "text": "Correcting Warping: Prewarping\n\n\n\nFIG. 8.11\n\n\nFIG. 8.11 Graphical representation of IIR filter design using the BLT.\nDesign strategy:\n\nStart from desired digital cutoff/band edges \\(\\omega_d\\).\nConvert to equivalent analog prewarped frequencies using\n\\[\n\\omega_a = \\frac{2}{T} \\tan\\!\\left(\\frac{\\omega_d T}{2}\\right)\n\\]\nDesign analog filter to meet prewarped analog specs.\nApply BLT to get digital filter.\n\nResult: The digital filter exactly meets the original digital cutoff frequencies, compensating for warping."
+  },
+  {
+    "objectID": "dsp_81.html#blt-design-procedure-summary",
+    "href": "dsp_81.html#blt-design-procedure-summary",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8.2.3 BLT Design Procedure – Summary",
+    "text": "8.2.3 BLT Design Procedure – Summary\nStep‑by‑step BLT‑based IIR design:\n\nPrewarp digital specs\n\nFor lowpass / highpass:\n\\[\n\\omega_a = \\frac{2}{T} \\tan\\!\\left(\\frac{\\omega_d T}{2}\\right)\n\\]\nFor bandpass / bandstop:\n\\[\n\\omega_{al} = \\frac{2}{T} \\tan\\!\\left(\\frac{\\omega_l T}{2}\\right), \\quad\n\\omega_{ah} = \\frac{2}{T} \\tan\\!\\left(\\frac{\\omega_h T}{2}\\right)\n\\]\nThen\n\\[\n\\omega_0 = \\sqrt{\\omega_{al} \\omega_{ah}}, \\quad W = \\omega_{ah} - \\omega_{al}\n\\]\n\nAnalog prototype transformation\nGiven a lowpass prototype \\(H_P(s)\\):\n\nLowpass:\n\\[\nH(s) = H_P\\!\\left(\\frac{s}{\\omega_a}\\right)\n\\]\nHighpass:\n\\[\nH(s) = H_P\\!\\left(\\frac{\\omega_a}{s}\\right)\n\\]\nBandpass:\n\\[\nH(s) = H_P\\!\\left(\\frac{s^2+\\omega_0^2}{sW}\\right)\n\\]\nBandstop:\n\\[\nH(s) = H_P\\!\\left(\\frac{sW}{s^2+\\omega_0^2}\\right)\n\\]\n\nApply BLT\n\\[\nH(z) = H(s)\\Big|_{s = \\frac{2}{T} \\frac{z-1}{z+1}}\n\\]\nSimplify to standard \\(z^{-1}\\) form to obtain coefficients \\(b_k\\), \\(a_k\\)."
+  },
+  {
+    "objectID": "dsp_81.html#matlab-support-for-blt-design",
+    "href": "dsp_81.html#matlab-support-for-blt-design",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "MATLAB Support for BLT Design",
+    "text": "MATLAB Support for BLT Design\nTable 8.2 – Key MATLAB Functions\n\nAnalog prototype transformations\n\nLowpass to lowpass:\n[B, A] = lp2lp(Bp, Ap, wa)\nLowpass to highpass:\n[B, A] = lp2hp(Bp, Ap, wa)\nLowpass to bandpass:\n[B, A] = lp2bp(Bp, Ap, w0, W)\nLowpass to bandstop:\n[B, A] = lp2bs(Bp, Ap, w0, W)\n\nBilinear transformation\n[b, a] = bilinear(B, A, fs)\nDigital frequency response\n[H, f] = freqz(b, a, 512, fs)\n\nWhere:\n\nBp, Ap – lowpass prototype numerator/denominator.\nwa, w0, W – analog cutoff/center/bandwidth in rad/s.\nB, A – analog filter coefficients after transformation.\nb, a – digital filter coefficients after BLT.\nfs – sampling rate in samples/s."
+  },
+  {
+    "objectID": "dsp_81.html#example-8.6-design-a-digital-lowpass-via-blt",
+    "href": "dsp_81.html#example-8.6-design-a-digital-lowpass-via-blt",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.6 – Design a Digital Lowpass via BLT",
+    "text": "Example 8.6 – Design a Digital Lowpass via BLT\nPrototype:\n\\[\nH_P(s) = \\frac{1}{s + 1}\n\\]\nDesign goal:\n\nDigital lowpass with cutoff \\(f_c = 15\\) Hz.\nSampling rate \\(f_s = 90\\) Hz.\n\nTasks:\n\nDerive \\(H(z)\\) via BLT using prewarping.\nPlot magnitude and phase using MATLAB."
+  },
+  {
+    "objectID": "dsp_81.html#example-8.6-step-1-prewarp",
+    "href": "dsp_81.html#example-8.6-step-1-prewarp",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.6 – Step 1: Prewarp",
+    "text": "Example 8.6 – Step 1: Prewarp\nDigital cutoff frequency:\n\\[\n\\omega_d = 2\\pi f_c = 2\\pi(15) = 30\\pi \\text{ rad/s}\n\\]\nSampling period:\n\\[\nT = \\frac{1}{f_s} = \\frac{1}{90} \\text{ s}\n\\]\nPrewarped analog cutoff:\n\\[\n\\omega_a = \\frac{2}{T} \\tan\\!\\left(\\frac{\\omega_d T}{2}\\right)\n= \\frac{2}{1/90} \\tan\\!\\left(\\frac{30\\pi / 90}{2}\\right)\n\\]\nCompute:\n\n\\(\\frac{30\\pi}{90} = \\frac{\\pi}{3}\\)\n\\(\\frac{\\pi}{3}/2 = \\frac{\\pi}{6} = 30^\\circ\\)\n\nThus:\n\\[\n\\omega_a = 180 \\tan(30^\\circ) = 180 \\cdot \\frac{1}{\\sqrt{3}} \\approx 103.92 \\text{ rad/s}\n\\]"
+  },
+  {
+    "objectID": "dsp_81.html#example-8.6-step-2-analog-lp-from-prototype",
+    "href": "dsp_81.html#example-8.6-step-2-analog-lp-from-prototype",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.6 – Step 2: Analog LP from Prototype",
+    "text": "Example 8.6 – Step 2: Analog LP from Prototype\nLowpass to lowpass transformation:\n\\[\nH(s) = H_P\\!\\left(\\frac{s}{\\omega_a}\\right)\n= \\frac{1}{\\frac{s}{\\omega_a} + 1}\n= \\frac{\\omega_a}{s + \\omega_a}\n\\]\nSo\n\\[\nH(s) = \\frac{103.92}{s + 103.92}\n\\]\nThis is the analog lowpass with cutoff at \\(\\omega_a\\) that will yield the desired digital cutoff after BLT."
+  },
+  {
+    "objectID": "dsp_81.html#example-8.6-step-3-apply-blt",
+    "href": "dsp_81.html#example-8.6-step-3-apply-blt",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.6 – Step 3: Apply BLT",
+    "text": "Example 8.6 – Step 3: Apply BLT\nBLT:\n\\[\ns = \\frac{2}{T} \\frac{z - 1}{z + 1} = 180 \\frac{z - 1}{z + 1}\n\\]\nSubstitute into \\(H(s)\\):\n\\[\nH(z) = \\frac{103.92}{180\\frac{z - 1}{z + 1} + 103.92}\n= \\frac{103.92}{\\frac{180(z - 1) + 103.92(z + 1)}{z + 1}}\n= \\frac{103.92 (z + 1)}{180(z - 1) + 103.92(z + 1)}\n\\]\nTo simplify, divide numerator and denominator by 180:\n\\[\nH(z) = \\frac{0.5773 (z + 1)}{\\left(\\frac{z - 1}{z + 1} + 0.5773\\right)(z + 1)}\n= \\frac{0.5773 (z + 1)}{(z - 1) + 0.5773(z + 1)}\n\\]\nCompute denominator:\n\\[\n(z - 1) + 0.5773(z + 1) = 1.5773 z - 0.4227\n\\]\nSo\n\\[\nH(z) = \\frac{0.5773 z + 0.5773}{1.5773 z - 0.4227}\n\\]\nDivide numerator and denominator by \\(1.5773 z\\):\n\\[\nH(z) = \\frac{(0.5773 z + 0.5773)/(1.5773 z)}{(1.5773 z - 0.4227)/(1.5773 z)}\n= \\frac{0.3660 + 0.3660 z^{-1}}{1 - 0.2679 z^{-1}}\n\\]\nSo the digital filter is:\n\\[\nH(z) = \\frac{0.3660 + 0.3660 z^{-1}}{1 - 0.2679 z^{-1}}\n\\]\nDifference equation:\n\\[\ny(n) = 0.3660 x(n) + 0.3660 x(n-1) + 0.2679 y(n-1)\n\\]"
+  },
+  {
+    "objectID": "dsp_81.html#example-8.6-matlab-implementation",
+    "href": "dsp_81.html#example-8.6-matlab-implementation",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.6 – MATLAB Implementation",
+    "text": "Example 8.6 – MATLAB Implementation\nProgram 8.2 (cleaned‑up)\n% Example 8.6: BLT-based lowpass design\nfs = 90;                          % Sampling rate (Hz)\n\n% 1) Prototype: H_P(s) = 1 / (s + 1)\nBp = 1;                           % Numerator of prototype\nAp = [1 1];                       % Denominator of prototype\n\n% 2) Prewarped analog cutoff\nfc = 15;\nwd = 2*pi*fc;\nT = 1/fs;\nwa = (2/T) * tan(wd*T/2);         % ~103.92 rad/s\n\n% 3) Lowpass prototype -&gt; analog lowpass\n[B, A] = lp2lp(Bp, Ap, wa);       % Should give B=[wa], A=[1 wa]\n\n% 4) Bilinear transform -&gt; digital filter\n[b, a] = bilinear(B, A, fs)\n\n% 5) Frequency response\n[hz, f] = freqz(b, a, 512, fs);\nphi = 180*unwrap(angle(hz))/pi;\n\nsubplot(2,1,1);\nplot(f, abs(hz)); grid on;\naxis([0 fs/2 0 1.2]);\nxlabel('Frequency (Hz)');\nylabel('Magnitude');\n\nsubplot(2,1,2);\nplot(f, phi); grid on;\naxis([0 fs/2 -200 0]);\nxlabel('Frequency (Hz)');\nylabel('Phase (degrees)');\n\n\n\nFIG. 8.12\n\n\nFIG. 8.12 Frequency responses of the designed digital filter for Example 8.6."
+  },
+  {
+    "objectID": "dsp_81.html#summary-key-points",
+    "href": "dsp_81.html#summary-key-points",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Summary / Key Points",
+    "text": "Summary / Key Points\n\nIIR filters are recursive digital filters with infinite‑length impulse responses; their transfer functions are rational (ratio of polynomials).\nStability of an IIR filter requires all poles to lie strictly inside the unit circle in the z‑plane.\nUsing analog lowpass prototypes, we can build analog lowpass, highpass, bandpass, and bandstop filters via standard s‑domain substitutions.\nThe bilinear transform\n\\[\ns = \\frac{2}{T} \\frac{z - 1}{z + 1}\n\\]\nmaps the analog s‑plane to the digital z‑plane in a way that preserves stability and maps the entire \\(j\\omega\\) axis to the unit circle.\nBLT introduces frequency warping, described by\n\\[\n\\omega_a = \\frac{2}{T} \\tan\\!\\left(\\frac{\\omega_d T}{2}\\right)\n\\]\nso cutoffs must be prewarped from digital to analog before design.\nThe BLT design procedure:\n\nPrewarp digital frequencies → analog.\nUse prototype transformations to get analog \\(H(s)\\).\nApply BLT to obtain digital \\(H(z)\\).\nVerify responses (e.g., using MATLAB freqz)."
+  },
+  {
+    "objectID": "dsp_81.html#formula-summary",
+    "href": "dsp_81.html#formula-summary",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Formula Summary",
+    "text": "Formula Summary\nIIR difference equation:\n\\[\ny(n) = \\sum_{k=0}^M b_k\\,x(n-k) - \\sum_{k=1}^N a_k\\,y(n-k)\n\\]\nIIR transfer function:\n\\[\nH(z) = \\frac{Y(z)}{X(z)}\n     = \\frac{b_0 + b_1 z^{-1} + \\dots + b_M z^{-M}}{1 + a_1 z^{-1} + \\dots + a_N z^{-N}}\n\\]\nPrototype → analog transformations:\n\nLowpass:\n\\[\nH_{LP}(s) = H_P\\!\\left(\\frac{s}{\\omega_c}\\right)\n\\]\nHighpass:\n\\[\nH_{HP}(s) = H_P\\!\\left(\\frac{\\omega_c}{s}\\right)\n\\]\nBandpass:\n\\[\nH_{BP}(s) = H_P\\!\\left(\\frac{s^2 + \\omega_0^2}{sW}\\right),\\;\n\\omega_0 = \\sqrt{\\omega_l \\omega_h},\\;\nW = \\omega_h - \\omega_l\n\\]\nBandstop:\n\\[\nH_{BS}(s) = H_P\\!\\left(\\frac{sW}{s^2 + \\omega_0^2}\\right)\n\\]\n\nBilinear transform:\n\\[\ns = \\frac{2}{T} \\frac{z - 1}{z + 1},\\qquad\nz = \\frac{1 + sT/2}{1 - sT/2}\n\\]\nFrequency mapping (warping):\n\\[\n\\omega_a = \\frac{2}{T} \\tan\\!\\left(\\frac{\\omega_d T}{2}\\right),\\qquad\n\\omega_d = \\frac{2}{T} \\tan^{-1}\\!\\left(\\frac{\\omega_a T}{2}\\right)\n\\]\nPrewarping for band edges:\n\\[\n\\omega_{al} = \\frac{2}{T} \\tan\\!\\left(\\frac{\\omega_l T}{2}\\right),\\quad\n\\omega_{ah} = \\frac{2}{T} \\tan\\!\\left(\\frac{\\omega_h T}{2}\\right)\n\\]\nwith\n\\[\n\\omega_0 = \\sqrt{\\omega_{al}\\omega_{ah}},\\quad\nW = \\omega_{ah} - \\omega_{al}\n\\]"
+  },
+  {
+    "objectID": "dsp_81.html#infinite-impulse-response-filter-design",
+    "href": "dsp_81.html#infinite-impulse-response-filter-design",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8 Infinite Impulse Response Filter Design",
+    "text": "8 Infinite Impulse Response Filter Design\nInteractive Deck"
+  },
+  {
+    "objectID": "dsp_81.html#learning-with-this-interactive-deck",
+    "href": "dsp_81.html#learning-with-this-interactive-deck",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Learning with this Interactive Deck",
+    "text": "Learning with this Interactive Deck\nIn this deck you will:\n\nExperiment with simple IIR filters numerically.\nSee how analog–digital mapping behaves via the bilinear transform.\nInteractively explore frequency warping and prewarping.\nUse Pyodide (Python in the browser), Observable JS, and Plotly to connect formulas to behavior.\n\nAll code runs in your browser – feel free to tweak and rerun."
+  },
+  {
+    "objectID": "dsp_81.html#handson-simulating-a-simple-iir-filter",
+    "href": "dsp_81.html#handson-simulating-a-simple-iir-filter",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "1. Hands‑On: Simulating a Simple IIR Filter",
+    "text": "1. Hands‑On: Simulating a Simple IIR Filter\nRecall Example 8.1:\n\\[\ny(n) = 0.2x(n) + 0.4x(n-1) + 0.5y(n-1)\n\\]\nThis block:\n\nImplements the IIR difference equation.\nComputes the impulse response for a few samples.\nPrints the results so you can compare with the book.\n\nTry: change coefficients and see how the response changes.\n\n\n\n\n\n\n\nEncourage students to edit b0, b1, and a1. For example, change a1 to 0.9 and observe that the impulse response decays more slowly. Ask: what happens if |a1| &gt;= 1?"
+  },
+  {
+    "objectID": "dsp_81.html#visualizing-iir-feedback-behavior",
+    "href": "dsp_81.html#visualizing-iir-feedback-behavior",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "2. Visualizing IIR Feedback Behavior",
+    "text": "2. Visualizing IIR Feedback Behavior\nLet’s visualize the effect of recursion for different feedback coefficients \\(a_1\\).\nUse the slider to choose \\(a_1\\) and compare impulse responses.\n\nviewof a1_slider = Inputs.range([-1, 0.99], {step: 0.01, label: \"Feedback coefficient a1\"})\nviewof N_slider = Inputs.range([5, 50], {step: 1, label: \"Number of samples N\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDiscuss: - For |a1| &lt; 1 → decaying response → stable. - For a1 close to 1 → slow decay. - For a1 near −1 → oscillatory response. Challenge: ask students to try a1 close to 1 and near −1 and interpret."
+  },
+  {
+    "objectID": "dsp_81.html#exploring-analog-lowpass-prototype-scaling",
+    "href": "dsp_81.html#exploring-analog-lowpass-prototype-scaling",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "3. Exploring Analog Lowpass Prototype Scaling",
+    "text": "3. Exploring Analog Lowpass Prototype Scaling\nPrototype:\n\\[\nH_P(s) = \\frac{1}{s + 1}\n\\]\nPractical analog lowpass with cutoff \\(\\omega_c\\):\n\\[\nH(s) = \\frac{\\omega_c}{s + \\omega_c}\n\\]\nExplore how changing \\(\\omega_c\\) affects the magnitude response at a few frequencies.\n\nviewof wc = Inputs.range([1, 200], {step: 1, label: \"Analog cutoff ω_c (rad/s)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\nAsk: at which ω value does the curve cross −3 dB? Students should see it tracks the slider’s ω_c. This reinforces the “frequency scaling” idea without changing the shape."
+  },
+  {
+    "objectID": "dsp_81.html#bilinear-transform-s-z-mapping-playground",
+    "href": "dsp_81.html#bilinear-transform-s-z-mapping-playground",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "4. Bilinear Transform: s ↔︎ z Mapping Playground",
+    "text": "4. Bilinear Transform: s ↔︎ z Mapping Playground\nBLT:\n\\[\ns = \\frac{2}{T} \\frac{z - 1}{z + 1}, \\quad\nz = \\frac{1 + sT/2}{1 - sT/2}\n\\]\nUse this block to:\n\nEnter a complex \\(s = \\sigma + j\\omega\\).\nSee the mapped \\(z\\) and its magnitude / angle.\nCheck if it lands inside / on / outside the unit circle.\n\n\nviewof sigma = Inputs.range([-10, 10], {step: 0.5, label: \"Real part σ of s\"})\nviewof omega = Inputs.range([-10, 10], {step: 0.5, label: \"Imag part ω of s (rad/s)\"})\nviewof T_bt = Inputs.range([0.001, 2], {step: 0.001, label: \"Sampling period T (s)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHave students test: - σ &lt; 0: should map inside unit circle. - σ &gt; 0: outside. - σ = 0 (pure imaginary s): on unit circle. Encourage them to change T and see how mapping changes in angle but not in stability."
+  },
+  {
+    "objectID": "dsp_81.html#frequency-warping-analog-vs-digital",
+    "href": "dsp_81.html#frequency-warping-analog-vs-digital",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "5. Frequency Warping – Analog vs Digital",
+    "text": "5. Frequency Warping – Analog vs Digital\nWarping relation:\n\\[\n\\omega_a = \\frac{2}{T} \\tan\\!\\left(\\frac{\\omega_d T}{2}\\right)\n\\]\nWe’ll:\n\nUse a slider for digital frequency \\(\\omega_d\\).\nPlot the mapping function \\(\\omega_a(\\omega_d)\\) over the whole band.\nMark the chosen \\(\\omega_d\\) and its corresponding \\(\\omega_a\\).\n\n\nviewof wd = Inputs.range([0, Math.PI], {step: 0.01, label: \"Digital frequency ω_d (rad/sample)\"})\nviewof T_warp = Inputs.range([0.005, 0.1], {step: 0.005, label: \"Sampling period T (s)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAsk students: - Where is the curve almost straight? (Near ω_d = 0.) - Where does it “blow up”? (Near ω_d = π, i.e., Nyquist.) Explain that high analog frequencies compress into the last part of the digital band."
+  },
+  {
+    "objectID": "dsp_81.html#prewarping-practice-lowpass-design",
+    "href": "dsp_81.html#prewarping-practice-lowpass-design",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "6. Prewarping Practice – Lowpass Design",
+    "text": "6. Prewarping Practice – Lowpass Design\nWe’ll simulate the prewarping step for a digital lowpass cutoff specification.\nGiven\n\nTarget digital cutoff: frequency in Hz.\nSampling frequency: \\(f_s\\).\n\nCompute:\n\n\\(\\omega_d = 2\\pi f_c\\).\n\\(T = 1/f_s\\).\nPrewarped \\(\\omega_a\\):\n\\[\n\\omega_a = \\frac{2}{T} \\tan\\!\\left(\\frac{\\omega_d T}{2}\\right)\n\\]\n\nInteractively compute and visualize.\n\nviewof fc_lp = Inputs.range([1, 40], {step: 1, label: \"Digital cutoff f_c (Hz)\"})\nviewof fs_lp = Inputs.range([50, 200], {step: 10, label: \"Sampling rate f_s (Hz)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelate this directly to Example 8.6. Ask students to plug in f_c=15 Hz, f_s=90 Hz and see if they reproduce ω_a ≈ 103.92 rad/s."
+  },
+  {
+    "objectID": "dsp_81.html#full-minidesign-via-blt-interactive",
+    "href": "dsp_81.html#full-minidesign-via-blt-interactive",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "7. Full Mini‑Design via BLT (Interactive)",
+    "text": "7. Full Mini‑Design via BLT (Interactive)\nWe’ll recreate a simplified version of Example 8.6, but now you control the specs:\nSteps inside the block:\n\nCompute digital cutoff ω_d from chosen f_c and f_s.\nPrewarp to analog ω_a.\nDesign analog \\(H(s) = \\dfrac{\\omega_a}{s + \\omega_a}\\) (1st order).\nApply BLT to find digital \\(H(z)\\).\nPlot the magnitude response (Hz).\n\n\nviewof fc_design = Inputs.range([5, 40], {step: 1, label: \"Desired digital cutoff f_c (Hz)\"})\nviewof fs_design = Inputs.range([40, 200], {step: 10, label: \"Sampling rate f_s (Hz)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAsk students to: - Try different f_c values as a fraction of fs/2. - Observe whether the −3 dB point of the plotted magnitude curve lines up with the vertical line at f_c. Point out that because of prewarping, it should be very close (for a 1st‑order design)."
+  },
+  {
+    "objectID": "dsp_81.html#challenge-explore-bandpass-prewarping",
+    "href": "dsp_81.html#challenge-explore-bandpass-prewarping",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8. Challenge: Explore Bandpass Prewarping",
+    "text": "8. Challenge: Explore Bandpass Prewarping\nFor a bandpass design, we need to prewarp both edges:\n\\[\n\\omega_{al} = \\frac{2}{T}\\tan\\left(\\frac{\\omega_l T}{2}\\right),\\quad\n\\omega_{ah} = \\frac{2}{T}\\tan\\left(\\frac{\\omega_h T}{2}\\right)\n\\]\nThen\n\\[\n\\omega_0 = \\sqrt{\\omega_{al}\\omega_{ah}},\\quad\nW = \\omega_{ah} - \\omega_{al}\n\\]\nUse the following block to compute and visualize how analog band edges differ from digital ones.\n\nviewof fl = Inputs.range([5, 40], {step: 1, label: \"Lower digital band edge f_l (Hz)\"})\nviewof fh = Inputs.range([10, 80], {step: 1, label: \"Upper digital band edge f_h (Hz)\"})\nviewof fs_bp = Inputs.range([100, 400], {step: 20, label: \"Sampling rate f_s (Hz)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThis sets up the reasoning for full BLT bandpass designs (next lecture/section). Ask: - How much are the analog edges shifted relative to the digital edges? - Is the shift symmetric?"
+  },
+  {
+    "objectID": "dsp_81.html#wrapup-what-you-should-be-able-to-do-interactively",
+    "href": "dsp_81.html#wrapup-what-you-should-be-able-to-do-interactively",
+    "title": "8.1 Infinite Impulse Response (IIR) Filter Design",
+    "section": "9. Wrap‑Up: What You Should Be Able to Do Interactively",
+    "text": "9. Wrap‑Up: What You Should Be Able to Do Interactively\nUsing the tools in this deck, you should now be able to:\n\nSimulate and visualize IIR impulse responses for different feedback coefficients.\nObserve how analog lowpass parameter \\(\\omega_c\\) shifts the −3 dB point.\nExperiment with the bilinear transform mapping from \\(s\\) to \\(z\\), and see its stability‑preserving nature.\nPlot and understand frequency warping between \\(\\omega_a\\) and \\(\\omega_d\\).\nCompute and use prewarped analog cutoffs for BLT‑based IIR design.\nPerform a mini BLT lowpass design end‑to‑end and inspect its response.\n\nYou are encouraged to modify all sliders and code examples and see if you can “break” the design or create unexpected behaviors – then explain why it happens using the underlying theory."
   },
   {
     "objectID": "dsp_71.html#learning-objectives",
@@ -1349,5 +2021,698 @@
     "title": "7.2 FIR Filter Design – Applications & Advanced Methods",
     "section": "10. Reflection – What Did You Learn Interactively?",
     "text": "10. Reflection – What Did You Learn Interactively?\nUse this slide to check your understanding.\n\n\n\n\n\n\nTry answering in your own words (mentally or in your notes) before the instructor discussion.\n\nUse this slide as a prompt for in‑class discussion or a quick poll. Students should link their interactive observations (sliders, plots) back to the formal definitions: passband ripple, stopband attenuation, transition width, linear phase, etc."
+  },
+  {
+    "objectID": "dsp_82.html#butterworth-chebyshev-filters-cascade-design-audio-equalizer",
+    "href": "dsp_82.html#butterworth-chebyshev-filters-cascade-design-audio-equalizer",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8.3–8.5: Butterworth & Chebyshev Filters, Cascade Design, Audio Equalizer",
+    "text": "8.3–8.5: Butterworth & Chebyshev Filters, Cascade Design, Audio Equalizer"
+  },
+  {
+    "objectID": "dsp_82.html#learning-objectives",
+    "href": "dsp_82.html#learning-objectives",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\nBy the end of this session, you should be able to:\n\nExplain what a lowpass prototype is and why it is central to IIR filter design.\nUse the passband/stopband specifications to compute filter order for Butterworth and Chebyshev type I.\nApply frequency transformations (LP→LP, LP→HP, LP→BP, LP→BS) and the bilinear transform (BLT) to get a digital IIR filter.\nInterpret MATLAB‑style design workflows for lowpass, highpass, bandpass, bandstop examples.\nUnderstand how to build higher‑order IIR filters using a cascade of biquads.\nRelate IIR filter banks to a practical digital audio equalizer."
+  },
+  {
+    "objectID": "dsp_82.html#motivation-why-butterworth-chebyshev-iir-filters",
+    "href": "dsp_82.html#motivation-why-butterworth-chebyshev-iir-filters",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Motivation: Why Butterworth & Chebyshev IIR Filters?",
+    "text": "Motivation: Why Butterworth & Chebyshev IIR Filters?\n\nReal‑world ECE tasks need sharp frequency selection with low computational cost.\nIIR filters can approximate analog designs (RC, RLC filters, op‑amp filters) very efficiently.\nButterworth and Chebyshev type I are two classical “workhorse” families:\n\nButterworth: maximally flat in passband.\nChebyshev: equiripple passband, sharper roll‑off for the same order.\n\nTypical uses:\n\nAnti‑aliasing / reconstruction filters (analog, then digitized via BLT).\nCommunications channel shaping.\nAudio equalization and tone control.\n\n\n\nConnect to what students already know: analog RC lowpass, Bode plots, and FIR vs IIR tradeoffs. Emphasize “analog prototype → frequency transformation → bilinear transform” as the backbone."
+  },
+  {
+    "objectID": "dsp_82.html#big-picture-design-flow-bltbased-iir-design",
+    "href": "dsp_82.html#big-picture-design-flow-bltbased-iir-design",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Big Picture Design Flow (BLT‑Based IIR Design)",
+    "text": "Big Picture Design Flow (BLT‑Based IIR Design)\n\n\n\n\n\n\n\n\n\n\n\n\nStress that everything in 8.3 is about steps C–D (prototype and transformation) and then BLT. Prewarping compensates BLT’s frequency nonlinearity: we map desired digital Fp, Fs back to analog ωap, ωas so that after BLT the digital edges land where we want."
+  },
+  {
+    "objectID": "dsp_82.html#lowpass-prototype-functions",
+    "href": "dsp_82.html#lowpass-prototype-functions",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8.3.1 Lowpass Prototype Functions",
+    "text": "8.3.1 Lowpass Prototype Functions\nIdea: Design one normalized lowpass filter (prototype) with:\n\nNormalized passband edge: \\(\\nu_p = 1\\)\nSpecified passband ripple \\(A_p\\) (e.g., 3 dB, 0.5 dB, 1 dB)\nMinimal order \\(n\\) that also satisfies stopband attenuation \\(A_s\\) at \\(\\nu_s\\)\n\nThen:\n\nTransform this prototype to the desired analog filter shape (LP/HP/BP/BS).\nConvert analog \\(H(s)\\) → digital \\(H(z)\\) using BLT."
+  },
+  {
+    "objectID": "dsp_82.html#butterworth-lowpass-prototype",
+    "href": "dsp_82.html#butterworth-lowpass-prototype",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Butterworth Lowpass Prototype",
+    "text": "Butterworth Lowpass Prototype\nButterworth magnitude response (normalized lowpass):\n\\[\n\\left|H_P(\\nu)\\right| = \\frac{1}{\\sqrt{1 + \\varepsilon^{2}\\nu^{2n}}}\n\\]\n\n\\(\\nu\\): normalized frequency (prototype domain).\n\\(n\\): filter order.\n\\(\\varepsilon\\): ripple parameter (for Butterworth with 3 dB spec, \\(\\varepsilon = 1\\)).\n\n\n\n\nFigure: Normalized Butterworth magnitude response\n\n\n\nExplain that in Butterworth, the magnitude is monotonically decreasing, no ripples. For a 3‑dB LP prototype we define \\(|H_P(1)|^2 = 0.5\\), which implies \\(\\varepsilon = 1\\). Discuss how higher \\(n\\) increases steepness of the roll‑off."
+  },
+  {
+    "objectID": "dsp_82.html#butterworth-prototype-transfer-functions-3-db",
+    "href": "dsp_82.html#butterworth-prototype-transfer-functions-3-db",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Butterworth Prototype Transfer Functions (3 dB)",
+    "text": "Butterworth Prototype Transfer Functions (3 dB)\nFrom Table 8.3 (\\(\\varepsilon = 1\\)):\n\n\n\n\n\n\n\n\\(n\\)\n\\(H_P(s)\\)\n\n\n\n\n1\n\\(\\dfrac{1}{s+1}\\)\n\n\n2\n\\(\\dfrac{1}{s^{2}+1.4142s+1}\\)\n\n\n3\n\\(\\dfrac{1}{s^{3}+2s^{2}+2s+1}\\)\n\n\n4\n\\(\\dfrac{1}{s^{4}+2.6131s^{3}+3.4142s^{2}+2.6131s+1}\\)\n\n\n5\n\\(\\dfrac{1}{s^{5}+3.2361s^{4}+5.2361s^{3}+5.2361s^{2}+3.2361s+1}\\)\n\n\n6\n\\(\\dfrac{1}{s^{6}+3.8637s^{5}+7.4641s^{4}+9.1416s^{3}+7.4641s^{2}+3.8637s+1}\\)\n\n\n\n\n\n\n\n\n\nTip\n\n\nFor low orders (1–6), it is common to pick \\(H_P(s)\\) from a table rather than factor everything by hand."
+  },
+  {
+    "objectID": "dsp_82.html#computing-butterworth-order-from-specs",
+    "href": "dsp_82.html#computing-butterworth-order-from-specs",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Computing Butterworth Order from Specs",
+    "text": "Computing Butterworth Order from Specs\nGiven:\n\nPassband ripple \\(A_p\\) (dB).\nStopband attenuation \\(A_s\\) (dB).\nNormalized edges: \\(\\nu_p = 1\\), \\(\\nu_s\\) from Table 8.6.\n\nWe use:\nPassband ripple:\n\\[\nA_p\\text{ dB} = -20\\log_{10}\\left(\\frac{1}{\\sqrt{1+\\varepsilon^2}}\\right)\n\\]\nStopband attenuation:\n\\[\nA_s\\text{ dB} = -20\\log_{10}\\left(\\frac{1}{\\sqrt{1+\\varepsilon^2\\nu_s^{2n}}}\\right)\n\\]\nSolving:\n\\[\n\\varepsilon^{2} = 10^{0.1A_p} - 1\n\\]\n\\[\nn \\ge\n\\frac{\n\\log_{10}\\left(\\dfrac{10^{0.1A_s}-1}{\\varepsilon^{2}}\\right)\n}{\n2\\log_{10}(\\nu_s)\n}\n\\]\n\n\n\n\n\n\nImportant\n\n\nIn practice, after computing \\(n\\) you always round up to the nearest integer to satisfy specs."
+  },
+  {
+    "objectID": "dsp_82.html#chebyshev-type-i-prototype-equiripple",
+    "href": "dsp_82.html#chebyshev-type-i-prototype-equiripple",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Chebyshev Type I Prototype (Equiripple)",
+    "text": "Chebyshev Type I Prototype (Equiripple)\nChebyshev LP prototype magnitude:\n\\[\n\\left|H_P(\\nu)\\right| = \\frac{1}{\\sqrt{1 + \\varepsilon^{2} C_n^{2}(\\nu)}}\n\\]\nwhere the (hyperbolic) Chebyshev function is:\n\\[\nC_n(\\nu) = \\cosh\\bigl[n \\cosh^{-1}(\\nu)\\bigr],\\quad\n\\cosh^{-1}(x) = \\ln\\left(x + \\sqrt{x^2 - 1}\\right)\n\\]\n\n\n\nFigure: Normalized Chebyshev magnitude response\n\n\nKey properties:\n\nRipple in passband, monotonic stopband.\nOdd \\(n\\): DC gain is 1.\nEven \\(n\\): DC gain is \\(1/\\sqrt{1 + \\varepsilon^2}\\).\nGain at cutoff \\(\\nu_p=1\\) is \\(1/\\sqrt{1+\\varepsilon^2}\\) in both cases.\n\n\nExplain verbally: “Chebyshev pays with passband ripples to get a narrower transition band compared to Butterworth for the same order \\(n\\).” Show on board a simple overlay sketch if possible."
+  },
+  {
+    "objectID": "dsp_82.html#chebyshev-prototype-functions-tables",
+    "href": "dsp_82.html#chebyshev-prototype-functions-tables",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Chebyshev Prototype Functions (Tables)",
+    "text": "Chebyshev Prototype Functions (Tables)\n0.5 dB ripple (\\(\\varepsilon = 0.3493\\)) – Table 8.4 (excerpt):\n\n\n\n\n\n\n\n\\(n\\)\n\\(H_P(s)\\)\n\n\n\n\n1\n\\(\\dfrac{2.8628}{s + 2.8628}\\)\n\n\n2\n\\(\\dfrac{1.4314}{s^{2} + 1.4256s + 1.5162}\\)\n\n\n3\n\\(\\dfrac{0.7157}{s^{3} + 1.2529s^{2} + 1.5349s + 0.7157}\\)\n\n\n\n1 dB ripple (\\(\\varepsilon = 0.5088\\)) – Table 8.5 (excerpt):\n\n\n\n\n\n\n\n\\(n\\)\n\\(H_P(s)\\)\n\n\n\n\n1\n\\(\\dfrac{1.9652}{s + 1.9652}\\)\n\n\n2\n\\(\\dfrac{0.9826}{s^{2} + 1.0977s + 1.1025}\\)\n\n\n3\n\\(\\dfrac{0.4913}{s^{3} + 0.9883s^{2} + 1.2384s + 0.4913}\\)"
+  },
+  {
+    "objectID": "dsp_82.html#computing-chebyshev-order-from-specs",
+    "href": "dsp_82.html#computing-chebyshev-order-from-specs",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Computing Chebyshev Order from Specs",
+    "text": "Computing Chebyshev Order from Specs\nGiven:\n\nPassband ripple \\(A_p\\) (dB), stopband attenuation \\(A_s\\) (dB).\nNormalized edges: \\(\\nu_p = 1\\) and \\(\\nu_s\\) from Table 8.6.\n\nSimilar to Butterworth,\n\\[\nA_p\\text{ dB} = -20\\log_{10}\\left(\\frac{1}{\\sqrt{1+\\varepsilon^{2}}}\\right)\n\\quad\\Rightarrow\\quad\n\\varepsilon^{2} = 10^{0.1A_p} - 1\n\\]\nStopband condition:\n\\[\nA_s\\text{ dB} =\n-20\\log_{10}\\left(\\frac{1}{\\sqrt{1+\\varepsilon^{2}C_n^{2}(\\nu_s)}}\\right)\n\\]\nSolving for \\(n\\):\n\\[\nn \\ge\n\\frac{\n\\cosh^{-1}\\left[\n\\left(\\dfrac{10^{0.1A_s}-1}{\\varepsilon^{2}}\\right)^{0.5}\n\\right]\n}{\n\\cosh^{-1}(\\nu_s)\n}\n\\]\nwhere \\(\\cosh^{-1}(x) = \\ln(x + \\sqrt{x^2 - 1})\\)."
+  },
+  {
+    "objectID": "dsp_82.html#from-analog-specs-to-prototype-specs",
+    "href": "dsp_82.html#from-analog-specs-to-prototype-specs",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "From Analog Specs to Prototype Specs",
+    "text": "From Analog Specs to Prototype Specs\nWe must convert analog frequency specs \\((\\omega_{ap}, \\omega_{as}, \\dots)\\) to prototype normalized frequencies.\nTable 8.6 gives:\n\n\n\n\n\n\n\n\nFilter\nGiven analog specs\nPrototype specs\n\n\n\n\nLowpass\n\\(\\omega_{ap}, \\omega_{as}\\)\n\\(\\nu_p = 1,\\ \\nu_s = \\omega_{as}/\\omega_{ap}\\)\n\n\nHighpass\n\\(\\omega_{ap}, \\omega_{as}\\)\n\\(\\nu_p = 1,\\ \\nu_s = \\omega_{ap}/\\omega_{as}\\)\n\n\nBandpass\n\\(\\omega_{apl}, \\omega_{aph}, \\omega_{asl}, \\omega_{ash}, \\omega_0\\)\n\\(\\nu_p = 1,\\ \\nu_s = \\dfrac{\\omega_{ash}-\\omega_{asl}}{\\omega_{aph}-\\omega_{apl}}\\)\n\n\nBandstop\nsame parameters as bandpass\nsame \\(\\nu_s\\) formula\n\n\n\n\n\n\nAnalog LP and BP specs\n\n\n\nExplain each symbol on Fig. 8.15: $ {ap}$ (passband edge), $ {as}$ (stopband edge), etc. Clarify: first prewarp digital specs to analog, then convert to prototype domain via this table."
+  },
+  {
+    "objectID": "dsp_82.html#example-8.7-lowpass-butterworth-via-blt",
+    "href": "dsp_82.html#example-8.7-lowpass-butterworth-via-blt",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.7 – Lowpass Butterworth via BLT",
+    "text": "Example 8.7 – Lowpass Butterworth via BLT\nGoal:\nDesign a digital lowpass Butterworth filter with:\n\n3‑dB attenuation at \\(f_p = 1.5\\) kHz.\n10‑dB attenuation at \\(f_s = 3\\) kHz.\nSampling frequency \\(f_s = 8000\\) Hz."
+  },
+  {
+    "objectID": "dsp_82.html#example-8.7-step-1-prewarping",
+    "href": "dsp_82.html#example-8.7-step-1-prewarping",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.7 – Step 1: Prewarping",
+    "text": "Example 8.7 – Step 1: Prewarping\nDigital radian frequencies:\n\\[\n\\omega_{dp} = 2\\pi(1500) = 3000\\pi\\ \\text{rad/s}\n\\]\n\\[\n\\omega_{ds} = 2\\pi(3000) = 6000\\pi\\ \\text{rad/s}\n\\]\nSampling period:\n\\[\nT = \\frac{1}{8000}\\ \\text{s}\n\\]\nApply prewarping:\n\\[\n\\omega_{ap} = \\frac{2}{T}\\tan\\left(\\frac{\\omega_{dp} T}{2}\\right)\n= 16{,}000 \\tan\\left(\\frac{3000\\pi/8000}{2}\\right)\n\\approx 1.0691\\times 10^{4}\\ \\text{rad/s}\n\\]\n\\[\n\\omega_{as} = \\frac{2}{T}\\tan\\left(\\frac{\\omega_{ds} T}{2}\\right)\n= 16{,}000 \\tan\\left(\\frac{6000\\pi/8000}{2}\\right)\n\\approx 3.8627\\times 10^{4}\\ \\text{rad/s}\n\\]"
+  },
+  {
+    "objectID": "dsp_82.html#example-8.7-step-2-prototype-specs-and-order",
+    "href": "dsp_82.html#example-8.7-step-2-prototype-specs-and-order",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.7 – Step 2: Prototype Specs and Order",
+    "text": "Example 8.7 – Step 2: Prototype Specs and Order\nFrom Table 8.6 for lowpass:\n\\[\n\\nu_p = 1,\\quad\n\\nu_s = \\frac{\\omega_{as}}{\\omega_{ap}}\n= \\frac{3.8627\\times10^{4}}{1.0691\\times10^{4}}\n= 3.6130\n\\]\nGiven:\n\nPassband ripple \\(A_p = 3\\) dB (Butterworth 3 dB prototype).\nStopband attenuation \\(A_s = 10\\) dB.\n\nCompute:\n\\[\n\\varepsilon^{2} = 10^{0.1 \\times 3} - 1 = 10^{0.3} - 1 \\approx 1\n\\]\nOrder:\n\\[\nn =\n\\frac{\\log_{10}(10^{0.1\\times 10}-1)}{2\\log_{10}(3.6130)}\n\\approx 0.8553\n\\]\nSo choose \\(n = 1\\).\nFrom Table 8.3:\n\\[\nH_P(s) = \\frac{1}{s+1}\n\\]"
+  },
+  {
+    "objectID": "dsp_82.html#example-8.7-step-3-lplp-and-blt",
+    "href": "dsp_82.html#example-8.7-step-3-lplp-and-blt",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.7 – Step 3: LP→LP and BLT",
+    "text": "Example 8.7 – Step 3: LP→LP and BLT\nAnalog LP (scale cutoff to \\(\\omega_{ap}\\)):\n\\[\nH(s) = H_P\\left(\\frac{s}{\\omega_{ap}}\\right)\n= \\frac{1}{\\frac{s}{\\omega_{ap}} + 1}\n= \\frac{\\omega_{ap}}{s + \\omega_{ap}}\n= \\frac{1.0691\\times10^4}{s + 1.0691\\times10^4}\n\\]\nApply BLT, \\(s = \\frac{2}{T}\\frac{z-1}{z+1} = 16000\\frac{z-1}{z+1}\\):\n\\[\nH(z) =\n\\frac{1.0691\\times10^4}{16000\\frac{z-1}{z+1} + 1.0691\\times10^4}\n\\]\nDivide numerator and denominator by 16000:\n\\[\nH(z) = \\frac{0.6682}{\\frac{z-1}{z+1} + 0.6682}\n\\]\nMultiply by \\((z+1)\\):\n\\[\nH(z) = \\frac{0.6682(z+1)}{(z-1) + 0.6682(z+1)}\n= \\frac{0.6682z + 0.6682}{1.6682z - 0.3318}\n\\]\nWrite in \\(z^{-1}\\) form:\n\\[\nH(z) = \\frac{0.4006 + 0.4006z^{-1}}{1 - 0.1989z^{-1}}\n\\]\nThis is a first‑order IIR digital LP filter."
+  },
+  {
+    "objectID": "dsp_82.html#example-8.7-matlab-implementation",
+    "href": "dsp_82.html#example-8.7-matlab-implementation",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.7 – MATLAB Implementation",
+    "text": "Example 8.7 – MATLAB Implementation\nfs = 8000;            % Sampling rate\n[B, A] = lp2lp([1], [1 1], 1.0691e4);  % Step 2 (analog LP)\n[b, a] = bilinear(B, A, fs);           % Step 3 (BLT)\n\n% Numerator / denominator from MATLAB:\n% b = [0.4005 0.4005];\n% a = [1 -0.1989];\n\nfreqz(b, a, 512, fs);\naxis([0 fs/2 -20 1]);\n\n\n\nFrequency response Example 8.7\n\n\n\nPoint out: the 3‑dB point is near 1.5 kHz and ~10 dB attenuation near 3 kHz as specified. Encourage students to check with MATLAB or Python (scipy.signal)."
+  },
+  {
+    "objectID": "dsp_82.html#example-8.8-highpass-chebyshev-order-given",
+    "href": "dsp_82.html#example-8.8-highpass-chebyshev-order-given",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.8 – Highpass Chebyshev (Order Given)",
+    "text": "Example 8.8 – Highpass Chebyshev (Order Given)\nSpecs:\n\nFirst‑order highpass Chebyshev type I.\nCutoff at 3 kHz, ripple \\(A_p = 1\\) dB.\nSampling frequency 8 kHz."
+  },
+  {
+    "objectID": "dsp_82.html#example-8.8-key-steps",
+    "href": "dsp_82.html#example-8.8-key-steps",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.8 – Key Steps",
+    "text": "Example 8.8 – Key Steps\n\nPrewarp the cutoff:\n\\[\n\\omega_d = 2\\pi \\cdot 3000 = 6000\\pi,\\quad T = 1/8000\n\\]\n\\[\n\\omega_a = \\frac{2}{T}\\tan\\left(\\frac{\\omega_d T}{2}\\right)\n= 16{,}000 \\tan\\left(\\frac{6000\\pi/8000}{2}\\right)\n\\approx 3.8627\\times 10^4\\ \\text{rad/s}\n\\]\nOrder is given: \\(n=1\\). Use Table 8.5 (1 dB ripple):\n\\[\nH_P(s) = \\frac{1.9652}{s + 1.9652}\n\\]\nLP→HP transformation:\n\\[\nH(s) = H_P\\left(\\frac{\\omega_a}{s}\\right)\n= \\frac{1.9652 s}{1.9652 s + \\omega_a}\n\\]\nDivide by 1.9652:\n\\[\nH(s) = \\frac{s}{s + 1.9656\\times 10^4}\n\\]\nApply BLT → digital HP:\n\\[\nH(z) = \\frac{s}{s + 1.9656\\times 10^4}\n\\Bigg|_{s=16000\\frac{z-1}{z+1}}\n\\]\nAfter algebra:\n\\[\nH(z) = \\frac{0.4487 - 0.4487 z^{-1}}{1 + 0.1025 z^{-1}}\n\\]\n\n\n\n\nFrequency response Example 8.8"
+  },
+  {
+    "objectID": "dsp_82.html#example-8.9-secondorder-lowpass-butterworth",
+    "href": "dsp_82.html#example-8.9-secondorder-lowpass-butterworth",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.9 – Second‑Order Lowpass Butterworth",
+    "text": "Example 8.9 – Second‑Order Lowpass Butterworth\nSpecs:\n\nSecond‑order LP Butterworth.\nCutoff 3.4 kHz, \\(f_s = 8000\\) Hz."
+  },
+  {
+    "objectID": "dsp_82.html#example-8.9-outline",
+    "href": "dsp_82.html#example-8.9-outline",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.9 – Outline",
+    "text": "Example 8.9 – Outline\n\nPrewarp digital cutoff:\n\\[\n\\omega_d = 2\\pi(3400) = 6800\\pi,\\quad T = 1/8000\n\\Rightarrow\n\\omega_a \\approx 6.6645\\times 10^4\\ \\text{rad/s}\n\\]\nOrder given \\(n=2\\). Use Table 8.3:\n\\[\nH_P(s) = \\frac{1}{s^2 + 1.4142s + 1}\n\\]\nLP→LP scaling:\n\\[\nH(s) = H_P\\left(\\frac{s}{\\omega_a}\\right)\n= \\frac{4.4416\\times 10^9}{s^2 + 9.4249\\times 10^4 s + 4.4416\\times 10^9}\n\\]\nApply BLT:\n\\[\nH(z) = \\text{(after algebra)}\n= \\frac{0.7157 + 1.4314z^{-1} + 0.7151z^{-2}}\n       {1 + 1.3490z^{-1} + 0.5140z^{-2}}\n\\]\n\n\n\n\nFrequency response Example 8.9\n\n\n\nUse this example to show a typical biquad (second‑order section). Explain that most practical IIRs are implemented as cascades of such sections for numerical stability."
+  },
+  {
+    "objectID": "dsp_82.html#example-8.10-highpass-chebyshev-order-from-specs",
+    "href": "dsp_82.html#example-8.10-highpass-chebyshev-order-from-specs",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.10 – Highpass Chebyshev (Order from Specs)",
+    "text": "Example 8.10 – Highpass Chebyshev (Order from Specs)\nSpecs:\n\nHighpass Chebyshev type I.\nPassband: 0.5 dB ripple at 3 kHz.\nStopband: 25 dB at 1 kHz.\n\\(f_s = 8000\\) Hz.\n\nWe now solve for order \\(n\\) using Chebyshev formulas."
+  },
+  {
+    "objectID": "dsp_82.html#example-8.10-steps-condensed",
+    "href": "dsp_82.html#example-8.10-steps-condensed",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.10 – Steps (Condensed)",
+    "text": "Example 8.10 – Steps (Condensed)\n\nPrewarp:\n\\[\n\\omega_{dp} = 6000\\pi,\\\n\\omega_{ds} = 2000\\pi,\\\nT = 1/8000\n\\]\n\\[\n\\omega_{ap} \\approx 3.8627\\times 10^4,\\quad\n\\omega_{as} \\approx 6.6274\\times 10^3\n\\]\nFor highpass, Table 8.6 says:\n\\[\n\\nu_s = \\frac{\\omega_{ap}}{\\omega_{as}} \\approx 5.8284\n\\]\nCompute:\n\\[\n\\varepsilon^2 = 10^{0.1 \\times 0.5} - 1 \\approx 0.1220\n\\]\n\\[\n\\frac{10^{0.1\\cdot 25} - 1}{\\varepsilon^2} \\approx 2583.8341\n\\]\n\\[\nn = \\frac{\\cosh^{-1}\\left[(2583.8341)^{0.5}\\right]}{\\cosh^{-1}(5.8284)}\n\\approx 1.8875 \\Rightarrow n = 2\n\\]\nChoose Chebyshev prototype from Table 8.4 (\\(n=2\\), 0.5 dB ripple):\n\\[\nH_P(s) = \\frac{1.4314}{s^2 + 1.4256s + 1.5162}\n\\]\nLP→HP transform, then BLT →\n\\[\nH(z) = \\frac{0.1327 - 0.2654z^{-1} + 0.1327z^{-2}}\n           {1 + 0.7996z^{-1} + 0.3618z^{-2}}\n\\]\n\n\n\n\nFrequency response Example 8.10"
+  },
+  {
+    "objectID": "dsp_82.html#bandpass-bandstop-design-strategy",
+    "href": "dsp_82.html#bandpass-bandstop-design-strategy",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Bandpass / Bandstop Design Strategy",
+    "text": "Bandpass / Bandstop Design Strategy\nFor BP and BS filters:\n\nPrewarp all relevant digital edges to analog.\nMatch them to bandpass / bandstop analog specs \\((\\omega_{apl}, \\omega_{aph}, \\omega_{asl}, \\omega_{ash}, \\omega_0)\\) and compute prototype \\(\\nu_s\\).\nSolve for order \\(n\\) (Butterworth or Chebyshev).\nUse LP→BP or LP→BS formulas:\n\nLP→BP: \\(s \\rightarrow \\dfrac{s^2 + \\omega_0^2}{Ws}\\)\nLP→BS: \\(s \\rightarrow \\dfrac{W s}{s^2 + \\omega_0^2}\\)\n\nApply BLT to get digital \\(H(z)\\)."
+  },
+  {
+    "objectID": "dsp_82.html#example-8.11-bandpass-butterworth",
+    "href": "dsp_82.html#example-8.11-bandpass-butterworth",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.11 – Bandpass Butterworth",
+    "text": "Example 8.11 – Bandpass Butterworth\nSpecs:\n\nSecond‑order digital BP Butterworth.\nLower cutoff 2.4 kHz, upper cutoff 2.6 kHz.\n\\(f_s = 8000\\) Hz."
+  },
+  {
+    "objectID": "dsp_82.html#example-8.11-key-computations",
+    "href": "dsp_82.html#example-8.11-key-computations",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.11 – Key Computations",
+    "text": "Example 8.11 – Key Computations\n\nDigital freqs:\n\\[\n\\omega_h = 2\\pi(2600),\\quad\n\\omega_l = 2\\pi(2400),\\quad\nT = 1/8000\n\\]\nPrewarp:\n\\[\n\\omega_{ah} \\approx 2.6110\\times10^4,\\quad\n\\omega_{al} \\approx 2.2022\\times10^4\n\\]\n\\[\nW = \\omega_{ah}-\\omega_{al} = 4088\\ \\text{rad/s}\n\\]\n\\[\n\\omega_0^2 = \\omega_{ah}\\omega_{al} \\approx 5.7499\\times 10^8\n\\]\nUse 1st‑order prototype from Table 8.3 (\\(H_P(s) = 1/(s+1)\\)) so BP filter is order 2:\nLP→BP transform:\n\\[\nH(s) = \\frac{W s}{s^2 + W s + \\omega_0^2}\n= \\frac{4088 s}{s^2 + 4088 s + 5.7499\\times10^8}\n\\]\nBLT:\n\\[\nH(z) = \\frac{0.0730 - 0.0730 z^{-2}}{1 + 0.7117 z^{-1} + 0.8541 z^{-2}}\n\\]\n\n\n\n\nFrequency response Example 8.11"
+  },
+  {
+    "objectID": "dsp_82.html#example-8.12-bandstop-butterworth",
+    "href": "dsp_82.html#example-8.12-bandstop-butterworth",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.12 – Bandstop Butterworth",
+    "text": "Example 8.12 – Bandstop Butterworth\nFocus: - Adjusting center frequency and bandwidth so the bandstop has unity gain at \\(\\omega_0\\) and meets passband / stopband widths. - Use LP→BS transformation and BLT.\nEnd result (after some careful bandwidth tuning):\n\nUse \\(n=1\\) (Butterworth).\nAnalog BS:\n\\[\nH(s) = \\frac{s^{2} + 5.7341\\times10^{8}}{s^{2} + 4149s + 5.7341\\times10^{8}}\n\\]\nDigital BS after BLT:\n\\[\nH(z) = \\frac{0.9259 + 0.7078 z^{-1} + 0.9259 z^{-2}}\n            {1 + 0.7078 z^{-1} + 0.8518 z^{-2}}\n\\]\n\n\n\n\nFrequency response Example 8.12"
+  },
+  {
+    "objectID": "dsp_82.html#example-8.13-bandpass-chebyshev",
+    "href": "dsp_82.html#example-8.13-bandpass-chebyshev",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.13 – Bandpass Chebyshev",
+    "text": "Example 8.13 – Bandpass Chebyshev\nSpecs:\n\nCenter frequency 2.5 kHz.\nPassband bandwidth 200 Hz, 0.5 dB ripple.\nStopband edges: 1.5 kHz and 3.5 kHz, 10 dB attenuation.\n\\(f_s = 8000\\) Hz.\n\nProcess:\n\nExtensive prewarping and “unit‑gain at center frequency” adjustments, then:\nCompute prototype \\(\\nu_s\\) and order \\(n\\) using Chebyshev formula → \\(n \\approx 0.928 \\Rightarrow 1\\).\nPrototype from Table 8.4 (0.5 dB, \\(n=1\\)):\n\\[\nH_P(s) = \\frac{2.8628}{s + 2.8628}\n\\]\nLP→BP and BLT yield:\n\\[\nH(s) = \\frac{1.1497\\times 10^4 s}{s^{2} + 1.1497\\times 10^4 s + 5.7341\\times 10^8}\n\\]\n\\[\nH(z) = \\frac{0.1815 - 0.1815z^{-2}}{1 + 0.6264z^{-1} + 0.6396z^{-2}}\n\\]\n\n\n\n\nFrequency response Example 8.13"
+  },
+  {
+    "objectID": "dsp_82.html#higherorder-iir-via-cascade-method",
+    "href": "dsp_82.html#higherorder-iir-via-cascade-method",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8.4 Higher‑Order IIR via Cascade Method",
+    "text": "8.4 Higher‑Order IIR via Cascade Method\nWhen order \\(n\\) is high (\\(n \\ge 3\\)), direct‑form implementation of \\(H(z)\\):\n\nIs numerically sensitive (round‑off, coefficient quantization).\nPoles can move out of the unit circle → instability.\n\nSolution: factor into cascaded second‑order sections (biquads).\n\nEach section has its own denominator \\((1 + a_1 z^{-1} + a_2 z^{-2})\\).\nCoefficients are better conditioned, easier to implement in hardware/embedded DSP."
+  },
+  {
+    "objectID": "dsp_82.html#cascade-forms-analog-prototypes",
+    "href": "dsp_82.html#cascade-forms-analog-prototypes",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Cascade Forms – Analog Prototypes",
+    "text": "Cascade Forms – Analog Prototypes\nTables 8.7–8.9 give factored lowpass prototypes.\nExample: Table 8.7, 4th‑order Butterworth:\n\\[\nH_P(s)\n= \\frac{1}{(s^{2} + 0.7654s + 1)(s^{2} + 1.8478s + 1)}\n\\]\nEach quadratic factor → will map to one biquad in digital domain.\nChebyshev prototypes also have cascade forms (Tables 8.8, 8.9)."
+  },
+  {
+    "objectID": "dsp_82.html#example-8.14-4thorder-butterworth-lp-cascade",
+    "href": "dsp_82.html#example-8.14-4thorder-butterworth-lp-cascade",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.14 – 4th‑Order Butterworth LP, Cascade",
+    "text": "Example 8.14 – 4th‑Order Butterworth LP, Cascade\nSpecs:\n\n4th‑order Butterworth LP.\nCutoff 2.5 kHz.\n\\(f_s = 8000\\) Hz."
+  },
+  {
+    "objectID": "dsp_82.html#example-8.14-steps",
+    "href": "dsp_82.html#example-8.14-steps",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.14 – Steps",
+    "text": "Example 8.14 – Steps\n\nPrewarp:\n\\[\n\\omega_d = 2\\pi(2500) = 5000\\pi,\\quad\n\\omega_a \\approx 2.3946\\times 10^4\\ \\text{rad/s}\n\\]\nUse cascade prototype from Table 8.7:\n\\[\nH_P(s) = \\frac{1}{(s^{2} + 0.7654s + 1)(s^{2} + 1.8478s + 1)}\n\\]\nLP→LP for each factor:\n\nFirst factor:\n\\[\nH_{P1}(s) = \\frac{1}{s^{2} + 0.7654s + 1}\n\\Rightarrow\nH_1(s) = H_{P1}\\left(\\frac{s}{\\omega_a}\\right)\n\\]\nSecond factor similarly: \\(H_2(s)\\).\n\nOverall: \\(H(s) = H_1(s) H_2(s)\\).\nApply BLT to each factor:\n\\[\nH_1(z) = \\frac{0.5108 + 1.0215z^{-1} + 0.5108z^{-2}}{1 + 0.5654z^{-1} + 0.4776z^{-2}}\n\\]\n\\[\nH_2(z) = \\frac{0.3730 + 0.7460z^{-1} + 0.3730z^{-2}}{1 + 0.4129z^{-1} + 0.0790z^{-2}}\n\\]\nOverall: \\(H(z) = H_1(z)H_2(z)\\).\n\n\n\n\nFrequency response Example 8.14"
+  },
+  {
+    "objectID": "dsp_82.html#why-cascades-are-better-in-practice",
+    "href": "dsp_82.html#why-cascades-are-better-in-practice",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Why Cascades Are Better in Practice",
+    "text": "Why Cascades Are Better in Practice\n\n\nDirect Form\n\nSingle high‑order polynomial.\nCoefficient quantization can significantly alter pole locations.\nHard to stabilize and tune.\n\n\nCascade of Biquads\n\nEach section 2nd‑order: \\[\nH_k(z) = \\frac{b_{0k} + b_{1k}z^{-1} + b_{2k}z^{-2}}{1 + a_{1k}z^{-1} + a_{2k}z^{-2}}\n\\]\nMore robust to finite‑precision arithmetic.\nEasy to scale sections or change gain.\n\n\n\n\n\n\n\n\nNote\n\n\nMost real DSP chips (audio codecs, SDR front‑ends, etc.) include biquad building blocks specifically to implement IIR filters in cascade."
+  },
+  {
+    "objectID": "dsp_82.html#application-digital-audio-equalizer",
+    "href": "dsp_82.html#application-digital-audio-equalizer",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8.5 Application: Digital Audio Equalizer",
+    "text": "8.5 Application: Digital Audio Equalizer\nA 7‑band digital audio equalizer:\n\nSampling rate \\(f_s = 44.1\\) kHz (CD audio).\nAudio bandwidth ~22.05 kHz.\nEach band implemented by a second‑order bandpass Butterworth filter.\nCenter frequencies and bandwidths in Table 8.10.\n\n\n\n\nBlock diagram: audio equalizer"
+  },
+  {
+    "objectID": "dsp_82.html#audio-equalizer-intuition",
+    "href": "dsp_82.html#audio-equalizer-intuition",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Audio Equalizer – Intuition",
+    "text": "Audio Equalizer – Intuition\n\nThink of it like a graphic equalizer on a stereo.\nEach bandpass filter extracts a slice of the audio spectrum:\n\nBass (100–400 Hz).\nMidrange (1 kHz–2.5 kHz).\nTreble (6 kHz–15 kHz).\n\nGains \\(g_0, \\dots, g_6\\) let you boost or cut each band.\n\n\n\n\n\n\n\nTip\n\n\nReal‑world analogy: adjusting bass and treble on your phone or car stereo is a coarse 2‑band version of this 7‑band equalizer."
+  },
+  {
+    "objectID": "dsp_82.html#equalizer-specifications-table-8.10",
+    "href": "dsp_82.html#equalizer-specifications-table-8.10",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Equalizer Specifications (Table 8.10)",
+    "text": "Equalizer Specifications (Table 8.10)\n\n\n\nCenter freq (Hz)\n100\n200\n400\n1000\n2500\n6000\n15000\n\n\n\n\n3‑dB BW (Hz)\n50\n100\n200\n500\n1250\n3000\n7500\n\n\n\nEach band uses a 2nd‑order BP Butterworth IIR designed via BLT.\nTable 8.11 lists the numerator/denominator coefficients \\((b_k, a_k)\\) for each band:\nExample (Band 0):\n\nNumerator: \\([0.0031954934, 0, -0.0031954934]\\)\nDenominator: \\([1, -1.9934066716, 0.9936090132]\\)"
+  },
+  {
+    "objectID": "dsp_82.html#equalizer-filter-bank-responses",
+    "href": "dsp_82.html#equalizer-filter-bank-responses",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Equalizer Filter Bank Responses",
+    "text": "Equalizer Filter Bank Responses\n\n\n\nMagnitude responses for the seven bands\n\n\n\nEach curve is one bandpass filter’s gain vs frequency.\nCombined, they cover the audio band with overlapping magnitude responses."
+  },
+  {
+    "objectID": "dsp_82.html#equalizer-operation",
+    "href": "dsp_82.html#equalizer-operation",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Equalizer Operation",
+    "text": "Equalizer Operation\nInput \\(x(n)\\) → each bandpass filter → \\(y_k(n)\\), then:\n\\[\ny(n) = \\left(\\sum_{k=0}^{6} g_k y_k(n)\\right) + x(n)\n\\]\n\nThe original signal is mixed back in (like a “dry + wet” mixing in audio).\nGains \\(g_k\\) control emphasis per band.\n\nExample gain setting:\n\\[\ng_0 = 10,\\ g_1 = 10,\\ g_2 = g_3 = g_4 = 0,\\ g_5 = 10,\\ g_6 = 10\n\\]\n→ “Smile” EQ curve: boost very low and very high frequencies by 20 dB (\\(20\\log_{10}10\\)), leave mids mostly unchanged."
+  },
+  {
+    "objectID": "dsp_82.html#test-signal-and-spectra",
+    "href": "dsp_82.html#test-signal-and-spectra",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Test Signal and Spectra",
+    "text": "Test Signal and Spectra\nTest signal (sum of 7 sinusoids at band centers):\n\\[\nx(n) =\n\\sin\\left(\\frac{200\\pi n}{44100}\\right)\n+ \\sin\\left(\\frac{400\\pi n}{44100} + \\frac{\\pi}{14}\\right)\n+ \\cdots\n+ \\sin\\left(\\frac{30000\\pi n}{44100} + \\frac{3\\pi}{7}\\right)\n\\]\nSimulation shows:\n\nBefore equalization: spectral peaks equal at each center frequency.\nAfter equalization: peaks at 100, 200, 6000, 15000 Hz are boosted.\n\n\n\n\nAudio spectrum and equalized audio spectrum\n\n\n\nAsk students what perceptual effect this would have: louder bass and presence, more “sparkle” in cymbals and sibilants, and relatively recessed mids (vocals/guitars)."
+  },
+  {
+    "objectID": "dsp_82.html#summary-key-points",
+    "href": "dsp_82.html#summary-key-points",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Summary / Key Points",
+    "text": "Summary / Key Points\n\nLowpass prototypes (Butterworth & Chebyshev type I) are the starting point for many IIR designs.\nFilter order \\(n\\) is determined from \\(A_p, A_s\\) and normalized stopband frequency \\(\\nu_s\\).\nButterworth: flat passband, monotonic; Chebyshev: equiripple passband, steeper roll‑off for same order.\nFrequency transformations map LP prototypes to LP/HP/BP/BS analog filters.\nThe bilinear transform (BLT) converts analog \\(H(s)\\) to digital \\(H(z)\\), with frequency prewarping correcting its nonlinearity.\nHigher‑order IIR filters are best implemented as cascades of biquads for numerical robustness.\nA multi‑band digital audio equalizer is a practical example of an IIR filter bank: each band is a 2nd‑order BP Butterworth IIR, gains adjust tonal balance."
+  },
+  {
+    "objectID": "dsp_82.html#formula-summary",
+    "href": "dsp_82.html#formula-summary",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Formula Summary",
+    "text": "Formula Summary\nButterworth magnitude (prototype):\n\\[\n\\left|H_P(\\nu)\\right| = \\frac{1}{\\sqrt{1 + \\varepsilon^2 \\nu^{2n}}}\n\\]\nChebyshev magnitude (prototype):\n\\[\n\\left|H_P(\\nu)\\right| = \\frac{1}{\\sqrt{1 + \\varepsilon^2 C_n^2(\\nu)}}\n\\]\n\\[\nC_n(\\nu) = \\cosh\\left[n\\cosh^{-1}(\\nu)\\right],\\quad\n\\cosh^{-1}(x) = \\ln\\left(x + \\sqrt{x^2 - 1}\\right)\n\\]\nRipple parameter from passband spec:\n\\[\n\\varepsilon^2 = 10^{0.1 A_p} - 1\n\\]\nButterworth order:\n\\[\nn \\ge\n\\frac{\\log_{10}\\left(\\dfrac{10^{0.1A_s} - 1}{\\varepsilon^{2}}\\right)}\n{2\\log_{10}(\\nu_s)}\n\\]\nChebyshev order:\n\\[\nn \\ge\n\\frac{\\cosh^{-1}\\left[\\left(\\dfrac{10^{0.1A_s} - 1}{\\varepsilon^{2}}\\right)^{0.5}\\right]}\n{\\cosh^{-1}(\\nu_s)}\n\\]\nPrewarping (digital → analog):\n\\[\n\\omega_a = \\frac{2}{T} \\tan\\left(\\frac{\\omega_d T}{2}\\right)\n\\]\nBilinear transform:\n\\[\ns = \\frac{2}{T}\\,\\frac{z - 1}{z + 1}\n\\]\nLP frequency transformations (analog domain):\n\nLP→LP (change cutoff): \\(s \\rightarrow \\dfrac{s}{\\omega_a}\\)\nLP→HP: \\(s \\rightarrow \\dfrac{\\omega_a}{s}\\)\nLP→BP: \\(s \\rightarrow \\dfrac{s^2 + \\omega_0^2}{W s}\\)\nLP→BS: \\(s \\rightarrow \\dfrac{W s}{s^2 + \\omega_0^2}\\)"
+  },
+  {
+    "objectID": "dsp_82.html#iir-filter-design-interactive-deck",
+    "href": "dsp_82.html#iir-filter-design-interactive-deck",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8 IIR Filter Design – Interactive Deck",
+    "text": "8 IIR Filter Design – Interactive Deck\nInteractive Deck"
+  },
+  {
+    "objectID": "dsp_82.html#how-to-use-this-interactive-deck",
+    "href": "dsp_82.html#how-to-use-this-interactive-deck",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "How to Use This Interactive Deck",
+    "text": "How to Use This Interactive Deck\n\nYou can edit and run Python code directly in many slides.\nCode blocks tagged {pyodide} run in your browser using Pyodide (Python in WebAssembly).\nSome slides use Observable JS (OJS) + Pyodide + Plotly for reactive visualizations.\nTry changing parameters (e.g., \\(A_p, A_s, n\\)) and see how filter behavior changes immediately.\n\n\n\n\n\n\n\nTip\n\n\nClick inside a code cell, modify values, then press the Run button (or use the keyboard shortcut if available) to re‑execute."
+  },
+  {
+    "objectID": "dsp_82.html#warmup-db-and-linear-gain",
+    "href": "dsp_82.html#warmup-db-and-linear-gain",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Warm‑up: dB and Linear Gain",
+    "text": "Warm‑up: dB and Linear Gain\nPlay with the basic conversion between dB and linear gain.\n\n\n\n\n\n\n\nEncourage students to try Ap = 0.5 and Ap = 3, then ask them what happens to the linear passband ripple."
+  },
+  {
+    "objectID": "dsp_82.html#computing-the-butterworth-ripple-parameter-ϵ",
+    "href": "dsp_82.html#computing-the-butterworth-ripple-parameter-ϵ",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Computing the Butterworth Ripple Parameter ϵ",
+    "text": "Computing the Butterworth Ripple Parameter ϵ\nFrom the lecture:\n\\[\n\\varepsilon^{2} = 10^{0.1A_p} - 1\n\\]\nUse this block to experiment with different passband ripples \\(A_p\\).\n\n\n\n\n\n\nTry adding another \\(A_p\\) value (e.g., 0.1 dB) to the list and rerun."
+  },
+  {
+    "objectID": "dsp_82.html#butterworth-order-calculator-interactive",
+    "href": "dsp_82.html#butterworth-order-calculator-interactive",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Butterworth Order Calculator (Interactive)",
+    "text": "Butterworth Order Calculator (Interactive)\nRecall Butterworth order formula:\n\\[\nn \\ge\n\\frac{\\log_{10}\\left(\\dfrac{10^{0.1A_s} - 1}{\\varepsilon^{2}}\\right)}\n{2\\log_{10}(\\nu_s)},\\quad\n\\varepsilon^{2} = 10^{0.1A_p} - 1\n\\]\nUse this interactive calculator to see how \\(A_p, A_s, \\nu_s\\) affect the required order.\n\n\n\n\n\n\nTask: Change Ap, As, and nu_s and see how the minimum integer order changes."
+  },
+  {
+    "objectID": "dsp_82.html#reactive-butterworth-order-explorer",
+    "href": "dsp_82.html#reactive-butterworth-order-explorer",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Reactive Butterworth Order Explorer",
+    "text": "Reactive Butterworth Order Explorer\nUse sliders (OJS) to control \\(A_p\\), \\(A_s\\), and \\(\\nu_s\\), and get the order and a quick visualization of the transition region.\n\nviewof Ap = Inputs.range([0.1, 3], {step: 0.1, value: 1, label: \"Passband ripple Ap (dB)\"})\nviewof As = Inputs.range([10, 60], {step: 5, value: 30, label: \"Stopband attenuation As (dB)\"})\nviewof nu_s = Inputs.range([1.1, 5], {step: 0.1, value: 2, label: \"Normalized stopband edge ν_s\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAsk: “What happens to \\(n\\) when you demand very small ripple (Ap → 0.1 dB) and very high attenuation (As → 60 dB) with a small separation (νs near 1.2)?”"
+  },
+  {
+    "objectID": "dsp_82.html#chebyshev-order-calculator-interactive",
+    "href": "dsp_82.html#chebyshev-order-calculator-interactive",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Chebyshev Order Calculator (Interactive)",
+    "text": "Chebyshev Order Calculator (Interactive)\nChebyshev order:\n\\[\nn \\ge\n\\frac{\\cosh^{-1}\\left[\\left(\\dfrac{10^{0.1A_s}-1}{\\varepsilon^{2}}\\right)^{0.5}\\right]}\n{\\cosh^{-1}(\\nu_s)},\\quad\n\\varepsilon^{2} = 10^{0.1A_p} - 1\n\\]\n\n\n\n\n\n\nTry adjusting Ap, As, and nu_s and compare with Butterworth for same specs."
+  },
+  {
+    "objectID": "dsp_82.html#butterworth-vs-chebyshev-order-reactive-comparison",
+    "href": "dsp_82.html#butterworth-vs-chebyshev-order-reactive-comparison",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Butterworth vs Chebyshev Order – Reactive Comparison",
+    "text": "Butterworth vs Chebyshev Order – Reactive Comparison\nUse sliders to compare required orders for the same specs.\n\nviewof Ap_common = Inputs.range([0.1, 3], {step: 0.1, value: 1, label: \"Ap (dB), both filters\"})\nviewof As_common = Inputs.range([10, 80], {step: 5, value: 40, label: \"As (dB), both filters\"})\nviewof nu_s_common = Inputs.range([1.1, 5], {step: 0.1, value: 2, label: \"ν_s, both filters\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHighlight that Chebyshev typically achieves the same specs with lower order (especially for tough specs), at the cost of passband ripple."
+  },
+  {
+    "objectID": "dsp_82.html#prewarping-digital-frequency-to-analog",
+    "href": "dsp_82.html#prewarping-digital-frequency-to-analog",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Prewarping Digital Frequency to Analog",
+    "text": "Prewarping Digital Frequency to Analog\nPrewarping formula:\n\\[\n\\omega_a = \\frac{2}{T} \\tan\\left(\\frac{\\omega_d T}{2}\\right),\n\\quad\nT = \\frac{1}{f_s},\\ \\omega_d = 2\\pi f_d\n\\]\nExperiment with the prewarped analog cutoff for different sampling rates and digital cutoff frequencies.\n\n\n\n\n\n\nTry adding other fs values (e.g., 16000, 48000) and see how \\(\\omega_a\\) changes."
+  },
+  {
+    "objectID": "dsp_82.html#visualizing-prewarping-nonlinearity",
+    "href": "dsp_82.html#visualizing-prewarping-nonlinearity",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Visualizing Prewarping Nonlinearity",
+    "text": "Visualizing Prewarping Nonlinearity\nPlot mapping from digital frequency \\(f_d\\) to prewarped analog \\(\\omega_a\\) for a given \\(f_s\\).\n\n\n\n\n\n\nObserve how mapping becomes steeper near Nyquist (\\(f_s/2\\))."
+  },
+  {
+    "objectID": "dsp_82.html#interactive-example-8.7-design-in-python",
+    "href": "dsp_82.html#interactive-example-8.7-design-in-python",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Interactive: Example 8.7 Design in Python",
+    "text": "Interactive: Example 8.7 Design in Python\nApproximate Example 8.7 using Python tools for filter design (scipy‑like pattern, but we will only compute formulas here).\n\n\n\n\n\n\nChange Ap or As and see whether an order of 1 is still enough."
+  },
+  {
+    "objectID": "dsp_82.html#simple-butterworth-analog-prototype-plot-magnitude-only",
+    "href": "dsp_82.html#simple-butterworth-analog-prototype-plot-magnitude-only",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Simple Butterworth Analog Prototype Plot (Magnitude Only)",
+    "text": "Simple Butterworth Analog Prototype Plot (Magnitude Only)\nPlot the normalized Butterworth magnitude response for a given order \\(n\\).\n\n\n\n\n\n\nExperiment by changing n and Ap and rerun to see the effect on roll‑off and passband."
+  },
+  {
+    "objectID": "dsp_82.html#chebyshev-prototype-magnitude-plot-approximate",
+    "href": "dsp_82.html#chebyshev-prototype-magnitude-plot-approximate",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Chebyshev Prototype Magnitude Plot (Approximate)",
+    "text": "Chebyshev Prototype Magnitude Plot (Approximate)\nApproximate Chebyshev type I magnitude using numpy.polynomial.chebyshev.chebval for \\(|ν| \\le 1\\) and hyperbolic extension for \\(|ν|&gt;1\\).\n\n\n\n\n\n\nTry different n and Ap and compare with the Butterworth prototype slide."
+  },
+  {
+    "objectID": "dsp_82.html#reactive-try-your-own-lowpass-specs",
+    "href": "dsp_82.html#reactive-try-your-own-lowpass-specs",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Reactive: Try Your Own Lowpass Specs",
+    "text": "Reactive: Try Your Own Lowpass Specs\nUse sliders to specify a lowpass analog filter (already prewarped) and see normalized prototype stopband and required Butterworth order.\n\nviewof omega_ap = Inputs.range([1000, 50000], {step: 1000, value: 5000, label: \"Analog passband edge ω_ap (rad/s)\"})\nviewof omega_as = Inputs.range([2000, 100000], {step: 2000, value: 20000, label: \"Analog stopband edge ω_as (rad/s)\"})\nviewof Ap_lp = Inputs.range([0.1, 3], {step: 0.1, value: 1, label: \"Ap (dB)\"})\nviewof As_lp = Inputs.range([10, 60], {step: 5, value: 40, label: \"As (dB)\"})"
+  },
+  {
+    "objectID": "dsp_82.html#interactive-audio-equalizer-conceptual-numeric-play",
+    "href": "dsp_82.html#interactive-audio-equalizer-conceptual-numeric-play",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Interactive Audio Equalizer – Conceptual Numeric Play",
+    "text": "Interactive Audio Equalizer – Conceptual Numeric Play\nWe will not process full audio here, but we can explore gains per band and resulting total gain at each center frequency.\nCenter frequencies (Table 8.10):\n\n[100, 200, 400, 1000, 2500, 6000, 15000] Hz\n\n\nviewof g0 = Inputs.range([0, 10], {step: 1, value: 10, label: \"g0 (100 Hz)\"})\nviewof g1 = Inputs.range([0, 10], {step: 1, value: 10, label: \"g1 (200 Hz)\"})\nviewof g2 = Inputs.range([0, 10], {step: 1, value: 0,  label: \"g2 (400 Hz)\"})\nviewof g3 = Inputs.range([0, 10], {step: 1, value: 0,  label: \"g3 (1 kHz)\"})\nviewof g4 = Inputs.range([0, 10], {step: 1, value: 0,  label: \"g4 (2.5 kHz)\"})\nviewof g5 = Inputs.range([0, 10], {step: 1, value: 10, label: \"g5 (6 kHz)\"})\nviewof g6 = Inputs.range([0, 10], {step: 1, value: 10, label: \"g6 (15 kHz)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTry making your own EQ curve (e.g., mid‑boost, treble‑cut) and relate it to how music would sound."
+  },
+  {
+    "objectID": "dsp_82.html#minichallenge-1",
+    "href": "dsp_82.html#minichallenge-1",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Mini‑Challenge 1",
+    "text": "Mini‑Challenge 1\nUse any of the calculators above to design:\n\nA Butterworth LP with:\n\n\\(A_p = 1\\) dB, \\(A_s = 40\\) dB,\n\\(\\nu_s = 2.5\\).\n\n\nThen:\n\nCompute the order \\(n\\) with the Butterworth calculator.\nDesign a Chebyshev type I with the same specs and compute its order.\nWhich one has the lower order?\n\nUse both:\n\nThe simple order calculator slides.\nThe comparison slide (Butterworth vs Chebyshev)."
+  },
+  {
+    "objectID": "dsp_82.html#minichallenge-2-move-from-specs-to-prototype",
+    "href": "dsp_82.html#minichallenge-2-move-from-specs-to-prototype",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Mini‑Challenge 2 – Move from Specs to Prototype",
+    "text": "Mini‑Challenge 2 – Move from Specs to Prototype\nPick analog LP specs:\n\n\\(\\omega_{ap} = 10{,}000\\ \\text{rad/s}\\),\n\\(\\omega_{as} = 30{,}000\\ \\text{rad/s}\\),\n\\(A_p = 1\\) dB, \\(A_s = 25\\) dB.\n\nTasks:\n\nUse the “Try Your Own Lowpass Specs” slide to find \\(\\nu_s\\) and Butterworth order \\(n\\).\nChange \\(A_p\\) from 1 dB → 0.1 dB and observe how \\(n\\) changes.\nReflect: why does tightening passband ripple increase the required order?\n\nWrite your answers (and screenshots if possible) in your lab notebook."
+  },
+  {
+    "objectID": "dsp_82.html#wrapup-key-takeaways-from-the-interactive-deck",
+    "href": "dsp_82.html#wrapup-key-takeaways-from-the-interactive-deck",
+    "title": "8.2 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Wrap‑Up: Key Takeaways from the Interactive Deck",
+    "text": "Wrap‑Up: Key Takeaways from the Interactive Deck\n\nYou can now compute filter order for both Butterworth and Chebyshev I IIR filters from \\((A_p, A_s, \\nu_s)\\).\nYou’ve seen how prewarping adjusts analog specs before BLT.\nYou used live Python code to:\n\nImplement the formulas for \\(\\varepsilon\\), \\(n\\), and prewarped \\(\\omega_a\\).\nVisualize magnitude responses of Butterworth and Chebyshev prototypes.\n\nYou explored how a multi‑band equalizer is essentially a bank of bandpass IIR filters plus gains.\n\n\n\n\n\n\n\nTip\n\n\nKeep this deck open while doing homework: copy the formulas, tweak the code, and use it as a design sandbox."
+  },
+  {
+    "objectID": "dsp_84.html#what-well-focus-on-today",
+    "href": "dsp_84.html#what-well-focus-on-today",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8.9–8.12: What We’ll Focus On Today",
+    "text": "8.9–8.12: What We’ll Focus On Today\nChapter topics covered in this session:\n\n8.9 Application: 60‑Hz hum eliminator & heart‑rate detection in ECG\n8.10 Coefficient accuracy effects on IIR filters\n8.11 Application: DTMF generation & detection using the Goertzel algorithm\n8.12 Summary & practical choice of IIR design methods"
+  },
+  {
+    "objectID": "dsp_84.html#learning-objectives",
+    "href": "dsp_84.html#learning-objectives",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\nBy the end of this session, you should be able to:\n\nExplain why 60‑Hz hum and its harmonics corrupt ECG signals and how IIR notch filters can remove them.\nDerive and interpret the difference equations of cascaded second‑order IIR notch filters and a bandpass IIR filter in an ECG workflow.\nImplement a simple heart‑rate detector based on zero‑crossing of a filtered ECG signal.\nDescribe how finite‑precision (quantized) coefficients move IIR poles/zeros and affect magnitude/phase responses.\nUse the Goertzel algorithm conceptually to compute selected DFT bins and apply it to DTMF detection.\nCompare BLT, impulse‑invariant, and pole‑zero placement IIR design methods and select an appropriate method for a given application.\n\n\nEmphasize to students that this is a very application‑heavy section: biomedical (ECG) and communications/telephony (DTMF). Connect to earlier theory (poles/zeros, z‑transform, DFT) repeatedly."
+  },
+  {
+    "objectID": "dsp_84.html#ecg-60hz-hum-eliminator-why-we-care",
+    "href": "dsp_84.html#ecg-60hz-hum-eliminator-why-we-care",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8.9 ECG: 60‑Hz Hum Eliminator – Why We Care",
+    "text": "8.9 ECG: 60‑Hz Hum Eliminator – Why We Care\nProblem context (ECE / biomedical):\n\nECG signals are very low‑amplitude (on the order of mV).\nPower‑line interference (60 Hz in US, 50 Hz in many other countries) easily corrupts ECG traces.\nNonlinearities in electrodes and amplifiers can create harmonics at 120 Hz, 180 Hz, etc.\nSevere interference can make the ECG unusable for diagnostics or even basic heart‑rate measurement.\n\nEngineering target:\n\nRemove 60 Hz + 120 Hz + 180 Hz components.\nPreserve the clinically useful ECG content for:\n\nGeneral ECG analysis (0.01–250 Hz).\nHeart‑rate detection (narrower band is enough)."
+  },
+  {
+    "objectID": "dsp_84.html#hz-hum-eliminator-concept",
+    "href": "dsp_84.html#hz-hum-eliminator-concept",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "60‑Hz Hum Eliminator Concept",
+    "text": "60‑Hz Hum Eliminator Concept\n\n\nWe cascade three second‑order IIR notch filters:\n\nNotch 1: 60 Hz\nNotch 2: 120 Hz\nNotch 3: 180 Hz\n\nEach notch:\n\nCenter (notch) frequency: (f_0 {60,120,180}) Hz\n3‑dB bandwidth: 4 Hz\nSampling rate: (f_s = 600) Hz\nDesign method: pole‑zero placement\n\nCombined response ≈ product of three notches.\n\n\n\n\n60-Hz hum eliminator and spectra\n\n\nFig. 8.41: (top) hum eliminator block diagram; (middle) magnitude response; (bottom) input spectrum with 60/120/180 Hz hum.\n\n\nRemind students: a notch filter places zeros on the unit circle at the hum frequency and nearby poles slightly inside the unit circle to control bandwidth. Cascading multiplies responses: deep notches at each harmonic while leaving most other frequencies relatively untouched."
+  },
+  {
+    "objectID": "dsp_84.html#ecg-waveform-basics",
+    "href": "dsp_84.html#ecg-waveform-basics",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "ECG Waveform Basics",
+    "text": "ECG Waveform Basics\n\n\nKey ECG components in a single heartbeat:\n\nP wave – atrial depolarization\nQRS complex – rapid ventricular depolarization\nT wave – ventricular repolarization\n\nR is the tallest positive peak; Q and S are small negatives around R.\nHeart rate estimation from ECG:\n\nMeasure period between successive R peaks: (t_R) (ms)\nHeart rate (bpm): \\[\nHR = \\frac{60,\\!000}{\\Delta t_R}\n\\]\n\n\n\n\n\nECG pulse\n\n\nFig. 8.42: ECG pulse with P, QRS, and T waves.\n\n\nExplain that QRS detection is often the first step in ECG processing. For this chapter, they only need the idea that R‑R intervals map to heart rate. Later we’ll use a simple threshold/zero‑cross strategy instead of sophisticated QRS detectors."
+  },
+  {
+    "objectID": "dsp_84.html#ecg-enhancement-system-overview",
+    "href": "dsp_84.html#ecg-enhancement-system-overview",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "ECG Enhancement System Overview",
+    "text": "ECG Enhancement System Overview\n\n\nGoals:\n\nStage 1 – Hum elimination:\n\nRemove 60 Hz and its 2nd and 3rd harmonics.\nUse three cascaded IIR notch filters.\n\nStage 2 – Heart‑rate oriented bandpass:\n\nRemove DC drift and high‑frequency muscle noise (~40 Hz+).\nUse a bandpass IIR filter.\n\n\nDesign summary (for heart‑rate detection path):\n\nHum notch filters (3× second order, IIR, pole‑zero placement).\nBandpass: Chebyshev, 4th order (BLT design).\nPassband: 0.25–40 Hz (approx heart‑rate + QRS content only).\n(f_s = 600) Hz.\n\n\n\n\n\nECG enhancement system\n\n\nFig. 8.43: ECG enhancement and heart‑rate detection chain.\n\n\n\n\n\n\n\nImportant\n\n\nThe bandpass‑filtered ECG (0.25–40 Hz) is good for heart‑rate detection, but not for full diagnostic ECG analysis (which needs ≈0.01–250 Hz)."
+  },
+  {
+    "objectID": "dsp_84.html#designing-one-notch-filter-60-hz-geometry",
+    "href": "dsp_84.html#designing-one-notch-filter-60-hz-geometry",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Designing One Notch Filter (60 Hz) – Geometry",
+    "text": "Designing One Notch Filter (60 Hz) – Geometry\nFor a second‑order digital notch filter:\n\nSampling rate: (f_s=600) Hz\nNotch frequency: (f_0=60) Hz\nDesired 3 dB bandwidth: 4 Hz\n\nWe choose a pole radius (r &lt; 1) from:\n\\[\nr = 1 - \\frac{BW}{f_s}\\pi = 1 - \\frac{4}{600}\\pi \\approx 0.9791\n\\]\nNormalized digital frequency (in degrees):\n\\[\n\\theta = \\frac{f_0}{f_s}\\times 360^\\circ = \\frac{60}{600}\\times 360^\\circ = 36^\\circ\n\\]\nCompute:\n\n(2(36^) = 1.6180)\n(2r(36^) = 1.5842)\n\nGain scale factor (K):\n\\[\nK = \\frac{1 - 2r\\cos\\theta + r^2}{2 - 2\\cos\\theta} \\approx 0.9803\n\\]\n\nIntuition: zeros at angle ±θ on the unit circle create the notch. Poles at radius r, slightly inside, sharpen the notch and control bandwidth. K normalizes overall gain so passband ≈ 0 dB."
+  },
+  {
+    "objectID": "dsp_84.html#hz-notch-filter-transfer-function-difference-equation",
+    "href": "dsp_84.html#hz-notch-filter-transfer-function-difference-equation",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "60‑Hz Notch Filter – Transfer Function & Difference Equation",
+    "text": "60‑Hz Notch Filter – Transfer Function & Difference Equation\nThe 60‑Hz section:\n\\[\nH_1(z) = \\frac{0.9803 - 1.5862 z^{-1} + 0.9803 z^{-2}}{1 - 1.5842 z^{-1} + 0.9586 z^{-2}}\n\\]\nDifference equation (input (x(n)), output (y_1(n))):\n\\[\n\\begin{aligned}\ny_1(n) &= 0.9803\\,x(n) - 1.5862\\,x(n-1) + 0.9802\\,x(n-2) \\\\\n       &\\quad + 1.5842\\,y_1(n-1) - 0.9586\\,y_1(n-2)\n\\end{aligned}\n\\]\nOther two notch sections:\n\n120 Hz section, input (y_1(n)), output (y_2(n)):\n\n\\[\nH_2(z)=\\frac{0.9794 - 0.6053 z^{-1} + 0.9794 z^{-2}}{1 - 0.6051 z^{-1} + 0.9586 z^{-2}}\n\\]\n\\[\n\\begin{aligned}\ny_2(n) &= 0.9794\\,y_1(n) - 0.6053\\,y_1(n-1) + 0.9794\\,y_1(n-2) \\\\\n       &\\quad + 0.6051\\,y_2(n-1) - 0.9586\\,y_2(n-2)\n\\end{aligned}\n\\]\n\n180 Hz section, input (y_2(n)), output (y_3(n)):\n\n\\[\nH_3(z)=\\frac{0.9793 + 0.6052 z^{-1} + 0.9793 z^{-2}}{1 + 0.6051 z^{-1} + 0.9586 z^{-2}}\n\\]\n\\[\n\\begin{aligned}\ny_3(n) &= 0.9793\\,y_2(n) + 0.6052\\,y_2(n-1) + 0.9793\\,y_2(n-2) \\\\\n       &\\quad - 0.6051\\,y_3(n-1) - 0.9586\\,y_3(n-2)\n\\end{aligned}\n\\]\n\n\n\n\n\n\nNote\n\n\nIn implementation, you typically realize each second‑order section (“biquad”) separately and cascade them: \\[\ny_3(n) = H_3(z)\\,H_2(z)\\,H_1(z)\\,x(n)\n\\]"
+  },
+  {
+    "objectID": "dsp_84.html#frequency-response-of-the-cascaded-notches",
+    "href": "dsp_84.html#frequency-response-of-the-cascaded-notches",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Frequency Response of the Cascaded Notches",
+    "text": "Frequency Response of the Cascaded Notches\n\n\n\nThree cascaded notch responses\n\n\nFig. 8.44: Combined response of the three notch filters – deep notches near 60, 120, 180 Hz (&gt; 50 dB attenuation).\n\nHighlight: even though each biquad is simple, cascading gives strong rejection at the hum frequencies while minimally affecting most of the ECG band. Ask: what might happen if hum frequency drifts (e.g., 59.8 Hz)? This motivates bandwidth choice."
+  },
+  {
+    "objectID": "dsp_84.html#stage-2-bandpass-filter-for-heartrate-detection",
+    "href": "dsp_84.html#stage-2-bandpass-filter-for-heartrate-detection",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Stage 2: Bandpass Filter for Heart‑Rate Detection",
+    "text": "Stage 2: Bandpass Filter for Heart‑Rate Detection\nAfter hum removal ((y_3(n))), we still see:\n\nDC drift (very low frequency baseline wander).\nMuscle noise, typically &gt; 40 Hz.\n\nWe design a 4th‑order Chebyshev bandpass:\n\nPassband: 0.25–40 Hz\nPassband ripple: 0.5 dB\nDesign method: bilinear transform (BLT) from an analog prototype.\nSampling rate: (f_s = 600) Hz.\n\nResulting transfer function:\n\\[\nH_4(z)=\\frac{0.0464 - 0.0927 z^{-2} + 0.0464 z^{-4}}{1 - 3.3523 z^{-1} + 4.2557 z^{-2} - 2.4540 z^{-3} + 0.5506 z^{-4}}\n\\]\nDifference equation (input (y_3), output (y_4)):\n\\[\n\\begin{aligned}\ny_4(n) &= 0.0464\\,y_3(n) - 0.0927\\,y_3(n-2) + 0.0464\\,y_3(n-4) \\\\\n&\\quad + 3.3523\\,y_4(n-1) - 4.2557\\,y_4(n-2) \\\\\n&\\quad + 2.4540\\,y_4(n-3) - 0.5506\\,y_4(n-4)\n\\end{aligned}\n\\]"
+  },
+  {
+    "objectID": "dsp_84.html#ecg-processing-stages-visual-effect",
+    "href": "dsp_84.html#ecg-processing-stages-visual-effect",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "ECG Processing Stages – Visual Effect",
+    "text": "ECG Processing Stages – Visual Effect\n\n\n\nECG processing stages\n\n\n\n\nRaw ECG + 60/120/180 Hz interference + muscle noise.\n\n\nAfter 60 Hz notch eliminator – hum/harmonics removed.\n\n\nAfter bandpass (0.25–40 Hz) – baseline wander and muscle noise removed, QRS complexes clearly visible for heart‑rate detection.\n\n\n\nPoint out that step (C) modifies waveform shape significantly (QRS broadened, P/T changed); that’s acceptable for HR detection but not for subtle diagnostic morphologies."
+  },
+  {
+    "objectID": "dsp_84.html#matlab-example-ecg-hum-removal-bandpass",
+    "href": "dsp_84.html#matlab-example-ecg-hum-removal-bandpass",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "MATLAB Example – ECG Hum Removal & Bandpass",
+    "text": "MATLAB Example – ECG Hum Removal & Bandpass\nProgram 8.16 (conceptual structure):\n\nLoad noisy ECG ecgbn.dat.\nDefine three notch filter coefficient vectors b1,a1, b2,a2, b3,a3.\nFilter the signal through each notch: y1, y2, y3.\nDesign bandpass via BLT (lowpass‑to‑bandpass + bilinear), get b,a.\nFilter y3 to get bandpassed ECG y4.\nPlot stages (A, B, C).\nRun zero‑crossing heart‑rate detection.\n\nYou can encourage students to:\n\nVary threshold, see impact on detected heart rate.\nTry different sampling rates or hum frequencies (50 Hz scenario)."
+  },
+  {
+    "objectID": "dsp_84.html#zerocrossingbased-heartrate-detection",
+    "href": "dsp_84.html#zerocrossingbased-heartrate-detection",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Zero‑Crossing–Based Heart‑Rate Detection",
+    "text": "Zero‑Crossing–Based Heart‑Rate Detection\nWe approximate the R‑R interval count by counting zero crossings vs. a threshold on (y_4(n)).\nFor each sample (n):\n\nDefine signs w.r.t. a threshold (e.g., 0.5): \\[\n\\text{cur\\_sign} = \\begin{cases}\n1 & x(n) \\ge \\text{threshold} \\\\\n-1 & x(n) &lt; \\text{threshold}\n\\end{cases}\n\\] \\[\n\\text{pre\\_sign} = \\begin{cases}\n1 & x(n-1) \\ge \\text{threshold} \\\\\n-1 & x(n-1) &lt; \\text{threshold}\n\\end{cases}\n\\]\nZero crossing at sample n: \\[\n\\text{ZeroCross}(n) = \\frac{|\\text{cur\\_sign} - \\text{pre\\_sign}|}{2}\n\\]\n\nIf signs differ: (|1-(-1)|/2 = 1) → crossing.\nIf same: 0.\n\n\nTotal zero crossings: sum over n.\nNumber of peaks ≈ half the zero crossings.\nHeart rate estimation:\n\\[\nHR = \\frac{60}{\\frac{N}{f_s}} \\times \\frac{\\text{zero crossings}}{2}\n\\]"
+  },
+  {
+    "objectID": "dsp_84.html#heartrate-example-calculation",
+    "href": "dsp_84.html#heartrate-example-calculation",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Heart‑Rate Example Calculation",
+    "text": "Heart‑Rate Example Calculation\nIn the example:\n\nData length: (N=1500) samples.\nSampling rate: (f_s=600) Hz.\nTotal zero crossings detected: 6.\n\nCompute HR:\n\\[\n\\begin{aligned}\nHR &= \\frac{60}{\\frac{1500}{600}} \\times \\frac{6}{2} \\\\\n   &= \\frac{60}{2.5} \\times 3 \\\\\n   &= 24 \\times 3 = 72\\ \\text{beats per minute}.\n\\end{aligned}\n\\]\n\n\n\n\n\n\nTip\n\n\nThis is a crude detector but works reasonably well with a clean, band‑limited ECG. Modern systems rely on more sophisticated feature detection (e.g., QRS detectors)."
+  },
+  {
+    "objectID": "dsp_84.html#coefficient-accuracy-effects-on-iir-filters",
+    "href": "dsp_84.html#coefficient-accuracy-effects-on-iir-filters",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8.10 Coefficient Accuracy Effects on IIR Filters",
+    "text": "8.10 Coefficient Accuracy Effects on IIR Filters\nIn practice:\n\nFilter coefficients are quantized (finite word length), especially on fixed‑point DSPs.\nQuantization moves pole and zero locations, changing frequency response and possibly stability.\n\nGeneral IIR form (first order):\n\\[\nH(z) = \\frac{b_0 + b_1 z^{-1}}{1 + a_1 z^{-1}}\n\\]\nAfter quantization:\n\\[\nH^q(z) = \\frac{b_0^q + b_1^q z^{-1}}{1 + a_1^q z^{-1}}\n\\]\nPoles and zeros:\n\\[\nz_1 = -\\frac{b_1^q}{b_0^q}, \\qquad p_1 = -a_1^q\n\\]\nSecond‑order case:\n\\[\nH(z) = \\frac{b_0 + b_1 z^{-1} + b_2 z^{-2}}{1 + a_1 z^{-1} + a_2 z^{-2}}\n\\]\n\\[\nH^q(z) = \\frac{b_0^q + b_1^q z^{-1} + b_2^q z^{-2}}{1 + a_1^q z^{-1} + a_2^q z^{-2}}\n\\]\nZeros:\n\\[\nz_{1,2} = -\\frac{1}{2}\\frac{b_1^q}{b_0^q} \\pm j\\left(\\frac{b_2^q}{b_0^q} - \\frac{1}{4}\\left(\\frac{b_1^q}{b_0^q}\\right)^2\\right)^{1/2}\n\\]\nPoles:\n\\[\np_{1,2} = -\\frac{1}{2} a_1^q \\pm j\\left(a_2^q - \\frac{1}{4}(a_1^q)^2\\right)^{1/2}\n\\]\n\nStress the connection between coefficient accuracy and pole radius: if a pole intended at r ≈ 0.99 gets quantized to r ≈ 1.01, the filter can become unstable. This motivates using second‑order sections and enough bits."
+  },
+  {
+    "objectID": "dsp_84.html#example-8.24-1storder-iir-quantization",
+    "href": "dsp_84.html#example-8.24-1storder-iir-quantization",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.24 – 1st‑Order IIR Quantization",
+    "text": "Example 8.24 – 1st‑Order IIR Quantization\nGiven ideal filter:\n\\[\nH(z) = \\frac{1.2341 + 0.2126 z^{-1}}{1 - 0.5126 z^{-1}}\n\\]\nWe have 1 sign bit + 6 magnitude bits = 7‑bit fixed‑point, with scaling chosen so max coefficient lies in [1,2).\nScale by (2^5):\n\n(1.2341 ^5 ) → (b_0^q = 39/32 = 1.21875).\nSimilarly:\n\n(b_1^q = 0.1875)\n(a_1^q = -0.5)\n\n\nQuantized transfer function:\n\\[\nH^q(z) = \\frac{1.21875 + 0.1875 z^{-1}}{1 - 0.5 z^{-1}}\n\\]\nPoles and zeros (before vs. after):\n\nOriginal zero: (z_1 = - ).\nQuantized zero: (z_1^q - ).\nOriginal pole: (p_1 = 0.5126).\nQuantized pole: (p_1^q = 0.5).\n\n\n\n\n\n\n\nNote\n\n\nEven small coefficient rounding changes pole/zero positions, which changes magnitude and phase response. Here, changes are mild; but in high‑order filters, effects can accumulate."
+  },
+  {
+    "objectID": "dsp_84.html#example-8.25-2ndorder-chebyshev-lowpass",
+    "href": "dsp_84.html#example-8.25-2ndorder-chebyshev-lowpass",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.25 – 2nd‑Order Chebyshev Lowpass",
+    "text": "Example 8.25 – 2nd‑Order Chebyshev Lowpass\nOriginal design (fs = 8 kHz, passband ripple 0.5 dB, (f_c = 3.4) kHz):\n\\[\nH(z) = \\frac{0.7434 + 1.4865 z^{-1} + 0.7434 z^{-2}}{1 + 1.5149 z^{-1} + 0.6346 z^{-2}}\n\\]\nQuantization:\n\n1 sign bit + 7 magnitude bits, scale factor (2^6).\n\nQuantized filter:\n\\[\nH^q(z) = \\frac{0.7500 + 1.484375 z^{-1} + 0.7500 z^{-2}}{1 + 1.515625 z^{-1} + 0.640625 z^{-2}}\n\\]\nPoles/zeros (approx):\n\nUnquantized zeros: (-1, -1) (double real zero at (-1)).\nQuantized zeros: (-0.9896 j 0.1440).\nUnquantized poles: (-0.7574 j 0.2467).\nQuantized poles: (-0.7578 j 0.2569).\n\nMagnitude/phase comparison:\n\n\n\nQuantized vs unquantized responses\n\n\n\nSolid: ideal coefficients.\nDash‑dotted: quantized.\n\nObservation:\n\nMagnitude response shows visible deviation, especially near cutoff.\nPhase response in passband is less affected."
+  },
+  {
+    "objectID": "dsp_84.html#dtmf-realworld-telephony-application",
+    "href": "dsp_84.html#dtmf-realworld-telephony-application",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8.11 DTMF: Real‑World Telephony Application",
+    "text": "8.11 DTMF: Real‑World Telephony Application\nDTMF (Dual‑Tone Multi‑Frequency):\n\nEach telephone keypad key encodes two tones:\n\nOne from a low‑frequency group (rows).\nOne from a high‑frequency group (columns).\n\n\n\n\n\nDTMF keypad and frequencies\n\n\nFig. 8.48: DTMF keypad and associated tone frequencies.\nExample: Key “7” → 852 Hz (row) + 1209 Hz (column).\nSystem roles:\n\nTransmitter: generates the dual‑tone signal.\nReceiver (central office): detects which two frequencies are present → decodes key."
+  },
+  {
+    "objectID": "dsp_84.html#singletone-digital-generator",
+    "href": "dsp_84.html#singletone-digital-generator",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8.11.1 Single‑Tone Digital Generator",
+    "text": "8.11.1 Single‑Tone Digital Generator\nWe use a second‑order IIR whose impulse response is a sinusoid:\n\\[\nH(z) = \\frac{z \\sin\\Omega_0}{z^2 - 2 z \\cos\\Omega_0 + 1} = \\frac{z^{-1} \\sin\\Omega_0}{1 - 2 \\cos\\Omega_0 z^{-1} + z^{-2}}\n\\]\nWith sampling rate (f_s) and tone frequency (f_0):\n\\[\n\\Omega_0 = \\frac{2\\pi f_0}{f_s}\n\\]\nDifference equation (input (x(n)), output (y(n))):\n\\[\ny(n) = \\sin\\Omega_0\\,x(n-1) + 2\\cos\\Omega_0\\,y(n-1) - y(n-2)\n\\]\nTo generate a pure tone of amplitude A:\n\nUse (x(n) = A(n)) (single impulse).\nOutput (y(n)) is the sinusoid.\n\n\n\n\nSingle-tone generator\n\n\nFig. 8.49: Single‑tone generator structure."
+  },
+  {
+    "objectID": "dsp_84.html#example-generate-1-khz-at-8-khz-sampling",
+    "href": "dsp_84.html#example-generate-1-khz-at-8-khz-sampling",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example: Generate 1 kHz at 8 kHz Sampling",
+    "text": "Example: Generate 1 kHz at 8 kHz Sampling\nGiven: (f_s = 8000) Hz, (f_0 = 1000) Hz.\nCompute:\n\\[\n\\Omega_0 = 2\\pi\\frac{1000}{8000} = \\frac{\\pi}{4}\n\\]\n\\[\n\\sin\\Omega_0 = \\sin\\left(\\frac{\\pi}{4}\\right) \\approx 0.707107\n\\]\n\\[\n2\\cos\\Omega_0 = 2\\cos\\left(\\frac{\\pi}{4}\\right) \\approx 1.414214\n\\]\nFilter:\n\\[\nH(z) = \\frac{0.707107 z^{-1}}{1 - 1.414214 z^{-1} + z^{-2}}\n\\]\nMATLAB (Program 8.18) uses impulse input to filter this system and plots:\n\n\n\nSingle tone and spectrum\n\n\nFig. 8.50: Generated 1 kHz tone and its spectrum."
+  },
+  {
+    "objectID": "dsp_84.html#dtmf-dualtone-generator-key-7",
+    "href": "dsp_84.html#dtmf-dualtone-generator-key-7",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8.11.2 DTMF Dual‑Tone Generator (Key “7”)",
+    "text": "8.11.2 DTMF Dual‑Tone Generator (Key “7”)\nTo generate key “7”:\n\nTone 1: 852 Hz\nTone 2: 1209 Hz\n\nImplementation:\n\nUse two second‑order tone generators in parallel.\nSum their outputs.\n\n\n\n\nDTMF tone generator for key 7\n\n\nFig. 8.51: DTMF generator for key “7.”\nProgram 8.19 (MATLAB) does:\n\nCompute coefficients for 852 Hz and 1209 Hz generating filters.\nFilter impulse through each to get y852 and y1209.\nSum: y7 = y852 + y1209.\n\nResult:\n\n\n\nDTMF ‘7’ and spectrum\n\n\nFig. 8.52: DTMF “7” waveform and spectrum with two peaks at 852 and 1209 Hz."
+  },
+  {
+    "objectID": "dsp_84.html#goertzel-algorithm-motivation",
+    "href": "dsp_84.html#goertzel-algorithm-motivation",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8.11.3 Goertzel Algorithm – Motivation",
+    "text": "8.11.3 Goertzel Algorithm – Motivation\nWe want to detect specific tones (e.g., only 7 DTMF frequencies) from a signal. Full FFT:\n\nComputes all N DFT bins → unnecessary and heavier.\n\nGoertzel:\n\nEfficiently computes selected DFT coefficients using a second‑order IIR filter.\nEspecially good for DTMF detection and similar narrowband spectral lines.\n\nKey idea: interpret a DFT bin as the output of a resonator filter excited by the signal."
+  },
+  {
+    "objectID": "dsp_84.html#from-dft-to-goertzel-concept",
+    "href": "dsp_84.html#from-dft-to-goertzel-concept",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "From DFT to Goertzel – Concept",
+    "text": "From DFT to Goertzel – Concept\nDFT of length N:\n\\[\nX(k) = \\sum_{n=0}^{N-1} x(n) e^{-j\\frac{2\\pi kn}{N}}\n\\]\nWe can rewrite in terms of convolution with a sequence (h_k(n) = e^{j}):\n\\[\nX(k) = \\sum_{n=0}^{N-1} x(n) h_k(N-n)\n\\]\nIf we treat (h_k(n)) as an impulse response of an IIR filter:\n\\[\nH_k(z) = \\sum_{n=0}^{\\infty} h_k(n) z^{-n} = \\frac{1}{1 - e^{j\\frac{2\\pi k}{N}} z^{-1}} = \\frac{1}{1 - W_N^{-k} z^{-1}}\n\\]\nAfter some algebra and multiplying numerator/denominator by (1 - W_N^k z^{-1}):\n\\[\nH_k(z) = \\frac{1 - W_N^k z^{-1}}{1 - 2\\cos\\left(\\frac{2\\pi k}{N}\\right) z^{-1} + z^{-2}}\n\\]\nThis is the Goertzel filter – a second‑order resonator with resonance at (= 2k/N)."
+  },
+  {
+    "objectID": "dsp_84.html#goertzel-algorithm-difference-equations",
+    "href": "dsp_84.html#goertzel-algorithm-difference-equations",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Goertzel Algorithm – Difference Equations",
+    "text": "Goertzel Algorithm – Difference Equations\nUsing direct‑form II (Fig. 8.53):\n\n\n\nGoertzel IIR filter\n\n\nAlgorithm for bin k, length N:\n\nInitialize: (v_k(-2)=0), (v_k(-1)=0).\nAppend one zero sample: set (x(N)=0).\n\nFor (n = 0, 1, , N):\n\\[\nv_k(n) = 2\\cos\\left(\\frac{2\\pi k}{N}\\right) v_k(n-1) - v_k(n-2) + x(n)\n\\]\nThen:\n\\[\ny_k(n) = v_k(n) - W_N^k\\,v_k(n-1)\n\\]\nAt n = N:\n\\[\nX(k) = y_k(N)\n\\]\nBut in many applications we only need (|X(k)|), not the complex phase."
+  },
+  {
+    "objectID": "dsp_84.html#magnitude-without-complex-arithmetic-modified-goertzel",
+    "href": "dsp_84.html#magnitude-without-complex-arithmetic-modified-goertzel",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Magnitude without Complex Arithmetic (Modified Goertzel)",
+    "text": "Magnitude without Complex Arithmetic (Modified Goertzel)\nUsing the same state sequence (v_k(n)) (with (x(N)=0)):\n\\[\n|X(k)|^2 = v_k^2(N) + v_k^2(N-1) - 2\\cos\\left(\\frac{2\\pi k}{N}\\right) v_k(N) v_k(N-1)\n\\]\nThis avoids complex multiplications, only uses real arithmetic.\nA simplified filter (Fig. 8.54) has transfer function:\n\n\n\nModified Goertzel filter\n\n\n\\[\nG_k(z) = \\frac{V_k(z)}{X(z)} = \\frac{1}{1 - 2\\cos\\left(\\frac{2\\pi k}{N}\\right) z^{-1} + z^{-2}}\n\\]\nAlgorithm (modified Goertzel):\n\nSame recurrence for (v_k(n)).\nUse formula above to get (|X(k)|^2)."
+  },
+  {
+    "objectID": "dsp_84.html#example-8.26-goertzel-for-x1-with-n4",
+    "href": "dsp_84.html#example-8.26-goertzel-for-x1-with-n4",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.26 – Goertzel for X(1) with N=4",
+    "text": "Example 8.26 – Goertzel for X(1) with N=4\nGiven: (x(0)=1, x(1)=2, x(2)=3, x(3)=4). We want bin (k=1), (N=4).\nCompute constants:\n\\[\n2\\cos\\left(\\frac{2\\pi}{4}\\right) = 0, \\quad W_4^1 = e^{-j\\frac{\\pi}{2}} = -j\n\\]\nSimplified recurrence:\n\\[\nx(4) = 0\n\\]\nFor (n=0,,4):\n\\[\nv_1(n) = -v_1(n-2) + x(n)\n\\]\nOutput:\n\\[\ny_1(n) = v_1(n) + j v_1(n-1)\n\\]\nCompute sequence step‑by‑step (given in text), final result:\n\n(X(1) = y_1(4) = -2 + j2)\n(|X(1)|^2 = 8)\nTwo‑sided amplitude: (A_1 = = 0.7071)\nSingle‑sided amplitude: ≈ 1.4141\n\nThis matches what you’d get from direct DFT."
+  },
+  {
+    "objectID": "dsp_84.html#example-8.27-modified-goertzel-for-k0",
+    "href": "dsp_84.html#example-8.27-modified-goertzel-for-k0",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.27 – Modified Goertzel for k=0",
+    "text": "Example 8.27 – Modified Goertzel for k=0\nSame sequence: (x = [1,2,3,4]), (k=0), (N=4).\nHere: (2(0) = 2).\nRecurrence:\n\\[\nv_0(n) = 2 v_0(n-1) - v_0(n-2) + x(n)\n\\]\nAfter computing (v_0(0)v_0(4)):\n\n(v_0(3) = 20), (v_0(4) = 30).\n\nMagnitude:\n\\[\n\\begin{aligned}\n|X(0)|^2 &= v_0^2(4) + v_0^2(3) - 2 v_0(4)v_0(3) \\\\\n         &= 30^2 + 20^2 - 2\\cdot30\\cdot20 = 100\n\\end{aligned}\n\\]\nAmplitude:\n\\[\nA_0 = \\frac{1}{4}\\sqrt{100} = 2.5\n\\]\nAgain, matches DFT result."
+  },
+  {
+    "objectID": "dsp_84.html#matlab-function-goertzel-implementation-program-8.20",
+    "href": "dsp_84.html#matlab-function-goertzel-implementation-program-8.20",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "MATLAB Function – Goertzel Implementation (Program 8.20)",
+    "text": "MATLAB Function – Goertzel Implementation (Program 8.20)\nFunction interface:\nfunction [Xk, Ak] = galg(x, k)\n    % x: input vector\n    % k: frequency index\n    % Xk: kth DFT coefficient\n    % Ak: magnitude of kth DFT coefficient (single-sided)\nLogic:\n\nLet N = length(x), append one zero sample.\nUse recurrence to fill array vk.\nCompute complex (X_k) and magnitude Ak using formula for (|X(k)|^2).\n\nVerification (Example 8.28):\n\nFor x = [1 2 3 4], k=1 → X1 ≈ −2 + 2i, A1 ≈ 0.7071.\nFor x = [1 2 3 4], k=0 → X0 = 10, A0 ≈ 2.5."
+  },
+  {
+    "objectID": "dsp_84.html#dtmf-detection-via-goertzel",
+    "href": "dsp_84.html#dtmf-detection-via-goertzel",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8.11.4 DTMF Detection via Goertzel",
+    "text": "8.11.4 DTMF Detection via Goertzel\nFor DTMF: we know the 7 possible tone frequencies:\n\\[\n\\{697, 770, 852, 941, 1209, 1336, 1477\\}\\ \\text{Hz}\n\\]\nDesign:\n\nChoose (f_s = 8000) Hz, frame length (N = 205) samples.\nMap tone frequencies to DFT bin indices by: \\[\nk = \\text{round}\\left( \\frac{f}{f_s} \\cdot N \\right)\n\\]\n\nTable 8.12 (precomputed):\n\n\n\nf (Hz)\nk\n\n\n\n\n697\n18\n\n\n770\n20\n\n\n852\n22\n\n\n941\n24\n\n\n1209\n31\n\n\n1336\n34\n\n\n1477\n38\n\n\n\nWe implement 7 parallel Goertzel filters, one for each k."
+  },
+  {
+    "objectID": "dsp_84.html#dtmf-detector-block-diagram",
+    "href": "dsp_84.html#dtmf-detector-block-diagram",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "DTMF Detector Block Diagram",
+    "text": "DTMF Detector Block Diagram\n\n\n\nDTMF detector\n\n\nFig. 8.55: DTMF detector using modified Goertzel filters.\nProcessing steps:\n\nFor received DTMF window (x(n)), run modified Goertzel for each bin (k{18,20,22,24,31,34,38}) to get (|X(k)|^2).\nConvert to single‑sided amplitude: \\[\nA_k = \\frac{2}{N}\\sqrt{|X(k)|^2}\n\\]\nIdeally only two (A_k) values are large (one row tone, one column tone).\nSet a threshold: \\[\n\\text{threshold} = \\frac{\\sum_{k=1}^7 A_k}{4}\n\\]\nFor each k:\n\nIf (A_k &gt; ) → logic 1\nElse → logic 0\n\nThis yields a 7‑bit pattern that uniquely maps to one keypad digit."
+  },
+  {
+    "objectID": "dsp_84.html#example-8.29-detect-key-7",
+    "href": "dsp_84.html#example-8.29-detect-key-7",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Example 8.29 – Detect Key “7”",
+    "text": "Example 8.29 – Detect Key “7”\nGiven:\n\nDTMF key “7” tones: (f_L = 852) Hz, (f_H = 1209) Hz.\n(f_s = 8000) Hz, (N = 205).\n\n\nFrequency bin numbers:\n\n\\[\nk_L \\approx \\frac{852}{8000}\\cdot205 \\approx 22\n\\]\n\\[\nk_H \\approx \\frac{1209}{8000}\\cdot205 \\approx 31\n\\]\n\nGoertzel filters:\n\nCompute coefficients:\n\\[\n2\\cos\\left(\\frac{2\\pi\\cdot22}{205}\\right) = 1.5623\n\\]\n\\[\n2\\cos\\left(\\frac{2\\pi\\cdot31}{205}\\right) = 1.1631\n\\]\nTransfer functions:\n\\[\nH_{22}(z) = \\frac{1}{1 - 1.5623 z^{-1} + z^{-2}}\n\\]\n\\[\nH_{31}(z) = \\frac{1}{1 - 1.1631 z^{-1} + z^{-2}}\n\\]\nDSP equations (with (x(205)=0)):\n\\[\nv_{22}(n) = 1.5623\\,v_{22}(n-1) - v_{22}(n-2) + x(n)\n\\]\n\\[\nv_{31}(n) = 1.1631\\,v_{31}(n-1) - v_{31}(n-2) + x(n)\n\\]\n\nAmplitude spectra:\n\n\\[\n|X(22)|^2 = v_{22}^2(205) + v_{22}^2(204) - 1.5623\\,v_{22}(205)\\,v_{22}(204)\n\\]\n\\[\nA_{22} = \\frac{2}{205}\\sqrt{|X(22)|^2}\n\\]\n\\[\n|X(31)|^2 = v_{31}^2(205) + v_{31}^2(204) - 1.1631\\,v_{31}(205)\\,v_{31}(204)\n\\]\n\\[\nA_{31} = \\frac{2}{205}\\sqrt{|X(31)|^2}\n\\]\nThese two will stand out above other (A_k)’s."
+  },
+  {
+    "objectID": "dsp_84.html#dtmf-matlab-detection-demo-program-8.21",
+    "href": "dsp_84.html#dtmf-matlab-detection-demo-program-8.21",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "DTMF MATLAB Detection Demo (Program 8.21)",
+    "text": "DTMF MATLAB Detection Demo (Program 8.21)\nKey parts of the script:\n\nGenerator:\n\nPrecompute impulse responses for each tone (697, 770, 852, 941, 1209, 1336, 1477).\nBased on user input key, construct yDTMF = sum of two appropriate tones.\n\nDetector:\n\nFor each target frequency bin, create denominator coefficients of Goertzel IIR:\na697  = [1 -2*cos(2*pi*18/N) 1];\n...\na1477 = [1 -2*cos(2*pi*38/N) 1];\nPlot filter bank frequency responses:\n\n\n\nFilter bank responses\n\n\nFilter DTMF signal with each filter to get y697, y770, ....\nUse modified Goertzel formula at n = 205,206 to compute magnitudes m(1..7).\nConvert to single‑sided magnitude m = 2*m/205.\n\nThreshold and logic:\n\nThreshold th = sum(m)/4.\nPlot stem of spectral values with threshold line.\nRound m to [0 or 1] to form a 7‑bit pattern.\nUse if statements to map that pattern to a detected key."
+  },
+  {
+    "objectID": "dsp_84.html#choosing-iir-design-methods-in-practice",
+    "href": "dsp_84.html#choosing-iir-design-methods-in-practice",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "8.12 Choosing IIR Design Methods in Practice",
+    "text": "8.12 Choosing IIR Design Methods in Practice\nWe now summarize the three IIR design approaches used in this chapter:\n\nBilinear Transform (BLT)\nImpulse Invariant\nPole‑Zero Placement\n\nAnd give guidance on when to use which."
+  },
+  {
+    "objectID": "dsp_84.html#blt-design-recommended-workhorse",
+    "href": "dsp_84.html#blt-design-recommended-workhorse",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "BLT Design – Recommended Workhorse",
+    "text": "BLT Design – Recommended Workhorse\nSteps (BLT):\n\nStart from digital specs; prewarp each digital edge frequency to analog using:\n\n(= 2f_s(/2)) style formulas (Eqs. 8.18–8.19).\n\nDetermine analog prototype order:\n\nButterworth: Eq. (8.29).\nChebyshev: Eq. (8.35b).\n\nDesign analog lowpass prototype, then transform to LP/HP/BP/BS as needed (Eqs. 8.20–8.23).\nApply BLT: (s = ) (Eq. 8.24).\nGet digital H(z), verify frequency response, then derive difference equation.\n\nCharacteristics:\n\nWorks for LPF, HPF, BPF, BSF.\nGood control over passband ripple and stopband attenuation.\nSome frequency warping, but prewarping corrects this."
+  },
+  {
+    "objectID": "dsp_84.html#impulse-invariant-design-when-to-use",
+    "href": "dsp_84.html#impulse-invariant-design-when-to-use",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Impulse Invariant Design – When to Use",
+    "text": "Impulse Invariant Design – When to Use\nProcedure:\n\nDesign analog lowpass or bandpass as usual (Butterworth/Chebyshev).\nCompute analog impulse response (h_a(t)) via partial fraction expansion + inverse Laplace (Eq. 8.37).\nSample: (h_d[n] = h_a(nT)) (Eq. 8.38).\nTake z‑transform of sampled impulse response to get H(z).\nVerify frequency response; if specs not met (aliasing issues), switch to BLT.\n\nLimitations:\n\nBest for lowpass and bandpass; highpass/bandstop are problematic due to aliasing.\nRequires sampling rate much higher than highest important analog frequency to reduce aliasing."
+  },
+  {
+    "objectID": "dsp_84.html#polezero-placement-quick-simple-designs",
+    "href": "dsp_84.html#polezero-placement-quick-simple-designs",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Pole‑Zero Placement – Quick, Simple Designs",
+    "text": "Pole‑Zero Placement – Quick, Simple Designs\nUse when:\n\nYou only need simple first‑ or second‑order filters:\n\n2nd‑order bandpass or notch.\n1st‑order lowpass or highpass.\n\n\nProcedure outline:\n\nCompute pole and zero locations from design equations for the filter type (e.g., notch frequency, bandwidth).\nCompute scale factor K and form H(z).\nVerify frequency response; if unsatisfactory, fall back to BLT for better control.\n\nAdvantages:\n\nVery simple closed‑form equations.\nMinimal toolset (just some algebra and a calculator).\n\nDisadvantages:\n\nLimited to low order.\nLess control over ripple/attenuation; primarily 3 dB bandwidth and center frequency."
+  },
+  {
+    "objectID": "dsp_84.html#comparison-table-at-a-glance",
+    "href": "dsp_84.html#comparison-table-at-a-glance",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Comparison Table – At a Glance",
+    "text": "Comparison Table – At a Glance\n\n\n\n\n\n\n\n\n\n\nDesign Method\nFilter Types\nUses Ripple/Stopband Specs?\nSpecial Requirements\nComplexity\n\n\n\n\nBLT\nLP, HP, BP, BS\nYes\nNone\nHigh (but standard)\n\n\nImpulse Invariant\nLP, BP (mainly)\nYes (via analog design)\nSampling rate &gt;&gt; cutoff (LP) or &gt;&gt; upper cutoff (BP) to avoid aliasing\nModerate\n\n\nPole‑Zero Placement\n2nd‑order BP/notch, 1st‑order LP/HP\nNo (only 3 dB level)\nNarrow bands or simple edges; usually low order\nSimple\n\n\n\nPerformance example:\n\nFor a bandpass spec: center 400 Hz, BW 200 Hz, fs=2000 Hz, 2nd order Butterworth:\n\nBLT best meets specs.\nPole‑zero placement shows some center frequency shift and wider response if poles not very close to unit circle.\nImpulse invariant suffers stopband aliasing unless fs is very high.\n\n\n\n\n\nMethod comparison\n\n\nFig. 8.57: BLT vs pole‑zero vs impulse invariant magnitude responses for a bandpass example."
+  },
+  {
+    "objectID": "dsp_84.html#problem-solution-examples-summary",
+    "href": "dsp_84.html#problem-solution-examples-summary",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Problem & Solution Examples – Summary",
+    "text": "Problem & Solution Examples – Summary\n\nECG 60‑Hz Hum Eliminator\n\nGiven: fs=600 Hz, notches at 60/120/180 Hz, BW=4 Hz.\nDesign: 3 second‑order IIR notches via pole‑zero placement.\nCascade → strong rejection; plus 4th‑order Chebyshev bandpass (BLT) for 0.25–40 Hz.\nHeart rate via zero crossings.\n\nCoefficient Quantization (Examples 8.24–8.25)\n\nShow how 7‑bit/8‑bit coefficients move poles/zeros in 1st and 2nd‑order filters.\nAnalyze effect on magnitude and phase.\n\nGoertzel Algorithm (Examples 8.26–8.28)\n\nCompute DFT bins X(1) and X(0) for a short sequence using Goertzel.\nVerify magnitudes match direct DFT.\n\nDTMF Detection (Example 8.29, Program 8.21)\n\nMap DTMF frequencies to k indices.\nConstruct Goertzel IIR filters and threshold logic.\nDecode keypad digit from 7 spectral magnitudes."
+  },
+  {
+    "objectID": "dsp_84.html#key-takeaways-summary",
+    "href": "dsp_84.html#key-takeaways-summary",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Key Takeaways / Summary",
+    "text": "Key Takeaways / Summary\n\nIIR filters are powerful for narrowband tasks:\n\nNotch filters → removing line hum and harmonics in ECG.\nBandpass filters → isolating ECG frequencies or communication channels.\n\nFinite precision matters:\n\nQuantized coefficients shift pole/zero locations.\nStability and magnitude response can be impacted – always verify.\n\nGoertzel algorithm:\n\nEfficient when you only need a few DFT bins.\nDirect mapping between a target frequency and a second‑order resonator.\nPerfectly suited for DTMF detection: small filter bank + logic.\n\nIIR design methods in practice:\n\nUse BLT for most serious filter designs (LP, HP, BP, BS).\nUse impulse invariant when you want to mimic analog impulse response and can oversample.\nUse pole‑zero placement for quick, simple filters (e.g., small notches, 1st‑order LP/HP), especially in embedded DSP."
+  },
+  {
+    "objectID": "dsp_84.html#formula-summary",
+    "href": "dsp_84.html#formula-summary",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Formula Summary",
+    "text": "Formula Summary\nNotch filter design (2nd order):\n\nPole radius (for bandwidth BW at fs): \\[\nr = 1 - \\frac{BW}{f_s}\\pi\n\\]\nAngle for notch at (f_0): \\[\n\\theta = 2\\pi \\frac{f_0}{f_s} \\quad \\text{(or } \\theta^\\circ = 360^\\circ \\frac{f_0}{f_s}\\text{)}\n\\]\nScale factor K (see text Eq. 8.50 type): \\[\nK = \\frac{1 - 2r\\cos\\theta + r^2}{2 - 2\\cos\\theta}\n\\]\n\nGeneral 2nd‑order IIR (biquad):\n\\[\nH(z)=\\frac{b_0 + b_1 z^{-1} + b_2 z^{-2}}{1 + a_1 z^{-1} + a_2 z^{-2}}\n\\]\nDifference equation:\n\\[\ny(n) = b_0 x(n) + b_1 x(n-1) + b_2 x(n-2) - a_1 y(n-1) - a_2 y(n-2)\n\\]\nGoertzel recurrence (modified):\n\nState update: \\[\nv_k(n) = 2\\cos\\left(\\frac{2\\pi k}{N}\\right) v_k(n-1) - v_k(n-2) + x(n)\n\\]\nSquared magnitude: \\[\n|X(k)|^2 = v_k^2(N) + v_k^2(N-1) - 2\\cos\\left(\\frac{2\\pi k}{N}\\right) v_k(N) v_k(N-1)\n\\]\nSingle‑sided amplitude: \\[\nA_k = \\frac{2}{N} \\sqrt{|X(k)|^2}\n\\]\n\nHeart‑rate from zero crossings:\n\\[\nHR\\ (\\text{bpm}) = \\frac{60}{N/f_s} \\cdot \\frac{\\text{zero crossings}}{2}\n\\]\nDTMF bin mapping:\n\\[\nk = \\text{round}\\left( \\frac{f}{f_s} N \\right)\n\\]"
   }
 ]
