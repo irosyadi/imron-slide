@@ -281,9 +281,9 @@ Imron Rosyadi
 </ul>
 <p>Each notch:</p>
 <ul>
-<li>Center (notch) frequency: (f_0 {60,120,180}) Hz</li>
+<li>Center (notch) frequency: <span class="math inline">\(f_0 \in \{60,120,180\}\)</span> Hz</li>
 <li>3‑dB bandwidth: 4 Hz</li>
-<li>Sampling rate: (f_s = 600) Hz</li>
+<li>Sampling rate: <span class="math inline">\(f_s = 600\)</span> Hz</li>
 <li>Design method: pole‑zero placement</li>
 </ul>
 <p>Combined response ≈ product of three notches.</p>
@@ -291,10 +291,9 @@ Imron Rosyadi
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_8/0b8cd37394d2ca1855dd6a2e5cae22aa_MD5.jpg" height="250"></p>
-<figcaption>60-Hz hum eliminator and spectra</figcaption>
+<figcaption>Fig. 8.41: (top) hum eliminator block diagram; (middle) magnitude response; (bottom) input spectrum with 60/120/180 Hz hum.</figcaption>
 </figure>
 </div>
-<p><em>Fig. 8.41: (top) hum eliminator block diagram; (middle) magnitude response; (bottom) input spectrum with 60/120/180 Hz hum.</em></p>
 </div></div>
 <aside class="notes">
 <p>Remind students: a notch filter places zeros on the unit circle at the hum frequency and nearby poles slightly inside the unit circle to control bandwidth. Cascading multiplies responses: deep notches at each harmonic while leaving most other frequencies relatively untouched.</p>
@@ -323,7 +322,7 @@ Imron Rosyadi
 <p>R is the tallest positive peak; Q and S are small negatives around R.</p>
 <p><strong>Heart rate estimation</strong> from ECG:</p>
 <ul>
-<li>Measure period between successive R peaks: (t_R) (ms)</li>
+<li>Measure period between successive R peaks: <span class="math inline">\(\Delta t_R\)</span> (ms)</li>
 <li>Heart rate (bpm): <span class="math display">\[
 HR = \frac{60,\!000}{\Delta t_R}
 \]</span></li>
@@ -332,12 +331,10 @@ HR = \frac{60,\!000}{\Delta t_R}
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_8/7613942a5fdb5fbb82387865b161841e_MD5.jpg" height="250"></p>
-<figcaption>ECG pulse</figcaption>
+<figcaption>Fig. 8.42: ECG pulse with P, QRS, and T waves.</figcaption>
 </figure>
 </div>
-<p><em>Fig. 8.42: ECG pulse with P, QRS, and T waves.</em></p>
-</div></div>
-<aside class="notes">
+</div><aside class="notes">
 <p>Explain that QRS detection is often the first step in ECG processing. For this chapter, they only need the idea that R‑R intervals map to heart rate. Later we’ll use a simple threshold/zero‑cross strategy instead of sophisticated QRS detectors.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -349,12 +346,8 @@ HR = \frac{60,\!000}{\Delta t_R}
           width: 1px!important;
           overflow: hidden!important;
           display:block!important;
-      }</style></aside>
-</section>
-<section id="ecg-enhancement-system-overview" class="slide level2 scrollable">
+      }</style></aside><hr><section id="ecg-enhancement-system-overview" class="slide level2 scrollable">
 <h2>ECG Enhancement System Overview</h2>
-<div class="columns">
-<div class="column" style="width:55%;">
 <p>Goals:</p>
 <ol type="1">
 <li><strong>Stage 1</strong> – Hum elimination:
@@ -373,17 +366,15 @@ HR = \frac{60,\!000}{\Delta t_R}
 <li>Hum notch filters (3× second order, IIR, pole‑zero placement).</li>
 <li>Bandpass: Chebyshev, 4th order (BLT design).</li>
 <li>Passband: 0.25–40 Hz (approx heart‑rate + QRS content only).</li>
-<li>(f_s = 600) Hz.</li>
+<li><span class="math inline">\(f_s = 600\)</span> Hz.</li>
 </ul>
-</div><div class="column" style="width:45%;">
+<hr>
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_8/83a1e465b50b639a839a42b15c5edb93_MD5.jpg" height="250"></p>
-<figcaption>ECG enhancement system</figcaption>
+<figcaption>Fig. 8.43: ECG enhancement and heart‑rate detection chain.</figcaption>
 </figure>
 </div>
-<p><em>Fig. 8.43: ECG enhancement and heart‑rate detection chain.</em></p>
-</div></div>
 <div class="callout callout-important callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -397,32 +388,36 @@ HR = \frac{60,\!000}{\Delta t_R}
 </div>
 </div>
 </div>
-</section>
-<section id="designing-one-notch-filter-60-hz-geometry" class="slide level2">
+<hr>
+</section><section id="designing-one-notch-filter-60-hz-geometry" class="slide level2">
 <h2>Designing One Notch Filter (60 Hz) – Geometry</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <p>For a second‑order digital notch filter:</p>
 <ul>
-<li>Sampling rate: (f_s=600) Hz</li>
-<li>Notch frequency: (f_0=60) Hz</li>
+<li>Sampling rate: <span class="math inline">\(f_s=600\)</span> Hz</li>
+<li>Notch frequency: <span class="math inline">\(f_0=60\)</span> Hz</li>
 <li>Desired 3 dB bandwidth: 4 Hz</li>
 </ul>
-<p>We choose a pole radius (r &lt; 1) from:</p>
+<p>We choose a pole radius <span class="math inline">\(r &lt; 1\)</span> from:</p>
 <p><span class="math display">\[
 r = 1 - \frac{BW}{f_s}\pi = 1 - \frac{4}{600}\pi \approx 0.9791
 \]</span></p>
+</div><div class="column" style="width:50%;">
 <p>Normalized digital frequency (in degrees):</p>
 <p><span class="math display">\[
 \theta = \frac{f_0}{f_s}\times 360^\circ = \frac{60}{600}\times 360^\circ = 36^\circ
 \]</span></p>
 <p>Compute:</p>
 <ul>
-<li>(2(36^) = 1.6180)</li>
-<li>(2r(36^) = 1.5842)</li>
+<li><span class="math inline">\(2\cos(36^\circ) = 1.6180\)</span></li>
+<li><span class="math inline">\(2r\cos(36^\circ) = 1.5842\)</span></li>
 </ul>
-<p>Gain scale factor (K):</p>
+<p>Gain scale factor <span class="math inline">\(K\)</span>:</p>
 <p><span class="math display">\[
 K = \frac{1 - 2r\cos\theta + r^2}{2 - 2\cos\theta} \approx 0.9803
 \]</span></p>
+</div></div>
 <aside class="notes">
 <p>Intuition: zeros at angle ±θ on the unit circle create the notch. Poles at radius r, slightly inside, sharpen the notch and control bandwidth. K normalizes overall gain so passband ≈ 0 dB.</p>
 <style type="text/css">
@@ -436,14 +431,14 @@ K = \frac{1 - 2r\cos\theta + r^2}{2 - 2\cos\theta} \approx 0.9803
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</section>
-<section id="hz-notch-filter-transfer-function-difference-equation" class="slide level2">
+<hr>
+</section><section id="hz-notch-filter-transfer-function-difference-equation" class="slide level2">
 <h2>60‑Hz Notch Filter – Transfer Function &amp; Difference Equation</h2>
 <p>The 60‑Hz section:</p>
 <p><span class="math display">\[
 H_1(z) = \frac{0.9803 - 1.5862 z^{-1} + 0.9803 z^{-2}}{1 - 1.5842 z^{-1} + 0.9586 z^{-2}}
 \]</span></p>
-<p>Difference equation (input (x(n)), output (y_1(n))):</p>
+<p>Difference equation (input <span class="math inline">\(x(n)\)</span>, output <span class="math inline">\(y_1(n)\)</span>):</p>
 <p><span class="math display">\[
 \begin{aligned}
 y_1(n) &amp;= 0.9803\,x(n) - 1.5862\,x(n-1) + 0.9802\,x(n-2) \\
@@ -452,11 +447,12 @@ y_1(n) &amp;= 0.9803\,x(n) - 1.5862\,x(n-1) + 0.9802\,x(n-2) \\
 \]</span></p>
 <p><strong>Other two notch sections:</strong></p>
 <ul>
-<li>120 Hz section, input (y_1(n)), output (y_2(n)):</li>
+<li>120 Hz section, input <span class="math inline">\(y_1(n)\)</span>, output <span class="math inline">\(y_2(n)\)</span>:</li>
 </ul>
 <p><span class="math display">\[
 H_2(z)=\frac{0.9794 - 0.6053 z^{-1} + 0.9794 z^{-2}}{1 - 0.6051 z^{-1} + 0.9586 z^{-2}}
 \]</span></p>
+<hr>
 <p><span class="math display">\[
 \begin{aligned}
 y_2(n) &amp;= 0.9794\,y_1(n) - 0.6053\,y_1(n-1) + 0.9794\,y_1(n-2) \\
@@ -464,7 +460,7 @@ y_2(n) &amp;= 0.9794\,y_1(n) - 0.6053\,y_1(n-1) + 0.9794\,y_1(n-2) \\
 \end{aligned}
 \]</span></p>
 <ul>
-<li>180 Hz section, input (y_2(n)), output (y_3(n)):</li>
+<li>180 Hz section, input <span class="math inline">\(y_2(n)\)</span>, output <span class="math inline">\(y_3(n)\)</span>:</li>
 </ul>
 <p><span class="math display">\[
 H_3(z)=\frac{0.9793 + 0.6052 z^{-1} + 0.9793 z^{-2}}{1 + 0.6051 z^{-1} + 0.9586 z^{-2}}
@@ -490,16 +486,15 @@ y_3(n) = H_3(z)\,H_2(z)\,H_1(z)\,x(n)
 </div>
 </div>
 </div>
-</section>
-<section id="frequency-response-of-the-cascaded-notches" class="slide level2">
+<hr>
+</section><section id="frequency-response-of-the-cascaded-notches" class="slide level2">
 <h2>Frequency Response of the Cascaded Notches</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_8/c8747f76a13d7b3a97c8a4a684d34ca6_MD5.jpg" height="260"></p>
-<figcaption>Three cascaded notch responses</figcaption>
+<figcaption>Fig. 8.44: Combined response of the three notch filters – deep notches near 60, 120, 180 Hz (&gt; 50 dB attenuation).</figcaption>
 </figure>
 </div>
-<p><em>Fig. 8.44: Combined response of the three notch filters – deep notches near 60, 120, 180 Hz (&gt; 50 dB attenuation).</em></p>
 <aside class="notes">
 <p>Highlight: even though each biquad is simple, cascading gives strong rejection at the hum frequencies while minimally affecting most of the ECG band. Ask: what might happen if hum frequency drifts (e.g., 59.8 Hz)? This motivates bandwidth choice.</p>
 <style type="text/css">
@@ -513,10 +508,10 @@ y_3(n) = H_3(z)\,H_2(z)\,H_1(z)\,x(n)
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</section>
-<section id="stage-2-bandpass-filter-for-heartrate-detection" class="slide level2">
+<hr>
+</section><section id="stage-2-bandpass-filter-for-heartrate-detection" class="slide level2">
 <h2>Stage 2: Bandpass Filter for Heart‑Rate Detection</h2>
-<p>After hum removal ((y_3(n))), we still see:</p>
+<p>After hum removal (<span class="math inline">\(y_3(n)\)</span>), we still see:</p>
 <ul>
 <li>DC drift (very low frequency baseline wander).</li>
 <li>Muscle noise, typically &gt; 40 Hz.</li>
@@ -526,13 +521,14 @@ y_3(n) = H_3(z)\,H_2(z)\,H_1(z)\,x(n)
 <li>Passband: 0.25–40 Hz</li>
 <li>Passband ripple: 0.5 dB</li>
 <li>Design method: bilinear transform (BLT) from an analog prototype.</li>
-<li>Sampling rate: (f_s = 600) Hz.</li>
+<li>Sampling rate: <span class="math inline">\(f_s = 600\)</span> Hz.</li>
 </ul>
+<hr>
 <p>Resulting transfer function:</p>
 <p><span class="math display">\[
 H_4(z)=\frac{0.0464 - 0.0927 z^{-2} + 0.0464 z^{-4}}{1 - 3.3523 z^{-1} + 4.2557 z^{-2} - 2.4540 z^{-3} + 0.5506 z^{-4}}
 \]</span></p>
-<p>Difference equation (input (y_3), output (y_4)):</p>
+<p>Difference equation (input <span class="math inline">\(y_3\)</span>, output <span class="math inline">\(y_4\)</span>):</p>
 <p><span class="math display">\[
 \begin{aligned}
 y_4(n) &amp;= 0.0464\,y_3(n) - 0.0927\,y_3(n-2) + 0.0464\,y_3(n-4) \\
@@ -540,8 +536,8 @@ y_4(n) &amp;= 0.0464\,y_3(n) - 0.0927\,y_3(n-2) + 0.0464\,y_3(n-4) \\
 &amp;\quad + 2.4540\,y_4(n-3) - 0.5506\,y_4(n-4)
 \end{aligned}
 \]</span></p>
-</section>
-<section id="ecg-processing-stages-visual-effect" class="slide level2 scrollable">
+<hr>
+</section><section id="ecg-processing-stages-visual-effect" class="slide level2 scrollable">
 <h2>ECG Processing Stages – Visual Effect</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -573,8 +569,8 @@ y_4(n) &amp;= 0.0464\,y_3(n) - 0.0927\,y_3(n-2) + 0.0464\,y_3(n-4) \\
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</section>
-<section id="matlab-example-ecg-hum-removal-bandpass" class="slide level2 scrollable">
+<hr>
+</section><section id="matlab-example-ecg-hum-removal-bandpass" class="slide level2 scrollable">
 <h2>MATLAB Example – ECG Hum Removal &amp; Bandpass</h2>
 <p><strong>Program 8.16 (conceptual structure):</strong></p>
 <ol type="1">
@@ -591,44 +587,45 @@ y_4(n) &amp;= 0.0464\,y_3(n) - 0.0927\,y_3(n-2) + 0.0464\,y_3(n-4) \\
 <li>Vary <code>threshold</code>, see impact on detected heart rate.</li>
 <li>Try different sampling rates or hum frequencies (50 Hz scenario).</li>
 </ul>
-</section>
-<section id="zerocrossingbased-heartrate-detection" class="slide level2 scrollable">
+<hr>
+</section><section id="zerocrossingbased-heartrate-detection" class="slide level2 scrollable">
 <h2>Zero‑Crossing–Based Heart‑Rate Detection</h2>
-<p>We approximate the R‑R interval count by counting <strong>zero crossings vs.&nbsp;a threshold</strong> on (y_4(n)).</p>
-<p>For each sample (n):</p>
+<p>We approximate the R‑R interval count by counting <strong>zero crossings vs.&nbsp;a threshold</strong> on <span class="math inline">\(y_4(n)\)</span>.</p>
+<p>For each sample <span class="math inline">\(n\)</span>:</p>
 <ol type="1">
 <li><p>Define signs w.r.t. a threshold (e.g., 0.5): <span class="math display">\[
-\text{cur\_sign} = \begin{cases}
+\text{cur_sign} = \begin{cases}
 1 &amp; x(n) \ge \text{threshold} \\
 -1 &amp; x(n) &lt; \text{threshold}
 \end{cases}
 \]</span> <span class="math display">\[
-\text{pre\_sign} = \begin{cases}
+\text{pre_sign} = \begin{cases}
 1 &amp; x(n-1) \ge \text{threshold} \\
 -1 &amp; x(n-1) &lt; \text{threshold}
 \end{cases}
 \]</span></p></li>
 <li><p>Zero crossing at sample n: <span class="math display">\[
-\text{ZeroCross}(n) = \frac{|\text{cur\_sign} - \text{pre\_sign}|}{2}
+\text{ZeroCross}(n) = \frac{|\text{cur_sign} - \text{pre_sign}|}{2}
 \]</span></p>
 <ul>
-<li>If signs differ: (|1-(-1)|/2 = 1) → crossing.</li>
+<li>If signs differ: <span class="math inline">\(|1-(-1)|/2 = 1\)</span> → crossing.</li>
 <li>If same: 0.</li>
 </ul></li>
 </ol>
+<hr>
 <p>Total zero crossings: sum over n.</p>
 <p>Number of peaks ≈ half the zero crossings.</p>
 <p>Heart rate estimation:</p>
 <p><span class="math display">\[
 HR = \frac{60}{\frac{N}{f_s}} \times \frac{\text{zero crossings}}{2}
 \]</span></p>
-</section>
-<section id="heartrate-example-calculation" class="slide level2">
+<hr>
+</section><section id="heartrate-example-calculation" class="slide level2">
 <h2>Heart‑Rate Example Calculation</h2>
 <p>In the example:</p>
 <ul>
-<li>Data length: (N=1500) samples.</li>
-<li>Sampling rate: (f_s=600) Hz.</li>
+<li>Data length: <span class="math inline">\(N=1500\)</span> samples.</li>
+<li>Sampling rate: <span class="math inline">\(f_s=600\)</span> Hz.</li>
 <li>Total zero crossings detected: 6.</li>
 </ul>
 <p>Compute HR:</p>
@@ -652,8 +649,8 @@ HR &amp;= \frac{60}{\frac{1500}{600}} \times \frac{6}{2} \\
 </div>
 </div>
 </div>
-</section>
-<section id="coefficient-accuracy-effects-on-iir-filters" class="slide level2">
+<hr>
+</section><section id="coefficient-accuracy-effects-on-iir-filters" class="slide level2">
 <h2>8.10 Coefficient Accuracy Effects on IIR Filters</h2>
 <p>In practice:</p>
 <ul>
@@ -668,6 +665,7 @@ H(z) = \frac{b_0 + b_1 z^{-1}}{1 + a_1 z^{-1}}
 <p><span class="math display">\[
 H^q(z) = \frac{b_0^q + b_1^q z^{-1}}{1 + a_1^q z^{-1}}
 \]</span></p>
+<hr>
 <p>Poles and zeros:</p>
 <p><span class="math display">\[
 z_1 = -\frac{b_1^q}{b_0^q}, \qquad p_1 = -a_1^q
@@ -700,33 +698,34 @@ p_{1,2} = -\frac{1}{2} a_1^q \pm j\left(a_2^q - \frac{1}{4}(a_1^q)^2\right)^{1/2
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</section>
-<section id="example-8.24-1storder-iir-quantization" class="slide level2">
+<hr>
+</section><section id="example-8.24-1storder-iir-quantization" class="slide level2">
 <h2>Example 8.24 – 1st‑Order IIR Quantization</h2>
 <p>Given ideal filter:</p>
 <p><span class="math display">\[
 H(z) = \frac{1.2341 + 0.2126 z^{-1}}{1 - 0.5126 z^{-1}}
 \]</span></p>
 <p>We have 1 sign bit + 6 magnitude bits = 7‑bit fixed‑point, with scaling chosen so max coefficient lies in [1,2).</p>
-<p>Scale by (2^5):</p>
+<p>Scale by <span class="math inline">\(2^5\)</span>:</p>
 <ul>
-<li>(1.2341 ^5 ) → (b_0^q = 39/32 = 1.21875).</li>
+<li><span class="math inline">\(1.2341 \times 2^5 \approx 39.49 \rightarrow 39\)</span> → <span class="math inline">\(b_0^q = 39/32 = 1.21875\)</span>.</li>
 <li>Similarly:
 <ul>
-<li>(b_1^q = 0.1875)</li>
-<li>(a_1^q = -0.5)</li>
+<li><span class="math inline">\(b_1^q = 0.1875\)</span></li>
+<li><span class="math inline">\(a_1^q = -0.5\)</span></li>
 </ul></li>
 </ul>
+<hr>
 <p>Quantized transfer function:</p>
 <p><span class="math display">\[
 H^q(z) = \frac{1.21875 + 0.1875 z^{-1}}{1 - 0.5 z^{-1}}
 \]</span></p>
 <p>Poles and zeros (before vs.&nbsp;after):</p>
 <ul>
-<li>Original zero: (z_1 = - ).</li>
-<li>Quantized zero: (z_1^q - ).</li>
-<li>Original pole: (p_1 = 0.5126).</li>
-<li>Quantized pole: (p_1^q = 0.5).</li>
+<li>Original zero: <span class="math inline">\(z_1 = -\frac{0.2126}{1.2341} \approx -0.1723\)</span>.</li>
+<li>Quantized zero: <span class="math inline">\(z_1^q \approx -\frac{0.1875}{1.21875} \approx -0.1538\)</span>.</li>
+<li>Original pole: <span class="math inline">\(p_1 = 0.5126\)</span>.</li>
+<li>Quantized pole: <span class="math inline">\(p_1^q = 0.5\)</span>.</li>
 </ul>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
@@ -741,16 +740,16 @@ H^q(z) = \frac{1.21875 + 0.1875 z^{-1}}{1 - 0.5 z^{-1}}
 </div>
 </div>
 </div>
-</section>
-<section id="example-8.25-2ndorder-chebyshev-lowpass" class="slide level2">
+<hr>
+</section><section id="example-8.25-2ndorder-chebyshev-lowpass" class="slide level2">
 <h2>Example 8.25 – 2nd‑Order Chebyshev Lowpass</h2>
-<p>Original design (fs = 8 kHz, passband ripple 0.5 dB, (f_c = 3.4) kHz):</p>
+<p>Original design (fs = 8 kHz, passband ripple 0.5 dB, <span class="math inline">\(f_c = 3.4\)</span> kHz):</p>
 <p><span class="math display">\[
 H(z) = \frac{0.7434 + 1.4865 z^{-1} + 0.7434 z^{-2}}{1 + 1.5149 z^{-1} + 0.6346 z^{-2}}
 \]</span></p>
 <p>Quantization:</p>
 <ul>
-<li>1 sign bit + 7 magnitude bits, scale factor (2^6).</li>
+<li>1 sign bit + 7 magnitude bits, scale factor <span class="math inline">\(2^6\)</span>.</li>
 </ul>
 <p>Quantized filter:</p>
 <p><span class="math display">\[
@@ -758,11 +757,12 @@ H^q(z) = \frac{0.7500 + 1.484375 z^{-1} + 0.7500 z^{-2}}{1 + 1.515625 z^{-1} + 0
 \]</span></p>
 <p>Poles/zeros (approx):</p>
 <ul>
-<li>Unquantized zeros: (-1, -1) (double real zero at (-1)).</li>
-<li>Quantized zeros: (-0.9896 j 0.1440).</li>
-<li>Unquantized poles: (-0.7574 j 0.2467).</li>
-<li>Quantized poles: (-0.7578 j 0.2569).</li>
+<li>Unquantized zeros: <span class="math inline">\(-1, -1\)</span> (double real zero at <span class="math inline">\(-1\)</span>).</li>
+<li>Quantized zeros: <span class="math inline">\(-0.9896 \pm j 0.1440\)</span>.</li>
+<li>Unquantized poles: <span class="math inline">\(-0.7574 \pm j 0.2467\)</span>.</li>
+<li>Quantized poles: <span class="math inline">\(-0.7578 \pm j 0.2569\)</span>.</li>
 </ul>
+<hr>
 <p>Magnitude/phase comparison:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -779,8 +779,8 @@ H^q(z) = \frac{0.7500 + 1.484375 z^{-1} + 0.7500 z^{-2}}{1 + 1.515625 z^{-1} + 0
 <li>Magnitude response shows visible deviation, especially near cutoff.</li>
 <li>Phase response in passband is less affected.</li>
 </ul>
-</section>
-<section id="dtmf-realworld-telephony-application" class="slide level2">
+<hr>
+</section><section id="dtmf-realworld-telephony-application" class="slide level2">
 <h2>8.11 DTMF: Real‑World Telephony Application</h2>
 <p><strong>DTMF (Dual‑Tone Multi‑Frequency)</strong>:</p>
 <ul>
@@ -793,47 +793,45 @@ H^q(z) = \frac{0.7500 + 1.484375 z^{-1} + 0.7500 z^{-2}}{1 + 1.515625 z^{-1} + 0
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_8/2182fe704ccfae1d2d10fedec9e19a34_MD5.jpg" height="260"></p>
-<figcaption>DTMF keypad and frequencies</figcaption>
+<figcaption>Fig. 8.48: DTMF keypad and associated tone frequencies.</figcaption>
 </figure>
 </div>
-<p><em>Fig. 8.48: DTMF keypad and associated tone frequencies.</em></p>
 <p>Example: Key “7” → 852 Hz (row) + 1209 Hz (column).</p>
 <p>System roles:</p>
 <ul>
 <li><strong>Transmitter</strong>: generates the dual‑tone signal.</li>
 <li><strong>Receiver (central office)</strong>: detects which two frequencies are present → decodes key.</li>
 </ul>
-</section>
-<section id="singletone-digital-generator" class="slide level2">
+<hr>
+</section><section id="singletone-digital-generator" class="slide level2">
 <h2>8.11.1 Single‑Tone Digital Generator</h2>
 <p>We use a second‑order IIR whose impulse response is a sinusoid:</p>
 <p><span class="math display">\[
 H(z) = \frac{z \sin\Omega_0}{z^2 - 2 z \cos\Omega_0 + 1} = \frac{z^{-1} \sin\Omega_0}{1 - 2 \cos\Omega_0 z^{-1} + z^{-2}}
 \]</span></p>
-<p>With sampling rate (f_s) and tone frequency (f_0):</p>
+<p>With sampling rate <span class="math inline">\(f_s\)</span> and tone frequency <span class="math inline">\(f_0\)</span>:</p>
 <p><span class="math display">\[
 \Omega_0 = \frac{2\pi f_0}{f_s}
 \]</span></p>
-<p>Difference equation (input (x(n)), output (y(n))):</p>
+<p>Difference equation (input <span class="math inline">\(x(n)\)</span>, output <span class="math inline">\(y(n)\)</span>):</p>
 <p><span class="math display">\[
 y(n) = \sin\Omega_0\,x(n-1) + 2\cos\Omega_0\,y(n-1) - y(n-2)
 \]</span></p>
 <p><strong>To generate a pure tone of amplitude A:</strong></p>
 <ul>
-<li>Use (x(n) = A(n)) (single impulse).</li>
-<li>Output (y(n)) is the sinusoid.</li>
+<li>Use <span class="math inline">\(x(n) = A\delta(n)\)</span> (single impulse).</li>
+<li>Output <span class="math inline">\(y(n)\)</span> is the sinusoid.</li>
 </ul>
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_8/0c0cd37394d2ca1855dd6a2e5cae829a21_MD5.jpg" height="220"></p>
-<figcaption>Single-tone generator</figcaption>
+<figcaption>Fig. 8.49: Single‑tone generator structure.</figcaption>
 </figure>
 </div>
-<p><em>Fig. 8.49: Single‑tone generator structure.</em></p>
-</section>
-<section id="example-generate-1-khz-at-8-khz-sampling" class="slide level2">
+<hr>
+</section><section id="example-generate-1-khz-at-8-khz-sampling" class="slide level2">
 <h2>Example: Generate 1 kHz at 8 kHz Sampling</h2>
-<p>Given: (f_s = 8000) Hz, (f_0 = 1000) Hz.</p>
+<p>Given: <span class="math inline">\(f_s = 8000\)</span> Hz, <span class="math inline">\(f_0 = 1000\)</span> Hz.</p>
 <p>Compute:</p>
 <p><span class="math display">\[
 \Omega_0 = 2\pi\frac{1000}{8000} = \frac{\pi}{4}
@@ -856,8 +854,8 @@ H(z) = \frac{0.707107 z^{-1}}{1 - 1.414214 z^{-1} + z^{-2}}
 </figure>
 </div>
 <p><em>Fig. 8.50: Generated 1 kHz tone and its spectrum.</em></p>
-</section>
-<section id="dtmf-dualtone-generator-key-7" class="slide level2">
+<hr>
+</section><section id="dtmf-dualtone-generator-key-7" class="slide level2">
 <h2>8.11.2 DTMF Dual‑Tone Generator (Key “7”)</h2>
 <p>To generate key “7”:</p>
 <ul>
@@ -890,8 +888,8 @@ H(z) = \frac{0.707107 z^{-1}}{1 - 1.414214 z^{-1} + z^{-2}}
 </figure>
 </div>
 <p><em>Fig. 8.52: DTMF “7” waveform and spectrum with two peaks at 852 and 1209 Hz.</em></p>
-</section>
-<section id="goertzel-algorithm-motivation" class="slide level2">
+<hr>
+</section><section id="goertzel-algorithm-motivation" class="slide level2">
 <h2>8.11.3 Goertzel Algorithm – Motivation</h2>
 <p>We want to <strong>detect specific tones</strong> (e.g., only 7 DTMF frequencies) from a signal. Full FFT:</p>
 <ul>
@@ -903,28 +901,28 @@ H(z) = \frac{0.707107 z^{-1}}{1 - 1.414214 z^{-1} + z^{-2}}
 <li>Especially good for DTMF detection and similar narrowband spectral lines.</li>
 </ul>
 <p>Key idea: interpret a DFT bin as the output of a resonator filter excited by the signal.</p>
-</section>
-<section id="from-dft-to-goertzel-concept" class="slide level2">
+<hr>
+</section><section id="from-dft-to-goertzel-concept" class="slide level2">
 <h2>From DFT to Goertzel – Concept</h2>
 <p>DFT of length N:</p>
 <p><span class="math display">\[
 X(k) = \sum_{n=0}^{N-1} x(n) e^{-j\frac{2\pi kn}{N}}
 \]</span></p>
-<p>We can rewrite in terms of convolution with a sequence (h_k(n) = e^{j}):</p>
+<p>We can rewrite in terms of convolution with a sequence <span class="math inline">\(h_k(n) = e^{j\frac{2\pi k n}{N}}\)</span>:</p>
 <p><span class="math display">\[
 X(k) = \sum_{n=0}^{N-1} x(n) h_k(N-n)
 \]</span></p>
-<p>If we treat (h_k(n)) as an <strong>impulse response</strong> of an IIR filter:</p>
+<p>If we treat <span class="math inline">\(h_k(n)\)</span> as an <strong>impulse response</strong> of an IIR filter:</p>
 <p><span class="math display">\[
 H_k(z) = \sum_{n=0}^{\infty} h_k(n) z^{-n} = \frac{1}{1 - e^{j\frac{2\pi k}{N}} z^{-1}} = \frac{1}{1 - W_N^{-k} z^{-1}}
 \]</span></p>
-<p>After some algebra and multiplying numerator/denominator by (1 - W_N^k z^{-1}):</p>
+<p>After some algebra and multiplying numerator/denominator by <span class="math inline">\(1 - W_N^k z^{-1}\)</span>:</p>
 <p><span class="math display">\[
 H_k(z) = \frac{1 - W_N^k z^{-1}}{1 - 2\cos\left(\frac{2\pi k}{N}\right) z^{-1} + z^{-2}}
 \]</span></p>
-<p>This is the <strong>Goertzel filter</strong> – a <strong>second‑order resonator</strong> with resonance at (= 2k/N).</p>
-</section>
-<section id="goertzel-algorithm-difference-equations" class="slide level2">
+<p>This is the <strong>Goertzel filter</strong> – a <strong>second‑order resonator</strong> with resonance at <span class="math inline">\(\Omega = 2\pi k/N\)</span>.</p>
+<hr>
+</section><section id="goertzel-algorithm-difference-equations" class="slide level2">
 <h2>Goertzel Algorithm – Difference Equations</h2>
 <p>Using direct‑form II (Fig. 8.53):</p>
 <div class="quarto-figure quarto-figure-center">
@@ -935,10 +933,10 @@ H_k(z) = \frac{1 - W_N^k z^{-1}}{1 - 2\cos\left(\frac{2\pi k}{N}\right) z^{-1} +
 </div>
 <p>Algorithm for bin k, length N:</p>
 <ul>
-<li>Initialize: (v_k(-2)=0), (v_k(-1)=0).</li>
-<li>Append one zero sample: set (x(N)=0).</li>
+<li>Initialize: <span class="math inline">\(v_k(-2)=0\)</span>, <span class="math inline">\(v_k(-1)=0\)</span>.</li>
+<li>Append one zero sample: set <span class="math inline">\(x(N)=0\)</span>.</li>
 </ul>
-<p>For (n = 0, 1, , N):</p>
+<p>For <span class="math inline">\(n = 0, 1, \dots, N\)</span>:</p>
 <p><span class="math display">\[
 v_k(n) = 2\cos\left(\frac{2\pi k}{N}\right) v_k(n-1) - v_k(n-2) + x(n)
 \]</span></p>
@@ -950,11 +948,11 @@ y_k(n) = v_k(n) - W_N^k\,v_k(n-1)
 <p><span class="math display">\[
 X(k) = y_k(N)
 \]</span></p>
-<p>But in many applications we only need (|X(k)|), not the complex phase.</p>
-</section>
-<section id="magnitude-without-complex-arithmetic-modified-goertzel" class="slide level2">
+<p>But in many applications we only need <span class="math inline">\(|X(k)|\)</span>, not the complex phase.</p>
+<hr>
+</section><section id="magnitude-without-complex-arithmetic-modified-goertzel" class="slide level2">
 <h2>Magnitude without Complex Arithmetic (Modified Goertzel)</h2>
-<p>Using the same state sequence (v_k(n)) (with (x(N)=0)):</p>
+<p>Using the same state sequence <span class="math inline">\(v_k(n)\)</span> (with <span class="math inline">\(x(N)=0\)</span>):</p>
 <p><span class="math display">\[
 |X(k)|^2 = v_k^2(N) + v_k^2(N-1) - 2\cos\left(\frac{2\pi k}{N}\right) v_k(N) v_k(N-1)
 \]</span></p>
@@ -971,13 +969,13 @@ G_k(z) = \frac{V_k(z)}{X(z)} = \frac{1}{1 - 2\cos\left(\frac{2\pi k}{N}\right) z
 \]</span></p>
 <p>Algorithm (modified Goertzel):</p>
 <ul>
-<li>Same recurrence for (v_k(n)).</li>
-<li>Use formula above to get (|X(k)|^2).</li>
+<li>Same recurrence for <span class="math inline">\(v_k(n)\)</span>.</li>
+<li>Use formula above to get <span class="math inline">\(|X(k)|^2\)</span>.</li>
 </ul>
-</section>
-<section id="example-8.26-goertzel-for-x1-with-n4" class="slide level2">
+<hr>
+</section><section id="example-8.26-goertzel-for-x1-with-n4" class="slide level2">
 <h2>Example 8.26 – Goertzel for X(1) with N=4</h2>
-<p>Given: (x(0)=1, x(1)=2, x(2)=3, x(3)=4). We want bin (k=1), (N=4).</p>
+<p>Given: <span class="math inline">\(x(0)=1, x(1)=2, x(2)=3, x(3)=4\)</span>. We want bin <span class="math inline">\(k=1\)</span>, <span class="math inline">\(N=4\)</span>.</p>
 <p>Compute constants:</p>
 <p><span class="math display">\[
 2\cos\left(\frac{2\pi}{4}\right) = 0, \quad W_4^1 = e^{-j\frac{\pi}{2}} = -j
@@ -986,7 +984,7 @@ G_k(z) = \frac{V_k(z)}{X(z)} = \frac{1}{1 - 2\cos\left(\frac{2\pi k}{N}\right) z
 <p><span class="math display">\[
 x(4) = 0
 \]</span></p>
-<p>For (n=0,,4):</p>
+<p>For <span class="math inline">\(n=0,\dots,4\)</span>:</p>
 <p><span class="math display">\[
 v_1(n) = -v_1(n-2) + x(n)
 \]</span></p>
@@ -996,24 +994,24 @@ y_1(n) = v_1(n) + j v_1(n-1)
 \]</span></p>
 <p>Compute sequence step‑by‑step (given in text), final result:</p>
 <ul>
-<li>(X(1) = y_1(4) = -2 + j2)</li>
-<li>(|X(1)|^2 = 8)</li>
-<li>Two‑sided amplitude: (A_1 = = 0.7071)</li>
+<li><span class="math inline">\(X(1) = y_1(4) = -2 + j2\)</span></li>
+<li><span class="math inline">\(|X(1)|^2 = 8\)</span></li>
+<li>Two‑sided amplitude: <span class="math inline">\(A_1 = \frac{1}{4}\sqrt{8} = 0.7071\)</span></li>
 <li>Single‑sided amplitude: ≈ 1.4141</li>
 </ul>
 <p>This matches what you’d get from direct DFT.</p>
-</section>
-<section id="example-8.27-modified-goertzel-for-k0" class="slide level2">
+<hr>
+</section><section id="example-8.27-modified-goertzel-for-k0" class="slide level2">
 <h2>Example 8.27 – Modified Goertzel for k=0</h2>
-<p>Same sequence: (x = [1,2,3,4]), (k=0), (N=4).</p>
-<p>Here: (2(0) = 2).</p>
+<p>Same sequence: <span class="math inline">\(x = [1,2,3,4]\)</span>, <span class="math inline">\(k=0\)</span>, <span class="math inline">\(N=4\)</span>.</p>
+<p>Here: <span class="math inline">\(2\cos(0) = 2\)</span>.</p>
 <p>Recurrence:</p>
 <p><span class="math display">\[
 v_0(n) = 2 v_0(n-1) - v_0(n-2) + x(n)
 \]</span></p>
-<p>After computing (v_0(0)v_0(4)):</p>
+<p>After computing <span class="math inline">\(v_0(0)\dots v_0(4)\)</span>:</p>
 <ul>
-<li>(v_0(3) = 20), (v_0(4) = 30).</li>
+<li><span class="math inline">\(v_0(3) = 20\)</span>, <span class="math inline">\(v_0(4) = 30\)</span>.</li>
 </ul>
 <p>Magnitude:</p>
 <p><span class="math display">\[
@@ -1027,8 +1025,8 @@ v_0(n) = 2 v_0(n-1) - v_0(n-2) + x(n)
 A_0 = \frac{1}{4}\sqrt{100} = 2.5
 \]</span></p>
 <p>Again, matches DFT result.</p>
-</section>
-<section id="matlab-function-goertzel-implementation-program-8.20" class="slide level2">
+<hr>
+</section><section id="matlab-function-goertzel-implementation-program-8.20" class="slide level2">
 <h2>MATLAB Function – Goertzel Implementation (Program 8.20)</h2>
 <p>Function interface:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource matlab number-lines code-with-copy"><code class="sourceCode matlab"><span id="cb1-1"><a></a><span class="kw">function</span> [<span class="va">Xk</span><span class="op">,</span> <span class="va">Ak</span>] <span class="op">=</span> <span class="va">galg</span>(<span class="va">x</span><span class="op">,</span> <span class="va">k</span>)</span>
@@ -1040,15 +1038,15 @@ A_0 = \frac{1}{4}\sqrt{100} = 2.5
 <ul>
 <li>Let N = length(x), append one zero sample.</li>
 <li>Use recurrence to fill array <code>vk</code>.</li>
-<li>Compute complex (X_k) and magnitude Ak using formula for (|X(k)|^2).</li>
+<li>Compute complex <span class="math inline">\(X_k\)</span> and magnitude Ak using formula for <span class="math inline">\(|X(k)|^2\)</span>.</li>
 </ul>
 <p><strong>Verification (Example 8.28):</strong></p>
 <ul>
 <li>For x = [1 2 3 4], k=1 → X1 ≈ −2 + 2i, A1 ≈ 0.7071.</li>
 <li>For x = [1 2 3 4], k=0 → X0 = 10, A0 ≈ 2.5.</li>
 </ul>
-</section>
-<section id="dtmf-detection-via-goertzel" class="slide level2">
+<hr>
+</section><section id="dtmf-detection-via-goertzel" class="slide level2">
 <h2>8.11.4 DTMF Detection via Goertzel</h2>
 <p>For DTMF: we know the 7 possible tone frequencies:</p>
 <p><span class="math display">\[
@@ -1056,7 +1054,7 @@ A_0 = \frac{1}{4}\sqrt{100} = 2.5
 \]</span></p>
 <p>Design:</p>
 <ul>
-<li>Choose (f_s = 8000) Hz, frame length (N = 205) samples.</li>
+<li>Choose <span class="math inline">\(f_s = 8000\)</span> Hz, frame length <span class="math inline">\(N = 205\)</span> samples.</li>
 <li>Map tone frequencies to DFT bin indices by: <span class="math display">\[
 k = \text{round}\left( \frac{f}{f_s} \cdot N \right)
 \]</span></li>
@@ -1101,8 +1099,8 @@ k = \text{round}\left( \frac{f}{f_s} \cdot N \right)
 </tbody>
 </table>
 <p>We implement <strong>7 parallel Goertzel filters</strong>, one for each k.</p>
-</section>
-<section id="dtmf-detector-block-diagram" class="slide level2 scrollable">
+<hr>
+</section><section id="dtmf-detector-block-diagram" class="slide level2 scrollable">
 <h2>DTMF Detector Block Diagram</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -1113,28 +1111,28 @@ k = \text{round}\left( \frac{f}{f_s} \cdot N \right)
 <p><em>Fig. 8.55: DTMF detector using modified Goertzel filters.</em></p>
 <p>Processing steps:</p>
 <ol type="1">
-<li><p>For received DTMF window (x(n)), run modified Goertzel for each bin (k{18,20,22,24,31,34,38}) to get (|X(k)|^2).</p></li>
+<li><p>For received DTMF window <span class="math inline">\(x(n)\)</span>, run modified Goertzel for each bin <span class="math inline">\(k\in\{18,20,22,24,31,34,38\}\)</span> to get <span class="math inline">\(|X(k)|^2\)</span>.</p></li>
 <li><p>Convert to single‑sided amplitude: <span class="math display">\[
 A_k = \frac{2}{N}\sqrt{|X(k)|^2}
 \]</span></p></li>
-<li><p>Ideally only <strong>two</strong> (A_k) values are large (one row tone, one column tone).</p></li>
+<li><p>Ideally only <strong>two</strong> <span class="math inline">\(A_k\)</span> values are large (one row tone, one column tone).</p></li>
 <li><p>Set a threshold: <span class="math display">\[
 \text{threshold} = \frac{\sum_{k=1}^7 A_k}{4}
 \]</span></p></li>
 <li><p>For each k:</p>
 <ul>
-<li>If (A_k &gt; ) → logic 1</li>
+<li>If <span class="math inline">\(A_k &gt; \text{threshold}\)</span> → logic 1</li>
 <li>Else → logic 0</li>
 </ul></li>
 <li><p>This yields a 7‑bit pattern that uniquely maps to one keypad digit.</p></li>
 </ol>
-</section>
-<section id="example-8.29-detect-key-7" class="slide level2 scrollable">
+<hr>
+</section><section id="example-8.29-detect-key-7" class="slide level2 scrollable">
 <h2>Example 8.29 – Detect Key “7”</h2>
 <p>Given:</p>
 <ul>
-<li>DTMF key “7” tones: (f_L = 852) Hz, (f_H = 1209) Hz.</li>
-<li>(f_s = 8000) Hz, (N = 205).</li>
+<li>DTMF key “7” tones: <span class="math inline">\(f_L = 852\)</span> Hz, <span class="math inline">\(f_H = 1209\)</span> Hz.</li>
+<li><span class="math inline">\(f_s = 8000\)</span> Hz, <span class="math inline">\(N = 205\)</span>.</li>
 </ul>
 <ol type="1">
 <li>Frequency bin numbers:</li>
@@ -1162,7 +1160,7 @@ H_{22}(z) = \frac{1}{1 - 1.5623 z^{-1} + z^{-2}}
 <p><span class="math display">\[
 H_{31}(z) = \frac{1}{1 - 1.1631 z^{-1} + z^{-2}}
 \]</span></p>
-<p>DSP equations (with (x(205)=0)):</p>
+<p>DSP equations (with <span class="math inline">\(x(205)=0\)</span>):</p>
 <p><span class="math display">\[
 v_{22}(n) = 1.5623\,v_{22}(n-1) - v_{22}(n-2) + x(n)
 \]</span></p>
@@ -1184,9 +1182,9 @@ A_{22} = \frac{2}{205}\sqrt{|X(22)|^2}
 <p><span class="math display">\[
 A_{31} = \frac{2}{205}\sqrt{|X(31)|^2}
 \]</span></p>
-<p>These two will stand out above other (A_k)’s.</p>
-</section>
-<section id="dtmf-matlab-detection-demo-program-8.21" class="slide level2 scrollable">
+<p>These two will stand out above other <span class="math inline">\(A_k\)</span>’s.</p>
+<hr>
+</section><section id="dtmf-matlab-detection-demo-program-8.21" class="slide level2 scrollable">
 <h2>DTMF MATLAB Detection Demo (Program 8.21)</h2>
 <p>Key parts of the script:</p>
 <ol type="1">
@@ -1220,8 +1218,8 @@ A_{31} = \frac{2}{205}\sqrt{|X(31)|^2}
 <li>Use <code>if</code> statements to map that pattern to a detected key.</li>
 </ul></li>
 </ol>
-</section>
-<section id="choosing-iir-design-methods-in-practice" class="slide level2 scrollable">
+<hr>
+</section><section id="choosing-iir-design-methods-in-practice" class="slide level2 scrollable">
 <h2>8.12 Choosing IIR Design Methods in Practice</h2>
 <p>We now summarize the three IIR design approaches used in this chapter:</p>
 <ol type="1">
@@ -1230,14 +1228,14 @@ A_{31} = \frac{2}{205}\sqrt{|X(31)|^2}
 <li><strong>Pole‑Zero Placement</strong></li>
 </ol>
 <p>And give guidance on when to use which.</p>
-</section>
-<section id="blt-design-recommended-workhorse" class="slide level2 scrollable">
+<hr>
+</section><section id="blt-design-recommended-workhorse" class="slide level2 scrollable">
 <h2>BLT Design – Recommended Workhorse</h2>
 <p><strong>Steps (BLT):</strong></p>
 <ol type="1">
 <li>Start from <strong>digital</strong> specs; prewarp each digital edge frequency to analog using:
 <ul>
-<li>(= 2f_s(/2)) style formulas (Eqs. 8.18–8.19).</li>
+<li><span class="math inline">\(\Omega = 2f_s\tan(\omega/2)\)</span> style formulas (Eqs. 8.18–8.19).</li>
 </ul></li>
 <li>Determine analog prototype order:
 <ul>
@@ -1245,7 +1243,7 @@ A_{31} = \frac{2}{205}\sqrt{|X(31)|^2}
 <li>Chebyshev: Eq. (8.35b).</li>
 </ul></li>
 <li>Design analog lowpass prototype, then transform to LP/HP/BP/BS as needed (Eqs. 8.20–8.23).</li>
-<li>Apply BLT: (s = ) (Eq. 8.24).</li>
+<li>Apply BLT: <span class="math inline">\(s = \frac{2}{T} \frac{1 - z^{-1}}{1 + z^{-1}}\)</span> (Eq. 8.24).</li>
 <li>Get digital H(z), verify frequency response, then derive difference equation.</li>
 </ol>
 <p><strong>Characteristics:</strong></p>
@@ -1254,14 +1252,14 @@ A_{31} = \frac{2}{205}\sqrt{|X(31)|^2}
 <li>Good control over passband ripple and stopband attenuation.</li>
 <li>Some frequency warping, but prewarping corrects this.</li>
 </ul>
-</section>
-<section id="impulse-invariant-design-when-to-use" class="slide level2 scrollable">
+<hr>
+</section><section id="impulse-invariant-design-when-to-use" class="slide level2 scrollable">
 <h2>Impulse Invariant Design – When to Use</h2>
 <p><strong>Procedure:</strong></p>
 <ol type="1">
 <li>Design analog lowpass or bandpass as usual (Butterworth/Chebyshev).</li>
-<li>Compute analog impulse response (h_a(t)) via partial fraction expansion + inverse Laplace (Eq. 8.37).</li>
-<li>Sample: (h_d[n] = h_a(nT)) (Eq. 8.38).</li>
+<li>Compute analog impulse response <span class="math inline">\(h_a(t)\)</span> via partial fraction expansion + inverse Laplace (Eq. 8.37).</li>
+<li>Sample: <span class="math inline">\(h_d[n] = h_a(nT)\)</span> (Eq. 8.38).</li>
 <li>Take z‑transform of sampled impulse response to get H(z).</li>
 <li>Verify frequency response; if specs not met (aliasing issues), switch to BLT.</li>
 </ol>
@@ -1270,8 +1268,8 @@ A_{31} = \frac{2}{205}\sqrt{|X(31)|^2}
 <li>Best for <strong>lowpass and bandpass</strong>; highpass/bandstop are problematic due to aliasing.</li>
 <li>Requires <strong>sampling rate much higher</strong> than highest important analog frequency to reduce aliasing.</li>
 </ul>
-</section>
-<section id="polezero-placement-quick-simple-designs" class="slide level2 scrollable">
+<hr>
+</section><section id="polezero-placement-quick-simple-designs" class="slide level2 scrollable">
 <h2>Pole‑Zero Placement – Quick, Simple Designs</h2>
 <p><strong>Use when:</strong></p>
 <ul>
@@ -1297,8 +1295,8 @@ A_{31} = \frac{2}{205}\sqrt{|X(31)|^2}
 <li>Limited to low order.</li>
 <li>Less control over ripple/attenuation; primarily 3 dB bandwidth and center frequency.</li>
 </ul>
-</section>
-<section id="comparison-table-at-a-glance" class="slide level2">
+<hr>
+</section><section id="comparison-table-at-a-glance" class="slide level2">
 <h2>Comparison Table – At a Glance</h2>
 <table class="caption-top">
 <colgroup>
@@ -1357,8 +1355,8 @@ A_{31} = \frac{2}{205}\sqrt{|X(31)|^2}
 </figure>
 </div>
 <p><em>Fig. 8.57: BLT vs pole‑zero vs impulse invariant magnitude responses for a bandpass example.</em></p>
-</section>
-<section id="problem-solution-examples-summary" class="slide level2 scrollable">
+<hr>
+</section><section id="problem-solution-examples-summary" class="slide level2 scrollable">
 <h2>Problem &amp; Solution Examples – Summary</h2>
 <ol type="1">
 <li><strong>ECG 60‑Hz Hum Eliminator</strong>
@@ -1385,8 +1383,8 @@ A_{31} = \frac{2}{205}\sqrt{|X(31)|^2}
 <li>Decode keypad digit from 7 spectral magnitudes.</li>
 </ul></li>
 </ol>
-</section>
-<section id="key-takeaways-summary" class="slide level2">
+<hr>
+</section><section id="key-takeaways-summary" class="slide level2">
 <h2>Key Takeaways / Summary</h2>
 <ul>
 <li><strong>IIR filters are powerful for narrowband tasks</strong>:
@@ -1412,15 +1410,15 @@ A_{31} = \frac{2}{205}\sqrt{|X(31)|^2}
 <li>Use <strong>pole‑zero placement</strong> for quick, simple filters (e.g., small notches, 1st‑order LP/HP), especially in embedded DSP.</li>
 </ul></li>
 </ul>
-</section>
-<section id="formula-summary" class="slide level2">
+<hr>
+</section><section id="formula-summary" class="slide level2">
 <h2>Formula Summary</h2>
 <p><strong>Notch filter design (2nd order):</strong></p>
 <ul>
 <li><p>Pole radius (for bandwidth BW at fs): <span class="math display">\[
 r = 1 - \frac{BW}{f_s}\pi
 \]</span></p></li>
-<li><p>Angle for notch at (f_0): <span class="math display">\[
+<li><p>Angle for notch at <span class="math inline">\(f_0\)</span>: <span class="math display">\[
 \theta = 2\pi \frac{f_0}{f_s} \quad \text{(or } \theta^\circ = 360^\circ \frac{f_0}{f_s}\text{)}
 \]</span></p></li>
 <li><p>Scale factor K (see text Eq. 8.50 type): <span class="math display">\[
@@ -1457,6 +1455,8 @@ k = \text{round}\left( \frac{f}{f_s} N \right)
 \]</span></p>
 
 
+</section>
+</div>
 <script type="ojs-module-contents">
 eyJjb250ZW50cyI6W119
 </script>

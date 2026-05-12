@@ -275,7 +275,6 @@ Imron Rosyadi
 y(n)=b_0 x(n)+b_1 x(n-1)+\cdots +b_M x(n-M)
 \quad -\, a_1 y(n-1)-\cdots-a_N y(n-N)
 \]</span></p>
-<p>(Your book uses the convention that the denominator is written as <span class="math inline">\(1+a_1 z^{-1}+\dots\)</span>.)</p>
 <p><strong>Transfer function:</strong></p>
 <p><span class="math display">\[
 H(z) = \frac{Y(z)}{X(z)} =
@@ -346,6 +345,9 @@ H(z)=\frac{Y(z)}{X(z)}=\frac{0.2+0.4z^{-1}}{1-0.5z^{-1}}
 <li><span class="math inline">\(b_0 = 0.2,\quad b_1 = 0.4\)</span></li>
 <li>Denominator: <span class="math inline">\(1 - 0.5 z^{-1} \Rightarrow a_1 = -0.5\)</span></li>
 </ul>
+</section>
+<section class="slide level2 scrollable">
+
 <ol start="3" type="1">
 <li><strong>Impulse response</strong></li>
 </ol>
@@ -434,10 +436,9 @@ h(n) = 0.2(0.5)^n u(n) + 0.4(0.5)^{n-1} u(n-1)
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_8/bdbd39ab93874a1003ac6c3360a2d4e5_MD5.jpg" height="300"></p>
-<figcaption>FIG. 8.1</figcaption>
+<figcaption>FIG. 8.1 General procedure for IIR filter design using BLT.</figcaption>
 </figure>
 </div>
-<p>FIG. 8.1 General procedure for IIR filter design using BLT.</p>
 <p>Key steps:</p>
 <ol type="1">
 <li><strong>Digital specs → Analog specs</strong> (prewarping).</li>
@@ -465,6 +466,8 @@ H_P(s) = \frac{1}{s+1}
 </section>
 <section id="prototype-frequency-response-normalized-lowpass" class="slide level2">
 <h2>Prototype Frequency Response – Normalized Lowpass</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <p>For prototype</p>
 <p><span class="math display">\[
 H_P(s) = \frac{1}{s+1}
@@ -477,6 +480,7 @@ H_P(j\nu) = \frac{1}{j\nu + 1}
 <p><span class="math display">\[
 |H_P(j\nu)| = \frac{1}{\sqrt{1+\nu^2}}
 \]</span></p>
+</div><div class="column" style="width:50%;">
 <p>Evaluate:</p>
 <ul>
 <li><span class="math inline">\(\nu = 0\)</span>: <span class="math inline">\(|H_P(j0)| = 1\)</span> (DC gain)</li>
@@ -485,16 +489,16 @@ H_P(j\nu) = \frac{1}{j\nu + 1}
 <li><span class="math inline">\(\nu = 10\,000\)</span>: <span class="math inline">\(\approx 0.0001\)</span></li>
 </ul>
 <p>This is a <strong>normalized</strong> lowpass: cutoff frequency = 1 rad/s.</p>
+</div></div>
 </section>
 <section id="from-prototype-to-practical-analog-lowpass" class="slide level2">
 <h2>From Prototype to Practical Analog Lowpass</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_8/ed5a9a32bc9559391bc751fb4fc5e7b5_MD5.jpg" height="240"></p>
-<figcaption>FIG. 8.2</figcaption>
+<figcaption>FIG. 8.2 Analog lowpass prototype transformation into a lowpass filter.</figcaption>
 </figure>
 </div>
-<p>FIG. 8.2 Analog lowpass prototype transformation into a lowpass filter.</p>
 <p>Transformation:</p>
 <ul>
 <li>Want a lowpass with cutoff <span class="math inline">\(\omega_c\)</span> rad/s.</li>
@@ -524,10 +528,9 @@ H(s) = H_P\!\left(\frac{s}{\omega_c}\right) = \frac{1}{s/\omega_c + 1} = \frac{\
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_8/e9c9e8dc2a084bb1fe77b50792035e5b_MD5.jpg" height="240"></p>
-<figcaption>FIG. 8.3</figcaption>
+<figcaption>FIG. 8.3 Analog lowpass prototype transformation to the highpass filter.</figcaption>
 </figure>
 </div>
-<p>FIG. 8.3 Analog lowpass prototype transformation to the highpass filter.</p>
 <p>Use substitution</p>
 <p><span class="math display">\[
 s \;\to\; \frac{\omega_c}{s}
@@ -545,13 +548,14 @@ H_{HP}(s) = H_P\!\left(\frac{\omega_c}{s}\right)
 </section>
 <section id="prototype-analog-bandpass" class="slide level2">
 <h2>Prototype → Analog Bandpass</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_8/e3b1bf14372ce6aa050736cd53197798_MD5.jpg" height="260"></p>
-<figcaption>FIG. 8.4</figcaption>
+<figcaption>FIG. 8.4 Analog lowpass prototype transformation to the bandpass filter.</figcaption>
 </figure>
 </div>
-<p>FIG. 8.4 Analog lowpass prototype transformation to the bandpass filter.</p>
 <p>Bandpass parameters:</p>
 <ul>
 <li>Lower cutoff: <span class="math inline">\(\omega_l\)</span></li>
@@ -559,6 +563,7 @@ H_{HP}(s) = H_P\!\left(\frac{\omega_c}{s}\right)
 <li>Center (geometric mean): <span class="math inline">\(\omega_0 = \sqrt{\omega_l\omega_h}\)</span></li>
 <li>Bandwidth: <span class="math inline">\(W = \omega_h - \omega_l\)</span></li>
 </ul>
+</div><div class="column" style="width:50%;">
 <p>Transformation:</p>
 <p><span class="math display">\[
 s \;\to\; \frac{s^2 + \omega_0^2}{s W}
@@ -568,16 +573,19 @@ s \;\to\; \frac{s^2 + \omega_0^2}{s W}
 H_{BP}(s) = H_P\!\left( \frac{s^2 + \omega_0^2}{sW} \right)
 \]</span></p>
 <p>Resulting filter: - Passes a band around <span class="math inline">\(\omega_0\)</span> with bandwidth <span class="math inline">\(W\)</span>. - Order is doubled relative to prototype.</p>
+</div></div>
 </section>
 <section id="prototype-analog-bandstop-bandreject" class="slide level2">
 <h2>Prototype → Analog Bandstop (Bandreject)</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_8/6f7b6fef2124191754820caa74a5f041_MD5.jpg" height="260"></p>
-<figcaption>FIG. 8.5</figcaption>
+<figcaption>FIG. 8.5 Analog lowpass prototype transformation to a bandstop filter.</figcaption>
 </figure>
 </div>
-<p>FIG. 8.5 Analog lowpass prototype transformation to a bandstop filter.</p>
+</div><div class="column" style="width:50%;">
 <p>Transformation:</p>
 <p><span class="math display">\[
 s \;\to\; \frac{sW}{s^2 + \omega_0^2}
@@ -587,6 +595,7 @@ s \;\to\; \frac{sW}{s^2 + \omega_0^2}
 H_{BS}(s) = H_P\!\left( \frac{sW}{s^2 + \omega_0^2} \right)
 \]</span></p>
 <p>Again: band edges defined by <span class="math inline">\(\omega_l, \omega_h\)</span>, with center and bandwidth as before.</p>
+</div></div>
 </section>
 <section id="summary-analog-lowpass-prototype-transformations" class="slide level2 scrollable">
 <h2>Summary: Analog Lowpass Prototype Transformations</h2>
@@ -687,7 +696,7 @@ H_{BP}(s) = H_P\!\left( \frac{s^2 + 100}{20s} \right)
 </section>
 <section id="example-8.2-matlab-confirmation" class="slide level2">
 <h2>Example 8.2 – MATLAB Confirmation</h2>
-<p><strong>Program 8.1 (corrected)</strong></p>
+<p><strong>Program 8.1</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource matlab number-lines code-with-copy"><code class="sourceCode matlab"><span id="cb1-1"><a></a><span class="va">W</span> <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span><span class="op">;</span>            <span class="co">% Analog frequency points (rad/s)</span></span>
 <span id="cb1-2"><a></a></span>
 <span id="cb1-3"><a></a><span class="co">% Highpass: H_HP(s) = s / (s + 40)</span></span>
@@ -709,13 +718,15 @@ H_{BP}(s) = H_P\!\left( \frac{s^2 + 100}{20s} \right)
 <span id="cb1-19"><a></a><span class="va">plot</span>(<span class="va">W</span><span class="op">,</span> <span class="va">abs</span>(<span class="va">Hb</span>)<span class="op">,</span> <span class="ss">'k'</span>)<span class="op">;</span> <span class="va">grid</span> <span class="va">on</span><span class="op">;</span></span>
 <span id="cb1-20"><a></a><span class="va">xlabel</span>(<span class="ss">'b) Frequency (rad/s)'</span>)<span class="op">;</span></span>
 <span id="cb1-21"><a></a><span class="va">ylabel</span>(<span class="ss">'Magnitude'</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section class="slide level2">
+
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_8/2e47e4a29393df39494b51b949f5b0d0_MD5.jpg" height="300"></p>
-<figcaption>FIG. 8.6</figcaption>
+<figcaption>FIG. 8.6 Magnitude responses for the analog highpass and bandpass filters in Example 8.2.</figcaption>
 </figure>
 </div>
-<p>FIG. 8.6 Magnitude responses for the analog highpass and bandpass filters in Example 8.2.</p>
 <aside class="notes">
 <p>Point out that <code>freqs</code> works with analog filters: numerator and denominator polynomials in <strong>s</strong>, not z. Highlight the increase in filter order from 1 (prototype) to 2 (bandpass).</p>
 <style type="text/css">
@@ -757,11 +768,10 @@ Y(s) = \frac{1}{s} X(s) \quad \Rightarrow \quad G(s) = \frac{Y(s)}{X(s)} = \frac
 <p>Numerical approximation (Fig. 8.7):</p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/chapter_8/75c81f0cf4718f3b4cbb0b4974078dd6_MD5.jpg" height="260"></p>
-<figcaption>FIG. 8.7</figcaption>
+<p><img data-src="images/chapter_8/75c81f0cf4718f3b4cbb0b4974078dd6_MD5.jpg" height="200"></p>
+<figcaption>FIG. 8.7 Digital integration method to calculate the area under the curve.</figcaption>
 </figure>
 </div>
-<p>FIG. 8.7 Digital integration method to calculate the area under the curve.</p>
 <p>Difference equation (trapezoidal rule):</p>
 <p><span class="math display">\[
 y(n) = y(n-1) + \frac{T}{2}\big[x(n) + x(n-1)\big]
@@ -791,6 +801,9 @@ H(z) = \frac{Y(z)}{X(z)} = \frac{T}{2} \frac{1 + z^{-1}}{1 - z^{-1}}
 s \;\approx\; \frac{2}{T} \frac{1 - z^{-1}}{1 + z^{-1}}
 = \frac{2z - 2}{T(z + 1)} = \frac{2}{T} \frac{z - 1}{z + 1}
 \]</span></p>
+</section>
+<section class="slide level2">
+
 <p>This <strong>is</strong> the bilinear transform (up to exact algebra):</p>
 <p><span class="math display">\[
 s = \frac{2}{T} \frac{z - 1}{z + 1}
@@ -828,10 +841,9 @@ z = \frac{1 + sT/2}{1 - sT/2}
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_8/cffedbfa53d046430da292e3c943559c_MD5.jpg" height="260"></p>
-<figcaption>FIG. 8.8</figcaption>
+<figcaption>FIG. 8.8 Mapping between the s-plane and the z-plane by the BLT.</figcaption>
 </figure>
 </div>
-<p>FIG. 8.8 Mapping between the s-plane and the z-plane by the BLT.</p>
 <p>Conclusion: <strong>Stable analog filters map to stable digital filters.</strong></p>
 </section>
 <section id="example-8.3-mapping-specific-spoints-to-zplane" class="slide level2 scrollable">
@@ -847,6 +859,9 @@ z = \frac{1 + s}{1 - s}
 <li><span class="math inline">\(s_3 = j\)</span> (positive imaginary axis)</li>
 <li><span class="math inline">\(s_4 = -j\)</span> (negative imaginary axis)</li>
 </ol>
+</section>
+<section class="slide level2 scrollable">
+
 <p>We compute</p>
 <ol type="1">
 <li><p><span class="math inline">\(z_1 = \dfrac{1 + (-1+j)}{1 - (-1+j)}
@@ -901,6 +916,9 @@ H(z) = H(s)\Big|_{s=\frac{200(z - 1)}{z + 1}}
 H(z) = \frac{10}{\frac{200(z - 1) + 10(z + 1)}{z + 1}}
      = \frac{10(z + 1)}{200(z - 1) + 10(z + 1)}
 \]</span></p>
+</section>
+<section class="slide level2">
+
 <p>Compute denominator:</p>
 <p><span class="math display">\[
 200(z - 1) + 10(z + 1) = 210z - 190
@@ -937,6 +955,9 @@ j\omega_a = \frac{2}{T} \frac{e^{j\omega_d T} - 1}{e^{j\omega_d T} + 1}
 <p><span class="math display">\[
 \omega_a = \frac{2}{T} \tan\!\left(\frac{\omega_d T}{2}\right)
 \]</span></p>
+</section>
+<section class="slide level2">
+
 <p>Inverse relation:</p>
 <p><span class="math display">\[
 \omega_d = \frac{2}{T} \tan^{-1}\!\left(\frac{\omega_a T}{2}\right)
@@ -945,10 +966,9 @@ j\omega_a = \frac{2}{T} \frac{e^{j\omega_d T} - 1}{e^{j\omega_d T} + 1}
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_8/d40d016a6e94c46f3c47c118f7cb4bc7_MD5.jpg" height="260"></p>
-<figcaption>FIG. 8.9</figcaption>
+<figcaption>FIG. 8.9 Frequency mapping from the analog domain to the digital domain.</figcaption>
 </figure>
 </div>
-<p>FIG. 8.9 Frequency mapping from the analog domain to the digital domain.</p>
 </section>
 <section id="frequency-warping-visualization" class="slide level2">
 <h2>Frequency Warping Visualization</h2>
@@ -970,7 +990,7 @@ j\omega_a = \frac{2}{T} \frac{e^{j\omega_d T} - 1}{e^{j\omega_d T} + 1}
 </ul>
 <p>Implication: - We must <strong>prewarp</strong> digital frequency specifications before designing the analog prototype.</p>
 </section>
-<section id="example-8.5-warping-effect" class="slide level2 scrollable">
+<section id="example-8.5-warping-effect" class="slide level2">
 <h2>Example 8.5 – Warping Effect</h2>
 <p>Given sampling period <span class="math inline">\(T = 0.01\)</span> s.</p>
 <p>Analog frequencies:</p>
@@ -983,6 +1003,9 @@ j\omega_a = \frac{2}{T} \frac{e^{j\omega_d T} - 1}{e^{j\omega_d T} + 1}
 <p><span class="math display">\[
 \omega_d = \frac{2}{T} \tan^{-1}\!\left(\frac{\omega_a T}{2}\right)
 \]</span></p>
+</section>
+<section class="slide level2 scrollable">
+
 <p>Compute:</p>
 <ol type="1">
 <li><span class="math inline">\(\omega_a = 10\)</span>:</li>
@@ -1008,15 +1031,17 @@ j\omega_a = \frac{2}{T} \frac{e^{j\omega_d T} - 1}{e^{j\omega_d T} + 1}
 <p>→ larger error (near Nyquist).</p>
 <p>Conclusion: warping is small at low frequencies, significant near Nyquist.</p>
 </section>
-<section id="correcting-warping-prewarping" class="slide level2 scrollable">
+<section id="correcting-warping-prewarping" class="slide level2">
 <h2>Correcting Warping: Prewarping</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/chapter_8/51f2741aac9b62b6bea3874dde4648c1_MD5.jpg" height="260"></p>
-<figcaption>FIG. 8.11</figcaption>
+<p><img data-src="images/chapter_8/51f2741aac9b62b6bea3874dde4648c1_MD5.jpg" height="400"></p>
+<figcaption>FIG. 8.11 Graphical representation of IIR filter design using the BLT.</figcaption>
 </figure>
 </div>
-<p>FIG. 8.11 Graphical representation of IIR filter design using the BLT.</p>
+</section>
+<section class="slide level2 scrollable">
+
 <p>Design strategy:</p>
 <ol type="1">
 <li><p><strong>Start from desired digital cutoff/band edges <span class="math inline">\(\omega_d\)</span></strong>.</p></li>
@@ -1049,6 +1074,11 @@ j\omega_a = \frac{2}{T} \frac{e^{j\omega_d T} - 1}{e^{j\omega_d T} + 1}
 \omega_0 = \sqrt{\omega_{al} \omega_{ah}}, \quad W = \omega_{ah} - \omega_{al}
 \]</span></p></li>
 </ul></li>
+</ol>
+</section>
+<section class="slide level2 scrollable">
+
+<ol start="2" type="1">
 <li><p><strong>Analog prototype transformation</strong></p>
 <p>Given a lowpass prototype <span class="math inline">\(H_P(s)\)</span>:</p>
 <ul>
@@ -1078,6 +1108,8 @@ H(z) = H(s)\Big|_{s = \frac{2}{T} \frac{z-1}{z+1}}
 </section>
 <section id="matlab-support-for-blt-design" class="slide level2">
 <h2>MATLAB Support for BLT Design</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <p><strong>Table 8.2 – Key MATLAB Functions</strong></p>
 <ul>
 <li><p><strong>Analog prototype transformations</strong></p>
@@ -1091,6 +1123,9 @@ H(z) = H(s)\Big|_{s = \frac{2}{T} \frac{z-1}{z+1}}
 <li><p>Lowpass to bandstop:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource matlab number-lines code-with-copy"><code class="sourceCode matlab"><span id="cb5-1"><a></a>[<span class="va">B</span><span class="op">,</span> <span class="va">A</span>] <span class="op">=</span> <span class="va">lp2bs</span>(<span class="va">Bp</span><span class="op">,</span> <span class="va">Ap</span><span class="op">,</span> <span class="va">w0</span><span class="op">,</span> <span class="va">W</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 </ul></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<ul>
 <li><p><strong>Bilinear transformation</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource matlab number-lines code-with-copy"><code class="sourceCode matlab"><span id="cb6-1"><a></a>[<span class="va">b</span><span class="op">,</span> <span class="va">a</span>] <span class="op">=</span> <span class="va">bilinear</span>(<span class="va">B</span><span class="op">,</span> <span class="va">A</span><span class="op">,</span> <span class="va">fs</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 <li><p><strong>Digital frequency response</strong></p>
@@ -1104,6 +1139,7 @@ H(z) = H(s)\Big|_{s = \frac{2}{T} \frac{z-1}{z+1}}
 <li><code>b, a</code> – digital filter coefficients after BLT.</li>
 <li><code>fs</code> – sampling rate in samples/s.</li>
 </ul>
+</div></div>
 </section>
 <section id="example-8.6-design-a-digital-lowpass-via-blt" class="slide level2 scrollable">
 <h2>Example 8.6 – Design a Digital Lowpass via BLT</h2>
@@ -1137,13 +1173,8 @@ T = \frac{1}{f_s} = \frac{1}{90} \text{ s}
 \omega_a = \frac{2}{T} \tan\!\left(\frac{\omega_d T}{2}\right)
 = \frac{2}{1/90} \tan\!\left(\frac{30\pi / 90}{2}\right)
 \]</span></p>
-<p>Compute:</p>
-<ul>
-<li><span class="math inline">\(\frac{30\pi}{90} = \frac{\pi}{3}\)</span></li>
-<li><span class="math inline">\(\frac{\pi}{3}/2 = \frac{\pi}{6} = 30^\circ\)</span></li>
-</ul>
-<p>Thus:</p>
-<p><span class="math display">\[
+<p>Compute <span class="math inline">\(\frac{30\pi}{90} = \frac{\pi}{3}\)</span> and <span class="math inline">\(\frac{\pi}{3}/2 = \frac{\pi}{6} = 30^\circ\)</span></p>
+<p>Thus <span class="math display">\[
 \omega_a = 180 \tan(30^\circ) = 180 \cdot \frac{1}{\sqrt{3}} \approx 103.92 \text{ rad/s}
 \]</span></p>
 </section>
@@ -1182,6 +1213,9 @@ H(z) = \frac{0.5773 (z + 1)}{\left(\frac{z - 1}{z + 1} + 0.5773\right)(z + 1)}
 <p><span class="math display">\[
 (z - 1) + 0.5773(z + 1) = 1.5773 z - 0.4227
 \]</span></p>
+</section>
+<section class="slide level2">
+
 <p>So</p>
 <p><span class="math display">\[
 H(z) = \frac{0.5773 z + 0.5773}{1.5773 z - 0.4227}
@@ -1237,13 +1271,15 @@ y(n) = 0.3660 x(n) + 0.3660 x(n-1) + 0.2679 y(n-1)
 <span id="cb8-32"><a></a><span class="va">axis</span>([<span class="fl">0</span> <span class="va">fs</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span><span class="fl">200</span> <span class="fl">0</span>])<span class="op">;</span></span>
 <span id="cb8-33"><a></a><span class="va">xlabel</span>(<span class="ss">'Frequency (Hz)'</span>)<span class="op">;</span></span>
 <span id="cb8-34"><a></a><span class="va">ylabel</span>(<span class="ss">'Phase (degrees)'</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section class="slide level2">
+
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/chapter_8/e291f83cd9ceaa2183dd43be4f8679a5_MD5.jpg" height="300"></p>
-<figcaption>FIG. 8.12</figcaption>
+<figcaption>FIG. 8.12 Frequency responses of the designed digital filter for Example 8.6.</figcaption>
 </figure>
 </div>
-<p>FIG. 8.12 Frequency responses of the designed digital filter for Example 8.6.</p>
 </section>
 <section id="summary-key-points" class="slide level2 scrollable">
 <h2>Summary / Key Points</h2>
@@ -1256,6 +1292,11 @@ y(n) = 0.3660 x(n) + 0.3660 x(n-1) + 0.2679 y(n-1)
 s = \frac{2}{T} \frac{z - 1}{z + 1}
 \]</span></p>
 <p>maps the analog s‑plane to the digital z‑plane in a way that preserves stability and maps the entire <span class="math inline">\(j\omega\)</span> axis to the unit circle.</p></li>
+</ol>
+</section>
+<section class="slide level2 scrollable">
+
+<ol start="5" type="1">
 <li><p>BLT introduces <strong>frequency warping</strong>, described by</p>
 <p><span class="math display">\[
 \omega_a = \frac{2}{T} \tan\!\left(\frac{\omega_d T}{2}\right)
@@ -1281,6 +1322,9 @@ y(n) = \sum_{k=0}^M b_k\,x(n-k) - \sum_{k=1}^N a_k\,y(n-k)
 H(z) = \frac{Y(z)}{X(z)}
      = \frac{b_0 + b_1 z^{-1} + \dots + b_M z^{-M}}{1 + a_1 z^{-1} + \dots + a_N z^{-N}}
 \]</span></p>
+</section>
+<section class="slide level2">
+
 <p><strong>Prototype → analog transformations:</strong></p>
 <ul>
 <li><p>Lowpass:</p>
@@ -1302,6 +1346,9 @@ W = \omega_h - \omega_l
 H_{BS}(s) = H_P\!\left(\frac{sW}{s^2 + \omega_0^2}\right)
 \]</span></p></li>
 </ul>
+</section>
+<section class="slide level2">
+
 <p><strong>Bilinear transform:</strong></p>
 <p><span class="math display">\[
 s = \frac{2}{T} \frac{z - 1}{z + 1},\qquad
@@ -1323,9 +1370,13 @@ z = \frac{1 + sT/2}{1 - sT/2}
 W = \omega_{ah} - \omega_{al}
 \]</span></p>
 </section>
-<section id="infinite-impulse-response-filter-design" class="slide level2">
-<h2>8 Infinite Impulse Response Filter Design</h2>
-<p>Interactive Deck</p>
+<section class="slide level2">
+
+</section>
+<section>
+<section id="infinite-impulse-response-filter-design---interactive-deck" class="title-slide slide level1 center">
+<h1>Infinite Impulse Response Filter Design - Interactive Deck</h1>
+
 </section>
 <section id="learning-with-this-interactive-deck" class="slide level2">
 <h2>Learning with this Interactive Deck</h2>
@@ -1378,8 +1429,8 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1heC1saW5lcyI6MTB9LCJjb2RlIjoiaW1w
 <p>Let’s <strong>visualize</strong> the effect of recursion for different feedback coefficients <span class="math inline">\(a_1\)</span>.</p>
 <p>Use the slider to choose <span class="math inline">\(a_1\)</span> and compare impulse responses.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb9" data-startfrom="1341" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1340;"><span id="cb9-1341"><a></a>viewof a1_slider <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="fl">0.99</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Feedback coefficient a1"</span>})</span>
-<span id="cb9-1342"><a></a>viewof N_slider <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">5</span><span class="op">,</span> <span class="dv">50</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Number of samples N"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb9" data-startfrom="1359" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1358;"><span id="cb9-1359"><a></a>viewof a1_slider <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="fl">0.99</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Feedback coefficient a1"</span>})</span>
+<span id="cb9-1360"><a></a>viewof N_slider <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">5</span><span class="op">,</span> <span class="dv">50</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Number of samples N"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-1-1" data-nodetype="declaration">
@@ -1429,7 +1480,7 @@ H(s) = \frac{\omega_c}{s + \omega_c}
 \]</span></p>
 <p>Explore how <strong>changing <span class="math inline">\(\omega_c\)</span></strong> affects the magnitude response at a few frequencies.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb10" data-startfrom="1401" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1400;"><span id="cb10-1401"><a></a>viewof wc <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">200</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Analog cutoff ω_c (rad/s)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb10" data-startfrom="1419" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1418;"><span id="cb10-1419"><a></a>viewof wc <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">200</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Analog cutoff ω_c (rad/s)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-2" data-nodetype="declaration">
 
@@ -1472,9 +1523,9 @@ z = \frac{1 + sT/2}{1 - sT/2}
 <li>Check if it lands inside / on / outside the unit circle.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb11" data-startfrom="1449" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1448;"><span id="cb11-1449"><a></a>viewof sigma <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">10</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Real part σ of s"</span>})</span>
-<span id="cb11-1450"><a></a>viewof omega <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">10</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Imag part ω of s (rad/s)"</span>})</span>
-<span id="cb11-1451"><a></a>viewof T_bt <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.001</span><span class="op">,</span> <span class="dv">2</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.001</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Sampling period T (s)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb11" data-startfrom="1467" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1466;"><span id="cb11-1467"><a></a>viewof sigma <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">10</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Real part σ of s"</span>})</span>
+<span id="cb11-1468"><a></a>viewof omega <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">10</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Imag part ω of s (rad/s)"</span>})</span>
+<span id="cb11-1469"><a></a>viewof T_bt <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.001</span><span class="op">,</span> <span class="dv">2</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.001</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Sampling period T (s)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-3-1" data-nodetype="declaration">
@@ -1532,8 +1583,8 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsic2ln
 <li>Mark the chosen <span class="math inline">\(\omega_d\)</span> and its corresponding <span class="math inline">\(\omega_a\)</span>.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb12" data-startfrom="1509" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1508;"><span id="cb12-1509"><a></a>viewof wd <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Digital frequency ω_d (rad/sample)"</span>})</span>
-<span id="cb12-1510"><a></a>viewof T_warp <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.005</span><span class="op">,</span> <span class="fl">0.1</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.005</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Sampling period T (s)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb12" data-startfrom="1527" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1526;"><span id="cb12-1527"><a></a>viewof wd <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Digital frequency ω_d (rad/sample)"</span>})</span>
+<span id="cb12-1528"><a></a>viewof T_warp <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.005</span><span class="op">,</span> <span class="fl">0.1</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.005</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Sampling period T (s)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-4-1" data-nodetype="declaration">
@@ -1590,8 +1641,8 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsid2Qi
 </ol>
 <p>Interactively compute and visualize.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb13" data-startfrom="1581" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1580;"><span id="cb13-1581"><a></a>viewof fc_lp <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">40</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Digital cutoff f_c (Hz)"</span>})</span>
-<span id="cb13-1582"><a></a>viewof fs_lp <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">50</span><span class="op">,</span> <span class="dv">200</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Sampling rate f_s (Hz)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb13" data-startfrom="1599" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1598;"><span id="cb13-1599"><a></a>viewof fc_lp <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">40</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Digital cutoff f_c (Hz)"</span>})</span>
+<span id="cb13-1600"><a></a>viewof fs_lp <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">50</span><span class="op">,</span> <span class="dv">200</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Sampling rate f_s (Hz)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-5-1" data-nodetype="declaration">
@@ -1641,8 +1692,8 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwiaW5wdXQiOlsiZmNf
 <li>Plot the magnitude response (Hz).</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb14" data-startfrom="1627" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1626;"><span id="cb14-1627"><a></a>viewof fc_design <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">5</span><span class="op">,</span> <span class="dv">40</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Desired digital cutoff f_c (Hz)"</span>})</span>
-<span id="cb14-1628"><a></a>viewof fs_design <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">40</span><span class="op">,</span> <span class="dv">200</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Sampling rate f_s (Hz)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb14" data-startfrom="1645" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1644;"><span id="cb14-1645"><a></a>viewof fc_design <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">5</span><span class="op">,</span> <span class="dv">40</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Desired digital cutoff f_c (Hz)"</span>})</span>
+<span id="cb14-1646"><a></a>viewof fs_design <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">40</span><span class="op">,</span> <span class="dv">200</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Sampling rate f_s (Hz)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-6-1" data-nodetype="declaration">
@@ -1694,9 +1745,9 @@ W = \omega_{ah} - \omega_{al}
 \]</span></p>
 <p>Use the following block to compute and visualize how analog band edges differ from digital ones.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb15" data-startfrom="1718" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1717;"><span id="cb15-1718"><a></a>viewof fl <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">5</span><span class="op">,</span> <span class="dv">40</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Lower digital band edge f_l (Hz)"</span>})</span>
-<span id="cb15-1719"><a></a>viewof fh <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">10</span><span class="op">,</span> <span class="dv">80</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Upper digital band edge f_h (Hz)"</span>})</span>
-<span id="cb15-1720"><a></a>viewof fs_bp <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">100</span><span class="op">,</span> <span class="dv">400</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">20</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Sampling rate f_s (Hz)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb15" data-startfrom="1736" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1735;"><span id="cb15-1736"><a></a>viewof fl <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">5</span><span class="op">,</span> <span class="dv">40</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Lower digital band edge f_l (Hz)"</span>})</span>
+<span id="cb15-1737"><a></a>viewof fh <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">10</span><span class="op">,</span> <span class="dv">80</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Upper digital band edge f_h (Hz)"</span>})</span>
+<span id="cb15-1738"><a></a>viewof fs_bp <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">100</span><span class="op">,</span> <span class="dv">400</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="dv">20</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Sampling rate f_s (Hz)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-7-1" data-nodetype="declaration">
@@ -1772,7 +1823,7 @@ eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTgiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2RO
 <script type="vfs-file">
 W10=
 </script>
-</section>
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <p><img src="qrjs_pics/unsoed_logo.png" class="slide-logo"></p>
