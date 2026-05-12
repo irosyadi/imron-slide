@@ -2552,21 +2552,21 @@
     "href": "dsp_84.html#singletone-digital-generator",
     "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
     "section": "8.11.1 Single‑Tone Digital Generator",
-    "text": "8.11.1 Single‑Tone Digital Generator\nWe use a second‑order IIR whose impulse response is a sinusoid:\n\\[\nH(z) = \\frac{z \\sin\\Omega_0}{z^2 - 2 z \\cos\\Omega_0 + 1} = \\frac{z^{-1} \\sin\\Omega_0}{1 - 2 \\cos\\Omega_0 z^{-1} + z^{-2}}\n\\]\nWith sampling rate \\(f_s\\) and tone frequency \\(f_0\\):\n\\[\n\\Omega_0 = \\frac{2\\pi f_0}{f_s}\n\\]\nDifference equation (input \\(x(n)\\), output \\(y(n)\\)):\n\\[\ny(n) = \\sin\\Omega_0\\,x(n-1) + 2\\cos\\Omega_0\\,y(n-1) - y(n-2)\n\\]\nTo generate a pure tone of amplitude A:\n\nUse \\(x(n) = A\\delta(n)\\) (single impulse).\nOutput \\(y(n)\\) is the sinusoid.\n\n\n\n\nFig. 8.49: Single‑tone generator structure."
+    "text": "8.11.1 Single‑Tone Digital Generator\nWe use a second‑order IIR whose impulse response is a sinusoid:\n\\[\nH(z) = \\frac{z \\sin\\Omega_0}{z^2 - 2 z \\cos\\Omega_0 + 1} = \\frac{z^{-1} \\sin\\Omega_0}{1 - 2 \\cos\\Omega_0 z^{-1} + z^{-2}}\n\\]\nWith sampling rate \\(f_s\\) and tone frequency \\(f_0\\):\n\\[\n\\Omega_0 = \\frac{2\\pi f_0}{f_s}\n\\]\nDifference equation (input \\(x(n)\\), output \\(y(n)\\)):\n\\[\ny(n) = \\sin\\Omega_0\\,x(n-1) + 2\\cos\\Omega_0\\,y(n-1) - y(n-2)\n\\]"
   },
   {
     "objectID": "dsp_84.html#example-generate-1-khz-at-8-khz-sampling",
     "href": "dsp_84.html#example-generate-1-khz-at-8-khz-sampling",
     "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
     "section": "Example: Generate 1 kHz at 8 kHz Sampling",
-    "text": "Example: Generate 1 kHz at 8 kHz Sampling\nGiven: \\(f_s = 8000\\) Hz, \\(f_0 = 1000\\) Hz.\nCompute:\n\\[\n\\Omega_0 = 2\\pi\\frac{1000}{8000} = \\frac{\\pi}{4}\n\\]\n\\[\n\\sin\\Omega_0 = \\sin\\left(\\frac{\\pi}{4}\\right) \\approx 0.707107\n\\]\n\\[\n2\\cos\\Omega_0 = 2\\cos\\left(\\frac{\\pi}{4}\\right) \\approx 1.414214\n\\]\nFilter:\n\\[\nH(z) = \\frac{0.707107 z^{-1}}{1 - 1.414214 z^{-1} + z^{-2}}\n\\]\nMATLAB (Program 8.18) uses impulse input to filter this system and plots:\n\n\n\nSingle tone and spectrum\n\n\nFig. 8.50: Generated 1 kHz tone and its spectrum."
+    "text": "Example: Generate 1 kHz at 8 kHz Sampling\nGiven: \\(f_s = 8000\\) Hz, \\(f_0 = 1000\\) Hz.\nCompute:\n\\[\n\\Omega_0 = 2\\pi\\frac{1000}{8000} = \\frac{\\pi}{4}\n\\]\n\\[\n\\sin\\Omega_0 = \\sin\\left(\\frac{\\pi}{4}\\right) \\approx 0.707107\n\\]\n\\[\n2\\cos\\Omega_0 = 2\\cos\\left(\\frac{\\pi}{4}\\right) \\approx 1.414214\n\\]\nFilter:\n\\[\nH(z) = \\frac{0.707107 z^{-1}}{1 - 1.414214 z^{-1} + z^{-2}}\n\\]"
   },
   {
     "objectID": "dsp_84.html#dtmf-dualtone-generator-key-7",
     "href": "dsp_84.html#dtmf-dualtone-generator-key-7",
     "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
     "section": "8.11.2 DTMF Dual‑Tone Generator (Key “7”)",
-    "text": "8.11.2 DTMF Dual‑Tone Generator (Key “7”)\nTo generate key “7”:\n\nTone 1: 852 Hz\nTone 2: 1209 Hz\n\nImplementation:\n\nUse two second‑order tone generators in parallel.\nSum their outputs.\n\n\n\n\nDTMF tone generator for key 7\n\n\nFig. 8.51: DTMF generator for key “7.”\nProgram 8.19 (MATLAB) does:\n\nCompute coefficients for 852 Hz and 1209 Hz generating filters.\nFilter impulse through each to get y852 and y1209.\nSum: y7 = y852 + y1209.\n\nResult:\n\n\n\nDTMF ‘7’ and spectrum\n\n\nFig. 8.52: DTMF “7” waveform and spectrum with two peaks at 852 and 1209 Hz."
+    "text": "8.11.2 DTMF Dual‑Tone Generator (Key “7”)\nTo generate key “7”:\n\nTone 1: 852 Hz\nTone 2: 1209 Hz\n\nImplementation:\n\nUse two second‑order tone generators in parallel.\nSum their outputs.\n\n\n\n\nFig. 8.51: DTMF generator for key “7.”"
   },
   {
     "objectID": "dsp_84.html#goertzel-algorithm-motivation",
@@ -2587,21 +2587,21 @@
     "href": "dsp_84.html#goertzel-algorithm-difference-equations",
     "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
     "section": "Goertzel Algorithm – Difference Equations",
-    "text": "Goertzel Algorithm – Difference Equations\nUsing direct‑form II (Fig. 8.53):\n\n\n\nGoertzel IIR filter\n\n\nAlgorithm for bin k, length N:\n\nInitialize: \\(v_k(-2)=0\\), \\(v_k(-1)=0\\).\nAppend one zero sample: set \\(x(N)=0\\).\n\nFor \\(n = 0, 1, \\dots, N\\):\n\\[\nv_k(n) = 2\\cos\\left(\\frac{2\\pi k}{N}\\right) v_k(n-1) - v_k(n-2) + x(n)\n\\]\nThen:\n\\[\ny_k(n) = v_k(n) - W_N^k\\,v_k(n-1)\n\\]\nAt n = N:\n\\[\nX(k) = y_k(N)\n\\]\nBut in many applications we only need \\(|X(k)|\\), not the complex phase."
+    "text": "Goertzel Algorithm – Difference Equations\nUsing direct‑form II (Fig. 8.53):\n\n\n\nGoertzel IIR filter\n\n\nAlgorithm for bin k, length N:\n\nInitialize: \\(v_k(-2)=0\\), \\(v_k(-1)=0\\).\nAppend one zero sample: set \\(x(N)=0\\)."
   },
   {
     "objectID": "dsp_84.html#magnitude-without-complex-arithmetic-modified-goertzel",
     "href": "dsp_84.html#magnitude-without-complex-arithmetic-modified-goertzel",
     "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
     "section": "Magnitude without Complex Arithmetic (Modified Goertzel)",
-    "text": "Magnitude without Complex Arithmetic (Modified Goertzel)\nUsing the same state sequence \\(v_k(n)\\) (with \\(x(N)=0\\)):\n\\[\n|X(k)|^2 = v_k^2(N) + v_k^2(N-1) - 2\\cos\\left(\\frac{2\\pi k}{N}\\right) v_k(N) v_k(N-1)\n\\]\nThis avoids complex multiplications, only uses real arithmetic.\nA simplified filter (Fig. 8.54) has transfer function:\n\n\n\nModified Goertzel filter\n\n\n\\[\nG_k(z) = \\frac{V_k(z)}{X(z)} = \\frac{1}{1 - 2\\cos\\left(\\frac{2\\pi k}{N}\\right) z^{-1} + z^{-2}}\n\\]\nAlgorithm (modified Goertzel):\n\nSame recurrence for \\(v_k(n)\\).\nUse formula above to get \\(|X(k)|^2\\)."
+    "text": "Magnitude without Complex Arithmetic (Modified Goertzel)\nUsing the same state sequence \\(v_k(n)\\) (with \\(x(N)=0\\)):\n\\[\n|X(k)|^2 = v_k^2(N) + v_k^2(N-1) - 2\\cos\\left(\\frac{2\\pi k}{N}\\right) v_k(N) v_k(N-1)\n\\]\nThis avoids complex multiplications, only uses real arithmetic.\nA simplified filter (Fig. 8.54) has transfer function:\n\n\n\nModified Goertzel filter"
   },
   {
     "objectID": "dsp_84.html#example-8.26-goertzel-for-x1-with-n4",
     "href": "dsp_84.html#example-8.26-goertzel-for-x1-with-n4",
     "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
     "section": "Example 8.26 – Goertzel for X(1) with N=4",
-    "text": "Example 8.26 – Goertzel for X(1) with N=4\nGiven: \\(x(0)=1, x(1)=2, x(2)=3, x(3)=4\\). We want bin \\(k=1\\), \\(N=4\\).\nCompute constants:\n\\[\n2\\cos\\left(\\frac{2\\pi}{4}\\right) = 0, \\quad W_4^1 = e^{-j\\frac{\\pi}{2}} = -j\n\\]\nSimplified recurrence:\n\\[\nx(4) = 0\n\\]\nFor \\(n=0,\\dots,4\\):\n\\[\nv_1(n) = -v_1(n-2) + x(n)\n\\]\nOutput:\n\\[\ny_1(n) = v_1(n) + j v_1(n-1)\n\\]\nCompute sequence step‑by‑step (given in text), final result:\n\n\\(X(1) = y_1(4) = -2 + j2\\)\n\\(|X(1)|^2 = 8\\)\nTwo‑sided amplitude: \\(A_1 = \\frac{1}{4}\\sqrt{8} = 0.7071\\)\nSingle‑sided amplitude: ≈ 1.4141\n\nThis matches what you’d get from direct DFT."
+    "text": "Example 8.26 – Goertzel for X(1) with N=4\nGiven: \\(x(0)=1, x(1)=2, x(2)=3, x(3)=4\\). We want bin \\(k=1\\), \\(N=4\\).\nCompute constants:\n\\[\n2\\cos\\left(\\frac{2\\pi}{4}\\right) = 0, \\quad W_4^1 = e^{-j\\frac{\\pi}{2}} = -j\n\\]\nSimplified recurrence:\n\\[\nx(4) = 0\n\\]\nFor \\(n=0,\\dots,4\\):\n\\[\nv_1(n) = -v_1(n-2) + x(n)\n\\]\nOutput:\n\\[\ny_1(n) = v_1(n) + j v_1(n-1)\n\\]"
   },
   {
     "objectID": "dsp_84.html#example-8.27-modified-goertzel-for-k0",
@@ -2629,21 +2629,21 @@
     "href": "dsp_84.html#dtmf-detector-block-diagram",
     "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
     "section": "DTMF Detector Block Diagram",
-    "text": "DTMF Detector Block Diagram\n\n\n\nDTMF detector\n\n\nFig. 8.55: DTMF detector using modified Goertzel filters.\nProcessing steps:\n\nFor received DTMF window \\(x(n)\\), run modified Goertzel for each bin \\(k\\in\\{18,20,22,24,31,34,38\\}\\) to get \\(|X(k)|^2\\).\nConvert to single‑sided amplitude: \\[\nA_k = \\frac{2}{N}\\sqrt{|X(k)|^2}\n\\]\nIdeally only two \\(A_k\\) values are large (one row tone, one column tone).\nSet a threshold: \\[\n\\text{threshold} = \\frac{\\sum_{k=1}^7 A_k}{4}\n\\]\nFor each k:\n\nIf \\(A_k &gt; \\text{threshold}\\) → logic 1\nElse → logic 0\n\nThis yields a 7‑bit pattern that uniquely maps to one keypad digit."
+    "text": "DTMF Detector Block Diagram\n\n\n\nFig. 8.55: DTMF detector using modified Goertzel filters."
   },
   {
     "objectID": "dsp_84.html#example-8.29-detect-key-7",
     "href": "dsp_84.html#example-8.29-detect-key-7",
     "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
     "section": "Example 8.29 – Detect Key “7”",
-    "text": "Example 8.29 – Detect Key “7”\nGiven:\n\nDTMF key “7” tones: \\(f_L = 852\\) Hz, \\(f_H = 1209\\) Hz.\n\\(f_s = 8000\\) Hz, \\(N = 205\\).\n\n\nFrequency bin numbers:\n\n\\[\nk_L \\approx \\frac{852}{8000}\\cdot205 \\approx 22\n\\]\n\\[\nk_H \\approx \\frac{1209}{8000}\\cdot205 \\approx 31\n\\]\n\nGoertzel filters:\n\nCompute coefficients:\n\\[\n2\\cos\\left(\\frac{2\\pi\\cdot22}{205}\\right) = 1.5623\n\\]\n\\[\n2\\cos\\left(\\frac{2\\pi\\cdot31}{205}\\right) = 1.1631\n\\]\nTransfer functions:\n\\[\nH_{22}(z) = \\frac{1}{1 - 1.5623 z^{-1} + z^{-2}}\n\\]\n\\[\nH_{31}(z) = \\frac{1}{1 - 1.1631 z^{-1} + z^{-2}}\n\\]\nDSP equations (with \\(x(205)=0\\)):\n\\[\nv_{22}(n) = 1.5623\\,v_{22}(n-1) - v_{22}(n-2) + x(n)\n\\]\n\\[\nv_{31}(n) = 1.1631\\,v_{31}(n-1) - v_{31}(n-2) + x(n)\n\\]\n\nAmplitude spectra:\n\n\\[\n|X(22)|^2 = v_{22}^2(205) + v_{22}^2(204) - 1.5623\\,v_{22}(205)\\,v_{22}(204)\n\\]\n\\[\nA_{22} = \\frac{2}{205}\\sqrt{|X(22)|^2}\n\\]\n\\[\n|X(31)|^2 = v_{31}^2(205) + v_{31}^2(204) - 1.1631\\,v_{31}(205)\\,v_{31}(204)\n\\]\n\\[\nA_{31} = \\frac{2}{205}\\sqrt{|X(31)|^2}\n\\]\nThese two will stand out above other \\(A_k\\)’s."
+    "text": "Example 8.29 – Detect Key “7”\nGiven:\n\nDTMF key “7” tones: \\(f_L = 852\\) Hz, \\(f_H = 1209\\) Hz.\n\\(f_s = 8000\\) Hz, \\(N = 205\\).\n\n\nFrequency bin numbers:\n\n\\[\nk_L \\approx \\frac{852}{8000}\\cdot205 \\approx 22\n\\]\n\\[\nk_H \\approx \\frac{1209}{8000}\\cdot205 \\approx 31\n\\]"
   },
   {
     "objectID": "dsp_84.html#dtmf-matlab-detection-demo-program-8.21",
     "href": "dsp_84.html#dtmf-matlab-detection-demo-program-8.21",
     "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
     "section": "DTMF MATLAB Detection Demo (Program 8.21)",
-    "text": "DTMF MATLAB Detection Demo (Program 8.21)\nKey parts of the script:\n\nGenerator:\n\nPrecompute impulse responses for each tone (697, 770, 852, 941, 1209, 1336, 1477).\nBased on user input key, construct yDTMF = sum of two appropriate tones.\n\nDetector:\n\nFor each target frequency bin, create denominator coefficients of Goertzel IIR:\na697  = [1 -2*cos(2*pi*18/N) 1];\n...\na1477 = [1 -2*cos(2*pi*38/N) 1];\nPlot filter bank frequency responses:\n\n\n\nFilter bank responses\n\n\nFilter DTMF signal with each filter to get y697, y770, ....\nUse modified Goertzel formula at n = 205,206 to compute magnitudes m(1..7).\nConvert to single‑sided magnitude m = 2*m/205.\n\nThreshold and logic:\n\nThreshold th = sum(m)/4.\nPlot stem of spectral values with threshold line.\nRound m to [0 or 1] to form a 7‑bit pattern.\nUse if statements to map that pattern to a detected key."
+    "text": "DTMF MATLAB Detection Demo (Program 8.21)\nKey parts of the script:\n\nGenerator:\n\nPrecompute impulse responses for each tone (697, 770, 852, 941, 1209, 1336, 1477).\nBased on user input key, construct yDTMF = sum of two appropriate tones."
   },
   {
     "objectID": "dsp_84.html#choosing-iir-design-methods-in-practice",
@@ -2678,7 +2678,7 @@
     "href": "dsp_84.html#comparison-table-at-a-glance",
     "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
     "section": "Comparison Table – At a Glance",
-    "text": "Comparison Table – At a Glance\n\n\n\n\n\n\n\n\n\n\nDesign Method\nFilter Types\nUses Ripple/Stopband Specs?\nSpecial Requirements\nComplexity\n\n\n\n\nBLT\nLP, HP, BP, BS\nYes\nNone\nHigh (but standard)\n\n\nImpulse Invariant\nLP, BP (mainly)\nYes (via analog design)\nSampling rate &gt;&gt; cutoff (LP) or &gt;&gt; upper cutoff (BP) to avoid aliasing\nModerate\n\n\nPole‑Zero Placement\n2nd‑order BP/notch, 1st‑order LP/HP\nNo (only 3 dB level)\nNarrow bands or simple edges; usually low order\nSimple\n\n\n\nPerformance example:\n\nFor a bandpass spec: center 400 Hz, BW 200 Hz, fs=2000 Hz, 2nd order Butterworth:\n\nBLT best meets specs.\nPole‑zero placement shows some center frequency shift and wider response if poles not very close to unit circle.\nImpulse invariant suffers stopband aliasing unless fs is very high.\n\n\n\n\n\nMethod comparison\n\n\nFig. 8.57: BLT vs pole‑zero vs impulse invariant magnitude responses for a bandpass example."
+    "text": "Comparison Table – At a Glance\n\n\n\n\n\n\n\n\n\n\nDesign Method\nFilter Types\nUses Ripple/Stopband Specs?\nSpecial Requirements\nComplexity\n\n\n\n\nBLT\nLP, HP, BP, BS\nYes\nNone\nHigh (but standard)\n\n\nImpulse Invariant\nLP, BP (mainly)\nYes (via analog design)\nSampling rate &gt;&gt; cutoff (LP) or &gt;&gt; upper cutoff (BP) to avoid aliasing\nModerate\n\n\nPole‑Zero Placement\n2nd‑order BP/notch, 1st‑order LP/HP\nNo (only 3 dB level)\nNarrow bands or simple edges; usually low order\nSimple"
   },
   {
     "objectID": "dsp_84.html#problem-solution-examples-summary",
@@ -2699,6 +2699,76 @@
     "href": "dsp_84.html#formula-summary",
     "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
     "section": "Formula Summary",
-    "text": "Formula Summary\nNotch filter design (2nd order):\n\nPole radius (for bandwidth BW at fs): \\[\nr = 1 - \\frac{BW}{f_s}\\pi\n\\]\nAngle for notch at \\(f_0\\): \\[\n\\theta = 2\\pi \\frac{f_0}{f_s} \\quad \\text{(or } \\theta^\\circ = 360^\\circ \\frac{f_0}{f_s}\\text{)}\n\\]\nScale factor K (see text Eq. 8.50 type): \\[\nK = \\frac{1 - 2r\\cos\\theta + r^2}{2 - 2\\cos\\theta}\n\\]\n\nGeneral 2nd‑order IIR (biquad):\n\\[\nH(z)=\\frac{b_0 + b_1 z^{-1} + b_2 z^{-2}}{1 + a_1 z^{-1} + a_2 z^{-2}}\n\\]\nDifference equation:\n\\[\ny(n) = b_0 x(n) + b_1 x(n-1) + b_2 x(n-2) - a_1 y(n-1) - a_2 y(n-2)\n\\]\nGoertzel recurrence (modified):\n\nState update: \\[\nv_k(n) = 2\\cos\\left(\\frac{2\\pi k}{N}\\right) v_k(n-1) - v_k(n-2) + x(n)\n\\]\nSquared magnitude: \\[\n|X(k)|^2 = v_k^2(N) + v_k^2(N-1) - 2\\cos\\left(\\frac{2\\pi k}{N}\\right) v_k(N) v_k(N-1)\n\\]\nSingle‑sided amplitude: \\[\nA_k = \\frac{2}{N} \\sqrt{|X(k)|^2}\n\\]\n\nHeart‑rate from zero crossings:\n\\[\nHR\\ (\\text{bpm}) = \\frac{60}{N/f_s} \\cdot \\frac{\\text{zero crossings}}{2}\n\\]\nDTMF bin mapping:\n\\[\nk = \\text{round}\\left( \\frac{f}{f_s} N \\right)\n\\]"
+    "text": "Formula Summary\nNotch filter design (2nd order):\n\nPole radius (for bandwidth BW at fs): \\[\nr = 1 - \\frac{BW}{f_s}\\pi\n\\]\nAngle for notch at \\(f_0\\): \\[\n\\theta = 2\\pi \\frac{f_0}{f_s} \\quad \\text{(or } \\theta^\\circ = 360^\\circ \\frac{f_0}{f_s}\\text{)}\n\\]\nScale factor K (see text Eq. 8.50 type): \\[\nK = \\frac{1 - 2r\\cos\\theta + r^2}{2 - 2\\cos\\theta}\n\\]"
+  },
+  {
+    "objectID": "dsp_84.html#how-this-interactive-deck-works",
+    "href": "dsp_84.html#how-this-interactive-deck-works",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "How This Interactive Deck Works",
+    "text": "How This Interactive Deck Works\n\nAll code runs in your browser using Pyodide (Python compiled to WebAssembly).\nYou can:\n\nEdit Python code and run it live.\nUse interactive sliders (Observable JS) to control parameters.\nSee Plotly charts update in real time as you adjust the controls.\n\n\nTip: Use this deck to experiment with:\n\n60 Hz notch filter behavior.\nGoertzel algorithm and DTMF tone detection.\nEffects of coefficient changes on poles/zeros.\n\n\nExplain briefly what Pyodide is and that no separate Python installation is needed. Mention that some cells may take a second to run the first time (Pyodide initialization)."
+  },
+  {
+    "objectID": "dsp_84.html#warmup-simple-pyodide-code-cell",
+    "href": "dsp_84.html#warmup-simple-pyodide-code-cell",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "Warm‑Up: Simple Pyodide Code Cell",
+    "text": "Warm‑Up: Simple Pyodide Code Cell\nTry editing the loop range or the formula.\n\n\n\n\n\n\n\nHave students increase the range or change the arithmetic expression. Confirm they see immediate output changes."
+  },
+  {
+    "objectID": "dsp_84.html#exploring-a-secondorder-iir-notch-filter-60-hz",
+    "href": "dsp_84.html#exploring-a-secondorder-iir-notch-filter-60-hz",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "1. Exploring a Second‑Order IIR Notch Filter (60 Hz)",
+    "text": "1. Exploring a Second‑Order IIR Notch Filter (60 Hz)\nLet’s start from the 60 Hz notch filter section used in the ECG hum eliminator.\nWe’ll implement:\n\\[\nH_1(z) = \\frac{0.9803 - 1.5862 z^{-1} + 0.9803 z^{-2}}{1 - 1.5842 z^{-1} + 0.9586 z^{-2}}\n\\]\nand visualize its frequency response.\n\n\n\n\n\n\n\nAsk: where is the notch located? Students should hover around 60 Hz and note the depth. Invite them to change fs or coefficients in the cell to see what happens to the notch."
+  },
+  {
+    "objectID": "dsp_84.html#interactive-move-the-notch-frequency",
+    "href": "dsp_84.html#interactive-move-the-notch-frequency",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "1.1 Interactive: Move the Notch Frequency",
+    "text": "1.1 Interactive: Move the Notch Frequency\nUse the slider to adjust the notch frequency between 40 and 100 Hz and see how the response changes.\n\nviewof notch_f = Inputs.range([40, 100], {step: 2, label: \"Notch center frequency f0 (Hz)\"})\nviewof bw = Inputs.range([2, 10], {step: 1, label: \"Approximate 3-dB bandwidth (Hz)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEncourage students to increase BW and observe how the notch widens and passband distortion grows. Ask: What happens if BW is very small (poles close to unit circle)? Discuss sensitivity to coefficient quantization."
+  },
+  {
+    "objectID": "dsp_84.html#timedomain-ecg-notch-filtering-toy-example",
+    "href": "dsp_84.html#timedomain-ecg-notch-filtering-toy-example",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "2. Time‑Domain ECG Notch Filtering (Toy Example)",
+    "text": "2. Time‑Domain ECG Notch Filtering (Toy Example)\nWe’ll create a synthetic ECG‑like pulse plus 60 Hz hum and see how the notch filter cleans it up.\nTry: change the hum amplitude or notch frequency and re‑run.\n\n\n\n\n\n\n\nWhile this is not a fully realistic ECG, it’s enough to show hum removal in time domain. Encourage them to modify hum_amp or add harmonics at 120 Hz, 180 Hz and see remaining oscillation if only one notch is used."
+  },
+  {
+    "objectID": "dsp_84.html#interactive-coefficient-quantization-effect-1storder-iir",
+    "href": "dsp_84.html#interactive-coefficient-quantization-effect-1storder-iir",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "3. Interactive Coefficient Quantization Effect (1st‑Order IIR)",
+    "text": "3. Interactive Coefficient Quantization Effect (1st‑Order IIR)\nWe’ll reproduce the idea from Example 8.24 interactively:\n\\[\nH(z) = \\frac{b_0 + b_1 z^{-1}}{1 + a_1 z^{-1}}\n\\]\nUse sliders to adjust the quantized coefficients and watch:\n\nPole and zero locations.\nMagnitude response changes.\n\n\nviewof b0 = Inputs.range([0.5, 1.5], {step: 0.01, label: \"b0 (quantized)\"})\nviewof b1 = Inputs.range([-0.5, 0.5], {step: 0.01, label: \"b1 (quantized)\"})\nviewof a1 = Inputs.range([-0.9, 0.9], {step: 0.01, label: \"a1 (quantized)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAsk students to move a1 closer to ±1 and observe the pole on or near the unit circle. Discuss stability: |pole| &lt; 1 is required. This makes the impact of small quantization errors visually clear."
+  },
+  {
+    "objectID": "dsp_84.html#interactive-goertzel-algorithm-single-bin",
+    "href": "dsp_84.html#interactive-goertzel-algorithm-single-bin",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "4. Interactive Goertzel Algorithm – Single Bin",
+    "text": "4. Interactive Goertzel Algorithm – Single Bin\nWe’ll build an interactive Goertzel analyzer for a single DFT bin.\nUse sliders to:\n\nSelect signal frequency (f_0).\nSelect DFT bin index k.\n\nThen we’ll compute (|X(k)|) using the modified Goertzel algorithm.\n\nviewof sig_freq = Inputs.range([0, 4000], {step: 50, label: \"Signal frequency f0 (Hz)\"})\nviewof bin_k = Inputs.range([0, 64], {step: 1, label: \"DFT bin index k\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAsk students to choose f0 exactly matching a DFT bin: f0 = k*fs/N, and observe that Goertzel and DFT amplitudes match. Then choose an “off‑bin” frequency and see how energy spreads across bins."
+  },
+  {
+    "objectID": "dsp_84.html#dtmf-tone-generation-try-another-key",
+    "href": "dsp_84.html#dtmf-tone-generation-try-another-key",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "5. DTMF Tone Generation – Try Another Key",
+    "text": "5. DTMF Tone Generation – Try Another Key\nLet’s build a small DTMF generator you can experiment with.\nWe’ll approximate the idea of Program 8.19:\n\nUse the IIR sinusoid generator with impulse input.\nSum two tones for a key.\n\n\nviewof key_choice = Inputs.select(\n  [\n    \"1\",\"2\",\"3\",\n    \"4\",\"5\",\"6\",\n    \"7\",\"8\",\"9\",\n    \"*\",\"0\",\"#\"\n  ],\n  {label: \"DTMF Key\"}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\nAsk students: verify the two peaks in the spectrum match the standard DTMF frequencies for the chosen key. Next, they can modify fs or T and see effect on frequency resolution."
+  },
+  {
+    "objectID": "dsp_84.html#mini-dtmf-detector-with-goertzel",
+    "href": "dsp_84.html#mini-dtmf-detector-with-goertzel",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "6. Mini DTMF Detector with Goertzel",
+    "text": "6. Mini DTMF Detector with Goertzel\nNow we’ll build a minimal DTMF detector for a single key window.\nSteps:\n\nGenerate a DTMF tone for a chosen key.\nApply 7 Goertzel filters at standard DTMF frequencies.\nPlot measured amplitudes and compare with a simple threshold.\n\n\nviewof detect_key = Inputs.select(\n  [\n    \"1\",\"2\",\"3\",\n    \"4\",\"5\",\"6\",\n    \"7\",\"8\",\"9\",\n    \"*\",\"0\",\"#\"\n  ],\n  {label: \"Key to Generate & Then Detect\"}\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\nStudents should see two bars clearly above the threshold corresponding to one low and one high frequency. Challenge: can they write simple Python logic (in this cell) to map the two highest bins back to a key automatically?"
+  },
+  {
+    "objectID": "dsp_84.html#summary-what-to-explore-further",
+    "href": "dsp_84.html#summary-what-to-explore-further",
+    "title": "8.4 Infinite Impulse Response (IIR) Filter Design",
+    "section": "7. Summary: What to Explore Further",
+    "text": "7. Summary: What to Explore Further\nUse these interactive blocks to:\n\nVary notch filter parameters and see:\n\nHow bandwidth and center frequency affect ECG hum rejection.\n\nChange IIR coefficients to understand:\n\nPole/zero motion vs. stability and magnitude response.\n\nExperiment with the Goertzel algorithm by:\n\nChanging N and k, observing resolution vs. leakage.\n\nExtend the DTMF detector:\n\nImplement a full keypad decoder purely in Python.\n\n\n\n\n\n\n\n\nTip\n\n\nTry to break the designs: - What happens if the sampling rate changes but the same coefficients are used? - How sensitive is the DTMF detector to frequency drift or noise?\nThis kind of hands‑on “stress testing” is a great way to build intuition about real‑world DSP systems.\n\n\n\n\nEncourage students to save interesting parameter combinations and screen captures. Suggest they adapt these snippets for homework, labs, or mini‑projects (e.g., implementing a Goertzel‑based tone detector on a microcontroller)."
   }
 ]
