@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-html/tabby.min.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.37">
+
+  <meta name="author" content="Imron Rosyadi">
+  <title>Capstone Design – Stage 6 – Unit / Component Verification</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-364db60e29fb914c6c58c0372f1cec08.css">
+  <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+  <link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Stage 6 – Unit / Component Verification</h1>
+  <p class="subtitle">Capstone Design</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Imron Rosyadi 
+</div>
+</div>
+</div>
+
+</section>
+<section id="stage-6-unit-component-verification" class="slide level2">
+<h2>Stage 6 – Unit / Component Verification</h2>
+<p>Capstone Design Course – From Needs to Validated Systems using the V‑Model &amp; ISO/IEC/IEEE 29148</p>
+<p>Focus of this session: Stage 6 – Unit / Component Verification</p>
+<p>DCP‑500A – Unit Verification</p>
+<aside class="notes">
+<p>This deck is a dedicated session for <strong>Stage 6</strong>. Students should already have seen the full V‑Model and Stage 5 (Implementation / DCP‑400).</p>
+<p>Goals for you as instructor: - Anchor Stage 6 in <strong>29148’s Verification process</strong> at the component level. - Emphasize that tests are <strong>requirement‑based</strong> and <strong>traceable</strong> (<code>TST-*</code> ↔︎ <code>CMP-*</code> ↔︎ <code>REQ-*</code>). - Show how this looks for common ECE projects (embedded controllers, FPGA, mixed‑signal boards, IoT nodes). - Clarify the role and structure of <strong>DCP‑500A Unit Verification</strong>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="session-learning-objectives" class="slide level2 scrollable">
+<h2>Session Learning Objectives</h2>
+<p>By the end of this session, you will be able to:</p>
+<ol type="1">
+<li>Explain <strong>where Stage 6 fits</strong> in the V‑Model and how it differs from Stage 7 (System Verification).</li>
+<li>Describe the <strong>ISO/IEC/IEEE 29148 Verification process at the component level</strong> and its main activities.</li>
+<li>Define <strong>unit / component verification</strong> vs informal “it seems to work” testing.</li>
+<li>Identify the <strong>key deliverables</strong> of Stage 6, especially <strong>DCP‑500A Unit Verification</strong> and <code>TST-*</code> artifacts.</li>
+<li>Apply these ideas to <strong>ECE examples</strong> such as embedded firmware modules, FPGA IP cores, and hardware subassemblies.</li>
+</ol>
+<aside class="notes">
+<p>Use these objectives as waypoints: - After explaining 29148: ask students to restate the verification process in their own words. - After examples: ask how they would verify a specific module from their own project.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="where-are-we-in-the-vmodel" class="slide level2">
+<h2>Where Are We in the V‑Model?</h2>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<p><img data-src="cd_06_files\figure-revealjs\mermaid-figure-1.png" style="width:3.6in;height:8.35in"></p>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Stage 6 sits on the <strong>right‑hand side</strong>, directly across from <strong>Stage 4 (Design)</strong>. You are testing <strong>individual components</strong> against their <strong>design specs and allocated requirements</strong>.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Remind them of mirror relationships in the V‑Model: - Architecture &amp; component design (Stage 4) ↔︎ Unit / component verification (Stage 6). - System requirements (Stage 3) ↔︎ System verification (Stage 7). - Stakeholder needs (Stage 2) ↔︎ Validation (Stage 8).</p>
+<p>Stage 6 is <strong>not full system testing</strong>; it’s targeted testing of each piece in isolation or in a small test harness.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="quick-recap-traceability-backbone" class="slide level2">
+<h2>Quick Recap – Traceability Backbone</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Traceability chain:</strong></p>
+<ul>
+<li><code>STR-*</code> – Stakeholder Requirements</li>
+<li><code>REQ-*</code> – System Requirements</li>
+<li><code>CMP-*</code> – Components (design elements)</li>
+<li><code>IMP-*</code> – Implementation items (code, boards, FPGA, etc.)</li>
+<li><code>TST-*</code> – <strong>Unit / component tests</strong> (Stage 6)</li>
+<li><code>VER-*</code> – System verification tests (Stage 7)</li>
+<li><code>VAL-*</code> – Validation activities (Stage 8)</li>
+</ul>
+<p>All maintained in the <strong>RTM</strong>.</p>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<p><img data-src="cd_06_files\figure-revealjs\mermaid-figure-4.png" style="width:1.63in;height:7.23in"></p>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div></div>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>Stage 6 lives in the <strong><code>CMP-* ↔︎ TST-*</code></strong> space: Every component should have <strong>planned, traceable tests</strong>.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>If students forget traceability, Stage 6 degenerates into “random test scripts.” Keep reinforcing: &gt; “If you can’t say which requirement a test verifies, that test may not belong in this project.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="verification-vs-validation-revisited" class="slide level2">
+<h2>Verification vs Validation (Revisited)</h2>
+<ul>
+<li><strong>Verification</strong> – “Did we build it right?”
+<ul>
+<li>Against <strong>requirements and design specs</strong>.</li>
+<li>Evidence‑based: tests, analysis, inspection, etc.</li>
+</ul></li>
+<li><strong>Validation</strong> – “Did we build the right thing?”
+<ul>
+<li>Against <strong>stakeholder needs and intended use</strong>.</li>
+</ul></li>
+</ul>
+<p>At <strong>Stage 6</strong>, we are doing <strong>verification</strong> at the <strong>unit / component level</strong>:</p>
+<ul>
+<li>Verifying that each <strong>component</strong> (<code>CMP-*</code>) + implementation (<code>IMP-*</code>) behaves as its specification says.</li>
+</ul>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Think: “Does this <strong>module</strong> do exactly what <strong>its component spec and allocated requirements</strong> say it should?”</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Clarify that validation will come later at system level, with real users and realistic scenarios. For now, the “customer” of each test is the <strong>design document (DCP‑300)</strong> and requirements (DCP‑200).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="verification-process-at-component-level" class="slide level2 scrollable">
+<h2>29148: Verification Process at Component Level</h2>
+<p>ISO/IEC/IEEE 29148 describes <strong>Verification</strong> as a process to confirm that <strong>work products</strong> meet their <strong>specified requirements</strong>.</p>
+<p>At <strong>component level</strong>, this means:</p>
+<ol type="1">
+<li><strong>Plan verification</strong> for each component.</li>
+<li><strong>Design test cases</strong> linked to requirements and design elements.</li>
+<li><strong>Establish test environment</strong> (tools, equipment, simulators).</li>
+<li><strong>Execute tests</strong> and record objective evidence.</li>
+<li><strong>Evaluate results</strong> and decide pass/fail for each requirement.</li>
+<li><strong>Record and track defects</strong>, and re‑test after fixes.</li>
+</ol>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<p><img data-src="cd_06_files\figure-revealjs\mermaid-figure-3.png" style="width:12.62in;height:1.36in"></p>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Simplify 29148 language: - It doesn’t dictate your exact tools; it demands <strong>discipline and traceability</strong>. - Component verification is not “poke it and hope”; it’s <strong>planned experiments</strong>.</p>
+<p>Tell them: 29148 expects you to answer: - What requirement are you checking? - How are you checking it (test/analysis/model/inspection)? - What is the evidence?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="stage-6-in-the-course-framework" class="slide level2">
+<h2>Stage 6 in the Course Framework</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>Course Stage:</strong></p>
+<ul>
+<li><strong>Stage 6 – Unit / Component Verification</strong></li>
+</ul>
+<p><strong>V‑Model Level:</strong></p>
+<ul>
+<li>Lower‑right: <strong>unit tests / component verification</strong></li>
+</ul>
+<p><strong>Inputs:</strong></p>
+<ul>
+<li>Approved <strong>DCP‑300 Design</strong> (component specs, interfaces).</li>
+<li>Approved <strong>DCP‑400 Implementation</strong> (actual HW/SW built, <code>IMP-*</code>).</li>
+<li>Initial <strong>Test Plan</strong> from Stage 4.</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<p><strong>Outputs:</strong></p>
+<ul>
+<li><strong><code>TST-*</code> unit/component test cases</strong>.</li>
+<li>Test procedures and logs.</li>
+<li>Defect / issue reports and resolutions.</li>
+<li>Updated <strong>RTM</strong> (<code>CMP-* → TST-*</code>).</li>
+<li><strong>DCP‑500A – Unit Verification</strong> document.</li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Stage 6 asks: &gt; “Is each building block <strong>solid</strong> before we snap them together in Stage 7?”</p>
+</div>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>Emphasize: if Stage 6 is weak, Stage 7 becomes a nightmare of debugging with too many unknowns.</p>
+<p>Good unit tests localize bugs and make system‑level debugging far easier.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="component-verification-vs-system-verification" class="slide level2">
+<h2>Component Verification vs System Verification</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Stage 6 – Unit / Component Verification</strong></p>
+<ul>
+<li>Test <strong>individual components</strong> (<code>CMP-*</code>) and their implementations (<code>IMP-*</code>).</li>
+<li>Example scope:
+<ul>
+<li>A single firmware module (e.g., motor control loop).</li>
+<li>A single FPGA IP core (e.g., FIR filter).</li>
+<li>A hardware board in isolation (e.g., sensor PCB).</li>
+</ul></li>
+<li>Focus:
+<ul>
+<li>Does this unit <strong>meet its spec</strong>?</li>
+<li>Does it behave correctly across specified ranges?</li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Stage 7 – System / Integration Verification</strong></p>
+<ul>
+<li>Test the <strong>integrated system</strong>.</li>
+<li>Example scope:
+<ul>
+<li>Motor controller + UI + communication.</li>
+<li>Full sensor network (nodes + gateway + backend).</li>
+</ul></li>
+<li>Focus:
+<ul>
+<li>Does the system satisfy <strong>system requirements</strong> (<code>REQ-*</code>)?</li>
+<li>Are interfaces and timing working correctly together?</li>
+</ul></li>
+</ul>
+</div></div>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>Unit tests try to <strong>isolate</strong> the component under test. System tests exercise <strong>end‑to‑end flows</strong>.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Tell a story: - If a motor doesn’t spin correctly, is the bug in the power stage, firmware, encoder, or command interface? Well‑designed Stage 6 tests for each part reduce the search space dramatically.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="activities-applied-to-components" class="slide level2 scrollable">
+<h2>29148 Activities – Applied to Components</h2>
+<p><strong>29148 Verification Activities (adapted to Stage 6):</strong></p>
+<ol type="1">
+<li><strong>Identify verification items</strong>
+<ul>
+<li>Choose which <strong>components</strong> (<code>CMP-*</code>) and <strong>implementation items</strong> (<code>IMP-*</code>) need unit tests.</li>
+</ul></li>
+<li><strong>Define verification objectives</strong>
+<ul>
+<li>For each item, state <strong>which requirements</strong> (<code>REQ-*</code>) or design constraints you are verifying.</li>
+</ul></li>
+<li><strong>Design test cases (<code>TST-*</code>)</strong>
+<ul>
+<li>Preconditions, inputs, expected outputs, pass/fail criteria.</li>
+</ul></li>
+<li><strong>Specify test methods &amp; tools</strong>
+<ul>
+<li>Hardware bench, HDL simulator, unit test framework, logic analyzer, etc.</li>
+</ul></li>
+<li><strong>Execute tests</strong>
+<ul>
+<li>Run tests, record procedures, outputs, and anomalies.</li>
+</ul></li>
+</ol>
+</section>
+<section class="slide level2 scrollable">
+
+<ol start="6" type="1">
+<li><strong>Evaluate &amp; report</strong>
+<ul>
+<li>Declare each test <strong>Pass/Fail</strong>, tie failures to defect reports/buttons in issue tracker.</li>
+</ul></li>
+<li><strong>Regression</strong>
+<ul>
+<li>Re‑run relevant tests after fixes or design changes.</li>
+</ul></li>
+</ol>
+<aside class="notes">
+<p>Make these concrete by pointing to typical ECE tools: - HDL: ModelSim/Questa, Vivado simulator. - Embedded C: Unity/Cmocka, custom harness. - Hardware: oscilloscopes, DMM, spectrum analyzers, signal generators.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="dcp500a-unit-verification-overview" class="slide level2 scrollable">
+<h2>DCP‑500A – Unit Verification (Overview)</h2>
+<p><strong>Main Stage 6 deliverable:</strong></p>
+<ul>
+<li><strong>DCP‑500A – Unit Verification</strong></li>
+</ul>
+<p>Typical contents:</p>
+<ol type="1">
+<li><strong>Scope &amp; Objectives</strong></li>
+<li><strong>Items Under Test (IUTs)</strong> – Components / <code>CMP-*</code> and <code>IMP-*</code>.</li>
+<li><strong>Test Environment &amp; Tools</strong></li>
+<li><strong>Unit Test Cases (<code>TST-*</code>)</strong> – definitions.</li>
+<li><strong>Test Execution Results</strong> – logs &amp; summaries.</li>
+<li><strong>Defects &amp; Resolutions</strong></li>
+<li><strong>Updated RTM excerpt (<code>CMP-* ↔︎ TST-*</code>)</strong></li>
+<li><strong>Conclusion: Readiness for System Verification (Stage 7)</strong></li>
+</ol>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>DCP‑500A is the <strong>evidence package</strong> that your components are ready to be integrated.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>You don’t need to include every raw log in the PDF; large logs can be referenced as files in your repo, but key results and summaries must be captured.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="from-components-to-unit-tests-mapping" class="slide level2">
+<h2>From Components to Unit Tests – Mapping</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<p><img data-src="cd_06_files\figure-revealjs\mermaid-figure-2.png" style="width:2.48in;height:5.73in"></p>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p><strong>Interpretation:</strong></p>
+<ul>
+<li>Each <code>CMP-*</code> is allocated some <code>REQ-*</code>.</li>
+<li>Each <code>CMP-*</code> is realized by one or more <code>IMP-*</code>.</li>
+<li>For each critical <code>CMP-*</code>, you design one or more <code>TST-*</code> that:
+<ul>
+<li>Exercise the <strong>implementation</strong>.</li>
+<li>Show that allocated <strong>requirements are satisfied</strong>.</li>
+</ul></li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>Emphasize that <code>TST-*</code> IDs now join the traceability family: - <code>CMP-SW-020</code> → <code>IMP-SW-020A</code> → <code>TST-SW-020-01</code>, etc.</p>
+<p>Students should plan <code>TST-*</code> as carefully as they plan code modules.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="ece-example-1-embedded-motor-controller-unit-level" class="slide level2">
+<h2>ECE Example 1 – Embedded Motor Controller (Unit Level)</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Project Recap:</strong></p>
+<p>BLDC motor controller for a small robot arm.</p>
+<p>Relevant items:</p>
+<ul>
+<li><code>REQ-SY-010</code>: Motor speed control 0–3000 RPM, ±2% accuracy.</li>
+<li><code>CMP-SW-020</code>: Motor control firmware module.</li>
+<li><code>IMP-SW-020A</code>: <code>motor_ctrl.c</code>, <code>motor_ctrl.h</code>.</li>
+</ul>
+<p><strong>What do we verify at Stage 6?</strong></p>
+<ul>
+<li>Control module’s <strong>speed regulation</strong> behavior.</li>
+<li>Response to step changes in speed command.</li>
+<li>Handling of sensor faults (e.g., encoder dropout).</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Example Unit Tests (<code>TST-*</code>):</strong></p>
+<ul>
+<li><code>TST-SW-020-01</code>:
+<ul>
+<li><strong>Objective:</strong> Verify speed control accuracy at several setpoints.</li>
+<li><strong>Method:</strong> HIL (hardware‑in‑the‑loop) testbench with actual motor.</li>
+</ul></li>
+<li><code>TST-SW-020-02</code>:
+<ul>
+<li><strong>Objective:</strong> Verify controller response to speed step input.</li>
+<li><strong>Method:</strong> Log speed vs time; check settling time &lt; 0.5 s, overshoot &lt; 10%.</li>
+</ul></li>
+<li><code>TST-SW-020-03</code>:
+<ul>
+<li><strong>Objective:</strong> Verify safe behavior on encoder signal loss.</li>
+<li><strong>Method:</strong> Simulate encoder failure; ensure motor stops within 200 ms.</li>
+</ul></li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>Discuss the practicalities: - You might use a <strong>test jig</strong> or a lab setup with load on motor. - Some tests may run via a PC controlling the target over UART or CAN.</p>
+<p>All of these tests are still <strong>component‑level</strong>: just the controller + motor, not the whole robot system.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-motor-controller-test-case-definition" class="slide level2">
+<h2>Example – Motor Controller Test Case Definition</h2>
+<p><strong>Test Case ID:</strong> <code>TST-SW-020-01</code> – Speed Control Accuracy</p>
+<ul>
+<li><strong>Related Requirement(s):</strong>
+<ul>
+<li><code>REQ-SY-010</code> – Speed 0–3000 RPM with ±2% accuracy.</li>
+</ul></li>
+<li><strong>Related Component / Implementation:</strong>
+<ul>
+<li><code>CMP-SW-020</code> – Motor control firmware module.</li>
+<li><code>IMP-SW-020A</code> – <code>motor_ctrl.c</code> / <code>motor_ctrl.h</code>.</li>
+</ul></li>
+<li><strong>Test Method:</strong> Test (physical, instrumented).</li>
+<li><strong>Test Setup:</strong>
+<ul>
+<li>BLDC motor with encoder.</li>
+<li>Motor controller board with firmware <code>motor-fw-v1.0-TST</code>.</li>
+<li>Lab PSU, oscilloscope, tachometer (or encoder‑based RPM measurement).</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2 scrollable">
+
+<p><strong>Procedure:</strong></p>
+<ol type="1">
+<li>Set PWM frequency and control gains as in DCP‑300, Appendix B.</li>
+<li>Command setpoints: 500, 1500, 2500, 3000 RPM via serial console.</li>
+<li>For each setpoint, wait until speed stabilizes (t &gt; 2 s).</li>
+<li>Measure actual RPM (average over 1 s window).</li>
+<li>Compute error = |actual – setpoint| / setpoint × 100%.</li>
+</ol>
+<p><strong>Pass/Fail Criteria:</strong></p>
+<ul>
+<li>All tested setpoints must have error ≤ 2%.</li>
+</ul>
+<p><strong>Result:</strong></p>
+<p><em>[To be filled after execution – e.g., “PASS – max error = 1.3% at 3000 RPM”]</em></p>
+<aside class="notes">
+<p>This is a <strong>template</strong> for a solid 29148‑style test case: - Objective, setup, procedure, and pass/fail clearly defined. Encourage students to follow a similar structure in DCP‑500A.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="ece-example-2-fpgabased-fir-filter" class="slide level2">
+<h2>ECE Example 2 – FPGA‑Based FIR Filter</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Project Recap:</strong></p>
+<p>FPGA card performing real‑time FIR low‑pass filtering.</p>
+<p>Relevant items:</p>
+<ul>
+<li><code>REQ-SY-020</code>: Low‑pass FIR with 60 dB stop‑band at 8 kHz, fs = 48 kHz.</li>
+<li><code>CMP-HW-010</code>: FPGA filter core.</li>
+<li><code>IMP-HW-010A</code>: HDL module <code>fir_core.vhd</code>.</li>
+</ul>
+<p><strong>Stage‑6 Focus:</strong></p>
+<ul>
+<li>Verify <strong>functional correctness</strong> of <code>fir_core</code>.</li>
+<li>Measure <strong>frequency response</strong> and <strong>numerical precision</strong>.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Example Unit Tests (<code>TST-*</code>):</strong></p>
+<ul>
+<li><code>TST-HW-010-01</code>:
+<ul>
+<li>Method: HDL simulation.</li>
+<li>Objective: Check impulse response matches design coefficients exactly.</li>
+</ul></li>
+<li><code>TST-HW-010-02</code>:
+<ul>
+<li>Method: HDL simulation with sinusoidal sweeps.</li>
+<li>Objective: Verify magnitude response:
+<ul>
+<li>Pass‑band ripple ≤ 1 dB.</li>
+<li>Stop‑band attenuation ≥ 60 dB beyond 8 kHz.</li>
+</ul></li>
+</ul></li>
+<li><code>TST-HW-010-03</code>:
+<ul>
+<li>Method: Simulation with max‑amplitude signals.</li>
+<li>Objective: Check no overflow or saturation within expected input range.</li>
+</ul></li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>Unit tests here may be done entirely in <strong>simulation</strong>, which is typical and acceptable for Stage 6 in FPGA projects.</p>
+<p>You can still do <strong>bench tests</strong> later in Stage 7 when the FPGA is integrated with I/O and software.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="ece-example-3-sensor-node-hardware-smart-lab-project" class="slide level2">
+<h2>ECE Example 3 – Sensor Node Hardware (Smart Lab Project)</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>Project Recap:</strong></p>
+<p>Smart Lab wireless sensor nodes.</p>
+<p>Relevant items:</p>
+<ul>
+<li><code>REQ-SY-010</code>: Temperature measurement 10–40°C, ±0.5°C.</li>
+<li><code>CMP-SY-040</code>: Sensor node hardware.</li>
+<li><code>IMP-SY-040A</code>: Node PCB rev B.</li>
+</ul>
+<p><strong>Stage‑6 Hardware Verification:</strong></p>
+<ul>
+<li>Verify sensor accuracy and linearity.</li>
+<li>Verify power rails within tolerance.</li>
+<li>Verify radio front‑end basic operation (RSSI, packet send/receive at unit level).</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<p><strong>Example Unit Tests (<code>TST-*</code>):</strong></p>
+<ul>
+<li><code>TST-SY-040-01</code>: Temperature sensor calibration and accuracy bench test.</li>
+<li><code>TST-SY-040-02</code>: Power integrity test – verify 3.3 V rail under load stays within ±5%.</li>
+<li><code>TST-SY-040-03</code>: RF smoke test – verify node can send packets to test receiver over 5 m line‑of‑sight with RSSI above threshold.</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>Make it clear that even though some of these tests involve more than one chip, they are still <strong>component‑level</strong> tests: They are scoped to the <strong>node PCB as a unit</strong>, not the whole network with backend and UI.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="designing-good-unit-tests-29148style" class="slide level2">
+<h2>Designing Good Unit Tests – 29148‑Style</h2>
+<p><strong>Characteristics of good unit/component tests:</strong></p>
+<ul>
+<li><strong>Traceable:</strong>
+<ul>
+<li>Linked to specific <code>REQ-*</code> and <code>CMP-*</code>.</li>
+</ul></li>
+<li><strong>Repeatable:</strong>
+<ul>
+<li>Clear procedure and environment description.</li>
+</ul></li>
+<li><strong>Observable:</strong>
+<ul>
+<li>You can capture outputs or measurements objectively.</li>
+</ul></li>
+<li><strong>Deterministic:</strong>
+<ul>
+<li>Same preconditions → same expected result (within defined tolerance).</li>
+</ul></li>
+<li><strong>Isolated (as far as practical):</strong>
+<ul>
+<li>Minimize external dependencies; use stubs/mocks when needed.</li>
+</ul></li>
+</ul>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Ask yourself for each unit test:</p>
+<blockquote>
+<p>“If someone else on my team followed this procedure, would they get the <strong>same pass/fail decision</strong>?”</p>
+</blockquote>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>You can contrast this with “wiggle some inputs on the scope and see if it looks okay.” Informal checks are fine as <strong>pre‑tests</strong>, but 29148‑style verification calls for <strong>documented, repeatable tests</strong>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="test-methods-tamdi-at-component-level" class="slide level2">
+<h2>Test Methods – TAMDI at Component Level</h2>
+<p>29148 and many SE texts use <strong>TAMDI</strong> test methods:</p>
+<ul>
+<li><strong>Test</strong> – Run the system/component and directly measure behavior.</li>
+<li><strong>Analysis</strong> – Use models, calculations, or code review to infer behavior.</li>
+<li><strong>Modeling/Simulation</strong> – Computer‑based experiments (e.g., HDL simulation).</li>
+<li><strong>Demonstration</strong> – Show the function informally, usually qualitative.</li>
+<li><strong>Inspection</strong> – Visual/manual check (e.g., schematics, code, layout).</li>
+</ul>
+<p>At Stage 6:</p>
+<ul>
+<li>You will mostly use <strong>Test</strong> and <strong>Modeling/Simulation</strong>, sometimes <strong>Inspection</strong> and <strong>Analysis</strong>.</li>
+<li>Example:
+<ul>
+<li>Inspect a PCB layout to confirm trace widths (Inspection).</li>
+<li>Simulate a filter’s frequency response (Modeling/Simulation).</li>
+<li>Run firmware unit tests in CI (Test).</li>
+</ul></li>
+</ul>
+<aside class="notes">
+<p>Encourage students to <strong>label</strong> the method for each <code>TST-*</code> in DCP‑500A. E.g., “Method: Test (hardware bench)” or “Method: Simulation (Modeling)”. This is common practice in industry test specs.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="test-environment-tooling" class="slide level2">
+<h2>Test Environment &amp; Tooling</h2>
+<p>For Stage 6, you must define a <strong>test environment</strong> to support unit/component tests.</p>
+<p>Examples for ECE projects:</p>
+<ul>
+<li><strong>Embedded firmware:</strong>
+<ul>
+<li>Target dev boards, JTAG/SWD debuggers.</li>
+<li>UART/USB link to PC for scripts to drive tests.</li>
+<li>Unit test frameworks (Unity, Google Test on host).</li>
+</ul></li>
+<li><strong>FPGA/HDL:</strong>
+<ul>
+<li>HDL simulation tools (Vivado, Questa).</li>
+<li>Testbench code that feeds stimuli and checks responses.</li>
+</ul></li>
+<li><strong>Analog / mixed‑signal / RF boards:</strong>
+<ul>
+<li>Oscilloscope, function/signal generator, DMM, spectrum analyzer.</li>
+<li>Test fixtures to connect loads and probes consistently.</li>
+</ul></li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Document <strong>versions and configurations</strong> of test tools, just as you do for implementation tools.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Connect this back to CM: - If a particular version of the simulator or lab tool is known to behave differently, you need that recorded. This becomes important in regression testing or future maintenance.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="sample-dcp500a-structure-short-version" class="slide level2 scrollable">
+<h2>Sample DCP‑500A Structure (Short Version)</h2>
+<ol type="1">
+<li><strong>Introduction and Scope</strong>
+<ul>
+<li>Which components and requirements are covered.</li>
+</ul></li>
+<li><strong>Items Under Test (IUTs)</strong>
+<ul>
+<li>List of <code>CMP-*</code> and <code>IMP-*</code> under unit test.</li>
+</ul></li>
+<li><strong>Test Environment and Tools</strong>
+<ul>
+<li>Hardware bench, simulators, etc.</li>
+</ul></li>
+<li><strong>Unit Test Cases (<code>TST-*</code>)</strong>
+<ul>
+<li>Tables / subsections with objectives, inputs, expected results.</li>
+</ul></li>
+<li><strong>Execution Summary</strong>
+<ul>
+<li>Counts of tests passed/failed/skipped.</li>
+</ul></li>
+</ol>
+</section>
+<section class="slide level2 scrollable">
+
+<ol start="6" type="1">
+<li><strong>Defects and Anomalies</strong>
+<ul>
+<li>Issues discovered, mapped to tests and components.</li>
+</ul></li>
+<li><strong>Traceability Updates</strong>
+<ul>
+<li><code>CMP-* ↔︎ TST-*</code> mapping in RTM.</li>
+</ul></li>
+<li><strong>Readiness for Stage 7</strong>
+<ul>
+<li>Statement about which components are verified and ready to integrate.</li>
+</ul></li>
+</ol>
+<aside class="notes">
+<p>You might show a brief excerpt from a real or mock DCP‑500A to demonstrate formatting and level of detail expected.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-unit-test-summary-table-excerpt" class="slide level2">
+<h2>Example – Unit Test Summary Table (Excerpt)</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 13%">
+<col style="width: 20%">
+<col style="width: 14%">
+<col style="width: 8%">
+<col style="width: 28%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>TST ID</th>
+<th>CMP ID</th>
+<th>REQ ID(s)</th>
+<th>Method</th>
+<th>Result</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>TST-SW-020-01</td>
+<td>CMP-SW-020</td>
+<td>REQ-SY-010</td>
+<td>Test (HIL)</td>
+<td>PASS</td>
+<td>Max error 1.3% at 3000 RPM</td>
+</tr>
+<tr class="even">
+<td>TST-SW-020-02</td>
+<td>CMP-SW-020</td>
+<td>REQ-SY-010</td>
+<td>Test (HIL)</td>
+<td>PASS</td>
+<td>Settling time &lt; 0.4 s</td>
+</tr>
+<tr class="odd">
+<td>TST-HW-010-01</td>
+<td>CMP-HW-010</td>
+<td>REQ-SY-020</td>
+<td>Simulation</td>
+<td>PASS</td>
+<td>Impulse response correct</td>
+</tr>
+<tr class="even">
+<td>TST-HW-010-02</td>
+<td>CMP-HW-010</td>
+<td>REQ-SY-020</td>
+<td>Simulation</td>
+<td>FAIL</td>
+<td>Stop‑band 55 dB only</td>
+</tr>
+<tr class="odd">
+<td>TST-SY-040-01</td>
+<td>CMP-SY-040</td>
+<td>REQ-SY-010</td>
+<td>Test (bench)</td>
+<td>PASS</td>
+<td>±0.4°C across range</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Warning</strong></p>
+</div>
+<div class="callout-content">
+<p>A <strong>FAIL</strong> is not a disaster; hiding it is. Failures are where engineering actually happens.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Discuss how a failure (e.g., <code>TST-HW-010-02</code>) leads to: - Defect report. - Potential design change (e.g., more taps). - Re‑implementation and re‑test.</p>
+<p>This is 29148’s <strong>verification feedback loop</strong> in action.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="defects-root-cause-and-retesting" class="slide level2 scrollable">
+<h2>Defects, Root Cause, and Re‑Testing</h2>
+<p>When a test fails, Stage 6 should:</p>
+<ol type="1">
+<li><strong>Log the defect</strong>
+<ul>
+<li>ID it, link to <code>TST-*</code>, <code>CMP-*</code>, <code>IMP-*</code>, and relevant <code>REQ-*</code>.</li>
+</ul></li>
+<li><strong>Classify severity</strong>
+<ul>
+<li>Blocking vs non‑blocking for integration.</li>
+</ul></li>
+<li><strong>Analyze root cause</strong>
+<ul>
+<li>Is it implementation? design? requirement? measurement error?</li>
+</ul></li>
+<li><strong>Fix and re‑test</strong>
+<ul>
+<li>Update code / HDL / hardware as needed.</li>
+<li>Re‑execute affected tests (and regression tests).</li>
+</ul></li>
+<li><strong>Update documents &amp; RTM</strong>
+<ul>
+<li>If design/requirements change, follow change control.</li>
+</ul></li>
+</ol>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Use your <strong>issue tracker</strong> with tags like <code>defect</code>, <code>unit-test-fail</code>, and include IDs such as <code>TST-SW-020-02</code>, <code>CMP-SW-020</code>.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Tie this back to configuration management: - You must know <strong>which version</strong> of the implementation you tested. - If you retest after a fix, record the new baseline/tag.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="inclass-exercise-draft-a-unit-test-case" class="slide level2 scrollable">
+<h2>In‑Class Exercise – Draft a Unit Test Case</h2>
+<p><strong>Activity (5–10 minutes):</strong></p>
+<ol type="1">
+<li>Pick <strong>one component (<code>CMP-*</code>)</strong> from your team’s design (Stage 4).</li>
+<li>Identify <strong>one requirement (<code>REQ-*</code>)</strong> that was allocated to this component.</li>
+<li>Draft a <strong>unit test case (<code>TST-*</code>)</strong> with:
+<ul>
+<li>Objective.</li>
+<li>Method (Test / Simulation / etc.).</li>
+<li>Setup (equipment/software).</li>
+<li>Procedure (3–5 bullet steps).</li>
+<li>Pass/fail criteria (quantitative if possible).</li>
+</ul></li>
+</ol>
+</section>
+<section class="slide level2">
+
+<p>Example prompt answers on the board:</p>
+<ul>
+<li><code>CMP-SW-015</code> – Data logger module.</li>
+<li><code>REQ-SW-033</code> – “System shall store at least 10,000 records in non‑volatile memory without data corruption.”</li>
+<li><code>TST-SW-015-01</code> – Fill log with 10,000 entries, power‑cycle 50 times, check for bit‑exact match.</li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>This exercise primes their thinking for drafting <strong>DCP‑500A</strong> in their own projects.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Walk around and: - Check that students are tying the test to a real <code>REQ-*</code>. - Challenge vague criteria (e.g., “should be fast”) and ask them to quantify.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="summary-key-takeaways-for-stage-6" class="slide level2 scrollable">
+<h2>Summary – Key Takeaways for Stage 6</h2>
+<ol type="1">
+<li>Stage 6 is about <strong>Unit / Component Verification</strong>: proving that each <strong>component</strong> (<code>CMP-*</code>) and its implementation (<code>IMP-*</code>) satisfies its allocated <strong>requirements</strong>.</li>
+<li>ISO/IEC/IEEE <strong>29148 Verification process</strong> at component level involves:
+<ul>
+<li>Planning tests, designing <code>TST-*</code>, executing them in a defined environment, and recording objective evidence.</li>
+</ul></li>
+<li>All unit tests should be <strong>traceable</strong>: <code>REQ-* → CMP-* → IMP-* → TST-*</code>.</li>
+<li>The main deliverable is <strong>DCP‑500A Unit Verification</strong>, which documents:
+<ul>
+<li>Items under test, test environment, test cases, results, and defects.</li>
+</ul></li>
+<li>Solid Stage‑6 verification reduces risk and effort in <strong>Stage 7 System / Integration Verification</strong> and <strong>Stage 8 Validation</strong>.</li>
+</ol>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>Do not skip Stage 6 or treat it as an afterthought. A strong <strong>unit verification phase</strong> is one of the clearest markers of <strong>professional‑grade engineering practice</strong>.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Wrap up by connecting forward: - Next we will see how these verified components are integrated and tested at the system level in <strong>Stage 7 – System / Integration Verification</strong>.</p>
+<p>Invite questions about: - How detailed DCP‑500A needs to be. - How to choose between simulation vs hardware tests. - How to organize <code>TST-*</code> IDs in their RTM.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W119
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="qrjs_pics/unsoed_logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="https://imron-slide.vercel.app">irosyadi-2025</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script type="ojs-module-contents">
+    eyJjb250ZW50cyI6W119
+    </script>
+    <script type="module">
+    if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+    window._ojs.paths.runtimeToDoc = "../..";
+    window._ojs.paths.runtimeToRoot = "../..";
+    window._ojs.paths.docToRoot = "";
+    window._ojs.selfContained = false;
+    window._ojs.runtime.interpretFromScriptTags();
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

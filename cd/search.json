@@ -11,7 +11,7 @@
     "href": "index.html#capstone-design",
     "title": "Capstone Design",
     "section": "Capstone Design",
-    "text": "Capstone Design\n\nRPS\nCapstone Design Intro\nCapstone Design Chapter 5\nCapstone Design Chapter 6 Github\nCapstone Design Chapter 7 Markdown"
+    "text": "Capstone Design\n\nCapstone Design Intro\nCapstone Design Chapter 1\nCapstone Design Chapter 2\nCapstone Design Chapter 3\nCapstone Design Chapter 4\nCapstone Design Chapter 5\nCapstone Design Chapter 5 Github\nCapstone Design Chapter 5 Markdown\nCapstone Design Chapter 6\nCapstone Design Chapter 7\nCapstone Design Chapter 8\nCapstone Design Chapter 9"
   },
   {
     "objectID": "cd_00_intro.html#capstone-design-course-introduction",
@@ -873,5 +873,1013 @@
     "title": "Stage 5 – Implementation / Construction",
     "section": "Summary – Key Takeaways for Stage 5",
     "text": "Summary – Key Takeaways for Stage 5\n\nStage 5 (Implementation / Construction) is the bottom of the V‑Model, where designs become real HW/SW systems.\nISO/IEC/IEEE 15288 defines the Implementation and Configuration Management processes that guide how you build and control your system elements.\nISO/IEC/IEEE 29148 remains active: implementation must continue to respect and trace back to requirements, and any requirement changes must be controlled.\nYour main Stage‑5 deliverable is DCP‑400 Implementation, which documents:\n\nImplementation items (IMP-*) and their traceability to CMP-* / REQ-*.\nConfiguration baselines, repos, versions, build procedures, and change log.\n\nSolid configuration management (Git, tags, PCB revs, BOM versions, change control) is essential for:\n\nReproducibility.\nReliable verification and validation later.\nProfessional practice aligned with real ECE industries.\n\n\n\n\n\n\n\n\nImportant\n\n\nStage 5 is not “just hacking until it works.” It is disciplined construction under configuration control, preparing you for rigorous verification and validation.\n\n\n\n\nClose by connecting forward: - Next sessions will focus on how your Stage 5 implementation feeds into Stage 6 (Unit / Component Verification) and Stage 7 (System / Integration Verification).\nInvite questions: - About Git workflows, PCB versioning, or how detailed DCP‑400 needs to be. Encourage teams to start setting up repos and CM practices immediately, not halfway through the build."
+  },
+  {
+    "objectID": "cd_06.html#stage-6-unit-component-verification",
+    "href": "cd_06.html#stage-6-unit-component-verification",
+    "title": "Stage 6 – Unit / Component Verification",
+    "section": "Stage 6 – Unit / Component Verification",
+    "text": "Stage 6 – Unit / Component Verification\nCapstone Design Course – From Needs to Validated Systems using the V‑Model & ISO/IEC/IEEE 29148\nFocus of this session: Stage 6 – Unit / Component Verification\nDCP‑500A – Unit Verification\n\nThis deck is a dedicated session for Stage 6. Students should already have seen the full V‑Model and Stage 5 (Implementation / DCP‑400).\nGoals for you as instructor: - Anchor Stage 6 in 29148’s Verification process at the component level. - Emphasize that tests are requirement‑based and traceable (TST-* ↔︎ CMP-* ↔︎ REQ-*). - Show how this looks for common ECE projects (embedded controllers, FPGA, mixed‑signal boards, IoT nodes). - Clarify the role and structure of DCP‑500A Unit Verification."
+  },
+  {
+    "objectID": "cd_06.html#session-learning-objectives",
+    "href": "cd_06.html#session-learning-objectives",
+    "title": "Stage 6 – Unit / Component Verification",
+    "section": "Session Learning Objectives",
+    "text": "Session Learning Objectives\nBy the end of this session, you will be able to:\n\nExplain where Stage 6 fits in the V‑Model and how it differs from Stage 7 (System Verification).\nDescribe the ISO/IEC/IEEE 29148 Verification process at the component level and its main activities.\nDefine unit / component verification vs informal “it seems to work” testing.\nIdentify the key deliverables of Stage 6, especially DCP‑500A Unit Verification and TST-* artifacts.\nApply these ideas to ECE examples such as embedded firmware modules, FPGA IP cores, and hardware subassemblies.\n\n\nUse these objectives as waypoints: - After explaining 29148: ask students to restate the verification process in their own words. - After examples: ask how they would verify a specific module from their own project."
+  },
+  {
+    "objectID": "cd_06.html#where-are-we-in-the-vmodel",
+    "href": "cd_06.html#where-are-we-in-the-vmodel",
+    "title": "Stage 6 – Unit / Component Verification",
+    "section": "Where Are We in the V‑Model?",
+    "text": "Where Are We in the V‑Model?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nStage 6 sits on the right‑hand side, directly across from Stage 4 (Design). You are testing individual components against their design specs and allocated requirements.\n\n\n\n\nRemind them of mirror relationships in the V‑Model: - Architecture & component design (Stage 4) ↔︎ Unit / component verification (Stage 6). - System requirements (Stage 3) ↔︎ System verification (Stage 7). - Stakeholder needs (Stage 2) ↔︎ Validation (Stage 8).\nStage 6 is not full system testing; it’s targeted testing of each piece in isolation or in a small test harness."
+  },
+  {
+    "objectID": "cd_06.html#quick-recap-traceability-backbone",
+    "href": "cd_06.html#quick-recap-traceability-backbone",
+    "title": "Stage 6 – Unit / Component Verification",
+    "section": "Quick Recap – Traceability Backbone",
+    "text": "Quick Recap – Traceability Backbone\n\n\nTraceability chain:\n\nSTR-* – Stakeholder Requirements\nREQ-* – System Requirements\nCMP-* – Components (design elements)\nIMP-* – Implementation items (code, boards, FPGA, etc.)\nTST-* – Unit / component tests (Stage 6)\nVER-* – System verification tests (Stage 7)\nVAL-* – Validation activities (Stage 8)\n\nAll maintained in the RTM.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nImportant\n\n\nStage 6 lives in the CMP-* ↔︎ TST-* space: Every component should have planned, traceable tests.\n\n\n\n\nIf students forget traceability, Stage 6 degenerates into “random test scripts.” Keep reinforcing: &gt; “If you can’t say which requirement a test verifies, that test may not belong in this project.”"
+  },
+  {
+    "objectID": "cd_06.html#verification-vs-validation-revisited",
+    "href": "cd_06.html#verification-vs-validation-revisited",
+    "title": "Stage 6 – Unit / Component Verification",
+    "section": "Verification vs Validation (Revisited)",
+    "text": "Verification vs Validation (Revisited)\n\nVerification – “Did we build it right?”\n\nAgainst requirements and design specs.\nEvidence‑based: tests, analysis, inspection, etc.\n\nValidation – “Did we build the right thing?”\n\nAgainst stakeholder needs and intended use.\n\n\nAt Stage 6, we are doing verification at the unit / component level:\n\nVerifying that each component (CMP-*) + implementation (IMP-*) behaves as its specification says.\n\n\n\n\n\n\n\nTip\n\n\nThink: “Does this module do exactly what its component spec and allocated requirements say it should?”\n\n\n\n\nClarify that validation will come later at system level, with real users and realistic scenarios. For now, the “customer” of each test is the design document (DCP‑300) and requirements (DCP‑200)."
+  },
+  {
+    "objectID": "cd_06.html#verification-process-at-component-level",
+    "href": "cd_06.html#verification-process-at-component-level",
+    "title": "Stage 6 – Unit / Component Verification",
+    "section": "29148: Verification Process at Component Level",
+    "text": "29148: Verification Process at Component Level\nISO/IEC/IEEE 29148 describes Verification as a process to confirm that work products meet their specified requirements.\nAt component level, this means:\n\nPlan verification for each component.\nDesign test cases linked to requirements and design elements.\nEstablish test environment (tools, equipment, simulators).\nExecute tests and record objective evidence.\nEvaluate results and decide pass/fail for each requirement.\nRecord and track defects, and re‑test after fixes.\n\n\n\n\n\n\n\n\n\n\n\n\n\nSimplify 29148 language: - It doesn’t dictate your exact tools; it demands discipline and traceability. - Component verification is not “poke it and hope”; it’s planned experiments.\nTell them: 29148 expects you to answer: - What requirement are you checking? - How are you checking it (test/analysis/model/inspection)? - What is the evidence?"
+  },
+  {
+    "objectID": "cd_06.html#stage-6-in-the-course-framework",
+    "href": "cd_06.html#stage-6-in-the-course-framework",
+    "title": "Stage 6 – Unit / Component Verification",
+    "section": "Stage 6 in the Course Framework",
+    "text": "Stage 6 in the Course Framework\n\n\nCourse Stage:\n\nStage 6 – Unit / Component Verification\n\nV‑Model Level:\n\nLower‑right: unit tests / component verification\n\nInputs:\n\nApproved DCP‑300 Design (component specs, interfaces).\nApproved DCP‑400 Implementation (actual HW/SW built, IMP-*).\nInitial Test Plan from Stage 4.\n\n\nOutputs:\n\nTST-* unit/component test cases.\nTest procedures and logs.\nDefect / issue reports and resolutions.\nUpdated RTM (CMP-* → TST-*).\nDCP‑500A – Unit Verification document.\n\n\n\n\n\n\n\nNote\n\n\nStage 6 asks: &gt; “Is each building block solid before we snap them together in Stage 7?”\n\n\n\n\n\nEmphasize: if Stage 6 is weak, Stage 7 becomes a nightmare of debugging with too many unknowns.\nGood unit tests localize bugs and make system‑level debugging far easier."
+  },
+  {
+    "objectID": "cd_06.html#component-verification-vs-system-verification",
+    "href": "cd_06.html#component-verification-vs-system-verification",
+    "title": "Stage 6 – Unit / Component Verification",
+    "section": "Component Verification vs System Verification",
+    "text": "Component Verification vs System Verification\n\n\nStage 6 – Unit / Component Verification\n\nTest individual components (CMP-*) and their implementations (IMP-*).\nExample scope:\n\nA single firmware module (e.g., motor control loop).\nA single FPGA IP core (e.g., FIR filter).\nA hardware board in isolation (e.g., sensor PCB).\n\nFocus:\n\nDoes this unit meet its spec?\nDoes it behave correctly across specified ranges?\n\n\n\nStage 7 – System / Integration Verification\n\nTest the integrated system.\nExample scope:\n\nMotor controller + UI + communication.\nFull sensor network (nodes + gateway + backend).\n\nFocus:\n\nDoes the system satisfy system requirements (REQ-*)?\nAre interfaces and timing working correctly together?\n\n\n\n\n\n\n\n\n\nImportant\n\n\nUnit tests try to isolate the component under test. System tests exercise end‑to‑end flows.\n\n\n\n\nTell a story: - If a motor doesn’t spin correctly, is the bug in the power stage, firmware, encoder, or command interface? Well‑designed Stage 6 tests for each part reduce the search space dramatically."
+  },
+  {
+    "objectID": "cd_06.html#activities-applied-to-components",
+    "href": "cd_06.html#activities-applied-to-components",
+    "title": "Stage 6 – Unit / Component Verification",
+    "section": "29148 Activities – Applied to Components",
+    "text": "29148 Activities – Applied to Components\n29148 Verification Activities (adapted to Stage 6):\n\nIdentify verification items\n\nChoose which components (CMP-*) and implementation items (IMP-*) need unit tests.\n\nDefine verification objectives\n\nFor each item, state which requirements (REQ-*) or design constraints you are verifying.\n\nDesign test cases (TST-*)\n\nPreconditions, inputs, expected outputs, pass/fail criteria.\n\nSpecify test methods & tools\n\nHardware bench, HDL simulator, unit test framework, logic analyzer, etc.\n\nExecute tests\n\nRun tests, record procedures, outputs, and anomalies."
+  },
+  {
+    "objectID": "cd_06.html#dcp500a-unit-verification-overview",
+    "href": "cd_06.html#dcp500a-unit-verification-overview",
+    "title": "Stage 6 – Unit / Component Verification",
+    "section": "DCP‑500A – Unit Verification (Overview)",
+    "text": "DCP‑500A – Unit Verification (Overview)\nMain Stage 6 deliverable:\n\nDCP‑500A – Unit Verification\n\nTypical contents:\n\nScope & Objectives\nItems Under Test (IUTs) – Components / CMP-* and IMP-*.\nTest Environment & Tools\nUnit Test Cases (TST-*) – definitions.\nTest Execution Results – logs & summaries.\nDefects & Resolutions\nUpdated RTM excerpt (CMP-* ↔︎ TST-*)\nConclusion: Readiness for System Verification (Stage 7)\n\n\n\n\n\n\n\nNote\n\n\nDCP‑500A is the evidence package that your components are ready to be integrated.\n\n\n\n\nYou don’t need to include every raw log in the PDF; large logs can be referenced as files in your repo, but key results and summaries must be captured."
+  },
+  {
+    "objectID": "cd_06.html#from-components-to-unit-tests-mapping",
+    "href": "cd_06.html#from-components-to-unit-tests-mapping",
+    "title": "Stage 6 – Unit / Component Verification",
+    "section": "From Components to Unit Tests – Mapping",
+    "text": "From Components to Unit Tests – Mapping\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInterpretation:\n\nEach CMP-* is allocated some REQ-*.\nEach CMP-* is realized by one or more IMP-*.\nFor each critical CMP-*, you design one or more TST-* that:\n\nExercise the implementation.\nShow that allocated requirements are satisfied.\n\n\n\n\nEmphasize that TST-* IDs now join the traceability family: - CMP-SW-020 → IMP-SW-020A → TST-SW-020-01, etc.\nStudents should plan TST-* as carefully as they plan code modules."
+  },
+  {
+    "objectID": "cd_06.html#ece-example-1-embedded-motor-controller-unit-level",
+    "href": "cd_06.html#ece-example-1-embedded-motor-controller-unit-level",
+    "title": "Stage 6 – Unit / Component Verification",
+    "section": "ECE Example 1 – Embedded Motor Controller (Unit Level)",
+    "text": "ECE Example 1 – Embedded Motor Controller (Unit Level)\n\n\nProject Recap:\nBLDC motor controller for a small robot arm.\nRelevant items:\n\nREQ-SY-010: Motor speed control 0–3000 RPM, ±2% accuracy.\nCMP-SW-020: Motor control firmware module.\nIMP-SW-020A: motor_ctrl.c, motor_ctrl.h.\n\nWhat do we verify at Stage 6?\n\nControl module’s speed regulation behavior.\nResponse to step changes in speed command.\nHandling of sensor faults (e.g., encoder dropout).\n\n\nExample Unit Tests (TST-*):\n\nTST-SW-020-01:\n\nObjective: Verify speed control accuracy at several setpoints.\nMethod: HIL (hardware‑in‑the‑loop) testbench with actual motor.\n\nTST-SW-020-02:\n\nObjective: Verify controller response to speed step input.\nMethod: Log speed vs time; check settling time &lt; 0.5 s, overshoot &lt; 10%.\n\nTST-SW-020-03:\n\nObjective: Verify safe behavior on encoder signal loss.\nMethod: Simulate encoder failure; ensure motor stops within 200 ms.\n\n\n\n\nDiscuss the practicalities: - You might use a test jig or a lab setup with load on motor. - Some tests may run via a PC controlling the target over UART or CAN.\nAll of these tests are still component‑level: just the controller + motor, not the whole robot system."
+  },
+  {
+    "objectID": "cd_06.html#example-motor-controller-test-case-definition",
+    "href": "cd_06.html#example-motor-controller-test-case-definition",
+    "title": "Stage 6 – Unit / Component Verification",
+    "section": "Example – Motor Controller Test Case Definition",
+    "text": "Example – Motor Controller Test Case Definition\nTest Case ID: TST-SW-020-01 – Speed Control Accuracy\n\nRelated Requirement(s):\n\nREQ-SY-010 – Speed 0–3000 RPM with ±2% accuracy.\n\nRelated Component / Implementation:\n\nCMP-SW-020 – Motor control firmware module.\nIMP-SW-020A – motor_ctrl.c / motor_ctrl.h.\n\nTest Method: Test (physical, instrumented).\nTest Setup:\n\nBLDC motor with encoder.\nMotor controller board with firmware motor-fw-v1.0-TST.\nLab PSU, oscilloscope, tachometer (or encoder‑based RPM measurement)."
+  },
+  {
+    "objectID": "cd_06.html#ece-example-2-fpgabased-fir-filter",
+    "href": "cd_06.html#ece-example-2-fpgabased-fir-filter",
+    "title": "Stage 6 – Unit / Component Verification",
+    "section": "ECE Example 2 – FPGA‑Based FIR Filter",
+    "text": "ECE Example 2 – FPGA‑Based FIR Filter\n\n\nProject Recap:\nFPGA card performing real‑time FIR low‑pass filtering.\nRelevant items:\n\nREQ-SY-020: Low‑pass FIR with 60 dB stop‑band at 8 kHz, fs = 48 kHz.\nCMP-HW-010: FPGA filter core.\nIMP-HW-010A: HDL module fir_core.vhd.\n\nStage‑6 Focus:\n\nVerify functional correctness of fir_core.\nMeasure frequency response and numerical precision.\n\n\nExample Unit Tests (TST-*):\n\nTST-HW-010-01:\n\nMethod: HDL simulation.\nObjective: Check impulse response matches design coefficients exactly.\n\nTST-HW-010-02:\n\nMethod: HDL simulation with sinusoidal sweeps.\nObjective: Verify magnitude response:\n\nPass‑band ripple ≤ 1 dB.\nStop‑band attenuation ≥ 60 dB beyond 8 kHz.\n\n\nTST-HW-010-03:\n\nMethod: Simulation with max‑amplitude signals.\nObjective: Check no overflow or saturation within expected input range.\n\n\n\n\nUnit tests here may be done entirely in simulation, which is typical and acceptable for Stage 6 in FPGA projects.\nYou can still do bench tests later in Stage 7 when the FPGA is integrated with I/O and software."
+  },
+  {
+    "objectID": "cd_06.html#ece-example-3-sensor-node-hardware-smart-lab-project",
+    "href": "cd_06.html#ece-example-3-sensor-node-hardware-smart-lab-project",
+    "title": "Stage 6 – Unit / Component Verification",
+    "section": "ECE Example 3 – Sensor Node Hardware (Smart Lab Project)",
+    "text": "ECE Example 3 – Sensor Node Hardware (Smart Lab Project)\n\n\nProject Recap:\nSmart Lab wireless sensor nodes.\nRelevant items:\n\nREQ-SY-010: Temperature measurement 10–40°C, ±0.5°C.\nCMP-SY-040: Sensor node hardware.\nIMP-SY-040A: Node PCB rev B.\n\nStage‑6 Hardware Verification:\n\nVerify sensor accuracy and linearity.\nVerify power rails within tolerance.\nVerify radio front‑end basic operation (RSSI, packet send/receive at unit level).\n\n\nExample Unit Tests (TST-*):\n\nTST-SY-040-01: Temperature sensor calibration and accuracy bench test.\nTST-SY-040-02: Power integrity test – verify 3.3 V rail under load stays within ±5%.\nTST-SY-040-03: RF smoke test – verify node can send packets to test receiver over 5 m line‑of‑sight with RSSI above threshold.\n\n\n\nMake it clear that even though some of these tests involve more than one chip, they are still component‑level tests: They are scoped to the node PCB as a unit, not the whole network with backend and UI."
+  },
+  {
+    "objectID": "cd_06.html#designing-good-unit-tests-29148style",
+    "href": "cd_06.html#designing-good-unit-tests-29148style",
+    "title": "Stage 6 – Unit / Component Verification",
+    "section": "Designing Good Unit Tests – 29148‑Style",
+    "text": "Designing Good Unit Tests – 29148‑Style\nCharacteristics of good unit/component tests:\n\nTraceable:\n\nLinked to specific REQ-* and CMP-*.\n\nRepeatable:\n\nClear procedure and environment description.\n\nObservable:\n\nYou can capture outputs or measurements objectively.\n\nDeterministic:\n\nSame preconditions → same expected result (within defined tolerance).\n\nIsolated (as far as practical):\n\nMinimize external dependencies; use stubs/mocks when needed.\n\n\n\n\n\n\n\n\nTip\n\n\nAsk yourself for each unit test:\n\n“If someone else on my team followed this procedure, would they get the same pass/fail decision?”\n\n\n\n\n\nYou can contrast this with “wiggle some inputs on the scope and see if it looks okay.” Informal checks are fine as pre‑tests, but 29148‑style verification calls for documented, repeatable tests."
+  },
+  {
+    "objectID": "cd_06.html#test-methods-tamdi-at-component-level",
+    "href": "cd_06.html#test-methods-tamdi-at-component-level",
+    "title": "Stage 6 – Unit / Component Verification",
+    "section": "Test Methods – TAMDI at Component Level",
+    "text": "Test Methods – TAMDI at Component Level\n29148 and many SE texts use TAMDI test methods:\n\nTest – Run the system/component and directly measure behavior.\nAnalysis – Use models, calculations, or code review to infer behavior.\nModeling/Simulation – Computer‑based experiments (e.g., HDL simulation).\nDemonstration – Show the function informally, usually qualitative.\nInspection – Visual/manual check (e.g., schematics, code, layout).\n\nAt Stage 6:\n\nYou will mostly use Test and Modeling/Simulation, sometimes Inspection and Analysis.\nExample:\n\nInspect a PCB layout to confirm trace widths (Inspection).\nSimulate a filter’s frequency response (Modeling/Simulation).\nRun firmware unit tests in CI (Test).\n\n\n\nEncourage students to label the method for each TST-* in DCP‑500A. E.g., “Method: Test (hardware bench)” or “Method: Simulation (Modeling)”. This is common practice in industry test specs."
+  },
+  {
+    "objectID": "cd_06.html#test-environment-tooling",
+    "href": "cd_06.html#test-environment-tooling",
+    "title": "Stage 6 – Unit / Component Verification",
+    "section": "Test Environment & Tooling",
+    "text": "Test Environment & Tooling\nFor Stage 6, you must define a test environment to support unit/component tests.\nExamples for ECE projects:\n\nEmbedded firmware:\n\nTarget dev boards, JTAG/SWD debuggers.\nUART/USB link to PC for scripts to drive tests.\nUnit test frameworks (Unity, Google Test on host).\n\nFPGA/HDL:\n\nHDL simulation tools (Vivado, Questa).\nTestbench code that feeds stimuli and checks responses.\n\nAnalog / mixed‑signal / RF boards:\n\nOscilloscope, function/signal generator, DMM, spectrum analyzer.\nTest fixtures to connect loads and probes consistently.\n\n\n\n\n\n\n\n\nNote\n\n\nDocument versions and configurations of test tools, just as you do for implementation tools.\n\n\n\n\nConnect this back to CM: - If a particular version of the simulator or lab tool is known to behave differently, you need that recorded. This becomes important in regression testing or future maintenance."
+  },
+  {
+    "objectID": "cd_06.html#sample-dcp500a-structure-short-version",
+    "href": "cd_06.html#sample-dcp500a-structure-short-version",
+    "title": "Stage 6 – Unit / Component Verification",
+    "section": "Sample DCP‑500A Structure (Short Version)",
+    "text": "Sample DCP‑500A Structure (Short Version)\n\nIntroduction and Scope\n\nWhich components and requirements are covered.\n\nItems Under Test (IUTs)\n\nList of CMP-* and IMP-* under unit test.\n\nTest Environment and Tools\n\nHardware bench, simulators, etc.\n\nUnit Test Cases (TST-*)\n\nTables / subsections with objectives, inputs, expected results.\n\nExecution Summary\n\nCounts of tests passed/failed/skipped."
+  },
+  {
+    "objectID": "cd_06.html#example-unit-test-summary-table-excerpt",
+    "href": "cd_06.html#example-unit-test-summary-table-excerpt",
+    "title": "Stage 6 – Unit / Component Verification",
+    "section": "Example – Unit Test Summary Table (Excerpt)",
+    "text": "Example – Unit Test Summary Table (Excerpt)\n\n\n\n\n\n\n\n\n\n\n\nTST ID\nCMP ID\nREQ ID(s)\nMethod\nResult\nNotes\n\n\n\n\nTST-SW-020-01\nCMP-SW-020\nREQ-SY-010\nTest (HIL)\nPASS\nMax error 1.3% at 3000 RPM\n\n\nTST-SW-020-02\nCMP-SW-020\nREQ-SY-010\nTest (HIL)\nPASS\nSettling time &lt; 0.4 s\n\n\nTST-HW-010-01\nCMP-HW-010\nREQ-SY-020\nSimulation\nPASS\nImpulse response correct\n\n\nTST-HW-010-02\nCMP-HW-010\nREQ-SY-020\nSimulation\nFAIL\nStop‑band 55 dB only\n\n\nTST-SY-040-01\nCMP-SY-040\nREQ-SY-010\nTest (bench)\nPASS\n±0.4°C across range\n\n\n\n\n\n\n\n\n\nWarning\n\n\nA FAIL is not a disaster; hiding it is. Failures are where engineering actually happens.\n\n\n\n\nDiscuss how a failure (e.g., TST-HW-010-02) leads to: - Defect report. - Potential design change (e.g., more taps). - Re‑implementation and re‑test.\nThis is 29148’s verification feedback loop in action."
+  },
+  {
+    "objectID": "cd_06.html#defects-root-cause-and-retesting",
+    "href": "cd_06.html#defects-root-cause-and-retesting",
+    "title": "Stage 6 – Unit / Component Verification",
+    "section": "Defects, Root Cause, and Re‑Testing",
+    "text": "Defects, Root Cause, and Re‑Testing\nWhen a test fails, Stage 6 should:\n\nLog the defect\n\nID it, link to TST-*, CMP-*, IMP-*, and relevant REQ-*.\n\nClassify severity\n\nBlocking vs non‑blocking for integration.\n\nAnalyze root cause\n\nIs it implementation? design? requirement? measurement error?\n\nFix and re‑test\n\nUpdate code / HDL / hardware as needed.\nRe‑execute affected tests (and regression tests).\n\nUpdate documents & RTM\n\nIf design/requirements change, follow change control.\n\n\n\n\n\n\n\n\nTip\n\n\nUse your issue tracker with tags like defect, unit-test-fail, and include IDs such as TST-SW-020-02, CMP-SW-020.\n\n\n\n\nTie this back to configuration management: - You must know which version of the implementation you tested. - If you retest after a fix, record the new baseline/tag."
+  },
+  {
+    "objectID": "cd_06.html#inclass-exercise-draft-a-unit-test-case",
+    "href": "cd_06.html#inclass-exercise-draft-a-unit-test-case",
+    "title": "Stage 6 – Unit / Component Verification",
+    "section": "In‑Class Exercise – Draft a Unit Test Case",
+    "text": "In‑Class Exercise – Draft a Unit Test Case\nActivity (5–10 minutes):\n\nPick one component (CMP-*) from your team’s design (Stage 4).\nIdentify one requirement (REQ-*) that was allocated to this component.\nDraft a unit test case (TST-*) with:\n\nObjective.\nMethod (Test / Simulation / etc.).\nSetup (equipment/software).\nProcedure (3–5 bullet steps).\nPass/fail criteria (quantitative if possible)."
+  },
+  {
+    "objectID": "cd_06.html#summary-key-takeaways-for-stage-6",
+    "href": "cd_06.html#summary-key-takeaways-for-stage-6",
+    "title": "Stage 6 – Unit / Component Verification",
+    "section": "Summary – Key Takeaways for Stage 6",
+    "text": "Summary – Key Takeaways for Stage 6\n\nStage 6 is about Unit / Component Verification: proving that each component (CMP-*) and its implementation (IMP-*) satisfies its allocated requirements.\nISO/IEC/IEEE 29148 Verification process at component level involves:\n\nPlanning tests, designing TST-*, executing them in a defined environment, and recording objective evidence.\n\nAll unit tests should be traceable: REQ-* → CMP-* → IMP-* → TST-*.\nThe main deliverable is DCP‑500A Unit Verification, which documents:\n\nItems under test, test environment, test cases, results, and defects.\n\nSolid Stage‑6 verification reduces risk and effort in Stage 7 System / Integration Verification and Stage 8 Validation.\n\n\n\n\n\n\n\nImportant\n\n\nDo not skip Stage 6 or treat it as an afterthought. A strong unit verification phase is one of the clearest markers of professional‑grade engineering practice.\n\n\n\n\nWrap up by connecting forward: - Next we will see how these verified components are integrated and tested at the system level in Stage 7 – System / Integration Verification.\nInvite questions about: - How detailed DCP‑500A needs to be. - How to choose between simulation vs hardware tests. - How to organize TST-* IDs in their RTM."
+  },
+  {
+    "objectID": "cd_07.html#stage-7-system-integration-verification",
+    "href": "cd_07.html#stage-7-system-integration-verification",
+    "title": "Stage 7 – System / Integration Verification",
+    "section": "Stage 7 – System / Integration Verification",
+    "text": "Stage 7 – System / Integration Verification\nCapstone Design Course – From Needs to Validated Systems using the V‑Model & ISO/IEC/IEEE 29148\nFocus of this session: Stage 7 – System / Integration Verification\nDCP‑500B – System Verification\n\nThis is a Quarto/Reveal.js slide deck in Markdown. Lines end with two spaces for Reveal line breaks. Speaker notes give you extra explanation and prompts.\nStudents should already have: - Seen the whole V‑Model. - Done Stage 5 (Implementation / DCP‑400). - Learned Stage 6 (Unit / Component Verification / DCP‑500A).\nNow we move one level up: verifying the integrated system against the **system requirements (REQ-*)**, per ISO/IEC/IEEE 29148."
+  },
+  {
+    "objectID": "cd_07.html#session-learning-objectives",
+    "href": "cd_07.html#session-learning-objectives",
+    "title": "Stage 7 – System / Integration Verification",
+    "section": "Session Learning Objectives",
+    "text": "Session Learning Objectives\nBy the end of this session, you will be able to:\n\nPlace Stage 7 – System / Integration Verification correctly in the V‑Model and distinguish it from Stage 6 and Stage 8.\nDescribe the ISO/IEC/IEEE 29148 Verification process at the system level and its main activities.\nExplain what makes a good system‑level test: scenarios, interfaces, and non‑functional behavior.\nIdentify the key deliverables of Stage 7, especially DCP‑500B – System Verification and VER-* test artifacts.\nApply these ideas to ECE projects: IoT sensor systems, motor control platforms, FPGA‑accelerated pipelines, and mixed HW/SW systems.\n\n\nUse this slide to set expectations. Ask: - “What’s the difference between a unit test and a system test?” Collect a few answers before moving on."
+  },
+  {
+    "objectID": "cd_07.html#where-are-we-in-the-vmodel-now",
+    "href": "cd_07.html#where-are-we-in-the-vmodel-now",
+    "title": "Stage 7 – System / Integration Verification",
+    "section": "Where Are We in the V‑Model Now?",
+    "text": "Where Are We in the V‑Model Now?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nStage 7 is the mirror of Stage 3: You are verifying that the integrated system satisfies the system requirements (REQ-*).\n\n\n\n\nReinforce mirroring: - Stage 3 – define system requirements. - Stage 7 – verify system against those requirements.\nStage 6 checked components vs component specs (DCP‑300). Stage 7 checks the assembled system vs system requirements (DCP‑200)."
+  },
+  {
+    "objectID": "cd_07.html#recap-the-traceability-chain",
+    "href": "cd_07.html#recap-the-traceability-chain",
+    "title": "Stage 7 – System / Integration Verification",
+    "section": "Recap: The Traceability Chain",
+    "text": "Recap: The Traceability Chain\n\n\nArtifacts so far:\n\nSTR-* – Stakeholder requirements (Stage 2).\nREQ-* – System requirements (Stage 3).\nCMP-* – Components (Stage 4).\nIMP-* – Implementations (Stage 5).\nTST-* – Unit/component tests (Stage 6).\n\nAt Stage 7 we introduce:\n\nVER-* – System / integration verification test cases.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nImportant\n\n\nStage 7 lives in the REQ-* ↔︎ VER-* space: Each system requirement should be covered by one or more VER-* tests.\n\n\n\n\nRemind them of the RTM: - Now you add REQ-* → VER-* rows. - Not every requirement is tested at unit level; Stage 7 is where many functional and non‑functional requirements are checked end‑to‑end."
+  },
+  {
+    "objectID": "cd_07.html#verification-vs-validation-one-more-time",
+    "href": "cd_07.html#verification-vs-validation-one-more-time",
+    "title": "Stage 7 – System / Integration Verification",
+    "section": "Verification vs Validation – One More Time",
+    "text": "Verification vs Validation – One More Time\n\nVerification – “Did we build it right?”\n\nAgainst requirements and design.\nEvidence: tests, analyses, inspections, simulations.\n\nValidation – “Did we build the right thing?”\n\nAgainst stakeholder needs & intended use.\n\n\nAt Stage 7, we are still doing verification:\n\nVerifying the integrated system against system requirements (REQ-*).\nStep before Stage 8, where actual users and realistic scenarios dominate.\n\n\n\n\n\n\n\nTip\n\n\nThink of Stage 7 as:\n\n“Can we prove that the system does everything the requirements document says, under realistic but controlled conditions?”\n\n\n\n\n\nStage 8 might involve field trials, user studies, etc. Stage 7 may still happen in a lab but should mimic real workflows and interface behaviors."
+  },
+  {
+    "objectID": "cd_07.html#systemlevel-verification-process",
+    "href": "cd_07.html#systemlevel-verification-process",
+    "title": "Stage 7 – System / Integration Verification",
+    "section": "29148: System‑Level Verification Process",
+    "text": "29148: System‑Level Verification Process\nISO/IEC/IEEE 29148 defines Verification as confirming that work products meet their specified requirements.\nAt the system level, that means:\n\nPlan verification of system requirements (REQ-*).\nDesign system‑level test cases (VER-*) that trace to REQ-*.\nEstablish the integration test environment (HW, SW, network, tools).\nIntegrate components into a working system (HW + SW + data).\nExecute tests, record results as objective evidence.\nEvaluate coverage of requirements and handle non‑conformances.\nUpdate traceability and configuration status.\n\n\n\n\n\n\n\n\n\n\n\n\n\nDifferences from Stage 6: - The items under test are no longer isolated modules, but the end‑to‑end system. - Test cases refer primarily to REQ-* IDs, not just CMP-*.\nStress: 29148 doesn’t force particular tools; it requires planned, traceable, repeatable verification."
+  },
+  {
+    "objectID": "cd_07.html#stage-7-in-the-course-framework",
+    "href": "cd_07.html#stage-7-in-the-course-framework",
+    "title": "Stage 7 – System / Integration Verification",
+    "section": "Stage 7 in the Course Framework",
+    "text": "Stage 7 in the Course Framework\n\n\nCourse Stage:\n\nStage 7 – System / Integration Verification\n\nV‑Model Level:\n\nRight‑hand side, system‑level verification.\n\nInputs:\n\nDCP‑200 – System Requirements (REQ-*).\nDCP‑300 – Design (for context, expected interfaces).\nDCP‑400 – Implementation (IMP-*, baselines).\nDCP‑500A – Unit Verification results (TST-*).\n\n\nOutputs:\n\nIntegrated system in test environment.\nSystem‑level test cases (VER-*).\nTest procedures, logs, and reports.\nUpdated RTM with REQ-* → VER-* links.\nDCP‑500B – System Verification document.\n\n\n\n\n\n\n\nNote\n\n\nStage 7 asks: &gt; “Does the whole system meet its system requirements?”\n\n\n\n\n\nMake clear: You should not enter Stage 7 with unverified, unstable components. Stage 6 should have found and fixed most local bugs.\nStage 7 is more about interfaces, end‑to‑end flows, and non‑functional requirements (throughput, latency, power, robustness)."
+  },
+  {
+    "objectID": "cd_07.html#component-vs-system-verification-quick-contrast",
+    "href": "cd_07.html#component-vs-system-verification-quick-contrast",
+    "title": "Stage 7 – System / Integration Verification",
+    "section": "Component vs System Verification – Quick Contrast",
+    "text": "Component vs System Verification – Quick Contrast\n\n\nStage 6 – Unit / Component Verification\n\nScope: Single component in isolation or with simple stubs.\nExamples:\n\nA motor control firmware module.\nA FIR filter HDL core.\nA temperature sensor PCB on the bench.\n\nMain artifacts:\n\nTST-* test cases.\nDCP‑500A Unit Verification.\n\n\n\nStage 7 – System / Integration Verification\n\nScope: Whole system, all major components integrated.\nExamples:\n\nMotor + controller + UI + comms.\nSensor nodes + gateway + backend + dashboard.\n\nMain artifacts:\n\nVER-* system test cases.\nDCP‑500B System Verification.\n\n\n\n\n\n\n\n\n\nImportant\n\n\nUnit tests ask: “Does this block work?” System tests ask: “Does the whole thing do what it’s supposed to do?”\n\n\n\n\nUse a concrete analogy: - Stage 6: testing a single LEGO piece for correct dimensions. - Stage 7: check the assembled LEGO car drives down the ramp without falling apart."
+  },
+  {
+    "objectID": "cd_07.html#activities-applied-to-system-verification",
+    "href": "cd_07.html#activities-applied-to-system-verification",
+    "title": "Stage 7 – System / Integration Verification",
+    "section": "29148 Activities – Applied to System Verification",
+    "text": "29148 Activities – Applied to System Verification\nSystem‑level verification activities (adapted from 29148):\n\nIdentify verification scope\n\nWhich system requirements (REQ-*) will be verified in Stage 7.\n\nDefine verification objectives\n\nFor each REQ-*, specify how it will be verified (Test / Analysis / Modeling / Demonstration / Inspection).\n\nDesign system test cases (VER-*)\n\nInputs, environment, preconditions, execution steps, expected results.\n\nPrepare integration & test environment\n\nHardware racks, network, lab setups, simulators, test data.\n\nExecute system tests\n\nRun tests, collect data, log outcomes."
+  },
+  {
+    "objectID": "cd_07.html#dcp500b-system-verification-overview",
+    "href": "cd_07.html#dcp500b-system-verification-overview",
+    "title": "Stage 7 – System / Integration Verification",
+    "section": "DCP‑500B – System Verification (Overview)",
+    "text": "DCP‑500B – System Verification (Overview)\nMain Stage 7 deliverable:\n\nDCP‑500B – System Verification\n\nTypical contents:\n\nPurpose and Scope – What is being verified at system level.\nSystem Under Test (SUT) – Architecture snapshot, configuration, versions.\nTest Environment & Tools – Lab setup, networks, simulators.\nSystem Test Cases (VER-*) – definitions and links to REQ-*.\nExecution Results – Summary + key logs and evidence.\nDefects / Issues & Resolutions – integration bugs, performance issues.\nTraceability & Coverage – REQ-* ↔︎ VER-*.\nReadiness for Validation (Stage 8) – Are we ready to show this to real users?\n\n\n\n\n\n\n\nNote\n\n\nDCP‑500B is the evidence package that your system fulfills its system requirements and is ready for stakeholder evaluation.\n\n\n\n\nYou can reuse the structure of test cases from DCP‑500A (TST‑*) but now focus on: - Higher‑level scenarios. - Cross‑component behaviors and metrics like latency, throughput, power, robustness."
+  },
+  {
+    "objectID": "cd_07.html#mapping-requirements-to-system-tests",
+    "href": "cd_07.html#mapping-requirements-to-system-tests",
+    "title": "Stage 7 – System / Integration Verification",
+    "section": "Mapping Requirements to System Tests",
+    "text": "Mapping Requirements to System Tests\n\n\n\n\n\n\n\n\n\n\n\nInterpretation:\n\nEach system requirement (REQ-*) must be verified.\nSome REQ-* can be partially supported by unit tests (TST-*), but the final answer is at system level (VER-*).\nThe RTM should show coverage: every REQ-* has at least one VER-* (unless justified).\n\n\nExample: - REQ-SY-011: “System shall display current lab temperatures within 10 s of change.” - Unit tests may check sensor sampling and UI refresh separately. - Only a system test can confirm end‑to‑end latency within 10 s."
+  },
+  {
+    "objectID": "cd_07.html#ece-example-1-smart-lab-sensor-network-system-level",
+    "href": "cd_07.html#ece-example-1-smart-lab-sensor-network-system-level",
+    "title": "Stage 7 – System / Integration Verification",
+    "section": "ECE Example 1 – Smart Lab Sensor Network (System Level)",
+    "text": "ECE Example 1 – Smart Lab Sensor Network (System Level)\n\n\nProject Recap:\n\nWireless sensor nodes in labs.\nGateway forwards data to backend.\nDashboard displays current values and alerts.\n\nRelevant system requirements:\n\nREQ-SY-011: Node measurements visible on dashboard within 30 s.\nREQ-SY-012: Data loss &lt; 1% over 24 h.\nREQ-SY-013: System supports at least 20 nodes simultaneously.\nREQ-SW-020: Alerts raised when temperature &gt; threshold.\n\n\nSystem‑level tests (VER-*) might include:\n\nVER-SYS-001: End‑to‑end latency from sensor change to dashboard update.\nVER-SYS-002: 24‑hour soak test for data loss and reliability.\nVER-SYS-003: Scalability test with 20 simulated or real nodes.\nVER-SYS-004: Alert behavior when lab overheats (alarm + log).\n\n\n\nHighlight: - Unit tests already checked sensor accuracy and firmware packet interval. - System tests now check the whole pipeline under realistic conditions."
+  },
+  {
+    "objectID": "cd_07.html#example-versys001-endtoend-latency",
+    "href": "cd_07.html#example-versys001-endtoend-latency",
+    "title": "Stage 7 – System / Integration Verification",
+    "section": "Example – VER‑SYS‑001: End‑to‑End Latency",
+    "text": "Example – VER‑SYS‑001: End‑to‑End Latency\nTest Case ID: VER-SYS-001 – End‑to‑End Delay from Sensor to Dashboard\n\nRelated Requirement(s):\n\nREQ-SY-011: “System shall display updated lab temperature on the dashboard within 30 s of a step change.”\n\nSystem Under Test (SUT):\n\nN sensor nodes, 1 gateway, backend, dashboard UI.\n\nMethod: Test (integrated system).\n\nSetup:\n\nAt least 1 node in demo lab with adjustable local temperature (e.g., using a hot air source).\nBackend and UI running in standard deployment configuration.\nPC screen capture or logging of dashboard timestamps."
+  },
+  {
+    "objectID": "cd_07.html#ece-example-2-motor-drive-platform",
+    "href": "cd_07.html#ece-example-2-motor-drive-platform",
+    "title": "Stage 7 – System / Integration Verification",
+    "section": "ECE Example 2 – Motor Drive Platform",
+    "text": "ECE Example 2 – Motor Drive Platform\n\n\nProject Recap:\n\nBrushless DC motor drive with embedded controller and GUI.\n\nKey system requirements:\n\nREQ-SY-030: Motor reaches commanded speed within 1 s, overshoot &lt; 10%.\nREQ-SY-031: Emergency stop halts motor within 200 ms.\nREQ-SY-032: Communication fault detection within 500 ms, safe state on error.\n\n\nSystem‑level VER-* tests:\n\nVER-SYS-030-01: Step speed command from 0 → 2000 RPM, measure speed vs time.\nVER-SYS-031-01: Trigger E‑stop while spinning at 1500 RPM, measure stop time.\nVER-SYS-032-01: Simulate CAN link failure and observe safe‑state transition.\n\n\n\nPoint out: - Stage 6 probably tested the controller algorithm and the power stage separately. - Stage 7 tests the motor, firmware, HW, and interface together, under realistic operating conditions."
+  },
+  {
+    "objectID": "cd_07.html#example-versys03101-emergency-stop",
+    "href": "cd_07.html#example-versys03101-emergency-stop",
+    "title": "Stage 7 – System / Integration Verification",
+    "section": "Example – VER‑SYS‑031‑01: Emergency Stop",
+    "text": "Example – VER‑SYS‑031‑01: Emergency Stop\nTest Case ID: VER-SYS-031-01 – Emergency Stop Response\n\nRelated Requirement(s):\n\nREQ-SY-031: “Emergency stop shall bring the motor to a halt within 200 ms from activation under any normal operating condition.”\n\nSUT:\n\nFull motor drive system (motor, power board, controller, E‑stop hardware).\n\nMethod: Test (physical measurement).\n\nSetup:\n\nMotor mounted securely with appropriate load.\nCurrent and speed measurement (e.g., encoder + oscilloscope).\nE‑stop button wired as per design."
+  },
+  {
+    "objectID": "cd_07.html#ece-example-3-fpgaaccelerated-signal-processing-chain",
+    "href": "cd_07.html#ece-example-3-fpgaaccelerated-signal-processing-chain",
+    "title": "Stage 7 – System / Integration Verification",
+    "section": "ECE Example 3 – FPGA‑Accelerated Signal Processing Chain",
+    "text": "ECE Example 3 – FPGA‑Accelerated Signal Processing Chain\n\n\nProject Recap:\n\nFPGA card performs filtering and decimation; host PC handles control and logging.\n\nSystem requirements might include:\n\nREQ-SY-040: End‑to‑end processing latency ≤ 5 ms.\nREQ-SY-041: Throughput ≥ 48 k samples/s.\nREQ-SY-042: Output SNR ≥ 60 dB with specified input.\n\n\nSystem‑level VER-* tests:\n\nVER-SYS-040-01: Latency test from analog input change to processed data on host.\nVER-SYS-041-01: Throughput test with continuous data and back‑to‑back frames.\nVER-SYS-042-01: End‑to‑end SNR test with reference input (e.g., pure tone + noise).\n\n\n\nNote: - Stage 6 already verified the FIR core in isolation. - Stage 7: we now test FPGA + ADC + DMA + driver + host software together."
+  },
+  {
+    "objectID": "cd_07.html#designing-good-system-tests-key-qualities",
+    "href": "cd_07.html#designing-good-system-tests-key-qualities",
+    "title": "Stage 7 – System / Integration Verification",
+    "section": "Designing Good System Tests – Key Qualities",
+    "text": "Designing Good System Tests – Key Qualities\nGood VER-* system tests are:\n\nRequirements‑driven:\n\nExplicitly reference REQ-* IDs; not just “general poking around.”\n\nScenario‑based:\n\nReflect realistic use cases or operational scenarios (e.g., 24‑hour operation, network outage, overload).\n\nObservable:\n\nSystem outputs and behaviors are measurable and recorded (logs, waveforms, screenshots).\n\nRepeatable:\n\nClear setup and procedure to re‑run the same scenario for regression.\n\nCross‑component:\n\nInvolve multiple subsystems: HW, FW, SW, networking, UI.\n\n\n\n\n\n\n\n\nTip\n\n\nAsk yourself:\n\n“If I change a firmware version, can I re‑run this VER-* test and see if the system still meets the same requirement?”\n\n\n\n\n\nEncourage teams to prioritize system tests, because they are time‑intensive: - Start with “must‑pass” scenarios that cover critical requirements and risks."
+  },
+  {
+    "objectID": "cd_07.html#test-methods-tamdi-at-system-level",
+    "href": "cd_07.html#test-methods-tamdi-at-system-level",
+    "title": "Stage 7 – System / Integration Verification",
+    "section": "Test Methods (TAMDI) at System Level",
+    "text": "Test Methods (TAMDI) at System Level\nAs in Stage 6, 29148 supports multiple verification methods:\n\nTest – Execute the system and measure behavior (most Stage‑7 work).\nAnalysis – Use models, math, or logs to argue that behavior meets requirements.\nModeling/Simulation – Digital twins, network simulators, etc.\nDemonstration – Qualitative show‑and‑tell (often not sufficient alone).\nInspection – Check configuration, documentation, or interfaces manually.\n\nExamples for Stage 7:\n\nUse Test to check: latency, throughput, response to faults.\nUse Analysis to show: worst‑case timing margins from logs.\nUse Inspection to verify: configuration files match documented settings.\n\n\nPoint out: - Many VER-* will be Test + Analysis: run experiments, then analyze captured data to verify against numbers in REQ-*."
+  },
+  {
+    "objectID": "cd_07.html#system-test-environment-configuration",
+    "href": "cd_07.html#system-test-environment-configuration",
+    "title": "Stage 7 – System / Integration Verification",
+    "section": "System Test Environment & Configuration",
+    "text": "System Test Environment & Configuration\nYou must define and control the environment in which system tests run.\nExample for Smart Lab Sensor Network:\n\nHardware:\n\n5 real sensor nodes + optional simulated nodes.\n1 gateway, 1 backend server (lab PC or VM).\nRouter / Wi‑Fi AP if needed.\n\nSoftware:\n\nBackend at baseline tag backend-v0.7-stage7.\nNode firmware node-fw-v1.0-stage7.\nUI labdash-ui-v1.0-stage7.\n\nNetwork / Infrastructure:\n\nLab VLAN isolated from other networks.\nTime‑synchronized clocks (NTP) for consistent timestamps.\n\nTest Tools:\n\nTraffic generator or script to simulate node load.\nLog collectors, dashboards, metrics exporters.\n\n\n\n\n\n\n\n\nNote\n\n\nSystem verification depends heavily on having a stable, reproducible environment. Document it in DCP‑500B.\n\n\n\n\nTie to configuration management: - Just as you version your code, you need to version your test environment. - This allows future teams to reproduce your verification results."
+  },
+  {
+    "objectID": "cd_07.html#dcp500b-example-structure-short",
+    "href": "cd_07.html#dcp500b-example-structure-short",
+    "title": "Stage 7 – System / Integration Verification",
+    "section": "DCP‑500B – Example Structure (Short)",
+    "text": "DCP‑500B – Example Structure (Short)\n\nIntroduction & Scope\n\nWhich requirements and scenarios are covered by this system verification.\n\nSystem Under Test (SUT)\n\nArchitecture overview, versions of HW/SW, configuration.\n\nTest Environment & Tools\n\nLab topology, equipment, simulators, logging.\n\nSystem Test Cases (VER-*)\n\nDetailed definitions: objective, method, setup, procedure, pass/fail criteria.\n\nTest Execution & Results\n\nSummary and key evidence.\n\nDefects & Integration Issues\n\nFailures, root cause, fixes, retests.\n\nRequirements Coverage & RTM Update\n\nHow many REQ-* covered by VER-*, any gaps.\n\nReadiness for Validation (Stage 8)\n\nAre we ready to put this in front of real stakeholders?\n\n\n\nIf you already showed DCP‑500A structure, emphasize parallels: - Same pattern, different level: component vs system."
+  },
+  {
+    "objectID": "cd_07.html#example-system-test-summary-table",
+    "href": "cd_07.html#example-system-test-summary-table",
+    "title": "Stage 7 – System / Integration Verification",
+    "section": "Example – System Test Summary Table",
+    "text": "Example – System Test Summary Table\n\n\n\n\n\n\n\n\n\n\nVER ID\nREQ ID(s)\nMethod\nStatus\nNotes\n\n\n\n\nVER-SYS-001\nREQ-SY-011\nTest\nPASS\nLatency 8–12 s (limit 30 s)\n\n\nVER-SYS-002\nREQ-SY-012\nTest\nPASS\nData loss &lt; 0.1% over 24 h\n\n\nVER-SYS-003\nREQ-SY-013\nTest + Analysis\nFAIL\n20 nodes overload backend CPU\n\n\nVER-SYS-004\nREQ-SW-020\nTest\nPASS\nAlerts triggered correctly\n\n\nVER-SYS-005\nREQ-SY-0xy (power)\nTest + Analysis\nPASS\nSystem average power &lt; specified budget\n\n\n\n\n\n\n\n\n\nWarning\n\n\nFailing a system test is common, especially initially. The important thing is: - Capture it, understand it, and use it to improve.\n\n\n\n\nDiscuss VER‑SYS‑003 as a mini‑case: - Backend CPU hits 90–100% at 20 nodes. - Might need optimization or a downgraded spec (e.g., 16 nodes for prototype)."
+  },
+  {
+    "objectID": "cd_07.html#defects-and-systemlevel-root-cause",
+    "href": "cd_07.html#defects-and-systemlevel-root-cause",
+    "title": "Stage 7 – System / Integration Verification",
+    "section": "Defects and System‑Level Root Cause",
+    "text": "Defects and System‑Level Root Cause\nWhen a VER-* test fails, Stage 7 should:\n\nLog the defect with links: VER-*, REQ-*, affected CMP-*/IMP-*.\nAnalyze the root cause:\n\nIntegration issue?\nSingle component bug that escaped Stage 6?\nMisunderstood requirement?\n\nFix at appropriate level:\n\nCould require changes to: firmware, backend, UI, or configuration.\n\nRegression test:\n\nRe‑run the failing VER-* and any related tests.\n\n\n\n\n\n\n\n\nTip\n\n\nUse the same issue tracker discipline from Stage 6, but now defects can involve multiple components.\n\n\n\n\nEncourage them to think in terms of “fault tree”: e.g., data loss could be due to: - RF collisions, - gateway buffer overflow, - backend bugs, - database limits.\nSystem‑level tests help locate where to investigate next."
+  },
+  {
+    "objectID": "cd_07.html#rtm-with-ver--example-excerpt",
+    "href": "cd_07.html#rtm-with-ver--example-excerpt",
+    "title": "Stage 7 – System / Integration Verification",
+    "section": "RTM with VER-* – Example Excerpt",
+    "text": "RTM with VER-* – Example Excerpt\n\n\n\n\n\n\n\n\n\n\n\nSTR ID\nREQ ID\nCMP IDs\nTST IDs (Stage 6)\nVER IDs (Stage 7)\nNotes\n\n\n\n\nSTR-SY-001\nREQ-SY-010\nCMP-SY-040, SW-020\nTST-SY-040-01, SW-020-01\nVER-SYS-001\nEnd‑to‑end accuracy & latency\n\n\nSTR-SY-002\nREQ-SY-011\nCMP-SW-020, SW-030, SW-010\nTST-SW-020-02\nVER-SYS-001, VER-SYS-002\nEnd‑to‑end reporting and reliability\n\n\nSTR-SY-003\nREQ-SY-013\nCMP-SW-030, SW-010\n—\nVER-SYS-003\nCapacity test only at system level\n\n\nSTR-SY-004\nREQ-SW-020\nCMP-SW-030, SW-010\nTST-SW-030-01\nVER-SYS-004\nAlerts end‑to‑end\n\n\n\n\n\n\n\n\n\nImportant\n\n\nBy the end of Stage 7, every REQ-* should either:\n\nHave at least one VER-* test marked PASS, or\nHave a documented rationale (e.g., waived, not applicable to prototype).\n\n\n\n\n\nShow them how TST-* (Stage 6) and VER-* (Stage 7) complement each other, not replace each other."
+  },
+  {
+    "objectID": "cd_07.html#inclass-exercise-draft-a-systemlevel-test",
+    "href": "cd_07.html#inclass-exercise-draft-a-systemlevel-test",
+    "title": "Stage 7 – System / Integration Verification",
+    "section": "In‑Class Exercise – Draft a System‑Level Test",
+    "text": "In‑Class Exercise – Draft a System‑Level Test\nActivity (5–10 minutes):\n\nPick one system requirement (REQ-*) from your team’s DCP‑200.\nIdentify which components participate in fulfilling it.\nDraft a system test case (VER-*) that:\n\nHas a clear objective.\nDefines environment / setup.\nDescribes 4–6 procedure steps.\nStates measurable pass/fail criteria.\n\n\nExamples of good candidates:\n\nLatency / response time requirement.\nThroughput / capacity requirement.\nRobustness to network loss or power cycling.\n\n\n\n\n\n\n\nNote\n\n\nWe’ll ask a few teams to share their VER-* ideas and map them to REQ-* on the board.\n\n\n\n\nWhile walking around, check: - They are not just re‑labeling a unit test; it must involve multiple subsystems. - Criteria are numeric or clearly checkable, not just “seems okay”."
+  },
+  {
+    "objectID": "cd_07.html#summary-key-takeaways-for-stage-7",
+    "href": "cd_07.html#summary-key-takeaways-for-stage-7",
+    "title": "Stage 7 – System / Integration Verification",
+    "section": "Summary – Key Takeaways for Stage 7",
+    "text": "Summary – Key Takeaways for Stage 7\n\nStage 7 – System / Integration Verification checks the integrated system against system requirements (REQ-*), per ISO/IEC/IEEE 29148.\nSystem tests (VER-*) are:\n\nRequirements‑driven, scenario‑based, cross‑component, and repeatable.\n\nThe main deliverable is DCP‑500B – System Verification, capturing:\n\nSystem under test, environment, VER-* cases, results, defects, and coverage.\n\nTraceability expands: the RTM links REQ-* to VER-* (and also to TST-* where helpful).\nA solid Stage 7 greatly reduces risk when you enter Stage 8 – Stakeholder Validation and public demos.\n\n\n\n\n\n\n\nImportant\n\n\nIf Stage 6 is about building strong bricks, Stage 7 is about checking that the house built from those bricks is safe, functional, and matches the blueprint.\n\n\n\n\nClose by previewing Stage 8: - After system verification, we’ll bring real stakeholders or surrogate users to validate that the system actually solves their problem.\nInvite questions specifically on: - Choosing which requirements to test at system vs unit level. - How to design realistic system test environments in the constraints of the teaching lab. - How deep DCP‑500B needs to be for the course."
+  },
+  {
+    "objectID": "cd_08.html#stage-8-stakeholder-validation-acceptance",
+    "href": "cd_08.html#stage-8-stakeholder-validation-acceptance",
+    "title": "Stage 8 – Stakeholder Validation & Acceptance",
+    "section": "Stage 8 – Stakeholder Validation & Acceptance",
+    "text": "Stage 8 – Stakeholder Validation & Acceptance\nCapstone Design Course – From Needs to Validated Systems using the V‑Model & ISO/IEC/IEEE 29148\nFocus of this session: Stage 8 – Stakeholder Validation & Acceptance\nDCP‑500C – Stakeholder Validation\n\nThis is a Quarto/Reveal.js slide deck in pure Markdown. Use --- between slides. Every sentence ends with two spaces for Reveal line breaks.\nThis session assumes students have: - Defined stakeholder needs (STR-*) and system requirements (REQ-*). - Done design, implementation, unit/component verification (Stage 6). - Completed or nearly completed system / integration verification (Stage 7, DCP‑500B).\nNow you show how we close the loop: - Bring the system back to real stakeholders. - Confirm it actually solves their problem."
+  },
+  {
+    "objectID": "cd_08.html#session-learning-objectives",
+    "href": "cd_08.html#session-learning-objectives",
+    "title": "Stage 8 – Stakeholder Validation & Acceptance",
+    "section": "Session Learning Objectives",
+    "text": "Session Learning Objectives\nBy the end of this session, you will be able to:\n\nPlace Stage 8 – Stakeholder Validation & Acceptance correctly in the V‑Model and distinguish it from verification.\nDescribe the ISO/IEC/IEEE 29148 Validation process and its main activities.\nPlan validation scenarios and acceptance tests that tie back to stakeholder needs (STR-*).\nIdentify the key deliverables of Stage 8, especially DCP‑500C – Stakeholder Validation and VAL-* artifacts.\nApply these concepts to ECE projects (IoT, motor control, FPGA systems, embedded devices) using realistic examples of validation.\n\n\nAsk the class up front: - “What is the difference between verification and validation in your own words?” Collect a few answers and keep them in mind to refine when you present the formal definitions."
+  },
+  {
+    "objectID": "cd_08.html#vmodel-where-is-stage-8",
+    "href": "cd_08.html#vmodel-where-is-stage-8",
+    "title": "Stage 8 – Stakeholder Validation & Acceptance",
+    "section": "V‑Model – Where Is Stage 8?",
+    "text": "V‑Model – Where Is Stage 8?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nImportant\n\n\nStage 8 is the mirror of Stage 1–2: You are validating the delivered system against the stakeholder needs (STR-*), not just the technical requirements.\n\n\n\n\nEmphasize: - Stage 7 answered: “Does the system meet its requirements?” - Stage 8 answers: “Does the system satisfy real users and stakeholders in their intended context?”\nThe dashed line A — G shows the direct STR ↔︎ VAL traceability."
+  },
+  {
+    "objectID": "cd_08.html#quick-recap-verification-vs-validation",
+    "href": "cd_08.html#quick-recap-verification-vs-validation",
+    "title": "Stage 8 – Stakeholder Validation & Acceptance",
+    "section": "Quick Recap – Verification vs Validation",
+    "text": "Quick Recap – Verification vs Validation\nVerification – “Did we build it right?”\n\nCheck product vs requirements and design.\nActivities: unit tests, system tests, analyses, inspections.\nStages 6 and 7.\n\nValidation – “Did we build the right thing?”\n\nCheck product vs stakeholder needs (STR-*) and intended use.\nRealistic scenarios, users, environments.\nStage 8.\n\n\n\n\n\n\n\nTip\n\n\nA system can be verified (passes all REQ‑based tests) and still fail validation if the requirements were incomplete, misunderstood, or no longer match user needs.\n\n\n\n\nGive a simple example: - Requirement: “System shall log all data.” Verified. - Stakeholder: “I needed a real‑time alarm, not just logs.” Validation fails.\nStage 8 is where you discover such gaps."
+  },
+  {
+    "objectID": "cd_08.html#what-is-validation",
+    "href": "cd_08.html#what-is-validation",
+    "title": "Stage 8 – Stakeholder Validation & Acceptance",
+    "section": "29148: What Is Validation?",
+    "text": "29148: What Is Validation?\nISO/IEC/IEEE 29148 defines Validation as:\n\nConfirmation, through provision of objective evidence, that the system, as built, fulfills its intended use when placed in its intended operational environment.\n\nKey points for Stage 8:\n\nFocus on stakeholder needs (STR-*) and operational scenarios.\nUses realistic users, workflows, and environments as far as practical.\nProduces evidence that supports acceptance decisions.\n\n\n\n\n\n\n\n\n\n\n\n\n\nHighlight: - Verification ensures we built what we specified. - Validation checks that what we specified was the right thing in the first place.\nThey are related but not interchangeable."
+  },
+  {
+    "objectID": "cd_08.html#validation-activities-high-level",
+    "href": "cd_08.html#validation-activities-high-level",
+    "title": "Stage 8 – Stakeholder Validation & Acceptance",
+    "section": "29148 Validation Activities (High Level)",
+    "text": "29148 Validation Activities (High Level)\nTypical validation process steps (adapted from 29148 and course framework):\n\nPlan validation\n\nIdentify stakeholders, context of use, and success criteria.\n\nDefine validation objectives and scenarios\n\nWhat real‑world tasks should the system enable?\nMap these to stakeholder requirements (STR-*).\n\nPrepare validation environment\n\nAs close as possible to operational conditions.\n\nConduct validation sessions\n\nDemonstrations, user trials, pilot runs, acceptance tests.\n\nCollect and analyze evidence\n\nObservations, metrics, questionnaires, stakeholder feedback.\n\nDecide on acceptance\n\nConfirm which needs are satisfied, which are partially or not met.\nIdentify required changes or limitations to communicate.\n\nDocument results\n\nDCP‑500C – Stakeholder Validation, updated RTM, acceptance sign‑off(s) where possible.\n\n\n\nClarify that in a university capstone, validation may be: - Smaller scale than in industry. - Time‑boxed, often a few sessions with stakeholders / advisors / peers.\nStill, we want to mimic the real discipline of validation."
+  },
+  {
+    "objectID": "cd_08.html#stage-8-in-the-course-framework",
+    "href": "cd_08.html#stage-8-in-the-course-framework",
+    "title": "Stage 8 – Stakeholder Validation & Acceptance",
+    "section": "Stage 8 in the Course Framework",
+    "text": "Stage 8 in the Course Framework\n\n\nCourse Stage:\n\nStage 8 – Stakeholder Validation & Acceptance\n\nInputs:\n\nDCP‑100B – Stakeholder Requirements (STR-*).\nDCP‑200 – System Requirements (REQ-*).\nDCP‑500B – System Verification (Stage 7 results).\nWorking system prototype (HW + SW + docs).\n\n\nOutputs:\n\nValidation plan and scenarios (VAL-* items).\nValidation session records (notes, metrics, videos, surveys).\nDCP‑500C – Stakeholder Validation document.\nUpdated RTM with STR-* → VAL-* links.\nAcceptance decision (yes / yes with caveats / no).\n\n\n\n\n\n\n\n\nNote\n\n\nStage 7 said: “We meet REQ‑123.” Stage 8 should let a stakeholder say:\n\n“Yes, this actually solves my problem / supports my work.”\n\n\n\n\n\nUnderline the three‑level chain: - STR – stakeholder needs. - REQ – engineered requirements. - VER / VAL – evidence.\nStage 8 calls stakeholders back into the loop."
+  },
+  {
+    "objectID": "cd_08.html#trace-from-str-to-val",
+    "href": "cd_08.html#trace-from-str-to-val",
+    "title": "Stage 8 – Stakeholder Validation & Acceptance",
+    "section": "TRACE: From STR‑* to VAL‑*",
+    "text": "TRACE: From STR‑* to VAL‑*\n\n\n\n\n\n\n\n\n\n\n\nInterpretation:\n\nSTR-* were captured early (Stage 1–2).\nREQ-* were derived from STR-* (Stage 3).\nVER-* tested REQ-* (Stage 7).\nNow VAL-* activities and acceptance tests link directly back to STR-*.\n\n\n\n\n\n\n\nImportant\n\n\nValidation must explicitly reference stakeholder needs (STR-*), not just REQ-*.\n\n\n\n\nGive an example STR:\n\nSTR-SY-001: “Lab technicians can quickly see if any lab is too hot or too cold.”\n\nPossible VAL-* link: - VAL-STR-001-01: Observational study where lab tech uses dashboard to locate problematic rooms in under 1 minute."
+  },
+  {
+    "objectID": "cd_08.html#ece-example-smart-lab-sensor-network",
+    "href": "cd_08.html#ece-example-smart-lab-sensor-network",
+    "title": "Stage 8 – Stakeholder Validation & Acceptance",
+    "section": "ECE Example – Smart Lab Sensor Network",
+    "text": "ECE Example – Smart Lab Sensor Network\n\n\nStakeholder:\n\nLab manager, lab technicians, department safety officer.\n\nKey Stakeholder Needs (STR-*):\n\nSTR-SY-001: Quickly know if any lab is out of safe temperature range.\nSTR-SY-002: Understand historical temperature trends for audits.\nSTR-SY-003: Avoid having to manually walk around checking every room.\n\n\nPotential Validation Activities (VAL-*):\n\nVAL-STR-001-01: Lab manager uses system to locate a “too hot” room in a mock scenario.\nVAL-STR-002-01: Safety officer retrieves last week’s data to check compliance.\nVAL-STR-003-01: Compare time/effort vs old manual process.\n\n\n\nHighlight distinction: - Stage 7 already checked: - Latency, accuracy, reliability (technical). - Stage 8 checks whether: - Stakeholders actually find and use the information easily. - The system reduces their workload as intended."
+  },
+  {
+    "objectID": "cd_08.html#example-need-requirement-validation",
+    "href": "cd_08.html#example-need-requirement-validation",
+    "title": "Stage 8 – Stakeholder Validation & Acceptance",
+    "section": "Example Need → Requirement → Validation",
+    "text": "Example Need → Requirement → Validation\nStakeholder Need (STR-SY-001):\n\n“I want to quickly see if any room is unsafe, without reading lots of numbers.”\n\nDerived Requirements (simplified):\n\nREQ-UI-001: Dashboard shall show each room with a color‑coded status (OK / Warning / Alarm).\nREQ-UI-002: Overall summary view shall be visible without scrolling on a standard 1080p monitor.\n\nVerification (Stage 7) – VER-*:\n\nCheck that status colors are computed correctly from thresholds.\nCheck that layout fits 1080p screen."
+  },
+  {
+    "objectID": "cd_08.html#validation-activities-applied",
+    "href": "cd_08.html#validation-activities-applied",
+    "title": "Stage 8 – Stakeholder Validation & Acceptance",
+    "section": "29148 Validation Activities – Applied",
+    "text": "29148 Validation Activities – Applied\nBreak down the 29148 steps with concrete tasks for your capstone:\n\nIdentify stakeholders and context of use\n\nWho will actually use or benefit from this system (lab manager, student, operator, client engineer)?\nWhere and how (lab, field, classroom demo, web)?\n\nDefine validation objectives\n\nWhat tasks or problems must the system help them solve?\nWhat would count as success in their view?\n\nDesign validation scenarios (VAL-*)\n\nTask scripts, acceptance tests, demo storyboards tied to STR-*.\n\nPrepare the validation environment\n\nAs close as possible to real conditions (devices, data, noise, loads)."
+  },
+  {
+    "objectID": "cd_08.html#dcp500c-stakeholder-validation-overview",
+    "href": "cd_08.html#dcp500c-stakeholder-validation-overview",
+    "title": "Stage 8 – Stakeholder Validation & Acceptance",
+    "section": "DCP‑500C – Stakeholder Validation (Overview)",
+    "text": "DCP‑500C – Stakeholder Validation (Overview)\nMain Stage 8 deliverable:\n\nDCP‑500C – Stakeholder Validation & Acceptance\n\nTypical contents:\n\nPurpose & Scope – Which stakeholders, which needs (STR-*) are in scope.\nStakeholders & Roles – Who participated, what roles they have.\nValidation Plan – Scenarios, success criteria, schedule.\nValidation Activities (VAL-*) – Detailed descriptions and scripts.\nResults & Evidence – Observations, measurements, feedback.\nAssessment vs Needs (STR-*) – Which needs are met / partially / not met.\nAcceptance Decision & Conditions – Advisor / client sign‑off if possible.\nLessons Learned & Future Work – What remains to be improved if the project continued.\n\n\n\n\n\n\n\nNote\n\n\nDCP‑500C is your final argument that the system is not just technically solid, but valuable to the people it was built for.\n\n\n\n\nYou can reuse style from DCP‑500A/B (structured tables, IDs). But now the main ID namespace is VAL-* instead of TST-* or VER-*."
+  },
+  {
+    "objectID": "cd_08.html#system-tests-vs-validation-activities-contrast",
+    "href": "cd_08.html#system-tests-vs-validation-activities-contrast",
+    "title": "Stage 8 – Stakeholder Validation & Acceptance",
+    "section": "System Tests vs Validation Activities – Contrast",
+    "text": "System Tests vs Validation Activities – Contrast\n\n\nSystem Verification (Stage 7, VER-*):\n\nPerspective: Engineer / system.\nFocus:\n\nRequirements (REQ-*).\nTechnical performance (latency, accuracy, reliability).\n\nMethods:\n\nAutomated tests, instrumentation, load scripts.\n\nExample:\n\n“Does the system show temperature within 30 s of change?”\n\n\n\nStakeholder Validation (Stage 8, VAL-*):\n\nPerspective: User / stakeholder.\nFocus:\n\nNeeds (STR-*).\nUsability, usefulness, workflow fit.\n\nMethods:\n\nUser observation, interviews, acceptance demos, pilots.\n\nExample:\n\n“Can a lab manager easily see which rooms need attention?”\n\n\n\n\n\n\n\n\n\nImportant\n\n\nStage 7 can pass while Stage 8 fails. If that happens, you have learned something important about stakeholder needs.\n\n\n\n\nRemind them: - Failure at Stage 8 is not necessarily a “bad grade” if it is well‑analyzed and leads to insights. - It shows that requirements elicitation might need improvement in future iterations."
+  },
+  {
+    "objectID": "cd_08.html#ece-example-motor-drive-platform-validation",
+    "href": "cd_08.html#ece-example-motor-drive-platform-validation",
+    "title": "Stage 8 – Stakeholder Validation & Acceptance",
+    "section": "ECE Example – Motor Drive Platform Validation",
+    "text": "ECE Example – Motor Drive Platform Validation\n\n\nProject: BLDC motor drive with GUI for lab use.\nStakeholders: - Lab instructors. - Students running lab experiments.\nStakeholder Needs (examples):\n\nSTR-MD-001: Instructors can set up labs quickly and safely.\nSTR-MD-002: Students can change motor speed easily without damaging equipment.\nSTR-MD-003: Safety stops are obvious and intuitive.\n\n\nValidation Activities (VAL-*):\n\nVAL-MD-001-01: Instructor configures a typical lab setup in under 10 minutes after brief training.\nVAL-MD-002-01: Students perform a speed sweep lab with only the provided manual.\nVAL-MD-003-01: Observers watch if students instinctively use the E‑stop in a mock “problem” scenario.\n\n\n\nConnect to earlier Stage 7 tests: - Stage 7 already measured E‑stop response time (200 ms). - Stage 8 checks whether users know when and how to trigger it, and feel safe."
+  },
+  {
+    "objectID": "cd_08.html#example-validation-scenario-valmd00201",
+    "href": "cd_08.html#example-validation-scenario-valmd00201",
+    "title": "Stage 8 – Stakeholder Validation & Acceptance",
+    "section": "Example Validation Scenario – VAL‑MD‑002‑01",
+    "text": "Example Validation Scenario – VAL‑MD‑002‑01\nID: VAL-MD-002-01 – Student Lab Usability Scenario\n\nLinked Needs (STR-*):\n\nSTR-MD-002: Students can safely run speed control experiments with minimal confusion.\n\nObjective:\n\nDetermine whether typical students can perform a standard motor speed control lab using the system and manual, without instructor intervention.\n\nParticipants:\n\n4–6 students who did not build the system, representing target users.\n\n\nProcedure (simplified):\n\nProvide students with the motor drive hardware and GUI, plus a brief lab handout (no extra verbal coaching).\nAsk them to:\n\nStart the motor.\nAdjust speed to 500, 1000, 1500 RPM.\nRecord observed behavior and plots.\n\nObserve without interfering; time how long they take to complete each step.\nAfter the task, administer a short questionnaire:\n\n“How easy was it to use the interface?” (1–5)\n“Did you ever feel unsure or unsafe?” (Y/N, comments).\n\n\nSuccess Criteria (example):\n\nAt least 80% of students can complete all steps within the allotted lab time.\nAverage usability rating ≥ 4/5.\nNo safety incidents or serious confusion reported.\n\n\nEmphasize that validation criteria often include percentages and thresholds, not just binary pass/fail.\nRecord not just success, but where they struggled, which will inform improvements."
+  },
+  {
+    "objectID": "cd_08.html#ece-example-fpgabased-signal-processing-toolkit",
+    "href": "cd_08.html#ece-example-fpgabased-signal-processing-toolkit",
+    "title": "Stage 8 – Stakeholder Validation & Acceptance",
+    "section": "ECE Example – FPGA‑Based Signal Processing Toolkit",
+    "text": "ECE Example – FPGA‑Based Signal Processing Toolkit\n\n\nProject: FPGA card used as a teaching / research accelerator for signal processing.\nStakeholders: - Faculty member doing research. - Graduate students prototyping algorithms.\nKey Needs (examples):\n\nSTR-FPGA-001: Easy to swap in new FIR filter coefficients or HDL modules.\nSTR-FPGA-002: Students can set up experiments quickly from Python/Matlab.\nSTR-FPGA-003: System behaves predictably during long‑running experiments.\n\n\nValidation (VAL-*) Examples:\n\nVAL-FPGA-001-01: Researcher swaps filter design and deploys new bitstream in ≤ 30 min using provided scripts.\nVAL-FPGA-002-01: Student controls FPGA pipeline from Python notebook following a short tutorial.\nVAL-FPGA-003-01: 2‑hour experiment run with researcher judging reliability and workflow fit.\n\n\n\nAgain, Stage 7 already verified throughput, latency, SNR. Stage 8 checks whether the workflow around those capabilities supports real research/teaching."
+  },
+  {
+    "objectID": "cd_08.html#designing-good-validation-activities",
+    "href": "cd_08.html#designing-good-validation-activities",
+    "title": "Stage 8 – Stakeholder Validation & Acceptance",
+    "section": "Designing Good Validation Activities",
+    "text": "Designing Good Validation Activities\nGood VAL-* activities are:\n\nAnchored in stakeholder needs (STR-*):\n\nEach scenario references one or more STR-* IDs.\n\nTask‑oriented:\n\nBased on real tasks stakeholders perform (not just button‑click tours).\n\nContextual:\n\nUse realistic data, environments, and constraints where possible.\n\nObservable:\n\nYou can measure time, errors, satisfaction, or other indicators.\n\nOpen to feedback:\n\nCollect qualitative comments, not just numeric scores.\n\n\n\n\n\n\n\n\nTip\n\n\nAsk yourself:\n\n“If this were a product, would this validation give the client enough confidence to buy or deploy it?”\n\n\n\n\n\nEncourage variety: - Some VAL-* can be structured “acceptance tests”. - Others may be more exploratory (observational, interviews).\nBoth are valid if they are planned and documented."
+  },
+  {
+    "objectID": "cd_08.html#validation-methods-beyond-traditional-tests",
+    "href": "cd_08.html#validation-methods-beyond-traditional-tests",
+    "title": "Stage 8 – Stakeholder Validation & Acceptance",
+    "section": "Validation Methods – Beyond Traditional Tests",
+    "text": "Validation Methods – Beyond Traditional Tests\nAt Stage 8, you may use a mix of methods:\n\nDemonstration:\n\nShow key workflows to stakeholders; let them interact and discuss.\n\nObservation / Usability Testing:\n\nWatch real users perform tasks; note confusion points and errors.\n\nInterviews & Surveys:\n\nGather perceptions on usefulness, trust, and satisfaction.\n\nPilot Runs / Field Trials:\n\nDeploy the system in real or pseudo‑real conditions for some time.\n\nAnalytical Comparison:\n\nCompare measured performance and outcomes to stakeholder expectations (e.g., time saved, reliability vs previous methods).\n\n\n\n\n\n\n\n\nNote\n\n\nIn capstone projects, even a short, structured user session can be valuable validation evidence if carefully planned.\n\n\n\n\nWarn against “drive‑by validation”: - A quick “Looks good” from the advisor in the hallway is not the same as a structured validation tied to STR-*."
+  },
+  {
+    "objectID": "cd_08.html#validation-environment-practical-considerations",
+    "href": "cd_08.html#validation-environment-practical-considerations",
+    "title": "Stage 8 – Stakeholder Validation & Acceptance",
+    "section": "Validation Environment – Practical Considerations",
+    "text": "Validation Environment – Practical Considerations\nIt is often impossible to fully replicate real‑world conditions, but you should approximate them.\nSmart Lab Sensor Network example:\n\nIdeally: real building, real lab staff, real HVAC events.\nPractically in course:\n\nA subset of rooms in the ECE building.\nSimulated temperature events.\nLab manager or instructor role‑playing as stakeholder.\n\n\nMotor Drive example:\n\nIdeally: long‑term use in teaching labs across a semester.\nPractically:\n\n1–2 trial lab sessions with volunteer students.\nInstructor feedback on set‑up time and clarity.\n\n\n\n\n\n\n\n\nWarning\n\n\nBe explicit about assumptions and limitations of your validation environment in DCP‑500C.\n\n\n\n\nStress honesty: - It is better to clearly explain validation constraints than to over‑claim. - Evaluators look for critical thinking, not perfection."
+  },
+  {
+    "objectID": "cd_08.html#capturing-evidence-what-to-record",
+    "href": "cd_08.html#capturing-evidence-what-to-record",
+    "title": "Stage 8 – Stakeholder Validation & Acceptance",
+    "section": "Capturing Evidence – What to Record",
+    "text": "Capturing Evidence – What to Record\nDuring validation, collect:\n\nQuantitative data:\n\nTime to complete tasks.\nNumber of errors or assistance requests.\nSuccess/failure rates.\n\nQualitative data:\n\nComments from stakeholders.\nObservations of confusion, workarounds, or pleasant surprises.\nSuggestions for improvements.\n\nArtifacts:\n\nPhotos or screen recordings (if allowed).\nFilled questionnaires.\nLog extracts showing realistic use.\n\n\n\n\n\n\n\n\nNote\n\n\nThese form the core evidence you will summarize in DCP‑500C, not just “The client liked it.”\n\n\n\n\nMention ethics briefly if relevant: - Respect privacy, get consent if recording or quoting. - In courses, this is usually simple, but awareness is good."
+  },
+  {
+    "objectID": "cd_08.html#example-validation-results-summary-table",
+    "href": "cd_08.html#example-validation-results-summary-table",
+    "title": "Stage 8 – Stakeholder Validation & Acceptance",
+    "section": "Example – Validation Results Summary Table",
+    "text": "Example – Validation Results Summary Table\n\n\n\n\n\n\n\n\n\n\nVAL ID\nSTR ID(s)\nStakeholder Role\nOutcome\nKey Observations\n\n\n\n\nVAL-STR-001-01\nSTR-SY-001\nLab manager\nFully met\nCould identify hot room in 12 s\n\n\nVAL-STR-002-01\nSTR-SY-002\nSafety officer\nPartially met\nHistorical charts ok, export cumbersome\n\n\nVAL-STR-003-01\nSTR-SY-003\nLab manager\nFully met\nWalk‑through replaced by quick screen check\n\n\nVAL-MD-002-01\nSTR-MD-002\nStudents\nPartially met\nNeeded minor help finding correct menu\n\n\n\n\n\n\n\n\n\nImportant\n\n\nValidation results can be Fully Met, Partially Met, or Not Met. Document why and what that implies for future work.\n\n\n\n\nEncourage them to avoid vague statuses like “OK” or “Fine”. Instead, define criteria ahead of time and then categorize outcomes accordingly."
+  },
+  {
+    "objectID": "cd_08.html#rtm-extending-to-str--val-",
+    "href": "cd_08.html#rtm-extending-to-str--val-",
+    "title": "Stage 8 – Stakeholder Validation & Acceptance",
+    "section": "RTM – Extending to STR-* ↔︎ VAL-*",
+    "text": "RTM – Extending to STR-* ↔︎ VAL-*\nYour RTM (Requirements Traceability Matrix) can include validation links.\n\n\n\n\n\n\n\n\n\n\nSTR ID\nREQ IDs (main)\nVER IDs (Stage 7)\nVAL IDs (Stage 8)\nValidation Status\n\n\n\n\nSTR-SY-001\nREQ-SY-011, REQ-UI-001\nVER-SYS-001\nVAL-STR-001-01\nFully met\n\n\nSTR-SY-002\nREQ-SW-030, REQ-REP-001\nVER-SYS-002, 005\nVAL-STR-002-01\nPartially met\n\n\nSTR-MD-002\nREQ-MD-GUI-001\nVER-MD-001\nVAL-MD-002-01\nPartially met\n\n\n\n\n\n\n\n\n\nTip\n\n\nBy the end of Stage 8, each key stakeholder need (STR-*) should be:\n\nValidated (Fully / Partially / Not Met), and\nLinked to concrete validation evidence (VAL-*).\n\n\n\n\n\nExplain that not every tiny STR has to be validated in isolation. - Some VAL-* scenarios can cover multiple needs at once."
+  },
+  {
+    "objectID": "cd_08.html#inclass-exercise-plan-a-validation-scenario",
+    "href": "cd_08.html#inclass-exercise-plan-a-validation-scenario",
+    "title": "Stage 8 – Stakeholder Validation & Acceptance",
+    "section": "In‑Class Exercise – Plan a Validation Scenario",
+    "text": "In‑Class Exercise – Plan a Validation Scenario\nActivity (5–10 minutes):\n\nWith your team, pick one key stakeholder need (STR-*) from your DCP‑100B.\nBriefly describe:\n\nWho is the stakeholder?\nWhat real task / problem does this STR describe?\n\nDesign a validation activity (VAL-*):\n\nID (e.g., VAL-&lt;proj&gt;-001-01).\nObjective (one sentence).\nParticipants and environment.\n3–5 steps in the scenario.\nSuccess criteria (quantitative or qualitative).\n\n\nWe will ask a few teams to share:\n\nHow does your VAL-* link back to STR-*?\nHow would you measure success?\n\n\n\n\n\n\n\nNote\n\n\nThis exercise can seed your actual DCP‑500C validation plan.\n\n\n\n\nAs you walk around, look for: - Scenarios that are too “demo‑only” with no clear success criteria. - Missing link to specific STR-* IDs.\nPrompt teams to be realistic given time and stakeholder availability."
+  },
+  {
+    "objectID": "cd_08.html#summary-key-takeaways-for-stage-8",
+    "href": "cd_08.html#summary-key-takeaways-for-stage-8",
+    "title": "Stage 8 – Stakeholder Validation & Acceptance",
+    "section": "Summary – Key Takeaways for Stage 8",
+    "text": "Summary – Key Takeaways for Stage 8\n\nStage 8 – Stakeholder Validation & Acceptance is about confirming that the system fulfills its intended use for real people, in real (or close‑to‑real) contexts.\nIt implements the ISO/IEC/IEEE 29148 Validation process, focusing on stakeholder needs (STR-*) rather than just requirements.\nValidation activities (VAL-*) are task‑based, contextual, and evidence‑driven, involving actual stakeholders or good proxies.\nThe main deliverable, DCP‑500C – Stakeholder Validation, documents:\n\nThe validation plan, activities, results, and acceptance decision.\n\nEven if all verification tests pass, validation can reveal missing, misunderstood, or evolving needs, which is valuable learning in itself.\n\n\n\n\n\n\n\nImportant\n\n\nIn the end, a system is successful not just because it passes all tests, but because its stakeholders say, “Yes, this is what we needed.”\n\n\n\n\nClose the loop for the course:\n\nIdea → Needs → Requirements → Design → Implementation → Verification → Validation → Handover.\n\nEncourage students: - Treat Stage 8 seriously; it is often the most memorable part for real stakeholders. - Use the feedback from validation to write a strong reflection in their final report (DCP‑600)."
+  },
+  {
+    "objectID": "cd_09.html#stage-9-project-finalization-handover",
+    "href": "cd_09.html#stage-9-project-finalization-handover",
+    "title": "Stage 9 – Project Finalization & Handover",
+    "section": "Stage 9 – Project Finalization & Handover",
+    "text": "Stage 9 – Project Finalization & Handover\nFrom “It Works” to “Someone Else Can Own It”\nCapstone Design – Stage 9 Focus Session\n\nThis deck is intended for an ECE capstone course session about Stage 9 – Project Finalization & Handover in the V‑Model.\nFocus today: - What does it mean to finish a project properly in an engineering sense? - How do ISO/IEC/IEEE 15288 & 29148 talk about Information Management and Transition? - What concrete artifacts do student teams need at Stage 9?\nAssume students have already seen earlier stages (1–8) and have at least a partially working prototype."
+  },
+  {
+    "objectID": "cd_09.html#learning-objectives-stage-9",
+    "href": "cd_09.html#learning-objectives-stage-9",
+    "title": "Stage 9 – Project Finalization & Handover",
+    "section": "Learning Objectives – Stage 9",
+    "text": "Learning Objectives – Stage 9\nBy the end of this session, you will be able to:\n\nExplain the purpose of Stage 9 – Project Finalization & Handover in the capstone V‑Model.\nDescribe the Information Management process (15288/29148) and its role in project closure.\nDescribe the Transition process (15288) and how it maps to handing off a student project.\nIdentify key Stage 9 deliverables: technical, documentation, and administrative.\nApply these ideas to ECE‑style projects (embedded, FPGA, networked systems, tools).\n\n\nMake clear that Stage 9 is not just “the demo” or “the final report”.\nIt’s about leaving the project in a state where: - Someone else can understand it. - It can be maintained, extended, or retired safely."
+  },
+  {
+    "objectID": "cd_09.html#vmodel-where-stage-9-fits",
+    "href": "cd_09.html#vmodel-where-stage-9-fits",
+    "title": "Stage 9 – Project Finalization & Handover",
+    "section": "V‑Model – Where Stage 9 Fits",
+    "text": "V‑Model – Where Stage 9 Fits\n\n\n\n\n\n\n\n\n\n\n\n\nStage 6–8: Build and prove the system works as required.\nStage 9: Close the loop:\n\nFinalize docs and artifacts.\nHand over to sponsor / department / next team.\nCapture what was learned.\n\n\n\nEmphasize: Many engineering failures in the real world are not in building, but in maintaining and operating systems after handover.\nCapstone projects simulate a miniature version of industry transition."
+  },
+  {
+    "objectID": "cd_09.html#stage-9-in-standards-context",
+    "href": "cd_09.html#stage-9-in-standards-context",
+    "title": "Stage 9 – Project Finalization & Handover",
+    "section": "Stage 9 in Standards Context",
+    "text": "Stage 9 in Standards Context\nTwo key processes from the standards relate strongly to Stage 9:\n\nInformation Management\n\nFrom ISO/IEC/IEEE 15288 & 29148.\nAbout creating, storing, organizing, and maintaining project information.\n\nTransition\n\nFrom ISO/IEC/IEEE 15288.\nAbout moving a system from development into its intended operational environment (or to a new owner).\n\n\nIn the capstone course, Stage 9 is where you:\n\nClose out Information Management: organize and package your project knowledge.\nExecute a scaled‑down Transition: demo, train, and hand off to sponsor, lab staff, or next year’s team.\n\n\n\n\n\n\n\nNote\n\n\nYour Stage 9 work is what decides whether your project is: - A one‑week demo, or - A system that someone could actually use or continue.\n\n\n\n\nClarify that we are adapting these processes to a student project scale. We don’t expect full corporate document control, but we want structured, reusable outputs."
+  },
+  {
+    "objectID": "cd_09.html#information-management-what-it-is",
+    "href": "cd_09.html#information-management-what-it-is",
+    "title": "Stage 9 – Project Finalization & Handover",
+    "section": "Information Management – What It Is",
+    "text": "Information Management – What It Is\nInformation Management (in 15288/29148 terms) is about:\n\nEnsuring the right information (requirements, design, code, tests, decisions) is:\n\nCreated when needed.\nStored in an appropriate place.\nOrganized and labeled so others can find it.\nMaintained and controlled (versions, change history).\n\n\nAt Stage 9, Information Management focuses on:\n\nConsolidating and finalizing all project information.\nMaking it accessible and understandable for:\n\nSponsors / lab staff.\nInstructors and reviewers.\nFuture student teams.\n\n\n\n\n\n\n\n\nTip\n\n\nThink of Information Management as building a library for your project: - Books = documents, code, CAD, configs. - Catalog = README, directory structure, links. - Librarian notes = what changed, what’s missing, what to be careful about.\n\n\n\n\nAsk students: - If you were the new maintainer of your project, what would you want to find? - Clear repo? - Setup instructions? - Architecture diagram? - Known bugs list?"
+  },
+  {
+    "objectID": "cd_09.html#information-management-key-activities-at-stage-9",
+    "href": "cd_09.html#information-management-key-activities-at-stage-9",
+    "title": "Stage 9 – Project Finalization & Handover",
+    "section": "Information Management – Key Activities at Stage 9",
+    "text": "Information Management – Key Activities at Stage 9\nTypical Stage 9 activities under the Information Management process:\n\nInventory Project Artifacts\n\nRequirements docs (DCP‑100A/B, DCP‑200).\nDesign docs (DCP‑300, any schematics, HDL block diagrams).\nSource code, HDL, scripts.\nTest plans, test results, validation evidence.\nUser docs and training material.\n\nOrganize and Clean Up\n\nEnforce a clear directory layout in the repo.\nRemove dead files and duplicates (or clearly mark them as legacy).\nAdd README files to explain each major folder and artifact.\n\nFinalize and Version Documents\n\nEnsure each major doc has:\n\nTitle, version, date, authors.\n“Final” or release status.\n\nExport PDFs where appropriate for long‑term reading.\n\nSummarize Decisions and Known Issues\n\nDocument key design decisions (and rationale).\nRecord known bugs, limitations, and technical debt.\n\nPackage for Handover\n\nBundle the repository or create a release (e.g., Git tag, zip archive).\nEnsure external dependencies (libraries, tools) are documented.\n\n\n\nEncourage teams to think of Information Management as reducing “tribal knowledge”: “it’s only in Alice’s head” should become “it’s in the docs/repo”."
+  },
+  {
+    "objectID": "cd_09.html#transition-what-it-is",
+    "href": "cd_09.html#transition-what-it-is",
+    "title": "Stage 9 – Project Finalization & Handover",
+    "section": "Transition – What It Is",
+    "text": "Transition – What It Is\nTransition (in 15288) is the process of:\n\nMoving a system from development into its intended operational environment.\nMaking sure that users, operators, and maintainers can actually use and support the system.\nVerifying that necessary documentation, training, and logistics are in place.\n\nIn capstone Stage 9, “Transition” usually means:\n\nHandover to:\n\nA sponsor (e.g., company, lab, research group), or\nThe ECE department (e.g., as a lab demo system), or\nA future student team continuing the work.\n\n\nIt includes:\n\nFinal demo and acceptance discussions.\nUser/operator instructions.\nTraining sessions or videos.\nAgreement on what will happen to the hardware, accounts, and data.\n\n\n\n\n\n\n\nNote\n\n\nTransition answers the question: &gt; “Now that we have a system, who owns it and knows how to use it?”\n\n\n\n\nHighlight that even if the system is “prototype only”, there is still a transition: - Perhaps to a research advisor, with clear statement that it is not production‑ready."
+  },
+  {
+    "objectID": "cd_09.html#transition-key-activities-at-stage-9",
+    "href": "cd_09.html#transition-key-activities-at-stage-9",
+    "title": "Stage 9 – Project Finalization & Handover",
+    "section": "Transition – Key Activities at Stage 9",
+    "text": "Transition – Key Activities at Stage 9\nTypical Stage 9 activities for the Transition process:\n\nDefine the Target Environment and Owner\n\nWho will own the system after the course?\nWhere will it be deployed (network, lab, server, etc.)?\n\nPrepare Operational Documentation\n\nQuick‑start guide for users (e.g., lab techs, students).\nAdmin/maintenance guide (e.g., how to restart, update, or reconfigure).\n\nConduct Final Demonstration and Walk‑Through\n\nShow that system meets agreed key requirements.\nWalk sponsor/owner through normal workflows.\n\nTraining / Knowledge Transfer\n\nRun a short training session (live or recorded).\nAnswer questions; update docs based on feedback.\n\nAgree on Post‑Project Plan\n\nWhat hardware stays where; what must be returned.\nWhat accounts/servers will remain active (and who manages them).\nHow bug reports or issues will be handled (if at all) after the course.\n\nObtain Acceptance or Closure Agreement\n\nA signoff email/form from sponsor or advisor stating:\n\nThey understand the status and limitations.\nThey accept the handover or define follow‑up actions.\n\n\n\n\nStress that in industry, Transition might involve months of formal cut‑over plans.\nIn capstone, it’s typically a compact but structured process in the last weeks of the term."
+  },
+  {
+    "objectID": "cd_09.html#stage-9-vs-earlier-stages",
+    "href": "cd_09.html#stage-9-vs-earlier-stages",
+    "title": "Stage 9 – Project Finalization & Handover",
+    "section": "Stage 9 vs Earlier Stages",
+    "text": "Stage 9 vs Earlier Stages\n\nStage 1–3: Decide what to build (mission, requirements).\nStage 4–5: Decide how to build and then build it (architecture, implementation).\nStage 6–8: Prove it works (verification & validation).\nStage 9: Ensure it can live beyond your team (documentation, training, formal handoff).\n\n\n\n\n\n\n\nTip\n\n\nA great Stage 9 output means: - Someone else can say “Oh, I see what this does, how to run it, and how to extend it.” - Your work doesn’t die when your team graduates.\n\n\n\n\nThis is also where teams practice professional behaviors: - Organizing project knowledge. - Communicating clearly with non‑student stakeholders. - Being honest about limitations."
+  },
+  {
+    "objectID": "cd_09.html#ece-example-1-smart-lab-sensor-network-handover",
+    "href": "cd_09.html#ece-example-1-smart-lab-sensor-network-handover",
+    "title": "Stage 9 – Project Finalization & Handover",
+    "section": "ECE Example 1 – Smart Lab Sensor Network Handover",
+    "text": "ECE Example 1 – Smart Lab Sensor Network Handover\nRecall the Smart Lab Sensor Network project from earlier stages.\nAt Stage 9, we focus on:\n\nInformation Management outputs:\n\nFinal DCP‑100A/B, DCP‑200, DCP‑300, and test reports.\nGit repository with firmware, gateway, backend, dashboard code.\nConfiguration files for labs and thresholds.\nBuild & deployment instructions.\n\nTransition outputs:\n\nQuick‑start guide for lab technicians:\n\nHow to log in to the dashboard.\nHow to interpret status colors.\nHow to acknowledge alerts.\n\nAdmin guide for lab manager/IT:\n\nHow to change thresholds.\nHow to restart services or update the server.\nWho to call if the VM is down.\n\nHandover meeting with lab manager and IT staff.\n\n\n\nUse this to tie back to earlier slides: Stage 9 builds directly on all prior artifacts.\nAlso note: for many capstone projects, Stage 9 is the most visible to sponsors."
+  },
+  {
+    "objectID": "cd_09.html#example-smart-lab-information-management-artifacts",
+    "href": "cd_09.html#example-smart-lab-information-management-artifacts",
+    "title": "Stage 9 – Project Finalization & Handover",
+    "section": "Example – Smart Lab: Information Management Artifacts",
+    "text": "Example – Smart Lab: Information Management Artifacts\nFor Smart Lab, a reasonable Stage 9 information package might include:\n\nRepository structure:\n\nsmart-lab-sensor-network/\n  README.md\n  docs/\n    DCP-100A-Mission-ConOps-vfinal.pdf\n    DCP-100B-StakeholderReqs-vfinal.pdf\n    DCP-200-SystemReqs-vfinal.pdf\n    DCP-300-ArchitectureDesign-vfinal.pdf\n    TestReport-Stage7-Validation-vfinal.pdf\n    UserGuide-LabTechnicians-v1.0.pdf\n    AdminGuide-LabManager-IT-v1.0.pdf\n  firmware/\n    sensor_node/\n    gateway/\n  backend/\n    src/\n    config/\n    db-migrations/\n  dashboard/\n    src/\n    build_instructions.md\n  deployment/\n    install_backend_on_linux.md\n    systemd-service-files/\n  known-issues.md\n  changelog.md\n\nKey items added in Stage 9:\n\nUserGuide-LabTechnicians-v1.0.pdf\nAdminGuide-LabManager-IT-v1.0.pdf\nknown-issues.md (limitations, bugs).\ndeployment/install_backend_on_linux.md.\n\n\n\n\n\n\n\n\nNote\n\n\nA well‑labeled repo is itself a deliverable under Information Management.\n\n\n\n\nWalk students through how this structure would feel from the perspective of a new maintainer.\nAsk: What else might you add? Issue templates? Sample configs?"
+  },
+  {
+    "objectID": "cd_09.html#example-smart-lab-transition-activities",
+    "href": "cd_09.html#example-smart-lab-transition-activities",
+    "title": "Stage 9 – Project Finalization & Handover",
+    "section": "Example – Smart Lab: Transition Activities",
+    "text": "Example – Smart Lab: Transition Activities\nStage 9 Transition steps for Smart Lab:\n\nIdentify owner & environment\n\nOwner: ECE Lab Manager and Lab Technicians.\nEnvironment: Department Linux VM + lab Wi‑Fi network.\n\nDeploy final version\n\nInstall backend and dashboard on the VM.\nConfigure systemd services for automatic start.\nConnect gateway and verify sensor data flow.\n\nFinal demo & walkthrough\n\nDemonstrate typical use cases:\n\nViewing lab statuses.\nResponding to an overheat alert.\n\nShow how to change thresholds.\n\nTraining & Q&A\n\n30–60 minute training session for techs and manager.\nProvide printed quick‑start sheet.\n\nHandover package\n\nSend a link to the Git repo and docs.\nProvide export/backup of current configuration.\n\nAcceptance and closure\n\nLab manager signs off that:\n\nThey understand the system and its limitations.\nThey accept the hardware (or note what must be removed).\n\n\n\n\nHighlight that Step 6 is also about honest communication: clarifying what is prototype‑quality vs production‑quality."
+  },
+  {
+    "objectID": "cd_09.html#ece-example-2-fpgabased-ecg-system-handover",
+    "href": "cd_09.html#ece-example-2-fpgabased-ecg-system-handover",
+    "title": "Stage 9 – Project Finalization & Handover",
+    "section": "ECE Example 2 – FPGA‑Based ECG System Handover",
+    "text": "ECE Example 2 – FPGA‑Based ECG System Handover\nProject: FPGA‑based real‑time ECG filter and feature detector (from earlier lectures).\nStage 9 Information Management:\n\nFinalized:\n\nHDL source and synthesis/project files (e.g., Vivado project).\nBlock diagrams for the filter and feature detection modules.\nTiming reports and resource utilization (docs or exported reports).\nTestbench files and simulation results.\nLab setup instructions (how to connect ECG simulator to FPGA board).\n\nDocument updates:\n\nShort Operator Guide for lab instructors:\n\nHow to load the bitstream.\nHow to connect the input and interpret LEDs/outputs.\n\nIntegration notes if the FPGA is part of a larger teaching lab.\n\n\nStage 9 Transition:\n\nDecide where the FPGA board will live (which lab, which cabinet).\nTrain at least one TA or lab instructor on usage.\nDocument any safety considerations (e.g., not using real human ECG yet).\nClarify that it is a teaching demo and not a medical product.\n\n\n\n\n\n\n\nWarning\n\n\nFor safety‑related ECE projects (e.g., ECG, medical, power systems), Transition must include explicit statements of limits and intended use.\n\n\n\n\nUse this to talk briefly about regulatory and ethical issues: Stage 9 should not misrepresent the maturity or safety of the system."
+  },
+  {
+    "objectID": "cd_09.html#ece-example-3-remote-instrument-lab-tool",
+    "href": "cd_09.html#ece-example-3-remote-instrument-lab-tool",
+    "title": "Stage 9 – Project Finalization & Handover",
+    "section": "ECE Example 3 – Remote Instrument Lab Tool",
+    "text": "ECE Example 3 – Remote Instrument Lab Tool\nProject: Remote Instrument Lab where students control lab instruments via web.\nStage 9 focus:\n\nInformation Management:\n\nDocument instrument control scripts (e.g., Python with VISA).\nSave configuration of the lab PC (OS, drivers, required libraries).\nDocument firewall rules, ports, and URLs.\nProvide a “reset script” to bring instruments back to a known state.\n\nTransition:\n\nTrain lab staff or TAs:\n\nHow to launch/stop the instrument control service.\nHow to troubleshoot common issues (instrument not found, port in use).\n\nProvide a small Student User Guide:\n\nHow to book a time slot.\nHow to access the web interface.\n\nDecide whether the system will be used in the next course offering.\n\n\n\nThis example shows that handover is not just for external sponsors— it is equally important when handing off to future students and instructors."
+  },
+  {
+    "objectID": "cd_09.html#stage-9-deliverables-what-you-owe",
+    "href": "cd_09.html#stage-9-deliverables-what-you-owe",
+    "title": "Stage 9 – Project Finalization & Handover",
+    "section": "Stage 9 Deliverables – What You Owe",
+    "text": "Stage 9 Deliverables – What You Owe\nFor this course (adapt/rename as needed), Stage 9 typically includes:\n\nFinal Technical Report & Documents\n\nFinal versions of DCP‑100A/B, DCP‑200, DCP‑300, and test/validation reports.\nUpdate with a short “As‑Built vs Planned” section noting major deviations.\n\nUser & Admin Documentation\n\nUser guide(s) for end‑users (students, technicians, operators).\nAdmin / maintenance guide for those who will run or modify the system.\n\nCode & Artifact Repository\n\nClean, organized code/HDL repo with README and build/run instructions.\nAny CAD/PCB files, schematics, and firmware images as appropriate.\n\nKnown Issues & Future Work Summary\n\nClear list of known bugs, limitations, and open tasks.\nRecommendations for future teams or maintainers.\n\nHandover Package\n\nList of all hardware handed over (with serial numbers, locations).\nLogin/account information (or procedures to get credentials) for servers and cloud accounts, respecting security policies.\nLinks to video demos or training sessions, if created.\n\nSponsor / Advisor Handover Meeting\n\nFinal demo and walkthrough.\nDiscussion of acceptance, next steps, and closure.\n\n\n\n\n\n\n\n\nImportant\n\n\nStage 9 is not only about grading. It’s about delivering a professional artifact that respects your stakeholders’ time and trust.\n\n\n\n\nAlign these with your actual course rubric or capstone handbook. Make explicit which items are required vs strongly recommended."
+  },
+  {
+    "objectID": "cd_09.html#information-management-practical-checklist",
+    "href": "cd_09.html#information-management-practical-checklist",
+    "title": "Stage 9 – Project Finalization & Handover",
+    "section": "Information Management – Practical Checklist",
+    "text": "Information Management – Practical Checklist\nBefore calling your project “done”, check:\n\nRepo has a clear top‑level README.md explaining purpose, structure, and how to get started.\nAll major documents are in a consistent place (e.g., docs/) with version numbers.\nBuild instructions are present and have been tested by someone other than the main author.\nConfiguration files (for servers, FPGA, instruments) are checked in or documented.\nTest results and validation evidence are saved and labeled.\nThere is a clear summary of known issues and limitations.\n\n\n\n\n\n\n\nTip\n\n\nHave one team member unfamiliar with part of the system try to follow the docs. If they get stuck, your Information Management is not finished.\n\n\n\n\nSuggest that teams schedule 1–2 dedicated “documentation sprints” in the last weeks, not just ad‑hoc last‑minute edits."
+  },
+  {
+    "objectID": "cd_09.html#transition-practical-checklist",
+    "href": "cd_09.html#transition-practical-checklist",
+    "title": "Stage 9 – Project Finalization & Handover",
+    "section": "Transition – Practical Checklist",
+    "text": "Transition – Practical Checklist\nBefore handover:\n\nYou know who the owner/sponsor is and have contact info.\nThere is an agreement on where the system will run (server, lab, PC).\nFinal demo is prepared, including backup/recorded demo if live demo fails.\nUser and admin guides are complete and shared.\nAt least one training session or walkthrough is scheduled and conducted.\nHardware inventory is documented and transferred (or returned).\nAny accounts or credentials are transferred using secure methods, not hard‑coded in git.\nThe sponsor/advisor understands the system’s status (prototype vs ready for limited use).\n\n\n\n\n\n\n\nWarning\n\n\nUnmanaged credentials (e.g., passwords in source files or on slides) are a security incident, not a professional handover.\n\n\n\n\nUse this to remind students about basic cybersecurity hygiene: Stage 9 is a common time for poor practices to show up (e.g., dumping keys in GitHub)."
+  },
+  {
+    "objectID": "cd_09.html#common-pitfalls-in-stage-9",
+    "href": "cd_09.html#common-pitfalls-in-stage-9",
+    "title": "Stage 9 – Project Finalization & Handover",
+    "section": "Common Pitfalls in Stage 9",
+    "text": "Common Pitfalls in Stage 9\n\n“We’ll document later” → never happens\n\nCode is left undocumented; later teams cannot reuse it.\n\nScattered information\n\nDocs in emails, random Google Drives, team laptops, not in the project repo.\n\nNo clear owner\n\nHardware ends up in a box; nobody knows who is responsible.\n\nUnrealistic claims\n\nSaying “production‑ready” when it is actually prototype quality.\n\nIgnoring licensing/permissions\n\nUsing proprietary tools or IP without clarifying usage rights in the handover.\n\n\n\n\n\n\n\n\nWarning\n\n\nA great demo with poor handover is a failed Stage 9. A modest demo with excellent handover can still be a successful project.\n\n\n\n\nReinforce that good Stage 9 work is visible in the long run: advisors and sponsors remember projects that were easy to reuse and extend."
+  },
+  {
+    "objectID": "cd_09.html#summary-stage-9-takeaways",
+    "href": "cd_09.html#summary-stage-9-takeaways",
+    "title": "Stage 9 – Project Finalization & Handover",
+    "section": "Summary – Stage 9 Takeaways",
+    "text": "Summary – Stage 9 Takeaways\n\nInformation Management (15288/29148)\n\nCreate, organize, and preserve the knowledge of your project.\nFinalize documents, code, and evidence into a coherent package.\n\nTransition (15288)\n\nMove the system from “student project” into an operational or maintainable state.\nPrepare users, operators, and future developers to take over.\n\nKey Outputs\n\nFinal technical & user documentation.\nClean, organized repository.\nHandover meeting, training, and explicit acceptance/closure.\n\nECE Examples\n\nSmart Lab Sensor Network → lab manager & techs.\nFPGA ECG system → lab instructors & TAs.\nRemote Instrument Lab → future course staff & students.\n\n\n\n\n\n\n\n\nImportant\n\n\nStage 9 is your chance to show you can think like a professional engineer, not just a student who can get something working once.\n\n\n\n\nEncourage students to treat Stage 9 as a portfolio item: well‑organized repos and clear handover docs are impressive to employers."
+  },
+  {
+    "objectID": "cd_09.html#next-steps-for-your-team",
+    "href": "cd_09.html#next-steps-for-your-team",
+    "title": "Stage 9 – Project Finalization & Handover",
+    "section": "Next Steps for Your Team",
+    "text": "Next Steps for Your Team\n\nPlan Your Stage 9 Work Early\n\nDon’t leave documentation and handover to the last week.\nAssign clear responsibilities:\n\n“Doc lead”, “Deployment lead”, “Training lead”.\n\n\nBuild Your Information Package\n\nStandardize your repo structure.\nFinalize key documents and export stable versions.\n\nDesign Your Transition\n\nIdentify who is taking over and what they need.\nPrepare user/admin guides and demo scripts.\n\nSchedule Handover Interactions\n\nBook time with sponsor/advisor for:\n\nFinal demo.\nTraining session.\nAcceptance discussion.\n\n\nReflect and Capture Lessons Learned\n\nWrite a short “lessons learned” section or doc:\n\nWhat went well, what didn’t, what you’d do differently.\n\n\n\n\n\n\n\n\n\nTip\n\n\nA strong Stage 9 deliverable leaves your project in a state where you would be proud to hand it to a future employer with your name on it.\n\n\n\n\nOptional assignment idea: - Each team produces a one‑page “handover summary” for public posting (e.g., on the department capstone showcase), plus the detailed internal package.\nThis reinforces communication skills and highlights good Stage 9 practices."
+  },
+  {
+    "objectID": "cd_05_markdown.html#writing-like-a-pro-with-github-flavored-markdown-mermaid-and-latex",
+    "href": "cd_05_markdown.html#writing-like-a-pro-with-github-flavored-markdown-mermaid-and-latex",
+    "title": "Writing Like a Pro with Markdown, Mermaid, and LaTeX",
+    "section": "Writing Like a Pro with GitHub Flavored Markdown, Mermaid, and LaTeX",
+    "text": "Writing Like a Pro with GitHub Flavored Markdown, Mermaid, and LaTeX\n\nThis deck teaches students three related skills they can use directly in GitHub and many other tools:\n\nGitHub Flavored Markdown (GFM) for documentation, READMEs, and reports.\nMermaid diagrams for architecture, flowcharts, and sequence diagrams directly in Markdown.\nLaTeX math in Markdown for equations and derivations.\n\nEmphasize that these are lightweight but powerful tools that integrate directly with GitHub, issues, PR descriptions, and documentation sites."
+  },
+  {
+    "objectID": "cd_05_markdown.html#learning-objectives",
+    "href": "cd_05_markdown.html#learning-objectives",
+    "title": "Writing Like a Pro with Markdown, Mermaid, and LaTeX",
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\nBy the end of this session, you will be able to:\n\nWrite clear documents using GitHub Flavored Markdown (GFM).\nCreate structured diagrams with Mermaid directly in Markdown.\nWrite mathematical equations using LaTeX syntax inside Markdown.\nCombine text, diagrams, and equations into rich technical documentation for ECE projects.\n\n\nHighlight that these skills apply across courses: lab reports, design docs, README files, documentation for firmware, HDL, simulations, etc."
+  },
+  {
+    "objectID": "cd_05_markdown.html#big-picture-why-these-tools-matter",
+    "href": "cd_05_markdown.html#big-picture-why-these-tools-matter",
+    "title": "Writing Like a Pro with Markdown, Mermaid, and LaTeX",
+    "section": "Big Picture: Why These Tools Matter",
+    "text": "Big Picture: Why These Tools Matter\n\n\n\nMost engineering collaboration happens in:\n\nGitHub READMEs and wikis.\nIssues and pull requests.\nDocumentation repos (e.g., MkDocs, Quarto, Docusaurus).\n\nGFM + Mermaid + LaTeX let you:\n\nExplain algorithms and protocols.\nShow system architectures.\nDerive and present equations.\n\nAll using plain text files in your repo.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExplain that these formats are:\n\nVersion-controllable.\nCode-reviewable.\nRendered nicely on GitHub and in many documentation tools.\n\nNo need for heavy Word/PowerPoint docs for many technical artifacts."
+  },
+  {
+    "objectID": "cd_05_markdown.html#part-1-github-flavored-markdown-gfm-overview",
+    "href": "cd_05_markdown.html#part-1-github-flavored-markdown-gfm-overview",
+    "title": "Writing Like a Pro with Markdown, Mermaid, and LaTeX",
+    "section": "Part 1: GitHub Flavored Markdown (GFM) – Overview",
+    "text": "Part 1: GitHub Flavored Markdown (GFM) – Overview\nGitHub Flavored Markdown extends basic Markdown with extra features:\n\nHeadings, lists, emphasis, code blocks.\nTables, task lists, and fenced code blocks with syntax highlighting.\nInline HTML (in some cases).\n\nYou can use GFM in:\n\nREADME.md, CONTRIBUTING.md, LABx.md.\nIssues and PR descriptions.\nWiki pages.\n\n\n\n\n\n\n\nNote\n\n\nMarkdown is plain text → easy to diff, review, and version using Git.\n\n\n\n\nMention that GFM is the “dialect” GitHub uses.\nStudents may have seen Markdown in other tools (e.g., Slack, Discord, Jupyter) – many concepts carry over."
+  },
+  {
+    "objectID": "cd_05_markdown.html#gfm-basics-headings-and-paragraphs",
+    "href": "cd_05_markdown.html#gfm-basics-headings-and-paragraphs",
+    "title": "Writing Like a Pro with Markdown, Mermaid, and LaTeX",
+    "section": "GFM Basics: Headings and Paragraphs",
+    "text": "GFM Basics: Headings and Paragraphs\nUse # for headings:\n## Section Heading\n\n### Subsection Heading\nRendered result:"
+  },
+  {
+    "objectID": "cd_05_markdown.html#section-heading",
+    "href": "cd_05_markdown.html#section-heading",
+    "title": "Writing Like a Pro with Markdown, Mermaid, and LaTeX",
+    "section": "Section Heading",
+    "text": "Section Heading\nSubsection Heading\nParagraphs:\n\nSeparate paragraphs with a blank line.\nNo special marker needed.\n\nThis is a paragraph describing the project.\n\nThis is another paragraph with more detail.\n\nEncourage descriptive headings: “Signal Acquisition Pipeline” instead of “Section 1.”\nHeadings make documents scannable and auto-generate tables of contents in some tools."
+  },
+  {
+    "objectID": "cd_05_markdown.html#gfm-basics-emphasis-and-line-breaks",
+    "href": "cd_05_markdown.html#gfm-basics-emphasis-and-line-breaks",
+    "title": "Writing Like a Pro with Markdown, Mermaid, and LaTeX",
+    "section": "GFM Basics: Emphasis and Line Breaks",
+    "text": "GFM Basics: Emphasis and Line Breaks\nUse * or _ for emphasis:\nThis word is *italic*.\n\nThis is **bold**.\n\nYou can combine ***bold and italic***.\nRendered:\nThis word is italic. This is bold. You can combine bold and italic.\nLine breaks:\n\nOne line in Markdown usually wraps automatically.\nTo force a line break without a new paragraph, end the line with two spaces.\n\nLine one with a forced break.\nLine two appears directly below.\n\nExplain that for GitHub specifically, two spaces at end of line → &lt;br&gt; break.\nGood for addresses, list items with multiple lines, or poetry; but don’t overuse."
+  },
+  {
+    "objectID": "cd_05_markdown.html#gfm-lists-bulleted-and-numbered",
+    "href": "cd_05_markdown.html#gfm-lists-bulleted-and-numbered",
+    "title": "Writing Like a Pro with Markdown, Mermaid, and LaTeX",
+    "section": "GFM Lists: Bulleted and Numbered",
+    "text": "GFM Lists: Bulleted and Numbered\n\n\nBulleted list:\n- First item\n- Second item\n  - Nested item\n- Third item\n\nRendered:\n\nFirst item\nSecond item\n\nNested item\n\nThird item\n\n\n\n\nNumbered list:\n1. Step one\n2. Step two\n3. Step three\n\n\nStep one\nStep two\nStep three\n\n\n\nMention that numbering can be auto-generated (you can write 1. for every item and GitHub will number them).\nNested lists are useful for substeps or comments."
+  },
+  {
+    "objectID": "cd_05_markdown.html#gfm-code-inline-and-blocks",
+    "href": "cd_05_markdown.html#gfm-code-inline-and-blocks",
+    "title": "Writing Like a Pro with Markdown, Mermaid, and LaTeX",
+    "section": "GFM Code: Inline and Blocks",
+    "text": "GFM Code: Inline and Blocks\nUse backticks for inline code:\nUse the `adc_read()` function to sample the signal.\nUse triple backticks for code blocks (optionally with language):\n```c\nuint16_t sample = adc_read();\nprocess_sample(sample);\n```\nRendered:\nuint16_t sample = adc_read();\nprocess_sample(sample);\n\n\n\n\n\n\nTip\n\n\nAlways specify the language (e.g., c, python, verilog) for syntax highlighting.\n\n\n\n\nHighlight that inline code is great for function names, file paths, CLI commands, etc.\nCode blocks are crucial in documentation of APIs, setup instructions, and lab guides."
+  },
+  {
+    "objectID": "cd_05_markdown.html#gfm-tables",
+    "href": "cd_05_markdown.html#gfm-tables",
+    "title": "Writing Like a Pro with Markdown, Mermaid, and LaTeX",
+    "section": "GFM Tables",
+    "text": "GFM Tables\nTables in GFM are ASCII-based:\n| Signal | Type   | Description             |\n|--------|--------|-------------------------|\n| VIN    | Analog | Input voltage (0–3.3 V) |\n| VOUT   | Analog | Filtered output         |\n| CLK    | Digital| System clock input      |\nRendered:\n\n\n\nSignal\nType\nDescription\n\n\n\n\nVIN\nAnalog\nInput voltage (0–3.3 V)\n\n\nVOUT\nAnalog\nFiltered output\n\n\nCLK\nDigital\nSystem clock input\n\n\n\nYou can align columns using colons:\n| Name  | Value |\n|:------|------:|\n| R1    | 10 kΩ |\n| C1    | 0.1 µF|\n\nTables are extremely useful for pinouts, parameter lists, test cases, etc.\nWarn that tables are somewhat tedious by hand; tools exist to help generate them, but practice helps."
+  },
+  {
+    "objectID": "cd_05_markdown.html#gfm-task-lists-and-links",
+    "href": "cd_05_markdown.html#gfm-task-lists-and-links",
+    "title": "Writing Like a Pro with Markdown, Mermaid, and LaTeX",
+    "section": "GFM Task Lists and Links",
+    "text": "GFM Task Lists and Links\nTask lists (often used in issues and PRs):\n- [ ] Implement ADC driver\n- [x] Write unit tests\n- [ ] Update documentation\nRendered as checkboxes on GitHub.\n\nImplement ADC driver\nWrite unit tests\nUpdate documentation\n\nLinks:\n[GitHub](https://github.com/)\n\n[Lab 3 Instructions](./LAB3.md)\nRendered:\nGitHub\nLab 3 Instructions\n\n\n\n\n\n\nNote\n\n\nTask lists are great for TODOs in issues or project boards.\n\n\n\n\nPoint out that relative links like ./LAB3.md work within the repo, and make navigable documentation."
+  },
+  {
+    "objectID": "cd_05_markdown.html#gfm-image-embeds",
+    "href": "cd_05_markdown.html#gfm-image-embeds",
+    "title": "Writing Like a Pro with Markdown, Mermaid, and LaTeX",
+    "section": "GFM Image Embeds",
+    "text": "GFM Image Embeds\nYou can embed images directly:\n![Block diagram of the system](./images/unsoed_logo.png)\nRendered:\n\n\n\nExample: logo Unsoed\n\n\n(Your actual image would appear here.)\nTips:\n\nKeep images in a folder like images/ or docs/img/.\nUse meaningful alt text: describes the image content.\n\n\nIn ECE projects, images may include oscilloscope screenshots, PCB layouts, or block diagrams exported from tools.\nAlso mention that some diagram types can be done as text via Mermaid, which we’ll cover next."
+  },
+  {
+    "objectID": "cd_05_markdown.html#gfm-example-mini-readme",
+    "href": "cd_05_markdown.html#gfm-example-mini-readme",
+    "title": "Writing Like a Pro with Markdown, Mermaid, and LaTeX",
+    "section": "GFM Example: Mini README",
+    "text": "GFM Example: Mini README\n# FFT-Based Spectrum Analyzer\n\nThis project implements a real-time spectrum analyzer on an embedded board.\n\n## Features\n\n- 12-bit ADC sampling at 20 kHz\n- 1024-point FFT using CMSIS-DSP\n- UART output for spectrum data\n\n## Usage\n\n1. Flash the firmware to the board.\n2. Open a serial terminal at `115200` baud.\n3. Observe frequency peaks as you vary the input signal.\n\n## TODO\n\n- [ ] Add windowing options\n- [x] Implement basic FFT\n- [ ] Document serial protocol\n\nWalk through this example: headings, lists, code, and task list all in one.\nEncourage students to create such a README for each of their labs or projects."
+  },
+  {
+    "objectID": "cd_05_markdown.html#part-2-mermaid-diagrams-overview",
+    "href": "cd_05_markdown.html#part-2-mermaid-diagrams-overview",
+    "title": "Writing Like a Pro with Markdown, Mermaid, and LaTeX",
+    "section": "Part 2: Mermaid Diagrams – Overview",
+    "text": "Part 2: Mermaid Diagrams – Overview\nMermaid lets you describe diagrams as text blocks in Markdown.\nGitHub supports Mermaid in:\n\nMarkdown files (.md).\nGitHub Wiki pages.\nSome other contexts.\n\nCommon diagram types:\n\nFlowcharts.\nSequence diagrams.\nClass / entity-relationship diagrams.\nState diagrams, Gantt charts, etc.\n\n\n\n\n\n\n\nImportant\n\n\nMermaid diagrams live in your repo as code, so they can be versioned, reviewed, and edited like any other file.\n\n\n\n\nExplain that Mermaid reduces friction: no need for external drawing tools and exported images for many diagrams.\nThis is very useful for system architecture, dataflow, and protocol sequence diagrams."
+  },
+  {
+    "objectID": "cd_05_markdown.html#mermaid-basics-flowchart-syntax",
+    "href": "cd_05_markdown.html#mermaid-basics-flowchart-syntax",
+    "title": "Writing Like a Pro with Markdown, Mermaid, and LaTeX",
+    "section": "Mermaid Basics: Flowchart Syntax",
+    "text": "Mermaid Basics: Flowchart Syntax\nBasic pattern in GitHub Markdown:\n```mermaid\nflowchart LR\n  A[Start] --&gt; B[Process]\n  B --&gt; C{Decision?}\n  C --&gt;|Yes| D[Branch 1]\n  C --&gt;|No|  E[Branch 2]\n```\nRendered (conceptually):\n\n\n\n\n\n\n\n\n\n\n\nKey elements:\n\nflowchart LR → left-to-right flowchart.\nNodes: A[...], B(...), C{...} etc.\nEdges: A --&gt; B, optionally with labels: C --&gt;|Yes| D.\n\n\nExplain briefly node shapes:\n\n[...] = rectangular.\n( ) = rounded.\n{ } = decision / diamond.\n\nMermaid renders these automatically."
+  },
+  {
+    "objectID": "cd_05_markdown.html#mermaid-flowchart-ece-example",
+    "href": "cd_05_markdown.html#mermaid-flowchart-ece-example",
+    "title": "Writing Like a Pro with Markdown, Mermaid, and LaTeX",
+    "section": "Mermaid Flowchart: ECE Example",
+    "text": "Mermaid Flowchart: ECE Example\nADC sampling + DSP + UART pipeline:\n```mermaid\nflowchart LR\n  IN[Analog Input] --&gt; ADC[ADC Sampling]\n  ADC --&gt; DSP[Digital Signal Processing]\n  DSP --&gt; UART[UART Formatter]\n  UART --&gt; PC[PC Visualization]\n```\nRendered:\n\n\n\n\n\n\n\n\n\n\n\nUse this in:\n\nREADME to show system overview.\nDesign document to explain data flow.\n\n\nPoint out that updating the pipeline (adding, say, a filter stage) is as simple as editing text.\nNo need to open drawing software."
+  },
+  {
+    "objectID": "cd_05_markdown.html#part-3-latex-equations-in-markdown-overview",
+    "href": "cd_05_markdown.html#part-3-latex-equations-in-markdown-overview",
+    "title": "Writing Like a Pro with Markdown, Mermaid, and LaTeX",
+    "section": "Part 3: LaTeX Equations in Markdown – Overview",
+    "text": "Part 3: LaTeX Equations in Markdown – Overview\nFor math, many Markdown renderers (including Quarto and some GitHub contexts) support LaTeX syntax:\n\nInline math: $ ... $\nDisplay (block) math: $$ ... $$\n\nExamples work in:\n\nQuarto documents and slides.\nMany static site generators.\nSome GitHub tools (GitHub itself has limited direct LaTeX support, but GitHub Pages with MathJax, Quarto, etc., can render it).\n\n\n\n\n\n\n\nWarning\n\n\nGitHub’s native Markdown does not render LaTeX as math in all views by default. However, Quarto, Jupyter, and many documentation setups built on GitHub do.\n\n\n\n\nClarify this nuance: in this course, they’ll often view LaTeX-rendered math through Quarto, Jupyter, or other tools that support it.\nThe syntax is still standard LaTeX math mode."
+  },
+  {
+    "objectID": "cd_05_markdown.html#inline-vs-display-math",
+    "href": "cd_05_markdown.html#inline-vs-display-math",
+    "title": "Writing Like a Pro with Markdown, Mermaid, and LaTeX",
+    "section": "Inline vs Display Math",
+    "text": "Inline vs Display Math\nInline math:\nThe sampling frequency is $f_s = 20\\,\\text{kHz}$ in this design.\nRendered:\nThe sampling frequency is \\(f_s = 20\\,\\text{kHz}\\) in this design.\nDisplay math:\nThe discrete-time Fourier transform (DTFT) is given by\n\n$$\nX(e^{j\\omega}) = \\sum_{n=-\\infty}^{\\infty} x[n] e^{-j \\omega n}\n$$\nRendered:\nThe discrete-time Fourier transform (DTFT) is given by\n\\[\nX(e^{j\\omega}) = \\sum_{n=-\\infty}^{\\infty} x[n] e^{-j \\omega n}\n\\]\n\nExplain that inline math flows with text; display math is centered and on its own line, making it easier to read for larger expressions."
+  },
+  {
+    "objectID": "cd_05_markdown.html#common-latex-symbols-and-expressions",
+    "href": "cd_05_markdown.html#common-latex-symbols-and-expressions",
+    "title": "Writing Like a Pro with Markdown, Mermaid, and LaTeX",
+    "section": "Common LaTeX Symbols and Expressions",
+    "text": "Common LaTeX Symbols and Expressions\nSome useful patterns:\n- Greek letters: $\\alpha$, $\\beta$, $\\omega$, $\\Omega$, $\\phi$\n- Subscripts: $x[n]$, $y_k$, $V_{\\text{in}}$\n- Superscripts: $e^{j\\omega}$, $x^2$\n- Fractions: $\\frac{1}{2}$, $\\frac{V_{\\text{out}}}{V_{\\text{in}}}$\n- Square roots: $\\sqrt{2}$, $\\sqrt{1 - \\alpha^2}$\n- Sums and integrals: $\\sum_{n=0}^{N-1} x[n]$, $\\int_0^T v(t)\\,dt$\nRendered examples:\n\nGreek letters: \\(\\alpha\\), \\(\\beta\\), \\(\\omega\\), \\(\\Omega\\), \\(\\phi\\)\nSubscripts: \\(x[n]\\), \\(y_k\\), \\(V_{\\text{in}}\\)\nSuperscripts: \\(e^{j\\omega}\\), \\(x^2\\)\nFractions: \\(\\frac{1}{2}\\), \\(\\frac{V_{\\text{out}}}{V_{\\text{in}}}\\)\nSquare roots: \\(\\sqrt{2}\\), \\(\\sqrt{1 - \\alpha^2}\\)\nSums and integrals: \\(\\sum_{n=0}^{N-1} x[n]\\), \\(\\int_0^T v(t)\\,dt\\)\n\n\nEncourage students to keep a cheat sheet of commonly used LaTeX commands; they will quickly memorize the ones they use frequently."
+  },
+  {
+    "objectID": "cd_05_markdown.html#ece-example-discrete-time-filter",
+    "href": "cd_05_markdown.html#ece-example-discrete-time-filter",
+    "title": "Writing Like a Pro with Markdown, Mermaid, and LaTeX",
+    "section": "ECE Example: Discrete-Time Filter",
+    "text": "ECE Example: Discrete-Time Filter\nA first-order IIR low-pass filter can be written as\n\n$$\ny[n] = (1 - \\alpha)\\,x[n] + \\alpha\\,y[n-1],\n$$\n\nwhere $\\alpha \\in [0,1]$ controls the smoothing.\nRendered:\nA first-order IIR low-pass filter can be written as\n\\[\ny[n] = (1 - \\alpha)\\,x[n] + \\alpha\\,y[n-1],\n\\]\nwhere \\(\\alpha \\in [0,1]\\) controls the smoothing.\n\nUse this to show how to properly space and align terms.\nNote the use of \\, for a small space and \\in for “is in.”"
+  },
+  {
+    "objectID": "cd_05_markdown.html#systems-example-transfer-function",
+    "href": "cd_05_markdown.html#systems-example-transfer-function",
+    "title": "Writing Like a Pro with Markdown, Mermaid, and LaTeX",
+    "section": "Systems Example: Transfer Function",
+    "text": "Systems Example: Transfer Function\nThe transfer function of a simple RC low-pass filter is\n\n$$\nH(j\\omega) = \\frac{1}{1 + j \\omega R C}.\n$$\n\nThe magnitude response is\n\n$$\n|H(j\\omega)| = \\frac{1}{\\sqrt{1 + (\\omega R C)^2}}.\n$$\nRendered:\nThe transfer function of a simple RC low-pass filter is\n\\[\nH(j\\omega) = \\frac{1}{1 + j \\omega R C}.\n\\]\nThe magnitude response is\n\\[\n|H(j\\omega)| = \\frac{1}{\\sqrt{1 + (\\omega R C)^2}}.\n\\]\n\nHighlight how LaTeX keeps formulas readable and avoids ambiguity that plain text may introduce.\nThese examples are directly relevant to signals/systems and circuits courses."
+  },
+  {
+    "objectID": "cd_05_markdown.html#matrices-and-vectors",
+    "href": "cd_05_markdown.html#matrices-and-vectors",
+    "title": "Writing Like a Pro with Markdown, Mermaid, and LaTeX",
+    "section": "Matrices and Vectors",
+    "text": "Matrices and Vectors\nThe state vector is\n\n$$\n\\mathbf{x} =\n\\begin{bmatrix}\nx_1 \\\\\nx_2 \\\\\nx_3\n\\end{bmatrix}.\n$$\n\nThe state-space model is\n\n$$\n\\dot{\\mathbf{x}} = A \\mathbf{x} + B \\mathbf{u}, \\quad\n\\mathbf{y} = C \\mathbf{x} + D \\mathbf{u}.\n$$\nRendered:\nThe state vector is\n\\[\n\\mathbf{x} =\n\\begin{bmatrix}\nx_1 \\\\\nx_2 \\\\\nx_3\n\\end{bmatrix}.\n\\]\nThe state-space model is\n\\[\n\\dot{\\mathbf{x}} = A \\mathbf{x} + B \\mathbf{u}, \\quad\n\\mathbf{y} = C \\mathbf{x} + D \\mathbf{u}.\n\\]\n\nThis shows how to handle vectors, matrices, and multiple equations with alignment (using \\quad for spacing).\nImportant in control systems and linear algebra-heavy ECE topics."
+  },
+  {
+    "objectID": "cd_05_markdown.html#combining-gfm-mermaid-and-latex",
+    "href": "cd_05_markdown.html#combining-gfm-mermaid-and-latex",
+    "title": "Writing Like a Pro with Markdown, Mermaid, and LaTeX",
+    "section": "Combining GFM, Mermaid, and LaTeX",
+    "text": "Combining GFM, Mermaid, and LaTeX\nYou can mix all three in one Markdown document or Quarto doc:\n# Digital Filter Module\n\nWe implement a FIR filter with impulse response\n\n$$\nh[n] = \\begin{cases}\n\\frac{1}{M}, & 0 \\le n &lt; M \\\\\n0,           & \\text{otherwise}\n\\end{cases}\n$$\n\n## Data Flow\n\n```mermaid\nflowchart LR\n  X[\"Input x[n]\"] --&gt; FIR[\"FIR Filter h[n]\"]\n  FIR --&gt; Y[\"Output y[n]\"]\n```\n\n## Test Procedure\n\n1. Generate a sine wave input using `test_signal.py`.\n2. Capture output samples and compute the FFT.\n3. Verify that the passband gain is approximately $1$ and stopband is low.\n\nThis slide demonstrates “rich documentation”: explanation, math, diagram, and steps all together.\nEncourage students to structure design docs in a similar way."
+  },
+  {
+    "objectID": "cd_05_markdown.html#example-embedded-system-overview-document",
+    "href": "cd_05_markdown.html#example-embedded-system-overview-document",
+    "title": "Writing Like a Pro with Markdown, Mermaid, and LaTeX",
+    "section": "Example: Embedded System Overview Document",
+    "text": "Example: Embedded System Overview Document\n\n\n# Temperature Monitoring System\n\n## System Overview\n\n```mermaid\nflowchart LR\n  Sensor[Temp Sensor] --&gt; MCU[Microcontroller]\n  MCU --&gt; Display[7-Segment Display]\n  MCU --&gt; Logger[UART Logger]\n```\n\n## Sensor Model\n\nThe sensor output voltage is\n\n$$\nV_{\\text{out}} = S \\cdot T + V_{\\text{offset}},\n$$\n\nwhere $S$ is sensitivity (V/°C), and $T$ is temperature in °C.\n\n## TODO\n\n- [ ] Calibrate sensor at 0°C and 100°C\n- [ ] Implement UART logging protocol\n- [x] Basic display driver\n\n\nUses GFM for structure, lists, and TODOs.\nUses Mermaid for block diagram.\nUses LaTeX for sensor equation.\nEntire doc lives in docs/temperature-system.md in the repo.\n\n\n\nPoint out how much information and structure you can capture in one small text file.\nStudents can attach such docs to their PRs when adding new subsystems."
+  },
+  {
+    "objectID": "cd_05_markdown.html#practice-guide-what-you-should-try-next",
+    "href": "cd_05_markdown.html#practice-guide-what-you-should-try-next",
+    "title": "Writing Like a Pro with Markdown, Mermaid, and LaTeX",
+    "section": "Practice Guide: What You Should Try Next",
+    "text": "Practice Guide: What You Should Try Next\nTo solidify these skills, create a new Markdown file in a repo:\n\nGFM Practice\n\nWrite a mini-README with headings, lists, code blocks, and a table.\n\nMermaid Practice\n\nAdd a flowchart of a system (e.g., sensor → MCU → actuator).\nAdd a small sequence diagram for a communication protocol.\n\nLaTeX Practice\n\nInclude at least two inline equations and two display equations.\nOne should be an ECE-relevant formula (e.g., filter equation, Ohm’s law, transfer function).\n\n\n\n\n\n\n\n\nTip\n\n\nStart small. You don’t need perfect diagrams or equations at first. Iterate as you would with code.\n\n\n\n\nEncourage them to push this practice file to GitHub and view it in the browser to see how it renders.\nIf using Quarto or Jupyter, render locally to verify LaTeX equations and Mermaid."
+  },
+  {
+    "objectID": "cd_05_markdown.html#summary-key-points",
+    "href": "cd_05_markdown.html#summary-key-points",
+    "title": "Writing Like a Pro with Markdown, Mermaid, and LaTeX",
+    "section": "Summary / Key Points",
+    "text": "Summary / Key Points\n\nGitHub Flavored Markdown (GFM):\n\nUse headings, lists, code blocks, tables, task lists, links, and images.\nIdeal for READMEs, lab guides, and design docs.\n\nMermaid Diagrams:\n\nWrite diagrams as text (flowcharts, sequence diagrams, class diagrams).\nPerfect for showing data flow, protocols, and architecture.\n\nLaTeX in Markdown:\n\nUse $...$ for inline and $$...$$ for display math.\nPresent equations, derivations, and models clearly.\n\nCombining all three gives you powerful, maintainable, version-controlled documentation for ECE projects.\n\n\nClose by emphasizing that good documentation is a core engineering skill, not an optional add-on.\nThese tools make documentation efficient and closely integrated with code, improving team communication and project quality."
+  },
+  {
+    "objectID": "cd_05_github.html#collaborative-workflow-for-ece-software-projects",
+    "href": "cd_05_github.html#collaborative-workflow-for-ece-software-projects",
+    "title": "Working in Team: From Basic to Professional GitHub",
+    "section": "Collaborative Workflow for ECE Software Projects",
+    "text": "Collaborative Workflow for ECE Software Projects\n\nThis deck is designed to walk students from “I can push to GitHub” to “I can work like an engineer using pull requests and reviews.”\nEmphasize that they probably already know some basics, but the goal is professional habits: branches, PRs, reviews, and protected main."
+  },
+  {
+    "objectID": "cd_05_github.html#learning-objectives",
+    "href": "cd_05_github.html#learning-objectives",
+    "title": "Working in Team: From Basic to Professional GitHub",
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\nBy the end of this session, you will be able to:\n\nSet up and configure your GitHub account and local tools.\nClone a team repository and work locally using VS Code.\nCommit and push changes so your team can see your work.\nExplain why professional teams use branches, pull requests, and protected main.\nCreate a feature branch, open a Pull Request (PR), review code, and handle merge conflicts.\n\n\nRead the objectives, but focus especially on the last two: this is where we move from “student GitHub” to “professional GitHub.”\nTie back to ECE context: firmware repos, FPGA projects, data-processing pipelines all use these same workflows."
+  },
+  {
+    "objectID": "cd_05_github.html#big-picture-how-teams-use-github",
+    "href": "cd_05_github.html#big-picture-how-teams-use-github",
+    "title": "Working in Team: From Basic to Professional GitHub",
+    "section": "Big Picture: How Teams Use GitHub",
+    "text": "Big Picture: How Teams Use GitHub\n\n\n\nGitHub is more than file storage; it’s a collaboration platform.\nYour team works in a shared Organization with a shared repository.\nEach of you:\n\nWorks on your local copy.\nSends changes back to the remote repo.\nUses pull requests to get code reviewed before it reaches main.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHighlight the “remote repo ↔︎ local clone” idea and the flow into PRs and then into main.\nMention that this diagram is exactly what professional ECE/embedded teams use for firmware, HDL, signal processing libraries, etc."
+  },
+  {
+    "objectID": "cd_05_github.html#setting-up-your-github-account",
+    "href": "cd_05_github.html#setting-up-your-github-account",
+    "title": "Working in Team: From Basic to Professional GitHub",
+    "section": "1. Setting Up Your GitHub Account",
+    "text": "1. Setting Up Your GitHub Account\nBefore writing code, you need a GitHub identity.\n\nGo to https://github.com and click Sign up.\nUse your student email address if possible:\n\nMay unlock the GitHub Student Developer Pack (free tools and credits).\n\nVerify your email.\nTurn on Two-Factor Authentication (2FA) for security.\nAction: Share your GitHub username with your instructor.\n\n\n\n\n\n\n\nImportant\n\n\nWhy 2FA matters for engineers\nLosing access to your GitHub is like losing access to your lab notebook, code, and design files at once. 2FA is required in many companies and research labs.\n\n\n\n\nMention that many organizations now require 2FA to even be added as a collaborator.\nIf time allows, quickly show where to enable 2FA in GitHub settings."
+  },
+  {
+    "objectID": "cd_05_github.html#installing-your-toolkit",
+    "href": "cd_05_github.html#installing-your-toolkit",
+    "title": "Working in Team: From Basic to Professional GitHub",
+    "section": "2. Installing Your Toolkit",
+    "text": "2. Installing Your Toolkit\nTo work efficiently, install these three tools:\n\n\n\n\n\n\n\nTool\nPurpose\n\n\n\n\nGit\nVersion control engine tracking changes to your code.\n\n\nGitHub Desktop\nGUI to manage repositories without the command line.\n\n\nVS Code\nEditor/IDE where you write and edit code.\n\n\n\n\nDownload Git: https://git-scm.com/ (accept defaults).\nDownload GitHub Desktop: https://desktop.github.com/.\nDownload VS Code: https://code.visualstudio.com/.\n\n\nClarify:\n\nGit is the underlying tool.\nGitHub is a hosting service on top of Git.\nGitHub Desktop uses Git under the hood but is friendlier when you are starting.\n\nECE angle: Same tools are used for C/C++, Python, Verilog, MATLAB scripts (via plugins), etc."
+  },
+  {
+    "objectID": "cd_05_github.html#getting-into-the-organization-and-team-repo",
+    "href": "cd_05_github.html#getting-into-the-organization-and-team-repo",
+    "title": "Working in Team: From Basic to Professional GitHub",
+    "section": "3. Getting Into the Organization and Team Repo",
+    "text": "3. Getting Into the Organization and Team Repo\nOnce your instructor adds you to the GitHub Organization:\n\nAccept the email / in‑GitHub invitation.\nGo to the Organization’s main page.\nFind your team repository, e.g., Team-A-Project.\nClick the green Code button.\nSelect Open with GitHub Desktop.\n\n\n\n\n\n\n\nTip\n\n\nIf “Open with GitHub Desktop” doesn’t appear, first install GitHub Desktop and sign in with the same GitHub account.\n\n\n\n\nExplain what an “Organization” is on GitHub: a container for multiple repos, access control, teams.\nRelate it to a company’s engineering org or a research lab’s shared GitHub."
+  },
+  {
+    "objectID": "cd_05_github.html#cloning-getting-a-local-copy",
+    "href": "cd_05_github.html#cloning-getting-a-local-copy",
+    "title": "Working in Team: From Basic to Professional GitHub",
+    "section": "4. Cloning: Getting a Local Copy",
+    "text": "4. Cloning: Getting a Local Copy\nWhen you “Open with GitHub Desktop,” it will ask: Where should I save this?\n\nThis process is called cloning.\nChoose a folder you’ll remember, e.g., Documents/GitHub/Team-A-Project.\nClick Clone.\n\n\n\nConceptual View\n\nRemote repository: lives on GitHub servers.\nLocal clone: full copy on your laptop.\nYou always edit the local copy, then sync with the remote.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nStress: never treat GitHub as a Google Docs editor for code. Edit locally in a proper editor.\nMention that cloning includes full history, not just latest files."
+  },
+  {
+    "objectID": "cd_05_github.html#opening-the-project-in-vs-code",
+    "href": "cd_05_github.html#opening-the-project-in-vs-code",
+    "title": "Working in Team: From Basic to Professional GitHub",
+    "section": "5. Opening the Project in VS Code",
+    "text": "5. Opening the Project in VS Code\nWith the repo cloned:\n\nIn GitHub Desktop, select your repository.\nClick Open in Visual Studio Code.\nVS Code opens directly in the project folder.\n\nInside VS Code:\n\nLeft sidebar shows Explorer with project files.\nClick a file to open it.\nCreate new files as needed (e.g., index.html, script.js, main.c, filter.py).\nSave frequently: Ctrl+S (Windows/Linux) or Cmd+S (macOS).\n\n\n\n\n\n\n\nWarning\n\n\nGit only tracks saved changes. If you forget to save, your work is not in the next commit.\n\n\n\n\nDemonstrate making a trivial change: add a comment line in a file and hit save.\nECE example: show a simple C file with a comment // TODO: read ADC value."
+  },
+  {
+    "objectID": "cd_05_github.html#local-changes-commit-push",
+    "href": "cd_05_github.html#local-changes-commit-push",
+    "title": "Working in Team: From Basic to Professional GitHub",
+    "section": "6. Local Changes → Commit → Push",
+    "text": "6. Local Changes → Commit → Push\nOnce you’ve completed a small task or feature:\n\nSwitch to GitHub Desktop.\n\nYou’ll see a list of changed files.\n\nWrite a Commit Message (bottom left).\n\nExample: Add UART initialization or Fix FFT windowing bug.\n\nClick Commit to main (or current branch).\n\nThis saves a snapshot in your local repo.\n\nClick Push origin (top).\n\nThis uploads your commit(s) to the GitHub remote.\n\n\n\n\n\n\n\n\nNote\n\n\nThink of a commit as a checkpoint in your lab notebook. Push sends that checkpoint to the shared notebook on GitHub.\n\n\n\n\nEmphasize small, meaningful commits.\nGive examples:\n\nBad: stuff or changes.\nGood: Implement debounce for button input or Refactor ADC driver into module."
+  },
+  {
+    "objectID": "cd_05_github.html#pulling-your-teammates-work",
+    "href": "cd_05_github.html#pulling-your-teammates-work",
+    "title": "Working in Team: From Basic to Professional GitHub",
+    "section": "7. Pulling Your Teammates’ Work",
+    "text": "7. Pulling Your Teammates’ Work\nYou are not working alone. Before you start each session:\n\nOpen GitHub Desktop.\nClick Fetch origin.\nIf new commits exist on GitHub, click Pull.\n\nThis updates your local files with your teammates’ latest work.\n\n\n\n\n\n\nImportant\n\n\nPull before you start coding each day. This reduces merge conflicts and keeps everyone aligned.\n\n\n\n\nUse analogy: pulling is like syncing your local lab notes with the shared notebook before you take new measurements.\nIf students skip pulling, they’re effectively writing on an old copy of the design."
+  },
+  {
+    "objectID": "cd_05_github.html#from-student-github-to-professional-github",
+    "href": "cd_05_github.html#from-student-github-to-professional-github",
+    "title": "Working in Team: From Basic to Professional GitHub",
+    "section": "8. From “Student GitHub” to “Professional GitHub”",
+    "text": "8. From “Student GitHub” to “Professional GitHub”\nSo far: you can clone, edit, commit, push, and pull.\nIn many student projects:\n\nEveryone has Write access to main.\nEvery push goes directly into main.\n\nIn professional teams:\n\nmain is often protected.\nYou cannot push directly to main.\nYou work in branches and use Pull Requests (PRs).\n\n\n\n\n\n\n\nTip\n\n\nYou can already start using this professional model in class projects, even if GitHub doesn’t force it. Just agree as a team to use branches + PRs.\n\n\n\n\nExplain why:\n\nProtects production code (e.g., firmware released to hardware in the field).\nEnsures someone else reviews your design or fix."
+  },
+  {
+    "objectID": "cd_05_github.html#protected-branches-guarding-main",
+    "href": "cd_05_github.html#protected-branches-guarding-main",
+    "title": "Working in Team: From Basic to Professional GitHub",
+    "section": "9. Protected Branches: Guarding main",
+    "text": "9. Protected Branches: Guarding main\nA protected branch (usually main):\n\nRejects direct pushes.\nRequires all changes to go through a Pull Request.\nCan require:\n\nAt least N approvals.\nStatus checks (e.g., automated tests) to pass.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nImportant\n\n\nOn real engineering teams, main often represents production code:\n\nDeployed firmware.\nFPGA bitstreams.\nReleased software versions.\n\n\n\n\n\nIn class, “production” might be the version that passes all tests and demos.\nIf instructor configures protected branches, students will experience real-world workflow."
+  },
+  {
+    "objectID": "cd_05_github.html#branches-working-on-features-safely",
+    "href": "cd_05_github.html#branches-working-on-features-safely",
+    "title": "Working in Team: From Basic to Professional GitHub",
+    "section": "10. Branches: Working on Features Safely",
+    "text": "10. Branches: Working on Features Safely\nInstead of pushing to main:\n\nCreate a feature branch for each task.\nName it clearly, e.g.:\n\nfeature-login-ui\nbugfix-adc-saturation\nlab3-filter-implementation\n\n\nTypical workflow:\n\nStart from up‑to‑date main.\nCreate a new branch.\nCommit changes into your branch.\nPush your branch to GitHub.\nOpen a Pull Request from your branch into main.\n\n\nRelate branches to ECE:\n\nOne branch per hardware revision, or per feature like “add SPI peripheral,” “implement PWM control,” etc.\n\nPoint out that branches keep unfinished work from breaking the “known good” main."
+  },
+  {
+    "objectID": "cd_05_github.html#creating-a-branch-github-desktop",
+    "href": "cd_05_github.html#creating-a-branch-github-desktop",
+    "title": "Working in Team: From Basic to Professional GitHub",
+    "section": "11. Creating a Branch (GitHub Desktop)",
+    "text": "11. Creating a Branch (GitHub Desktop)\nIn GitHub Desktop:\n\nMake sure you’ve pulled the latest main.\nClick Current Branch → New Branch.\nEnter a descriptive name, e.g., feature-sensor-readout.\nBase it on main.\nClick Create Branch.\n\nYou’re now on that branch:\n\nChanges and commits belong to feature-sensor-readout.\n\n\n\n\n\n\n\nTip\n\n\nInclude your initials or issue number if helpful: feature-sensor-readout-az or issue-42-sensor-calibration.\n\n\n\n\nDemonstrate creating a branch live if possible.\nExplain that branches are cheap: don’t be afraid to create many small ones."
+  },
+  {
+    "objectID": "cd_05_github.html#making-and-committing-changes-on-your-branch",
+    "href": "cd_05_github.html#making-and-committing-changes-on-your-branch",
+    "title": "Working in Team: From Basic to Professional GitHub",
+    "section": "12. Making and Committing Changes on Your Branch",
+    "text": "12. Making and Committing Changes on Your Branch\nOn your feature branch:\n\nOpen the repo in VS Code.\nImplement your change:\n\nExample: add a new module sensor.c and sensor.h.\nOr modify main.py to add plotting.\n\nSave your files.\n\nThen in GitHub Desktop:\n\nConfirm you are still on your feature branch.\nReview the list of changed files.\nWrite a descriptive commit message.\nClick Commit to &lt;your-branch&gt;.\nClick Push origin to push the branch to GitHub.\n\n\nReinforce: commits still work the same on a branch—only the destination differs.\nECE analogy: a branch is a separate test setup on your lab bench; commits are snapshots of tests."
+  },
+  {
+    "objectID": "cd_05_github.html#opening-a-pull-request-pr",
+    "href": "cd_05_github.html#opening-a-pull-request-pr",
+    "title": "Working in Team: From Basic to Professional GitHub",
+    "section": "13. Opening a Pull Request (PR)",
+    "text": "13. Opening a Pull Request (PR)\nOnce your feature is ready:\n\nGo to GitHub in your browser.\nNavigate to your team repository.\nGitHub often shows a banner:\n\n“Compare & pull request” for your recently pushed branch.\n\nClick New pull request if needed.\nSet:\n\nBase branch: main (or the protected branch).\nCompare branch: your feature branch (e.g., feature-sensor-readout).\n\nWrite a clear title and description:\n\nTitle: Add temperature sensor readout.\nDescription: what changed, why, any test results.\n\n\n\n\n\n\n\n\nNote\n\n\nA PR is a request for review, not just a “merge button.”\n\n\n\n\nShow a screenshot or live demo if possible.\nMention including links to requirements, issues, or diagrams in PR description."
+  },
+  {
+    "objectID": "cd_05_github.html#who-reviews-your-pr",
+    "href": "cd_05_github.html#who-reviews-your-pr",
+    "title": "Working in Team: From Basic to Professional GitHub",
+    "section": "14. Who Reviews Your PR?",
+    "text": "14. Who Reviews Your PR?\nIn a three-person team:\n\nAuthors: the person who wrote the code opens the PR.\nReviewers: usually the other two teammates.\nIn some courses:\n\nInstructor or TA may also act as a maintainer.\n\n\nGitHub settings can:\n\nRequire 1 or 2 approvals before merging.\nBlock self-approval (you cannot approve your own PR).\n\n\n\n\n\n\n\nImportant\n\n\nCultural rule used by many teams: &gt; “No one merges their own code without review.”\n\n\n\n\nConnect to industry:\n\nMany companies make code review mandatory for safety, reliability, and maintainability (especially in embedded and controls)."
+  },
+  {
+    "objectID": "cd_05_github.html#review-and-acceptance-flow",
+    "href": "cd_05_github.html#review-and-acceptance-flow",
+    "title": "Working in Team: From Basic to Professional GitHub",
+    "section": "15. Review and Acceptance Flow",
+    "text": "15. Review and Acceptance Flow\n\n\n\n\n\n\n\n\n\n\n\nDetailed steps:\n\nStudent A pushes feature-login.\nStudent A opens PR → target main.\nStudents B and C review:\n\nComment on code, request changes, or approve.\n\nWhen approvals + checks are satisfied, Merge button turns green.\nA maintainer (or the author, if allowed) clicks Confirm merge.\n\n\nHighlight that review is not punishment—it’s collaboration.\nEncourage constructive comments: “Can we rename this variable?” “What happens if sensor data is out of range?”\nECE tie‑in: helps catch edge cases in control logic, timing, or numeric overflow."
+  },
+  {
+    "objectID": "cd_05_github.html#what-reviewers-actually-do",
+    "href": "cd_05_github.html#what-reviewers-actually-do",
+    "title": "Working in Team: From Basic to Professional GitHub",
+    "section": "16. What Reviewers Actually Do",
+    "text": "16. What Reviewers Actually Do\nReviewers should:\n\nRead the PR description.\nScan the files changed tab.\nCheck for:\n\nLogic bugs.\nStyle consistency (naming, formatting).\nMissing tests or documentation.\nSafety issues (e.g., unbounded loops, unchecked I/O).\n\nUse comments to ask questions or suggest improvements.\n\nCommon GitHub review actions:\n\nComment — leave general or line‑specific feedback.\nRequest changes — PR must be updated before approval.\nApprove — PR is ready to merge.\n\n\n\n\n\n\n\nTip\n\n\nAs a reviewer, try to understand the intent: “If I had to maintain this code later, would I understand what it does?”\n\n\n\n\nMention that in embedded/ECE work, code review also checks for timing assumptions, power constraints, and hardware interactions.\nEncourage students to rotate who reviews whose code to learn from each other."
+  },
+  {
+    "objectID": "cd_05_github.html#merging-the-pr",
+    "href": "cd_05_github.html#merging-the-pr",
+    "title": "Working in Team: From Basic to Professional GitHub",
+    "section": "17. Merging the PR",
+    "text": "17. Merging the PR\nAfter approvals:\n\nThe PR status will show all required checks green.\nThe Merge button becomes active.\nClick Merge pull request → Confirm merge.\n\nResult:\n\nThe feature branch code is combined into main.\nmain now has the new functionality.\nOptionally, delete the feature branch to keep things tidy.\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote: some teams also use “Squash and merge” to combine all branch commits into one commit on main. You can mention but don’t need to go deep for this class."
+  },
+  {
+    "objectID": "cd_05_github.html#handling-merge-conflicts",
+    "href": "cd_05_github.html#handling-merge-conflicts",
+    "title": "Working in Team: From Basic to Professional GitHub",
+    "section": "18. Handling Merge Conflicts",
+    "text": "18. Handling Merge Conflicts\nConflicts happen when:\n\nTwo people edit the same line of a file in different ways.\nGit cannot automatically decide which version to keep.\n\nGitHub will:\n\nBlock the merge.\nMark the PR as having conflicts.\n\nThe person attempting to merge must:\n\nPull the latest main.\nMerge main into their feature branch locally.\nResolve conflicts in affected files (choose/merge code).\nCommit the resolved changes.\nPush the updated branch.\n\n\n\n\n\n\n\nWarning\n\n\nIgnoring conflicts is not an option—Git will not merge until they are resolved.\n\n\n\n\nShow a simple example of a conflicting line in a text file if time permits.\nReassure students that conflicts are normal; the goal is to learn not to panic, but to read and resolve them carefully."
+  },
+  {
+    "objectID": "cd_05_github.html#example-scenario-team-of-three",
+    "href": "cd_05_github.html#example-scenario-team-of-three",
+    "title": "Working in Team: From Basic to Professional GitHub",
+    "section": "19. Example Scenario: Team of Three",
+    "text": "19. Example Scenario: Team of Three\nLet’s walk through a complete cycle:\n\nStudent A: implements “login” feature on feature-login.\nStudent B: implements “dashboard” on feature-dashboard.\nStudent C: fixes “sensor bug” on bugfix-sensor.\n\nEach student:\n\nPulls latest main.\nCreates a new branch.\nCommits and pushes their work.\nOpens a PR into main.\nReviews at least one teammate’s PR.\n\nQuestion for students: How would you decide who reviews which PR to balance workload?\n\nUse this scenario for an in‑class activity:\n\nAssign roles and ask them to sketch out the branches and PRs on paper or a whiteboard."
+  },
+  {
+    "objectID": "cd_05_github.html#real-world-ece-application-example",
+    "href": "cd_05_github.html#real-world-ece-application-example",
+    "title": "Working in Team: From Basic to Professional GitHub",
+    "section": "20. Real-World ECE Application Example",
+    "text": "20. Real-World ECE Application Example\nImagine your team is building a signal acquisition and processing pipeline:\n\nOne student works on ADC driver (branch feature-adc-driver).\nAnother on DSP filter (branch feature-dsp-filter).\nAnother on data logger (branch feature-logging).\n\nProfessional workflow:\n\nEach feature in its own branch.\nPR for each feature.\nTeam reviews each PR for:\n\nSampling rate assumptions.\nOverflow/underflow in fixed‑point math.\nCorrect interface between modules.\n\n\nProtecting main ensures:\n\nThe version running on actual hardware is always tested and reviewed.\n\n\nConnect to safety-critical or high‑reliability systems (medical, automotive).\nIn such domains, unreviewed changes can have serious consequences; hence PRs and approvals are mandatory."
+  },
+  {
+    "objectID": "cd_05_github.html#best-practice-rule-for-your-team",
+    "href": "cd_05_github.html#best-practice-rule-for-your-team",
+    "title": "Working in Team: From Basic to Professional GitHub",
+    "section": "21. “Best Practice” Rule for Your Team",
+    "text": "21. “Best Practice” Rule for Your Team\nEven if your instructor allows direct pushes to main, adopt this team rule:\n\nNo one merges their own code into main without at least one teammate’s review.\n\nThis helps you:\n\nCatch bugs early.\nShare knowledge of each part of the codebase.\nPractice professional workflows you’ll use in internships and jobs.\n\n\n\n\n\n\n\nTip\n\n\nWrite this rule in your repository’s README.md as part of your team contract.\n\n\n\n\nEncourage students to treat this like any lab safety rule—simple, but very effective.\nMention that many companies literally have the same policy written down."
+  },
+  {
+    "objectID": "cd_05_github.html#quick-practice-checklist",
+    "href": "cd_05_github.html#quick-practice-checklist",
+    "title": "Working in Team: From Basic to Professional GitHub",
+    "section": "22. Quick Practice Checklist",
+    "text": "22. Quick Practice Checklist\nBefore next lab, try this with your team:\n\nEnsure everyone can:\n\nSign in to GitHub.\nAccess the Organization and team repo.\n\nEach person:\n\nCreates a personal branch.\nMakes a small change (e.g., add your name to a TEAM.md file).\nCommits and pushes.\nOpens a PR into main.\n\nPair up and review each other’s PRs.\nMerge the PRs and pull the new main.\n\n\nThis is a low-stakes way to practice the whole pipeline before you apply it to real lab code.\nAsk them to note anything confusing in the process to discuss in the next session."
+  },
+  {
+    "objectID": "cd_05_github.html#summary-key-points",
+    "href": "cd_05_github.html#summary-key-points",
+    "title": "Working in Team: From Basic to Professional GitHub",
+    "section": "Summary / Key Points",
+    "text": "Summary / Key Points\n\nYou work within a GitHub Organization and a shared team repository.\nUse Git, GitHub Desktop, and VS Code to:\n\nClone the repo, edit locally, commit, and push.\n\nAlways pull before starting work to sync with your teammates.\nProfessional workflows rely on:\n\nProtected main branches.\nFeature branches for changes.\nPull Requests for review and controlled merges.\n\nIn a PR workflow:\n\nAuthors push to branches and open PRs.\nReviewers approve or request changes.\nConflicts must be resolved before merging.\n\nAdopting “no self‑merge to main” prepares you for real engineering teams.\n\n\nEncourage students to view GitHub not just as a submission system, but as their professional engineering collaboration tool.\nInvite questions specifically about any step in the PR flow or about how this maps to their ongoing lab projects."
   }
 ]
