@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>cd_04 – Capstone Design</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-a0f9fd0d421825b736dc1bbcbcba2219.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Capstone Design</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#stage-4-architecture-component-design" id="toc-stage-4-architecture-component-design" class="nav-link active" data-scroll-target="#stage-4-architecture-component-design">Stage 4 – Architecture &amp; Component Design</a></li>
+  <li><a href="#learning-objectives-stage-4-session" id="toc-learning-objectives-stage-4-session" class="nav-link" data-scroll-target="#learning-objectives-stage-4-session">Learning Objectives – Stage 4 Session</a></li>
+  <li><a href="#vmodel-where-stage-4-fits" id="toc-vmodel-where-stage-4-fits" class="nav-link" data-scroll-target="#vmodel-where-stage-4-fits">V‑Model – Where Stage 4 Fits</a></li>
+  <li><a href="#standards-context-15288-29148-in-stage-4" id="toc-standards-context-15288-29148-in-stage-4" class="nav-link" data-scroll-target="#standards-context-15288-29148-in-stage-4">Standards Context – 15288 &amp; 29148 in Stage 4</a></li>
+  <li><a href="#architecture-vs.-detailed-design-big-picture" id="toc-architecture-vs.-detailed-design-big-picture" class="nav-link" data-scroll-target="#architecture-vs.-detailed-design-big-picture">Architecture vs.&nbsp;Detailed Design – Big Picture</a></li>
+  <li><a href="#architecture-definition-process" id="toc-architecture-definition-process" class="nav-link" data-scroll-target="#architecture-definition-process">15288 – Architecture Definition Process</a></li>
+  <li><a href="#design-definition-process" id="toc-design-definition-process" class="nav-link" data-scroll-target="#design-definition-process">15288 – Design Definition Process</a></li>
+  <li><a href="#requirements-allocation-what-and-why" id="toc-requirements-allocation-what-and-why" class="nav-link" data-scroll-target="#requirements-allocation-what-and-why">Requirements Allocation – What and Why</a></li>
+  <li><a href="#example-highlevel-architecture-smart-lab-sensor-network" id="toc-example-highlevel-architecture-smart-lab-sensor-network" class="nav-link" data-scroll-target="#example-highlevel-architecture-smart-lab-sensor-network">Example: High‑Level Architecture – Smart Lab Sensor Network</a></li>
+  <li><a href="#example-requirements-allocation-excerpt" id="toc-example-requirements-allocation-excerpt" class="nav-link" data-scroll-target="#example-requirements-allocation-excerpt">Example: Requirements Allocation (Excerpt)</a></li>
+  <li><a href="#ece-example-remote-instrument-lab-architecture" id="toc-ece-example-remote-instrument-lab-architecture" class="nav-link" data-scroll-target="#ece-example-remote-instrument-lab-architecture">ECE Example – Remote Instrument Lab Architecture</a></li>
+  <li><a href="#ece-example-fpgabased-dsp-system-architecture" id="toc-ece-example-fpgabased-dsp-system-architecture" class="nav-link" data-scroll-target="#ece-example-fpgabased-dsp-system-architecture">ECE Example – FPGA‑Based DSP System Architecture</a></li>
+  <li><a href="#architecture-views-what-you-should-capture" id="toc-architecture-views-what-you-should-capture" class="nav-link" data-scroll-target="#architecture-views-what-you-should-capture">Architecture Views – What You Should Capture</a></li>
+  <li><a href="#component-design-example-backend-service" id="toc-component-design-example-backend-service" class="nav-link" data-scroll-target="#component-design-example-backend-service">Component Design – Example (Backend Service)</a></li>
+  <li><a href="#component-design-example-sensor-node" id="toc-component-design-example-sensor-node" class="nav-link" data-scroll-target="#component-design-example-sensor-node">Component Design – Example (Sensor Node)</a></li>
+  <li><a href="#linking-design-back-to-requirements" id="toc-linking-design-back-to-requirements" class="nav-link" data-scroll-target="#linking-design-back-to-requirements">Linking Design Back to Requirements</a></li>
+  <li><a href="#ece-example-wearable-health-monitor-design" id="toc-ece-example-wearable-health-monitor-design" class="nav-link" data-scroll-target="#ece-example-wearable-health-monitor-design">ECE Example – Wearable Health Monitor Design</a></li>
+  <li><a href="#common-pitfalls-in-stage-4" id="toc-common-pitfalls-in-stage-4" class="nav-link" data-scroll-target="#common-pitfalls-in-stage-4">Common Pitfalls in Stage 4</a></li>
+  <li><a href="#stage-4-key-deliverables-for-this-course" id="toc-stage-4-key-deliverables-for-this-course" class="nav-link" data-scroll-target="#stage-4-key-deliverables-for-this-course">Stage 4 Key Deliverables (for This Course)</a></li>
+  <li><a href="#summary-stage-4-takeaways" id="toc-summary-stage-4-takeaways" class="nav-link" data-scroll-target="#summary-stage-4-takeaways">Summary – Stage 4 Takeaways</a></li>
+  <li><a href="#next-steps-for-your-team" id="toc-next-steps-for-your-team" class="nav-link" data-scroll-target="#next-steps-for-your-team">Next Steps for Your Team</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+
+
+
+
+<section id="stage-4-architecture-component-design" class="level2">
+<h2 class="anchored" data-anchor-id="stage-4-architecture-component-design">Stage 4 – Architecture &amp; Component Design</h2>
+<p>From Requirements to a Buildable Design</p>
+<p>Capstone Design – Stage 4 Focus Session</p>
+<div class="notes">
+<p>This deck covers <strong>Stage 4 – Architecture &amp; Component Design</strong> in the course V‑Model.</p>
+<p>Pre‑requisites for students: - Stage 2 complete: <strong>DCP‑100B</strong> (Stakeholder Requirements, <code>STR-*</code>). - Stage 3 complete or nearly complete: <strong>DCP‑200</strong> (System / SW Requirements, <code>REQ-*</code>).</p>
+<p>Goals of this session: - Explain what <strong>architecture</strong> and <strong>component design</strong> mean in the context of this course. - Connect to <strong>ISO/IEC/IEEE 15288 &amp; 29148</strong>: - Architecture Definition - Design Definition - Requirements Allocation - Show key deliverables (what goes in your <strong>Stage 4 design docs</strong>). - Use <strong>ECE‑relevant examples</strong> (embedded system, FPGA/DSP, networked systems, medical/wearables).</p>
+</div>
+<hr>
+</section>
+<section id="learning-objectives-stage-4-session" class="level2">
+<h2 class="anchored" data-anchor-id="learning-objectives-stage-4-session">Learning Objectives – Stage 4 Session</h2>
+<p>By the end of this session, you will be able to:</p>
+<ol type="1">
+<li>Explain the role of <strong>Stage 4 – Architecture &amp; Component Design</strong> in the V‑Model.</li>
+<li>Describe the <strong>Architecture Definition</strong> and <strong>Design Definition</strong> processes from 15288/29148.</li>
+<li>Explain <strong>Requirements Allocation</strong>: how <code>REQ-*</code> get assigned to components.</li>
+<li>Create and interpret <strong>architecture diagrams</strong> and <strong>component design descriptions</strong> for ECE systems.</li>
+<li>Identify the <strong>key Stage 4 deliverables</strong> for your capstone project.</li>
+</ol>
+<div class="notes">
+<p>Emphasize that Stage 4 is where you <strong>decide the structure</strong> of your system: what pieces exist, how they communicate, and what each piece is responsible for.</p>
+<p>It is <strong>not yet coding or PCB layout</strong> – it is the <strong>blueprint</strong> you will build from.</p>
+</div>
+<hr>
+</section>
+<section id="vmodel-where-stage-4-fits" class="level2">
+<h2 class="anchored" data-anchor-id="vmodel-where-stage-4-fits">V‑Model – Where Stage 4 Fits</h2>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">{mermaid}
+flowchart LR
+  subgraph Left["Definition &amp; Design"]
+    A["Stage 1:&lt;br&gt;Mission &amp; ConOps"]
+    B["Stage 2:&lt;br&gt;Stakeholder&lt;br&gt;Requirements"]
+    C["Stage 3:&lt;br&gt;System / SW&lt;br&gt;Requirements"]
+    D["Stage 4:&lt;br&gt;Architecture &amp;&lt;br&gt;Component Design"]
+    E["Stage 5:&lt;br&gt;Implementation"]
+  end
+
+  subgraph Right["Integration &amp; Qualification"]
+    F["Stage 6:&lt;br&gt;Unit / Component&lt;br&gt;Verification"]
+    G["Stage 7:&lt;br&gt;System / Integration&lt;br&gt;Verification"]
+    H["Stage 8:&lt;br&gt;Stakeholder Validation"]
+  end
+
+  A --&gt; B --&gt; C --&gt; D --&gt; E
+  E --&gt; F --&gt; G --&gt; H
+
+  style D fill:#ffd,stroke:#333,stroke-width:2px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<ul>
+<li><strong>Stage 3</strong> defined <em>what</em> the system must do (<code>REQ-*</code>).</li>
+<li><strong>Stage 4</strong> defines <em>how the system is structured</em> so those <code>REQ-*</code> can be met.</li>
+<li>It sets up the <strong>units/components</strong> you will verify in <strong>Stage 6</strong>.</li>
+</ul>
+<div class="notes">
+<p>Point out the vertical alignment: - Stage 4’s architecture &amp; design are what Stage 6’s <strong>unit tests</strong> and Stage 7’s <strong>integration tests</strong> will target.</p>
+<p>If Stage 4 is fuzzy, it becomes hard to say what a “unit” or “component” even is.</p>
+</div>
+<hr>
+</section>
+<section id="standards-context-15288-29148-in-stage-4" class="level2">
+<h2 class="anchored" data-anchor-id="standards-context-15288-29148-in-stage-4">Standards Context – 15288 &amp; 29148 in Stage 4</h2>
+<p>In Stage 4, we mostly apply three processes from the standards:</p>
+<ol type="1">
+<li><strong>Architecture Definition (15288)</strong>
+<ul>
+<li>Identify main system elements and how they interact.</li>
+</ul></li>
+<li><strong>Design Definition (15288)</strong>
+<ul>
+<li>Refine architecture into <strong>detailed component designs</strong> sufficient for implementation.</li>
+</ul></li>
+<li><strong>Requirements Allocation (29148/15288)</strong>
+<ul>
+<li>Allocate system requirements (<code>REQ-SY-*</code>) to specific hardware, firmware, and software components (<code>REQ-HW-*</code>, <code>REQ-SW-*</code>, etc.).</li>
+</ul></li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Think of Stage 3 as <strong>defining the target</strong>. Stage 4 defines the <strong>structure of the arrow</strong> you will shoot at that target.</p>
+</div>
+</div>
+<div class="notes">
+<p>Stress that we’re not memorizing these standards; we’re using them as <strong>guidance for good engineering practice</strong>.</p>
+<p>We care that students: - Structure their systems. - Allocate requirements. - Document their designs clearly.</p>
+</div>
+<hr>
+</section>
+<section id="architecture-vs.-detailed-design-big-picture" class="level2">
+<h2 class="anchored" data-anchor-id="architecture-vs.-detailed-design-big-picture">Architecture vs.&nbsp;Detailed Design – Big Picture</h2>
+<ul>
+<li><strong>Architecture</strong> (high level):
+<ul>
+<li>Major components (e.g., sensors, gateway, backend, UI).</li>
+<li>How they communicate (interfaces, protocols).</li>
+<li>Deployment view (what runs where).</li>
+</ul></li>
+<li><strong>Component Design</strong> (lower level):
+<ul>
+<li>Internal structure of each component (modules, threads, state machines, data flows).</li>
+<li>Internal interfaces and data structures.</li>
+<li>Algorithms, timing, and resource allocation details.</li>
+</ul></li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Architecture answers: &gt; “What are the main parts and how do they connect?”</p>
+<p>Component design answers: &gt; “What does each part look like internally?”</p>
+</div>
+</div>
+<div class="notes">
+<p>ECE analogy: - Architecture ≈ <strong>block diagrams</strong> in datasheets. - Design ≈ <strong>detailed schematics, state machines, pseudo‑code</strong>.</p>
+<p>Both must be <strong>consistent with <code>REQ-*</code></strong> defined in DCP‑200.</p>
+</div>
+<hr>
+</section>
+<section id="architecture-definition-process" class="level2">
+<h2 class="anchored" data-anchor-id="architecture-definition-process">15288 – Architecture Definition Process</h2>
+<p><strong>Purpose (adapted):</strong> To generate a set of <strong>architectural views</strong> of the system that:</p>
+<ul>
+<li>Describe <strong>major elements and their relationships</strong>.</li>
+<li>Satisfy system requirements (<code>REQ-*</code>).</li>
+<li>Provide a basis for <strong>design, implementation, and integration</strong>.</li>
+</ul>
+<p><strong>Key Architecture Definition activities:</strong></p>
+<ol type="1">
+<li><strong>Analyze system requirements</strong> (<code>REQ-*</code>) to identify needed capabilities and constraints.</li>
+<li><strong>Identify system elements</strong> (hardware, software, people, external systems).</li>
+<li><strong>Define architectural patterns</strong> (client–server, layered, microcontroller + gateway, etc.).</li>
+<li><strong>Develop architectural views</strong>, such as:
+<ul>
+<li>Logical / functional view (what functions sit where).</li>
+<li>Physical / deployment view (what runs on which hardware).</li>
+<li>Interface view (APIs, protocols, data flows).</li>
+</ul></li>
+<li><strong>Evaluate architecture</strong> against requirements and constraints (feasibility, performance, modifiability).</li>
+</ol>
+<div class="notes">
+<p>Students don’t need to enumerate all possible views, but they should at least have: - A <strong>top‑level block diagram</strong>. - A <strong>deployment view</strong> (ESP32 here, server there, etc.). - A <strong>data/communication view</strong> (how data flows from sensors to UI).</p>
+</div>
+<hr>
+</section>
+<section id="design-definition-process" class="level2">
+<h2 class="anchored" data-anchor-id="design-definition-process">15288 – Design Definition Process</h2>
+<p><strong>Purpose (adapted):</strong> To transform architecture into <strong>detailed design descriptions</strong> that:</p>
+<ul>
+<li>Specify how each system element will be implemented.</li>
+<li>Are consistent with allocated requirements.</li>
+<li>Are concrete enough for implementation and unit testing.</li>
+</ul>
+<p><strong>Key Design Definition activities:</strong></p>
+<ol type="1">
+<li><strong>Refine system elements</strong> into lower‑level components (e.g., microcontroller tasks, software modules, HDL blocks).</li>
+<li><strong>Define internal interfaces</strong> (function APIs, message structures, registers, etc.).</li>
+<li><strong>Specify algorithms and data structures</strong> (e.g., filter structure, control logic).</li>
+<li><strong>Capture design constraints</strong> (timing budgets, memory limits, power budgets).</li>
+<li><strong>Document designs</strong> in forms appropriate for your project:
+<ul>
+<li>Diagrams (UML, block diagrams, state machines)</li>
+<li>Pseudo‑code, interface tables, register maps</li>
+<li>Partial prototypes if necessary to de‑risk design choices</li>
+</ul></li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In this course, Stage 4 design docs should be detailed enough that: - Another competent capstone student could <strong>implement your design</strong> from the documentation.</p>
+</div>
+</div>
+<div class="notes">
+<p>Encourage teams to resist the urge to “just start coding” or “just start wiring” without a shared design.</p>
+<p>Decisions made &amp; documented here will: - Reduce integration surprises. - Improve testability in Stage 6/7.</p>
+</div>
+<hr>
+</section>
+<section id="requirements-allocation-what-and-why" class="level2">
+<h2 class="anchored" data-anchor-id="requirements-allocation-what-and-why">Requirements Allocation – What and Why</h2>
+<p><strong>Requirements Allocation</strong> = assigning each <strong>system requirement (<code>REQ-SY-*</code>)</strong> to:</p>
+<ul>
+<li>One or more <strong>hardware components</strong> (<code>REQ-HW-*</code>), and/or</li>
+<li>One or more <strong>software components</strong> (<code>REQ-SW-*</code>), and/or</li>
+<li>Combined behavior of multiple components.</li>
+</ul>
+<p>This ensures:</p>
+<ul>
+<li>Every <code>REQ-SY-*</code> has a <strong>home</strong> in the design.</li>
+<li>Each component knows what <strong>requirements it must satisfy</strong>.</li>
+<li>You can later verify at the <strong>right level</strong> (unit vs integration).</li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Practically: - Make a table: <code>REQ-SY-*</code> → Component(s). - Then, if helpful, derive more specific <code>REQ-HW-*</code> and <code>REQ-SW-*</code>.</p>
+</div>
+</div>
+<div class="notes">
+<p>Emphasize: Allocation is not just paperwork.</p>
+<p>If you don’t allocate requirements, you risk: - Nobody implementing a needed behavior. - Multiple components trying to do the same thing. - Confusion in testing (“who is responsible for this latency?”).</p>
+</div>
+<hr>
+</section>
+<section id="example-highlevel-architecture-smart-lab-sensor-network" class="level2">
+<h2 class="anchored" data-anchor-id="example-highlevel-architecture-smart-lab-sensor-network">Example: High‑Level Architecture – Smart Lab Sensor Network</h2>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">{mermaid}
+flowchart LR
+  subgraph Labs["Teaching Labs"]
+    S1["Sensor Node&lt;br&gt;(Temp/Humidity)"]
+    S2["Sensor Node&lt;br&gt;(Temp/Humidity)"]
+  end
+
+  GW["Gateway&lt;br&gt;(Local Collector)"]
+  BE["Backend Server&lt;br&gt;(DB + API)"]
+  UI["Web Dashboard&lt;br&gt;(Browser)"]
+  IT["Campus Auth / Network"]
+
+  S1 -- Wireless --&gt; GW
+  S2 -- Wireless --&gt; GW
+  GW -- TCP/IP --&gt; BE
+  UI -- HTTPS --&gt; BE
+  UI -- Auth --&gt; IT
+  BE -- Auth --&gt; IT
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>Major elements in this architecture:</p>
+<ul>
+<li><strong>Sensor Nodes</strong> – embedded hardware for sensing and wireless communication.</li>
+<li><strong>Gateway</strong> – aggregates sensor messages, forwards to backend.</li>
+<li><strong>Backend Server</strong> – data store, application logic, alerts, APIs.</li>
+<li><strong>Web Dashboard</strong> – front‑end for technicians and managers.</li>
+<li><strong>Campus IT</strong> – authentication and network services.</li>
+</ul>
+<div class="notes">
+<p>Show how this diagram came from Stage 3 <code>REQ-*</code>: - We needed wireless sensors, a centralized data store, and a web UI. - We also must integrate with campus auth: hence the explicit IT block.</p>
+<p>Ask students: - What other architectures could we have used (e.g., no separate gateway, sensors talk directly to cloud)?</p>
+</div>
+<hr>
+</section>
+<section id="example-requirements-allocation-excerpt" class="level2">
+<h2 class="anchored" data-anchor-id="example-requirements-allocation-excerpt">Example: Requirements Allocation (Excerpt)</h2>
+<p>Using the Smart Lab architecture:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 56%">
+<col style="width: 43%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>System Requirement (<code>REQ-SY-*</code>)</th>
+<th>Allocated Component(s)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>REQ-SY-001 – Store latest temp/humidity per lab</td>
+<td>Sensor Node, Gateway, Backend DB</td>
+</tr>
+<tr class="even">
+<td>REQ-SY-003 – Dashboard refresh every 60 s</td>
+<td>Backend API, Web Dashboard</td>
+</tr>
+<tr class="odd">
+<td>REQ-SY-010 – Create overheat alerts</td>
+<td>Backend Alert Logic</td>
+</tr>
+<tr class="even">
+<td>REQ-SY-061 – Notify technicians within 120 s</td>
+<td>Backend Notification Service, Email/SMS Agent</td>
+</tr>
+<tr class="odd">
+<td>REQ-SY-060 – Dashboard loads in ≤ 3 s (95% of time)</td>
+<td>Backend (performance), Web Dashboard (UI), Network</td>
+</tr>
+<tr class="even">
+<td>REQ-SY-092 – Use HTTPS for web access</td>
+<td>Web Server / Backend, Campus IT</td>
+</tr>
+<tr class="odd">
+<td>REQ-SY-081 – Detect missing sensor (“sensor fault”)</td>
+<td>Gateway, Backend, Dashboard UI</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Allocation helps: - Clarify which <strong>component is responsible</strong> for each behavior. - Identify cross‑cutting concerns, like performance and security.</p>
+</div>
+</div>
+<div class="notes">
+<p>Encourage teams to create a full allocation table (maybe in a spreadsheet), even if they don’t put every line in the report.</p>
+<p>This also helps them define <strong>unit test scopes</strong> in Stage 6.</p>
+</div>
+<hr>
+</section>
+<section id="ece-example-remote-instrument-lab-architecture" class="level2">
+<h2 class="anchored" data-anchor-id="ece-example-remote-instrument-lab-architecture">ECE Example – Remote Instrument Lab Architecture</h2>
+<p>Consider a <strong>Remote Electronics Lab</strong> system:</p>
+<ul>
+<li>Students remotely control benchtop instruments (oscilloscope, function generator) via a web interface.</li>
+</ul>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">{mermaid}
+flowchart LR
+  STU["Student Browser"]
+  WEB["Web Front-end&lt;br&gt;(Lab Portal)"]
+  APP["Application Server&lt;br&gt;(Session Manager)"]
+  PC["Lab PC&lt;br&gt;(Instrument Controller)"]
+  INS1["Oscilloscope"]
+  INS2["Function Generator"]
+
+  STU -- HTTPS --&gt; WEB --&gt; APP
+  APP -- Session Control --&gt; PC
+  PC -- USB/GPIB/VISA --&gt; INS1
+  PC -- USB/GPIB/VISA --&gt; INS2
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>Possible requirements allocation:</p>
+<ul>
+<li>Session management, exclusivity (<code>REQ-SY-104</code>): <strong>Application Server</strong>.</li>
+<li>Instrument command translation: <strong>Lab PC Instrument Controller</strong>.</li>
+<li>User scheduling/booking: <strong>Web Front‑end + Application Server</strong>.</li>
+</ul>
+<div class="notes">
+<p>Ask: - Where do we enforce “only one student per instrument at a time”? - Who is responsible for timing guarantees (e.g., latency)?</p>
+<p>This forces them to think about <strong>responsibility assignment</strong> in architecture.</p>
+</div>
+<hr>
+</section>
+<section id="ece-example-fpgabased-dsp-system-architecture" class="level2">
+<h2 class="anchored" data-anchor-id="ece-example-fpgabased-dsp-system-architecture">ECE Example – FPGA‑Based DSP System Architecture</h2>
+<p>Project: <strong>Real‑time ECG filter on FPGA + Microcontroller</strong>.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">{mermaid}
+flowchart LR
+  ECG["Analog Front End&lt;br&gt;(Amplifier + Anti-alias)"]
+  ADC["ADC"]
+  FPGA["FPGA&lt;br&gt;(DSP Filter + Feature Extract)"]
+  MCU["Microcontroller&lt;br&gt;(Control + Comms)"]
+  UI["Display / PC GUI"]
+  NET["Hospital Network (optional)"]
+
+  ECG --&gt; ADC --&gt; FPGA --&gt; MCU --&gt; UI
+  MCU -- Ethernet/USB --&gt; NET
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>Possible allocation:</p>
+<ul>
+<li>Sampling requirements (<code>REQ-HW-100</code>): <strong>ADC + FPGA interface</strong>.</li>
+<li>Filter characteristics (<code>REQ-SW-100</code>): <strong>FPGA DSP blocks</strong>.</li>
+<li>End‑to‑end latency (<code>REQ-SY-101</code>): <strong>ADC + FPGA + MCU + UI pipeline</strong>.</li>
+<li>Logging and configuration: <strong>MCU + UI + Network</strong>.</li>
+</ul>
+<div class="notes">
+<p>Show how architecture clarifies <strong>timing budget</strong>: - If end‑to‑end latency must be ≤ 100 ms, you can allocate sub‑budgets to each block.</p>
+<p>This will later inform <strong>design details</strong> (e.g., pipeline depth, communication method).</p>
+</div>
+<hr>
+</section>
+<section id="architecture-views-what-you-should-capture" class="level2">
+<h2 class="anchored" data-anchor-id="architecture-views-what-you-should-capture">Architecture Views – What You Should Capture</h2>
+<p>In your Stage 4 docs, you should capture at least:</p>
+<ol type="1">
+<li><strong>Logical / Functional View</strong>
+<ul>
+<li>Components and their responsibilities (e.g., sensor, gateway, server, UI).</li>
+</ul></li>
+<li><strong>Physical / Deployment View</strong>
+<ul>
+<li>Which components run on which hardware (e.g., ESP32, Raspberry Pi, cloud VM).</li>
+</ul></li>
+<li><strong>Interface / Data Flow View</strong>
+<ul>
+<li>What data flows between components (e.g., messages, API calls, timing).</li>
+</ul></li>
+</ol>
+<p>Optional but useful views:</p>
+<ul>
+<li><strong>State machines</strong> for critical control logic (e.g., operating modes).</li>
+<li><strong>Sequence diagrams</strong> for important scenarios (e.g., alert generation, remote login).</li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Diagrams should be <strong>simple and consistent</strong>. Pick a style (e.g., boxes + arrows, or simple UML) and stick to it.</p>
+</div>
+</div>
+<div class="notes">
+<p>Encourage them to label arrows with: - Protocol (e.g., MQTT, HTTP, UART). - Direction. - Frequency/performance hints if relevant.</p>
+<p>Remind them diagrams are communication tools, not art projects.</p>
+</div>
+<hr>
+</section>
+<section id="component-design-example-backend-service" class="level2">
+<h2 class="anchored" data-anchor-id="component-design-example-backend-service">Component Design – Example (Backend Service)</h2>
+<p>For the Smart Lab system, one architectural element is the <strong>Backend Server</strong>.</p>
+<p>At design level, we can refine it into:</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">{mermaid}
+flowchart LR
+  GWIF["Gateway Interface&lt;br&gt;Module"]
+  DB["Data Storage&lt;br&gt;(DB Layer)"]
+  ALERT["Alert Evaluation&lt;br&gt;&amp; Notification Module"]
+  API["REST API&lt;br&gt;/ Dashboard Backend"]
+  AUTH["Auth Client&lt;br&gt;(SSO Integration)"]
+
+  GWIF --&gt; DB
+  GWIF --&gt; ALERT
+  ALERT --&gt; DB
+  API --&gt; DB
+  API --&gt; AUTH
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>Design decisions to capture:</p>
+<ul>
+<li><strong>GW Interface Module</strong>:
+<ul>
+<li>Protocol used (e.g., TCP, MQTT, custom).</li>
+<li>Message formats and parsing logic.</li>
+</ul></li>
+<li><strong>Alert Module</strong>:
+<ul>
+<li>How thresholds are applied (sliding window? instantaneous?).</li>
+<li>How notifications are queued and sent.</li>
+</ul></li>
+<li><strong>API / Auth</strong>:
+<ul>
+<li>Endpoints, parameters, error codes.</li>
+<li>Which endpoints require which roles.</li>
+</ul></li>
+</ul>
+<div class="notes">
+<p>Explain that this level of design helps: - Developers break down coding tasks. - Testers plan unit tests for each module (Stage 6).</p>
+<p>Encourage using <strong>simple module diagrams</strong>, plus text/pseudo‑code for key behaviors.</p>
+</div>
+<hr>
+</section>
+<section id="component-design-example-sensor-node" class="level2">
+<h2 class="anchored" data-anchor-id="component-design-example-sensor-node">Component Design – Example (Sensor Node)</h2>
+<p>For the <strong>Sensor Node</strong> (embedded microcontroller):</p>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>A typical embedded design breakdown:</p>
+<ul>
+<li><strong>Hardware:</strong>
+<ul>
+<li>MCU, sensor chip, power supply, antenna.</li>
+</ul></li>
+<li><strong>Firmware tasks:</strong>
+<ul>
+<li>Sensor reading task.</li>
+<li>Communication task.</li>
+<li>Power management task.</li>
+</ul></li>
+</ul>
+<p>High‑level firmware structure (conceptually):</p>
+<pre class="text"><code>- init()
+  - configure sensor
+  - configure radio
+  - load config (sampling interval, node ID)
+
+- main loop
+  - wait for sampling interval
+  - read sensor
+  - package reading with timestamp and node ID
+  - send to gateway
+  - handle retries / errors</code></pre>
+</div><div class="column" style="width:45%;">
+<p>You might capture a <strong>state machine</strong>:</p>
+<ul>
+<li>Idle</li>
+<li>Measure</li>
+<li>Transmit</li>
+<li>Retry</li>
+<li>Error</li>
+</ul>
+<p>And a <strong>register / message format</strong>:</p>
+<ul>
+<li>Byte 0–1: Node ID</li>
+<li>Byte 2–5: Timestamp</li>
+<li>Byte 6–7: Temperature * 10 (int16)</li>
+<li>Byte 8–9: Humidity * 10 (int16)</li>
+<li>Byte 10–11: CRC</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Design details like <strong>tasks, states, and packet formats</strong> are what distinguish <strong>Stage 4 design</strong> from <strong>Stage 3 requirements</strong>.</p>
+</div>
+</div>
+<div class="notes">
+<p>Stress: This is the level at which you can meaningfully assign people tasks and estimate effort.</p>
+<p>Also: these design details will support specific <strong>unit/integration tests</strong> later (e.g., packet parser test, sensor driver test).</p>
+</div>
+<hr>
+</section>
+<section id="linking-design-back-to-requirements" class="level2">
+<h2 class="anchored" data-anchor-id="linking-design-back-to-requirements">Linking Design Back to Requirements</h2>
+<p>A good Stage 4 design explicitly answers:</p>
+<ul>
+<li>For each <strong>major component</strong>, which <code>REQ-*</code> does it help satisfy?</li>
+<li>For each <strong>critical requirement</strong>, where in the architecture/design is it addressed?</li>
+</ul>
+<p>Example (Smart Lab):</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 69%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Component</th>
+<th>Key Requirements It Addresses</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sensor Node Firmware</td>
+<td>REQ-HW-001, REQ-HW-060, REQ-HW-061, REQ-SY-030</td>
+</tr>
+<tr class="even">
+<td>Gateway</td>
+<td>REQ-SY-030, REQ-SY-032, REQ-SY-081</td>
+</tr>
+<tr class="odd">
+<td>Backend Alert Module</td>
+<td>REQ-SY-010, REQ-SY-011, REQ-SY-061</td>
+</tr>
+<tr class="even">
+<td>Web Dashboard Front-end</td>
+<td>REQ-SW-041, REQ-SW-042, REQ-SW-100, REQ-SW-101</td>
+</tr>
+<tr class="odd">
+<td>Auth Integration</td>
+<td>REQ-SY-090, REQ-SY-050</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you can’t point to any part of your design that fulfills a given <code>REQ-*</code>, either the requirement is <strong>missing in the design</strong> or <strong>mis‑allocated</strong>.</p>
+</div>
+</div>
+<div class="notes">
+<p>Encourage teams to do a quick <strong>traceability sanity check</strong> before the Stage 4 gate review.</p>
+<p>This also helps them spot <strong>over‑engineering</strong> – components that don’t seem to support any requirements.</p>
+</div>
+<hr>
+</section>
+<section id="ece-example-wearable-health-monitor-design" class="level2">
+<h2 class="anchored" data-anchor-id="ece-example-wearable-health-monitor-design">ECE Example – Wearable Health Monitor Design</h2>
+<p>System: <strong>Wearable heart‑rate and activity monitor</strong>.</p>
+<p>High‑level architecture (simplified):</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">{mermaid}
+flowchart LR
+  HR["HR Sensor&lt;br&gt;(PPG/ECG)"]
+  ACC["Accelerometer"]
+  MCU["Wearable MCU&lt;br&gt;(Sensor Fusion + BLE)"]
+  PHONE["Smartphone App"]
+  CLOUD["Cloud Service&lt;br&gt;(Alerts + DB)"]
+  NURSE["Nurse Station&lt;br&gt;Dashboard"]
+
+  HR --&gt; MCU
+  ACC --&gt; MCU
+  MCU -- BLE --&gt; PHONE
+  PHONE -- HTTPS --&gt; CLOUD
+  CLOUD --&gt; NURSE
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>Design activities:</p>
+<ul>
+<li>Decide <strong>sampling rates</strong> and buffer sizes on the MCU.</li>
+<li>Design <strong>algorithms</strong> for HR and activity detection (e.g., filters, peak detection).</li>
+<li>Specify <strong>BLE characteristics and messages</strong> between wearable and phone.</li>
+<li>Define <strong>API</strong> between phone app and cloud.</li>
+<li>Decide where to implement <strong>tachycardia detection</strong> logic:
+<ul>
+<li>On the wearable?</li>
+<li>On the phone?</li>
+<li>On the cloud?</li>
+</ul></li>
+</ul>
+<p>Each choice affects: - Latency (e.g., <code>REQ-SY-213</code> – alert within 300 s). - Power consumption, connectivity needs.</p>
+<div class="notes">
+<p>Ask: - If connectivity is lost, where can we still detect dangerous conditions? - How do we allocate <strong>safety‑critical requirements</strong> to the most reliable component?</p>
+<p>This is a real architectural design trade‑off.</p>
+</div>
+<hr>
+</section>
+<section id="common-pitfalls-in-stage-4" class="level2">
+<h2 class="anchored" data-anchor-id="common-pitfalls-in-stage-4">Common Pitfalls in Stage 4</h2>
+<ul>
+<li><strong>Jumping straight to code/PCB without shared architecture</strong>
+<ul>
+<li>Leads to mismatched assumptions and integration pain.</li>
+</ul></li>
+<li><strong>Architecture too vague</strong>
+<ul>
+<li>“We have a microcontroller and a server” with no clarity on responsibilities or protocols.</li>
+</ul></li>
+<li><strong>Over‑specifying design as requirements</strong>
+<ul>
+<li>In Stage 3, you may have already locked in implementation details unnecessarily.</li>
+</ul></li>
+<li><strong>No clear mapping from requirements to components</strong>
+<ul>
+<li>Some <code>REQ-*</code> have no home; some components exist with no purpose.</li>
+</ul></li>
+<li><strong>Ignoring non‑functional aspects in design</strong>
+<ul>
+<li>Architecture doesn’t consider performance, power, security, or safety until too late.</li>
+</ul></li>
+</ul>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Stage 4 is where you make <strong>big structural decisions</strong>. Getting them wrong is expensive to fix later.</p>
+</div>
+</div>
+<div class="notes">
+<p>Reinforce: It’s okay to iterate, but large changes after Stage 4 can cascade through implementation and tests.</p>
+<p>Encourage <strong>design reviews</strong>: - Within the team, - With advisor, - Possibly with stakeholders for sanity checks.</p>
+</div>
+<hr>
+</section>
+<section id="stage-4-key-deliverables-for-this-course" class="level2">
+<h2 class="anchored" data-anchor-id="stage-4-key-deliverables-for-this-course">Stage 4 Key Deliverables (for This Course)</h2>
+<p>Your Stage 4 outputs should include:</p>
+<ol type="1">
+<li><strong>Architecture Description</strong>
+<ul>
+<li>Top‑level block diagram (logical view).</li>
+<li>Deployment / hardware mapping view.</li>
+<li>Interface / data‑flow view.</li>
+</ul></li>
+<li><strong>Component Design Descriptions</strong>
+<ul>
+<li>For each major component: responsibilities, internal structure, interfaces.</li>
+<li>State machines or sequence diagrams for critical behaviors.</li>
+<li>Key algorithms (at least at pseudo‑code or block diagram level).</li>
+</ul></li>
+<li><strong>Requirements Allocation Summary</strong>
+<ul>
+<li>Table mapping <code>REQ-SY-*</code> to components (and optionally to <code>REQ-HW-*</code> / <code>REQ-SW-*</code>).</li>
+</ul></li>
+<li><strong>Design Rationale and Trade‑offs</strong>
+<ul>
+<li>Why you chose this architecture (e.g., central gateway vs direct cloud).</li>
+<li>How you addressed major risks (performance, safety, security).</li>
+</ul></li>
+<li><strong>Updated Risk / Open Issues List</strong> (if architecture reveals new risks)</li>
+</ol>
+<p>These deliverables are typically captured in:</p>
+<ul>
+<li>A <strong>Stage 4 design document</strong> (e.g., DCP‑300 / 400), and</li>
+<li>Slides/diagrams for the <strong>Stage 4 Gate Review</strong>.</li>
+</ul>
+<div class="notes">
+<p>You may tie this to your course’s actual document IDs (e.g., DCP‑300: High‑Level Design, DCP‑400: Detailed Design).</p>
+<p>Make clear that <strong>Stage 4 must be approved</strong> before full‑scale implementation (Stage 5).</p>
+</div>
+<hr>
+</section>
+<section id="summary-stage-4-takeaways" class="level2">
+<h2 class="anchored" data-anchor-id="summary-stage-4-takeaways">Summary – Stage 4 Takeaways</h2>
+<ol type="1">
+<li><strong>Architecture Definition (15288)</strong>
+<ul>
+<li>Identify major components and their interactions.</li>
+<li>Expressed in clear diagrams/views.</li>
+</ul></li>
+<li><strong>Design Definition (15288)</strong>
+<ul>
+<li>Refine components internally (modules, tasks, state machines, algorithms).</li>
+<li>Provides enough detail to start implementation and unit test design.</li>
+</ul></li>
+<li><strong>Requirements Allocation (29148/15288)</strong>
+<ul>
+<li>Map each <code>REQ-SY-*</code> to specific components.</li>
+<li>Ensure every requirement is owned and testable at the right level.</li>
+</ul></li>
+<li><strong>Good Stage 4 artifacts</strong> connect:
+<ul>
+<li>Stakeholder &amp; system requirements (Stages 2–3)</li>
+<li>Implementation &amp; verification plans (Stages 5–7)</li>
+</ul></li>
+</ol>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Stage 4 is the <strong>bridge from “what” to “how”</strong>. It gives your team a <strong>shared blueprint</strong> for building and testing your system.</p>
+</div>
+</div>
+<div class="notes">
+<p>Encourage teams: - Don’t skip Stage 4 because “we know the tech stack”. - Even small projects benefit from explicit architecture &amp; design.</p>
+<p>Mention that many real‑world system failures trace back to <strong>poor architecture</strong>, not bad code.</p>
+</div>
+<hr>
+</section>
+<section id="next-steps-for-your-team" class="level2">
+<h2 class="anchored" data-anchor-id="next-steps-for-your-team">Next Steps for Your Team</h2>
+<ol type="1">
+<li><strong>Review your DCP‑200 (<code>REQ-*</code>)</strong>
+<ul>
+<li>Make sure they are stable enough to base a design on.</li>
+</ul></li>
+<li><strong>Draft your Architecture</strong>
+<ul>
+<li>Identify main components and draw initial diagrams.</li>
+<li>Check that the architecture can, in principle, satisfy all <code>REQ-*</code>.</li>
+</ul></li>
+<li><strong>Define Component Designs</strong>
+<ul>
+<li>For each component, specify responsibilities, interfaces, and internal structure.</li>
+<li>Use diagrams and brief text/pseudo‑code.</li>
+</ul></li>
+<li><strong>Perform Requirements Allocation</strong>
+<ul>
+<li>Map each <code>REQ-SY-*</code> to component(s).</li>
+<li>Adjust architecture or requirements if you find gaps or conflicts.</li>
+</ul></li>
+<li><strong>Prepare for Stage 4 Gate Review</strong>
+<ul>
+<li>Be ready to explain:
+<ul>
+<li>Why you chose this architecture.</li>
+<li>How it satisfies key requirements.</li>
+<li>How you will break work into components for implementation and testing.</li>
+</ul></li>
+</ul></li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A clear Stage 4 design: - Makes <strong>coding and building</strong> in Stage 5 faster and safer. - Makes <strong>testing and integration</strong> in Stages 6–7 more straightforward.</p>
+</div>
+</div>
+<div class="notes">
+<p>Consider assigning an exercise:</p>
+<ul>
+<li>Take your current project.</li>
+<li>Draw a top‑level architecture diagram.</li>
+<li>Identify 3–5 key <code>REQ-SY-*</code> and show which components they map to.</li>
+</ul>
+<p>Review in class or in lab to reinforce these concepts.</p>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
